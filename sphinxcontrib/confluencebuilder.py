@@ -13,11 +13,8 @@
 
 from __future__ import (print_function, unicode_literals, absolute_import)
 
-from sphinx.builders import Builder
 from sphinx.writers.text import STDINDENT
 from .builders.confluence import ConfluenceBuilder
-from .writers.confluence import ConfluenceWriter
-
 
 
 def setup(app):

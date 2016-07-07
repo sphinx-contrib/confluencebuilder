@@ -57,19 +57,23 @@ class ConfluenceTranslator(TextTranslator):
         self.states = [[]]
         self.stateindent = [0]
         self.list_counter = []
-        self.sectionlevel = 0
+        self.sectionlevel = 1
         self.table = None
         if self.builder.config.rst_indent:
             self.indent = self.builder.config.rst_indent
         else:
             self.indent = STDINDENT
-        self.wrapper = textwrap.TextWrapper(width=STDINDENT, break_long_words=False, break_on_hyphens=False)
+        self.wrapper = textwrap.TextWrapper(width=STDINDENT,
+                                            break_long_words=False,
+                                            break_on_hyphens=False)
 
     def log_unknown(self, type, node):
         logger = logging.getLogger("sphinxcontrib.writers.confluence")
         if len(logger.handlers) == 0:
             # Logging is not yet configured. Configure it.
-            logging.basicConfig(level=logging.INFO, stream=sys.stderr, format='%(levelname)-8s %(message)s')
+            logging.basicConfig(level=logging.INFO,
+                                stream=sys.stderr,
+                                format='%(levelname)-8s %(message)s')
             logger = logging.getLogger("sphinxcontrib.writers.confluence")
         logger.warning("%s(%s) unsupported formatting" % (type, node))
 
@@ -90,6 +94,7 @@ class ConfluenceTranslator(TextTranslator):
         indent = self.stateindent.pop()
         result = []
         toformat = []
+
         def do_format():
             if not toformat:
                 return
@@ -129,7 +134,7 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_section(self, node):
-        self._title_char = self.sectionchars[self.sectionlevel]
+        self._title_char = 'h%i. ' % self.sectionlevel
         self.sectionlevel += 1
 
     def depart_section(self, node):
@@ -242,6 +247,7 @@ class ConfluenceTranslator(TextTranslator):
     def visit_desc_parameterlist(self, node):
         self.add_text('(')
         self.first_param = 1
+
     def depart_desc_parameterlist(self, node):
         self.add_text(')')
 
@@ -255,6 +261,7 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_desc_optional(self, node):
         self.add_text('[')
+
     def depart_desc_optional(self, node):
         self.add_text(']')
 
@@ -265,27 +272,32 @@ class ConfluenceTranslator(TextTranslator):
             content = content[:h] + " ... " + content[-h:]
             self.add_text(content)
             raise nodes.SkipNode
+
     def depart_desc_annotation(self, node):
         pass
 
     def visit_refcount(self, node):
         pass
+
     def depart_refcount(self, node):
         pass
 
     def visit_desc_content(self, node):
         self.new_state(self.indent)
+
     def depart_desc_content(self, node):
         self.end_state()
 
     def visit_figure(self, node):
         self.new_state(self.indent)
+
     def depart_figure(self, node):
         self.end_state()
 
     def visit_caption(self, node):
         # self.log_unknown("caption", node)
         pass
+
     def depart_caption(self, node):
         pass
 
@@ -307,12 +319,14 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_seealso(self, node):
         self.new_state(self.indent)
+
     def depart_seealso(self, node):
         self.end_state(first='')
 
     def visit_footnote(self, node):
         self._footnote = node.children[0].astext().strip()
         self.new_state(len(self._footnote) + self.indent)
+
     def depart_footnote(self, node):
         self.end_state(first='[%s] ' % self._footnote)
 
@@ -322,6 +336,7 @@ class ConfluenceTranslator(TextTranslator):
         else:
             self._citlabel = ''
         self.new_state(len(self._citlabel) + self.indent)
+
     def depart_citation(self, node):
         self.end_state(first='[%s] ' % self._citlabel)
 
@@ -333,16 +348,19 @@ class ConfluenceTranslator(TextTranslator):
     def visit_option_list(self, node):
         # self.log_unknown("option_list", node)
         pass
+
     def depart_option_list(self, node):
         pass
 
     def visit_option_list_item(self, node):
         self.new_state(0)
+
     def depart_option_list_item(self, node):
         self.end_state()
 
     def visit_option_group(self, node):
         self._firstoption = True
+
     def depart_option_group(self, node):
         self.add_text('     ')
 
@@ -351,23 +369,27 @@ class ConfluenceTranslator(TextTranslator):
             self._firstoption = False
         else:
             self.add_text(', ')
+
     def depart_option(self, node):
         pass
 
     def visit_option_string(self, node):
         # self.log_unknown("option_string", node)
         pass
+
     def depart_option_string(self, node):
         pass
 
     def visit_option_argument(self, node):
         self.add_text(node['delimiter'])
+
     def depart_option_argument(self, node):
         pass
 
     def visit_description(self, node):
         # self.log_unknown("description", node)
         pass
+
     def depart_description(self, node):
         pass
 
@@ -381,22 +403,26 @@ class ConfluenceTranslator(TextTranslator):
     def visit_tgroup(self, node):
         # self.log_unknown("tgroup", node)
         pass
+
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
         # self.log_unknown("thead", node)
         pass
+
     def depart_thead(self, node):
         pass
 
     def visit_tbody(self, node):
         self.table.append('sep')
+
     def depart_tbody(self, node):
         pass
 
     def visit_row(self, node):
         self.table.append([])
+
     def depart_row(self, node):
         pass
 
@@ -405,6 +431,7 @@ class ConfluenceTranslator(TextTranslator):
             raise NotImplementedError('Column or row spanning cells are '
                                       'not implemented.')
         self.new_state(0)
+
     def depart_entry(self, node):
         text = self.nl.join(self.nl.join(x[1]) for x in self.states.pop())
         self.stateindent.pop()
@@ -415,6 +442,7 @@ class ConfluenceTranslator(TextTranslator):
             raise NotImplementedError('Nested tables are not supported.')
         self.new_state(0)
         self.table = [[]]
+
     def depart_table(self, node):
         lines = self.table[1:]
         fmted_rows = []
@@ -488,16 +516,19 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_bullet_list(self, node):
         self.list_counter.append(-1)
+
     def depart_bullet_list(self, node):
         self.list_counter.pop()
 
     def visit_enumerated_list(self, node):
         self.list_counter.append(0)
+
     def depart_enumerated_list(self, node):
         self.list_counter.pop()
 
     def visit_definition_list(self, node):
         self.list_counter.append(-2)
+
     def depart_definition_list(self, node):
         self.list_counter.pop()
 
@@ -512,6 +543,7 @@ class ConfluenceTranslator(TextTranslator):
             # enumerated list
             self.list_counter[-1] += 1
             self.new_state(len(str(self.list_counter[-1])) + self.indent)
+
     def depart_list_item(self, node):
         if self.list_counter[-1] == -1:
             self.end_state(first='* ', end=None)
@@ -523,11 +555,13 @@ class ConfluenceTranslator(TextTranslator):
     def visit_definition_list_item(self, node):
         self._li_has_classifier = len(node) >= 2 and \
                                   isinstance(node[1], nodes.classifier)
+
     def depart_definition_list_item(self, node):
         pass
 
     def visit_term(self, node):
         self.new_state(0)
+
     def depart_term(self, node):
         if not self._li_has_classifier:
             self.end_state(end=None)
@@ -538,27 +572,32 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_classifier(self, node):
         self.add_text(' : ')
+
     def depart_classifier(self, node):
         self.end_state(end=None)
 
     def visit_definition(self, node):
         self.new_state(self.indent)
+
     def depart_definition(self, node):
         self.end_state()
 
     def visit_field_list(self, node):
         # self.log_unknown("field_list", node)
         pass
+
     def depart_field_list(self, node):
         pass
 
     def visit_field(self, node):
         self.new_state(0)
+
     def depart_field(self, node):
         self.end_state(end=None)
 
     def visit_field_name(self, node):
         self.add_text(':')
+
     def depart_field_name(self, node):
         self.add_text(':')
         content = node.astext()
@@ -566,33 +605,39 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_field_body(self, node):
         self.new_state(self.indent)
+
     def depart_field_body(self, node):
         self.end_state()
 
     def visit_centered(self, node):
         pass
+
     def depart_centered(self, node):
         pass
 
     def visit_hlist(self, node):
         # self.log_unknown("hlist", node)
         pass
+
     def depart_hlist(self, node):
         pass
 
     def visit_hlistcol(self, node):
         # self.log_unknown("hlistcol", node)
         pass
+
     def depart_hlistcol(self, node):
         pass
 
     def visit_admonition(self, node):
         self.new_state(0)
+
     def depart_admonition(self, node):
         self.end_state()
 
     def _visit_admonition(self, node):
         self.new_state(self.indent)
+
     def _make_depart_admonition(name):
         def depart_admonition(self, node):
             self.end_state(first=admonitionlabels[name] + ': ')
@@ -623,6 +668,7 @@ class ConfluenceTranslator(TextTranslator):
             self.add_text(versionlabels[node['type']] % node['version'] + ': ')
         else:
             self.add_text(versionlabels[node['type']] % node['version'] + '.')
+
     def depart_versionmodified(self, node):
         self.end_state()
 
