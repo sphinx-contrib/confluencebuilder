@@ -134,7 +134,7 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_section(self, node):
-        self._title_char = 'h%i. ' % self.sectionlevel
+        self._title_char = 'h%i.' % self.sectionlevel
         self.sectionlevel += 1
 
     def depart_section(self, node):
@@ -184,7 +184,7 @@ class ConfluenceTranslator(TextTranslator):
             char = '^'
         text = ''.join(x[1] for x in self.states.pop() if x[0] == -1)
         self.stateindent.pop()
-        self.states[-1].append((0, ['', text, '%s' % (char * len(text)), '']))
+        self.states[-1].append((0, ['%s %s' % (char, text), '']))
 
     def visit_subtitle(self, node):
         # self.log_unknown("subtitle", node)
@@ -822,6 +822,7 @@ class ConfluenceTranslator(TextTranslator):
     def visit_title_reference(self, node):
         # self.log_unknown("title_reference", node)
         self.add_text('*')
+
     def depart_title_reference(self, node):
         self.add_text('*')
 
