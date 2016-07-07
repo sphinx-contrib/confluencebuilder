@@ -41,8 +41,6 @@ class ConfluenceWriter(writers.Writer):
 
 
 class ConfluenceTranslator(TextTranslator):
-    sectionchars = '*=-~"+`'
-
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
 
@@ -53,7 +51,6 @@ class ConfluenceTranslator(TextTranslator):
             self.nl = os.linesep
         else:
             self.nl = '\n'
-        self.sectionchars = builder.config.text_sectionchars
         self.states = [[]]
         self.stateindent = [0]
         self.list_counter = []
