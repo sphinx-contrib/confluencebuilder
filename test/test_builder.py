@@ -11,6 +11,8 @@ class TestConfluenceBuilder(unittest.TestCase):
     def test_registry(self):
         self.assertTrue('sphinxcontrib.confluencebuilder' in self.app._extensions.keys())
 
+    def test_build(self):
+        self.app.build()
 
 if __name__ == '__main__':
     import sys

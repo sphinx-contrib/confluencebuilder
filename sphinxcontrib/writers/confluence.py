@@ -59,8 +59,8 @@ class ConfluenceTranslator(TextTranslator):
         self.list_counter = []
         self.sectionlevel = 1
         self.table = None
-        if self.builder.config.rst_indent:
-            self.indent = self.builder.config.rst_indent
+        if self.builder.config.confluence_indent:
+            self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
         self.wrapper = textwrap.TextWrapper(width=STDINDENT,

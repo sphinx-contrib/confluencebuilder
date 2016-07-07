@@ -119,7 +119,7 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
-        self.writer = RstWriter(self)
+        self.writer = ConfluenceWriter(self)
 
     def write_doc(self, docname, doctree):
         # This method is taken from TextBuilder.write_doc()
