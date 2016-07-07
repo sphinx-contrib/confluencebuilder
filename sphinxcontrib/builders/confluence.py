@@ -17,7 +17,7 @@ from os import path
 from docutils.io import StringOutput
 
 from sphinx.builders import Builder
-from sphinx.util.osutil import ensuredir, os_path, SEP
+from sphinx.util.osutil import ensuredir, SEP
 from ..writers.rst import RstWriter
 
 
