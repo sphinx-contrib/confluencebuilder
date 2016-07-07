@@ -1,7 +1,7 @@
 .. -*- restructuredtext -*-
 
 =======================================
-README for Atlassian Confluence Builder
+Atlassian Confluence Builder for Sphinx
 =======================================
 
 Sphinx_ extension to build Confluence Wiki markup formatted files.
