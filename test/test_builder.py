@@ -61,10 +61,9 @@ class TestConfluenceBuilder(unittest.TestCase):
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'This is a code example\n')
-            self.assertEqual(lines[2], '{code:title=code\n')
-            self.assertEqual(lines[3], 'example|theme=FadeToGrey|linenumbers=true|language=python|firstline=0001|collapse=true}\n')
-            self.assertEqual(lines[5], 'import antigravity\n')
-            self.assertEqual(lines[6], 'antigravity.space(){code}\n')
+            self.assertEqual(lines[2], '{code:title=|theme=Default|linenumbers=false|language=py|collapse=false}\n')
+            self.assertEqual(lines[4], 'import antigravity\n')
+            self.assertEqual(lines[5], 'antigravity.space(){code}\n')
 
 if __name__ == '__main__':
     import sys
