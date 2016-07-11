@@ -52,6 +52,19 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[0], 'this is a paragraph\n')
             self.assertEqual(lines[2], '_emphasis_\n')
             self.assertEqual(lines[4], '*strong emphasis*\n')
+            self.assertEqual(lines[6], '[http://website.com/]\n')
+
+    def test_code(self):
+        test_path = os.path.join(self.outdir, 'code.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(lines[0], 'This is a paragraph\n')
+            self.assertEqual(lines[2], '{code:title=code\n')
+            self.assertEqual(lines[3], 'example|theme=FadeToGrey|linenumbers=true|language=python|firstline=0001|collapse=true}\n')
+            self.assertEqual(lines[5], 'import antigravity\n')
+            self.assertEqual(lines[6], 'antigravity.space(){code}\n')
 
 if __name__ == '__main__':
     import sys
