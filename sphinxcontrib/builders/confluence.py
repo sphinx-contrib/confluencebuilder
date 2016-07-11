@@ -20,6 +20,7 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from ..writers.confluence import ConfluenceWriter
 
+from xmlrpclib import Fault
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -148,8 +149,25 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            page = 'test'
-            self.confluence.storePageContent(page, self.space_name, self.writer.output)
+            if len(doctree.children) <= 0:
+                self.warn("Skipping page %s with no title" % outfilename)
+                return
+            title = doctree.children[0].astext()
+            try:
+                page = self.confluence.getPage(str(title), self.space_name)
+            except Fault:
+                page = {
+                    'title': title,
+                    'space': self.space_name
+                }
+            finally:
+                page['content'] = self.confluence._server.confluence2.convertWikiToStorageFormat(
+                    self.confluence._token2,
+                    self.writer.output)
+                self.confluence._server.confluence2.storePage(
+                    self.confluence._token2,
+                    page)
+
 
     def finish(self):
         pass
