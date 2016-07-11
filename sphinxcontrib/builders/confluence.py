@@ -73,7 +73,9 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_parent_page is not None:
             self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
                                                        self.space_name)
-
+        else:
+            self.parent_id = None
+        import pdb; pdb.set_trace()
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
             return docname + self.file_suffix
@@ -173,7 +175,6 @@ class ConfluenceBuilder(Builder):
                 self.confluence._server.confluence2.storePage(
                     self.confluence._token2,
                     page)
-
 
     def finish(self):
         pass

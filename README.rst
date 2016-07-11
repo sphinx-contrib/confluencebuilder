@@ -11,7 +11,7 @@ Requirements
 ============
 
 * Sphinx_ 1.0 or later
-* Python 2.6 or later
+* Python 2.7 or later
 
 Installing
 ==========
@@ -108,6 +108,17 @@ Example `conf.py`
     confluence_publish = True
     confluence_space_name = 'TEST'
     confluence_parent_page = 'Documentation'
+
+Supported meta types
+====================
+
+* Headings
+* Paragraphs
+* Enumerated lists
+* Bulletted lists
+* Code blocks (uses the Confluence code macro)
+* Hyperlinks
+* Inline blocks
 
 
 Credit
