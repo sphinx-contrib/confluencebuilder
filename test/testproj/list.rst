@@ -1,4 +1,4 @@
-This is the beginning
+This is a list test
 
 - BULLET_1
 - BULLET_2

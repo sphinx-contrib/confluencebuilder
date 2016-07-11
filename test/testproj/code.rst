@@ -1,4 +1,4 @@
-This is a paragraph
+This is a code example
 
 .. code-block:: python
 
