@@ -72,6 +72,44 @@ The following four configuration variables are defined by sphinxcontrib.restbuil
    Function to translate a docname to a (partial) URI. 
    By default, returns `docname` + :confval:`confluence_link_suffix`.
 
+Publishing to Confluence
+========================
+
+After installing the `confluence` pip module, you can publish to a confluence server as part of the Sphinx build. Create a file called `config.ini` in the same directory as `conf.py`, with the URL of your confluence server, the username and password.
+You will need to enable the Remote XMLRPC API in Confluence.
+
+    [sphinx]
+    url=https://docs.mywebsite.net
+    user=my.username
+    pass=myPassword
+
+In `conf.py` update the following values
+
+.. confval:: confluence_publish
+
+   Function to translate a docname to a (partial) URI. 
+   By default, is False.
+
+.. confval:: confluence_space_name
+
+   The key of the space in confluence you want to publish the docs to
+
+You can also publish to a page within a space by using the `confluence_parent_page` configuration value with the name of the root page.
+
+.. confval:: confluence_parent_page
+
+   The root page to put the generated pages under
+   
+Example `conf.py`
+
+.. code-block:: python
+
+    extensions = ['sphinxcontrib.confluencebuilder']
+    confluence_publish = True
+    confluence_space_name = 'TEST'
+    confluence_parent_page = 'Documentation'
+
+
 Credit
 ======
 

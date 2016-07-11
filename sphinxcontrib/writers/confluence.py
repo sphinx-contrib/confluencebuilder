@@ -23,6 +23,11 @@ from sphinx.locale import admonitionlabels, versionlabels, _
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 
 
+LANG_MAP = {
+    'python': 'py'
+}
+
+
 class LIST_TYPES:
     BULLET = -1
     DEFINITION = -2
@@ -687,7 +692,9 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_literal_block(self, node):
         lang = node.get('language', '')
-        self.add_text('{code:title=code example|theme=FadeToGrey|linenumbers=true|language=%s|firstline=0001|collapse=true}' % lang)
+        if lang in LANG_MAP.keys():
+            lang = LANG_MAP[lang]
+        self.add_text('{code:title=|theme=Default|linenumbers=false|language=%s|collapse=false}' % lang)
         self.new_state(0)
 
     def depart_literal_block(self, node):

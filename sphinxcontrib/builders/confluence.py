@@ -22,6 +22,7 @@ from ..writers.confluence import ConfluenceWriter
 
 from xmlrpclib import Fault
 
+
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
 # This was fixed in Sphinx 1.2b.
@@ -69,6 +70,9 @@ class ConfluenceBuilder(Builder):
             self.publish = False
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
+        if self.config.confluence_parent_page is not None:
+            self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
+                                                       self.space_name)
 
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
@@ -164,6 +168,8 @@ class ConfluenceBuilder(Builder):
                 page['content'] = self.confluence._server.confluence2.convertWikiToStorageFormat(
                     self.confluence._token2,
                     self.writer.output)
+                if self.parent_id:
+                    page['parentId'] = self.parent_id
                 self.confluence._server.confluence2.storePage(
                     self.confluence._token2,
                     page)

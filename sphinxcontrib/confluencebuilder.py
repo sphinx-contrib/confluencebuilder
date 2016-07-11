@@ -33,3 +33,5 @@ def setup(app):
     app.add_config_value('confluence_publish', None, False)
     """Name of the confluence space to publish to (if publishing)"""
     app.add_config_value('confluence_space_name', None, False)
+    """Name of the page within the confluence space to use as the root (if publishing)"""
+    app.add_config_value('confluence_parent_page', None, False)
