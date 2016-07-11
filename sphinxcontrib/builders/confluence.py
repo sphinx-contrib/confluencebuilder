@@ -61,6 +61,13 @@ class ConfluenceBuilder(Builder):
             self.link_suffix = self.config.confluence_link_suffix
         elif self.link_suffix is None:
             self.link_suffix = self.file_suffix
+        if self.config.confluence_publish:
+            self.publish = True
+            self._connect()
+        else:
+            self.publish = False
+        if self.config.confluence_space_name is not None:
+            self.space_name = self.config.confluence_space_name
 
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
@@ -140,5 +147,18 @@ class ConfluenceBuilder(Builder):
         except (IOError, OSError) as err:
             self.warn("error writing file %s: %s" % (outfilename, err))
 
+        if self.publish:
+            page = 'test'
+            self.confluence.storePageContent(page, self.space_name, self.writer.output)
+
     def finish(self):
         pass
+
+    def _connect(self):
+        try:
+            from confluence import Confluence
+            self.confluence = Confluence(profile='sphinx')
+        except ImportError:
+            raise ImportError("Must install confluence PyPi package to publish")
+        except Exception:
+            raise Exception("Could not connect, check remote API is configured.")

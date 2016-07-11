@@ -29,3 +29,7 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
     """Function to translate a docname to a (partial) URI. By default, returns docname + confluence_file_suffix."""
     app.add_config_value('confluence_indent', STDINDENT, False)
+    """Publish to a confluence website"""
+    app.add_config_value('confluence_publish', None, False)
+    """Name of the confluence space to publish to (if publishing)"""
+    app.add_config_value('confluence_space_name', None, False)
