@@ -83,6 +83,8 @@ Publishing to Confluence
 After installing the `confluence` pip module, you can publish to a confluence server as part of the Sphinx build. Create a file called `config.ini` in the same directory as `conf.py`, with the URL of your confluence server, the username and password.
 You will need to enable the Remote XMLRPC API in Confluence.
 
+.. code-block::
+
     [sphinx]
     url=https://docs.mywebsite.net
     user=my.username
