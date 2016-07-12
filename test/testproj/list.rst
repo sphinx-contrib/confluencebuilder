@@ -1,4 +1,5 @@
-This is a list test
+list test
+---------
 
 - BULLET_1
 - BULLET_2

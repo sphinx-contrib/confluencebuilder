@@ -39,7 +39,7 @@ class TestConfluenceBuilder(unittest.TestCase):
 
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
-            self.assertEqual(lines[0], 'This is a list test\n')
+            self.assertEqual(lines[0], 'h1. list test\n')
             self.assertEqual(lines[1], '\n')
             self.assertEqual(lines[2], "* BULLET_1\n")
             self.assertEqual(lines[3], '* BULLET_2\n')
@@ -53,7 +53,7 @@ class TestConfluenceBuilder(unittest.TestCase):
 
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
-            self.assertEqual(lines[0], 'this is a text test\n')
+            self.assertEqual(lines[0], 'h1. this is a text test\n')
             self.assertEqual(lines[2], '_emphasis_\n')
             self.assertEqual(lines[4], '*strong emphasis*\n')
             self.assertEqual(lines[6], '[http://website.com/]\n')
@@ -64,10 +64,23 @@ class TestConfluenceBuilder(unittest.TestCase):
 
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
-            self.assertEqual(lines[0], 'This is a code example\n')
+            self.assertEqual(lines[0], 'h1. Code Test\n')
             self.assertEqual(lines[2], '{code:title=|theme=Default|linenumbers=false|language=py|collapse=false}\n')
             self.assertEqual(lines[4], 'import antigravity\n')
             self.assertEqual(lines[5], 'antigravity.space(){code}\n')
+
+    @unittest.expectedFailure
+    def test_toctree(self):
+        test_path = os.path.join(self.outdir, 'toctree.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(lines[0], 'h1. TOCTREE\n')
+            self.assertEqual(lines[2], '* [Code Test]\n')
+            self.assertEqual(lines[3], '* [HEADING_TEST]\n')
+            # This assertion fails. I need to program this logic.
+            self.assertEqual(lines[4], '   * [HEADING_TEST#subheading-test]\n')
 
 if __name__ == '__main__':
     import sys
