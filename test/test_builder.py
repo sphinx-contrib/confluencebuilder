@@ -1,5 +1,4 @@
 import unittest
-import xmlrpclib
 from sphinx.application import Sphinx
 import os
 
@@ -16,7 +15,6 @@ class TestConfluenceBuilder(unittest.TestCase):
         cls.outdir = os.path.join(srcdir, 'out')
         confdir = srcdir
         doctreedir = os.path.join(srcdir, 'doctree')
-        xmlrpclib.ServerProxy = FakeServerProxy
         cls.app = Sphinx(srcdir, confdir, cls.outdir, doctreedir, 'confluence')
         cls.app.build(force_all=True)
 

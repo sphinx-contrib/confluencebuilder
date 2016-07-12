@@ -22,6 +22,12 @@ from ..writers.confluence import ConfluenceWriter
 
 from xmlrpclib import Fault
 
+try:
+    from confluence import Confluence
+    HAS_CONFLUENCE = True
+except ImportError:
+    HAS_CONFLUENCE = False
+
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -64,18 +70,20 @@ class ConfluenceBuilder(Builder):
         elif self.link_suffix is None:
             self.link_suffix = self.file_suffix
         if self.config.confluence_publish:
+            if not HAS_CONFLUENCE:
+                raise ImportError("Must install Confluence module first to publish.")
             self.publish = True
             self._connect()
         else:
             self.publish = False
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
-        if self.config.confluence_parent_page is not None:
+        if self.config.confluence_parent_page is not None and self.publish:
             self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
                                                        self.space_name)
         else:
             self.parent_id = None
-        import pdb; pdb.set_trace()
+
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
             return docname + self.file_suffix
@@ -158,7 +166,7 @@ class ConfluenceBuilder(Builder):
             if len(doctree.children) <= 0:
                 self.warn("Skipping page %s with no title" % outfilename)
                 return
-            title = doctree.children[0].astext()
+            title = [el for el in doctree.traverse() if el.tagname == 'title'][0].astext()
             try:
                 page = self.confluence.getPage(str(title), self.space_name)
             except Fault:
@@ -167,6 +175,10 @@ class ConfluenceBuilder(Builder):
                     'space': self.space_name
                 }
             finally:
+                self.info('Uploading page to confluence - Title "%s"' % title)
+                if '\n' in str(title):
+                    self.warn('Page title too long, truncating')
+                    page['title'] = str(title).split('\n')[0]
                 page['content'] = self.confluence._server.confluence2.convertWikiToStorageFormat(
                     self.confluence._token2,
                     self.writer.output)
@@ -181,9 +193,8 @@ class ConfluenceBuilder(Builder):
 
     def _connect(self):
         try:
-            from confluence import Confluence
             self.confluence = Confluence(profile='sphinx')
         except ImportError:
             raise ImportError("Must install confluence PyPi package to publish")
-        except Exception:
-            raise Exception("Could not connect, check remote API is configured.")
+        except Exception as ex:
+            raise Exception("Could not connect, check remote API is configured. %s" % ex)

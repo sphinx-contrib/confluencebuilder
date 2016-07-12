@@ -46,7 +46,7 @@ Usage
 
 - Run sphinx-build with target ``confluence``:
 
-    sphinx-build -b confluence -c . build/confluence
+    sphinx-build -b confluence -d _build/doctrees   . _build/html -E -a
 
 Configuration
 =============

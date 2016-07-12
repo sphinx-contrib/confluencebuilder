@@ -13,12 +13,12 @@ requires = ['Sphinx>=1.0']
 setup(
     name='sphinxcontrib-confluencebuilder',
     version='0.1',
-    url='http://github.com/tonybaloney/sphinx-confluencebuilder',
+    url='http://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
     download_url='http://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
     license='BSD', # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',
-    description='Sphinx extension to output Atlassian Confluence Wiki files.',
+    description='Sphinx extension to output Atlassian Confluence Wiki files and publish to Confluence Servers.',
     long_description=long_desc,
     zip_safe=False,
     classifiers=[
