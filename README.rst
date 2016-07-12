@@ -4,7 +4,7 @@
 Atlassian Confluence Builder for Sphinx
 =======================================
 
-Sphinx_ extension to build Confluence Wiki markup formatted files.
+Sphinx_ extension to build Confluence Wiki markup formatted files and optionally publish them to a Confluence server.
 
 
 Requirements
@@ -12,6 +12,7 @@ Requirements
 
 * Sphinx_ 1.0 or later
 * Python 2.7 or later
+* 'Confluence' PyPi package, 0.1 or later (if publishing')
 
 Installing
 ==========
@@ -50,27 +51,31 @@ Usage
 Configuration
 =============
 
-The following four configuration variables are defined by sphinxcontrib.restbuilder:
+The following four configuration variables are defined by sphinxcontrib.confluencebuilder:
 
-.. confval:: confluence_file_suffix
+confluence_file_suffix
+----------------------
 
-   This is the file name suffix for generated files.  The default is
-   ``".conf"``.
+This is the file name suffix for generated files.  The default is
+``".conf"``.
 
-.. confval:: confluence_link_suffix
+confluence_link_suffix
+----------------------
 
-   Suffix for generated links to files.  The default is whatever
-   :confval:`confluence_file_suffix` is set to.
+Suffix for generated links to files.  The default is whatever
+:confval:`confluence_file_suffix` is set to.
 
-.. confval:: confluence_file_transform
+confluence_file_transform
+-------------------------
 
-   Function to translate a docname to a filename. 
-   By default, returns `docname` + :confval:`confluence_file_suffix`.
+Function to translate a docname to a filename. 
+By default, returns `docname` + :confval:`confluence_file_suffix`.
 
-.. confval:: confluence_link_transform
+confluence_link_transform
+-------------------------
 
-   Function to translate a docname to a (partial) URI. 
-   By default, returns `docname` + :confval:`confluence_link_suffix`.
+Function to translate a docname to a (partial) URI. 
+By default, returns `docname` + :confval:`confluence_link_suffix`.
 
 Publishing to Confluence
 ========================
@@ -85,20 +90,23 @@ You will need to enable the Remote XMLRPC API in Confluence.
 
 In `conf.py` update the following values
 
-.. confval:: confluence_publish
+confluence_publish
+------------------
 
-   Function to translate a docname to a (partial) URI. 
-   By default, is False.
+Function to translate a docname to a (partial) URI. 
+By default, is False.
 
-.. confval:: confluence_space_name
+confluence_space_name
+---------------------
 
-   The key of the space in confluence you want to publish the docs to
+key of the space in confluence you want to publish the docs to
 
 You can also publish to a page within a space by using the `confluence_parent_page` configuration value with the name of the root page.
 
-.. confval:: confluence_parent_page
+confluence_parent_page
+----------------------
 
-   The root page to put the generated pages under
+The root page to put the generated pages under
    
 Example `conf.py`
 

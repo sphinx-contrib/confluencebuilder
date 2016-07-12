@@ -910,13 +910,13 @@ class ConfluenceTranslator(TextTranslator):
     def visit_inline(self, node):
         # self.log_unknown("inline", node)
         pass
-    
+
     def depart_inline(self, node):
         pass
 
     def visit_problematic(self, node):
         self.add_text('>>')
-        
+
     def depart_problematic(self, node):
         self.add_text('<<')
 
