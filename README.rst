@@ -130,6 +130,7 @@ Supported meta types
 * Hyperlinks
 * Inline blocks
 * TOC Tree - But only with a Max Depth of 1, sub anchors will not be valid links.
+* Tables
 
 Unsupported meta types
 ======================
