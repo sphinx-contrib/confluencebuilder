@@ -57,6 +57,8 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[2], '_emphasis_\n')
             self.assertEqual(lines[4], '*strong emphasis*\n')
             self.assertEqual(lines[6], '[http://website.com/]\n')
+            self.assertEqual(lines[10], '----\n')
+            self.assertEqual(lines[12], 'End of transition test\n');
 
     def test_code(self):
         test_path = os.path.join(self.outdir, 'code.conf')

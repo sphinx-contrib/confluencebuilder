@@ -516,9 +516,8 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_transition(self, node):
-        indent = sum(self.stateindent)
         self.new_state(0)
-        self.add_text('=' * (MAXWIDTH - indent))
+        self.add_text('----')
         self.end_state()
         raise nodes.SkipNode
 
