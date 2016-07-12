@@ -6,3 +6,9 @@ this is a text test
 **strong emphasis**
 
 http://website.com/
+
+Transition test
+
+--------
+
+End of transition test

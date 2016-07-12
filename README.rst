@@ -129,6 +129,7 @@ Supported meta types
 * Code blocks (uses the Confluence code macro)
 * Hyperlinks
 * Inline blocks
+* TOC Tree - But only with a Max Depth of 1, sub anchors will not be valid links.
 
 
 Credit
