@@ -12,7 +12,7 @@ requires = ['Sphinx>=1.0']
 
 setup(
     name='sphinxcontrib-confluencebuilder',
-    version='0.1',
+    version='0.1.1',
     url='http://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
     download_url='http://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
     license='BSD', # 2-clause

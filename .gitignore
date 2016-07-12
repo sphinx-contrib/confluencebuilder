@@ -1,3 +1,6 @@
+build/
+dist/
+*.egg-info/
 config.ini
 .pyc
 .DS_Store
