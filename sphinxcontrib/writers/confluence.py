@@ -435,7 +435,7 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_entry(self, node):
-        if ['morerows', 'morecols'] in node.keys():
+        if ['morerows', 'morecols'] in node.attlist():
             raise NotImplementedError('Column or row spanning cells are '
                                       'not implemented.')
         self.new_state(0)
@@ -473,32 +473,24 @@ class ConfluenceTranslator(TextTranslator):
                     cells.append(par)
                 fmted_rows.append(cells)
 
-        def writesep(char='-'):
-            out = ['+']
-            for width in realwidths:
-                out.append(char * (width+2))
-                out.append('+')
-            self.add_text(''.join(out) + self.nl)
-
-        def writerow(row):
+        def writerow(row, double=False):
             lines = zip(*row)
+            sep = '|' if not double else '||'
             for line in lines:
-                out = ['|']
+                out = [sep]
                 for i, cell in enumerate(line):
                     if cell:
                         out.append(' ' + cell.ljust(realwidths[i]+1))
                     else:
                         out.append(' ' * (realwidths[i] + 2))
-                    out.append('|')
+                    out.append(sep)
                 self.add_text(''.join(out) + self.nl)
-
+        is_heading = True
         for i, row in enumerate(fmted_rows):
             if separator and i == separator:
-                writesep('=')
-            else:
-                writesep('-')
-            writerow(row)
-        writesep('-')
+                is_heading = False
+            writerow(row, is_heading)
+
         self.table = None
         self.end_state(wrap=False)
 

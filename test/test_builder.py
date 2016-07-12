@@ -84,6 +84,18 @@ class TestConfluenceBuilder(unittest.TestCase):
             # This assertion fails. I need to program this logic.
             self.assertEqual(lines[4], '   * [HEADING_TEST#subheading-test]\n')
 
+    def test_table(self):
+        test_path = os.path.join(self.outdir, 'tables.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(len(lines), 5)
+            self.assertEqual(lines[0], 'h1. Table Test\n')
+            self.assertEqual(lines[2], '|| A     || B     || A or B ||\n')
+            self.assertEqual(lines[3], '| False | False | False  |\n')
+            self.assertEqual(lines[4], '| True  | False | True   |\n')
+
 if __name__ == '__main__':
     import sys
     sys.exit(unittest.main())

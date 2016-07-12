@@ -131,6 +131,10 @@ Supported meta types
 * Inline blocks
 * TOC Tree - But only with a Max Depth of 1, sub anchors will not be valid links.
 
+Unsupported meta types
+======================
+
+* Images (will get around to this!)
 
 Credit
 ======
