@@ -80,15 +80,8 @@ By default, returns `docname` + :confval:`confluence_link_suffix`.
 Publishing to Confluence
 ========================
 
-After installing the `confluence` pip module, you can publish to a confluence server as part of the Sphinx build. Create a file called `config.ini` in the same directory as `conf.py`, with the URL of your confluence server, the username and password.
+After installing the `confluence` pip module, you can publish to a confluence server as part of the Sphinx build. Configure `conf.py`, with the URL of your confluence server, the username and password.
 You will need to enable the Remote XMLRPC API in Confluence.
-
-.. code-block::
-
-    [sphinx]
-    url=https://docs.mywebsite.net
-    user=my.username
-    pass=myPassword
 
 In `conf.py` update the following values
 
@@ -110,6 +103,21 @@ confluence_parent_page
 
 The root page to put the generated pages under
    
+confluence_server_url
+---------------------
+
+The URL for confluence (not including the API folder)
+
+confluence_server_user
+----------------------
+
+Your username for confluence
+
+confluence_server_pass
+----------------------
+
+Your password for confluence
+
 Example `conf.py`
 
 .. code-block:: python
@@ -118,6 +126,9 @@ Example `conf.py`
     confluence_publish = True
     confluence_space_name = 'TEST'
     confluence_parent_page = 'Documentation'
+    confluence_server_url = 'https://me.docs.com'
+    confluence_server_user = 'anthony.shaw'
+    confluence_server_pass = 'NotMyPassword!'
 
 Supported meta types
 ====================
