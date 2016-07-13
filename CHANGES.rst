@@ -1,15 +1,19 @@
 Changelog
 =========
 
-restbuilder 0.1 (25 August 2013)
---------------------------------
-* Code submitted to sphinx-contrib
-  https://bitbucket.org/birkenfeld/sphinx-contrib
-* Released as sphinxcontrib-restbuilder
-* Added basic documentation
-* Unsupported/unknown tags are not printed, but send to log facility.
+0.2.0 (2016-13-07)
+------------------
 
-restbuilder (no version) (28 April 2012)
------------------------------------------
-* First release as port of a documentation generator in the NBT package
-  https://github.com/twoolie/NBT/commit/eefbd26c422a0e5f3c89e84fabcfb951a11722b0
+* moved configuration to the sphinx config
+
+0.1.1 (2016-12-07)
+------------------
+
+* Added table support
+* Fixed internal links
+
+0.1.0 (2016-11-07)
+------------------
+
+* Added lists, bullets, formatted text
+* Added headings and titles
