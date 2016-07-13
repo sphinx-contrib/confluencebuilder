@@ -35,3 +35,9 @@ def setup(app):
     app.add_config_value('confluence_space_name', None, False)
     """Name of the page within the confluence space to use as the root (if publishing)"""
     app.add_config_value('confluence_parent_page', None, False)
+    """URL of the Confluence server to publish to"""
+    app.add_config_value('confluence_server_url', None, False)
+    """ Username to login to Confluence API with """
+    app.add_config_value('confluence_server_user', None, False)
+    """ Password to login to Confluence API with """
+    app.add_config_value('confluence_server_pass', None, False)

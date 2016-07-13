@@ -193,7 +193,9 @@ class ConfluenceBuilder(Builder):
 
     def _connect(self):
         try:
-            self.confluence = Confluence(profile='sphinx')
+            self.confluence = Confluence(url=self.config.confluence_server_url,
+                                         username=self.config.confluence_server_user,
+                                         password=self.config.confluence_server_pass)
         except ImportError:
             raise ImportError("Must install confluence PyPi package to publish")
         except Exception as ex:
