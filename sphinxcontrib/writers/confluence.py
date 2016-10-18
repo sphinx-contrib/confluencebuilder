@@ -793,12 +793,12 @@ class ConfluenceTranslator(TextTranslator):
         format.
         """
         if 'refuri' not in node:
-            self.add_text('`%s`_' % node['name'])
+            if 'name' in node:
+                self.add_text('`%s`_' % node['name'])
             raise nodes.SkipNode
         elif 'internal' not in node:
-            try:
+            if 'name' in node and 'refuri' in node:
                 self.add_text('[%s^%s] ' % (node['name'], node['refuri']))
-            except KeyError:
                 self.add_text('[%s] ' % (node['refuri']))
             raise nodes.SkipNode
         elif 'reftitle' in node:
