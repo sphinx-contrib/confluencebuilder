@@ -20,7 +20,7 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from ..writers.confluence import ConfluenceWriter
 
-from xmlrpclib import Fault
+from xmlrpc.client import Fault
 
 try:
     from confluence import Confluence
