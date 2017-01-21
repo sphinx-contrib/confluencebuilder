@@ -37,4 +37,6 @@ setup(
     include_package_data=True,
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
+    test_suite='test',
+    tests_require=['sphinx']
 )
