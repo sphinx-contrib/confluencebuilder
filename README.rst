@@ -4,6 +4,12 @@
 Atlassian Confluence Builder for Sphinx
 =======================================
 
+.. image:: https://img.shields.io/pypi/v/sphinxcontrib-confluencebuilder.svg
+        :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
+
+.. image:: https://img.shields.io/travis/tonybaloney/sphinxcontrib-confluencebuilder.svg
+        :target: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder
+
 Sphinx_ extension to build Confluence Wiki markup formatted files and optionally publish them to a Confluence server.
 
 
@@ -11,8 +17,8 @@ Requirements
 ============
 
 * Sphinx_ 1.0 or later
-* Python 2.7 or later
-* 'Confluence' PyPi package, 0.1 or later (if publishing')
+* Python 2.7, 3.3 or later
+* 'Confluence' PyPi package, 0.2 or later (if publishing')
 
 Installing
 ==========
