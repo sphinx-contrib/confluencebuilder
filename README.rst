@@ -18,7 +18,7 @@ Requirements
 
 * Sphinx_ 1.0 or later
 * Python 2.7, 3.3 or later
-* 'Confluence' PyPi package, 0.2 or later (if publishing')
+* 'Confluence' PyPi package, 0.3.0 or later (if publishing')
 
 Installing
 ==========
@@ -30,6 +30,8 @@ Using pip
 
 Manual
 ------
+
+.. code-block:: bash
 
     git clone https://github.com/tonybaloney/sphinxcontrib-confluencebuilder
     cd sphinxcontrib-confluencebuilder
