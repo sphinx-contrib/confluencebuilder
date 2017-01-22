@@ -647,7 +647,7 @@ class ConfluenceTranslator(TextTranslator):
     def _visit_admonition(self, node):
         self.new_state(self.indent)
 
-    def _make_depart_admonition(name):  # noqa
+    def _make_depart_admonition(name):  # pylint: disable=no-self-argument
         def depart_admonition(self, node):
             self.end_state(first=admonitionlabels[name] + ': ')
         return depart_admonition
