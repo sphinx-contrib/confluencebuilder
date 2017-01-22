@@ -647,7 +647,7 @@ class ConfluenceTranslator(TextTranslator):
     def _visit_admonition(self, node):
         self.new_state(self.indent)
 
-    def _make_depart_admonition(name):
+    def _make_depart_admonition(self, name):
         def depart_admonition(self, node):
             self.end_state(first=admonitionlabels[name] + ': ')
         return depart_admonition
@@ -930,7 +930,7 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_raw(self, node):
         if 'text' in node.get('format', '').split():
-            self.body.append(node.astext())
+            self.body = self.body + node.astext()
         raise nodes.SkipNode
 
     def unknown_visit(self, node):
