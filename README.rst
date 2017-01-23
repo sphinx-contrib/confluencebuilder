@@ -17,7 +17,7 @@ Requirements
 ============
 
 * Sphinx_ 1.0 or later
-* Python 2.7, 3.3 or later
+* Python 2.7, 3.3, 3.4, 3.5 or 3.6
 * 'Confluence' PyPi package, 0.3.0 or later (if publishing')
 
 Installing
