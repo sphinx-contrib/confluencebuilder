@@ -8,7 +8,7 @@ Sphinx_ extension to build Confluence Wiki markup files.
 This extension is in particular useful to use in combination with an automated publisher to confluence
 '''
 
-requires = ['Sphinx>=1.0', 'future', '-e git+https://github.com/tonybaloney/confluence@py3#egg=confluence']
+requires = ['Sphinx>=1.0', 'future']
 
 setup(
     name='sphinxcontrib-confluencebuilder',
