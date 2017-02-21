@@ -1,5 +1,7 @@
 import unittest
 from sphinx.application import Sphinx
+from sphinxcontrib.builders.confluence import (ConfluenceBuilder,
+                                               ConfluenceConnectionError)
 import os
 
 
@@ -95,6 +97,13 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[2], '|| A     || B     || A or B ||\n')
             self.assertEqual(lines[3], '| False | False | False  |\n')
             self.assertEqual(lines[4], '| True  | False | True   |\n')
+
+    def test_publish(self):
+        builder = ConfluenceBuilder(self.app)
+        builder.config.confluence_publish = True
+        with self.assertRaises(ConfluenceConnectionError):
+            builder.init()
+
 
 if __name__ == '__main__':
     import sys
