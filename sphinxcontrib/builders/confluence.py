@@ -71,7 +71,7 @@ class ConfluenceBuilder(Builder):
             self.link_suffix = self.file_suffix
         if self.config.confluence_publish:
             if not HAS_CONFLUENCE:
-                raise ImportError("Must install Confluence module first to publish.")
+                raise ImportError("Must install confluence module first to publish, see README.")
             self.publish = True
             self._connect()
         else:
