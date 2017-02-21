@@ -55,6 +55,10 @@ def relative_uri(base, to):
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
 
+class ConfluenceConnectionError(Exception):
+    pass
+
+
 class ConfluenceBuilder(Builder):
     name = 'confluence'
     format = 'confluence'
@@ -199,4 +203,4 @@ class ConfluenceBuilder(Builder):
         except ImportError:
             raise ImportError("Must install confluence PyPi package to publish")
         except Exception as ex:
-            raise Exception("Could not connect, check remote API is configured. %s" % ex)
+            raise ConfluenceConnectionError("Could not connect, check remote API is configured. %s" % ex)
