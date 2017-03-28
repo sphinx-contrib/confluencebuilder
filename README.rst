@@ -110,7 +110,13 @@ confluence_parent_page
 ----------------------
 
 The root page to put the generated pages under
-   
+
+confluence_purge
+----------------
+
+Whether or not to purge legacy pages detected in the parent page.
+By default, is False.
+
 confluence_server_url
 ---------------------
 
@@ -134,6 +140,7 @@ Example `conf.py`
     confluence_publish = True
     confluence_space_name = 'TEST'
     confluence_parent_page = 'Documentation'
+    confluence_purge = False
     confluence_server_url = 'https://me.docs.com'
     confluence_server_user = 'anthony.shaw'
     confluence_server_pass = 'NotMyPassword!'
