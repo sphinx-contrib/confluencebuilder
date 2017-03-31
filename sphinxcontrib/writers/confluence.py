@@ -11,12 +11,14 @@
 
 from __future__ import (print_function, unicode_literals, absolute_import)
 
+import codecs
 import os
 import sys
 import textwrap
 import logging
 
 from docutils import nodes, writers
+from os import path
 
 from sphinx import addnodes
 from sphinx.locale import admonitionlabels, versionlabels, _
@@ -133,10 +135,35 @@ class ConfluenceTranslator(TextTranslator):
 
     def depart_document(self, node):
         self.end_state()
-        self.body = self.nl.join(line and (' '*indent + line)
+        self.body = "";
+
+        if self.builder.config.confluence_header_file is not None:
+            headerFile = path.join(self.builder.env.srcdir,
+                self.builder.config.confluence_header_file)
+            try:
+                f = codecs.open(headerFile, 'r', 'utf-8')
+                try:
+                    self.body += f.read() + self.nl
+                finally:
+                    f.close()
+            except (IOError, OSError) as err:
+                self.warn("error reading file %s: %s" % (headerFile, err))
+
+        self.body += self.nl.join(line and (' '*indent + line)
                                  for indent, lines in self.states[0]
                                  for line in lines)
-        # TODO: add header/footer?
+
+        if self.builder.config.confluence_footer_file is not None:
+            footerFile = path.join(self.builder.env.srcdir,
+                self.builder.config.confluence_footer_file)
+            try:
+                f = codecs.open(footerFile, 'r', 'utf-8')
+                try:
+                    self.body += f.read() + self.nl
+                finally:
+                    f.close()
+            except (IOError, OSError) as err:
+                self.warn("error reading file %s: %s" % (footerFile, err))
 
     def visit_highlightlang(self, node):
         raise nodes.SkipNode
