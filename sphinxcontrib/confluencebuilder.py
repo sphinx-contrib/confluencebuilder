@@ -43,3 +43,7 @@ def setup(app):
     app.add_config_value('confluence_server_user', None, False)
     """ Password to login to Confluence API with """
     app.add_config_value('confluence_server_pass', None, False)
+    """ File to get page header information from. """
+    app.add_config_value('confluence_header_file', None, False)
+    """ File to get page footer information from. """
+    app.add_config_value('confluence_footer_file', None, False)

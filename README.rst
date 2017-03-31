@@ -132,6 +132,16 @@ confluence_server_pass
 
 Your password for confluence
 
+confluence_header_file
+----------------------
+
+The name of the file to use header data.
+
+confluence_footer_file
+----------------------
+
+The name of the file to use footer data.
+
 Example `conf.py`
 
 .. code-block:: python
