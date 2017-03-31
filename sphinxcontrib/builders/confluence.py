@@ -64,6 +64,7 @@ class ConfluenceBuilder(Builder):
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
+    legacyPages = []
 
     def init(self):
         """Load necessary templates and perform initialization."""
@@ -85,6 +86,12 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_parent_page is not None and self.publish:
             self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
                                                        self.space_name)
+            if self.config.confluence_purge:
+                childPages = self.confluence._server.confluence2.getDescendents(
+                    self.confluence._token2,
+                    self.parent_id)
+                for childPage in childPages:
+                    self.legacyPages.append(childPage["id"])
         else:
             self.parent_id = None
 
@@ -188,12 +195,20 @@ class ConfluenceBuilder(Builder):
                     self.writer.output)
                 if self.parent_id:
                     page['parentId'] = self.parent_id
-                self.confluence._server.confluence2.storePage(
-                    self.confluence._token2,
-                    page)
+                uploadedPage = self.confluence._server.confluence2.storePage(
+                        self.confluence._token2,
+                        page)
+                if self.config.confluence_purge:
+                    if uploadedPage["id"] in self.legacyPages:
+                        self.legacyPages.remove(uploadedPage["id"])
 
     def finish(self):
-        pass
+        if self.config.confluence_purge is True and self.legacyPages:
+            self.info('Removing legacy pages...')
+            for legacyPage in self.legacyPages:
+                self.confluence._server.confluence2.removePage(
+                        self.confluence._token2,
+                        legacyPage)
 
     def _connect(self):
         try:
