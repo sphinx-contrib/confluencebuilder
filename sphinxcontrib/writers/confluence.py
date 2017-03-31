@@ -19,7 +19,7 @@ import logging
 from docutils import nodes, writers
 
 from sphinx import addnodes
-from sphinx.locale import admonitionlabels, versionlabels, _
+from sphinx.locale import versionlabels, _
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 
 
@@ -644,32 +644,56 @@ class ConfluenceTranslator(TextTranslator):
     def depart_admonition(self, node):
         self.end_state()
 
-    def _visit_admonition(self, node):
-        self.new_state(self.indent)
+    def _visit_info(self, node):
+        self.new_state(0)
+        self.add_text('{info}')
 
-    def _make_depart_admonition(name):  # pylint: disable=no-self-argument
-        def depart_admonition(self, node):
-            self.end_state(first=admonitionlabels[name] + ': ')
-        return depart_admonition
+    def _depart_info(self, node):
+        self.add_text('{info}')
+        self.end_state()
 
-    visit_attention = _visit_admonition
-    depart_attention = _make_depart_admonition('attention')
-    visit_caution = _visit_admonition
-    depart_caution = _make_depart_admonition('caution')
-    visit_danger = _visit_admonition
-    depart_danger = _make_depart_admonition('danger')
-    visit_error = _visit_admonition
-    depart_error = _make_depart_admonition('error')
-    visit_hint = _visit_admonition
-    depart_hint = _make_depart_admonition('hint')
-    visit_important = _visit_admonition
-    depart_important = _make_depart_admonition('important')
-    visit_note = _visit_admonition
-    depart_note = _make_depart_admonition('note')
-    visit_tip = _visit_admonition
-    depart_tip = _make_depart_admonition('tip')
-    visit_warning = _visit_admonition
-    depart_warning = _make_depart_admonition('warning')
+    def _visit_note(self, node):
+        self.new_state(0)
+        self.add_text('{note}')
+
+    def _depart_note(self, node):
+        self.add_text('{note}')
+        self.end_state()
+
+    def _visit_tip(self, node):
+        self.new_state(0)
+        self.add_text('{tip}')
+
+    def _depart_tip(self, node):
+        self.add_text('{tip}')
+        self.end_state()
+
+    def _visit_warning(self, node):
+        self.new_state(0)
+        self.add_text('{warning}')
+
+    def _depart_warning(self, node):
+        self.add_text('{warning}')
+        self.end_state()
+
+    visit_attention = _visit_note
+    depart_attention = _depart_note
+    visit_caution = _visit_warning
+    depart_caution = _depart_warning
+    visit_danger = _visit_warning
+    depart_danger = _depart_warning
+    visit_error = _visit_warning
+    depart_error = _depart_warning
+    visit_hint = _visit_tip
+    depart_hint = _depart_tip
+    visit_important = _visit_warning
+    depart_important = _depart_warning
+    visit_note = _visit_info
+    depart_note = _depart_info
+    visit_tip = _visit_tip
+    depart_tip = _depart_tip
+    visit_warning = _visit_warning
+    depart_warning = _depart_warning
 
     def visit_versionmodified(self, node):
         self.new_state(0)
