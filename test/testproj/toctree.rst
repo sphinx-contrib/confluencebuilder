@@ -1,3 +1,5 @@
+:orphan:
+
 TOCTREE
 -------
 
@@ -7,6 +9,6 @@ TOCTREE
    code
    heading
    admonitions
+   tables
    list
-   test
    text
