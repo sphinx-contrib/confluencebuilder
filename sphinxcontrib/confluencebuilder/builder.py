@@ -18,7 +18,7 @@ from docutils.io import StringOutput
 
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
-from ..writers.confluence import ConfluenceWriter
+from .writer import ConfluenceWriter
 
 from xmlrpc.client import Fault
 

@@ -14,7 +14,7 @@
 from __future__ import (print_function, unicode_literals, absolute_import)
 
 from sphinx.writers.text import STDINDENT
-from .builders.confluence import ConfluenceBuilder
+from .builder import ConfluenceBuilder
 
 
 def setup(app):

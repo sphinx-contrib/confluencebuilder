@@ -1,6 +1,6 @@
 import unittest
 from sphinx.application import Sphinx
-from sphinxcontrib.builders.confluence import (ConfluenceBuilder,
+from sphinxcontrib.confluencebuilder.builder import (ConfluenceBuilder,
                                                ConfluenceConnectionError)
 import os
 
