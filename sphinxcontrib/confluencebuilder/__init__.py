@@ -16,6 +16,7 @@ from __future__ import (print_function, unicode_literals, absolute_import)
 from sphinx.writers.text import STDINDENT
 from .builder import ConfluenceBuilder
 
+__version__='0.6.0rc'
 
 def setup(app):
     app.require_sphinx('1.0')
