@@ -1,19 +1,43 @@
-Changelog
-=========
 
-0.2.0 (2016-13-07)
-------------------
+0.6.0 (unreleased)
+==================
+
+* cleanup module's structure, versions and other minor files
+
+0.5.0 (2016-03-31)
+==================
+
+* header/footer support
+* purging support
+* use macros for admonitions
+* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see PR #10)
+
+0.4.0 (2016-02-21)
+==================
+
+* move from 'Confluence' PyPi package to 'confluence' PyPi package (required for
+   publishing). See: https://github.com/pycontribs/confluence
+
+0.3.0 (2016-01-22)
+==================
+
+* adding travis ci, tox and initial unit testing
+* module now depends on `future`
+* providing initial support for python 3
+
+0.2.0 (2016-01-13)
+==================
 
 * moved configuration to the sphinx config
 
 0.1.1 (2016-12-07)
-------------------
+==================
 
-* Added table support
-* Fixed internal links
+* added table support
+* fixed internal links
 
 0.1.0 (2016-11-07)
-------------------
+==================
 
-* Added lists, bullets, formatted text
-* Added headings and titles
+* added lists, bullets, formatted text
+* added headings and titles
