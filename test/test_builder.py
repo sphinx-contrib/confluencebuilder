@@ -14,10 +14,10 @@ class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         srcdir = os.path.join(os.getcwd(), 'testproj')
-        cls.outdir = os.path.join(srcdir, 'out')
-        confdir = srcdir
-        doctreedir = os.path.join(srcdir, 'doctree')
-        cls.app = Sphinx(srcdir, confdir, cls.outdir, doctreedir, 'confluence')
+        builddir = os.path.join(srcdir, 'build')
+        cls.outdir = os.path.join(builddir, 'out')
+        doctreedir = os.path.join(builddir, 'doctree')
+        cls.app = Sphinx(srcdir, srcdir, cls.outdir, doctreedir, 'confluence')
         cls.app.build(force_all=True)
 
     def test_registry(self):
