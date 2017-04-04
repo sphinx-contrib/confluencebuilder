@@ -6,6 +6,7 @@ TOCTREE
 
    code
    heading
+   admonitions
    list
    test
    text

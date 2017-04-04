@@ -63,6 +63,23 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[8], '----\n')
             self.assertEqual(lines[10], 'End of transition test\n');
 
+    def test_admonitions(self):
+        test_path = os.path.join(self.outdir, 'admonitions.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(lines[0], 'h1. Admonition Test\n')
+            self.assertEqual(lines[2], '{note}attention-message{note}\n')
+            self.assertEqual(lines[4], '{warning}caution-message{warning}\n')
+            self.assertEqual(lines[6], '{warning}danger-message{warning}\n')
+            self.assertEqual(lines[8], '{warning}error-message{warning}\n')
+            self.assertEqual(lines[10], '{tip}hint-message{tip}\n')
+            self.assertEqual(lines[12], '{warning}important-message{warning}\n')
+            self.assertEqual(lines[14], '{info}note-message{info}\n')
+            self.assertEqual(lines[16], '{tip}tip-message{tip}\n')
+            self.assertEqual(lines[18], '{warning}warning-message{warning}\n')
+
     def test_code(self):
         test_path = os.path.join(self.outdir, 'code.conf')
         self.assertTrue(os.path.exists(test_path))
