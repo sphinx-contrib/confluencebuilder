@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.builders.confluence
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    sphinxcontrib.confluencebuilder.builder
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
