@@ -16,16 +16,10 @@ from docutils.io import StringOutput
 
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
 
 from xmlrpc.client import Fault
-
-try:
-    from confluence import Confluence
-    HAS_CONFLUENCE = True
-except ImportError:
-    HAS_CONFLUENCE = False
-
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -63,6 +57,7 @@ class ConfluenceBuilder(Builder):
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
     legacyPages = []
+    publisher = ConfluencePublisher()
 
     def init(self):
         """Load necessary templates and perform initialization."""
@@ -73,21 +68,17 @@ class ConfluenceBuilder(Builder):
         elif self.link_suffix is None:
             self.link_suffix = self.file_suffix
         if self.config.confluence_publish:
-            if not HAS_CONFLUENCE:
-                raise ImportError("Must install confluence module first to publish, see README.")
             self.publish = True
-            self._connect()
+            self.publisher.connect(self.config)
         else:
             self.publish = False
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
         if self.config.confluence_parent_page is not None and self.publish:
-            self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
-                                                       self.space_name)
+            self.parent_id = self.publisher.getPageId(self.space_name,
+                    self.config.confluence_parent_page)
             if self.config.confluence_purge:
-                childPages = self.confluence._server.confluence2.getDescendents(
-                    self.confluence._token2,
-                    self.parent_id)
+                childPages = self.publisher.getDescendents(self.parent_id)
                 for childPage in childPages:
                     self.legacyPages.append(childPage["id"])
         else:
@@ -175,9 +166,13 @@ class ConfluenceBuilder(Builder):
             if len(doctree.children) <= 0:
                 self.warn("Skipping page %s with no title" % outfilename)
                 return
-            title = [el for el in doctree.traverse() if el.tagname == 'title'][0].astext()
+            title = str([el for el in doctree.traverse() if el.tagname == 'title'][0].astext())
+            if '\n' in title:
+                self.warn('Page title too long, truncating')
+                title = title.split('\n')[0]
+
             try:
-                page = self.confluence.getPage(str(title), self.space_name)
+                page = self.publisher.getPageContent(self.space_name, title)
             except Fault:
                 page = {
                     'title': title,
@@ -185,35 +180,14 @@ class ConfluenceBuilder(Builder):
                 }
             finally:
                 self.info('Uploading page to confluence - Title "%s"' % title)
-                if '\n' in str(title):
-                    self.warn('Page title too long, truncating')
-                    page['title'] = str(title).split('\n')[0]
-                page['content'] = self.confluence._server.confluence2.convertWikiToStorageFormat(
-                    self.confluence._token2,
-                    self.writer.output)
-                if self.parent_id:
-                    page['parentId'] = self.parent_id
-                uploadedPage = self.confluence._server.confluence2.storePage(
-                        self.confluence._token2,
-                        page)
+                uploadedPageId = self.publisher.storePage(page,
+                        self.writer.output, self.parent_id)
                 if self.config.confluence_purge:
-                    if uploadedPage["id"] in self.legacyPages:
-                        self.legacyPages.remove(uploadedPage["id"])
+                    if uploadedPageId in self.legacyPages:
+                        self.legacyPages.remove(uploadedPageId)
 
     def finish(self):
         if self.config.confluence_purge is True and self.legacyPages:
             self.info('Removing legacy pages...')
-            for legacyPage in self.legacyPages:
-                self.confluence._server.confluence2.removePage(
-                        self.confluence._token2,
-                        legacyPage)
-
-    def _connect(self):
-        try:
-            self.confluence = Confluence(url=self.config.confluence_server_url,
-                                         username=self.config.confluence_server_user,
-                                         password=self.config.confluence_server_pass)
-        except ImportError:
-            raise ImportError("Must install confluence PyPi package to publish")
-        except Exception as ex:
-            raise ConfluenceConnectionError("Could not connect, check remote API is configured. %s" % ex)
+            for legacyPageId in self.legacyPages:
+                self.publisher.removePage(legacyPageId)
