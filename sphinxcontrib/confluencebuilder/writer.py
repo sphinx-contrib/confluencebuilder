@@ -3,9 +3,7 @@
     sphinxcontrib.writers.confluence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    .. moduleauthor:: Anthony Shaw <anthonyshaw@apache.org>
-
-    :copyright: Copyright 2016 by Anthony Shaw.
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
