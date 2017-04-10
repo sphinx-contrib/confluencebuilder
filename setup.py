@@ -12,9 +12,9 @@ requires = ['Sphinx>=1.0', 'future', 'confluence>=0.1']
 
 setup(
     name='sphinxcontrib-confluencebuilder',
-    version='0.4.0',
-    url='http://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
-    download_url='http://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
+    version='0.6.0.dev0',
+    url='https://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
+    download_url='https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
     license='BSD', # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',

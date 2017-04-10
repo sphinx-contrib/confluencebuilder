@@ -5,17 +5,16 @@
 
     Sphinx extension to output Atlassian Confluence wiki files.
 
-    .. moduleauthor:: Anthony Shaw <anthonyshaw@apache.org>
-
-    :copyright: Copyright 2016 by Anthony Shaw.
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
 
 from sphinx.writers.text import STDINDENT
-from .builders.confluence import ConfluenceBuilder
+from .builder import ConfluenceBuilder
 
+__version__='0.6.0.dev0'
 
 def setup(app):
     app.require_sphinx('1.0')

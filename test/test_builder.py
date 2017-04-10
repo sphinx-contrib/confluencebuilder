@@ -1,6 +1,6 @@
 import unittest
 from sphinx.application import Sphinx
-from sphinxcontrib.builders.confluence import (ConfluenceBuilder,
+from sphinxcontrib.confluencebuilder.builder import (ConfluenceBuilder,
                                                ConfluenceConnectionError)
 import os
 
@@ -14,10 +14,10 @@ class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         srcdir = os.path.join(os.getcwd(), 'testproj')
-        cls.outdir = os.path.join(srcdir, 'out')
-        confdir = srcdir
-        doctreedir = os.path.join(srcdir, 'doctree')
-        cls.app = Sphinx(srcdir, confdir, cls.outdir, doctreedir, 'confluence')
+        builddir = os.path.join(srcdir, 'build')
+        cls.outdir = os.path.join(builddir, 'out')
+        doctreedir = os.path.join(builddir, 'doctree')
+        cls.app = Sphinx(srcdir, srcdir, cls.outdir, doctreedir, 'confluence')
         cls.app.build(force_all=True)
 
     def test_registry(self):
@@ -62,6 +62,23 @@ class TestConfluenceBuilder(unittest.TestCase):
             # self.assertEqual(lines[6], '[http://website.com/]\n')
             self.assertEqual(lines[8], '----\n')
             self.assertEqual(lines[10], 'End of transition test\n');
+
+    def test_admonitions(self):
+        test_path = os.path.join(self.outdir, 'admonitions.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(lines[0], 'h1. Admonition Test\n')
+            self.assertEqual(lines[2], '{note}attention-message{note}\n')
+            self.assertEqual(lines[4], '{warning}caution-message{warning}\n')
+            self.assertEqual(lines[6], '{warning}danger-message{warning}\n')
+            self.assertEqual(lines[8], '{warning}error-message{warning}\n')
+            self.assertEqual(lines[10], '{tip}hint-message{tip}\n')
+            self.assertEqual(lines[12], '{warning}important-message{warning}\n')
+            self.assertEqual(lines[14], '{info}note-message{info}\n')
+            self.assertEqual(lines[16], '{tip}tip-message{tip}\n')
+            self.assertEqual(lines[18], '{warning}warning-message{warning}\n')
 
     def test_code(self):
         test_path = os.path.join(self.outdir, 'code.conf')

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.writers.confluence
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    sphinxcontrib.confluencebuilder.writer
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    .. moduleauthor:: Anthony Shaw <anthonyshaw@apache.org>
-
-    :copyright: Copyright 2016 by Anthony Shaw.
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
@@ -78,13 +76,13 @@ class ConfluenceTranslator(TextTranslator):
                                             break_on_hyphens=False)
 
     def log_unknown(self, type, node):
-        logger = logging.getLogger("sphinxcontrib.writers.confluence")
+        logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
         if len(logger.handlers) == 0:
             # Logging is not yet configured. Configure it.
             logging.basicConfig(level=logging.INFO,
                                 stream=sys.stderr,
                                 format='%(levelname)-8s %(message)s')
-            logger = logging.getLogger("sphinxcontrib.writers.confluence")
+            logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
         logger.warning("%s(%s) unsupported formatting" % (type, node))
 
     def wrap(self, text, width=STDINDENT):

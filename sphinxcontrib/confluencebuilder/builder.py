@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.builders.confluence
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    sphinxcontrib.confluencebuilder.builder
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    .. moduleauthor:: Anthony Shaw <anthonyshaw@apache.org>
-
-    :copyright: Copyright 2016 by Anthony Shaw.
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
@@ -18,7 +16,7 @@ from docutils.io import StringOutput
 
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
-from ..writers.confluence import ConfluenceWriter
+from .writer import ConfluenceWriter
 
 from xmlrpc.client import Fault
 
