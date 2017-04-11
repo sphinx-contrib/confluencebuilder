@@ -38,6 +38,7 @@ class ConfluencePublisher():
     def init(self, config):
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
+        self.proxy = config.confluence_proxy
         self.server_url = config.confluence_server_url
         self.server_user = config.confluence_server_user
         self.server_pass = config.confluence_server_pass
@@ -68,9 +69,14 @@ class ConfluencePublisher():
 
         if self.use_xmlrpc:
             try:
+                transport = None
+                if self.proxy:
+                    transport = ConfluenceTransport()
+                    transport.set_proxy(self.proxy)
+
                 self.xmlrpc = xmlrpclib.ServerProxy(
                     self.server_url + '/rpc/xmlrpc',
-                    allow_none=True)
+                    transport=transport, allow_none=True)
             except IOError as ex:
                 raise ConfluenceBadServerUrlError(self.server_url, ex)
 
@@ -278,3 +284,22 @@ class ConfluencePublisher():
             self.rest_client.delete('content', page_id)
         else:
             self.xmlrpc.removePage(self.token, page_id)
+
+class ConfluenceTransport(xmlrpclib.Transport):
+    proxy = None
+
+    def make_connection(self, host):
+        self.realhost = host
+        if self.proxy:
+            return httplib.HTTPConnection(self.proxy)
+        else:
+            return httplib.HTTPConnection(self.realhost)
+
+    def send_host(self, connection, host):
+        connection.putheader('Host', self.realhost)
+
+    def send_request(self, connection, handler, request_body):
+        connection.putrequest('POST', 'http://%s%s' % (self.realhost, handler))
+
+    def set_proxy(self, proxy):
+        self.proxy = proxy
