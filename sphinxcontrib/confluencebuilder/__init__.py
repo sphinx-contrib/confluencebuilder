@@ -69,3 +69,5 @@ def setup(app):
     app.add_config_value('confluence_publish', None, False)
     """Prefix to apply to published pages."""
     app.add_config_value('confluence_publish_prefix', None, False)
+    """Timeout for network-related calls (publishing)."""
+    app.add_config_value('confluence_timeout', None, False)

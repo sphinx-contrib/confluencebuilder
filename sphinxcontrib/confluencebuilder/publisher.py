@@ -43,6 +43,7 @@ class ConfluencePublisher():
         self.server_user = config.confluence_server_user
         self.server_pass = config.confluence_server_pass
         self.space_name = config.confluence_space_name
+        self.timeout = config.confluence_timeout
         self.use_rest = not config.confluence_disable_rest
         self.use_xmlrpc = not config.confluence_disable_xmlrpc
 
@@ -53,7 +54,7 @@ class ConfluencePublisher():
 
         if self.use_rest:
             self.rest_client = Rest(self.server_url,
-                self.server_user, self.server_pass);
+                self.server_user, self.server_pass, self.timeout);
             try:
                 rsp = self.rest_client.get('space', [
                     'spaceKey=' + self.space_name,
@@ -70,9 +71,12 @@ class ConfluencePublisher():
         if self.use_xmlrpc:
             try:
                 transport = None
-                if self.proxy:
+                if self.proxy or self.timeout:
                     transport = ConfluenceTransport()
-                    transport.set_proxy(self.proxy)
+                    if self.proxy:
+                        transport.set_proxy(self.proxy)
+                    if self.timeout:
+                        transport.set_timeout(self.timeout)
 
                 self.xmlrpc = xmlrpclib.ServerProxy(
                     self.server_url + '/rpc/xmlrpc',
@@ -287,13 +291,14 @@ class ConfluencePublisher():
 
 class ConfluenceTransport(xmlrpclib.Transport):
     proxy = None
+    timeout = None
 
     def make_connection(self, host):
         self.realhost = host
         if self.proxy:
-            return httplib.HTTPConnection(self.proxy)
+            return httplib.HTTPConnection(self.proxy, timeout=self.timeout)
         else:
-            return httplib.HTTPConnection(self.realhost)
+            return httplib.HTTPConnection(self.realhost, timeout=self.timeout)
 
     def send_host(self, connection, host):
         connection.putheader('Host', self.realhost)
@@ -303,3 +308,6 @@ class ConfluenceTransport(xmlrpclib.Transport):
 
     def set_proxy(self, proxy):
         self.proxy = proxy
+
+    def set_timeout(self, timeout):
+        self.timeout = timeout

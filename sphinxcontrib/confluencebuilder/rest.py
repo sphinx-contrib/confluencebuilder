@@ -17,8 +17,9 @@ import requests
 class Rest:
     BIND_PATH = "/rest/api/"
 
-    def __init__(self, server_url, server_user, server_pass):
+    def __init__(self, server_url, server_user, server_pass, timeout = None):
         self.url = server_url
+        self.timeout = timeout
         self.auth = None
         if server_user:
             self.auth = (server_user, server_pass)
@@ -31,7 +32,7 @@ class Rest:
                 restUrl += "&" + param;
 
         try:
-            rsp = requests.get(restUrl, auth=self.auth)
+            rsp = requests.get(restUrl, auth=self.auth, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
@@ -55,7 +56,8 @@ class Rest:
     def post(self, key, data):
         restUrl = self.url + self.BIND_PATH + key
         try:
-            rsp = requests.post(restUrl, auth=self.auth, json=data)
+            rsp = requests.post(restUrl, auth=self.auth, json=data,
+                timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
@@ -79,7 +81,8 @@ class Rest:
     def put(self, key, value, data):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.put(restUrl, auth=self.auth, json=data)
+            rsp = requests.put(restUrl, auth=self.auth, json=data,
+                timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
@@ -103,7 +106,7 @@ class Rest:
     def delete(self, key, value):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.delete(restUrl, auth=self.auth)
+            rsp = requests.delete(restUrl, auth=self.auth, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
