@@ -10,13 +10,14 @@
 * header/footer support
 * purging support
 * use macros for admonitions
-* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see PR #10)
+* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
+   tonybaloney/sphinxcontrib-confluencebuilder#10)
 
 0.4.0 (2016-02-21)
 ==================
 
-* move from 'Confluence' PyPi package to 'confluence' PyPi package (required for
-   publishing). See: https://github.com/pycontribs/confluence
+* move from 'confluence' pypi package to 'confluence' pypi package (required for
+   publishing). see: https://github.com/pycontribs/confluence
 
 0.3.0 (2016-01-22)
 ==================
