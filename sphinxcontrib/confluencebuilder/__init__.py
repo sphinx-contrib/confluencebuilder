@@ -51,6 +51,8 @@ def setup(app):
     app.add_config_value('confluence_disable_xmlrpc', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
+    """Root/parent page's identifier to publish documents into."""
+    app.add_config_value('confluence_parent_page_id_check', None, False)
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
     """Password to login to Confluence API with."""

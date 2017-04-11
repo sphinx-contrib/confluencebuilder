@@ -36,6 +36,7 @@ except ImportError:
 
 class ConfluencePublisher():
     def init(self, config):
+        self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.server_url = config.confluence_server_url
         self.server_user = config.confluence_server_user
@@ -136,6 +137,9 @@ class ConfluencePublisher():
                 raise ConfluenceConfigurationError("""Configured parent """
                     """page name do not exist.""")
             page = rsp['results'][0]
+            if self.parent_id and page['id'] != str(self.parent_id):
+                raise ConfluenceConfigurationError("""Configured parent """
+                    """page ID and name do not match.""")
             base_page_id = page['id']
         else:
             try:
@@ -144,7 +148,14 @@ class ConfluencePublisher():
             except xmlrpclib.Fault:
                 raise ConfluenceConfigurationError("""Configured parent """
                     """page name do not exist.""")
+            if self.parent_id and page['id'] != str(self.parent_id):
+                raise ConfluenceConfigurationError("""Configured parent """
+                    """page ID and name do not match.""")
             base_page_id = page['id']
+
+        if not base_page_id and self.parent_id:
+            raise ConfluenceConfigurationError("""Unable to find the """
+                """parent page matching the ID or name provided.""")
 
         return base_page_id
 
