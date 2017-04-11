@@ -13,8 +13,19 @@ from __future__ import (print_function, unicode_literals, absolute_import)
 
 from sphinx.writers.text import STDINDENT
 from .builder import ConfluenceBuilder
+import argparse
 
 __version__='0.6.0.dev0'
+
+def main():
+    parser = argparse.ArgumentParser(prog=__name__,
+        description='Sphinx extension to output Atlassian Confluence content.')
+    parser.add_argument(
+        '--version', action='version', version='%(prog)s ' + __version__)
+
+    parser.parse_args()
+    parser.print_help()
+    return 0
 
 def setup(app):
     app.require_sphinx('1.0')
