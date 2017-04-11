@@ -16,6 +16,7 @@ from docutils.io import StringOutput
 
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
 
@@ -46,43 +47,23 @@ def relative_uri(base, to):
         return '.' + SEP
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
-
-class ConfluenceConnectionError(Exception):
-    pass
-
-
 class ConfluenceBuilder(Builder):
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
-    legacyPages = []
+    legacy_pages = []
     publisher = ConfluencePublisher()
 
     def init(self):
-        """Load necessary templates and perform initialization."""
+        self.publisher.init(self.config)
+
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
         if self.config.confluence_link_suffix is not None:
             self.link_suffix = self.config.confluence_link_suffix
         elif self.link_suffix is None:
             self.link_suffix = self.file_suffix
-        if self.config.confluence_publish:
-            self.publish = True
-            self.publisher.connect(self.config)
-        else:
-            self.publish = False
-        if self.config.confluence_space_name is not None:
-            self.space_name = self.config.confluence_space_name
-        if self.config.confluence_parent_page is not None and self.publish:
-            self.parent_id = self.publisher.getPageId(self.space_name,
-                    self.config.confluence_parent_page)
-            if self.config.confluence_purge:
-                childPages = self.publisher.getDescendents(self.parent_id)
-                for childPage in childPages:
-                    self.legacyPages.append(childPage["id"])
-        else:
-            self.parent_id = None
 
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
@@ -100,6 +81,31 @@ class ConfluenceBuilder(Builder):
             self.link_transform = self.config.confluence_link_transform
         else:
             self.link_transform = link_transform
+
+        if self.config.confluence_publish:
+            if not self.config.confluence_server_url:
+                raise ConfluenceConfigurationError("""Confluence server URL """
+                    """has not been set. Unable to publish.""")
+            if not self.config.confluence_space_name:
+                raise ConfluenceConfigurationError("""Confluence space key """
+                    """has not been set. Unable to publish.""")
+            if not self.config.confluence_server_user:
+                if self.config.confluence_server_pass:
+                    raise ConfluenceConfigurationError("""Confluence """
+                        """username has not been set even though a password """
+                        """has been set. Unable to publish.""")
+
+            self.publish = True
+            self.publisher.connect()
+            self.parent_id = self.publisher.getBasePageId()
+            self.legacy_pages = self.publisher.getDescendents(self.parent_id)
+        else:
+            self.publish = False
+
+        if self.config.confluence_space_name is not None:
+            self.space_name = self.config.confluence_space_name
+        else:
+            self.parent_id = None
 
     def get_outdated_docs(self):
         """
@@ -171,23 +177,18 @@ class ConfluenceBuilder(Builder):
                 self.warn('Page title too long, truncating')
                 title = title.split('\n')[0]
 
-            try:
-                page = self.publisher.getPageContent(self.space_name, title)
-            except Fault:
-                page = {
-                    'title': title,
-                    'space': self.space_name
-                }
-            finally:
-                self.info('Uploading page to confluence - Title "%s"' % title)
-                uploadedPageId = self.publisher.storePage(page,
-                        self.writer.output, self.parent_id)
-                if self.config.confluence_purge:
-                    if uploadedPageId in self.legacyPages:
-                        self.legacyPages.remove(uploadedPageId)
+            uploaded_page_id = self.publisher.storePage(title,
+                    self.writer.output, self.parent_id)
+            if self.config.confluence_purge:
+                if uploaded_page_id in self.legacy_pages:
+                    self.legacy_pages.remove(uploaded_page_id)
 
     def finish(self):
-        if self.config.confluence_purge is True and self.legacyPages:
-            self.info('Removing legacy pages...')
-            for legacyPageId in self.legacyPages:
-                self.publisher.removePage(legacyPageId)
+        if self.publish:
+            if self.config.confluence_purge is True and self.legacy_pages:
+                self.info('removing legacy pages... ', nonl=0)
+                for legacy_page_id in self.legacy_pages:
+                   self.publisher.removePage(legacy_page_id)
+                self.info('done\n')
+
+            self.publisher.disconnect()

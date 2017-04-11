@@ -45,6 +45,10 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
 
     """(publishing)"""
+    """Explictly prevent any Confluence REST API callers."""
+    app.add_config_value('confluence_disable_rest', None, False)
+    """Explictly prevent any Confluence XML-RPC API callers."""
+    app.add_config_value('confluence_disable_xmlrpc', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
     """Enablement of purging legacy child pages from a parent page."""
