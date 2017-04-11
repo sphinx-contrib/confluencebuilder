@@ -145,7 +145,7 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.warn("error reading file %s: %s" % (headerFile, err))
+                self.builder.warn("error reading file %s: %s" % (headerFile, err))
 
         self.body += self.nl.join(line and (' '*indent + line)
                                  for indent, lines in self.states[0]
@@ -161,7 +161,7 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.warn("error reading file %s: %s" % (footerFile, err))
+                self.builder.warn("error reading file %s: %s" % (footerFile, err))
 
     def visit_highlightlang(self, node):
         raise nodes.SkipNode
