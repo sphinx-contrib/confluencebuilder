@@ -173,6 +173,10 @@ class ConfluenceBuilder(Builder):
                 self.warn("Skipping page %s with no title" % outfilename)
                 return
             title = str([el for el in doctree.traverse() if el.tagname == 'title'][0].astext())
+
+            if self.config.confluence_publish_prefix:
+                title = self.config.confluence_publish_prefix + title
+
             if '\n' in title:
                 self.warn('Page title too long, truncating')
                 title = title.split('\n')[0]

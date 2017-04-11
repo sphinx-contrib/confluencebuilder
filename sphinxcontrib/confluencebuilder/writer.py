@@ -71,6 +71,10 @@ class ConfluenceTranslator(TextTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
+        if self.builder.config.confluence_publish_prefix:
+            self.link_prefix = self.builder.config.confluence_publish_prefix
+        else:
+            self.link_prefix = ''
         self.wrapper = textwrap.TextWrapper(width=STDINDENT,
                                             break_long_words=False,
                                             break_on_hyphens=False)
@@ -862,7 +866,8 @@ class ConfluenceTranslator(TextTranslator):
                 anchor = '#' + node['refuri'].split('#')[1]
             else:
                 anchor = ''
-            self.add_text('[%s%s]' % (node.astext(), anchor))
+            self.add_text(
+                '[%s%s%s]' % (self.link_prefix, node.astext(), anchor))
             raise nodes.SkipNode
 
     def depart_reference(self, node):

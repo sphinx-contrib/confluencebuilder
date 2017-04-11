@@ -63,3 +63,5 @@ def setup(app):
     app.add_config_value('confluence_space_name', None, False)
     """Enablement of publishing."""
     app.add_config_value('confluence_publish', None, False)
+    """Prefix to apply to published pages."""
+    app.add_config_value('confluence_publish_prefix', None, False)
