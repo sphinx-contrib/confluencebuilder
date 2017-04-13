@@ -172,13 +172,15 @@ class ConfluencePublisher():
     def getDescendents(self, page_id):
         descendents = []
 
-        if not page_id:
-            return descendents
-
         if self.use_rest:
+            if page_id:
+                search_fields = ['cql=ancestor=' + str(page_id)]
+            else:
+                search_fields = ['cql=space=' + self.space_name +
+                    ' and type=page']
+
             # Observed issues with "content/{id}/descendant"; using search.
-            rsp = self.rest_client.get('content/search',
-                ['cql=ancestor=' + str(page_id)])
+            rsp = self.rest_client.get('content/search', search_fields)
             idx = 0
             while rsp['size'] > 0:
                 for result in rsp['results']:
@@ -188,10 +190,15 @@ class ConfluencePublisher():
                     break
 
                 idx += int(rsp['limit'])
-                rsp = self.rest_client.get('content/search', [
-                    'cql=ancestor=' + str(page_id), 'start=' + str(idx)])
+                sub_search_fields = search_fields
+                sub_search_fields.append('start=' + str(idx));
+                rsp = self.rest_client.get('content/search', sub_search_fields)
         else:
-            pages = self.xmlrpc.getDescendents(self.token, page_id)
+            if page_id:
+                pages = self.xmlrpc.getDescendents(self.token, page_id)
+            else:
+                pages = self.xmlrpc.getPages(self.token, self.space_name)
+
             for child_page in pages:
                 descendents.append(child_page['id'])
 
