@@ -104,6 +104,7 @@ class ConfluencePublisher():
                 except xmlrpclib.Fault as ex:
                     if ex.faultString.find('AuthenticationFailed') != -1:
                         raise ConfluenceAuthenticationFailedUrlError
+                    raise
                 if not self.token:
                     raise ConfluenceLegacyError
             else:
