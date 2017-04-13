@@ -36,6 +36,7 @@ except ImportError:
 
 class ConfluencePublisher():
     def init(self, config):
+        self.config = config
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.proxy = config.confluence_proxy
@@ -53,8 +54,7 @@ class ConfluencePublisher():
                 """options have been explicitly disabled. Unable to publish.""")
 
         if self.use_rest:
-            self.rest_client = Rest(self.server_url,
-                self.server_user, self.server_pass, self.timeout);
+            self.rest_client = Rest(self.config);
             try:
                 rsp = self.rest_client.get('space', [
                     'spaceKey=' + self.space_name,

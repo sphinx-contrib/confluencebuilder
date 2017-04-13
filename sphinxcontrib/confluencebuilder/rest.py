@@ -17,12 +17,13 @@ import requests
 class Rest:
     BIND_PATH = "/rest/api/"
 
-    def __init__(self, server_url, server_user, server_pass, timeout = None):
-        self.url = server_url
-        self.timeout = timeout
+    def __init__(self, config):
+        self.url = config.confluence_server_url
+        self.timeout = config.confluence_timeout
         self.auth = None
-        if server_user:
-            self.auth = (server_user, server_pass)
+        if config.confluence_server_user:
+            self.auth =
+                (config.confluence_server_user, config.confluence_server_pass)
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
