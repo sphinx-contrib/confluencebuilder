@@ -10,6 +10,7 @@
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
+from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 import json
 import requests
@@ -45,6 +46,8 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
+        if not rsp.content:
+            raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
             json_data = json.loads(rsp.content)
@@ -70,6 +73,8 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
+        if not rsp.content:
+            raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
             json_data = json.loads(rsp.content)
@@ -95,6 +100,8 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
+        if not rsp.content:
+            raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
             json_data = json.loads(rsp.content)

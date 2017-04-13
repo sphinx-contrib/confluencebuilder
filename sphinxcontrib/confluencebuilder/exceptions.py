@@ -88,6 +88,20 @@ class ConfluenceRemoteApiDisabledError(ConfluenceError):
             """---\n"""
         )
 
+class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
+    def __init__(self):
+        SphinxError.__init__(self,
+            """---\n"""
+            """Unable to authenticate with the Confluence server.\n"""
+            """\n"""
+            """While this could be your username or password being """
+            """incorrect, this plugin as detected that the Atlassian """
+            """Seraph instance has logged you out. This could be a """
+            """result of a server-related issue. If this persisted, """
+            """try contacting your Confluence administrator for help.\n"""
+            """---\n"""
+        )
+
 class ConfluenceTimeoutError(ConfluenceError):
     def __init__(self, server_url):
         SphinxError.__init__(self,
