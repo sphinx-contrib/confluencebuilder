@@ -283,8 +283,20 @@ class ConfluencePublisher():
                     'space': self.space_name
                 }
 
-            storage_data = self.xmlrpc.convertWikiToStorageFormat(
-                self.token, raw_data)
+            try:
+                storage_data = self.xmlrpc.convertWikiToStorageFormat(
+                    self.token, raw_data)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('UnknownMacroMigration') != -1:
+                    print("\nWARNING: Unsupported macro is page generation.");
+                    print(" (details: %s)" % ex.faultString);
+
+                    # Track known ID so legacy page does not get deleted if
+                    # purge is enabled.
+                    if 'id' in page:
+                        uploaded_page_id = page['id']
+                    return uploaded_page_id
+                raise
             page['content'] = storage_data
 
             if parent_id:
