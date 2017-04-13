@@ -28,13 +28,9 @@ class Rest:
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
-        if params:
-            restUrl += "?" + params[0];
-            for param in params[1:]:
-                restUrl += "&" + param;
-
         try:
-            rsp = requests.get(restUrl, auth=self.auth, timeout=self.timeout)
+            rsp = requests.get(restUrl, auth=self.auth, params=params,
+                timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:

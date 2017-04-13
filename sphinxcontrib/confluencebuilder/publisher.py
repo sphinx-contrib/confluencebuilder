@@ -56,10 +56,10 @@ class ConfluencePublisher():
         if self.use_rest:
             self.rest_client = Rest(self.config);
             try:
-                rsp = self.rest_client.get('space', [
-                    'spaceKey=' + self.space_name,
-                    'limit=1'
-                    ])
+                rsp = self.rest_client.get('space', {
+                    'spaceKey': self.space_name,
+                    'limit': 1
+                    })
                 if rsp['size'] == 0:
                     raise ConfluenceBadSpaceError(self.space_name)
                 self.use_xmlrpc = False
@@ -137,12 +137,12 @@ class ConfluencePublisher():
             return base_page_id
 
         if self.use_rest:
-            rsp = self.rest_client.get('content', [
-                'type=page',
-                'spaceKey=' + self.space_name,
-                'title=' + self.parent_name,
-                'status=current'
-                ])
+            rsp = self.rest_client.get('content', {
+                'type': 'page',
+                'spaceKey': self.space_name,
+                'title': self.parent_name,
+                'status': 'current'
+                })
             if rsp['size'] == 0:
                 raise ConfluenceConfigurationError("""Configured parent """
                     """page name do not exist.""")
@@ -174,10 +174,10 @@ class ConfluencePublisher():
 
         if self.use_rest:
             if page_id:
-                search_fields = ['cql=ancestor=' + str(page_id)]
+                search_fields = {'cql': 'ancestor=' + str(page_id)}
             else:
-                search_fields = ['cql=space=' + self.space_name +
-                    ' and type=page']
+                search_fields = {'cql': 'space=' + self.space_name +
+                    ' and type=page'}
 
             # Observed issues with "content/{id}/descendant"; using search.
             rsp = self.rest_client.get('content/search', search_fields)
@@ -190,8 +190,8 @@ class ConfluencePublisher():
                     break
 
                 idx += int(rsp['limit'])
-                sub_search_fields = search_fields
-                sub_search_fields.append('start=' + str(idx));
+                sub_search_fields = dict(search_fields)
+                sub_search_fields['start'] = idx;
                 rsp = self.rest_client.get('content/search', sub_search_fields)
         else:
             if page_id:
@@ -216,13 +216,13 @@ class ConfluencePublisher():
                 'contentbody/convert/storage', raw_data_req)
             storage_data = rsp['value']
 
-            rsp = self.rest_client.get('content', [
-                'type=page',
-                'spaceKey=' + self.space_name,
-                'title=' + page_name,
-                'status=current',
-                'expand=version'
-                ])
+            rsp = self.rest_client.get('content', {
+                'type': 'page',
+                'spaceKey': self.space_name,
+                'title': page_name,
+                'status': 'current',
+                'expand': 'version'
+                })
             if rsp['size'] == 0:
                 newPage = {
                     'type': 'page',
