@@ -866,8 +866,12 @@ class ConfluenceTranslator(TextTranslator):
                 anchor = '#' + node['refuri'].split('#')[1]
             else:
                 anchor = ''
-            self.add_text('[%s|%s%s%s]' % (node.astext(), self.link_prefix,
-                node.astext(), anchor))
+            label = node.astext()
+            link = self.link_prefix + label + anchor
+            if label == label:
+                self.add_text('[%s]' % link)
+            else:
+                self.add_text('[%s|%s]' % (label, link))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
