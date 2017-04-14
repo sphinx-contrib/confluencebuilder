@@ -162,6 +162,8 @@ class ConfluenceBuilder(Builder):
                 ConfluenceDocMap.register(doc, doctitle,
                     self.config.confluence_publish_prefix)
 
+        ConfluenceDocMap.conflictCheck()
+
     def write_doc(self, docname, doctree):
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.

@@ -30,6 +30,17 @@ class ConfluenceDocMap:
     def title(docname):
         return ConfluenceDocMap.doc2title.get(docname)
 
+    @staticmethod
+    def conflictCheck():
+        d = ConfluenceDocMap.doc2title
+        for key_a in d:
+            for key_b in d:
+                if key_a == key_b:
+                    break
+                if (d[key_a] == d[key_b]):
+                    ConfluenceLogger.warn("title conflict detected with "
+                        "'%s' and '%s'" % (key_a, key_b))
+
 class ConfluenceLogger():
     app = None
 
