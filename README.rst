@@ -131,6 +131,12 @@ confluence_publish
 Whether or not to allow publishing. This must be explicitly set to `True` if one
 wishes to publish content. By default, is ``False``.
 
+confluence_publish_prefix
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Insert a prefix into published document's titles and their respective links.
+By default, there is no prefix.
+
 confluence_space_name
 ~~~~~~~~~~~~~~~~~~~~~
 
