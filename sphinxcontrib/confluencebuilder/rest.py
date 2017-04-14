@@ -10,6 +10,7 @@
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
+from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 import json
@@ -35,6 +36,8 @@ class Rest:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
+        if rsp.status_code == 403:
+            raise ConfluencePermissionError("REST GET")
         if not rsp.ok:
             err = ""
             err += "REQ: GET\n"
@@ -62,6 +65,8 @@ class Rest:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
+        if rsp.status_code == 403:
+            raise ConfluencePermissionError("REST POST")
         if not rsp.ok:
             err = ""
             err += "REQ: POST\n"
@@ -89,6 +94,8 @@ class Rest:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
+        if rsp.status_code == 403:
+            raise ConfluencePermissionError("REST PUT")
         if not rsp.ok:
             err = ""
             err += "REQ: PUT\n"
@@ -115,6 +122,8 @@ class Rest:
             raise ConfluenceTimeoutError(self.url)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
+        if rsp.status_code == 403:
+            raise ConfluencePermissionError("REST DELETE")
         if not rsp.ok:
             err = ""
             err += "REQ: DELETE\n"

@@ -20,6 +20,7 @@ from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluenceBadSpaceError
 from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluenceLegacyError
+from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .rest import Rest
 import socket
@@ -228,51 +229,57 @@ class ConfluencePublisher():
                 'status': 'current',
                 'expand': 'version'
                 })
-            if rsp['size'] == 0:
-                newPage = {
-                    'type': 'page',
-                    'title': page_name,
-                    'body': {
-                        'storage': {
-                            'representation': 'storage',
-                            'value': storage_data
+            try:
+                if rsp['size'] == 0:
+                    newPage = {
+                        'type': 'page',
+                        'title': page_name,
+                        'body': {
+                            'storage': {
+                                'representation': 'storage',
+                                'value': storage_data
+                            }
+                        },
+                        'space': {
+                            'key': self.space_name
                         }
-                    },
-                    'space': {
-                        'key': self.space_name
                     }
-                }
 
-                if parent_id:
-                    newPage['ancestors'] = [{'id': parent_id}]
+                    if parent_id:
+                        newPage['ancestors'] = [{'id': parent_id}]
 
-                rsp = self.rest_client.post('content', newPage)
-            else:
-                page = rsp['results'][0]
-                last_version = int(page['version']['number'])
-                updatePage = {
-                    'id': page['id'],
-                    'type': 'page',
-                    'title': page_name,
-                    'body': {
-                        'storage': {
-                            'representation': 'storage',
-                            'value': storage_data
+                    rsp = self.rest_client.post('content', newPage)
+                else:
+                    page = rsp['results'][0]
+                    last_version = int(page['version']['number'])
+                    updatePage = {
+                        'id': page['id'],
+                        'type': 'page',
+                        'title': page_name,
+                        'body': {
+                            'storage': {
+                                'representation': 'storage',
+                                'value': storage_data
+                            }
+                        },
+                        'space': {
+                            'key': self.space_name
+                        },
+                        'version': {
+                            'number': last_version + 1
                         }
-                    },
-                    'space': {
-                        'key': self.space_name
-                    },
-                    'version': {
-                        'number': last_version + 1
                     }
-                }
 
-                if parent_id:
-                    updatePage['ancestors'] = [{'id': parent_id}]
+                    if parent_id:
+                        updatePage['ancestors'] = [{'id': parent_id}]
 
-                self.rest_client.put('content', page['id'], updatePage)
-                uploaded_page_id = page['id']
+                    self.rest_client.put('content', page['id'], updatePage)
+                    uploaded_page_id = page['id']
+            except ConfluencePermissionError:
+                raise ConfluencePermissionError(
+                    """Publish user does not have permission to add page """
+                    """content to the configured space."""
+                )
         else:
             try:
                 page = self.xmlrpc.getPage(
@@ -302,16 +309,38 @@ class ConfluencePublisher():
             if parent_id:
                 page['parentId'] = parent_id
 
-            uploaded_page = self.xmlrpc.storePage(self.token, page)
+            try:
+                uploaded_page = self.xmlrpc.storePage(self.token, page)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('NotPermittedException') != -1:
+                    raise ConfluencePermissionError(
+                        """Publish user does not have permission to add page """
+                        """content to the configured space."""
+                    )
+                raise
             uploaded_page_id = uploaded_page['id']
 
         return uploaded_page_id
 
     def removePage(self, page_id):
         if self.use_rest:
-            self.rest_client.delete('content', page_id)
+            try:
+                self.rest_client.delete('content', page_id)
+            except ConfluencePermissionError:
+                raise ConfluencePermissionError(
+                    """Publish user does not have permission to delete """
+                    """from the configured space."""
+                )
         else:
-            self.xmlrpc.removePage(self.token, page_id)
+            try:
+                self.xmlrpc.removePage(self.token, page_id)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('NotPermittedException') != -1:
+                    raise ConfluencePermissionError(
+                        """Publish user does not have permission to delete """
+                        """from the configured space."""
+                    )
+                raise
 
 class ConfluenceTransport(xmlrpclib.Transport):
     proxy = None

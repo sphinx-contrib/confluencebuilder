@@ -72,6 +72,16 @@ class ConfluenceLegacyError(ConfluenceError):
             """---\n"""
         )
 
+class ConfluencePermissionError(ConfluenceError):
+    def __init__(self, details):
+        SphinxError.__init__(self,
+            """---\n"""
+            """Do not have permission for this action on the Confluence """
+            """server.\n\n"""
+            """%s\n""" % details +
+            """---\n"""
+        )
+
 class ConfluenceRemoteApiDisabledError(ConfluenceError):
     def __init__(self, server_url):
         SphinxError.__init__(self,
