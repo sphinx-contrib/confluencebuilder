@@ -8,19 +8,16 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-
-import codecs
-from os import path
-
-from docutils.io import StringOutput
-
-from sphinx.builders import Builder
-from sphinx.util.osutil import ensuredir, SEP
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
-
+from docutils.io import StringOutput
+from docutils import nodes
+from sphinx.builders import Builder
+from sphinx.util.osutil import ensuredir, SEP
+from os import path
 from xmlrpc.client import Fault
+import codecs
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -153,11 +150,9 @@ class ConfluenceBuilder(Builder):
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
-        # print "write(%s,%s)" % (type(doctree), type(destination))
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        # print "write(%s,%s) -> %s" % (type(doctree), type(destination), outfilename)
         ensuredir(path.dirname(outfilename))
         try:
             f = codecs.open(outfilename, 'w', 'utf-8')
