@@ -46,6 +46,7 @@ def relative_uri(base, to):
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
 class ConfluenceBuilder(Builder):
+    current_docname = None
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
@@ -165,6 +166,8 @@ class ConfluenceBuilder(Builder):
         ConfluenceDocMap.conflictCheck()
 
     def write_doc(self, docname, doctree):
+        self.current_docname = docname
+
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')

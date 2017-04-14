@@ -8,10 +8,12 @@
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
+from .common import ConfluenceDocMap
 from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
 from sphinx.locale import versionlabels
+from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
 import os
@@ -45,8 +47,16 @@ class ConfluenceWriter(writers.Writer):
         self.output = visitor.body
 
 class ConfluenceTranslator(TextTranslator):
+    docparent = ''
+
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
+
+        # Determine document's name (if any).
+        assert builder.current_docname
+        self.docname = builder.current_docname
+        if SEP in self.docname:
+            self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
         newlines = builder.config.text_newlines
         if newlines == 'windows':
@@ -64,10 +74,6 @@ class ConfluenceTranslator(TextTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
-        if self.builder.config.confluence_publish_prefix:
-            self.link_prefix = self.builder.config.confluence_publish_prefix
-        else:
-            self.link_prefix = ''
         self.wrapper = textwrap.TextWrapper(width=STDINDENT,
                                             break_long_words=False,
                                             break_on_hyphens=False)
@@ -764,12 +770,10 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_target(self, node):
         if 'refid' in node:
-            self.new_state(0)
-            self.add_text('.. _'+node['refid']+':'+self.nl)
+            self.add_text('{anchor:' + node['refid'] + '}')
 
     def depart_target(self, node):
-        if 'refid' in node:
-            self.end_state()
+        pass
 
     def visit_index(self, node):
         raise nodes.SkipNode
@@ -784,34 +788,39 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_reference(self, node):
-
-        if 'refuri' not in node:
+        # External link.
+        if not 'internal' in node:
             if 'name' in node:
-                self.add_text('`%s`_' % node['name'])
+                self.add_text('[%s|%s]' % (node['name'], node['refuri']))
+            else:
+                self.add_text('[%s]' % (node['refuri']))
             raise nodes.SkipNode
-        elif 'internal' not in node:
-            if 'name' in node and 'refuri' in node:
-                self.add_text('[%s^%s] ' % (node['name'], node['refuri']))
-                self.add_text('[%s] ' % (node['refuri']))
-            raise nodes.SkipNode
-        elif 'reftitle' in node:
-            # Include node as text, rather than with markup.
-            # reST seems unable to parse a construct like ` ``literal`` <url>`_
-            # Hence we revert to the more simple `literal <url>`_
-            self.add_text('`%s <%s>`_' % (node.astext(), node['refuri']))
-            # self.end_state()
-            raise nodes.SkipNode
-        else:
+
+        # Internal link.
+        if 'refuri' in node:
             if '#' in node['refuri']:
                 anchor = '#' + node['refuri'].split('#')[1]
             else:
                 anchor = ''
-            label = node.astext()
-            link = self.link_prefix + label + anchor
-            if label == label:
-                self.add_text('[%s]' % link)
+
+            docname = self.docparent + path.splitext(node['refuri'])[0]
+            doctitle = ConfluenceDocMap.title(docname)
+
+            if doctitle:
+                label = node.astext()
+                if label == doctitle and not anchor:
+                    self.add_text('[%s]' % label)
+                else:
+                    self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
             else:
-                self.add_text('[%s|%s]' % (label, link))
+                self.builder.warn("unable to build link to document due to "
+                    "missing title (in %s): %s" % (self.docname, docname))
+            raise nodes.SkipNode
+
+        # Anchor.
+        if 'refid' in node:
+            anchor = ''.join(node['refid'].split())
+            self.add_text('[%s|#%s]' % (node.astext(), anchor))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
