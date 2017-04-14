@@ -100,7 +100,7 @@ class ConfluenceTranslator(TextTranslator):
         self.states.append([])
         self.stateindent.append(indent)
 
-    def end_state(self, wrap=True, end=[''], first=None):
+    def end_state(self, end=[''], first=None):
         content = self.states.pop()
         maxindent = sum(self.stateindent)
         indent = self.stateindent.pop()
@@ -110,10 +110,7 @@ class ConfluenceTranslator(TextTranslator):
         def do_format():
             if not toformat:
                 return
-            if wrap:
-                res = self.wrap(''.join(toformat), width=MAXWIDTH-maxindent)
-            else:
-                res = ''.join(toformat).splitlines()
+            res = ''.join(toformat).splitlines()
             if end:
                 res += end
             result.append((indent, res))
@@ -351,7 +348,7 @@ class ConfluenceTranslator(TextTranslator):
             else:
                 self.add_text('%s    ' % (' '*len(lastname)))
             self.add_text(production.astext() + self.nl)
-        self.end_state(wrap=False)
+        self.end_state()
         raise nodes.SkipNode
 
     def visit_seealso(self, node):
@@ -521,7 +518,7 @@ class ConfluenceTranslator(TextTranslator):
             writerow(row, is_heading)
 
         self.table = None
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_acks(self, node):
         self.new_state(0)
@@ -743,19 +740,19 @@ class ConfluenceTranslator(TextTranslator):
 
     def depart_literal_block(self, node):
         self.add_text('{code}')
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_doctest_block(self, node):
         self.new_state(0)
 
     def depart_doctest_block(self, node):
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_line_block(self, node):
         self.new_state(0)
 
     def depart_line_block(self, node):
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_line(self, node):
         # self.log_unknown("line", node)
@@ -797,7 +794,7 @@ class ConfluenceTranslator(TextTranslator):
 
     def depart_target(self, node):
         if 'refid' in node:
-            self.end_state(wrap=False)
+            self.end_state()
 
     def visit_index(self, node):
         raise nodes.SkipNode
@@ -859,7 +856,7 @@ class ConfluenceTranslator(TextTranslator):
             # reST seems unable to parse a construct like ` ``literal`` <url>`_
             # Hence we revert to the more simple `literal <url>`_
             self.add_text('`%s <%s>`_' % (node.astext(), node['refuri']))
-            # self.end_state(wrap=False)
+            # self.end_state()
             raise nodes.SkipNode
         else:
             if '#' in node['refuri']:
