@@ -8,6 +8,7 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
+from .common import ConfluenceDocMap
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
@@ -145,6 +146,21 @@ class ConfluenceBuilder(Builder):
 
     def prepare_writing(self, docnames):
         self.writer = ConfluenceWriter(self)
+        for doc in docnames:
+            doctree = self.env.get_doctree(doc)
+            idx = doctree.first_child_matching_class(nodes.section)
+            if idx is None or idx == -1:
+                continue
+
+            first_section = doctree[idx]
+            idx = first_section.first_child_matching_class(nodes.title)
+            if idx is None or idx == -1:
+                continue
+
+            doctitle = first_section[idx].astext()
+            if doctitle:
+                ConfluenceDocMap.register(doc, doctitle,
+                    self.config.confluence_publish_prefix)
 
     def write_doc(self, docname, doctree):
         # This method is taken from TextBuilder.write_doc()
@@ -164,17 +180,10 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            if len(doctree.children) <= 0:
-                self.warn("Skipping page %s with no title" % outfilename)
+            title = ConfluenceDocMap.title(docname)
+            if not title:
+                self.warn("skipping document with no title: %s" % docname)
                 return
-            title = str([el for el in doctree.traverse() if el.tagname == 'title'][0].astext())
-
-            if self.config.confluence_publish_prefix:
-                title = self.config.confluence_publish_prefix + title
-
-            if '\n' in title:
-                self.warn('Page title too long, truncating')
-                title = title.split('\n')[0]
 
             uploaded_page_id = self.publisher.storePage(title,
                     self.writer.output, self.parent_id)

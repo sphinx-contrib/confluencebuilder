@@ -10,6 +10,7 @@
 """
 
 from .builder import ConfluenceBuilder
+from .common import ConfluenceLogger
 from sphinx.writers.text import STDINDENT
 import argparse
 
@@ -26,6 +27,8 @@ def main():
     return 0
 
 def setup(app):
+    ConfluenceLogger.initialize(app)
+
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
     """(generic)"""
