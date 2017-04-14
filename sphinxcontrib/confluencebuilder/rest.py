@@ -24,8 +24,8 @@ class Rest:
         self.timeout = config.confluence_timeout
         self.auth = None
         if config.confluence_server_user:
-            self.auth =
-                (config.confluence_server_user, config.confluence_server_pass)
+            self.auth = (config.confluence_server_user,
+                config.confluence_server_pass)
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
