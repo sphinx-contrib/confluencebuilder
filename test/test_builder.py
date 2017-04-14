@@ -58,10 +58,9 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[0], 'h1. this is a text test\n')
             self.assertEqual(lines[2], '_emphasis_\n')
             self.assertEqual(lines[4], '*strong emphasis*\n')
-            # TODO : Find out where this is going!
-            # self.assertEqual(lines[6], '[http://website.com/]\n')
-            self.assertEqual(lines[8], '----\n')
-            self.assertEqual(lines[10], 'End of transition test\n');
+            self.assertEqual(lines[6], '[http://website.com/]\n')
+            self.assertEqual(lines[10], '----\n')
+            self.assertEqual(lines[12], 'End of transition test\n');
 
     def test_admonitions(self):
         test_path = os.path.join(self.outdir, 'admonitions.conf')
