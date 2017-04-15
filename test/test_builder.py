@@ -1,19 +1,23 @@
-import unittest
+# -*- coding: utf-8 -*-
+"""
+    sphinxcontrib.confluencebuilder.test.test_builder
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE.txt for details.
+"""
+
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import os
-
-
-class FakeServerProxy(object):
-    def __init__(self, server):
-        self.server = server
-
+import unittest
 
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         srcdir = os.path.join(os.getcwd(), 'testproj')
+        cls.expected = os.path.join(srcdir, 'expected')
         builddir = os.path.join(srcdir, 'build')
         cls.outdir = os.path.join(builddir, 'out')
         doctreedir = os.path.join(builddir, 'doctree')
