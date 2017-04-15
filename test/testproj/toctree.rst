@@ -11,4 +11,5 @@ TOCTREE
    admonitions
    tables
    list
+   ref
    text
