@@ -58,6 +58,8 @@ def setup(app):
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
+    """List of extension-provided macros restricted for use."""
+    app.add_config_value('confluence_restricted_macros', [], False)
     """Password to login to Confluence API with."""
     app.add_config_value('confluence_server_pass', None, False)
     """Username to login to Confluence API with."""

@@ -9,6 +9,7 @@
 
 from __future__ import (absolute_import, print_function, unicode_literals)
 from .common import ConfluenceDocMap
+from .common import ConfluenceLogger
 from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
@@ -770,7 +771,11 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_target(self, node):
         if 'refid' in node:
-            self.add_text('{anchor:' + node['refid'] + '}')
+            if 'anchor' in self.builder.config.confluence_restricted_macros:
+                ConfluenceLogger.warn("anchor macro restricted; cannot create "
+                        "link anchor (%s): %s" % (self.docname, node['refid']))
+            else:
+                self.add_text('{anchor:' + node['refid'] + '}')
 
     def depart_target(self, node):
         pass
