@@ -4,6 +4,7 @@
 
 * cleanup module's structure, versions and other minor files
 * drop 'confluence' pypi package (embedded xml-rpc support added)
+* improve hyperlink and cross-referencing arbitrary locations/documents support
 * improve proxy support
 * re-support python 3.x series
 * support anonymous publishing
