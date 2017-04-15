@@ -1,7 +1,7 @@
 import unittest
 from sphinx.application import Sphinx
-from sphinxcontrib.confluencebuilder.builder import (ConfluenceBuilder,
-                                               ConfluenceConnectionError)
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import os
 
 
@@ -118,9 +118,8 @@ class TestConfluenceBuilder(unittest.TestCase):
     def test_publish(self):
         builder = ConfluenceBuilder(self.app)
         builder.config.confluence_publish = True
-        with self.assertRaises(ConfluenceConnectionError):
+        with self.assertRaises(ConfluenceConfigurationError):
             builder.init()
-
 
 if __name__ == '__main__':
     import sys

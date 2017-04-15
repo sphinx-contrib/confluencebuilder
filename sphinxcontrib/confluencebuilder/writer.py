@@ -71,6 +71,10 @@ class ConfluenceTranslator(TextTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
+        if self.builder.config.confluence_publish_prefix:
+            self.link_prefix = self.builder.config.confluence_publish_prefix
+        else:
+            self.link_prefix = ''
         self.wrapper = textwrap.TextWrapper(width=STDINDENT,
                                             break_long_words=False,
                                             break_on_hyphens=False)
@@ -145,7 +149,7 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.warn("error reading file %s: %s" % (headerFile, err))
+                self.builder.warn("error reading file %s: %s" % (headerFile, err))
 
         self.body += self.nl.join(line and (' '*indent + line)
                                  for indent, lines in self.states[0]
@@ -161,7 +165,7 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.warn("error reading file %s: %s" % (footerFile, err))
+                self.builder.warn("error reading file %s: %s" % (footerFile, err))
 
     def visit_highlightlang(self, node):
         raise nodes.SkipNode
@@ -862,7 +866,12 @@ class ConfluenceTranslator(TextTranslator):
                 anchor = '#' + node['refuri'].split('#')[1]
             else:
                 anchor = ''
-            self.add_text('[%s%s]' % (node.astext(), anchor))
+            label = node.astext()
+            link = self.link_prefix + label + anchor
+            if label == label:
+                self.add_text('[%s]' % link)
+            else:
+                self.add_text('[%s|%s]' % (label, link))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
