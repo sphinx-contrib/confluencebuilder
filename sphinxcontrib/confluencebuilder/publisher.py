@@ -72,6 +72,10 @@ class ConfluencePublisher():
                 if not self.use_xmlrpc:
                     raise
                 self.use_rest = False
+            except ConfluenceBadServerUrlError:
+                if not self.use_xmlrpc:
+                    raise
+                self.use_rest = False
 
         if self.use_xmlrpc:
             try:

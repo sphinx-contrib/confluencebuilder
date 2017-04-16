@@ -57,6 +57,10 @@ class ConfluenceBuilder(Builder):
     def init(self):
         self.publisher.init(self.config)
 
+        server_url = self.config.confluence_server_url
+        if server_url and server_url.endswith('/'):
+            self.config.confluence_server_url = server_url[:-1]
+
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
         if self.config.confluence_link_suffix is not None:

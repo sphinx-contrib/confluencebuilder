@@ -34,6 +34,8 @@ class Rest:
                 timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.ConnectionError as ex:
+            raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
@@ -63,6 +65,8 @@ class Rest:
                 timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.ConnectionError as ex:
+            raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
@@ -92,6 +96,8 @@ class Rest:
                 timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.ConnectionError as ex:
+            raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
@@ -120,6 +126,8 @@ class Rest:
             rsp = requests.delete(restUrl, auth=self.auth, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.ConnectionError as ex:
+            raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:

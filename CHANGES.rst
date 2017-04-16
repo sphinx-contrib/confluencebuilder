@@ -10,7 +10,7 @@
 * support anonymous publishing
 * support rest api
 
-0.5.0 (2016-03-31)
+0.5.0 (2017-03-31)
 ==================
 
 * header/footer support
@@ -19,31 +19,31 @@
 * (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
    tonybaloney/sphinxcontrib-confluencebuilder#10)
 
-0.4.0 (2016-02-21)
+0.4.0 (2017-02-21)
 ==================
 
 * move from 'confluence' pypi package to 'confluence' pypi package (required for
    publishing). see: https://github.com/pycontribs/confluence
 
-0.3.0 (2016-01-22)
+0.3.0 (2017-01-22)
 ==================
 
 * adding travis ci, tox and initial unit testing
 * module now depends on `future`
 * providing initial support for python 3
 
-0.2.0 (2016-01-13)
+0.2.0 (2016-07-13)
 ==================
 
 * moved configuration to the sphinx config
 
-0.1.1 (2016-12-07)
+0.1.1 (2016-07-12)
 ==================
 
 * added table support
 * fixed internal links
 
-0.1.0 (2016-11-07)
+0.1.0 (2016-07-12)
 ==================
 
 * added lists, bullets, formatted text
