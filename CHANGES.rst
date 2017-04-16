@@ -2,12 +2,13 @@
 0.6.0 (unreleased)
 ==================
 
-* support rest api
-* support anonymous publishing
-* drop 'confluence' pypi package (embedded xml-rpc support added)
-* re-support python 3.x series
-* improve proxy support
 * cleanup module's structure, versions and other minor files
+* drop 'confluence' pypi package (embedded xml-rpc support added)
+* improve hyperlink and cross-referencing arbitrary locations/documents support
+* improve proxy support
+* re-support python 3.x series
+* support anonymous publishing
+* support rest api
 
 0.5.0 (2016-03-31)
 ==================

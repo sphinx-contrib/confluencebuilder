@@ -8,19 +8,17 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-
-import codecs
-from os import path
-
-from docutils.io import StringOutput
-
-from sphinx.builders import Builder
-from sphinx.util.osutil import ensuredir, SEP
+from .common import ConfluenceDocMap
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
-
+from docutils.io import StringOutput
+from docutils import nodes
+from sphinx.builders import Builder
+from sphinx.util.osutil import ensuredir, SEP
+from os import path
 from xmlrpc.client import Fault
+import codecs
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -48,6 +46,7 @@ def relative_uri(base, to):
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
 class ConfluenceBuilder(Builder):
+    current_docname = None
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
@@ -148,16 +147,33 @@ class ConfluenceBuilder(Builder):
 
     def prepare_writing(self, docnames):
         self.writer = ConfluenceWriter(self)
+        for doc in docnames:
+            doctree = self.env.get_doctree(doc)
+            idx = doctree.first_child_matching_class(nodes.section)
+            if idx is None or idx == -1:
+                continue
+
+            first_section = doctree[idx]
+            idx = first_section.first_child_matching_class(nodes.title)
+            if idx is None or idx == -1:
+                continue
+
+            doctitle = first_section[idx].astext()
+            if doctitle:
+                ConfluenceDocMap.register(doc, doctitle,
+                    self.config.confluence_publish_prefix)
+
+        ConfluenceDocMap.conflictCheck()
 
     def write_doc(self, docname, doctree):
+        self.current_docname = docname
+
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
-        # print "write(%s,%s)" % (type(doctree), type(destination))
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        # print "write(%s,%s) -> %s" % (type(doctree), type(destination), outfilename)
         ensuredir(path.dirname(outfilename))
         try:
             f = codecs.open(outfilename, 'w', 'utf-8')
@@ -169,17 +185,10 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            if len(doctree.children) <= 0:
-                self.warn("Skipping page %s with no title" % outfilename)
+            title = ConfluenceDocMap.title(docname)
+            if not title:
+                self.warn("skipping document with no title: %s" % docname)
                 return
-            title = str([el for el in doctree.traverse() if el.tagname == 'title'][0].astext())
-
-            if self.config.confluence_publish_prefix:
-                title = self.config.confluence_publish_prefix + title
-
-            if '\n' in title:
-                self.warn('Page title too long, truncating')
-                title = title.split('\n')[0]
 
             uploaded_page_id = self.publisher.storePage(title,
                     self.writer.output, self.parent_id)

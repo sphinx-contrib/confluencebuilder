@@ -7,32 +7,29 @@
     :license: BSD, see LICENSE.txt for details.
 """
 
-from __future__ import (print_function, unicode_literals, absolute_import)
-
+from __future__ import (absolute_import, print_function, unicode_literals)
+from .common import ConfluenceDocMap
+from .common import ConfluenceLogger
+from docutils import nodes, writers
+from os import path
+from sphinx import addnodes
+from sphinx.locale import versionlabels
+from sphinx.util.osutil import SEP
+from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
 import os
 import sys
 import textwrap
 import logging
 
-from docutils import nodes, writers
-from os import path
-
-from sphinx import addnodes
-from sphinx.locale import versionlabels, _
-from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
-
-
 LANG_MAP = {
     'python': 'py'
 }
-
 
 class LIST_TYPES:
     BULLET = -1
     DEFINITION = -2
     ENUMERATED = 0
-
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
@@ -50,10 +47,17 @@ class ConfluenceWriter(writers.Writer):
         self.document.walkabout(visitor)
         self.output = visitor.body
 
-
 class ConfluenceTranslator(TextTranslator):
+    docparent = ''
+
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
+
+        # Determine document's name (if any).
+        assert builder.current_docname
+        self.docname = builder.current_docname
+        if SEP in self.docname:
+            self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
         newlines = builder.config.text_newlines
         if newlines == 'windows':
@@ -71,10 +75,6 @@ class ConfluenceTranslator(TextTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
-        if self.builder.config.confluence_publish_prefix:
-            self.link_prefix = self.builder.config.confluence_publish_prefix
-        else:
-            self.link_prefix = ''
         self.wrapper = textwrap.TextWrapper(width=STDINDENT,
                                             break_long_words=False,
                                             break_on_hyphens=False)
@@ -100,7 +100,7 @@ class ConfluenceTranslator(TextTranslator):
         self.states.append([])
         self.stateindent.append(indent)
 
-    def end_state(self, wrap=True, end=[''], first=None):
+    def end_state(self, end=[''], first=None):
         content = self.states.pop()
         maxindent = sum(self.stateindent)
         indent = self.stateindent.pop()
@@ -110,10 +110,7 @@ class ConfluenceTranslator(TextTranslator):
         def do_format():
             if not toformat:
                 return
-            if wrap:
-                res = self.wrap(''.join(toformat), width=MAXWIDTH-maxindent)
-            else:
-                res = ''.join(toformat).splitlines()
+            res = ''.join(toformat).splitlines()
             if end:
                 res += end
             result.append((indent, res))
@@ -195,14 +192,12 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_compound(self, node):
-        # self.log_unknown("compount", node)
         pass
 
     def depart_compound(self, node):
         pass
 
     def visit_glossary(self, node):
-        # self.log_unknown("glossary", node)
         pass
 
     def depart_glossary(self, node):
@@ -224,7 +219,6 @@ class ConfluenceTranslator(TextTranslator):
         self.states[-1].append((0, ['%s %s' % (char, text), '']))
 
     def visit_subtitle(self, node):
-        # self.log_unknown("subtitle", node)
         pass
 
     def depart_subtitle(self, node):
@@ -255,21 +249,18 @@ class ConfluenceTranslator(TextTranslator):
             self.add_text('``')
 
     def visit_desc_name(self, node):
-        # self.log_unknown("desc_name", node)
         pass
 
     def depart_desc_name(self, node):
         pass
 
     def visit_desc_addname(self, node):
-        # self.log_unknown("desc_addname", node)
         pass
 
     def depart_desc_addname(self, node):
         pass
 
     def visit_desc_type(self, node):
-        # self.log_unknown("desc_type", node)
         pass
 
     def depart_desc_type(self, node):
@@ -332,7 +323,6 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_caption(self, node):
-        # self.log_unknown("caption", node)
         pass
 
     def depart_caption(self, node):
@@ -351,7 +341,7 @@ class ConfluenceTranslator(TextTranslator):
             else:
                 self.add_text('%s    ' % (' '*len(lastname)))
             self.add_text(production.astext() + self.nl)
-        self.end_state(wrap=False)
+        self.end_state()
         raise nodes.SkipNode
 
     def visit_seealso(self, node):
@@ -380,10 +370,7 @@ class ConfluenceTranslator(TextTranslator):
     def visit_label(self, node):
         raise nodes.SkipNode
 
-    # TODO: option list could use some better styling
-
     def visit_option_list(self, node):
-        # self.log_unknown("option_list", node)
         pass
 
     def depart_option_list(self, node):
@@ -411,7 +398,6 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_option_string(self, node):
-        # self.log_unknown("option_string", node)
         pass
 
     def depart_option_string(self, node):
@@ -424,7 +410,6 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_description(self, node):
-        # self.log_unknown("description", node)
         pass
 
     def depart_description(self, node):
@@ -438,14 +423,12 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_tgroup(self, node):
-        # self.log_unknown("tgroup", node)
         pass
 
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
-        # self.log_unknown("thead", node)
         pass
 
     def depart_thead(self, node):
@@ -521,7 +504,7 @@ class ConfluenceTranslator(TextTranslator):
             writerow(row, is_heading)
 
         self.table = None
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_acks(self, node):
         self.new_state(0)
@@ -532,8 +515,8 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_image(self, node):
         if 'alt' in node.attributes:
-            self.add_text(_('[image: %s]') % node['alt'])
-        self.add_text(_('[image]'))
+            self.add_text('[image: %s]' % node['alt'])
+        self.add_text('[image]')
         raise nodes.SkipNode
 
     def visit_transition(self, node):
@@ -621,7 +604,6 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_field_list(self, node):
-        # self.log_unknown("field_list", node)
         pass
 
     def depart_field_list(self, node):
@@ -654,14 +636,12 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_hlist(self, node):
-        # self.log_unknown("hlist", node)
         pass
 
     def depart_hlist(self, node):
         pass
 
     def visit_hlistcol(self, node):
-        # self.log_unknown("hlistcol", node)
         pass
 
     def depart_hlistcol(self, node):
@@ -743,22 +723,21 @@ class ConfluenceTranslator(TextTranslator):
 
     def depart_literal_block(self, node):
         self.add_text('{code}')
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_doctest_block(self, node):
         self.new_state(0)
 
     def depart_doctest_block(self, node):
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_line_block(self, node):
         self.new_state(0)
 
     def depart_line_block(self, node):
-        self.end_state(wrap=False)
+        self.end_state()
 
     def visit_line(self, node):
-        # self.log_unknown("line", node)
         pass
 
     def depart_line(self, node):
@@ -792,12 +771,14 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_target(self, node):
         if 'refid' in node:
-            self.new_state(0)
-            self.add_text('.. _'+node['refid']+':'+self.nl)
+            if 'anchor' in self.builder.config.confluence_restricted_macros:
+                ConfluenceLogger.warn("anchor macro restricted; cannot create "
+                        "link anchor (%s): %s" % (self.docname, node['refid']))
+            else:
+                self.add_text('{anchor:' + node['refid'] + '}')
 
     def depart_target(self, node):
-        if 'refid' in node:
-            self.end_state(wrap=False)
+        pass
 
     def visit_index(self, node):
         raise nodes.SkipNode
@@ -812,75 +793,43 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_reference(self, node):
-        """Run upon entering a reference
-
-        Because this class inherits from the TextTranslator class,
-        regularly defined links, such as::
-
-            `Some Text`_
-
-            .. _Some Text: http://www.some_url.com
-
-        were being written as plaintext. This included internal
-        references defined in the standard rst way, such as::
-
-            `Some Reference`
-
-            .. _Some Reference:
-
-            Some Title
-            ----------
-
-        To resolve this, if ``refuri`` is not included in the node (an
-        internal, non-Sphinx-defined internal uri, the reference is
-        left unchanged (e.g. ```Some Text`_`` is written as such).
-
-        If ``internal`` is not in the node (as for an external,
-        non-Sphinx URI, the reference is rewritten as an inline link,
-        e.g. ```Some Text <http://www.some_url.com>`_``.
-
-        If ``reftitle` is in the node (as in a Sphinx-generated
-        reference), the node is converted to an inline link.
-
-        Finally, all other links are also converted to an inline link
-        format.
-        """
-        if 'refuri' not in node:
+        # External link.
+        if not 'internal' in node:
             if 'name' in node:
-                self.add_text('`%s`_' % node['name'])
+                self.add_text('[%s|%s]' % (node['name'], node['refuri']))
+            else:
+                self.add_text('[%s]' % (node['refuri']))
             raise nodes.SkipNode
-        elif 'internal' not in node:
-            if 'name' in node and 'refuri' in node:
-                self.add_text('[%s^%s] ' % (node['name'], node['refuri']))
-                self.add_text('[%s] ' % (node['refuri']))
-            raise nodes.SkipNode
-        elif 'reftitle' in node:
-            # Include node as text, rather than with markup.
-            # reST seems unable to parse a construct like ` ``literal`` <url>`_
-            # Hence we revert to the more simple `literal <url>`_
-            self.add_text('`%s <%s>`_' % (node.astext(), node['refuri']))
-            # self.end_state(wrap=False)
-            raise nodes.SkipNode
-        else:
+
+        # Internal link.
+        if 'refuri' in node:
             if '#' in node['refuri']:
                 anchor = '#' + node['refuri'].split('#')[1]
             else:
                 anchor = ''
-            label = node.astext()
-            link = self.link_prefix + label + anchor
-            if label == label:
-                self.add_text('[%s]' % link)
+
+            docname = self.docparent + path.splitext(node['refuri'])[0]
+            doctitle = ConfluenceDocMap.title(docname)
+
+            if doctitle:
+                label = node.astext()
+                if label == doctitle and not anchor:
+                    self.add_text('[%s]' % label)
+                else:
+                    self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
             else:
-                self.add_text('[%s|%s]' % (label, link))
+                self.builder.warn("unable to build link to document due to "
+                    "missing title (in %s): %s" % (self.docname, docname))
+            raise nodes.SkipNode
+
+        # Anchor.
+        if 'refid' in node:
+            anchor = ''.join(node['refid'].split())
+            self.add_text('[%s|#%s]' % (node.astext(), anchor))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
-        if 'refuri' not in node:
-            pass  # Don't add these anchors
-        elif 'internal' not in node:
-            pass  # Don't add external links (they are automatically added by the reST spec)
-        elif 'reftitle' in node:
-            pass
+        pass
 
     def visit_download_reference(self, node):
         self.log_unknown("download_reference", node)
@@ -915,7 +864,6 @@ class ConfluenceTranslator(TextTranslator):
             self.add_text(' (%s)' % node['explanation'])
 
     def visit_title_reference(self, node):
-        # self.log_unknown("title_reference", node)
         self.add_text('*')
 
     def depart_title_reference(self, node):
@@ -954,14 +902,12 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_generated(self, node):
-        # self.log_unknown("generated", node)
         pass
 
     def depart_generated(self, node):
         pass
 
     def visit_inline(self, node):
-        # self.log_unknown("inline", node)
         pass
 
     def depart_inline(self, node):
