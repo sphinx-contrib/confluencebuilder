@@ -49,10 +49,6 @@ class ConfluencePublisher():
         self.use_rest = not config.confluence_disable_rest
         self.use_xmlrpc = not config.confluence_disable_xmlrpc
 
-        # REST will fail if space name is not upper case.
-        if self.space_name:
-            self.space_name = self.space_name.upper()
-
     def connect(self):
         if not self.use_rest and not self.use_xmlrpc:
             raise ConfluenceConfigurationError("""Both REST and XML-RPC """
