@@ -27,6 +27,22 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.app = Sphinx(srcdir, srcdir, self.outdir, doctreedir, 'confluence')
         self.app.build(force_all=True)
 
+    def _assertExpectedWithOutput(self, name):
+        filename = name + '.conf'
+        expected_path = os.path.join(self.expected, filename)
+        test_path = os.path.join(self.outdir, filename)
+        self.assertTrue(os.path.exists(expected_path))
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(expected_path, 'r') as expected_file:
+            with open(test_path, 'r') as test_file:
+                expected_data = expected_file.readlines()
+                test_data = test_file.readlines()
+                diff = difflib.unified_diff(
+                    expected_data, test_data, lineterm='')
+                diff_data = ''.join(list(diff))
+                self.assertTrue(diff_data == '', msg=diff_data)
+
     def test_registry(self):
         self.assertTrue('sphinxcontrib.confluencebuilder' in
                         self.app._extensions.keys())
@@ -98,19 +114,7 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[5], 'antigravity.space(){code}\n')
 
     def test_references(self):
-        expected_path = os.path.join(self.expected, 'ref.conf')
-        test_path = os.path.join(self.outdir, 'ref.conf')
-        self.assertTrue(os.path.exists(expected_path))
-        self.assertTrue(os.path.exists(test_path))
-
-        with open(expected_path, 'r') as expected_file:
-            with open(test_path, 'r') as test_file:
-                expected_data = expected_file.readlines()
-                test_data = test_file.readlines()
-                diff = difflib.unified_diff(
-                    expected_data, test_data, lineterm='')
-                diff_data = ''.join(list(diff))
-                self.assertTrue(diff_data == '', msg=diff_data)
+        self._assertExpectedWithOutput('ref')
 
     def test_toctree(self):
         test_path = os.path.join(self.outdir, 'toctree.conf')
