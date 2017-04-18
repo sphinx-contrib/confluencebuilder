@@ -10,20 +10,22 @@
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-import os
 import difflib
+import os
+import sys
 import unittest
 
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(self):
         srcdir = os.path.join(os.getcwd(), 'testproj')
-        cls.expected = os.path.join(srcdir, 'expected')
+        self.expected = os.path.join(srcdir, 'expected')
         builddir = os.path.join(srcdir, 'build')
-        cls.outdir = os.path.join(builddir, 'out')
+        self.outdir = os.path.join(builddir, 'out')
         doctreedir = os.path.join(builddir, 'doctree')
-        cls.app = Sphinx(srcdir, srcdir, cls.outdir, doctreedir, 'confluence')
-        cls.app.build(force_all=True)
+
+        self.app = Sphinx(srcdir, srcdir, self.outdir, doctreedir, 'confluence')
+        self.app.build(force_all=True)
 
     def test_registry(self):
         self.assertTrue('sphinxcontrib.confluencebuilder' in
@@ -141,5 +143,4 @@ class TestConfluenceBuilder(unittest.TestCase):
             builder.init()
 
 if __name__ == '__main__':
-    import sys
     sys.exit(unittest.main())
