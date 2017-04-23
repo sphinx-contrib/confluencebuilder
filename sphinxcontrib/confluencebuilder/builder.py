@@ -1,33 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.builders.confluence
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    sphinxcontrib.confluencebuilder.builder
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    .. moduleauthor:: Anthony Shaw <anthonyshaw@apache.org>
-
-    :copyright: Copyright 2016 by Anthony Shaw.
+    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-
-import codecs
-from os import path
-
+from .common import ConfluenceDocMap
+from .exceptions import ConfluenceConfigurationError
+from .publisher import ConfluencePublisher
+from .writer import ConfluenceWriter
 from docutils.io import StringOutput
-
+from docutils import nodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
-from ..writers.confluence import ConfluenceWriter
-
+from os import path
 from xmlrpc.client import Fault
-
-try:
-    from confluence import Confluence
-    HAS_CONFLUENCE = True
-except ImportError:
-    HAS_CONFLUENCE = False
-
+import codecs
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -54,46 +45,28 @@ def relative_uri(base, to):
         return '.' + SEP
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
-
-class ConfluenceConnectionError(Exception):
-    pass
-
-
 class ConfluenceBuilder(Builder):
+    current_docname = None
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
-    legacyPages = []
+    legacy_pages = []
+    publisher = ConfluencePublisher()
 
     def init(self):
-        """Load necessary templates and perform initialization."""
+        self.publisher.init(self.config)
+
+        server_url = self.config.confluence_server_url
+        if server_url and server_url.endswith('/'):
+            self.config.confluence_server_url = server_url[:-1]
+
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
         if self.config.confluence_link_suffix is not None:
             self.link_suffix = self.config.confluence_link_suffix
         elif self.link_suffix is None:
             self.link_suffix = self.file_suffix
-        if self.config.confluence_publish:
-            if not HAS_CONFLUENCE:
-                raise ImportError("Must install confluence module first to publish, see README.")
-            self.publish = True
-            self._connect()
-        else:
-            self.publish = False
-        if self.config.confluence_space_name is not None:
-            self.space_name = self.config.confluence_space_name
-        if self.config.confluence_parent_page is not None and self.publish:
-            self.parent_id = self.confluence.getPageId(self.config.confluence_parent_page,
-                                                       self.space_name)
-            if self.config.confluence_purge:
-                childPages = self.confluence._server.confluence2.getDescendents(
-                    self.confluence._token2,
-                    self.parent_id)
-                for childPage in childPages:
-                    self.legacyPages.append(childPage["id"])
-        else:
-            self.parent_id = None
 
         # Function to convert the docname to a reST file name.
         def file_transform(docname):
@@ -111,6 +84,31 @@ class ConfluenceBuilder(Builder):
             self.link_transform = self.config.confluence_link_transform
         else:
             self.link_transform = link_transform
+
+        if self.config.confluence_publish:
+            if not self.config.confluence_server_url:
+                raise ConfluenceConfigurationError("""Confluence server URL """
+                    """has not been set. Unable to publish.""")
+            if not self.config.confluence_space_name:
+                raise ConfluenceConfigurationError("""Confluence space key """
+                    """has not been set. Unable to publish.""")
+            if not self.config.confluence_server_user:
+                if self.config.confluence_server_pass:
+                    raise ConfluenceConfigurationError("""Confluence """
+                        """username has not been set even though a password """
+                        """has been set. Unable to publish.""")
+
+            self.publish = True
+            self.publisher.connect()
+            self.parent_id = self.publisher.getBasePageId()
+            self.legacy_pages = self.publisher.getDescendents(self.parent_id)
+        else:
+            self.publish = False
+
+        if self.config.confluence_space_name is not None:
+            self.space_name = self.config.confluence_space_name
+        else:
+            self.parent_id = None
 
     def get_outdated_docs(self):
         """
@@ -153,16 +151,33 @@ class ConfluenceBuilder(Builder):
 
     def prepare_writing(self, docnames):
         self.writer = ConfluenceWriter(self)
+        for doc in docnames:
+            doctree = self.env.get_doctree(doc)
+            idx = doctree.first_child_matching_class(nodes.section)
+            if idx is None or idx == -1:
+                continue
+
+            first_section = doctree[idx]
+            idx = first_section.first_child_matching_class(nodes.title)
+            if idx is None or idx == -1:
+                continue
+
+            doctitle = first_section[idx].astext()
+            if doctitle:
+                ConfluenceDocMap.register(doc, doctitle,
+                    self.config.confluence_publish_prefix)
+
+        ConfluenceDocMap.conflictCheck()
 
     def write_doc(self, docname, doctree):
+        self.current_docname = docname
+
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
-        # print "write(%s,%s)" % (type(doctree), type(destination))
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        # print "write(%s,%s) -> %s" % (type(doctree), type(destination), outfilename)
         ensuredir(path.dirname(outfilename))
         try:
             f = codecs.open(outfilename, 'w', 'utf-8')
@@ -174,48 +189,23 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            if len(doctree.children) <= 0:
-                self.warn("Skipping page %s with no title" % outfilename)
+            title = ConfluenceDocMap.title(docname)
+            if not title:
+                self.warn("skipping document with no title: %s" % docname)
                 return
-            title = [el for el in doctree.traverse() if el.tagname == 'title'][0].astext()
-            try:
-                page = self.confluence.getPage(str(title), self.space_name)
-            except Fault:
-                page = {
-                    'title': title,
-                    'space': self.space_name
-                }
-            finally:
-                self.info('Uploading page to confluence - Title "%s"' % title)
-                if '\n' in str(title):
-                    self.warn('Page title too long, truncating')
-                    page['title'] = str(title).split('\n')[0]
-                page['content'] = self.confluence._server.confluence2.convertWikiToStorageFormat(
-                    self.confluence._token2,
-                    self.writer.output)
-                if self.parent_id:
-                    page['parentId'] = self.parent_id
-                uploadedPage = self.confluence._server.confluence2.storePage(
-                        self.confluence._token2,
-                        page)
-                if self.config.confluence_purge:
-                    if uploadedPage["id"] in self.legacyPages:
-                        self.legacyPages.remove(uploadedPage["id"])
+
+            uploaded_page_id = self.publisher.storePage(title,
+                    self.writer.output, self.parent_id)
+            if self.config.confluence_purge:
+                if uploaded_page_id in self.legacy_pages:
+                    self.legacy_pages.remove(uploaded_page_id)
 
     def finish(self):
-        if self.config.confluence_purge is True and self.legacyPages:
-            self.info('Removing legacy pages...')
-            for legacyPage in self.legacyPages:
-                self.confluence._server.confluence2.removePage(
-                        self.confluence._token2,
-                        legacyPage)
+        if self.publish:
+            if self.config.confluence_purge is True and self.legacy_pages:
+                self.info('removing legacy pages... ', nonl=0)
+                for legacy_page_id in self.legacy_pages:
+                   self.publisher.removePage(legacy_page_id)
+                self.info('done\n')
 
-    def _connect(self):
-        try:
-            self.confluence = Confluence(url=self.config.confluence_server_url,
-                                         username=self.config.confluence_server_user,
-                                         password=self.config.confluence_server_pass)
-        except ImportError:
-            raise ImportError("Must install confluence PyPi package to publish")
-        except Exception as ex:
-            raise ConfluenceConnectionError("Could not connect, check remote API is configured. %s" % ex)
+            self.publisher.disconnect()
