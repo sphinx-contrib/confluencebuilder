@@ -751,12 +751,13 @@ class ConfluenceTranslator(TextTranslator):
             self.end_state()
 
     def visit_target(self, node):
-        if 'refid' in node:
-            if self.can_anchor:
-                self.add_text('{anchor:' + node['refid'] + '}')
-            else:
-                ConfluenceLogger.warn("anchor macro restricted; cannot create "
-                        "link anchor (%s): %s" % (self.docname, node['refid']))
+        if 'refid' in node and self.can_anchor:
+            anchor = ''.join(node['refid'].split())
+            target = ConfluenceDocMap.target(anchor)
+            if not target:
+                self.add_text('{anchor:%s}' % anchor)
+
+        raise nodes.SkipNode
 
     def depart_target(self, node):
         pass
@@ -775,7 +776,7 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_reference(self, node):
         # External link.
-        if not 'internal' in node:
+        if not 'internal' in node and 'refuri' in node:
             if 'name' in node:
                 self.add_text('[%s|%s]' % (node['name'], node['refuri']))
             else:
@@ -784,29 +785,50 @@ class ConfluenceTranslator(TextTranslator):
 
         # Internal link.
         if 'refuri' in node:
+            docname = self.docparent + path.splitext(node['refuri'])[0]
+            doctitle = ConfluenceDocMap.title(docname)
+            if not doctitle:
+                self.builder.warn("unable to build link to document due to "
+                    "missing title (in %s): %s" % (self.docname, docname))
+                raise nodes.SkipNode
+
             if '#' in node['refuri']:
-                anchor = '#' + node['refuri'].split('#')[1]
+                anchor = node['refuri'].split('#')[1]
+                if 'anchorname' in node:
+                    target_name = '%s#%s' % (docname, anchor)
+                else:
+                    target_name = anchor
+
+                target = ConfluenceDocMap.target(target_name)
+                if target:
+                    anchor = '#' + target
+                else:
+                    self.builder.warn("unable to build link to document due to "
+                        "missing target (in %s): %s" % (self.docname, anchor))
+                    anchor = ''
             else:
                 anchor = ''
 
-            docname = self.docparent + path.splitext(node['refuri'])[0]
-            doctitle = ConfluenceDocMap.title(docname)
-
-            if doctitle:
-                label = node.astext()
-                if label == doctitle and not anchor:
-                    self.add_text('[%s]' % label)
-                else:
-                    self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
+            label = node.astext()
+            if label == doctitle and not anchor:
+                self.add_text('[%s]' % label)
             else:
-                self.builder.warn("unable to build link to document due to "
-                    "missing title (in %s): %s" % (self.docname, docname))
+                self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
             raise nodes.SkipNode
 
         # Anchor.
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
-            self.add_text('[%s|#%s]' % (node.astext(), anchor))
+            target = ConfluenceDocMap.target(anchor)
+            text = node.astext().replace('[', '^')
+            text = text.replace(']', '^')
+            if target:
+                self.add_text('[%s|#%s]' % (text, target))
+            elif self.can_anchor:
+                self.add_text('[%s|#%s]' % (text, anchor))
+            else:
+                self.add_text('%s' % text)
+
             raise nodes.SkipNode
 
     def depart_reference(self, node):

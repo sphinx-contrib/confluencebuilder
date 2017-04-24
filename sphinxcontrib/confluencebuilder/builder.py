@@ -154,6 +154,8 @@ class ConfluenceBuilder(Builder):
     def prepare_writing(self, docnames):
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
+
+            # Find title for document.
             idx = doctree.first_child_matching_class(nodes.section)
             if idx is None or idx == -1:
                 continue
@@ -164,9 +166,32 @@ class ConfluenceBuilder(Builder):
                 continue
 
             doctitle = first_section[idx].astext()
-            if doctitle:
-                ConfluenceDocMap.register(doc, doctitle,
-                    self.config.confluence_publish_prefix)
+            if not doctitle:
+                continue
+
+            doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
+                self.config.confluence_publish_prefix)
+
+            target_refs = []
+            for node in doctree.traverse(nodes.target):
+                if 'refid' in node:
+                    target_refs.append(node['refid'])
+
+            doc_used_names = {}
+            for node in doctree.traverse(nodes.title):
+                if isinstance(node.parent, nodes.section):
+                    section_node = node.parent
+                    if 'ids' in section_node:
+                        target = ''.join(node.astext().split())
+                        section_id = doc_used_names.get(target, 0)
+                        doc_used_names[target] = section_id + 1
+                        if section_id > 0:
+                            target = '%s.%d' % (target, section_id)
+
+                        for id in section_node['ids']:
+                            if not id in target_refs:
+                                id = '%s#%s' % (doc, id)
+                            ConfluenceDocMap.registerTarget(id, target)
 
         ConfluenceDocMap.conflictCheck()
 

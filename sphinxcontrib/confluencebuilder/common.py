@@ -12,9 +12,15 @@ CONFLUENCE_MAX_TITLE_LEN = 255
 
 class ConfluenceDocMap:
     doc2title = {}
+    refid2target = {}
 
     @staticmethod
-    def register(docname, title, prefix = None):
+    def registerTarget(refid, target):
+        ConfluenceDocMap.refid2target[refid] = target
+        ConfluenceLogger.verbose("mapping %s to target: %s" % (refid, target))
+
+    @staticmethod
+    def registerTitle(docname, title, prefix = None):
         if prefix:
             title = prefix + title
 
@@ -25,6 +31,11 @@ class ConfluenceDocMap:
 
         ConfluenceDocMap.doc2title[docname] = title
         ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
+        return title
+
+    @staticmethod
+    def target(refid):
+        return ConfluenceDocMap.refid2target.get(refid)
 
     @staticmethod
     def title(docname):
