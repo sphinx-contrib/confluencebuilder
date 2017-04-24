@@ -15,6 +15,7 @@ from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
 from sphinx.locale import versionlabels
+from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
@@ -348,10 +349,12 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_seealso(self, node):
-        self.new_state(self.indent)
+        self.new_state(0)
+        self.add_text('{info:title=%s}' % admonitionlabels['seealso'])
 
     def depart_seealso(self, node):
-        self.end_state(first='')
+        self.add_text('{info}')
+        self.end_state()
 
     def visit_footnote(self, node):
         self._footnote = node.children[0].astext().strip()
