@@ -109,9 +109,10 @@ class TestConfluenceBuilder(unittest.TestCase):
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. Code Test\n')
-            self.assertEqual(lines[2], '{code:title=|theme=Default|linenumbers=false|language=py|collapse=false}\n')
-            self.assertEqual(lines[4], 'import antigravity\n')
-            self.assertEqual(lines[5], 'antigravity.space(){code}\n')
+            self.assertEqual(lines[2], '{code:linenumbers=false|language=python}\n')
+            self.assertEqual(lines[3], 'import antigravity\n')
+            self.assertEqual(lines[4], 'antigravity.space()\n')
+            self.assertEqual(lines[5], '{code}\n')
 
     def test_references(self):
         self._assertExpectedWithOutput('ref')

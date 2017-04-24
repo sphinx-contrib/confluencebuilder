@@ -1,8 +1,7 @@
 Code Test
 ---------
 
-
 .. code-block:: python
 
-    import antigravity
-    antigravity.space()
+   import antigravity
+   antigravity.space()
