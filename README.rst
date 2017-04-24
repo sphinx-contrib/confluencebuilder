@@ -10,6 +10,10 @@ Atlassian Confluence Builder for Sphinx
 .. image:: https://img.shields.io/travis/tonybaloney/sphinxcontrib-confluencebuilder.svg
         :target: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder
 
+.. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
+        :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
 Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
 publish them to a Confluence server.
 
