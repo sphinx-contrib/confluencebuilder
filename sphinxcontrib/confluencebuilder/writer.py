@@ -20,7 +20,6 @@ from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
 import os
 import sys
-import textwrap
 import logging
 
 LANG_MAP = {
@@ -77,16 +76,13 @@ class ConfluenceTranslator(TextTranslator):
         self.stateindent = [0]
         self.list_counter = []
         self.sectionlevel = 1
-        self.table = None
+        self.table = False
         self.escape_newlines = 0
         self.quote_level = 0
         if self.builder.config.confluence_indent:
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
-        self.wrapper = textwrap.TextWrapper(width=STDINDENT,
-                                            break_long_words=False,
-                                            break_on_hyphens=False)
 
     def log_unknown(self, type, node):
         logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
@@ -97,10 +93,6 @@ class ConfluenceTranslator(TextTranslator):
                                 format='%(levelname)-8s %(message)s')
             logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
         logger.warning("%s(%s) unsupported formatting" % (type, node))
-
-    def wrap(self, text, width=STDINDENT):
-        self.wrapper.width = width
-        return self.wrapper.wrap(text)
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -430,7 +422,6 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_colspec(self, node):
-        self.table[0].append(node['colwidth'])
         raise nodes.SkipNode
 
     def visit_tgroup(self, node):
@@ -440,82 +431,45 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_thead(self, node):
-        pass
+        self._table_sep = '||'
 
     def depart_thead(self, node):
         pass
 
     def visit_tbody(self, node):
-        self.table.append('sep')
+        self._table_sep = '|'
 
     def depart_tbody(self, node):
         pass
 
     def visit_row(self, node):
-        self.table.append([])
+        self.new_state(0)
 
     def depart_row(self, node):
-        pass
+        self.add_text(self._table_sep)
+        self.end_state(end=None)
 
     def visit_entry(self, node):
         if ['morerows', 'morecols'] in node.attlist():
             raise NotImplementedError('Column or row spanning cells are '
                                       'not implemented.')
-        self.new_state(0)
+
+        self.add_text(self._table_sep)
+        if node.astext() == '': # (empty cell)
+            self.add_text(' ')
+            raise nodes.SkipNode
 
     def depart_entry(self, node):
-        text = self.nl.join(self.nl.join(x[1]) for x in self.states.pop())
-        self.stateindent.pop()
-        self.table[-1].append(text)
+        pass
 
     def visit_table(self, node):
         if self.table:
             raise NotImplementedError('Nested tables are not supported.')
-        self.new_state(0)
-        self.table = [[]]
+        self.table = True
 
     def depart_table(self, node):
-        lines = self.table[1:]
-        fmted_rows = []
-        colwidths = self.table[0]
-        realwidths = colwidths[:]
-        separator = 0
-        # don't allow paragraphs in table cells for now
-        for line in lines:
-            if line == 'sep':
-                separator = len(fmted_rows)
-            else:
-                cells = []
-                for i, cell in enumerate(line):
-                    par = self.wrap(cell, width=colwidths[i])
-                    if par:
-                        maxwidth = max(map(len, par))
-                    else:
-                        maxwidth = 0
-                    realwidths[i] = max(realwidths[i], maxwidth)
-                    cells.append(par)
-                fmted_rows.append(cells)
-
-        def writerow(row, double=False):
-            lines = zip(*row)
-            sep = '|' if not double else '||'
-            for line in lines:
-                out = [sep]
-                for i, cell in enumerate(line):
-                    if cell:
-                        out.append(' ' + cell.ljust(realwidths[i]+1))
-                    else:
-                        out.append(' ' * (realwidths[i] + 2))
-                    out.append(sep)
-                self.add_text(''.join(out) + self.nl)
-        is_heading = True
-        for i, row in enumerate(fmted_rows):
-            if separator and i == separator:
-                is_heading = False
-            writerow(row, is_heading)
-
-        self.table = None
-        self.end_state()
+        self.table = False
+        self.add_text(self.nl)
 
     def visit_acks(self, node):
         self.new_state(0)
