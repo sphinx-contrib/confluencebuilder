@@ -59,6 +59,11 @@ class ConfluenceTranslator(TextTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
+        if not 'anchor' in builder.config.confluence_adv_restricted_macros:
+            self.can_anchor = True
+        else:
+            self.can_anchor = False
+
         newlines = builder.config.text_newlines
         if newlines == 'windows':
             self.nl = '\r\n'
@@ -771,11 +776,11 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_target(self, node):
         if 'refid' in node:
-            if 'anchor' in self.builder.config.confluence_restricted_macros:
+            if self.can_anchor:
+                self.add_text('{anchor:' + node['refid'] + '}')
+            else:
                 ConfluenceLogger.warn("anchor macro restricted; cannot create "
                         "link anchor (%s): %s" % (self.docname, node['refid']))
-            else:
-                self.add_text('{anchor:' + node['refid'] + '}')
 
     def depart_target(self, node):
         pass
