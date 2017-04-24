@@ -24,7 +24,8 @@ import textwrap
 import logging
 
 LANG_MAP = {
-    'python': 'py'
+    'c': 'cpp',
+    'py': 'python'
 }
 
 class LIST_TYPES:
@@ -729,12 +730,22 @@ class ConfluenceTranslator(TextTranslator):
         lang = node.get('language', '')
         if lang in LANG_MAP.keys():
             lang = LANG_MAP[lang]
-        self.add_text('{code:title=|theme=Default|linenumbers=false|language=%s|collapse=false}' % lang)
-        self.new_state(0)
+
+        if node.get('linenos', False) == True:
+            nums='true'
+        else:
+            nums='false'
+
+        self.add_text('{code:linenumbers=%s|language=%s}' % (nums, lang))
+        self.add_text(self.nl)
+        self.add_text(node.astext())
+        self.add_text(self.nl)
+        self.add_text('{code}')
+        self.add_text(self.nl)
+        raise nodes.SkipNode
 
     def depart_literal_block(self, node):
-        self.add_text('{code}')
-        self.end_state()
+        pass
 
     def visit_doctest_block(self, node):
         self.new_state(0)
