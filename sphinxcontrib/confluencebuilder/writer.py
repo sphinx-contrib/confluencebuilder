@@ -197,10 +197,9 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_rubric(self, node):
         self.new_state(0)
-        self.add_text('-[ ')
+        self.add_text('h1. ')
 
     def depart_rubric(self, node):
-        self.add_text(' ]-')
         self.end_state()
 
     def visit_compound(self, node):
