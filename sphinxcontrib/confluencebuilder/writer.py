@@ -173,7 +173,10 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_section(self, node):
-        self._title_char = 'h%i.' % self.sectionlevel
+        level = 6 if self.sectionlevel > 6 else self.sectionlevel
+        if self.builder.config.confluence_adv_writer_no_section_cap:
+            level = self.sectionlevel
+        self._title_char = 'h%i.' % level
         self.sectionlevel += 1
 
     def depart_section(self, node):
