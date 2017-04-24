@@ -51,10 +51,10 @@ class ConfluenceBuilder(Builder):
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
-    legacy_pages = []
     publisher = ConfluencePublisher()
 
     def init(self):
+        self.writer = ConfluenceWriter(self)
         self.publisher.init(self.config)
 
         server_url = self.config.confluence_server_url
@@ -104,11 +104,13 @@ class ConfluenceBuilder(Builder):
             self.legacy_pages = self.publisher.getDescendents(self.parent_id)
         else:
             self.publish = False
+            self.parent_id = None
+            self.legacy_pages = []
 
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
         else:
-            self.parent_id = None
+            self.space_name = None
 
     def get_outdated_docs(self):
         """
@@ -150,7 +152,6 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
-        self.writer = ConfluenceWriter(self)
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
             idx = doctree.first_child_matching_class(nodes.section)
@@ -189,16 +190,18 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            title = ConfluenceDocMap.title(docname)
-            if not title:
-                self.warn("skipping document with no title: %s" % docname)
-                return
+            self.publish_doc(docname, self.writer.output)
 
-            uploaded_page_id = self.publisher.storePage(title,
-                    self.writer.output, self.parent_id)
-            if self.config.confluence_purge:
-                if uploaded_page_id in self.legacy_pages:
-                    self.legacy_pages.remove(uploaded_page_id)
+    def publish_doc(self, docname, output):
+        title = ConfluenceDocMap.title(docname)
+        if not title:
+            self.warn("skipping document with no title: %s" % docname)
+            return
+
+        uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+        if self.config.confluence_purge:
+            if uploaded_id in self.legacy_pages:
+                self.legacy_pages.remove(uploaded_id)
 
     def finish(self):
         if self.publish:
