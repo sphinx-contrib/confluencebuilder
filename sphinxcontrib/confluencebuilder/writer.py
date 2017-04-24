@@ -931,6 +931,11 @@ class ConfluenceTranslator(TextTranslator):
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
 
+        remove_chars = [
+            '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
+            ]
+        for char in remove_chars:
+            s = s.replace(char, '')
         self.add_text(s)
 
     def depart_Text(self, node):
