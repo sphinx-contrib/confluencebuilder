@@ -10,6 +10,7 @@
 from __future__ import (absolute_import, print_function, unicode_literals)
 from .common import ConfluenceDocMap
 from .common import ConfluenceLogger
+from .experimental import EXPERIMENTAL_QUOTE_KEYWORD
 from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
@@ -77,6 +78,7 @@ class ConfluenceTranslator(TextTranslator):
         self.sectionlevel = 1
         self.table = None
         self.escape_newlines = 0
+        self.quote_level = 0
         if self.builder.config.confluence_indent:
             self.indent = self.builder.config.confluence_indent
         else:
@@ -753,11 +755,14 @@ class ConfluenceTranslator(TextTranslator):
         self.escape_newlines -= 1
 
     def visit_block_quote(self, node):
-        self.add_text('..')
-        self.new_state(self.indent)
+        self.quote_level += 1
+        if not self.builder.config.confluence_experimental_indentation:
+            self.new_state(self.indent)
 
     def depart_block_quote(self, node):
-        self.end_state()
+        self.quote_level -= 1
+        if not self.builder.config.confluence_experimental_indentation:
+            self.end_state()
 
     def visit_compact_paragraph(self, node):
         pass
@@ -906,10 +911,17 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_Text(self, node):
         conf = self.builder.config
-        self.add_text(node.astext())
+
+        s = ''
+        if conf.confluence_experimental_indentation:
+            for i in range(self.quote_level):
+                s += EXPERIMENTAL_QUOTE_KEYWORD
+        s += node.astext()
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
+
+        self.add_text(s)
 
     def depart_Text(self, node):
         pass
