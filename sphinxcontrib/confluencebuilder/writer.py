@@ -76,6 +76,7 @@ class ConfluenceTranslator(TextTranslator):
         self.list_counter = []
         self.sectionlevel = 1
         self.table = None
+        self.escape_newlines = 0
         if self.builder.config.confluence_indent:
             self.indent = self.builder.config.confluence_indent
         else:
@@ -740,16 +741,16 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_line_block(self, node):
-        self.new_state(0)
+        pass
 
     def depart_line_block(self, node):
-        self.end_state()
+        self.add_text(self.nl)
 
     def visit_line(self, node):
-        pass
+        self.escape_newlines += 1
 
     def depart_line(self, node):
-        pass
+        self.escape_newlines -= 1
 
     def visit_block_quote(self, node):
         self.add_text('..')
@@ -904,7 +905,11 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_Text(self, node):
+        conf = self.builder.config
         self.add_text(node.astext())
+
+        if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
+            s = s.replace(self.nl, ' ')
 
     def depart_Text(self, node):
         pass

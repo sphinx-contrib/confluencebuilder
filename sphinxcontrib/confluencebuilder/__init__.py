@@ -78,5 +78,7 @@ def setup(app):
     """(advanced)"""
     """List of extension-provided macros restricted for use."""
     app.add_config_value('confluence_adv_restricted_macros', [], False)
+    """Enforce reStructuredText strict line breaks."""
+    app.add_config_value('confluence_adv_strict_line_breaks', None, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
