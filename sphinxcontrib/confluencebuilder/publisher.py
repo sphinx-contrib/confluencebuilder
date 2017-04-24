@@ -221,7 +221,34 @@ class ConfluencePublisher():
             rsp = self.rest_client.post(
                 'contentbody/convert/storage', raw_data_req)
             storage_data = rsp['value']
+        else:
+            try:
+                page = self.xmlrpc.getPage(
+                    self.token, self.space_name, page_name)
+            except xmlrpclib.Fault:
+                page = {
+                    'title': page_name,
+                    'space': self.space_name
+                }
 
+            try:
+                storage_data = self.xmlrpc.convertWikiToStorageFormat(
+                    self.token, raw_data)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('UnknownMacroMigration') != -1:
+                    print("\nWARNING: Unsupported macro is page generation.");
+                    print(" (details: %s)" % ex.faultString);
+
+                    # Track known ID so legacy page does not get deleted if
+                    # purge is enabled.
+                    if 'id' in page:
+                        uploaded_page_id = page['id']
+                    return uploaded_page_id
+                raise
+
+        assert storage_data
+
+        if self.use_rest:
             rsp = self.rest_client.get('content', {
                 'type': 'page',
                 'spaceKey': self.space_name,
@@ -281,29 +308,6 @@ class ConfluencePublisher():
                     """content to the configured space."""
                 )
         else:
-            try:
-                page = self.xmlrpc.getPage(
-                    self.token, self.space_name, page_name)
-            except xmlrpclib.Fault:
-                page = {
-                    'title': page_name,
-                    'space': self.space_name
-                }
-
-            try:
-                storage_data = self.xmlrpc.convertWikiToStorageFormat(
-                    self.token, raw_data)
-            except xmlrpclib.Fault as ex:
-                if ex.faultString.find('UnknownMacroMigration') != -1:
-                    print("\nWARNING: Unsupported macro is page generation.");
-                    print(" (details: %s)" % ex.faultString);
-
-                    # Track known ID so legacy page does not get deleted if
-                    # purge is enabled.
-                    if 'id' in page:
-                        uploaded_page_id = page['id']
-                    return uploaded_page_id
-                raise
             page['content'] = storage_data
 
             if parent_id:
