@@ -1,4 +1,23 @@
 
+0.7.0 (unreleased)
+==================
+
+* cap headers/sections to six levels for improved visualization
+* improve markup for:
+  * body element lists
+  * citations
+  * definitions
+  * footnotes
+  * inline literals
+  * literal block (code)
+  * rubric
+  * seealso
+  * table
+  * versionmodified
+* re-work generated document references/targets (reference to section names)
+* sanitize output to prevent Confluence errors for certain characters
+* support indentations markup
+
 0.6.0 (2017-04-23)
 ==================
 
