@@ -2,8 +2,6 @@
 0.6.0 (2017-04-23)
 ==================
 
-Community contributions from @jdknight
-
 * cleanup module's structure, versions and other minor files
 * drop 'confluence' pypi package (embedded xml-rpc support added)
 * improve hyperlink and cross-referencing arbitrary locations/documents support
@@ -11,10 +9,6 @@ Community contributions from @jdknight
 * re-support python 3.x series
 * support anonymous publishing
 * support rest api
-* Added support for admonitions
-* Added support for headers and footer templates
-* Added support for purging contents of a confluence doctree element whilst publishing
-
 
 0.5.0 (2017-03-31)
 ==================
