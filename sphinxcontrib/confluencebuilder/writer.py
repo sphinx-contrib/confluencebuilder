@@ -356,21 +356,34 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_footnote(self, node):
-        self._footnote = node.children[0].astext().strip()
-        self.new_state(len(self._footnote) + self.indent)
+        self.new_state(0)
+
+        label_node = node.next_node()
+        if not isinstance(label_node, nodes.label):
+            raise nodes.SkipNode
+
+        anchor = node['ids'][0]
+
+        self.add_text('|')
+        if self.can_anchor:
+            self.add_text('{anchor:%s}' % anchor)
+        self.add_text('%s|' % label_node.astext())
 
     def depart_footnote(self, node):
-        self.end_state(first='[%s] ' % self._footnote)
+        self.add_text('|%s' % self.nl)
+
+        next_sibling = node.traverse(None, False, False, True)
+        if not next_sibling or not isinstance(
+                next_sibling[0], (nodes.citation, nodes.footnote)):
+            self.end_state()
+        else:
+            self.end_state(end=None)
 
     def visit_citation(self, node):
-        if len(node) and isinstance(node[0], nodes.label):
-            self._citlabel = node[0].astext()
-        else:
-            self._citlabel = ''
-        self.new_state(len(self._citlabel) + self.indent)
+        self.visit_footnote(node)
 
     def depart_citation(self, node):
-        self.end_state(first='[%s] ' % self._citlabel)
+        self.depart_footnote(node)
 
     def visit_label(self, node):
         raise nodes.SkipNode
@@ -539,34 +552,43 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_definition_list_item(self, node):
-        self._li_has_classifier = len(node) >= 2 and \
-                                  isinstance(node[1], nodes.classifier)
-
-    def depart_definition_list_item(self, node):
-        pass
-
-    def visit_term(self, node):
+        self._li_terms = []
         self.new_state(0)
 
-    def depart_term(self, node):
-        if not self._li_has_classifier:
+    def depart_definition_list_item(self, node):
+        self._li_terms = None
+
+    def visit_term(self, node):
+        if self._li_terms:
             self.end_state(end=None)
+            self.new_state(0)
+
+        self._li_terms.append(node.astext())
+
+    def depart_term(self, node):
+        pass
 
     def visit_termsep(self, node):
-        self.add_text(', ')
         raise nodes.SkipNode
 
     def visit_classifier(self, node):
         self.add_text(' : ')
 
     def depart_classifier(self, node):
-        self.end_state(end=None)
+        pass
 
     def visit_definition(self, node):
-        self.new_state(self.indent)
+        self.end_state(end=None)
+
+        self.new_state(0)
+        definition = ' '.join(node.astext().split(self.nl))
+        self.add_text('bq. %s' % definition)
+        self.end_state()
+
+        raise nodes.SkipNode
 
     def depart_definition(self, node):
-        self.end_state()
+        pass
 
     def visit_field_list(self, node):
         pass
@@ -738,6 +760,9 @@ class ConfluenceTranslator(TextTranslator):
     def visit_paragraph(self, node):
         if not isinstance(node.parent, (
                     nodes.Admonition,
+                    nodes.citation,
+                    nodes.entry,
+                    nodes.footnote,
                     nodes.list_item,
                     addnodes.seealso,
                 )):
@@ -749,6 +774,9 @@ class ConfluenceTranslator(TextTranslator):
 
         elif not isinstance(node.parent, (
                     nodes.Admonition,
+                    nodes.citation,
+                    nodes.entry,
+                    nodes.footnote,
                     addnodes.seealso,
                 )):
             self.end_state()
@@ -894,12 +922,16 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_footnote_reference(self, node):
-        self.add_text('[%s]' % node.astext())
+        anchor = ''.join(node['refid'].split())
+        text = '^%s^' % node.astext()
+        if self.can_anchor:
+            self.add_text('[%s|#%s]' % (text, anchor))
+        else:
+            self.add_text('%s' % text)
         raise nodes.SkipNode
 
     def visit_citation_reference(self, node):
-        self.add_text('[%s]' % node.astext())
-        raise nodes.SkipNode
+        pass
 
     def visit_Text(self, node):
         conf = self.builder.config
