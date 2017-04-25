@@ -28,10 +28,9 @@ LANG_MAP = {
     'py': 'python'
 }
 
-class LIST_TYPES:
-    BULLET = -1
-    DEFINITION = -2
-    ENUMERATED = 0
+class ConflueceListType(object):
+    BULLET = 1
+    ENUMERATED = 2
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
@@ -75,7 +74,7 @@ class ConfluenceTranslator(TextTranslator):
             self.nl = '\n'
         self.states = [[]]
         self.stateindent = [0]
-        self.list_counter = []
+        self.list_stack = []
         self.sectionlevel = 1
         self.table = False
         self.escape_newlines = 0
@@ -493,53 +492,51 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
         raise nodes.SkipNode
 
+    def _visit_list_type(self, type):
+        if not self.table and not self.list_stack:
+            self.new_state(0)
+        self.list_stack.append(type)
+
+    def _depart_list_type(self, node):
+        self.list_stack.pop()
+        if not self.table and not self.list_stack:
+            self.end_state()
+
     def visit_bullet_list(self, node):
-        self.list_counter.append(LIST_TYPES.BULLET)
+        self._visit_list_type(ConflueceListType.BULLET)
 
     def depart_bullet_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
+        self._depart_list_type(node)
 
     def visit_enumerated_list(self, node):
-        self.list_counter.append(LIST_TYPES.ENUMERATED)
+        self._visit_list_type(ConflueceListType.ENUMERATED)
 
     def depart_enumerated_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
+        self._depart_list_type(node)
 
     def visit_definition_list(self, node):
-        self.list_counter.append(LIST_TYPES.DEFINITION)
+        pass
 
     def depart_definition_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
+        pass
 
     def visit_list_item(self, node):
-        if self.list_counter[-1] == LIST_TYPES.BULLET:
-            self.new_state(self.indent)
-        elif self.list_counter[-1] == LIST_TYPES.DEFINITION:
-            pass
+        type = self.list_stack[-1]
+        level = len(self.list_stack)
+        if type == ConflueceListType.BULLET:
+            list_prefix = '*'
+        elif type == ConflueceListType.ENUMERATED:
+            list_prefix = '#'
         else:
-            # enumerated list
-            self.list_counter[-1] += 1
-            self.new_state(len(str(self.list_counter[-1])) + self.indent)
+            list_prefix = '-'
+
+        s = ''
+        for i in range(level):
+            s += list_prefix
+        self.add_text('%s ' % s)
 
     def depart_list_item(self, node):
-        if self.list_counter[-1] == LIST_TYPES.BULLET:
-            # bullet
-            self.end_state(first='* ', end=None)
-        elif self.list_counter[-1] == -2:
-            # definition list
-            pass
-        else:
-            # enumerated list
-            self.end_state(first='# ', end=None)
+        pass
 
     def visit_definition_list_item(self, node):
         self._li_has_classifier = len(node) >= 2 and \
@@ -735,19 +732,25 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def depart_compact_paragraph(self, node):
-        pass
+        if isinstance(node.parent, nodes.list_item):
+            self.add_text(self.nl)
 
     def visit_paragraph(self, node):
-        if not isinstance(node.parent, nodes.Admonition) or \
-               isinstance(node.parent, addnodes.seealso):
+        if not isinstance(node.parent, (
+                    nodes.Admonition,
+                    nodes.list_item,
+                    addnodes.seealso,
+                )):
             self.new_state(0)
 
     def depart_paragraph(self, node):
-        # Don't put line breaks between list items
         if isinstance(node.parent, nodes.list_item):
-            self.end_state(end=None)
-        elif not isinstance(node.parent, (nodes.Admonition,
-                                          addnodes.seealso)):
+            self.add_text(self.nl)
+
+        elif not isinstance(node.parent, (
+                    nodes.Admonition,
+                    addnodes.seealso,
+                )):
             self.end_state()
 
     def visit_target(self, node):
