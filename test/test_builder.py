@@ -126,8 +126,7 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[0], 'h1. TOCTREE\n')
             self.assertEqual(lines[2], '* [Code Test]\n')
             self.assertEqual(lines[3], '* [HEADING_TEST]\n')
-            # This assertion fails. I need to program this logic.
-            # self.assertEqual(lines[4], '   * [HEADING_TEST#subheading-test]\n')
+            self.assertEqual(lines[4], '** [SUBHEADER_TEST|HEADING_TEST#SUBHEADER_TEST]\n')
 
     def test_table(self):
         test_path = os.path.join(self.outdir, 'tables.conf')
