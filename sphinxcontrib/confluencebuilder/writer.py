@@ -14,7 +14,6 @@ from .experimental import EXPERIMENTAL_QUOTE_KEYWORD
 from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
-from sphinx.locale import versionlabels
 from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
@@ -693,12 +692,21 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_versionmodified(self, node):
         self.new_state(0)
-        if node.children:
-            self.add_text(versionlabels[node['type']] % node['version'] + ': ')
+        if node['type'] == 'deprecated':
+            self._vm_type = 'note'
+        elif node['type'] == 'versionadded':
+            self._vm_type = 'info'
+        elif node['type'] == 'versionchanged':
+            self._vm_type = 'note'
         else:
-            self.add_text(versionlabels[node['type']] % node['version'] + '.')
+            self._vm_type = 'info'
+            self.builder.warn('unsupported version modification type: '
+                '%s' % node['type'])
+
+        self.add_text('{%s}' % self._vm_type)
 
     def depart_versionmodified(self, node):
+        self.add_text('{%s}' % self._vm_type)
         self.end_state()
 
     def visit_literal_block(self, node):
