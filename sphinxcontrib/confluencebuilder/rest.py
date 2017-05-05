@@ -47,11 +47,11 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
-        if not rsp.content:
+        if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
-            json_data = json.loads(rsp.content)
+            json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
                 "REST reply did not provide valid JSON data.")
@@ -78,11 +78,11 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
-        if not rsp.content:
+        if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
-            json_data = json.loads(rsp.content)
+            json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
                 "REST reply did not provide valid JSON data.")
@@ -109,11 +109,11 @@ class Rest:
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
             raise ConfluenceBadApiError(err)
-        if not rsp.content:
+        if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
-            json_data = json.loads(rsp.content)
+            json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
                 "REST reply did not provide valid JSON data.")
