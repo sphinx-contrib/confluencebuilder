@@ -52,8 +52,12 @@ class TestConfluenceBuilder(unittest.TestCase):
                 self.assertTrue(diff_data == '', msg=diff_data)
 
     def test_registry(self):
-        self.assertTrue('sphinxcontrib.confluencebuilder' in
-                        self.app._extensions.keys())
+        if hasattr(self.app, 'extensions'):
+            self.assertTrue('sphinxcontrib.confluencebuilder' in
+                            self.app.extensions.keys())
+        else:
+            self.assertTrue('sphinxcontrib.confluencebuilder' in
+                            self.app._extensions.keys())
 
     def test_heading(self):
         test_path = os.path.join(self.outdir, 'heading.conf')
