@@ -18,7 +18,8 @@ import unittest
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        srcdir = os.path.join(os.getcwd(), 'testproj')
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        srcdir = os.path.join(basedir, 'testproj')
         self.expected = os.path.join(srcdir, 'expected')
         builddir = os.path.join(srcdir, 'build')
         self.outdir = os.path.join(builddir, 'out')

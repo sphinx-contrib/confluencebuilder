@@ -26,7 +26,8 @@ class TestConfluencePublisher(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        val_dir = os.path.join(os.getcwd(), 'validation-set')
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        val_dir = os.path.join(basedir, 'validation-set')
         build_dir = os.path.join(os.getcwd(), 'build')
         doctree_dir = os.path.join(build_dir, 'doctree')
         self.out = os.path.join(build_dir, 'out')
