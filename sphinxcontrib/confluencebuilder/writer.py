@@ -10,26 +10,26 @@
 from __future__ import (absolute_import, print_function, unicode_literals)
 from .common import ConfluenceDocMap
 from .common import ConfluenceLogger
+from .experimental import EXPERIMENTAL_QUOTE_KEYWORD
 from docutils import nodes, writers
 from os import path
 from sphinx import addnodes
-from sphinx.locale import versionlabels
+from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
 import os
 import sys
-import textwrap
 import logging
 
 LANG_MAP = {
-    'python': 'py'
+    'c': 'cpp',
+    'py': 'python'
 }
 
-class LIST_TYPES:
-    BULLET = -1
-    DEFINITION = -2
-    ENUMERATED = 0
+class ConflueceListType(object):
+    BULLET = 1
+    ENUMERATED = 2
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
@@ -59,6 +59,11 @@ class ConfluenceTranslator(TextTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
+        if not 'anchor' in builder.config.confluence_adv_restricted_macros:
+            self.can_anchor = True
+        else:
+            self.can_anchor = False
+
         newlines = builder.config.text_newlines
         if newlines == 'windows':
             self.nl = '\r\n'
@@ -68,16 +73,15 @@ class ConfluenceTranslator(TextTranslator):
             self.nl = '\n'
         self.states = [[]]
         self.stateindent = [0]
-        self.list_counter = []
+        self.list_stack = []
         self.sectionlevel = 1
-        self.table = None
+        self.table = False
+        self.escape_newlines = 0
+        self.quote_level = 0
         if self.builder.config.confluence_indent:
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
-        self.wrapper = textwrap.TextWrapper(width=STDINDENT,
-                                            break_long_words=False,
-                                            break_on_hyphens=False)
 
     def log_unknown(self, type, node):
         logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
@@ -88,10 +92,6 @@ class ConfluenceTranslator(TextTranslator):
                                 format='%(levelname)-8s %(message)s')
             logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
         logger.warning("%s(%s) unsupported formatting" % (type, node))
-
-    def wrap(self, text, width=STDINDENT):
-        self.wrapper.width = width
-        return self.wrapper.wrap(text)
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -168,7 +168,10 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_section(self, node):
-        self._title_char = 'h%i.' % self.sectionlevel
+        level = 6 if self.sectionlevel > 6 else self.sectionlevel
+        if self.builder.config.confluence_adv_writer_no_section_cap:
+            level = self.sectionlevel
+        self._title_char = 'h%i.' % level
         self.sectionlevel += 1
 
     def depart_section(self, node):
@@ -185,10 +188,9 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_rubric(self, node):
         self.new_state(0)
-        self.add_text('-[ ')
+        self.add_text('h1. ')
 
     def depart_rubric(self, node):
-        self.add_text(' ]-')
         self.end_state()
 
     def visit_compound(self, node):
@@ -345,27 +347,42 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_seealso(self, node):
-        self.new_state(self.indent)
+        self.new_state(0)
+        self.add_text('{info:title=%s}' % admonitionlabels['seealso'])
 
     def depart_seealso(self, node):
-        self.end_state(first='')
+        self.add_text('{info}')
+        self.end_state()
 
     def visit_footnote(self, node):
-        self._footnote = node.children[0].astext().strip()
-        self.new_state(len(self._footnote) + self.indent)
+        self.new_state(0)
+
+        label_node = node.next_node()
+        if not isinstance(label_node, nodes.label):
+            raise nodes.SkipNode
+
+        anchor = node['ids'][0]
+
+        self.add_text('|')
+        if self.can_anchor:
+            self.add_text('{anchor:%s}' % anchor)
+        self.add_text('%s|' % label_node.astext())
 
     def depart_footnote(self, node):
-        self.end_state(first='[%s] ' % self._footnote)
+        self.add_text('|%s' % self.nl)
+
+        next_sibling = node.traverse(None, False, False, True)
+        if not next_sibling or not isinstance(
+                next_sibling[0], (nodes.citation, nodes.footnote)):
+            self.end_state()
+        else:
+            self.end_state(end=None)
 
     def visit_citation(self, node):
-        if len(node) and isinstance(node[0], nodes.label):
-            self._citlabel = node[0].astext()
-        else:
-            self._citlabel = ''
-        self.new_state(len(self._citlabel) + self.indent)
+        self.visit_footnote(node)
 
     def depart_citation(self, node):
-        self.end_state(first='[%s] ' % self._citlabel)
+        self.depart_footnote(node)
 
     def visit_label(self, node):
         raise nodes.SkipNode
@@ -419,7 +436,6 @@ class ConfluenceTranslator(TextTranslator):
         raise nodes.SkipNode
 
     def visit_colspec(self, node):
-        self.table[0].append(node['colwidth'])
         raise nodes.SkipNode
 
     def visit_tgroup(self, node):
@@ -429,82 +445,45 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_thead(self, node):
-        pass
+        self._table_sep = '||'
 
     def depart_thead(self, node):
         pass
 
     def visit_tbody(self, node):
-        self.table.append('sep')
+        self._table_sep = '|'
 
     def depart_tbody(self, node):
         pass
 
     def visit_row(self, node):
-        self.table.append([])
+        self.new_state(0)
 
     def depart_row(self, node):
-        pass
+        self.add_text(self._table_sep)
+        self.end_state(end=None)
 
     def visit_entry(self, node):
         if ['morerows', 'morecols'] in node.attlist():
             raise NotImplementedError('Column or row spanning cells are '
                                       'not implemented.')
-        self.new_state(0)
+
+        self.add_text(self._table_sep)
+        if node.astext() == '': # (empty cell)
+            self.add_text(' ')
+            raise nodes.SkipNode
 
     def depart_entry(self, node):
-        text = self.nl.join(self.nl.join(x[1]) for x in self.states.pop())
-        self.stateindent.pop()
-        self.table[-1].append(text)
+        pass
 
     def visit_table(self, node):
         if self.table:
             raise NotImplementedError('Nested tables are not supported.')
-        self.new_state(0)
-        self.table = [[]]
+        self.table = True
 
     def depart_table(self, node):
-        lines = self.table[1:]
-        fmted_rows = []
-        colwidths = self.table[0]
-        realwidths = colwidths[:]
-        separator = 0
-        # don't allow paragraphs in table cells for now
-        for line in lines:
-            if line == 'sep':
-                separator = len(fmted_rows)
-            else:
-                cells = []
-                for i, cell in enumerate(line):
-                    par = self.wrap(cell, width=colwidths[i])
-                    if par:
-                        maxwidth = max(map(len, par))
-                    else:
-                        maxwidth = 0
-                    realwidths[i] = max(realwidths[i], maxwidth)
-                    cells.append(par)
-                fmted_rows.append(cells)
-
-        def writerow(row, double=False):
-            lines = zip(*row)
-            sep = '|' if not double else '||'
-            for line in lines:
-                out = [sep]
-                for i, cell in enumerate(line):
-                    if cell:
-                        out.append(' ' + cell.ljust(realwidths[i]+1))
-                    else:
-                        out.append(' ' * (realwidths[i] + 2))
-                    out.append(sep)
-                self.add_text(''.join(out) + self.nl)
-        is_heading = True
-        for i, row in enumerate(fmted_rows):
-            if separator and i == separator:
-                is_heading = False
-            writerow(row, is_heading)
-
-        self.table = None
-        self.end_state()
+        self.table = False
+        self.add_text(self.nl)
 
     def visit_acks(self, node):
         self.new_state(0)
@@ -525,83 +504,90 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
         raise nodes.SkipNode
 
+    def _visit_list_type(self, type):
+        if not self.table and not self.list_stack:
+            self.new_state(0)
+        self.list_stack.append(type)
+
+    def _depart_list_type(self, node):
+        self.list_stack.pop()
+        if not self.table and not self.list_stack:
+            self.end_state()
+
     def visit_bullet_list(self, node):
-        self.list_counter.append(LIST_TYPES.BULLET)
+        self._visit_list_type(ConflueceListType.BULLET)
 
     def depart_bullet_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
+        self._depart_list_type(node)
 
     def visit_enumerated_list(self, node):
-        self.list_counter.append(LIST_TYPES.ENUMERATED)
+        self._visit_list_type(ConflueceListType.ENUMERATED)
 
     def depart_enumerated_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
+        self._depart_list_type(node)
 
     def visit_definition_list(self, node):
-        self.list_counter.append(LIST_TYPES.DEFINITION)
-
-    def depart_definition_list(self, node):
-        self.list_counter.pop()
-        self.new_state(0)
-        self.add_text('')
-        self.end_state()
-
-    def visit_list_item(self, node):
-        if self.list_counter[-1] == LIST_TYPES.BULLET:
-            self.new_state(self.indent)
-        elif self.list_counter[-1] == LIST_TYPES.DEFINITION:
-            pass
-        else:
-            # enumerated list
-            self.list_counter[-1] += 1
-            self.new_state(len(str(self.list_counter[-1])) + self.indent)
-
-    def depart_list_item(self, node):
-        if self.list_counter[-1] == LIST_TYPES.BULLET:
-            # bullet
-            self.end_state(first='* ', end=None)
-        elif self.list_counter[-1] == -2:
-            # definition list
-            pass
-        else:
-            # enumerated list
-            self.end_state(first='# ', end=None)
-
-    def visit_definition_list_item(self, node):
-        self._li_has_classifier = len(node) >= 2 and \
-                                  isinstance(node[1], nodes.classifier)
-
-    def depart_definition_list_item(self, node):
         pass
 
-    def visit_term(self, node):
+    def depart_definition_list(self, node):
+        pass
+
+    def visit_list_item(self, node):
+        type = self.list_stack[-1]
+        level = len(self.list_stack)
+        if type == ConflueceListType.BULLET:
+            list_prefix = '*'
+        elif type == ConflueceListType.ENUMERATED:
+            list_prefix = '#'
+        else:
+            list_prefix = '-'
+
+        s = ''
+        for i in range(level):
+            s += list_prefix
+        self.add_text('%s ' % s)
+
+    def depart_list_item(self, node):
+        pass
+
+    def visit_definition_list_item(self, node):
+        self._li_terms = []
         self.new_state(0)
 
-    def depart_term(self, node):
-        if not self._li_has_classifier:
+    def depart_definition_list_item(self, node):
+        self._li_terms = None
+
+    def visit_term(self, node):
+        if self._li_terms:
             self.end_state(end=None)
+            self.new_state(0)
+
+        self._li_terms.append(node.astext())
+
+    def depart_term(self, node):
+        pass
 
     def visit_termsep(self, node):
-        self.add_text(', ')
         raise nodes.SkipNode
 
     def visit_classifier(self, node):
         self.add_text(' : ')
 
     def depart_classifier(self, node):
-        self.end_state(end=None)
+        pass
 
     def visit_definition(self, node):
-        self.new_state(self.indent)
+        self.end_state(end=None)
+
+        self.new_state(0)
+        definition = ' '.join(node.astext().split(self.nl))
+        self.add_text('bq. %s' % definition)
+        self.end_state()
+
+        raise nodes.SkipNode
 
     def depart_definition(self, node):
-        self.end_state()
+        pass
 
     def visit_field_list(self, node):
         pass
@@ -706,24 +692,43 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_versionmodified(self, node):
         self.new_state(0)
-        if node.children:
-            self.add_text(versionlabels[node['type']] % node['version'] + ': ')
+        if node['type'] == 'deprecated':
+            self._vm_type = 'note'
+        elif node['type'] == 'versionadded':
+            self._vm_type = 'info'
+        elif node['type'] == 'versionchanged':
+            self._vm_type = 'note'
         else:
-            self.add_text(versionlabels[node['type']] % node['version'] + '.')
+            self._vm_type = 'info'
+            self.builder.warn('unsupported version modification type: '
+                '%s' % node['type'])
+
+        self.add_text('{%s}' % self._vm_type)
 
     def depart_versionmodified(self, node):
+        self.add_text('{%s}' % self._vm_type)
         self.end_state()
 
     def visit_literal_block(self, node):
         lang = node.get('language', '')
         if lang in LANG_MAP.keys():
             lang = LANG_MAP[lang]
-        self.add_text('{code:title=|theme=Default|linenumbers=false|language=%s|collapse=false}' % lang)
-        self.new_state(0)
+
+        if node.get('linenos', False) == True:
+            nums='true'
+        else:
+            nums='false'
+
+        self.add_text('{code:linenumbers=%s|language=%s}' % (nums, lang))
+        self.add_text(self.nl)
+        self.add_text(node.astext())
+        self.add_text(self.nl)
+        self.add_text('{code}')
+        self.add_text(self.nl)
+        raise nodes.SkipNode
 
     def depart_literal_block(self, node):
-        self.add_text('{code}')
-        self.end_state()
+        pass
 
     def visit_doctest_block(self, node):
         self.new_state(0)
@@ -732,50 +737,66 @@ class ConfluenceTranslator(TextTranslator):
         self.end_state()
 
     def visit_line_block(self, node):
-        self.new_state(0)
+        pass
 
     def depart_line_block(self, node):
-        self.end_state()
+        self.add_text(self.nl)
 
     def visit_line(self, node):
-        pass
+        self.escape_newlines += 1
 
     def depart_line(self, node):
-        pass
+        self.escape_newlines -= 1
 
     def visit_block_quote(self, node):
-        self.add_text('..')
-        self.new_state(self.indent)
+        self.quote_level += 1
+        if not self.builder.config.confluence_experimental_indentation:
+            self.new_state(self.indent)
 
     def depart_block_quote(self, node):
-        self.end_state()
+        self.quote_level -= 1
+        if not self.builder.config.confluence_experimental_indentation:
+            self.end_state()
 
     def visit_compact_paragraph(self, node):
         pass
 
     def depart_compact_paragraph(self, node):
-        pass
+        if isinstance(node.parent, nodes.list_item):
+            self.add_text(self.nl)
 
     def visit_paragraph(self, node):
-        if not isinstance(node.parent, nodes.Admonition) or \
-               isinstance(node.parent, addnodes.seealso):
+        if not isinstance(node.parent, (
+                    nodes.Admonition,
+                    nodes.citation,
+                    nodes.entry,
+                    nodes.footnote,
+                    nodes.list_item,
+                    addnodes.seealso,
+                )):
             self.new_state(0)
 
     def depart_paragraph(self, node):
-        # Don't put line breaks between list items
         if isinstance(node.parent, nodes.list_item):
-            self.end_state(end=None)
-        elif not isinstance(node.parent, (nodes.Admonition,
-                                          addnodes.seealso)):
+            self.add_text(self.nl)
+
+        elif not isinstance(node.parent, (
+                    nodes.Admonition,
+                    nodes.citation,
+                    nodes.entry,
+                    nodes.footnote,
+                    addnodes.seealso,
+                )):
             self.end_state()
 
     def visit_target(self, node):
-        if 'refid' in node:
-            if 'anchor' in self.builder.config.confluence_restricted_macros:
-                ConfluenceLogger.warn("anchor macro restricted; cannot create "
-                        "link anchor (%s): %s" % (self.docname, node['refid']))
-            else:
-                self.add_text('{anchor:' + node['refid'] + '}')
+        if 'refid' in node and self.can_anchor:
+            anchor = ''.join(node['refid'].split())
+            target = ConfluenceDocMap.target(anchor)
+            if not target:
+                self.add_text('{anchor:%s}' % anchor)
+
+        raise nodes.SkipNode
 
     def depart_target(self, node):
         pass
@@ -794,7 +815,7 @@ class ConfluenceTranslator(TextTranslator):
 
     def visit_reference(self, node):
         # External link.
-        if not 'internal' in node:
+        if not 'internal' in node and 'refuri' in node:
             if 'name' in node:
                 self.add_text('[%s|%s]' % (node['name'], node['refuri']))
             else:
@@ -803,29 +824,50 @@ class ConfluenceTranslator(TextTranslator):
 
         # Internal link.
         if 'refuri' in node:
+            docname = self.docparent + path.splitext(node['refuri'])[0]
+            doctitle = ConfluenceDocMap.title(docname)
+            if not doctitle:
+                self.builder.warn("unable to build link to document due to "
+                    "missing title (in %s): %s" % (self.docname, docname))
+                raise nodes.SkipNode
+
             if '#' in node['refuri']:
-                anchor = '#' + node['refuri'].split('#')[1]
+                anchor = node['refuri'].split('#')[1]
+                if 'anchorname' in node:
+                    target_name = '%s#%s' % (docname, anchor)
+                else:
+                    target_name = anchor
+
+                target = ConfluenceDocMap.target(target_name)
+                if target:
+                    anchor = '#' + target
+                else:
+                    self.builder.warn("unable to build link to document due to "
+                        "missing target (in %s): %s" % (self.docname, anchor))
+                    anchor = ''
             else:
                 anchor = ''
 
-            docname = self.docparent + path.splitext(node['refuri'])[0]
-            doctitle = ConfluenceDocMap.title(docname)
-
-            if doctitle:
-                label = node.astext()
-                if label == doctitle and not anchor:
-                    self.add_text('[%s]' % label)
-                else:
-                    self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
+            label = node.astext()
+            if label == doctitle and not anchor:
+                self.add_text('[%s]' % label)
             else:
-                self.builder.warn("unable to build link to document due to "
-                    "missing title (in %s): %s" % (self.docname, docname))
+                self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
             raise nodes.SkipNode
 
         # Anchor.
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
-            self.add_text('[%s|#%s]' % (node.astext(), anchor))
+            target = ConfluenceDocMap.target(anchor)
+            text = node.astext().replace('[', '^')
+            text = text.replace(']', '^')
+            if target:
+                self.add_text('[%s|#%s]' % (text, target))
+            elif self.can_anchor:
+                self.add_text('[%s|#%s]' % (text, anchor))
+            else:
+                self.add_text('%s' % text)
+
             raise nodes.SkipNode
 
     def depart_reference(self, node):
@@ -870,10 +912,10 @@ class ConfluenceTranslator(TextTranslator):
         self.add_text('*')
 
     def visit_literal(self, node):
-        self.add_text('``')
+        self.add_text('{{')
 
     def depart_literal(self, node):
-        self.add_text('``')
+        self.add_text('}}')
 
     def visit_subscript(self, node):
         self.add_text('_')
@@ -888,15 +930,35 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_footnote_reference(self, node):
-        self.add_text('[%s]' % node.astext())
+        anchor = ''.join(node['refid'].split())
+        text = '^%s^' % node.astext()
+        if self.can_anchor:
+            self.add_text('[%s|#%s]' % (text, anchor))
+        else:
+            self.add_text('%s' % text)
         raise nodes.SkipNode
 
     def visit_citation_reference(self, node):
-        self.add_text('[%s]' % node.astext())
-        raise nodes.SkipNode
+        pass
 
     def visit_Text(self, node):
-        self.add_text(node.astext())
+        conf = self.builder.config
+
+        s = ''
+        if conf.confluence_experimental_indentation:
+            for i in range(self.quote_level):
+                s += EXPERIMENTAL_QUOTE_KEYWORD
+        s += node.astext()
+
+        if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
+            s = s.replace(self.nl, ' ')
+
+        remove_chars = [
+            '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
+            ]
+        for char in remove_chars:
+            s = s.replace(char, '')
+        self.add_text(s)
 
     def depart_Text(self, node):
         pass

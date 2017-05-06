@@ -211,14 +211,18 @@ Supported Markup
 ================
 
 * Bulleted Lists
+* Citations
 * Code Blocks
+* Definitions
 * Enumerated Lists
+* Footnotes
 * Headings
 * Hyperlinks
-* Inline Blocks
+* Indentations
+* Inline Blocks/Literals
 * Paragraphs
 * Tables
-* TOC Tree (maximum depth of one)
+* TOC Tree
 
 
 .. _Confluence: https://www.atlassian.com/software/confluence

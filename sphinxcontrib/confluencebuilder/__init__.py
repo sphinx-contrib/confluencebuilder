@@ -58,8 +58,6 @@ def setup(app):
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
-    """List of extension-provided macros restricted for use."""
-    app.add_config_value('confluence_restricted_macros', [], False)
     """Password to login to Confluence API with."""
     app.add_config_value('confluence_server_pass', None, False)
     """Username to login to Confluence API with."""
@@ -76,3 +74,15 @@ def setup(app):
     app.add_config_value('confluence_publish_prefix', None, False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
+
+    """(advanced)"""
+    """List of extension-provided macros restricted for use."""
+    app.add_config_value('confluence_adv_restricted_macros', [], False)
+    """Enforce reStructuredText strict line breaks."""
+    app.add_config_value('confluence_adv_strict_line_breaks', None, False)
+    """Do not cap sections to a maximum of six (6) levels."""
+    app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
+
+    """(experimental)"""
+    """Support experimental indentation support."""
+    app.add_config_value('confluence_experimental_indentation', True, True)

@@ -51,10 +51,10 @@ class ConfluenceBuilder(Builder):
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
-    legacy_pages = []
     publisher = ConfluencePublisher()
 
     def init(self):
+        self.writer = ConfluenceWriter(self)
         self.publisher.init(self.config)
 
         server_url = self.config.confluence_server_url
@@ -104,11 +104,13 @@ class ConfluenceBuilder(Builder):
             self.legacy_pages = self.publisher.getDescendents(self.parent_id)
         else:
             self.publish = False
+            self.parent_id = None
+            self.legacy_pages = []
 
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
         else:
-            self.parent_id = None
+            self.space_name = None
 
     def get_outdated_docs(self):
         """
@@ -150,9 +152,10 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
-        self.writer = ConfluenceWriter(self)
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
+
+            # Find title for document.
             idx = doctree.first_child_matching_class(nodes.section)
             if idx is None or idx == -1:
                 continue
@@ -163,9 +166,32 @@ class ConfluenceBuilder(Builder):
                 continue
 
             doctitle = first_section[idx].astext()
-            if doctitle:
-                ConfluenceDocMap.register(doc, doctitle,
-                    self.config.confluence_publish_prefix)
+            if not doctitle:
+                continue
+
+            doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
+                self.config.confluence_publish_prefix)
+
+            target_refs = []
+            for node in doctree.traverse(nodes.target):
+                if 'refid' in node:
+                    target_refs.append(node['refid'])
+
+            doc_used_names = {}
+            for node in doctree.traverse(nodes.title):
+                if isinstance(node.parent, nodes.section):
+                    section_node = node.parent
+                    if 'ids' in section_node:
+                        target = ''.join(node.astext().split())
+                        section_id = doc_used_names.get(target, 0)
+                        doc_used_names[target] = section_id + 1
+                        if section_id > 0:
+                            target = '%s.%d' % (target, section_id)
+
+                        for id in section_node['ids']:
+                            if not id in target_refs:
+                                id = '%s#%s' % (doc, id)
+                            ConfluenceDocMap.registerTarget(id, target)
 
         ConfluenceDocMap.conflictCheck()
 
@@ -189,16 +215,18 @@ class ConfluenceBuilder(Builder):
             self.warn("error writing file %s: %s" % (outfilename, err))
 
         if self.publish:
-            title = ConfluenceDocMap.title(docname)
-            if not title:
-                self.warn("skipping document with no title: %s" % docname)
-                return
+            self.publish_doc(docname, self.writer.output)
 
-            uploaded_page_id = self.publisher.storePage(title,
-                    self.writer.output, self.parent_id)
-            if self.config.confluence_purge:
-                if uploaded_page_id in self.legacy_pages:
-                    self.legacy_pages.remove(uploaded_page_id)
+    def publish_doc(self, docname, output):
+        title = ConfluenceDocMap.title(docname)
+        if not title:
+            self.warn("skipping document with no title: %s" % docname)
+            return
+
+        uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+        if self.config.confluence_purge:
+            if uploaded_id in self.legacy_pages:
+                self.legacy_pages.remove(uploaded_id)
 
     def finish(self):
         if self.publish:

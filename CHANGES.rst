@@ -1,8 +1,25 @@
 
-0.6.0 (2017-04-23)
+0.7.0 (unreleased)
 ==================
 
-Community contributions from @jdknight
+* cap headers/sections to six levels for improved visualization
+* improve markup for:
+  * body element lists
+  * citations
+  * definitions
+  * footnotes
+  * inline literals
+  * literal block (code)
+  * rubric
+  * seealso
+  * table
+  * versionmodified
+* re-work generated document references/targets (reference to section names)
+* sanitize output to prevent Confluence errors for certain characters
+* support indentations markup
+
+0.6.0 (2017-04-23)
+==================
 
 * cleanup module's structure, versions and other minor files
 * drop 'confluence' pypi package (embedded xml-rpc support added)
@@ -11,10 +28,6 @@ Community contributions from @jdknight
 * re-support python 3.x series
 * support anonymous publishing
 * support rest api
-* Added support for admonitions
-* Added support for headers and footer templates
-* Added support for purging contents of a confluence doctree element whilst publishing
-
 
 0.5.0 (2017-03-31)
 ==================
