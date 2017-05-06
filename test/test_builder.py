@@ -25,7 +25,14 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.outdir = os.path.join(builddir, 'out')
         doctreedir = os.path.join(builddir, 'doctree')
 
-        self.app = Sphinx(srcdir, srcdir, self.outdir, doctreedir, 'confluence')
+        self.config = {}
+        self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
+        self.config['confluence_parent_page'] = 'Documentation'
+        self.config['confluence_publish'] = False
+        self.config['confluence_space_name'] = 'TEST'
+
+        self.app = Sphinx(
+            srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
         self.app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name):
