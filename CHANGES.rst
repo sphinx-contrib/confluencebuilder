@@ -3,6 +3,7 @@
 ==================
 
 * cap headers/sections to six levels for improved visualization
+* fixed rest publishing for python 3.x (< 3.6)
 * improve markup for:
   * body element lists
   * citations
