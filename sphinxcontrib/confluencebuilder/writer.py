@@ -19,6 +19,7 @@ from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
 import codecs
 import os
+import posixpath
 import sys
 import logging
 
@@ -824,7 +825,8 @@ class ConfluenceTranslator(TextTranslator):
 
         # Internal link.
         if 'refuri' in node:
-            docname = self.docparent + path.splitext(node['refuri'])[0]
+            docname = posixpath.normpath(
+                self.docparent + path.splitext(node['refuri'])[0])
             doctitle = ConfluenceDocMap.title(docname)
             if not doctitle:
                 self.builder.warn("unable to build link to document due to "
