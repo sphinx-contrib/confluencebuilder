@@ -18,13 +18,21 @@ import unittest
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        srcdir = os.path.join(os.getcwd(), 'testproj')
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        srcdir = os.path.join(basedir, 'testproj')
         self.expected = os.path.join(srcdir, 'expected')
         builddir = os.path.join(srcdir, 'build')
         self.outdir = os.path.join(builddir, 'out')
         doctreedir = os.path.join(builddir, 'doctree')
 
-        self.app = Sphinx(srcdir, srcdir, self.outdir, doctreedir, 'confluence')
+        self.config = {}
+        self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
+        self.config['confluence_parent_page'] = 'Documentation'
+        self.config['confluence_publish'] = False
+        self.config['confluence_space_name'] = 'TEST'
+
+        self.app = Sphinx(
+            srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
         self.app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name):
@@ -44,8 +52,12 @@ class TestConfluenceBuilder(unittest.TestCase):
                 self.assertTrue(diff_data == '', msg=diff_data)
 
     def test_registry(self):
-        self.assertTrue('sphinxcontrib.confluencebuilder' in
-                        self.app._extensions.keys())
+        if hasattr(self.app, 'extensions'):
+            self.assertTrue('sphinxcontrib.confluencebuilder' in
+                            self.app.extensions.keys())
+        else:
+            self.assertTrue('sphinxcontrib.confluencebuilder' in
+                            self.app._extensions.keys())
 
     def test_heading(self):
         test_path = os.path.join(self.outdir, 'heading.conf')
