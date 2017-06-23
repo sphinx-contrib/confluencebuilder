@@ -27,7 +27,7 @@ def main():
     return 0
 
 def setup(app):
-    ConfluenceLogger.initialize(app)
+    ConfluenceLogger.initialize()
 
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)

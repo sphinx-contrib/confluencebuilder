@@ -9,6 +9,7 @@
 
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.common import ConfluenceLogger
 import os
 import sys
 import unittest
@@ -70,7 +71,7 @@ class TestConfluencePublisher(unittest.TestCase):
         builder = ConfluenceBuilder(self.app)
         builder.init()
         for docname in self.docnames:
-            builder.info("\033[01mpublishing '%s'...\033[0m" % docname)
+            ConfluenceLogger.info("\033[01mpublishing '%s'...\033[0m" % docname)
             output_filename = os.path.join(self.out, docname + '.conf')
             with open(output_filename, 'r') as output_file:
                 output = output_file.read()

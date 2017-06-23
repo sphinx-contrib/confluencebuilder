@@ -21,7 +21,6 @@ import codecs
 import os
 import posixpath
 import sys
-import logging
 
 LANG_MAP = {
     'c': 'cpp',
@@ -95,16 +94,6 @@ class ConfluenceTranslator(TextTranslator):
         else:
             self.indent = STDINDENT
 
-    def log_unknown(self, type, node):
-        logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
-        if len(logger.handlers) == 0:
-            # Logging is not yet configured. Configure it.
-            logging.basicConfig(level=logging.INFO,
-                                stream=sys.stderr,
-                                format='%(levelname)-8s %(message)s')
-            logger = logging.getLogger("sphinxcontrib.confluencebuilder.writer")
-        logger.warning("%s(%s) unsupported formatting" % (type, node))
-
     def add_text(self, text):
         self.states[-1].append((-1, text))
 
@@ -158,7 +147,8 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.builder.warn("error reading file %s: %s" % (headerFile, err))
+                ConfluenceLogger.warn("error reading file "
+                    "%s: %s" % (headerFile, err))
 
         self.body += self.nl.join(line and (' '*indent + line)
                                  for indent, lines in self.states[0]
@@ -174,7 +164,8 @@ class ConfluenceTranslator(TextTranslator):
                 finally:
                     f.close()
             except (IOError, OSError) as err:
-                self.builder.warn("error reading file %s: %s" % (footerFile, err))
+                ConfluenceLogger.warn("error reading file "
+                    "%s: %s" % (footerFile, err))
 
     def visit_highlightlang(self, node):
         raise nodes.SkipNode
@@ -712,7 +703,7 @@ class ConfluenceTranslator(TextTranslator):
             self._vm_type = 'note'
         else:
             self._vm_type = 'info'
-            self.builder.warn('unsupported version modification type: '
+            ConfluenceLogger.warn('unsupported version modification type: '
                 '%s' % node['type'])
 
         self.add_text('{%s}' % self._vm_type)
@@ -840,7 +831,7 @@ class ConfluenceTranslator(TextTranslator):
                 self.docparent + path.splitext(node['refuri'])[0])
             doctitle = ConfluenceDocMap.title(docname)
             if not doctitle:
-                self.builder.warn("unable to build link to document due to "
+                ConfluenceLogger.warn("unable to build link to document due to "
                     "missing title (in %s): %s" % (self.docname, docname))
                 raise nodes.SkipNode
 
@@ -855,8 +846,9 @@ class ConfluenceTranslator(TextTranslator):
                 if target:
                     anchor = '#' + target
                 else:
-                    self.builder.warn("unable to build link to document due to "
-                        "missing target (in %s): %s" % (self.docname, anchor))
+                    ConfluenceLogger.warn("unable to build link to document "
+                        "due to missing target (in "
+                        "%s): %s" % (self.docname, anchor))
                     anchor = ''
             else:
                 anchor = ''
@@ -889,7 +881,6 @@ class ConfluenceTranslator(TextTranslator):
         pass
 
     def visit_download_reference(self, node):
-        self.log_unknown("download_reference", node)
         pass
 
     def depart_download_reference(self, node):

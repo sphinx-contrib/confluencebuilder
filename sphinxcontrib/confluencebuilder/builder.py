@@ -9,6 +9,7 @@
 
 from __future__ import (print_function, unicode_literals, absolute_import)
 from .common import ConfluenceDocMap
+from .common import ConfluenceLogger
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
@@ -212,7 +213,8 @@ class ConfluenceBuilder(Builder):
             finally:
                 f.close()
         except (IOError, OSError) as err:
-            self.warn("error writing file %s: %s" % (outfilename, err))
+            ConfluenceLogger.warn("error writing file "
+                "%s: %s" % (outfilename, err))
 
         if self.publish:
             self.publish_doc(docname, self.writer.output)
@@ -220,7 +222,8 @@ class ConfluenceBuilder(Builder):
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
         if not title:
-            self.warn("skipping document with no title: %s" % docname)
+            ConfluenceLogger.warn("skipping document with no title: "
+                "%s" % docname)
             return
 
         uploaded_id = self.publisher.storePage(title, output, self.parent_id)
@@ -231,9 +234,9 @@ class ConfluenceBuilder(Builder):
     def finish(self):
         if self.publish:
             if self.config.confluence_purge is True and self.legacy_pages:
-                self.info('removing legacy pages... ', nonl=0)
+                ConfluenceLogger.info('removing legacy pages... ', nonl=0)
                 for legacy_page_id in self.legacy_pages:
                    self.publisher.removePage(legacy_page_id)
-                self.info('done\n')
+                ConfluenceLogger.info('done\n')
 
             self.publisher.disconnect()
