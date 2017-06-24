@@ -208,8 +208,6 @@ confluence_master_homepage
 Whether or not to force the configured space's homepage to be set to the page
 defined by the Sphinx configuration's master_doc_. By default, is ``False``.
 
-Only supported when using XML-RPC API.
-
 confluence_proxy
 ~~~~~~~~~~~~~~~~
 
