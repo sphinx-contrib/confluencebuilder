@@ -14,6 +14,7 @@
      https://developer.atlassian.com/confdev/deprecated-apis/confluence-xml-rpc-and-soap-apis
 """
 
+from .common import ConfluenceLogger
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
@@ -365,6 +366,48 @@ class ConfluencePublisher():
                     raise ConfluencePermissionError(
                         """Publish user does not have permission to delete """
                         """from the configured space."""
+                    )
+                raise
+
+    def updateSpaceHome(self, page_id):
+        if not page_id:
+            return
+
+        if self.use_rest:
+            ConfluenceLogger.warn('updating homepage not yet supported while '
+                'using rest api')
+            '''
+            try:
+                self.rest_client.put('space', self.space_name, {
+                    'key': self.space_name,
+
+                    # TODO update space homepage via rest api
+                    #
+                    # Determine the proper way to update a Confluence space's
+                    # homepage. While the API documentation hints that the
+                    # homepage can be updated, there is no explicit example to
+                    # use. See also:
+                    #
+                    #  https://docs.atlassian.com/atlassian-confluence/REST/latest/#space-update
+                    #
+                    # 'homepage': ?
+                    })
+            except ConfluencePermissionError:
+                raise ConfluencePermissionError(
+                    """Publish user does not have permission to update """
+                    """space's homepage."""
+                )
+            '''
+        else:
+            space = self.xmlrpc.getSpace(self.token, self.space_name)
+            space['homePage'] = page_id
+            try:
+                self.xmlrpc.storeSpace(self.token, space)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('NotPermittedException') != -1:
+                    raise ConfluencePermissionError(
+                        """Publish user does not have permission to update """
+                        """space's homepage."""
                     )
                 raise
 

@@ -52,6 +52,7 @@ class ConfluenceBuilder(Builder):
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
+    master_doc_page_id = None
     publisher = ConfluencePublisher()
 
     def init(self):
@@ -98,6 +99,14 @@ class ConfluenceBuilder(Builder):
                     raise ConfluenceConfigurationError("""Confluence """
                         """username has not been set even though a password """
                         """has been set. Unable to publish.""")
+            if self.config.master_doc:
+                if not self.config.confluence_master_homepage:
+                    ConfluenceLogger.verbose("master_doc value ignored")
+            else:
+                if self.config.confluence_master_homepage:
+                    raise ConfluenceConfigurationError("""Confluence """
+                        """master homepage option is set, but no master is """
+                        """defined in documentation. Unable to publish.""")
 
             self.publish = True
             self.publisher.connect()
@@ -224,12 +233,21 @@ class ConfluenceBuilder(Builder):
             return
 
         uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+
+        if self.config.master_doc == docname:
+            self.master_doc_page_id = uploaded_id
+
         if self.config.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
     def finish(self):
         if self.publish:
+            if self.config.confluence_master_homepage is True:
+                ConfluenceLogger.info('updating space\'s homepage... ', nonl=0)
+                self.publisher.updateSpaceHome(self.master_doc_page_id)
+                ConfluenceLogger.info('done\n')
+
             if self.config.confluence_purge is True and self.legacy_pages:
                 ConfluenceLogger.info('removing legacy pages... ', nonl=0)
                 for legacy_page_id in self.legacy_pages:
