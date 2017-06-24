@@ -19,6 +19,12 @@ class ConfluenceExperimentalQuoteSupportParser(HTMLParser):
     data = ''
     para_attrs = None
 
+    def __init__(self):
+        try:
+            HTMLParser.__init__(self, convert_charrefs=True)
+        except TypeError:
+            HTMLParser.__init__(self)
+
     def get_data(self):
         return self.data
 
