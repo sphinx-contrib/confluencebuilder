@@ -10,6 +10,7 @@
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.common import ConfluenceLogger
+import io
 import os
 import sys
 import unittest
@@ -53,7 +54,7 @@ class TestConfluencePublisher(unittest.TestCase):
             key_filename = os.path.abspath(key_filename)
             key_filename = os.path.join(key_filename, DEFAULT_PUBLISH_KEY_FILE)
             if os.path.isfile(key_filename):
-                with open(key_filename, 'r') as key_file:
+                with io.open(key_filename, encoding='utf8') as key_file:
                     self.config['confluence_server_pass'] = \
                         key_file.read().replace('\n', '')
 
@@ -73,7 +74,7 @@ class TestConfluencePublisher(unittest.TestCase):
         for docname in self.docnames:
             ConfluenceLogger.info("\033[01mpublishing '%s'...\033[0m" % docname)
             output_filename = os.path.join(self.out, docname + '.conf')
-            with open(output_filename, 'r') as output_file:
+            with io.open(output_filename, encoding='utf8') as output_file:
                 output = output_file.read()
                 builder.publish_doc(docname, output)
         builder.finish()

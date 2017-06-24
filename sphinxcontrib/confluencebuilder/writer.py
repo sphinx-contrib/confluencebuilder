@@ -17,7 +17,7 @@ from sphinx import addnodes
 from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.writers.text import TextTranslator, MAXWIDTH, STDINDENT
-import codecs
+import io
 import os
 import posixpath
 import sys
@@ -141,11 +141,8 @@ class ConfluenceTranslator(TextTranslator):
             headerFile = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
-                f = codecs.open(headerFile, 'r', 'utf-8')
-                try:
-                    self.body += f.read() + self.nl
-                finally:
-                    f.close()
+                with io.open(headerFile, encoding='utf-8') as file:
+                    self.body += file.read() + self.nl
             except (IOError, OSError) as err:
                 ConfluenceLogger.warn("error reading file "
                     "%s: %s" % (headerFile, err))
@@ -158,11 +155,8 @@ class ConfluenceTranslator(TextTranslator):
             footerFile = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
-                f = codecs.open(footerFile, 'r', 'utf-8')
-                try:
-                    self.body += f.read() + self.nl
-                finally:
-                    f.close()
+                with io.open(footerFile, encoding='utf-8') as file:
+                    self.body += file.read() + self.nl
             except (IOError, OSError) as err:
                 ConfluenceLogger.warn("error reading file "
                     "%s: %s" % (footerFile, err))

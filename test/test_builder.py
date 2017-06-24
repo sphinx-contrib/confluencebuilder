@@ -11,6 +11,7 @@ from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import difflib
+import io
 import os
 import sys
 import unittest
@@ -42,8 +43,8 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.assertTrue(os.path.exists(expected_path))
         self.assertTrue(os.path.exists(test_path))
 
-        with open(expected_path, 'r') as expected_file:
-            with open(test_path, 'r') as test_file:
+        with io.open(expected_path, encoding='utf8') as expected_file:
+            with io.open(test_path, encoding='utf8') as test_file:
                 expected_data = expected_file.readlines()
                 test_data = test_file.readlines()
                 diff = difflib.unified_diff(
@@ -63,7 +64,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'heading.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
 
             self.assertEqual(lines[0], "h1. HEADING_TEST\n")
@@ -74,7 +75,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'list.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. list test\n')
             self.assertEqual(lines[1], '\n')
@@ -88,7 +89,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'text.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. this is a text test\n')
             self.assertEqual(lines[2], '_emphasis_\n')
@@ -101,7 +102,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'admonitions.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. Admonition Test\n')
             self.assertEqual(lines[2], '{note}attention-message{note}\n')
@@ -118,7 +119,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'code.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. Code Test\n')
             self.assertEqual(lines[2], '{code:linenumbers=false|language=python}\n')
@@ -133,7 +134,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'toctree.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(lines[0], 'h1. TOCTREE\n')
             self.assertEqual(lines[2], '* [Code Test]\n')
@@ -144,7 +145,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         test_path = os.path.join(self.outdir, 'tables.conf')
         self.assertTrue(os.path.exists(test_path))
 
-        with open(test_path, 'r') as test_file:
+        with io.open(test_path, encoding='utf8') as test_file:
             lines = test_file.readlines()
             self.assertEqual(len(lines), 6)
             self.assertEqual(lines[0], 'h1. Table Test\n')

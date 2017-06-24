@@ -19,7 +19,7 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from os import path
 from xmlrpc.client import Fault
-import codecs
+import io
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -207,11 +207,8 @@ class ConfluenceBuilder(Builder):
         outfilename = path.join(self.outdir, self.file_transform(docname))
         ensuredir(path.dirname(outfilename))
         try:
-            f = codecs.open(outfilename, 'w', 'utf-8')
-            try:
-                f.write(self.writer.output)
-            finally:
-                f.close()
+            with io.open(outfilename, 'w', encoding='utf-8') as file:
+                file.write(self.writer.output)
         except (IOError, OSError) as err:
             ConfluenceLogger.warn("error writing file "
                 "%s: %s" % (outfilename, err))
