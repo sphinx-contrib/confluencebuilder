@@ -39,6 +39,8 @@ except ImportError:
     import xmlrpclib
 
 class ConfluencePublisher():
+    space_display_name = None
+
     def init(self, config):
         self.config = config
         self.notify = not config.confluence_disable_notifications
@@ -67,6 +69,7 @@ class ConfluencePublisher():
                     })
                 if rsp['size'] == 0:
                     raise ConfluenceBadSpaceError(self.space_name)
+                self.space_display_name = rsp['results'][0]['name']
                 self.use_xmlrpc = False
             except ConfluenceBadApiError:
                 if not self.use_xmlrpc:
@@ -374,30 +377,18 @@ class ConfluencePublisher():
             return
 
         if self.use_rest:
-            ConfluenceLogger.warn('updating homepage not yet supported while '
-                'using rest api')
-            '''
+            page = self.rest_client.get('content/' + page_id, None)
             try:
                 self.rest_client.put('space', self.space_name, {
                     'key': self.space_name,
-
-                    # TODO update space homepage via rest api
-                    #
-                    # Determine the proper way to update a Confluence space's
-                    # homepage. While the API documentation hints that the
-                    # homepage can be updated, there is no explicit example to
-                    # use. See also:
-                    #
-                    #  https://docs.atlassian.com/atlassian-confluence/REST/latest/#space-update
-                    #
-                    # 'homepage': ?
-                    })
+                    'name': self.space_display_name,
+                    'homepage': page
+                })
             except ConfluencePermissionError:
                 raise ConfluencePermissionError(
                     """Publish user does not have permission to update """
                     """space's homepage."""
                 )
-            '''
         else:
             space = self.xmlrpc.getSpace(self.token, self.space_name)
             space['homePage'] = page_id
