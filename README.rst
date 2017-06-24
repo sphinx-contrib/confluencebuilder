@@ -202,6 +202,14 @@ confluence_disable_xmlrpc
 
 Explicitly disable any XML-RPC API calls. By default, is ``False``.
 
+confluence_master_homepage
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether or not to force the configured space's homepage to be set to the page
+defined by the Sphinx configuration's master_doc_. By default, is ``False``.
+
+Only supported when using XML-RPC API.
+
 confluence_proxy
 ~~~~~~~~~~~~~~~~
 
@@ -240,3 +248,4 @@ Supported Markup
 .. _Python: https://www.python.org/
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _Sphinx: http://sphinx-doc.org/
+.. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
