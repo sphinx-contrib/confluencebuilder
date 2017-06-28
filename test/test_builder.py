@@ -10,10 +10,19 @@
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.common import ConfluenceDocMap
 import difflib
 import os
 import sys
 import unittest
+
+def create_default_test_config():
+    config = {}
+    config['extensions'] = ['sphinxcontrib.confluencebuilder']
+    config['confluence_parent_page'] = 'Documentation'
+    config['confluence_publish'] = False
+    config['confluence_space_name'] = 'TEST'
+    return config
 
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
@@ -25,11 +34,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.outdir = os.path.join(builddir, 'out')
         doctreedir = os.path.join(builddir, 'doctree')
 
-        self.config = {}
-        self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
-        self.config['confluence_parent_page'] = 'Documentation'
-        self.config['confluence_publish'] = False
-        self.config['confluence_space_name'] = 'TEST'
+        self.config = create_default_test_config()
 
         self.app = Sphinx(
             srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
@@ -152,11 +157,38 @@ class TestConfluenceBuilder(unittest.TestCase):
             self.assertEqual(lines[3], '|False|False|False|\n')
             self.assertEqual(lines[4], '|True|False|True|\n')
 
+    def test_no_parent(self):
+        self.assertEqual(ConfluenceDocMap.parent("toctree"), None)
+        self.assertEqual(ConfluenceDocMap.parent("code"), None)
+
     def test_publish(self):
         builder = ConfluenceBuilder(self.app)
         builder.config.confluence_publish = True
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init()
+
+class TestConfluenceBuilderExperimental(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        srcdir = os.path.join(basedir, 'testproj')
+        self.expected = os.path.join(srcdir, 'expected')
+        builddir = os.path.join(srcdir, 'build')
+        self.outdir = os.path.join(builddir, 'out')
+        doctreedir = os.path.join(builddir, 'doctree')
+
+        self.config = create_default_test_config()
+        self.config['master_doc'] = "toctree"
+        self.config['confluence_experimental_page_hierarchy'] = True
+
+        self.app = Sphinx(
+            srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
+        self.app.build(force_all=True)
+
+    def test_parent(self):
+        self.assertEqual(ConfluenceDocMap.parent("toctree"), None)
+        self.assertEqual(ConfluenceDocMap.parent("code"), "toctree")
+
 
 if __name__ == '__main__':
     sys.exit(unittest.main())
