@@ -113,10 +113,6 @@ class ConfluenceBuilder(Builder):
         else:
             self.space_name = None
 
-        if self.config.master_doc and self.config.confluence_experimental_page_hierarchy:
-            self.register_parents(self.config.master_doc)
-
-
     def get_outdated_docs(self):
         """
         Return an iterable of input files that are outdated.
@@ -164,6 +160,10 @@ class ConfluenceBuilder(Builder):
                 self.register_parents(includefile)
 
     def prepare_writing(self, docnames):
+        if self.config.master_doc:
+            if self.config.confluence_experimental_page_hierarchy:
+                self.register_parents(self.config.master_doc)
+
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
 
