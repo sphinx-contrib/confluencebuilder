@@ -14,8 +14,11 @@ from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
+from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from sphinx.util.nodes import inline_all_toctrees
+from sphinx.util.console import darkgreen
 from os import path
 from xmlrpc.client import Fault
 import codecs
@@ -151,7 +154,19 @@ class ConfluenceBuilder(Builder):
         return relative_uri(self.get_target_uri(from_),
                             self.get_target_uri(to, typ))
 
+    def register_depths(self, docname, depth=0):
+        ConfluenceDocMap.registerDepth(docname, depth)
+        doctree = self.env.get_doctree(docname)
+        for toctreenode in doctree.traverse(addnodes.toctree):
+            for includefile in toctreenode['includefiles']:
+                self.register_depths(includefile, depth+1)
+
+
     def prepare_writing(self, docnames):
+        if self.config.master_doc:
+            if isinstance(self.config.confluence_experimental_max_depth , (int, long, float, complex)):
+                self.register_depths(self.config.master_doc)
+
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
 
@@ -202,7 +217,15 @@ class ConfluenceBuilder(Builder):
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
 
-        self.writer.write(doctree, destination)
+        tree = self.env.get_doctree(docname)
+        depth = ConfluenceDocMap.depth(docname)
+        if depth and depth is self.config.confluence_experimental_max_depth:
+            print("rendering document inline due to confluence_experimental_max_depth: {} subdocs:".format(docname))
+            tree = inline_all_toctrees(self, set(), docname, tree, darkgreen, [docname])
+        if depth and depth > self.config.confluence_experimental_max_depth:
+            return
+
+        self.writer.write(tree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
         ensuredir(path.dirname(outfilename))
         try:

@@ -13,6 +13,7 @@ CONFLUENCE_MAX_TITLE_LEN = 255
 class ConfluenceDocMap:
     doc2title = {}
     refid2target = {}
+    doc2depth = {}
 
     @staticmethod
     def registerTarget(refid, target):
@@ -34,12 +35,21 @@ class ConfluenceDocMap:
         return title
 
     @staticmethod
+    def registerDepth(docname, depth):
+        ConfluenceDocMap.doc2depth[docname] = depth
+        return depth
+
+    @staticmethod
     def target(refid):
         return ConfluenceDocMap.refid2target.get(refid)
 
     @staticmethod
     def title(docname):
         return ConfluenceDocMap.doc2title.get(docname)
+
+    @staticmethod
+    def depth(docname):
+        return ConfluenceDocMap.doc2depth.get(docname)
 
     @staticmethod
     def conflictCheck():
