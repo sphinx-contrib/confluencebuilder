@@ -14,6 +14,7 @@ from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
+from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from os import path
@@ -151,7 +152,18 @@ class ConfluenceBuilder(Builder):
         return relative_uri(self.get_target_uri(from_),
                             self.get_target_uri(to, typ))
 
+    def register_parents(self, filename):
+        tree = self.env.get_doctree(filename)
+        for toctreenode in tree.traverse(addnodes.toctree):
+            for includefile in toctreenode['includefiles']:
+                ConfluenceDocMap.registerParent(includefile, filename)
+                self.register_parents(includefile)
+
     def prepare_writing(self, docnames):
+        if self.config.master_doc:
+            if self.config.confluence_experimental_page_hierarchy:
+                self.register_parents(self.config.master_doc)
+
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
 
@@ -223,7 +235,14 @@ class ConfluenceBuilder(Builder):
             self.warn("skipping document with no title: %s" % docname)
             return
 
-        uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+        parent = ConfluenceDocMap.parent(docname)
+        parent_id = ConfluenceDocMap.id(parent)
+        if not parent_id:
+            parent_id = self.parent_id
+
+        uploaded_id = self.publisher.storePage(title, output, parent_id)
+        ConfluenceDocMap.registerID(docname, uploaded_id)
+
         if self.config.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
