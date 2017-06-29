@@ -207,6 +207,12 @@ confluence_timeout
 
 Force a timeout (in seconds) value for network interaction.
 
+confluence_experimental_page_hierarchy
+~~~~~~~~~~~~~~~~~~
+
+Set this to True to convert any .rst pages in a toctree into children of the published confluence page.
+*Note: you must also set `master_doc` for this to work*
+
 Supported Markup
 ================
 

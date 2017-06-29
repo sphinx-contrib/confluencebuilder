@@ -12,6 +12,8 @@ CONFLUENCE_MAX_TITLE_LEN = 255
 
 class ConfluenceDocMap:
     doc2title = {}
+    doc2id = {}
+    doc2parent = {}
     refid2target = {}
 
     @staticmethod
@@ -34,8 +36,27 @@ class ConfluenceDocMap:
         return title
 
     @staticmethod
+    def registerParent(docname, parent_docname):
+        ConfluenceDocMap.doc2parent[docname] = parent_docname
+        ConfluenceLogger.verbose("setting parent of %s to: %s" % (docname, parent_docname))
+        return docname
+
+    @staticmethod
+    def registerID(docname, conf_id):
+        ConfluenceDocMap.doc2id[docname] = conf_id
+        return docname
+
+    @staticmethod
     def target(refid):
         return ConfluenceDocMap.refid2target.get(refid)
+
+    @staticmethod
+    def parent(docname):
+        return ConfluenceDocMap.doc2parent.get(docname)
+
+    @staticmethod
+    def id(docname):
+        return ConfluenceDocMap.doc2id.get(docname)
 
     @staticmethod
     def title(docname):
