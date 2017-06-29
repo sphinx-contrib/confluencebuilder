@@ -167,15 +167,15 @@ class TestConfluenceBuilder(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init()
 
-class TestConfluenceBuilderExperimental(unittest.TestCase):
+class TestConfluenceBuilderExperimentalParent(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         basedir = os.path.dirname(os.path.realpath(__file__))
         srcdir = os.path.join(basedir, 'testproj')
         self.expected = os.path.join(srcdir, 'expected')
         builddir = os.path.join(srcdir, 'build')
-        self.outdir = os.path.join(builddir, 'out')
-        doctreedir = os.path.join(builddir, 'doctree')
+        self.outdir = os.path.join(builddir, 'experimental-parent-out')
+        doctreedir = os.path.join(builddir, 'experimental-parent-doctree')
 
         self.config = create_default_test_config()
         self.config['master_doc'] = "toctree"
@@ -188,6 +188,28 @@ class TestConfluenceBuilderExperimental(unittest.TestCase):
     def test_parent(self):
         self.assertEqual(ConfluenceDocMap.parent("toctree"), None)
         self.assertEqual(ConfluenceDocMap.parent("code"), "toctree")
+
+class TestConfluenceBuilderExperimentalDepth(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        srcdir = os.path.join(basedir, 'testproj')
+        self.expected = os.path.join(srcdir, 'expected')
+        builddir = os.path.join(srcdir, 'build')
+        self.outdir = os.path.join(builddir, 'experimental-depth-out')
+        doctreedir = os.path.join(builddir, 'experimental-depth-doctree')
+
+        self.config = create_default_test_config()
+        self.config['master_doc'] = "toctree"
+        self.config['confluence_experimental_max_depth'] = 0
+
+        self.app = Sphinx(
+            srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
+        self.app.build(force_all=True)
+
+    def test_parent(self):
+        self.assertEqual(ConfluenceDocMap.depth("toctree"), 0)
+        self.assertEqual(ConfluenceDocMap.depth("code"), 1)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,7 @@ class ConfluenceDocMap:
     doc2id = {}
     doc2parent = {}
     refid2target = {}
+    doc2depth = {}
 
     @staticmethod
     def registerTarget(refid, target):
@@ -34,6 +35,11 @@ class ConfluenceDocMap:
         ConfluenceDocMap.doc2title[docname] = title
         ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
         return title
+
+    @staticmethod
+    def registerDepth(docname, depth):
+        ConfluenceDocMap.doc2depth[docname] = depth
+        return depth
 
     @staticmethod
     def registerParent(docname, parent_docname):
@@ -61,6 +67,10 @@ class ConfluenceDocMap:
     @staticmethod
     def title(docname):
         return ConfluenceDocMap.doc2title.get(docname)
+
+    @staticmethod
+    def depth(docname):
+        return ConfluenceDocMap.doc2depth.get(docname)
 
     @staticmethod
     def conflictCheck():
