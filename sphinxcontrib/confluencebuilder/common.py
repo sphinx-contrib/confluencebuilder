@@ -12,7 +12,10 @@ CONFLUENCE_MAX_TITLE_LEN = 255
 
 class ConfluenceDocMap:
     doc2title = {}
+    doc2id = {}
+    doc2parent = {}
     refid2target = {}
+    doc2depth = {}
 
     @staticmethod
     def registerTarget(refid, target):
@@ -34,12 +37,40 @@ class ConfluenceDocMap:
         return title
 
     @staticmethod
+    def registerDepth(docname, depth):
+        ConfluenceDocMap.doc2depth[docname] = depth
+        return depth
+
+    @staticmethod
+    def registerParent(docname, parent_docname):
+        ConfluenceDocMap.doc2parent[docname] = parent_docname
+        ConfluenceLogger.verbose("setting parent of %s to: %s" % (docname, parent_docname))
+        return docname
+
+    @staticmethod
+    def registerID(docname, conf_id):
+        ConfluenceDocMap.doc2id[docname] = conf_id
+        return docname
+
+    @staticmethod
     def target(refid):
         return ConfluenceDocMap.refid2target.get(refid)
 
     @staticmethod
+    def parent(docname):
+        return ConfluenceDocMap.doc2parent.get(docname)
+
+    @staticmethod
+    def id(docname):
+        return ConfluenceDocMap.doc2id.get(docname)
+
+    @staticmethod
     def title(docname):
         return ConfluenceDocMap.doc2title.get(docname)
+
+    @staticmethod
+    def depth(docname):
+        return ConfluenceDocMap.doc2depth.get(docname)
 
     @staticmethod
     def conflictCheck():

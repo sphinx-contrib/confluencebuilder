@@ -76,7 +76,8 @@ class Rest:
             err += "REQ: POST\n"
             err += "RSP: " + str(rsp.status_code) + "\n"
             err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
+            err += "API: " + key + "\n"
+            err += "BODY: " + str(rsp.text)
             raise ConfluenceBadApiError(err)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError

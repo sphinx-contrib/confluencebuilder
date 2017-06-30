@@ -84,5 +84,9 @@ def setup(app):
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
 
     """(experimental)"""
+    """Max sub-page depth before inlining all toctree dependancies."""
+    app.add_config_value('confluence_experimental_max_depth', None, True)
     """Support experimental indentation support."""
     app.add_config_value('confluence_experimental_indentation', True, True)
+    """Support experimental page hierarchy upload from toctree data."""
+    app.add_config_value('confluence_experimental_page_hierarchy', False, True)
