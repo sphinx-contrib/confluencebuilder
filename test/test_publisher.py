@@ -19,9 +19,10 @@ DEFAULT_TEST_SPACE = 'confluencebuilder'
 DEFAULT_TEST_PARENT = 'test-holder'
 DEFAULT_PUBLISH_KEY_FILE = '.test_publish_key'
 
+
 class TestConfluencePublisher(unittest.TestCase):
     @classmethod
-    def _conf(self, key, env, default = None):
+    def _conf(self, key, env, default=None):
         self.config[key] = os.getenv(env, default)
 
     @classmethod
