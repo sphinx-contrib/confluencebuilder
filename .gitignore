@@ -1,7 +1,7 @@
 # byte-compiled, optimized, etc.
 __pycache__/
 *.py[cod]
-
+.DS_Store
 # building, packaging, etc.
 *.egg-info/
 build/
