@@ -202,6 +202,11 @@ confluence_proxy
 Provide your network's proxy to access the Confluence server (only applies to
 XML-RPC API calls).
 
+confluence_disable_ssl_validation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Disable SSL validation checking
+
 confluence_timeout
 ~~~~~~~~~~~~~~~~~~
 
