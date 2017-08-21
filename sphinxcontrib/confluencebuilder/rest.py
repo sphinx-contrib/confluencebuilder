@@ -7,31 +7,33 @@
     :license: BSD, see LICENSE.txt for details.
 """
 
+import json
+import requests
+
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
-import json
-import requests
+
 
 class Rest:
     BIND_PATH = "/rest/api/"
 
     def __init__(self, config):
         self.url = config.confluence_server_url
-        self.timeout = config.confluence_timeout
-        self.auth = None
+        self.session = requests.Session()
+        self.session.timeout = config.confluence_timeout
         if config.confluence_server_user:
-            self.auth = (config.confluence_server_user,
+            self.session.auth = (
+                config.confluence_server_user,
                 config.confluence_server_pass)
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
         try:
-            rsp = requests.get(restUrl, auth=self.auth, params=params,
-                timeout=self.timeout)
+            rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -61,8 +63,7 @@ class Rest:
     def post(self, key, data):
         restUrl = self.url + self.BIND_PATH + key
         try:
-            rsp = requests.post(restUrl, auth=self.auth, json=data,
-                timeout=self.timeout)
+            rsp = self.session.post(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -92,8 +93,7 @@ class Rest:
     def put(self, key, value, data):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.put(restUrl, auth=self.auth, json=data,
-                timeout=self.timeout)
+            rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -123,7 +123,7 @@ class Rest:
     def delete(self, key, value):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.delete(restUrl, auth=self.auth, timeout=self.timeout)
+            rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
