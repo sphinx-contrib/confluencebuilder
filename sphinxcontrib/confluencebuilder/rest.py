@@ -53,6 +53,7 @@ class Rest:
             err += "RSP: " + str(rsp.status_code) + "\n"
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
+            err += "MSG: " + rsp.json()['message']
             raise ConfluenceBadApiError(err)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -83,6 +84,7 @@ class Rest:
             err += "RSP: " + str(rsp.status_code) + "\n"
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
+            err += "MSG: " + rsp.json()['message']
             raise ConfluenceBadApiError(err)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -113,6 +115,7 @@ class Rest:
             err += "RSP: " + str(rsp.status_code) + "\n"
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
+            err += "MSG: " + rsp.json()['message']
             raise ConfluenceBadApiError(err)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -143,4 +146,5 @@ class Rest:
             err += "RSP: " + str(rsp.status_code) + "\n"
             err += "URL: " + self.url + self.BIND_PATH + "\n"
             err += "API: " + key
+            err += "MSG: " + rsp.json()['message']
             raise ConfluenceBadApiError(err)
