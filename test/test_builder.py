@@ -158,5 +158,15 @@ class TestConfluenceBuilder(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init()
 
+    def test_bad_values(self):
+        test_path = os.path.join(self.outdir, 'badvalues.conf')
+        self.assertTrue(os.path.exists(test_path))
+
+        with open(test_path, 'r') as test_file:
+            lines = test_file.readlines()
+            self.assertEqual(len(lines), 3)
+            self.assertEqual(lines[0], 'This is a page with &lcub;bad&rcub; things\n')
+            self.assertEqual(lines[2], '* Like a bad value in a &lt;list&gt;\n')
+
 if __name__ == '__main__':
     sys.exit(unittest.main())

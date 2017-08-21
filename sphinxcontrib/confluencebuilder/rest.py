@@ -7,31 +7,38 @@
     :license: BSD, see LICENSE.txt for details.
 """
 
+import json
+import requests
+
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
-import json
-import requests
+
 
 class Rest:
     BIND_PATH = "/rest/api/"
 
     def __init__(self, config):
         self.url = config.confluence_server_url
-        self.timeout = config.confluence_timeout
-        self.auth = None
+        self.session = requests.Session()
+        self.session.timeout = config.confluence_timeout
+        self.session.proxies = {
+            'http': config.confluence_proxy,
+            'https': config.confluence_proxy
+        }
+        self.session.verify = not config.confluence_disable_ssl_validation
         if config.confluence_server_user:
-            self.auth = (config.confluence_server_user,
+            self.session.auth = (
+                config.confluence_server_user,
                 config.confluence_server_pass)
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
         try:
-            rsp = requests.get(restUrl, auth=self.auth, params=params,
-                timeout=self.timeout)
+            rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -41,12 +48,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST GET")
         if not rsp.ok:
-            err = ""
-            err += "REQ: GET\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -61,8 +63,7 @@ class Rest:
     def post(self, key, data):
         restUrl = self.url + self.BIND_PATH + key
         try:
-            rsp = requests.post(restUrl, auth=self.auth, json=data,
-                timeout=self.timeout)
+            rsp = self.session.post(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -72,12 +73,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST POST")
         if not rsp.ok:
-            err = ""
-            err += "REQ: POST\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -92,8 +88,7 @@ class Rest:
     def put(self, key, value, data):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.put(restUrl, auth=self.auth, json=data,
-                timeout=self.timeout)
+            rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -103,12 +98,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST PUT")
         if not rsp.ok:
-            err = ""
-            err += "REQ: PUT\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -123,7 +113,7 @@ class Rest:
     def delete(self, key, value):
         restUrl = self.url + self.BIND_PATH + key + "/" + value
         try:
-            rsp = requests.delete(restUrl, auth=self.auth, timeout=self.timeout)
+            rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.ConnectionError as ex:
@@ -133,9 +123,13 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST DELETE")
         if not rsp.ok:
-            err = ""
-            err += "REQ: DELETE\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
+
+    def _format_error(self, rsp, key):
+        err = ""
+        err += "REQ: {0}\n".format(rsp.request.method)
+        err += "RSP: " + str(rsp.status_code) + "\n"
+        err += "URL: " + self.url + self.BIND_PATH + "\n"
+        err += "API: " + key + "\n"
+        err += "MSG: " + rsp.json()['message']
+        return err

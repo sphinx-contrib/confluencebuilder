@@ -28,9 +28,19 @@ LANG_MAP = {
     'py': 'python'
 }
 
+# Confluence encoding for special chars
+SPECIAL_VALUE_REPLACEMENTS = {
+    ('{', '&lcub;'),
+    ('}', '&rcub;'),
+    ('<', '&lt;'),
+    ('>', '&gt;')
+}
+
+
 class ConflueceListType(object):
     BULLET = 1
     ENUMERATED = 2
+
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
@@ -47,6 +57,7 @@ class ConfluenceWriter(writers.Writer):
         visitor = ConfluenceTranslator(self.document, self.builder)
         self.document.walkabout(visitor)
         self.output = visitor.body
+
 
 class ConfluenceTranslator(TextTranslator):
     docparent = ''
@@ -851,6 +862,8 @@ class ConfluenceTranslator(TextTranslator):
                 anchor = ''
 
             label = node.astext()
+            for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
+                label = label.replace(find, encoded)
             if label == doctitle and not anchor:
                 self.add_text('[%s]' % label)
             else:
@@ -954,12 +967,13 @@ class ConfluenceTranslator(TextTranslator):
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
-
         remove_chars = [
             '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
             ]
         for char in remove_chars:
             s = s.replace(char, '')
+        for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
+            s = s.replace(find, encoded)
         self.add_text(s)
 
     def depart_Text(self, node):
