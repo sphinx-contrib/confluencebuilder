@@ -25,6 +25,10 @@ class Rest:
         self.url = config.confluence_server_url
         self.session = requests.Session()
         self.session.timeout = config.confluence_timeout
+        self.session.proxies = {
+            'http': config.proxy,
+            'https': config.proxy
+        }
         if config.confluence_server_user:
             self.session.auth = (
                 config.confluence_server_user,
