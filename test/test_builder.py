@@ -165,7 +165,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         with open(test_path, 'r') as test_file:
             lines = test_file.readlines()
             self.assertEqual(len(lines), 3)
-            self.assertEqual(lines[0], 'This is a page with &#123!bad&#124! things\n')
+            self.assertEqual(lines[0], 'This is a page with &lcub;bad&rcub; things\n')
             self.assertEqual(lines[2], '* Like a bad value in a &lt;list&gt;\n')
 
 if __name__ == '__main__':

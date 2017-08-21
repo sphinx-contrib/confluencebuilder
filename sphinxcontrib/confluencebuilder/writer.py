@@ -862,6 +862,8 @@ class ConfluenceTranslator(TextTranslator):
                 anchor = ''
 
             label = node.astext()
+            for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
+                label = label.replace(find, encoded)
             if label == doctitle and not anchor:
                 self.add_text('[%s]' % label)
             else:
