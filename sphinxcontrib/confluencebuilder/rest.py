@@ -29,6 +29,7 @@ class Rest:
             'http': config.confluence_proxy,
             'https': config.confluence_proxy
         }
+        self.session.verify = not config.confluence_disable_ssl_validation
         if config.confluence_server_user:
             self.session.auth = (
                 config.confluence_server_user,

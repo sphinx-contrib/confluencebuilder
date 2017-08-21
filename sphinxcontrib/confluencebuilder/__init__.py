@@ -68,6 +68,8 @@ def setup(app):
     app.add_config_value('confluence_space_name', None, False)
     """Proxy server needed to communicate with Confluence server."""
     app.add_config_value('confluence_proxy', None, False)
+    """Disable SSL validation with Confluence server."""
+    app.add_config_value('confluence_disable_ssl_validation', None, False)
     """Enablement of publishing."""
     app.add_config_value('confluence_publish', None, False)
     """Prefix to apply to published pages."""
