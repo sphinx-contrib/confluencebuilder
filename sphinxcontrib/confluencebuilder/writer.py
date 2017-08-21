@@ -30,8 +30,8 @@ LANG_MAP = {
 
 # Confluence encoding for special chars
 SPECIAL_VALUE_REPLACEMENTS = {
-    ('{', '&#123!'),
-    ('}', '&#124!'),
+    ('{', '&#123;'),
+    ('}', '&#124;'),
     ('<', '&lt;'),
     ('>', '&gt;')
 }

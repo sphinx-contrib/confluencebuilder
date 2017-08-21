@@ -48,13 +48,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST GET")
         if not rsp.ok:
-            err = ""
-            err += "REQ: GET\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            err += "MSG: " + rsp.json()['message']
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -79,13 +73,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST POST")
         if not rsp.ok:
-            err = ""
-            err += "REQ: POST\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            err += "MSG: " + rsp.json()['message']
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -110,13 +98,7 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST PUT")
         if not rsp.ok:
-            err = ""
-            err += "REQ: PUT\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            err += "MSG: " + rsp.json()['message']
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -141,10 +123,13 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST DELETE")
         if not rsp.ok:
-            err = ""
-            err += "REQ: DELETE\n"
-            err += "RSP: " + str(rsp.status_code) + "\n"
-            err += "URL: " + self.url + self.BIND_PATH + "\n"
-            err += "API: " + key
-            err += "MSG: " + rsp.json()['message']
-            raise ConfluenceBadApiError(err)
+            raise ConfluenceBadApiError(self._format_error(rsp, key))
+
+    def _format_error(self, rsp, key):
+        err = ""
+        err += "REQ: {0}\n".format(rsp.request.method)
+        err += "RSP: " + str(rsp.status_code) + "\n"
+        err += "URL: " + self.url + self.BIND_PATH + "\n"
+        err += "API: " + key + "\n"
+        err += "MSG: " + rsp.json()['message']
+        return err
