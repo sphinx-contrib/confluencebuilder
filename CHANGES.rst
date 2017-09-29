@@ -18,6 +18,7 @@
 * re-work generated document references/targets (reference to section names)
 * sanitize output to prevent Confluence errors for certain characters
 * support indentations markup
+* support silent page updates
 
 0.6.0 (2017-04-23)
 ==================
