@@ -2,3 +2,9 @@ HTMLParser
 future
 requests
 sphinx
+
+#
+# force most recent version of pip for environment
+#  see: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues/45
+#
+-e git+https://github.com/pypa/pip@master#egg=pip
