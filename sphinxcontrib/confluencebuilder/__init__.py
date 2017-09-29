@@ -52,6 +52,8 @@ def setup(app):
     app.add_config_value('confluence_disable_rest', None, False)
     """Explictly prevent any Confluence XML-RPC API callers."""
     app.add_config_value('confluence_disable_xmlrpc', None, False)
+    """Explictly prevent page notifications on update."""
+    app.add_config_value('confluence_disable_notifications', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
     """Root/parent page's identifier to publish documents into."""
