@@ -186,6 +186,12 @@ identifier of the parent page, both the parent page's name and identifier must
 match before this extension will publish any content to a Confluence server.
 This serves as a sanity-check configuration for the cautious.
 
+confluence_disable_notifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Explicitly disable any page update notifications (i.e. treats page updates from
+a publish request as minor updates). By default, is ``False``.
+
 confluence_disable_rest
 ~~~~~~~~~~~~~~~~~~~~~~~
 
