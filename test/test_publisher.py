@@ -10,6 +10,7 @@
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.common import ConfluenceLogger
+from subprocess import check_output
 import io
 import os
 import sys
@@ -101,6 +102,23 @@ class TestConfluencePublisher(unittest.TestCase):
 
             if not self.config['confluence_server_pass']:
                 assert False, "No password provided to publish to instance."
+
+        try:
+            source_revision = check_output(['git', 'rev-parse', 'HEAD'])
+            source_revision = source_revision.decode('utf-8').splitlines()[0]
+        except:
+            source_revision = 'unknown'
+
+        gencontents_file = os.path.join(val_dir, 'contents.rst')
+        try:
+            with io.open(gencontents_file, 'w', encoding='utf-8') as file:
+                print('revision', file=file)
+                print('========', file=file)
+                print('', file=file)
+                print("Revision: %s" % source_revision, file=file)
+        except (IOError, OSError) as err:
+            ConfluenceLogger.err("error generating file "
+                "%s: %s" % (gencontents_file, err))
 
         self.app = Sphinx(
             val_dir, None, self.out, doctree_dir, 'confluence', self.config)
