@@ -973,6 +973,3 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if 'text' in node.get('format', '').split():
             self.body = self.body + node.astext()
         raise nodes.SkipNode
-
-    def unknown_visit(self, node):
-        raise NotImplementedError('Unknown node: ' + node.__class__.__name__)

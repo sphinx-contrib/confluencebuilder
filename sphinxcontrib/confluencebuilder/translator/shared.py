@@ -31,3 +31,6 @@ class ConflueceListType(object):
 class ConfluenceTranslator(TextTranslator):
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
+
+    def unknown_visit(self, node):
+        raise NotImplementedError('unknown node: ' + node.__class__.__name__)
