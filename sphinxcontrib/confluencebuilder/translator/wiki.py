@@ -450,11 +450,13 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_table(self, node):
         if self.table:
             raise NotImplementedError('Nested tables are not supported.')
+        self.new_state(0)
         self.table = True
 
     def depart_table(self, node):
         self.table = False
         self.add_text(self.nl)
+        self.end_state(end=None)
 
     def visit_acks(self, node):
         self.new_state(0)
