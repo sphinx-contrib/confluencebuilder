@@ -208,6 +208,17 @@ class ConfluenceBuilder(Builder):
     def write_doc(self, docname, doctree):
         self.current_docname = docname
 
+        # remove title from page contents
+        if self.config.confluence_remove_title:
+            idx = doctree.first_child_matching_class(nodes.section)
+            if not idx == None and not idx == -1:
+                first_section = doctree[idx]
+                idx = first_section.first_child_matching_class(nodes.title)
+                if not idx == None and not idx == -1:
+                    doctitle = first_section[idx].astext()
+                    if doctitle:
+                        first_section.remove(first_section[idx])
+
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')

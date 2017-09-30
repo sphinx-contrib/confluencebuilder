@@ -46,6 +46,8 @@ def setup(app):
     app.add_config_value('confluence_link_suffix', None, False)
     """Translation of docname to a (partial) URI."""
     app.add_config_value('confluence_link_transform', None, False)
+    """Remove a detected title from generated documents."""
+    app.add_config_value('confluence_remove_title', True, False)
 
     """(publishing)"""
     """Explictly prevent any Confluence REST API callers."""
