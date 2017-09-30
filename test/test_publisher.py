@@ -47,6 +47,9 @@ class TestConfluencePublisher(unittest.TestCase):
         self._conf('confluence_server_user',    'CB_USR', DEFAULT_TEST_USER)
         self._conf('confluence_space_name',     'CB_SPC', DEFAULT_TEST_SPACE)
 
+        if self.config['confluence_publish_prefix']:
+            self.config['confluence_remove_title'] = False
+
         if not self.config['confluence_server_pass']:
             key_filename = os.path.realpath(__file__)
             key_filename = os.path.dirname(key_filename)

@@ -30,6 +30,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
         self.config['confluence_parent_page'] = 'Documentation'
         self.config['confluence_publish'] = False
+        self.config['confluence_remove_title'] = False
         self.config['confluence_space_name'] = 'TEST'
 
         self.app = Sphinx(
