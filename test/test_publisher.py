@@ -21,8 +21,9 @@ DEFAULT_TEST_SPACE = 'confluencebuilder'
 DEFAULT_TEST_PARENT = 'test-holder'
 DEFAULT_PUBLISH_KEY_FILE = '.test_publish_key'
 
-
 class TestConfluencePublisher(unittest.TestCase):
+    is_automated = True
+
     @classmethod
     def _conf(self, key, env, default=None):
         self.config[key] = os.getenv(env, default)
@@ -46,6 +47,43 @@ class TestConfluencePublisher(unittest.TestCase):
         self._conf('confluence_server_url',     'CB_URL', DEFAULT_TEST_URL)
         self._conf('confluence_server_user',    'CB_USR', DEFAULT_TEST_USER)
         self._conf('confluence_space_name',     'CB_SPC', DEFAULT_TEST_SPACE)
+
+        if not self.is_automated:
+            parent = self.config['confluence_parent_page']
+            prefix = self.config['confluence_publish_prefix']
+
+            parentValue = ""
+            if parent:
+                parentValue = " [%s]" % parent
+
+            prefixValue = ""
+            if prefix:
+                prefixValue = " [%s]" % prefix
+
+            print('')
+            parent = input('Parent page to publish to' + parentValue + ': ')
+            prefix = input('Page prefix value' + prefixValue + ': ')
+            print('')
+
+            if not parent:
+                parent = self.config['confluence_parent_page']
+            if not prefix:
+                prefix = self.config['confluence_publish_prefix']
+
+            print('Publish target]')
+            print('            url:', self.config['confluence_server_url'])
+            print('          space:', self.config['confluence_space_name'])
+            print('    parent page:', parent)
+            print('    page prefix:', prefix)
+            print('')
+
+            choice = input('Start publishing? [y/N] ').lower()
+            if not choice == "y" and not choice == "yes":
+                print('User has decided not to publish; exiting...')
+                sys.exit(0)
+
+            self.config['confluence_parent_page'] = parent
+            self.config['confluence_publish_prefix'] = prefix
 
         if self.config['confluence_publish_prefix']:
             self.config['confluence_remove_title'] = False
@@ -83,4 +121,7 @@ class TestConfluencePublisher(unittest.TestCase):
         builder.finish()
 
 if __name__ == '__main__':
+    if '--input' in sys.argv:
+        TestConfluencePublisher.is_automated = False
+        sys.argv.remove('--input')
     sys.exit(unittest.main())
