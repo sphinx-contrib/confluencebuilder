@@ -965,10 +965,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_comment(self, node):
         raise nodes.SkipNode
 
-    def visit_meta(self, node):
-        # only valid for HTML
-        raise nodes.SkipNode
-
     def visit_raw(self, node):
         if 'text' in node.get('format', '').split():
             self.body = self.body + node.astext()

@@ -8,6 +8,7 @@
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
+from docutils import nodes
 from sphinx.writers.text import TextTranslator
 
 # map of sphinx literal types to confluence code types
@@ -31,6 +32,11 @@ class ConflueceListType(object):
 class ConfluenceTranslator(TextTranslator):
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
+
+    def visit_meta(self, node):
+        # always ignore meta nodes as they are html-specific
+        # http://docutils.sourceforge.net/docs/ref/rst/directives.html#meta
+        raise nodes.SkipNode
 
     def unknown_visit(self, node):
         raise NotImplementedError('unknown node: ' + node.__class__.__name__)
