@@ -29,11 +29,11 @@ class TestConfluencePublisher(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        basedir = os.path.dirname(os.path.realpath(__file__))
-        val_dir = os.path.join(basedir, 'validation-set')
-        build_dir = os.path.join(os.getcwd(), 'build')
-        doctree_dir = os.path.join(build_dir, 'doctree')
-        self.out = os.path.join(build_dir, 'out')
+        base_dir = os.path.dirname(os.path.realpath(__file__))
+        val_dir = os.path.join(base_dir, 'validation-set')
+        build_dir = os.path.join(base_dir, 'build')
+        doctree_dir = os.path.join(build_dir, 'validation-doctree')
+        self.out = os.path.join(build_dir, 'validation-out')
 
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']

@@ -19,12 +19,12 @@ import unittest
 class TestConfluenceBuilder(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        basedir = os.path.dirname(os.path.realpath(__file__))
-        srcdir = os.path.join(basedir, 'testproj')
-        self.expected = os.path.join(srcdir, 'expected')
-        builddir = os.path.join(srcdir, 'build')
-        self.outdir = os.path.join(builddir, 'out')
-        doctreedir = os.path.join(builddir, 'doctree')
+        base_dir = os.path.dirname(os.path.realpath(__file__))
+        src_dir = os.path.join(base_dir, 'builder-set')
+        self.expected = os.path.join(src_dir, 'expected-wiki')
+        build_dir = os.path.join(base_dir, 'build')
+        self.out_dir = os.path.join(build_dir, 'builder-out')
+        doctree_dir = os.path.join(build_dir, 'builder-doctree')
 
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
@@ -33,13 +33,13 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.config['confluence_space_name'] = 'TEST'
 
         self.app = Sphinx(
-            srcdir, None, self.outdir, doctreedir, 'confluence', self.config)
+            src_dir, None, self.out_dir, doctree_dir, 'confluence', self.config)
         self.app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name):
         filename = name + '.conf'
         expected_path = os.path.join(self.expected, filename)
-        test_path = os.path.join(self.outdir, filename)
+        test_path = os.path.join(self.out_dir, filename)
         self.assertTrue(os.path.exists(expected_path))
         self.assertTrue(os.path.exists(test_path))
 
