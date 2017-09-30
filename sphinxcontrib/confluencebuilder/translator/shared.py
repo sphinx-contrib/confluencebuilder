@@ -33,6 +33,14 @@ class ConfluenceTranslator(TextTranslator):
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
 
+    def visit_centered(self, node):
+        # centered is deprecated; ignore
+        # http://www.sphinx-doc.org/en/stable/markup/para.html#directive-centered
+        pass
+
+    def depart_centered(self, node):
+        pass
+
     def visit_meta(self, node):
         # always ignore meta nodes as they are html-specific
         # http://docutils.sourceforge.net/docs/ref/rst/directives.html#meta

@@ -586,12 +586,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def depart_field_body(self, node):
         self.end_state()
 
-    def visit_centered(self, node):
-        pass
-
-    def depart_centered(self, node):
-        pass
-
     def visit_hlist(self, node):
         pass
 
