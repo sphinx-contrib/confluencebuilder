@@ -1,3 +1,5 @@
+:orphan:
+
 Admonition Test
 ---------------
 
