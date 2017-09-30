@@ -214,16 +214,17 @@ class ConfluenceBuilder(Builder):
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        ensuredir(path.dirname(outfilename))
-        try:
-            with io.open(outfilename, 'w', encoding='utf-8') as file:
-                file.write(self.writer.output)
-        except (IOError, OSError) as err:
-            ConfluenceLogger.warn("error writing file "
-                "%s: %s" % (outfilename, err))
+        if self.writer.output:
+            ensuredir(path.dirname(outfilename))
+            try:
+                with io.open(outfilename, 'w', encoding='utf-8') as file:
+                    file.write(self.writer.output)
+            except (IOError, OSError) as err:
+                ConfluenceLogger.warn("error writing file "
+                    "%s: %s" % (outfilename, err))
 
-        if self.publish:
-            self.publish_doc(docname, self.writer.output)
+            if self.publish:
+                self.publish_doc(docname, self.writer.output)
 
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
