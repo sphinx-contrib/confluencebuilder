@@ -13,7 +13,7 @@ from ..common import ConfluenceLogger
 from ..experimental import EXPERIMENTAL_QUOTE_KEYWORD
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
-from .shared import LANG_MAP
+from .shared import LITERAL2CODE_MAP
 from docutils import nodes
 from os import path
 from sphinx import addnodes
@@ -682,8 +682,8 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
     def visit_literal_block(self, node):
         lang = node.get('language', '')
-        if lang in LANG_MAP.keys():
-            lang = LANG_MAP[lang]
+        if lang in LITERAL2CODE_MAP.keys():
+            lang = LITERAL2CODE_MAP[lang]
 
         if node.get('linenos', False) == True:
             nums='true'
