@@ -40,6 +40,7 @@ except ImportError:
 class ConfluencePublisher():
     def init(self, config):
         self.config = config
+        self.notify = not config.confluence_disable_notifications
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.proxy = config.confluence_proxy
@@ -224,6 +225,7 @@ class ConfluencePublisher():
                 'contentbody/convert/storage', raw_data_req)
             storage_data = rsp['value']
         else:
+            isNewPage = False
             try:
                 page = self.xmlrpc.getPage(
                     self.token, self.space_name, page_name)
@@ -232,6 +234,7 @@ class ConfluencePublisher():
                     'title': page_name,
                     'space': self.space_name
                 }
+                isNewPage = True
 
             try:
                 storage_data = self.xmlrpc.convertWikiToStorageFormat(
@@ -304,6 +307,9 @@ class ConfluencePublisher():
                         }
                     }
 
+                    if not self.notify:
+                        updatePage['version']['minorEdit'] = True
+
                     if parent_id:
                         updatePage['ancestors'] = [{'id': parent_id}]
 
@@ -321,7 +327,16 @@ class ConfluencePublisher():
                 page['parentId'] = parent_id
 
             try:
-                uploaded_page = self.xmlrpc.storePage(self.token, page)
+                if isNewPage:
+                    uploaded_page = self.xmlrpc.storePage(self.token, page)
+                else:
+                    updateOptions = {}
+
+                    if not self.notify:
+                        updateOptions['minorEdit'] = True
+
+                    uploaded_page = self.xmlrpc.updatePage(
+                        self.token, page, updateOptions)
             except xmlrpclib.Fault as ex:
                 if ex.faultString.find('NotPermittedException') != -1:
                     raise ConfluencePermissionError(
