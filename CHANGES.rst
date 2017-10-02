@@ -1,10 +1,11 @@
 
-0.7.0 (unreleased)
-==================
+master
+======
 
 * cap headers/sections to six levels for improved visualization
 * fixed rest publishing for python 3.x (< 3.6)
 * improve markup for:
+
   * body element lists
   * citations
   * definitions
@@ -15,10 +16,12 @@
   * seealso
   * table
   * versionmodified
+
 * re-work generated document references/targets (reference to section names)
-* sanitize output to prevent Confluence errors for certain characters
+* sanitize output to prevent confluence errors for certain characters
 * support indentations markup
 * support master_doc option to configure space's homepage
+* support removing document titles from page outputs
 * support silent page updates
 
 0.6.0 (2017-04-23)
@@ -39,19 +42,19 @@
 * purging support
 * use macros for admonitions
 * (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
-   tonybaloney/sphinxcontrib-confluencebuilder#10)
+  tonybaloney/sphinxcontrib-confluencebuilder#10)
 
 0.4.0 (2017-02-21)
 ==================
 
 * move from 'confluence' pypi package to 'confluence' pypi package (required for
-   publishing). see: https://github.com/pycontribs/confluence
+  publishing). see: https://github.com/pycontribs/confluence
 
 0.3.0 (2017-01-22)
 ==================
 
 * adding travis ci, tox and initial unit testing
-* module now depends on `future`
+* module now depends on ``future``
 * providing initial support for python 3
 
 0.2.0 (2016-07-13)
