@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+#
+# provides a fresh/clean initial documentation files
+#
+args=()
+args+=(--project="Sphinx Confluence Builder")
+args+=(--author="Anthony Shaw and Contributors")
+
+# other options
+args+=(--batchfile)
+args+=(--makefile)
+args+=(--quiet)
+
+##
+
+if [ -z "$SPHINX_QUICKSTART" ]; then
+    SPHINX_QUICKSTART=sphinx-quickstart
+fi
+
+echo "Generating initial documentation structure..."
+if ! $SPHINX_QUICKSTART "${args[@]}"; then
+    echo "error: unable to perform sphinx-quickstart"
+    exit 1
+fi
