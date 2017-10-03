@@ -13,9 +13,9 @@ from sphinx.util import logging
 CONFLUENCE_MAX_TITLE_LEN = 255
 
 class ConfluenceDocMap:
-    doc2title = {}
     doc2id = {}
     doc2parent = {}
+    doc2title = {}
     refid2target = {}
     doc2depth = {}
 
@@ -50,7 +50,7 @@ class ConfluenceDocMap:
         return docname
 
     @staticmethod
-    def registerID(docname, conf_id):
+    def registerId(docname, conf_id):
         ConfluenceDocMap.doc2id[docname] = conf_id
         return docname
 

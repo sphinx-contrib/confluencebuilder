@@ -9,8 +9,8 @@
 
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.common import ConfluenceDocMap
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import difflib
 import io
 import os

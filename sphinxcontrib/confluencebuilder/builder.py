@@ -200,7 +200,8 @@ class ConfluenceBuilder(Builder):
             if not doctitle:
                 continue
 
-            first_section.remove(first_section[idx])
+            if self.config.confluence_remove_title:
+                first_section.remove(first_section[idx])
 
             doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
                 self.config.confluence_publish_prefix)
@@ -283,7 +284,7 @@ class ConfluenceBuilder(Builder):
             parent_id = self.parent_id
 
         uploaded_id = self.publisher.storePage(title, output, parent_id)
-        ConfluenceDocMap.registerID(docname, uploaded_id)
+        ConfluenceDocMap.registerId(docname, uploaded_id)
 
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
