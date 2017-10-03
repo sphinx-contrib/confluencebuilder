@@ -220,6 +220,9 @@ class ConfluencePublisher():
     def storePage(self, page_name, raw_data, parent_id=None):
         uploaded_page_id = None
 
+        if self.config.confluence_adv_trace_data:
+            ConfluenceLogger.trace('raw_data', raw_data)
+
         if self.use_rest:
             raw_data_req = {
                 'value': raw_data,
@@ -256,11 +259,17 @@ class ConfluencePublisher():
                 raise
 
         assert storage_data
+
+        if self.config.confluence_adv_trace_data:
+            ConfluenceLogger.trace('storage', storage_data)
+
         if self.config.confluence_experimental_indentation:
             parser = ConfluenceExperimentalQuoteSupportParser()
             parser.feed(storage_data)
             storage_data = parser.get_data()
             storage_data = storage_data.replace(EXPERIMENTAL_QUOTE_KEYWORD, '')
+            if self.config.confluence_adv_trace_data:
+                ConfluenceLogger.trace('storage-post-exp', storage_data)
 
         if self.use_rest:
             rsp = self.rest_client.get('content', {
