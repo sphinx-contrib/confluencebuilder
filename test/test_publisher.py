@@ -24,6 +24,7 @@ DEFAULT_PUBLISH_KEY_FILE = '.test_publish_key'
 
 class TestConfluencePublisher(unittest.TestCase):
     is_automated = True
+    single_docname = None
 
     @classmethod
     def _conf(self, key, env, default=None):
@@ -40,7 +41,7 @@ class TestConfluencePublisher(unittest.TestCase):
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
         self.config['confluence_publish'] = False
-        self.config['confluence_purge'] = True
+        self.config['confluence_purge'] = not self.single_docname
 
         self._conf('confluence_parent_page',    'CB_PAR', DEFAULT_TEST_PARENT)
         self._conf('confluence_publish_prefix', 'CB_PFX')
@@ -131,6 +132,8 @@ class TestConfluencePublisher(unittest.TestCase):
         builder = ConfluenceBuilder(self.app)
         builder.init()
         for docname in self.docnames:
+            if self.single_docname and self.single_docname != docname:
+                continue
             ConfluenceLogger.info("\033[01mpublishing '%s'...\033[0m" % docname)
             output_filename = os.path.join(self.out, docname + '.conf')
             with io.open(output_filename, encoding='utf8') as output_file:
@@ -139,6 +142,12 @@ class TestConfluencePublisher(unittest.TestCase):
         builder.finish()
 
 if __name__ == '__main__':
+    if '--doc' in sys.argv:
+        idx = sys.argv.index('--doc')
+        del sys.argv[idx]
+        if idx < len(sys.argv):
+            TestConfluencePublisher.single_docname = sys.argv[idx]
+            del sys.argv[idx]
     if '--input' in sys.argv:
         TestConfluencePublisher.is_automated = False
         sys.argv.remove('--input')
