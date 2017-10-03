@@ -23,8 +23,7 @@ from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
-from .experimental import ConfluenceExperimentalQuoteSupportParser
-from .experimental import EXPERIMENTAL_QUOTE_KEYWORD
+from .experimental import ConfluenceExperimentalQuoteSupport
 from .rest import Rest
 import socket
 
@@ -264,10 +263,8 @@ class ConfluencePublisher():
             ConfluenceLogger.trace('storage', storage_data)
 
         if self.config.confluence_experimental_indentation:
-            parser = ConfluenceExperimentalQuoteSupportParser()
-            parser.feed(storage_data)
-            storage_data = parser.get_data()
-            storage_data = storage_data.replace(EXPERIMENTAL_QUOTE_KEYWORD, '')
+            storage_data = \
+                ConfluenceExperimentalQuoteSupport.quoteProcess(storage_data)
             if self.config.confluence_adv_trace_data:
                 ConfluenceLogger.trace('storage-post-exp', storage_data)
 
