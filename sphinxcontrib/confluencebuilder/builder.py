@@ -18,9 +18,12 @@ from docutils import nodes
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from sphinx.util.nodes import inline_all_toctrees
+from sphinx.util.console import darkgreen
 from os import path
 from xmlrpc.client import Fault
 import io
+import numbers
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -162,17 +165,23 @@ class ConfluenceBuilder(Builder):
         return relative_uri(self.get_target_uri(from_),
                             self.get_target_uri(to, typ))
 
-    def register_parents(self, filename):
-        tree = self.env.get_doctree(filename)
-        for toctreenode in tree.traverse(addnodes.toctree):
+    def process_tree_structure(self, docname, depth=0):
+        register_parent = self.config.confluence_experimental_page_hierarchy
+        register_depth = isinstance(self.config.confluence_experimental_max_depth, numbers.Number)
+
+        if register_depth:
+            ConfluenceDocMap.registerDepth(docname, depth)
+
+        doctree = self.env.get_doctree(docname)
+        for toctreenode in doctree.traverse(addnodes.toctree):
             for includefile in toctreenode['includefiles']:
-                ConfluenceDocMap.registerParent(includefile, filename)
-                self.register_parents(includefile)
+                if register_parent:
+                    ConfluenceDocMap.registerParent(includefile, docname)
+                self.process_tree_structure(includefile, depth+1)
 
     def prepare_writing(self, docnames):
         if self.config.master_doc:
-            if self.config.confluence_experimental_page_hierarchy:
-                self.register_parents(self.config.master_doc)
+            self.process_tree_structure(self.config.master_doc)
 
         for doc in docnames:
             doctree = self.env.get_doctree(doc)
@@ -190,6 +199,8 @@ class ConfluenceBuilder(Builder):
             doctitle = first_section[idx].astext()
             if not doctitle:
                 continue
+
+            first_section.remove(first_section[idx])
 
             doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
                 self.config.confluence_publish_prefix)
@@ -218,6 +229,16 @@ class ConfluenceBuilder(Builder):
         ConfluenceDocMap.conflictCheck()
 
     def write_doc(self, docname, doctree):
+        depth = ConfluenceDocMap.depth(docname)
+        if isinstance(depth, numbers.Number) and depth is self.config.confluence_experimental_max_depth:
+            ConfluenceLogger.verbose("inlining children of {}".format(docname))
+            tree = self.env.get_doctree(docname)
+            doctree = inline_all_toctrees(self, set(), docname, tree, darkgreen, [docname])
+        elif isinstance(depth, numbers.Number) and depth > self.config.confluence_experimental_max_depth:
+            ConfluenceLogger.verbose("\not writing doc: '{}' depth: {} > max_depth"
+                                     .format(docname, depth))
+            return
+
         self.current_docname = docname
 
         # remove title from page contents
@@ -252,6 +273,7 @@ class ConfluenceBuilder(Builder):
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
         if not title:
+            print("\n\SKIPPING document {}\n\n".format(docname))
             ConfluenceLogger.warn("skipping document with no title: "
                 "%s" % docname)
             return
@@ -262,6 +284,7 @@ class ConfluenceBuilder(Builder):
             parent_id = self.parent_id
 
         uploaded_id = self.publisher.storePage(title, output, parent_id)
+        print("UPLOADED ID {}".format(uploaded_id))
         ConfluenceDocMap.registerID(docname, uploaded_id)
 
         if self.config.master_doc == docname:

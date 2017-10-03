@@ -40,6 +40,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         # Determine document's name (if any).
         assert builder.current_docname
+        self.docnames = [builder.current_docname]
         self.docname = builder.current_docname
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
@@ -134,6 +135,15 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             except (IOError, OSError) as err:
                 ConfluenceLogger.warn("error reading file "
                     "%s: %s" % (footerFile, err))
+
+    def visit_start_of_file(self, node):
+        # type: (nodes.Node) -> None
+        # only occurs in the single-file builder
+        self.docnames.append(node['docname'])
+
+    def depart_start_of_file(self, node):
+        # type: (nodes.Node) -> None
+        self.docnames.pop()
 
     def visit_highlightlang(self, node):
         raise nodes.SkipNode

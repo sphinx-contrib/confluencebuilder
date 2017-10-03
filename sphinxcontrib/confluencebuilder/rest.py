@@ -131,5 +131,6 @@ class Rest:
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.BIND_PATH + "\n"
         err += "API: " + key + "\n"
+        err += "BODY: " + str(rsp.text) + "\n"
         err += "MSG: " + rsp.json()['message']
         return err
