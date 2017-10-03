@@ -26,10 +26,10 @@ import posixpath
 
 # Confluence encoding for special chars
 SPECIAL_VALUE_REPLACEMENTS = {
-    ('{', '&lcub;'),
-    ('}', '&rcub;'),
-    ('<', '&lt;'),
-    ('>', '&gt;')
+    ('{', '&#123;'),
+    ('}', '&#125;'),
+    ('<', '&#60;'),
+    ('>', '&#62;')
 }
 
 class ConfluenceWikiTranslator(ConfluenceTranslator):
