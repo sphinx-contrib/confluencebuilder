@@ -27,7 +27,7 @@ def main():
     return 0
 
 def setup(app):
-    ConfluenceLogger.initialize(app)
+    ConfluenceLogger.initialize()
 
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
@@ -46,6 +46,8 @@ def setup(app):
     app.add_config_value('confluence_link_suffix', None, False)
     """Translation of docname to a (partial) URI."""
     app.add_config_value('confluence_link_transform', None, False)
+    """Remove a detected title from generated documents."""
+    app.add_config_value('confluence_remove_title', True, False)
 
     """(publishing)"""
     """Explictly prevent any Confluence REST API callers."""
@@ -54,6 +56,8 @@ def setup(app):
     app.add_config_value('confluence_disable_xmlrpc', None, False)
     """Explictly prevent page notifications on update."""
     app.add_config_value('confluence_disable_notifications', None, False)
+    """Enablement of configuring master as space's homepage."""
+    app.add_config_value('confluence_master_homepage', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
     """Root/parent page's identifier to publish documents into."""

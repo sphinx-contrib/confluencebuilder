@@ -7,6 +7,8 @@
     :license: BSD, see LICENSE.txt for details.
 """
 
+from sphinx.util import logging
+
 # Maximum length for a Confluence page title.
 CONFLUENCE_MAX_TITLE_LEN = 255
 
@@ -53,23 +55,23 @@ class ConfluenceDocMap:
                         "'%s' and '%s'" % (key_a, key_b))
 
 class ConfluenceLogger():
-    app = None
+    logger = None
 
     @staticmethod
-    def initialize(app):
-        ConfluenceLogger.app = app
+    def initialize():
+        ConfluenceLogger.logger = logging.getLogger("confluence")
 
     @staticmethod
     def info(*args, **kwargs):
-        if ConfluenceLogger.app:
-            ConfluenceLogger.app.info(*args, **kwargs)
+        if ConfluenceLogger.logger:
+            ConfluenceLogger.logger.info(*args, **kwargs)
 
     @staticmethod
     def verbose(*args, **kwargs):
-        if ConfluenceLogger.app:
-            ConfluenceLogger.app.verbose(*args, **kwargs)
+        if ConfluenceLogger.logger:
+            ConfluenceLogger.logger.verbose(*args, **kwargs)
 
     @staticmethod
     def warn(*args, **kwargs):
-        if ConfluenceLogger.app:
-            ConfluenceLogger.app.warn(*args, **kwargs)
+        if ConfluenceLogger.logger:
+            ConfluenceLogger.logger.warning(*args, **kwargs)

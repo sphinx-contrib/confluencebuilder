@@ -9,6 +9,7 @@
 
 from __future__ import (print_function, unicode_literals, absolute_import)
 from .common import ConfluenceDocMap
+from .common import ConfluenceLogger
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
@@ -18,7 +19,7 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from os import path
 from xmlrpc.client import Fault
-import codecs
+import io
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -51,6 +52,7 @@ class ConfluenceBuilder(Builder):
     format = 'confluence'
     file_suffix = '.conf'
     link_suffix = None  # defaults to file_suffix
+    master_doc_page_id = None
     publisher = ConfluencePublisher()
 
     def init(self):
@@ -97,6 +99,14 @@ class ConfluenceBuilder(Builder):
                     raise ConfluenceConfigurationError("""Confluence """
                         """username has not been set even though a password """
                         """has been set. Unable to publish.""")
+            if self.config.master_doc:
+                if not self.config.confluence_master_homepage:
+                    ConfluenceLogger.verbose("master_doc value ignored")
+            else:
+                if self.config.confluence_master_homepage:
+                    raise ConfluenceConfigurationError("""Confluence """
+                        """master homepage option is set, but no master is """
+                        """defined in documentation. Unable to publish.""")
 
             self.publish = True
             self.publisher.connect()
@@ -198,42 +208,62 @@ class ConfluenceBuilder(Builder):
     def write_doc(self, docname, doctree):
         self.current_docname = docname
 
+        # remove title from page contents
+        if self.config.confluence_remove_title:
+            idx = doctree.first_child_matching_class(nodes.section)
+            if not idx == None and not idx == -1:
+                first_section = doctree[idx]
+                idx = first_section.first_child_matching_class(nodes.title)
+                if not idx == None and not idx == -1:
+                    doctitle = first_section[idx].astext()
+                    if doctitle:
+                        first_section.remove(first_section[idx])
+
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        ensuredir(path.dirname(outfilename))
-        try:
-            f = codecs.open(outfilename, 'w', 'utf-8')
+        if self.writer.output:
+            ensuredir(path.dirname(outfilename))
             try:
-                f.write(self.writer.output)
-            finally:
-                f.close()
-        except (IOError, OSError) as err:
-            self.warn("error writing file %s: %s" % (outfilename, err))
+                with io.open(outfilename, 'w', encoding='utf-8') as file:
+                    file.write(self.writer.output)
+            except (IOError, OSError) as err:
+                ConfluenceLogger.warn("error writing file "
+                    "%s: %s" % (outfilename, err))
 
-        if self.publish:
-            self.publish_doc(docname, self.writer.output)
+            if self.publish:
+                self.publish_doc(docname, self.writer.output)
 
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
         if not title:
-            self.warn("skipping document with no title: %s" % docname)
+            ConfluenceLogger.warn("skipping document with no title: "
+                "%s" % docname)
             return
 
         uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+
+        if self.config.master_doc == docname:
+            self.master_doc_page_id = uploaded_id
+
         if self.config.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
     def finish(self):
         if self.publish:
+            if self.config.confluence_master_homepage is True:
+                ConfluenceLogger.info('updating space\'s homepage... ', nonl=0)
+                self.publisher.updateSpaceHome(self.master_doc_page_id)
+                ConfluenceLogger.info('done\n')
+
             if self.config.confluence_purge is True and self.legacy_pages:
-                self.info('removing legacy pages... ', nonl=0)
+                ConfluenceLogger.info('removing legacy pages... ', nonl=0)
                 for legacy_page_id in self.legacy_pages:
                    self.publisher.removePage(legacy_page_id)
-                self.info('done\n')
+                ConfluenceLogger.info('done\n')
 
             self.publisher.disconnect()
