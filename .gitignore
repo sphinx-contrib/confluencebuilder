@@ -7,6 +7,11 @@ __pycache__/
 build/
 dist/
 
+# PyDev files
+/.pydevproject
+/.project
+/.settings/
+
 # documentation
 doc/_build/
 
