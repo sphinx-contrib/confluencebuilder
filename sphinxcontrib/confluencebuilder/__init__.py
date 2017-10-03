@@ -94,3 +94,5 @@ def setup(app):
     """(experimental)"""
     """Support experimental indentation support."""
     app.add_config_value('confluence_experimental_indentation', True, True)
+    """Support experimental page hierarchy upload from toctree data."""
+    app.add_config_value('confluence_experimental_page_hierarchy', False, True)
