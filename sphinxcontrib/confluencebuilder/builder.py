@@ -273,7 +273,6 @@ class ConfluenceBuilder(Builder):
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
         if not title:
-            print("\n\SKIPPING document {}\n\n".format(docname))
             ConfluenceLogger.warn("skipping document with no title: "
                 "%s" % docname)
             return
@@ -284,7 +283,6 @@ class ConfluenceBuilder(Builder):
             parent_id = self.parent_id
 
         uploaded_id = self.publisher.storePage(title, output, parent_id)
-        print("UPLOADED ID {}".format(uploaded_id))
         ConfluenceDocMap.registerID(docname, uploaded_id)
 
         if self.config.master_doc == docname:
