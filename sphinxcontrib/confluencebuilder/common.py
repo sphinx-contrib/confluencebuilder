@@ -81,8 +81,8 @@ class ConfluenceLogger():
     def trace(title, data):
         try:
             with io.open('trace.log', 'a', encoding='utf-8') as file:
-                print('[%s]' % title, file=file)
-                print(data, file=file)
-                print('', file=file)
+                file.write(u'[%s]\n' % title)
+                file.write(data)
+                file.write(u'\n')
         except (IOError, OSError) as err:
             ConfluenceLogger.err('unable to trace: %s' % err)
