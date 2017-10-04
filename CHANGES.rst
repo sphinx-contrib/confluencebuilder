@@ -3,7 +3,7 @@ master
 ======
 
 * cap headers/sections to six levels for improved visualization
-* fixed rest publishing for python 3.x (< 3.6)
+* fixed rest publishing for encoding issues and python 3.x (< 3.6) issues 
 * improve markup for:
 
   * body element lists
