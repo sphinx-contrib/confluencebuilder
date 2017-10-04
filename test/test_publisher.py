@@ -113,10 +113,10 @@ class TestConfluencePublisher(unittest.TestCase):
         gencontents_file = os.path.join(val_dir, 'contents.rst')
         try:
             with io.open(gencontents_file, 'w', encoding='utf-8') as file:
-                print('revision', file=file)
-                print('========', file=file)
-                print('', file=file)
-                print("Revision: %s" % source_revision, file=file)
+                file.write(u'revision\n')
+                file.write(u'========\n')
+                file.write(u'\n')
+                file.write(u'Revision: %s\n' % source_revision)
         except (IOError, OSError) as err:
             ConfluenceLogger.err("error generating file "
                 "%s: %s" % (gencontents_file, err))
