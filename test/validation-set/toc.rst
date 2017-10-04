@@ -23,3 +23,4 @@ The following is a Sphinx generated table of contents:
    sections-a
    tables
    verification-of-content
+   contents

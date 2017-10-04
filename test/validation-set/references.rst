@@ -27,7 +27,7 @@ generic references
 ------------------
 
 | The most common method reference with Sphinx is a "phrase-reference";
-  consider the example of `this phrase being a link`_. Pphrase-reference links
+  consider the example of `this phrase being a link`_. Phrase-reference links
   can be on `two lines`_ or `various lines`_.
 
 .. _this phrase being a link: http://www.example.com
