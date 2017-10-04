@@ -876,10 +876,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.add_text(' (%s)' % node['explanation'])
 
     def visit_title_reference(self, node):
-        self.add_text('*')
+        self.add_text('_')
 
     def depart_title_reference(self, node):
-        self.add_text('*')
+        self.add_text('_')
 
     def visit_literal(self, node):
         self.add_text('{{')
