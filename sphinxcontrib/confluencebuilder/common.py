@@ -85,4 +85,4 @@ class ConfluenceLogger():
                 file.write(data)
                 file.write(u'\n')
         except (IOError, OSError) as err:
-            ConfluenceLogger.err('unable to trace: %s' % err)
+            ConfluenceLogger.warn('unable to trace: %s' % err)
