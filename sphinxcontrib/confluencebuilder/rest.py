@@ -20,6 +20,7 @@ from .exceptions import ConfluenceTimeoutError
 
 class Rest:
     BIND_PATH = "/rest/api/"
+    CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
         self.url = config.confluence_server_url
@@ -53,6 +54,7 @@ class Rest:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
+            rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
@@ -78,6 +80,7 @@ class Rest:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
+            rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
@@ -103,6 +106,7 @@ class Rest:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
         try:
+            rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
             raise ConfluenceBadServerUrlError(self.url,
