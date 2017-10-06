@@ -22,7 +22,7 @@ publish them to a Confluence server.
 Requirements
 ============
 
-* Python_ 2.7 or 3.3+
+* Python_ 2.7 or 3.4+
 * Requests_
 * Sphinx_ 1.0+
 
