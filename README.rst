@@ -88,6 +88,21 @@ For a complete list of configuration changes, see also:
  | Atlassian Confluence Builder for Sphinx - Configuration
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/#configuration
 
+Demonstration
+=============
+
+The set of example documents used to assist in validation/testing can be found
+here:
+
+ | Atlassian Confluence Builder for Sphinx - Validation Set
+ | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/tree/master/test/validation-set
+
+The active and older versions of published validation documents can be found
+here:
+
+ | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
+ | https://jdknight.atlassian.net/wiki/spaces/confluencebuilder/
+
 Supported Markup
 ================
 
