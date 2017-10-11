@@ -1,4 +1,3 @@
-HTMLParser
 future
 requests
 sphinx
