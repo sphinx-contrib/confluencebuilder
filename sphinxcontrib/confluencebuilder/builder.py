@@ -266,4 +266,6 @@ class ConfluenceBuilder(Builder):
                    self.publisher.removePage(legacy_page_id)
                 ConfluenceLogger.info('done\n')
 
+    def cleanup(self):
+        if self.publish:
             self.publisher.disconnect()
