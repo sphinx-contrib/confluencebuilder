@@ -48,6 +48,7 @@ def relative_uri(base, to):
 
 class ConfluenceBuilder(Builder):
     current_docname = None
+    publish_docnames = []
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
@@ -177,10 +178,14 @@ class ConfluenceBuilder(Builder):
 
             doctitle = first_section[idx].astext()
             if not doctitle:
+                if self.publish:
+                    ConfluenceLogger.warn("document will not be published "
+                        "since it has no title: %s" % docname)
                 continue
 
             doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
                 self.config.confluence_publish_prefix)
+            self.publish_docnames.append(doc)
 
             target_refs = []
             for node in doctree.traverse(nodes.target):
@@ -234,17 +239,10 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.warn("error writing file "
                     "%s: %s" % (outfilename, err))
 
-            if self.publish:
-                self.publish_doc(docname, self.writer.output)
-
     def publish_doc(self, docname, output):
         title = ConfluenceDocMap.title(docname)
-        if not title:
-            ConfluenceLogger.warn("skipping document with no title: "
-                "%s" % docname)
-            return
-
-        uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+        uploaded_id = self.publisher.storePage(
+            title, output, self.parent_id)
 
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
@@ -253,18 +251,38 @@ class ConfluenceBuilder(Builder):
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
-    def finish(self):
-        if self.publish:
+    def publish_finalize(self):
+        if self.master_doc_page_id:
             if self.config.confluence_master_homepage is True:
                 ConfluenceLogger.info('updating space\'s homepage... ', nonl=0)
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 ConfluenceLogger.info('done\n')
 
-            if self.config.confluence_purge is True and self.legacy_pages:
-                ConfluenceLogger.info('removing legacy pages... ', nonl=0)
-                for legacy_page_id in self.legacy_pages:
-                   self.publisher.removePage(legacy_page_id)
-                ConfluenceLogger.info('done\n')
+    def publish_purge(self):
+        if self.config.confluence_purge is True and self.legacy_pages:
+            ConfluenceLogger.info('removing legacy pages... ', nonl=0)
+            for legacy_page_id in self.legacy_pages:
+               self.publisher.removePage(legacy_page_id)
+            ConfluenceLogger.info('done\n')
+
+    def finish(self):
+        if self.publish:
+            for docname in self.publish_docnames:
+                ConfluenceLogger.info(
+                    "\033[01mpublishing '%s'...\033[0m" % docname)
+                docfile = path.join(self.outdir, self.file_transform(docname))
+
+                try:
+                    with io.open(docfile, 'r', encoding='utf-8') as file:
+                        output = file.read()
+                        self.publish_doc(docname, output)
+
+                except (IOError, OSError) as err:
+                    ConfluenceLogger.warn("error reading file %s: "
+                        "%s" % (docfile, err))
+
+            self.publish_purge()
+            self.publish_finalize()
 
     def cleanup(self):
         if self.publish:
