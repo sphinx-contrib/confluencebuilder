@@ -10,6 +10,7 @@
 from __future__ import (print_function, unicode_literals, absolute_import)
 from .common import ConfluenceDocMap
 from .common import ConfluenceLogger
+from .compat import ConfluenceCompat
 from .exceptions import ConfluenceConfigurationError
 from .publisher import ConfluencePublisher
 from .writer import ConfluenceWriter
@@ -267,8 +268,9 @@ class ConfluenceBuilder(Builder):
 
     def finish(self):
         if self.publish:
-            for docname in self.status_iterator(self.publish_docnames,
-                    'publishing... ', length=len(self.publish_docnames)):
+            for docname in ConfluenceCompat.status_iterator(self,
+                    self.publish_docnames, 'publishing... ',
+                    length=len(self.publish_docnames)):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
