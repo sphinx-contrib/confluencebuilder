@@ -27,8 +27,29 @@ class ConfluenceState:
     operation. This includes, but not limited to, remember title names for
     documents, tracking reference identifiers to other document names and more.
     """
+    doc2uploadId = {}
+    doc2parentDoc = {}
     doc2title = {}
     refid2target = {}
+
+    @staticmethod
+    def registerParentDocname(docname, parent_docname):
+        """
+        register a parent docname for a provided docname
+
+        When using Sphinx's toctree, documents defined in the tree can be
+        considered child pages (see the configuration option
+        'confluence_page_hierarchy'). This method helps track a parent document
+        for a provided child document. With the ability to track a parent
+        document and track publish upload identifiers (see `registerUploadId`),
+        the publish operation can help ensure pages are structured in a
+        hierarchical fashion (see also `parentDocname`).
+
+        [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
+        """
+        ConfluenceState.doc2parentDoc[docname] = parent_docname
+        ConfluenceLogger.verbose(
+            "setting parent of %s to: %s" % (docname, parent_docname))
 
     @staticmethod
     def registerTarget(refid, target):
@@ -74,6 +95,33 @@ class ConfluenceState:
         return title
 
     @staticmethod
+    def registerUploadId(docname, id):
+        """
+        register a page (upload) identifier for a docname
+
+        When a publisher creates/updates a page on a Confluence instance, the
+        resulting page will have an identifier for it. This state utility class
+        can help track the Confluence page's identifier by invoking this
+        registration method. This method is primarily used to help track/order
+        published documents into a hierarchical fashion (see
+        `registerParentDocname`). It is important to note that the order of
+        published documents will determine if a page's upload identifier is
+        tracked in this state (see also `uploadId`).
+        """
+        ConfluenceState.doc2uploadId[docname] = id
+        ConfluenceLogger.verbose(
+            "tracking docname %s's upload id: %s" % (docname, id))
+
+    @staticmethod
+    def parentDocname(docname):
+        """
+        return the parent docname (if any) for a provided docname
+
+        See `registerParentDocname` for more information.
+        """
+        return ConfluenceState.doc2parentDoc.get(docname)
+
+    @staticmethod
     def target(refid):
         """
         return the (anchor) target for a provided reference
@@ -85,7 +133,7 @@ class ConfluenceState:
     @staticmethod
     def title(docname):
         """
-        return the title value for a provided document name
+        return the title value for a provided docname
 
         See `registerTitle` for more information.
         """
@@ -110,3 +158,12 @@ class ConfluenceState:
                 if (d[key_a] == d[key_b]):
                     ConfluenceLogger.warn("title conflict detected with "
                         "'%s' and '%s'" % (key_a, key_b))
+
+    @staticmethod
+    def uploadId(docname):
+        """
+        return the confluence (upload) page id for the provided docname
+
+        See `registerUploadId` for more information.
+        """
+        return ConfluenceState.doc2uploadId.get(docname)

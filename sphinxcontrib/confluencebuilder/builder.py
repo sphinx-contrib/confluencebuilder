@@ -18,6 +18,7 @@ from docutils.io import StringOutput
 from docutils import nodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from sphinx import addnodes
 from os import path
 from xmlrpc.client import Fault
 import io
@@ -211,6 +212,25 @@ class ConfluenceBuilder(Builder):
 
         ConfluenceState.titleConflictCheck()
 
+        # if we have a master document set and hierarchy support enabled, go
+        # through the list of expected document names to publish, register
+        # parent document names and re-define the explicit order to publish
+        if self.config.master_doc and self.config.confluence_page_hierarchy:
+            if self.config.master_doc in self.publish_docnames:
+                ordered_docnames = []
+                self.register_parents(ordered_docnames, self.config.master_doc)
+                ordered_docnames.extend(x for x in self.publish_docnames
+                    if x not in ordered_docnames)
+                self.publish_docnames = ordered_docnames[:]
+
+    def register_parents(self, ordered_docnames, docname):
+        ordered_docnames.append(docname)
+        doctree = self.env.get_doctree(docname)
+        for node in doctree.traverse(addnodes.toctree):
+            for includefile in node['includefiles']:
+                ConfluenceState.registerParentDocname(includefile, docname)
+                self.register_parents(ordered_docnames, includefile)
+
     def write_doc(self, docname, doctree):
         self.current_docname = docname
 
@@ -242,8 +262,17 @@ class ConfluenceBuilder(Builder):
 
     def publish_doc(self, docname, output):
         title = ConfluenceState.title(docname)
-        uploaded_id = self.publisher.storePage(
-            title, output, self.parent_id)
+
+        parent_id = None
+        if self.config.master_doc and self.config.confluence_page_hierarchy:
+            if self.config.master_doc != docname:
+                parent = ConfluenceState.parentDocname(docname)
+                parent_id = ConfluenceState.uploadId(parent)
+        if not parent_id:
+            parent_id = self.parent_id
+
+        uploaded_id = self.publisher.storePage(title, output, parent_id)
+        ConfluenceState.registerUploadId(docname, uploaded_id)
 
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
