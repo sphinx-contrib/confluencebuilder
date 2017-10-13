@@ -8,7 +8,6 @@
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
-from .common import ConfluenceDocMap
 from .logger import ConfluenceLogger
 from .translator.wiki import ConfluenceWikiTranslator
 from docutils import writers

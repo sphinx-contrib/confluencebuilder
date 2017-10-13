@@ -8,9 +8,9 @@
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
-from ..common import ConfluenceDocMap
 from ..experimental import ConfluenceExperimentalQuoteSupport
 from ..logger import ConfluenceLogger
+from ..state import ConfluenceState
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
 from .shared import LITERAL2CODE_MAP
@@ -759,7 +759,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_target(self, node):
         if 'refid' in node and self.can_anchor:
             anchor = ''.join(node['refid'].split())
-            target = ConfluenceDocMap.target(anchor)
+            target = ConfluenceState.target(anchor)
             if not target:
                 self.add_text('{anchor:%s}' % anchor)
 
@@ -793,7 +793,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if 'refuri' in node:
             docname = posixpath.normpath(
                 self.docparent + path.splitext(node['refuri'])[0])
-            doctitle = ConfluenceDocMap.title(docname)
+            doctitle = ConfluenceState.title(docname)
             if not doctitle:
                 ConfluenceLogger.warn("unable to build link to document due to "
                     "missing title (in %s): %s" % (self.docname, docname))
@@ -806,7 +806,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
                 else:
                     target_name = anchor
 
-                target = ConfluenceDocMap.target(target_name)
+                target = ConfluenceState.target(target_name)
                 if target:
                     anchor = '#' + target
                 else:
@@ -829,7 +829,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         # Anchor.
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
-            target = ConfluenceDocMap.target(anchor)
+            target = ConfluenceState.target(anchor)
             text = node.astext().replace('[', '^')
             text = text.replace(']', '^')
             if target:

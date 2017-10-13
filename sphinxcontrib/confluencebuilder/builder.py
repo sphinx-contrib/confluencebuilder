@@ -8,11 +8,11 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-from .common import ConfluenceDocMap
 from .compat import ConfluenceCompat
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
 from .publisher import ConfluencePublisher
+from .state import ConfluenceState
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
@@ -184,7 +184,7 @@ class ConfluenceBuilder(Builder):
                         "since it has no title: %s" % docname)
                 continue
 
-            doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
+            doctitle = ConfluenceState.registerTitle(doc, doctitle,
                 self.config.confluence_publish_prefix)
             self.publish_docnames.append(doc)
 
@@ -207,9 +207,9 @@ class ConfluenceBuilder(Builder):
                         for id in section_node['ids']:
                             if not id in target_refs:
                                 id = '%s#%s' % (doc, id)
-                            ConfluenceDocMap.registerTarget(id, target)
+                            ConfluenceState.registerTarget(id, target)
 
-        ConfluenceDocMap.conflictCheck()
+        ConfluenceState.titleConflictCheck()
 
     def write_doc(self, docname, doctree):
         self.current_docname = docname
@@ -241,7 +241,7 @@ class ConfluenceBuilder(Builder):
                     "%s: %s" % (outfilename, err))
 
     def publish_doc(self, docname, output):
-        title = ConfluenceDocMap.title(docname)
+        title = ConfluenceState.title(docname)
         uploaded_id = self.publisher.storePage(
             title, output, self.parent_id)
 
