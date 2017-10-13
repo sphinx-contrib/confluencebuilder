@@ -131,14 +131,13 @@ class TestConfluencePublisher(unittest.TestCase):
 
         builder = ConfluenceBuilder(self.app)
         builder.init()
-        for docname in self.docnames:
-            if self.single_docname and self.single_docname != docname:
-                continue
-            ConfluenceLogger.info("\033[01mpublishing '%s'...\033[0m" % docname)
-            output_filename = os.path.join(self.out, docname + '.conf')
-            with io.open(output_filename, encoding='utf8') as output_file:
-                output = output_file.read()
-                builder.publish_doc(docname, output)
+
+        # if a test provides an explict document name to publish, override the
+        # builder's internal publish document names to only publish the single
+        # document
+        if self.single_docname:
+            builder.publish_docnames = [self.single_docname]
+
         builder.finish()
 
 if __name__ == '__main__':
