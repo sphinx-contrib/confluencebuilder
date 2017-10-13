@@ -267,9 +267,8 @@ class ConfluenceBuilder(Builder):
 
     def finish(self):
         if self.publish:
-            for docname in self.publish_docnames:
-                ConfluenceLogger.info(
-                    "\033[01mpublishing '%s'...\033[0m" % docname)
+            for docname in self.status_iterator(self.publish_docnames,
+                    'publishing... ', length=len(self.publish_docnames)):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
