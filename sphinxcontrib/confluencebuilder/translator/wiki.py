@@ -9,8 +9,8 @@
 
 from __future__ import (absolute_import, print_function, unicode_literals)
 from ..common import ConfluenceDocMap
-from ..common import ConfluenceLogger
 from ..experimental import ConfluenceExperimentalQuoteSupport
+from ..logger import ConfluenceLogger
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
 from .shared import LITERAL2CODE_MAP

@@ -9,7 +9,7 @@
 
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.common import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from subprocess import check_output
 import io
 import os

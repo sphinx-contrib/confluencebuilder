@@ -7,8 +7,7 @@
     :license: BSD, see LICENSE.txt for details.
 """
 
-from sphinx.util import logging
-import io
+from .logger import ConfluenceLogger
 
 # Maximum length for a Confluence page title.
 CONFLUENCE_MAX_TITLE_LEN = 255
@@ -54,35 +53,3 @@ class ConfluenceDocMap:
                 if (d[key_a] == d[key_b]):
                     ConfluenceLogger.warn("title conflict detected with "
                         "'%s' and '%s'" % (key_a, key_b))
-
-class ConfluenceLogger():
-    logger = None
-
-    @staticmethod
-    def initialize():
-        ConfluenceLogger.logger = logging.getLogger("confluence")
-
-    @staticmethod
-    def info(*args, **kwargs):
-        if ConfluenceLogger.logger:
-            ConfluenceLogger.logger.info(*args, **kwargs)
-
-    @staticmethod
-    def verbose(*args, **kwargs):
-        if ConfluenceLogger.logger:
-            ConfluenceLogger.logger.verbose(*args, **kwargs)
-
-    @staticmethod
-    def warn(*args, **kwargs):
-        if ConfluenceLogger.logger:
-            ConfluenceLogger.logger.warning(*args, **kwargs)
-
-    @staticmethod
-    def trace(title, data):
-        try:
-            with io.open('trace.log', 'a', encoding='utf-8') as file:
-                file.write(u'[%s]\n' % title)
-                file.write(data)
-                file.write(u'\n')
-        except (IOError, OSError) as err:
-            ConfluenceLogger.warn('unable to trace: %s' % err)

@@ -10,7 +10,7 @@
 """
 
 from .builder import ConfluenceBuilder
-from .common import ConfluenceLogger
+from .logger import ConfluenceLogger
 from sphinx.writers.text import STDINDENT
 import argparse
 

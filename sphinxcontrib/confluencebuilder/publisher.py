@@ -14,7 +14,6 @@
      https://developer.atlassian.com/confdev/deprecated-apis/confluence-xml-rpc-and-soap-apis
 """
 
-from .common import ConfluenceLogger
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
@@ -24,6 +23,7 @@ from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .experimental import ConfluenceExperimentalQuoteSupport
+from .logger import ConfluenceLogger
 from .rest import Rest
 import socket
 
