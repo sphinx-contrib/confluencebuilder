@@ -102,10 +102,7 @@ class ConfluenceBuilder(Builder):
                     raise ConfluenceConfigurationError("""Confluence """
                         """username has not been set even though a password """
                         """has been set. Unable to publish.""")
-            if self.config.master_doc:
-                if not self.config.confluence_master_homepage:
-                    ConfluenceLogger.verbose("master_doc value ignored")
-            else:
+            if not self.config.master_doc:
                 if self.config.confluence_master_homepage:
                     raise ConfluenceConfigurationError("""Confluence """
                         """master homepage option is set, but no master is """
