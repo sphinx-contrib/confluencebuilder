@@ -123,6 +123,24 @@ the master_doc_ configuration is ignored with a value of ``False``.
 
     confluence_master_homepage = False
 
+confluence_page_hierarchy
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not nest pages in a hierarchical ordered. The root
+of all pages is typically the configured master_doc_. If a master_doc_ instance
+contains a toctree_, listed documents will become child pages of the
+master_doc_. This cycle continues for child pages with their own toctree_
+markups. By default, the hierarchy mode is disabled with a value of ``False``.
+
+.. code-block:: python
+
+    confluence_page_hierarchy = False
+
+Note that even if hierarchy mode is enabled, the configured master_doc_ page and
+other published pages that are not defined in the complete toctree_, these
+documents will still be published based off the configured (or unconfigured)
+``confluence_parent_page`` setting.
+
 confluence_parent_page
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -301,3 +319,4 @@ seconds, the following can be used:
 
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
+.. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
