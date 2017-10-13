@@ -124,21 +124,18 @@ class TestConfluencePublisher(unittest.TestCase):
         self.app = Sphinx(
             val_dir, None, self.out, doctree_dir, 'confluence', self.config)
         self.app.build(force_all=True)
-        self.docnames = self.app.builder.env.found_docs
 
     def test_manual_publish(self):
         self.app.config['confluence_publish'] = True
-
-        builder = ConfluenceBuilder(self.app)
-        builder.init()
+        self.app.builder.init()
 
         # if a test provides an explict document name to publish, override the
         # builder's internal publish document names to only publish the single
         # document
         if self.single_docname:
-            builder.publish_docnames = [self.single_docname]
+            self.app.builder.publish_docnames = [self.single_docname]
 
-        builder.finish()
+        self.app.builder.finish()
 
 if __name__ == '__main__':
     if '--doc' in sys.argv:
