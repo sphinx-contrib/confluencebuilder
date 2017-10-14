@@ -137,6 +137,8 @@ class ConfluencePublisher():
                         self.xmlrpc = self.xmlrpc.confluence1
                     except xmlrpclib.Fault as ex:
                         raise ConfluenceBadSpaceError(self.space_name)
+                except socket.gaierror as ex:
+                    raise ConfluenceBadServerUrlError(self.server_url, ex)
 
     def disconnect(self):
         if self.use_xmlrpc and self.token:
