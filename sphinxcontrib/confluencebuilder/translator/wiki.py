@@ -44,10 +44,18 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
-        if not 'anchor' in builder.config.confluence_adv_restricted_macros:
+        restricted_macros = builder.config.confluence_adv_restricted_macros
+        if not 'anchor' in restricted_macros:
             self.can_anchor = True
         else:
             self.can_anchor = False
+
+        if (self.builder.config.confluence_page_hierarchy
+                and builder.config.confluence_adv_hierarchy_child_macro
+                and not 'children' in restricted_macros):
+            self.apply_hierarchy_children_macro = True
+        else:
+            self.apply_hierarchy_children_macro = False
 
         newlines = builder.config.text_newlines
         if newlines == 'windows':
@@ -67,6 +75,13 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
+
+        toctrees = self.builder.env.get_doctree(self.docname).traverse(
+            addnodes.toctree)
+        if toctrees and toctrees[0].get('maxdepth') > 0:
+            self.tocdepth = toctrees[0].get('maxdepth')
+        else:
+            self.tocdepth = 1
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -165,7 +180,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.end_state()
 
     def visit_compound(self, node):
-        pass
+        if self.apply_hierarchy_children_macro:
+            self.add_text('{children:depth=%s}' % self.tocdepth)
+            self.add_text(self.nl)
+            raise nodes.SkipNode
 
     def depart_compound(self, node):
         pass
