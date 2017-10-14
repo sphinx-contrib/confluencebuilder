@@ -31,6 +31,18 @@ class ConfluenceLogger():
         ConfluenceLogger.logger = logging.getLogger("confluence")
 
     @staticmethod
+    def error(msg, *args, **kwargs):
+        """
+        log an error message
+
+        Log a message at the error level. `msg` is a format string with the
+        arguments provided by `args`. See also:
+         https://docs.python.org/3/library/logging.html#logging.Logger.error
+        """
+        if ConfluenceLogger.logger:
+            ConfluenceLogger.logger.error(msg, *args, **kwargs)
+
+    @staticmethod
     def info(msg, *args, **kwargs):
         """
         log an informative message
