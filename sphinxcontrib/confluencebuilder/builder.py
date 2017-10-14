@@ -20,7 +20,6 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 from sphinx import addnodes
 from os import path
-from xmlrpc.client import Fault
 import io
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
@@ -162,8 +161,8 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
-        for doc in docnames:
-            doctree = self.env.get_doctree(doc)
+        for docname in docnames:
+            doctree = self.env.get_doctree(docname)
 
             # Find title for document.
             idx = doctree.first_child_matching_class(nodes.section)
@@ -182,9 +181,9 @@ class ConfluenceBuilder(Builder):
                         "since it has no title: %s" % docname)
                 continue
 
-            doctitle = ConfluenceState.registerTitle(doc, doctitle,
+            doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
-            self.publish_docnames.append(doc)
+            self.publish_docnames.append(docname)
 
             target_refs = []
             for node in doctree.traverse(nodes.target):
@@ -204,7 +203,7 @@ class ConfluenceBuilder(Builder):
 
                         for id in section_node['ids']:
                             if not id in target_refs:
-                                id = '%s#%s' % (doc, id)
+                                id = '%s#%s' % (docname, id)
                             ConfluenceState.registerTarget(id, target)
 
         ConfluenceState.titleConflictCheck()
