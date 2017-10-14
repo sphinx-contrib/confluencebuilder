@@ -136,6 +136,7 @@ class TestConfluencePublisher(unittest.TestCase):
             self.app.builder.publish_docnames = [self.single_docname]
 
         self.app.builder.finish()
+        self.app.builder.cleanup()
 
 if __name__ == '__main__':
     if '--doc' in sys.argv:
