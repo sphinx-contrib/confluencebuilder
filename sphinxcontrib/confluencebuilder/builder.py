@@ -217,7 +217,7 @@ class ConfluenceBuilder(Builder):
                 self.register_parents(ordered_docnames, self.config.master_doc)
                 ordered_docnames.extend(x for x in self.publish_docnames
                     if x not in ordered_docnames)
-                self.publish_docnames = ordered_docnames[:]
+                self.publish_docnames = ordered_docnames
 
     def register_parents(self, ordered_docnames, docname):
         ordered_docnames.append(docname)
