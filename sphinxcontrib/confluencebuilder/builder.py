@@ -8,6 +8,7 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
+from .config import ConfluenceConfig
 from .compat import ConfluenceCompat
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
@@ -58,6 +59,9 @@ class ConfluenceBuilder(Builder):
     publisher = ConfluencePublisher()
 
     def init(self):
+        if not ConfluenceConfig.validate(self.config):
+            raise ConfluenceConfigurationError('configuration error')
+
         self.writer = ConfluenceWriter(self)
         self.publisher.init(self.config)
 
@@ -90,23 +94,6 @@ class ConfluenceBuilder(Builder):
             self.link_transform = link_transform
 
         if self.config.confluence_publish:
-            if not self.config.confluence_server_url:
-                raise ConfluenceConfigurationError("""Confluence server URL """
-                    """has not been set. Unable to publish.""")
-            if not self.config.confluence_space_name:
-                raise ConfluenceConfigurationError("""Confluence space key """
-                    """has not been set. Unable to publish.""")
-            if not self.config.confluence_server_user:
-                if self.config.confluence_server_pass:
-                    raise ConfluenceConfigurationError("""Confluence """
-                        """username has not been set even though a password """
-                        """has been set. Unable to publish.""")
-            if not self.config.master_doc:
-                if self.config.confluence_master_homepage:
-                    raise ConfluenceConfigurationError("""Confluence """
-                        """master homepage option is set, but no master is """
-                        """defined in documentation. Unable to publish.""")
-
             self.publish = True
             self.publisher.connect()
             self.parent_id = self.publisher.getBasePageId()
