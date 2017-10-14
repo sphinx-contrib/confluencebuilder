@@ -58,8 +58,8 @@ class ConfluenceBuilder(Builder):
     master_doc_page_id = None
     publisher = ConfluencePublisher()
 
-    def init(self):
-        if not ConfluenceConfig.validate(self.config):
+    def init(self, suppress_conf_check=True):
+        if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
 
         self.writer = ConfluenceWriter(self)

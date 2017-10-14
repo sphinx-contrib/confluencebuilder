@@ -89,7 +89,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         builder = ConfluenceBuilder(self.app)
         builder.config.confluence_publish = True
         with self.assertRaises(ConfluenceConfigurationError):
-            builder.init()
+            builder.init(suppress_conf_check=True)
 
     def test_bad_values(self):
         self._assertExpectedWithOutput('badvalues')
