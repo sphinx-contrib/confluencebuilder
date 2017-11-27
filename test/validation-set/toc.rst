@@ -22,3 +22,5 @@ The following is a Sphinx generated table of contents:
    references
    sections-a
    tables
+   verification-of-content
+   contents

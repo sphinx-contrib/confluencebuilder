@@ -10,7 +10,7 @@
 from __future__ import (absolute_import, print_function, unicode_literals)
 from ..common import ConfluenceDocMap
 from ..common import ConfluenceLogger
-from ..experimental import EXPERIMENTAL_QUOTE_KEYWORD
+from ..experimental import ConfluenceExperimentalQuoteSupport
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
 from .shared import LITERAL2CODE_MAP
@@ -26,10 +26,10 @@ import posixpath
 
 # Confluence encoding for special chars
 SPECIAL_VALUE_REPLACEMENTS = {
-    ('{', '&lcub;'),
-    ('}', '&rcub;'),
-    ('<', '&lt;'),
-    ('>', '&gt;')
+    ('{', '&#123;'),
+    ('}', '&#125;'),
+    ('<', '&#60;'),
+    ('>', '&#62;')
 }
 
 class ConfluenceWikiTranslator(ConfluenceTranslator):
@@ -876,10 +876,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.add_text(' (%s)' % node['explanation'])
 
     def visit_title_reference(self, node):
-        self.add_text('*')
+        self.add_text('_')
 
     def depart_title_reference(self, node):
-        self.add_text('*')
+        self.add_text('_')
 
     def visit_literal(self, node):
         self.add_text('{{')
@@ -915,9 +915,8 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         conf = self.builder.config
 
         s = ''
-        if conf.confluence_experimental_indentation:
-            for i in range(self.quote_level):
-                s += EXPERIMENTAL_QUOTE_KEYWORD
+        if conf.confluence_experimental_indentation and self.quote_level > 0:
+            s += ConfluenceExperimentalQuoteSupport.quoteStart(self.quote_level)
         s += node.astext()
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
@@ -925,6 +924,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         remove_chars = [
             '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
             ]
+
+        if conf.confluence_experimental_indentation and self.quote_level > 0:
+            s += ConfluenceExperimentalQuoteSupport.quoteEnd()
+
         for char in remove_chars:
             s = s.replace(char, '')
         for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
