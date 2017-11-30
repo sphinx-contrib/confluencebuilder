@@ -14,7 +14,7 @@ from .common import ConfluenceLogger
 from sphinx.writers.text import STDINDENT
 import argparse
 
-__version__='0.7.0.dev0'
+__version__='0.7'
 
 def main():
     parser = argparse.ArgumentParser(prog=__name__,
