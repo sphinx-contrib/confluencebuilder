@@ -1,6 +1,6 @@
 
-master
-======
+0.7.0 (2017-11-30)
+==================
 
 * cap headers/sections to six levels for improved visualization
 * fixed rest publishing for encoding issues and python 3.x (< 3.6) issues 
