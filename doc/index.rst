@@ -19,6 +19,7 @@ documentation contents
    tutorial
    configuration
    documentation
+   experimental
    changelog
 
 .. _Confluence: https://www.atlassian.com/software/confluence

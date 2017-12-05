@@ -296,6 +296,7 @@ class ConfluencePublisher():
                         newPage['ancestors'] = [{'id': parent_id}]
 
                     rsp = self.rest_client.post('content', newPage)
+                    uploaded_page_id = rsp['id']
                 else:
                     page = rsp['results'][0]
                     last_version = int(page['version']['number'])
