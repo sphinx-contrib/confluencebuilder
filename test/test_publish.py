@@ -26,6 +26,7 @@ class TestConfluenceBuilder(unittest.TestCase):
 
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
+        self.config['confluence_page_hierarchy'] = True
         self.config['confluence_parent_page'] = 'Documentation'
         self.config['confluence_publish'] = False
         self.config['confluence_remove_title'] = False
@@ -35,6 +36,22 @@ class TestConfluenceBuilder(unittest.TestCase):
         self.app = Sphinx(
             src_dir, None, self.out_dir, doctree_dir, 'confluence', self.config)
         self.app.build(force_all=True)
+
+    def test_parent_registration(self):
+        root_doc = ConfluenceState.parentDocname('toctree')
+        self.assertIsNone(root_doc)
+
+        parent_doc = ConfluenceState.parentDocname('toctree-doc1')
+        self.assertEqual(parent_doc, 'toctree')
+
+        parent_doc = ConfluenceState.parentDocname('toctree-doc2')
+        self.assertEqual(parent_doc, 'toctree')
+
+        parent_doc = ConfluenceState.parentDocname('toctree-doc3')
+        self.assertEqual(parent_doc, 'toctree')
+
+        parent_doc = ConfluenceState.parentDocname('toctree-doc2a')
+        self.assertEqual(parent_doc, 'toctree-doc2')
 
     def test_publish(self):
         builder = ConfluenceBuilder(self.app)
