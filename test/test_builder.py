@@ -9,7 +9,6 @@
 
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import difflib
 import io
 import os
@@ -84,12 +83,6 @@ class TestConfluenceBuilder(unittest.TestCase):
 
     def test_table(self):
         self._assertExpectedWithOutput('tables')
-
-    def test_publish(self):
-        builder = ConfluenceBuilder(self.app)
-        builder.config.confluence_publish = True
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
 
     def test_bad_values(self):
         self._assertExpectedWithOutput('badvalues')
