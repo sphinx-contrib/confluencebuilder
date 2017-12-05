@@ -42,7 +42,7 @@ The recommended method to installing this extension is using pip_:
 For a more in-depth installation information, see also:
 
  | Atlassian Confluence Builder for Sphinx - Installation
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/#installing
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/install.html
 
 Usage
 =====
@@ -65,7 +65,7 @@ Usage
 For more information on the usage of this extension, see also:
 
  | Atlassian Confluence Builder for Sphinx - Tutorial
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/#tutorial
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/tutorial.html
 
 Configuration
 =============
@@ -86,7 +86,7 @@ and publishing:
 For a complete list of configuration changes, see also:
 
  | Atlassian Confluence Builder for Sphinx - Configuration
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/#configuration
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/configuration.html
 
 Demonstration
 =============
