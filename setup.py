@@ -2,11 +2,8 @@
 
 from setuptools import setup, find_packages
 
-long_desc = '''
-Sphinx_ extension to build Confluence Wiki markup files.
-
-This extension is in particular useful to use in combination with an automated publisher to confluence
-'''
+with open('README.rst', 'r') as readme_rst:
+    long_desc = readme_rst.read()
 
 requires = [
     'future',
@@ -19,7 +16,7 @@ setup(
     version='0.8.0.dev0',
     url='https://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
     download_url='https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
-    license='BSD', # 2-clause
+    license='BSD',  # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',
     description="""Sphinx extension to output Atlassian Confluence Wiki """
