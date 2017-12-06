@@ -1,3 +1,9 @@
+master
+======
+
+* fix case where first-publish with 'confluence_master_homepage' fails to
+  configure the space's homepage
+* support page hierarchy
 
 0.8.0.dev0 (2017-12-06)
 =======================

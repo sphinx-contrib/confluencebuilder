@@ -9,7 +9,7 @@
 
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.common import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from subprocess import check_output
 import io
 import os
@@ -124,22 +124,19 @@ class TestConfluencePublisher(unittest.TestCase):
         self.app = Sphinx(
             val_dir, None, self.out, doctree_dir, 'confluence', self.config)
         self.app.build(force_all=True)
-        self.docnames = self.app.builder.env.found_docs
 
     def test_manual_publish(self):
         self.app.config['confluence_publish'] = True
+        self.app.builder.init()
 
-        builder = ConfluenceBuilder(self.app)
-        builder.init()
-        for docname in self.docnames:
-            if self.single_docname and self.single_docname != docname:
-                continue
-            ConfluenceLogger.info("\033[01mpublishing '%s'...\033[0m" % docname)
-            output_filename = os.path.join(self.out, docname + '.conf')
-            with io.open(output_filename, encoding='utf8') as output_file:
-                output = output_file.read()
-                builder.publish_doc(docname, output)
-        builder.finish()
+        # if a test provides an explict document name to publish, override the
+        # builder's internal publish document names to only publish the single
+        # document
+        if self.single_docname:
+            self.app.builder.publish_docnames = [self.single_docname]
+
+        self.app.builder.finish()
+        self.app.builder.cleanup()
 
 if __name__ == '__main__':
     if '--doc' in sys.argv:

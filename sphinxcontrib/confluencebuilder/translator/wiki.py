@@ -8,9 +8,9 @@
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
-from ..common import ConfluenceDocMap
-from ..common import ConfluenceLogger
 from ..experimental import ConfluenceExperimentalQuoteSupport
+from ..logger import ConfluenceLogger
+from ..state import ConfluenceState
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
 from .shared import LITERAL2CODE_MAP
@@ -44,10 +44,18 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
-        if not 'anchor' in builder.config.confluence_adv_restricted_macros:
+        restricted_macros = builder.config.confluence_adv_restricted_macros
+        if not 'anchor' in restricted_macros:
             self.can_anchor = True
         else:
             self.can_anchor = False
+
+        if (self.builder.config.confluence_page_hierarchy
+                and builder.config.confluence_adv_hierarchy_child_macro
+                and not 'children' in restricted_macros):
+            self.apply_hierarchy_children_macro = True
+        else:
+            self.apply_hierarchy_children_macro = False
 
         newlines = builder.config.text_newlines
         if newlines == 'windows':
@@ -67,6 +75,13 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.indent = self.builder.config.confluence_indent
         else:
             self.indent = STDINDENT
+
+        toctrees = self.builder.env.get_doctree(self.docname).traverse(
+            addnodes.toctree)
+        if toctrees and toctrees[0].get('maxdepth') > 0:
+            self.tocdepth = toctrees[0].get('maxdepth')
+        else:
+            self.tocdepth = 1
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -165,7 +180,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.end_state()
 
     def visit_compound(self, node):
-        pass
+        if self.apply_hierarchy_children_macro:
+            self.add_text('{children:depth=%s}' % self.tocdepth)
+            self.add_text(self.nl)
+            raise nodes.SkipNode
 
     def depart_compound(self, node):
         pass
@@ -759,7 +777,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_target(self, node):
         if 'refid' in node and self.can_anchor:
             anchor = ''.join(node['refid'].split())
-            target = ConfluenceDocMap.target(anchor)
+            target = ConfluenceState.target(anchor)
             if not target:
                 self.add_text('{anchor:%s}' % anchor)
 
@@ -793,7 +811,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if 'refuri' in node:
             docname = posixpath.normpath(
                 self.docparent + path.splitext(node['refuri'])[0])
-            doctitle = ConfluenceDocMap.title(docname)
+            doctitle = ConfluenceState.title(docname)
             if not doctitle:
                 ConfluenceLogger.warn("unable to build link to document due to "
                     "missing title (in %s): %s" % (self.docname, docname))
@@ -806,7 +824,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
                 else:
                     target_name = anchor
 
-                target = ConfluenceDocMap.target(target_name)
+                target = ConfluenceState.target(target_name)
                 if target:
                     anchor = '#' + target
                 else:
@@ -829,7 +847,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         # Anchor.
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
-            target = ConfluenceDocMap.target(anchor)
+            target = ConfluenceState.target(anchor)
             text = node.astext().replace('[', '^')
             text = text.replace(']', '^')
             if target:

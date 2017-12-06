@@ -10,7 +10,7 @@
 """
 
 from .builder import ConfluenceBuilder
-from .common import ConfluenceLogger
+from .logger import ConfluenceLogger
 from sphinx.writers.text import STDINDENT
 import argparse
 
@@ -58,6 +58,8 @@ def setup(app):
     app.add_config_value('confluence_disable_notifications', None, False)
     """Enablement of configuring master as space's homepage."""
     app.add_config_value('confluence_master_homepage', None, False)
+    """Enablement of publishing pages into a hierarchy from a master toctree."""
+    app.add_config_value('confluence_page_hierarchy', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
     """Root/parent page's identifier to publish documents into."""
@@ -84,6 +86,8 @@ def setup(app):
     app.add_config_value('confluence_timeout', None, False)
 
     """(advanced)"""
+    """Enablement of the children macro for hierarchy mode."""
+    app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
     """List of extension-provided macros restricted for use."""
     app.add_config_value('confluence_adv_restricted_macros', [], False)
     """Enforce reStructuredText strict line breaks."""

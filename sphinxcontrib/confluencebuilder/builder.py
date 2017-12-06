@@ -8,17 +8,19 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-from .common import ConfluenceDocMap
-from .common import ConfluenceLogger
+from .config import ConfluenceConfig
+from .compat import ConfluenceCompat
 from .exceptions import ConfluenceConfigurationError
+from .logger import ConfluenceLogger
 from .publisher import ConfluencePublisher
+from .state import ConfluenceState
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
+from sphinx import addnodes
 from os import path
-from xmlrpc.client import Fault
 import io
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
@@ -48,6 +50,7 @@ def relative_uri(base, to):
 
 class ConfluenceBuilder(Builder):
     current_docname = None
+    publish_docnames = []
     name = 'confluence'
     format = 'confluence'
     file_suffix = '.conf'
@@ -55,7 +58,10 @@ class ConfluenceBuilder(Builder):
     master_doc_page_id = None
     publisher = ConfluencePublisher()
 
-    def init(self):
+    def init(self, suppress_conf_check=True):
+        if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
+            raise ConfluenceConfigurationError('configuration error')
+
         self.writer = ConfluenceWriter(self)
         self.publisher.init(self.config)
 
@@ -88,26 +94,6 @@ class ConfluenceBuilder(Builder):
             self.link_transform = link_transform
 
         if self.config.confluence_publish:
-            if not self.config.confluence_server_url:
-                raise ConfluenceConfigurationError("""Confluence server URL """
-                    """has not been set. Unable to publish.""")
-            if not self.config.confluence_space_name:
-                raise ConfluenceConfigurationError("""Confluence space key """
-                    """has not been set. Unable to publish.""")
-            if not self.config.confluence_server_user:
-                if self.config.confluence_server_pass:
-                    raise ConfluenceConfigurationError("""Confluence """
-                        """username has not been set even though a password """
-                        """has been set. Unable to publish.""")
-            if self.config.master_doc:
-                if not self.config.confluence_master_homepage:
-                    ConfluenceLogger.verbose("master_doc value ignored")
-            else:
-                if self.config.confluence_master_homepage:
-                    raise ConfluenceConfigurationError("""Confluence """
-                        """master homepage option is set, but no master is """
-                        """defined in documentation. Unable to publish.""")
-
             self.publish = True
             self.publisher.connect()
             self.parent_id = self.publisher.getBasePageId()
@@ -162,8 +148,8 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
-        for doc in docnames:
-            doctree = self.env.get_doctree(doc)
+        for docname in docnames:
+            doctree = self.env.get_doctree(docname)
 
             # Find title for document.
             idx = doctree.first_child_matching_class(nodes.section)
@@ -177,10 +163,14 @@ class ConfluenceBuilder(Builder):
 
             doctitle = first_section[idx].astext()
             if not doctitle:
+                if self.publish:
+                    ConfluenceLogger.warn("document will not be published "
+                        "since it has no title: %s" % docname)
                 continue
 
-            doctitle = ConfluenceDocMap.registerTitle(doc, doctitle,
+            doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
+            self.publish_docnames.append(docname)
 
             target_refs = []
             for node in doctree.traverse(nodes.target):
@@ -200,10 +190,29 @@ class ConfluenceBuilder(Builder):
 
                         for id in section_node['ids']:
                             if not id in target_refs:
-                                id = '%s#%s' % (doc, id)
-                            ConfluenceDocMap.registerTarget(id, target)
+                                id = '%s#%s' % (docname, id)
+                            ConfluenceState.registerTarget(id, target)
 
-        ConfluenceDocMap.conflictCheck()
+        ConfluenceState.titleConflictCheck()
+
+        # if we have a master document set and hierarchy support enabled, go
+        # through the list of expected document names to publish, register
+        # parent document names and re-define the explicit order to publish
+        if self.config.master_doc and self.config.confluence_page_hierarchy:
+            if self.config.master_doc in self.publish_docnames:
+                ordered_docnames = []
+                self.register_parents(ordered_docnames, self.config.master_doc)
+                ordered_docnames.extend(x for x in self.publish_docnames
+                    if x not in ordered_docnames)
+                self.publish_docnames = ordered_docnames
+
+    def register_parents(self, ordered_docnames, docname):
+        ordered_docnames.append(docname)
+        doctree = self.env.get_doctree(docname)
+        for node in doctree.traverse(addnodes.toctree):
+            for includefile in node['includefiles']:
+                ConfluenceState.registerParentDocname(includefile, docname)
+                self.register_parents(ordered_docnames, includefile)
 
     def write_doc(self, docname, doctree):
         self.current_docname = docname
@@ -234,17 +243,19 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.warn("error writing file "
                     "%s: %s" % (outfilename, err))
 
-            if self.publish:
-                self.publish_doc(docname, self.writer.output)
-
     def publish_doc(self, docname, output):
-        title = ConfluenceDocMap.title(docname)
-        if not title:
-            ConfluenceLogger.warn("skipping document with no title: "
-                "%s" % docname)
-            return
+        title = ConfluenceState.title(docname)
 
-        uploaded_id = self.publisher.storePage(title, output, self.parent_id)
+        parent_id = None
+        if self.config.master_doc and self.config.confluence_page_hierarchy:
+            if self.config.master_doc != docname:
+                parent = ConfluenceState.parentDocname(docname)
+                parent_id = ConfluenceState.uploadId(parent)
+        if not parent_id:
+            parent_id = self.parent_id
+
+        uploaded_id = self.publisher.storePage(title, output, parent_id)
+        ConfluenceState.registerUploadId(docname, uploaded_id)
 
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
@@ -253,17 +264,39 @@ class ConfluenceBuilder(Builder):
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
-    def finish(self):
-        if self.publish:
+    def publish_finalize(self):
+        if self.master_doc_page_id:
             if self.config.confluence_master_homepage is True:
                 ConfluenceLogger.info('updating space\'s homepage... ', nonl=0)
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 ConfluenceLogger.info('done\n')
 
-            if self.config.confluence_purge is True and self.legacy_pages:
-                ConfluenceLogger.info('removing legacy pages... ', nonl=0)
-                for legacy_page_id in self.legacy_pages:
-                   self.publisher.removePage(legacy_page_id)
-                ConfluenceLogger.info('done\n')
+    def publish_purge(self):
+        if self.config.confluence_purge is True and self.legacy_pages:
+            ConfluenceLogger.info('removing legacy pages... ', nonl=0)
+            for legacy_page_id in self.legacy_pages:
+               self.publisher.removePage(legacy_page_id)
+            ConfluenceLogger.info('done\n')
 
+    def finish(self):
+        if self.publish:
+            for docname in ConfluenceCompat.status_iterator(self,
+                    self.publish_docnames, 'publishing... ',
+                    length=len(self.publish_docnames)):
+                docfile = path.join(self.outdir, self.file_transform(docname))
+
+                try:
+                    with io.open(docfile, 'r', encoding='utf-8') as file:
+                        output = file.read()
+                        self.publish_doc(docname, output)
+
+                except (IOError, OSError) as err:
+                    ConfluenceLogger.warn("error reading file %s: "
+                        "%s" % (docfile, err))
+
+            self.publish_purge()
+            self.publish_finalize()
+
+    def cleanup(self):
+        if self.publish:
             self.publisher.disconnect()

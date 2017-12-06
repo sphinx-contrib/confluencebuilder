@@ -14,7 +14,6 @@
      https://developer.atlassian.com/confdev/deprecated-apis/confluence-xml-rpc-and-soap-apis
 """
 
-from .common import ConfluenceLogger
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
@@ -24,6 +23,7 @@ from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .experimental import ConfluenceExperimentalQuoteSupport
+from .logger import ConfluenceLogger
 from .rest import Rest
 import socket
 
@@ -137,6 +137,8 @@ class ConfluencePublisher():
                         self.xmlrpc = self.xmlrpc.confluence1
                     except xmlrpclib.Fault as ex:
                         raise ConfluenceBadSpaceError(self.space_name)
+                except socket.gaierror as ex:
+                    raise ConfluenceBadServerUrlError(self.server_url, ex)
 
     def disconnect(self):
         if self.use_xmlrpc and self.token:
@@ -296,6 +298,7 @@ class ConfluencePublisher():
                         newPage['ancestors'] = [{'id': parent_id}]
 
                     rsp = self.rest_client.post('content', newPage)
+                    uploaded_page_id = rsp['id']
                 else:
                     page = rsp['results'][0]
                     last_version = int(page['version']['number'])
