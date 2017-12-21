@@ -180,6 +180,11 @@ An example publish prefix is as follows:
 confluence_purge
 ~~~~~~~~~~~~~~~~
 
+.. warning::
+
+    Publishing individual/subset of documents with this option may lead to
+    unexpected results.
+
 A boolean value to whether or not purge legacy pages detected in a space or
 parent page. By default, this value is set to ``False`` to indicate that no
 pages will be removed. If this configuration is set to ``True``, detected pages
@@ -191,6 +196,13 @@ elsewise, all pages in the configured space could be removed.
 .. code-block:: python
 
     confluence_purge = False
+
+While this capability is useful for updating a series of pages, it may lead to
+unexpected results when attempting to publish a single-page update. The purge
+operation will remove all pages that are not publish in the request. For
+example, if an original request publishes ten documents and purges excess
+documents, a following publish attempt with only one of the documents will purge
+the other nine pages.
 
 advanced configuration - processing
 -----------------------------------
