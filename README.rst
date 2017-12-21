@@ -17,7 +17,7 @@ Atlassian Confluence Builder for Sphinx
     :alt: Documentation Status
 
 Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
-publish them to a Confluence server.
+publish them to a Confluence instance.
 
 Requirements
 ============
@@ -28,7 +28,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ 4.0+
+* Confluence_ Cloud or Server 4.0+
 
 Installing
 ==========
