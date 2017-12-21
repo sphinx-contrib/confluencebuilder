@@ -36,10 +36,15 @@ value is set to ``False``.
 confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The password used to authenticate with the Confluence server.
+The password value used to authenticate with the Confluence instance. If using
+Confluence cloud, it is recommended to use an API token (if supported) for the
+configured username value (see api_tokens_). If API tokens are not being used,
+the plain password for the configured username value should be used.
 
 .. code-block:: python
 
+    confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
+        (or)
     confluence_server_pass = 'myawesomepassword'
 
 confluence_server_url
@@ -59,10 +64,14 @@ should be as follows:
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The username used to authenticate with the Confluence server.
+The username value used to authenticate with the Confluence instance. If using
+Confluence cloud, this value will most likely be the account's E-mail address.
+If using Confluence server, this value will most likely be the username value.
 
 .. code-block:: python
 
+    confluence_server_user = 'myawesomeuser@example.com'
+        (or)
     confluence_server_user = 'myawesomeuser'
 
 confluence_space_name
@@ -330,5 +339,6 @@ seconds, the following can be used:
     confluence_timeout = 10
 
 .. _Requests: https://pypi.python.org/pypi/requests
+.. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
