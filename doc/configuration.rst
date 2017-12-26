@@ -132,6 +132,20 @@ the master_doc_ configuration is ignored with a value of ``False``.
 
     confluence_master_homepage = False
 
+confluence_max_doc_depth
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+An integer value, if provided, to indicate the maximum depth permitted for a
+nested child page before its contents is inlined with a parent. The root of all
+pages is typically the configured master_doc_. The root page is considered to be
+at a depth of zero. By defining a value of ``0``, all child pages of the root
+document will be merged into a single document. By default, the maximum document
+depth is disabled with a value of ``None``.
+
+.. code-block:: python
+
+    confluence_max_doc_depth = 2
+
 confluence_page_hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
