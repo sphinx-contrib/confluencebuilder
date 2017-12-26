@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from subprocess import check_output
 import io
 import os
+import shutil
 import sys
 import unittest
 
@@ -37,6 +38,7 @@ class TestConfluencePublisher(unittest.TestCase):
         build_dir = os.path.join(base_dir, 'build')
         doctree_dir = os.path.join(build_dir, 'validation-doctree')
         self.out = os.path.join(build_dir, 'validation-out')
+        shutil.rmtree(build_dir, ignore_errors=True)
 
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
