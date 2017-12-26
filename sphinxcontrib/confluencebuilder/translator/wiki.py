@@ -829,10 +829,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
                 if target:
                     anchor = '#' + target
                 else:
-                    ConfluenceLogger.warn("unable to build link to document "
-                        "due to missing target (in "
-                        "%s): %s" % (self.docname, anchor))
-                    anchor = ''
+                    anchor = '#' + anchor
             else:
                 anchor = ''
 
