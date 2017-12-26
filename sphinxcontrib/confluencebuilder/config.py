@@ -52,6 +52,19 @@ The option 'confluence_header_file' has been provided to find a header template
 file from a relative location. Ensure the value is set to a proper file path.
 """)
 
+        if c.confluence_max_doc_depth:
+            depth = c.confluence_max_doc_depth
+            if not isinstance(depth, int) or depth < 0:
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""maximum document depth is not an integer value
+
+When limiting the document depth permitted for a building/publishing event, the
+defined maximum document depth must be defined as an integer value (not a float,
+string, etc.).
+""")
+
         if c.confluence_publish:
             if c.confluence_disable_rest and c.confluence_disable_xmlrpc:
                 errState = True
