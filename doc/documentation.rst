@@ -18,4 +18,4 @@ following command:
 
 .. _Read the Docs: https://readthedocs.org/
 .. _Sphinx: http://sphinx-doc.org/
-.. _sphinx_rtd_theme:: https://github.com/rtfd/sphinx_rtd_theme#installation
+.. _sphinx_rtd_theme: https://github.com/rtfd/sphinx_rtd_theme#installation

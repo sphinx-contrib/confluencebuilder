@@ -58,6 +58,8 @@ def setup(app):
     app.add_config_value('confluence_disable_notifications', None, False)
     """Enablement of configuring master as space's homepage."""
     app.add_config_value('confluence_master_homepage', None, False)
+    """Enablement of the maximum document depth (before inlining)."""
+    app.add_config_value('confluence_max_doc_depth', None, False)
     """Enablement of publishing pages into a hierarchy from a master toctree."""
     app.add_config_value('confluence_page_hierarchy', None, False)
     """Root/parent page's name to publish documents into."""

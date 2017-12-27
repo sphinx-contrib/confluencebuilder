@@ -41,6 +41,13 @@ class ConfluenceTranslator(TextTranslator):
     def depart_centered(self, node):
         pass
 
+    def visit_start_of_file(self, node):
+        # ignore managing state of inlined documents
+        pass
+
+    def depart_start_of_file(self, node):
+        pass
+
     def visit_meta(self, node):
         # always ignore meta nodes as they are html-specific
         # http://docutils.sourceforge.net/docs/ref/rst/directives.html#meta

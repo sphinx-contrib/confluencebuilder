@@ -36,10 +36,15 @@ value is set to ``False``.
 confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The password used to authenticate with the Confluence server.
+The password value used to authenticate with the Confluence instance. If using
+Confluence cloud, it is recommended to use an API token (if supported) for the
+configured username value (see api_tokens_). If API tokens are not being used,
+the plain password for the configured username value should be used.
 
 .. code-block:: python
 
+    confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
+        (or)
     confluence_server_pass = 'myawesomepassword'
 
 confluence_server_url
@@ -59,10 +64,14 @@ should be as follows:
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The username used to authenticate with the Confluence server.
+The username value used to authenticate with the Confluence instance. If using
+Confluence cloud, this value will most likely be the account's E-mail address.
+If using Confluence server, this value will most likely be the username value.
 
 .. code-block:: python
 
+    confluence_server_user = 'myawesomeuser@example.com'
+        (or)
     confluence_server_user = 'myawesomeuser'
 
 confluence_space_name
@@ -123,6 +132,20 @@ the master_doc_ configuration is ignored with a value of ``False``.
 
     confluence_master_homepage = False
 
+confluence_max_doc_depth
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+An integer value, if provided, to indicate the maximum depth permitted for a
+nested child page before its contents is inlined with a parent. The root of all
+pages is typically the configured master_doc_. The root page is considered to be
+at a depth of zero. By defining a value of ``0``, all child pages of the root
+document will be merged into a single document. By default, the maximum document
+depth is disabled with a value of ``None``.
+
+.. code-block:: python
+
+    confluence_max_doc_depth = 2
+
 confluence_page_hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -180,6 +203,11 @@ An example publish prefix is as follows:
 confluence_purge
 ~~~~~~~~~~~~~~~~
 
+.. warning::
+
+    Publishing individual/subset of documents with this option may lead to
+    unexpected results.
+
 A boolean value to whether or not purge legacy pages detected in a space or
 parent page. By default, this value is set to ``False`` to indicate that no
 pages will be removed. If this configuration is set to ``True``, detected pages
@@ -191,6 +219,13 @@ elsewise, all pages in the configured space could be removed.
 .. code-block:: python
 
     confluence_purge = False
+
+While this capability is useful for updating a series of pages, it may lead to
+unexpected results when attempting to publish a single-page update. The purge
+operation will remove all pages that are not publish in the request. For
+example, if an original request publishes ten documents and purges excess
+documents, a following publish attempt with only one of the documents will purge
+the other nine pages.
 
 advanced configuration - processing
 -----------------------------------
@@ -318,5 +353,6 @@ seconds, the following can be used:
     confluence_timeout = 10
 
 .. _Requests: https://pypi.python.org/pypi/requests
+.. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree

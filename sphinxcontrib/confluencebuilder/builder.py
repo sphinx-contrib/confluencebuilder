@@ -49,7 +49,9 @@ def relative_uri(base, to):
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
 class ConfluenceBuilder(Builder):
+    cache_doctrees = {}
     current_docname = None
+    omitted_docnames = []
     publish_docnames = []
     name = 'confluence'
     format = 'confluence'
@@ -148,10 +150,32 @@ class ConfluenceBuilder(Builder):
                             self.get_target_uri(to, typ))
 
     def prepare_writing(self, docnames):
+        ordered_docnames = []
+        traversed = [self.config.master_doc]
+
+        # prepare caching doctree hook
+        #
+        # We'll temporarily override the environment's 'get_doctree' method to
+        # allow this extension to manipulate the doctree for a document inside
+        # the pre-writing stage to also take effect in the writing stage.
+        self._original_get_doctree = self.env.get_doctree
+        self.env.get_doctree = self._get_doctree
+
+        # process the document structure of the master document, allowing:
+        #  - populating a publish order to ensure parent pages are created first
+        #     (when using hierarchy mode)
+        #  - squash pages which exceed maximum depth (if configured with a max
+        #     depth value)
+        self.process_tree_structure(
+            ordered_docnames, self.config.master_doc, traversed)
+
+        # add orphans (if any) to the publish list
+        ordered_docnames.extend(x for x in docnames if x not in traversed)
+
         for docname in docnames:
             doctree = self.env.get_doctree(docname)
 
-            # Find title for document.
+            # find title for document
             idx = doctree.first_child_matching_class(nodes.section)
             if idx is None or idx == -1:
                 continue
@@ -170,7 +194,8 @@ class ConfluenceBuilder(Builder):
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
-            self.publish_docnames.append(docname)
+            if docname in ordered_docnames:
+                self.publish_docnames.append(docname)
 
             target_refs = []
             for node in doctree.traverse(nodes.target):
@@ -195,26 +220,51 @@ class ConfluenceBuilder(Builder):
 
         ConfluenceState.titleConflictCheck()
 
-        # if we have a master document set and hierarchy support enabled, go
-        # through the list of expected document names to publish, register
-        # parent document names and re-define the explicit order to publish
-        if self.config.master_doc and self.config.confluence_page_hierarchy:
-            if self.config.master_doc in self.publish_docnames:
-                ordered_docnames = []
-                self.register_parents(ordered_docnames, self.config.master_doc)
-                ordered_docnames.extend(x for x in self.publish_docnames
-                    if x not in ordered_docnames)
-                self.publish_docnames = ordered_docnames
+    def process_tree_structure(self, ordered, docname, traversed, depth=0):
+        omit = False
+        max_depth = self.config.confluence_max_doc_depth
+        if max_depth is not None and depth > max_depth:
+            omit = True
+            self.omitted_docnames.append(docname)
 
-    def register_parents(self, ordered_docnames, docname):
-        ordered_docnames.append(docname)
+        if not omit:
+            ordered.append(docname)
+
+        modified = False
         doctree = self.env.get_doctree(docname)
-        for node in doctree.traverse(addnodes.toctree):
-            for includefile in node['includefiles']:
-                ConfluenceState.registerParentDocname(includefile, docname)
-                self.register_parents(ordered_docnames, includefile)
+        for toctreenode in doctree.traverse(addnodes.toctree):
+            if not omit and max_depth is not None:
+                if (depth + toctreenode['maxdepth']) > max_depth:
+                    new_depth = max_depth - depth
+                    assert new_depth >= 0
+                    toctreenode['maxdepth'] = new_depth
+            movednodes = []
+            for child in toctreenode['includefiles']:
+                if child not in traversed:
+                    ConfluenceState.registerParentDocname(child, docname)
+                    traversed.append(child)
+
+                    children = self.process_tree_structure(
+                        ordered, child, traversed, depth+1)
+                    if children:
+                        movednodes.append(children)
+                        self._fix_std_labels(child, docname)
+
+            if movednodes:
+                modified = True
+                toctreenode.replace_self(movednodes)
+                toctreenode.parent['classes'].remove('toctree-wrapper')
+
+        if omit:
+            container = addnodes.start_of_file(docname=docname)
+            container.children = doctree.children
+            return container
+        elif modified:
+            self.env.resolve_references(doctree, docname, self)
 
     def write_doc(self, docname, doctree):
+        if docname in self.omitted_docnames:
+            return
         self.current_docname = docname
 
         # remove title from page contents
@@ -279,6 +329,8 @@ class ConfluenceBuilder(Builder):
             ConfluenceLogger.info('done\n')
 
     def finish(self):
+        self.env.get_doctree = self._original_get_doctree
+
         if self.publish:
             for docname in ConfluenceCompat.status_iterator(self,
                     self.publish_docnames, 'publishing... ',
@@ -300,3 +352,47 @@ class ConfluenceBuilder(Builder):
     def cleanup(self):
         if self.publish:
             self.publisher.disconnect()
+
+    def _fix_std_labels(self, olddocname, newdocname):
+        """
+        fix standard domain labels for squashed documents
+
+        When Sphinx resolves references for a doctree ('resolve_references'),
+        the standard domain's internal labels are used to map references to
+        target documents. To support document squashing (aka. max depth pages),
+        this utility method helps override a document's tuple labels so that any
+        squashed page's labels can be moved into a parent document's label set.
+        """
+        # see also: sphinx/domains/std.py
+        domain = self.env.get_domain('std')
+        for key, (fn, _l, lineno) in list(domain.data['citations'].items()):
+            if fn == olddocname:
+                data = domain.data['citations'][key]
+                domain.data['citations'][key] = newdocname, data[1], data[2]
+        for key, docnames in list(domain.data['citation_refs'].items()):
+            if fn == olddocname:
+                data = domain.data['citation_refs'][key]
+                domain.data['citation_refs'][key] = newdocname
+        for key, (fn, _l, _l) in list(domain.data['labels'].items()):
+            if fn == olddocname:
+                data = domain.data['labels'][key]
+                domain.data['labels'][key] = newdocname, data[1], data[2]
+        for key, (fn, _l) in list(domain.data['anonlabels'].items()):
+            if fn == olddocname:
+                data = domain.data['anonlabels'][key]
+                domain.data['anonlabels'][key] = newdocname, data[1]
+
+    def _get_doctree(self, docname):
+        """
+        override 'get_doctree' method
+
+        To support document squashing (aka. max depth pages), doctree's may be
+        loaded and manipulated before the writing stage. Normally, the writing
+        stage will load target doctree's from their source so there is no way to
+        pre-load and pass a document's doctree into the writing stage. To
+        overcome this, this extension hooks into the environment's 'get_doctree'
+        method and caches loaded document's doctree's into a map.
+        """
+        if docname not in self.cache_doctrees:
+            self.cache_doctrees[docname] = self._original_get_doctree(docname)
+        return self.cache_doctrees[docname]

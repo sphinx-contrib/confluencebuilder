@@ -180,10 +180,11 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.end_state()
 
     def visit_compound(self, node):
-        if self.apply_hierarchy_children_macro:
-            self.add_text('{children:depth=%s}' % self.tocdepth)
-            self.add_text(self.nl)
-            raise nodes.SkipNode
+        if 'toctree-wrapper' in node['classes']:
+            if self.apply_hierarchy_children_macro:
+                self.add_text('{children:depth=%s}' % self.tocdepth)
+                self.add_text(self.nl)
+                raise nodes.SkipNode
 
     def depart_compound(self, node):
         pass
@@ -828,10 +829,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
                 if target:
                     anchor = '#' + target
                 else:
-                    ConfluenceLogger.warn("unable to build link to document "
-                        "due to missing target (in "
-                        "%s): %s" % (self.docname, anchor))
-                    anchor = ''
+                    anchor = '#' + anchor
             else:
                 anchor = ''
 

@@ -12,6 +12,7 @@ from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 import difflib
 import io
 import os
+import shutil
 import sys
 import unittest
 
@@ -24,6 +25,7 @@ class TestConfluenceBuilder(unittest.TestCase):
         build_dir = os.path.join(base_dir, 'build')
         self.out_dir = os.path.join(build_dir, 'builder-out')
         doctree_dir = os.path.join(build_dir, 'builder-doctree')
+        shutil.rmtree(build_dir, ignore_errors=True)
 
         self.config = {}
         self.config['extensions'] = ['sphinxcontrib.confluencebuilder']
