@@ -29,7 +29,8 @@ SPECIAL_VALUE_REPLACEMENTS = {
     ('{', '&#123;'),
     ('}', '&#125;'),
     ('<', '&#60;'),
-    ('>', '&#62;')
+    ('>', '&#62;'),
+    ('-', '\-'),
 }
 
 class ConfluenceWikiTranslator(ConfluenceTranslator):
