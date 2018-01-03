@@ -70,6 +70,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.sectionlevel = 1
         self.table = False
         self.escape_newlines = 0
+        self.quote_cleanup = False
         self.quote_level = 0
         if self.builder.config.confluence_indent:
             self.indent = self.builder.config.confluence_indent
@@ -731,6 +732,11 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_line(self, node):
         self.escape_newlines += 1
 
+        if self.quote_cleanup:
+            self.quote_cleanup = False
+            data = ConfluenceExperimentalQuoteSupport.flag(self.quote_level)
+            self.add_text(data)
+
     def depart_line(self, node):
         self.escape_newlines -= 1
 
@@ -741,6 +747,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
     def depart_block_quote(self, node):
         self.quote_level -= 1
+        self.quote_cleanup = True
         if not self.builder.config.confluence_experimental_indentation:
             self.end_state()
 
@@ -761,6 +768,11 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
                     addnodes.seealso,
                 )):
             self.new_state(0)
+
+            c = self.builder.config
+            if c.confluence_experimental_indentation and self.quote_level > 0:
+                data = ConfluenceExperimentalQuoteSupport.flag(self.quote_level)
+                self.add_text(data)
 
     def depart_paragraph(self, node):
         if isinstance(node.parent, nodes.list_item):
@@ -930,19 +942,13 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_Text(self, node):
         conf = self.builder.config
 
-        s = ''
-        if conf.confluence_experimental_indentation and self.quote_level > 0:
-            s += ConfluenceExperimentalQuoteSupport.quoteStart(self.quote_level)
-        s += node.astext()
+        s = node.astext()
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
         remove_chars = [
             '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
             ]
-
-        if conf.confluence_experimental_indentation and self.quote_level > 0:
-            s += ConfluenceExperimentalQuoteSupport.quoteEnd()
 
         for char in remove_chars:
             s = s.replace(char, '')
