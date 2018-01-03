@@ -1,5 +1,5 @@
-tree-doc2c
-----------
+treedoc2c
+---------
 
 .. _example-doc2c-label:
 

@@ -1,5 +1,5 @@
-tree-doc3
----------
+treedoc3
+--------
 
 .. _example-doc3-label:
 

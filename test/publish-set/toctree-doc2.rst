@@ -1,5 +1,5 @@
-tree-doc2
----------
+treedoc2
+--------
 
 .. toctree::
    :maxdepth: 2

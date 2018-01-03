@@ -1,7 +1,7 @@
 :orphan:
 
-HEADING_TEST
+HEADING TEST
 ------------
 
-SUBHEADER_TEST
+SUBHEADER TEST
 ==============

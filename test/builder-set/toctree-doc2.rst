@@ -1,7 +1,7 @@
 :orphan:
 
-TOCTREE_TEST_2
---------------
+TOCTREETEST2
+------------
 
-TOCTREE_SUBHEADER_TEST_2
-========================
+TOCTREESUBHEADERTEST2
+=====================
