@@ -24,12 +24,22 @@ import io
 import os
 import posixpath
 
-# Confluence encoding for special chars
+# confluence encoding for special characters
+# (https://confluence.atlassian.com/doc/confluence-wiki-markup-251003035.html)
 SPECIAL_VALUE_REPLACEMENTS = {
-    ('{', '&#123;'),
-    ('}', '&#125;'),
-    ('<', '&#60;'),
-    ('>', '&#62;')
+    ('*', '&#42;'),  # strong
+    ('+', '&#43;'),  # inserted
+    ('-', '&#45;'),  # deleted
+    ('<', '&#60;'),  # *special-wiki-conversion
+    ('>', '&#62;'),  # *special-wiki-conversion
+    ('?', '&#63;'),  # citation
+    ('[', '&#91;'),  # links
+    (']', '&#93;'),  # links
+    ('^', '&#94;'),  # superscript
+    ('_', '&#95;'),  # emphasis
+    ('{', '&#123;'), # macro
+    ('}', '&#125;'), # macro
+    ('~', '&#126;')  # subscript
 }
 
 class ConfluenceWikiTranslator(ConfluenceTranslator):
@@ -943,17 +953,12 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         conf = self.builder.config
 
         s = node.astext()
+        for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
+            s = s.replace(find, encoded)
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
-        remove_chars = [
-            '[', ']' # Escaped brackets have issues with older Confluence/Wiki.
-            ]
 
-        for char in remove_chars:
-            s = s.replace(char, '')
-        for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
-            s = s.replace(find, encoded)
         self.add_text(s)
 
     def depart_Text(self, node):
