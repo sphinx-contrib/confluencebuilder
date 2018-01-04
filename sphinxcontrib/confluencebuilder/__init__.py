@@ -50,6 +50,8 @@ def setup(app):
     app.add_config_value('confluence_remove_title', True, False)
 
     """(publishing)"""
+    """Explictly prevent auto-generation of titles for titleless documents."""
+    app.add_config_value('confluence_disable_autogen_title', None, False)
     """Explictly prevent any Confluence REST API callers."""
     app.add_config_value('confluence_disable_rest', None, False)
     """Explictly prevent any Confluence XML-RPC API callers."""
