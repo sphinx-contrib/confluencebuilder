@@ -176,16 +176,15 @@ class ConfluenceBuilder(Builder):
             doctree = self.env.get_doctree(docname)
 
             # find title for document
-            idx = doctree.first_child_matching_class(nodes.section)
-            if idx is None or idx == -1:
-                continue
+            doctitle = None
+            tmpnode = doctree.next_node()
+            while isinstance(tmpnode, (nodes.comment)):
+                tmpnode = tmpnode.next_node(descend=False, siblings=True)
+            if tmpnode:
+                title_element = tmpnode.next_node(nodes.title)
+                if title_element:
+                    doctitle = title_element.astext()
 
-            first_section = doctree[idx]
-            idx = first_section.first_child_matching_class(nodes.title)
-            if idx is None or idx == -1:
-                continue
-
-            doctitle = first_section[idx].astext()
             if not doctitle:
                 if self.publish:
                     ConfluenceLogger.warn("document will not be published "
@@ -267,16 +266,15 @@ class ConfluenceBuilder(Builder):
             return
         self.current_docname = docname
 
-        # remove title from page contents
+        # remove title from page contents (if any)
         if self.config.confluence_remove_title:
-            idx = doctree.first_child_matching_class(nodes.section)
-            if not idx == None and not idx == -1:
-                first_section = doctree[idx]
-                idx = first_section.first_child_matching_class(nodes.title)
-                if not idx == None and not idx == -1:
-                    doctitle = first_section[idx].astext()
-                    if doctitle:
-                        first_section.remove(first_section[idx])
+            tmpnode = doctree.next_node()
+            while isinstance(tmpnode, (nodes.comment)):
+                tmpnode = tmpnode.next_node(descend=False, siblings=True)
+            if tmpnode:
+                title_element = tmpnode.next_node(nodes.title)
+                if title_element:
+                    tmpnode.remove(title_element)
 
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
