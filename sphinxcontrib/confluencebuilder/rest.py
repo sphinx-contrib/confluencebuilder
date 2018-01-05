@@ -75,7 +75,10 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST POST")
         if not rsp.ok:
-            raise ConfluenceBadApiError(self._format_error(rsp, key))
+            errdata = self._format_error(rsp, key)
+            errdata += "\n"
+            errdata += json.dumps(data, indent=2)
+            raise ConfluenceBadApiError(errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -101,7 +104,10 @@ class Rest:
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST PUT")
         if not rsp.ok:
-            raise ConfluenceBadApiError(self._format_error(rsp, key))
+            errdata = self._format_error(rsp, key)
+            errdata += "\n"
+            errdata += json.dumps(data, indent=2)
+            raise ConfluenceBadApiError(errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
