@@ -7,36 +7,36 @@ Admonition Test
 
 .. attention::
 
-   attention-message
+   attention message
 
 .. caution::
 
-   caution-message
+   caution message
 
 .. danger::
 
-   danger-message
+   danger message
 
 .. error::
 
-   error-message
+   error message
 
 .. hint::
 
-   hint-message
+   hint message
 
 .. important::
 
-   important-message
+   important message
 
 .. note::
 
-   note-message
+   note message
 
 .. tip::
 
-   tip-message
+   tip message
 
 .. warning::
 
-   warning-message
+   warning message

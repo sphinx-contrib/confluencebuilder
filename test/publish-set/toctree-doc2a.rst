@@ -1,5 +1,5 @@
-tree-doc2a
-----------
+treedoc2a
+---------
 
 .. _example-doc2a-label:
 

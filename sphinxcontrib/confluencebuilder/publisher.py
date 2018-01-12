@@ -266,7 +266,7 @@ class ConfluencePublisher():
 
         if self.config.confluence_experimental_indentation:
             storage_data = \
-                ConfluenceExperimentalQuoteSupport.quoteProcess(storage_data)
+                ConfluenceExperimentalQuoteSupport.process(storage_data)
             if self.config.confluence_adv_trace_data:
                 ConfluenceLogger.trace('storage-post-exp', storage_data)
 
