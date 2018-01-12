@@ -35,6 +35,7 @@ class Rest:
             self.session.auth = (
                 config.confluence_server_user,
                 config.confluence_server_pass)
+        self.verbosity = config.sphinx_verbosity
 
     def get(self, key, params):
         restUrl = self.url + self.BIND_PATH + key
@@ -76,8 +77,9 @@ class Rest:
             raise ConfluencePermissionError("REST POST")
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
-            errdata += "\n"
-            errdata += json.dumps(data, indent=2)
+            if self.verbosity > 0:
+                errdata += "\n"
+                errdata += json.dumps(data, indent=2)
             raise ConfluenceBadApiError(errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -105,8 +107,9 @@ class Rest:
             raise ConfluencePermissionError("REST PUT")
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
-            errdata += "\n"
-            errdata += json.dumps(data, indent=2)
+            if self.verbosity > 0:
+                errdata += "\n"
+                errdata += json.dumps(data, indent=2)
             raise ConfluenceBadApiError(errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
