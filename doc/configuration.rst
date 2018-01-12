@@ -275,6 +275,22 @@ get_relative_uri_ method. The default translation will be the combination of
 advanced configuration - publishing
 -----------------------------------
 
+confluence_disable_autogen_title
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to explicitly disable the automatic generation of titles for
+documents which do not have a title set. When this extension processes a set of
+documents to publish, a document needs a title value to know which Confluence
+page to create/update. In the event where a title value cannot be extracted from
+a document, a title value will be automatically generated for the document. For
+automatically generated titles, the value will always be prefixed with
+``autogen-``. For users who wish to ignore pages which have no title, this
+option can be set to ``True``. By default, this option is set to ``False``.
+
+.. code-block:: python
+
+    confluence_disable_autogen_title = True
+
 confluence_disable_rest
 ~~~~~~~~~~~~~~~~~~~~~~~
 

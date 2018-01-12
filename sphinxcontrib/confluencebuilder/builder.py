@@ -175,21 +175,8 @@ class ConfluenceBuilder(Builder):
         for docname in docnames:
             doctree = self.env.get_doctree(docname)
 
-            # find title for document
-            idx = doctree.first_child_matching_class(nodes.section)
-            if idx is None or idx == -1:
-                continue
-
-            first_section = doctree[idx]
-            idx = first_section.first_child_matching_class(nodes.title)
-            if idx is None or idx == -1:
-                continue
-
-            doctitle = first_section[idx].astext()
+            doctitle = self._parse_doctree_title(docname, doctree)
             if not doctitle:
-                if self.publish:
-                    ConfluenceLogger.warn("document will not be published "
-                        "since it has no title: %s" % docname)
                 continue
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
@@ -267,16 +254,15 @@ class ConfluenceBuilder(Builder):
             return
         self.current_docname = docname
 
-        # remove title from page contents
+        # remove title from page contents (if any)
         if self.config.confluence_remove_title:
-            idx = doctree.first_child_matching_class(nodes.section)
-            if not idx == None and not idx == -1:
-                first_section = doctree[idx]
-                idx = first_section.first_child_matching_class(nodes.title)
-                if not idx == None and not idx == -1:
-                    doctitle = first_section[idx].astext()
-                    if doctitle:
-                        first_section.remove(first_section[idx])
+            tmpnode = doctree.next_node()
+            while isinstance(tmpnode, (nodes.comment)):
+                tmpnode = tmpnode.next_node(descend=False, siblings=True)
+            if tmpnode:
+                title_element = tmpnode.next_node(nodes.title)
+                if title_element:
+                    tmpnode.remove(title_element)
 
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
@@ -396,3 +382,33 @@ class ConfluenceBuilder(Builder):
         if docname not in self.cache_doctrees:
             self.cache_doctrees[docname] = self._original_get_doctree(docname)
         return self.cache_doctrees[docname]
+
+    def _parse_doctree_title(self, docname, doctree):
+        """
+        parse a doctree for a raw title value
+
+        Examine a document's doctree value to find a title value from a title
+        section element. If no title is found, a title can be automatically
+        generated (if configuration permits) or a `None` value is returned.
+        """
+        doctitle = None
+
+        # find the title value from the first element's title element (if any)
+        tmpnode = doctree.next_node()
+        while isinstance(tmpnode, (nodes.comment)):
+            tmpnode = tmpnode.next_node(descend=False, siblings=True)
+        if tmpnode:
+            title_element = tmpnode.next_node(nodes.title)
+            if title_element:
+                doctitle = title_element.astext()
+
+        if not doctitle and not self.config.confluence_disable_autogen_title:
+            doctitle = "autogen-{}".format(docname)
+            if self.publish:
+                ConfluenceLogger.warn("document will be published using an "
+                    "generated title value: {}".format(docname))
+        elif self.publish:
+            ConfluenceLogger.warn("document will not be published since it has "
+                "no title: {}".format(docname))
+
+        return doctitle
