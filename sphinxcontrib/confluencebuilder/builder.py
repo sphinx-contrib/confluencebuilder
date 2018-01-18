@@ -65,6 +65,7 @@ class ConfluenceBuilder(Builder):
             raise ConfluenceConfigurationError('configuration error')
 
         self.writer = ConfluenceWriter(self)
+        self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
 
         server_url = self.config.confluence_server_url
