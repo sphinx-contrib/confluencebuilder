@@ -403,13 +403,14 @@ class ConfluenceBuilder(Builder):
             if title_element:
                 doctitle = title_element.astext()
 
-        if not doctitle and not self.config.confluence_disable_autogen_title:
-            doctitle = "autogen-{}".format(docname)
-            if self.publish:
-                ConfluenceLogger.warn("document will be published using an "
-                    "generated title value: {}".format(docname))
-        elif self.publish:
-            ConfluenceLogger.warn("document will not be published since it has "
-                "no title: {}".format(docname))
+        if not doctitle:
+            if not self.config.confluence_disable_autogen_title:
+                doctitle = "autogen-{}".format(docname)
+                if self.publish:
+                    ConfluenceLogger.warn("document will be published using an "
+                        "generated title value: {}".format(docname))
+            elif self.publish:
+                ConfluenceLogger.warn("document will not be published since it "
+                    "has no title: {}".format(docname))
 
         return doctitle
