@@ -706,7 +706,9 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
     def visit_literal_block(self, node):
         lang = node.get('language', self._highlight)
-        if lang in LITERAL2LANG_MAP.keys():
+        if self.builder.lang_transform:
+            lang = self.builder.lang_transform(lang)
+        elif lang in LITERAL2LANG_MAP.keys():
             lang = LITERAL2LANG_MAP[lang]
         else:
             ConfluenceLogger.warn('unknown code language: {0}'.format(lang))
