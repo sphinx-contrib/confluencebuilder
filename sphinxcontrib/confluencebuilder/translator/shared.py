@@ -3,25 +3,14 @@
     sphinxcontrib.confluencebuilder.translator.shared
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)
+from ..std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from sphinx.writers.text import TextTranslator
-
-# map of sphinx literal types to confluence code types
-#
-# This isn't a complete map of support Confluence code types. Unless specified
-# here, the default translator pattern will be to directly place a literal's
-# explicit language value into a Confluence's code macro language field. This
-# map serves as a helper to translate common Sphinx language definitions to
-# explicit language types supported by Confluence.
-LITERAL2CODE_MAP = {
-    'c': 'cpp',
-    'py': 'python'
-}
 
 # supported confluence list types
 class ConflueceListType(object):
@@ -33,6 +22,11 @@ class ConfluenceTranslator(TextTranslator):
     def __init__(self, document, builder):
         TextTranslator.__init__(self, document, builder)
 
+        if self.builder.config.highlight_language:
+            self._highlight = self.builder.config.highlight_language
+        else:
+            self._highlight = DEFAULT_HIGHLIGHT_STYLE
+
     def visit_centered(self, node):
         # centered is deprecated; ignore
         # http://www.sphinx-doc.org/en/stable/markup/para.html#directive-centered
@@ -40,6 +34,12 @@ class ConfluenceTranslator(TextTranslator):
 
     def depart_centered(self, node):
         pass
+
+    def visit_highlightlang(self, node):
+        # update the translator's highlight language from the defined directive
+        # http://www.sphinx-doc.org/en/stable/markup/code.html#directive-highlight
+        self._highlight = node.get('lang', DEFAULT_HIGHLIGHT_STYLE)
+        raise nodes.SkipNode
 
     def visit_start_of_file(self, node):
         # ignore managing state of inlined documents

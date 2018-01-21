@@ -3,7 +3,7 @@
     sphinxcontrib.confluencebuilder.translator.wiki
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
@@ -11,9 +11,10 @@ from __future__ import (absolute_import, print_function, unicode_literals)
 from ..experimental import ConfluenceExperimentalQuoteSupport
 from ..logger import ConfluenceLogger
 from ..state import ConfluenceState
+from ..std.confluence import LITERAL2LANG_MAP
+from ..std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from .shared import ConflueceListType
 from .shared import ConfluenceTranslator
-from .shared import LITERAL2CODE_MAP
 from docutils import nodes
 from os import path
 from sphinx import addnodes
@@ -160,9 +161,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             except (IOError, OSError) as err:
                 ConfluenceLogger.warn("error reading file "
                     "%s: %s" % (footerFile, err))
-
-    def visit_highlightlang(self, node):
-        raise nodes.SkipNode
 
     def visit_section(self, node):
         level = 6 if self.sectionlevel > 6 else self.sectionlevel
@@ -707,9 +705,12 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.end_state()
 
     def visit_literal_block(self, node):
-        lang = node.get('language', '')
-        if lang in LITERAL2CODE_MAP.keys():
-            lang = LITERAL2CODE_MAP[lang]
+        lang = node.get('language', self._highlight)
+        if lang in LITERAL2LANG_MAP.keys():
+            lang = LITERAL2LANG_MAP[lang]
+        else:
+            ConfluenceLogger.warn('unknown code language: {0}'.format(lang))
+            lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
 
         if node.get('linenos', False) == True:
             nums='true'
@@ -723,9 +724,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         self.add_text('{code}')
         self.add_text(self.nl)
         raise nodes.SkipNode
-
-    def depart_literal_block(self, node):
-        pass
 
     def visit_doctest_block(self, node):
         self.new_state(0)
