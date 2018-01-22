@@ -5,7 +5,7 @@
 
     Sphinx extension to output Atlassian Confluence wiki files.
 
-    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
@@ -100,6 +100,10 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
+
+    """(advanced - processing)"""
+    """Translation of a raw language to code block macro language."""
+    app.add_config_value('confluence_lang_transform', None, False)
 
     """(experimental)"""
     """Support experimental indentation support."""

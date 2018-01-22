@@ -96,6 +96,11 @@ class ConfluenceBuilder(Builder):
         else:
             self.link_transform = link_transform
 
+        if self.config.confluence_lang_transform is not None:
+            self.lang_transform = self.config.confluence_lang_transform
+        else:
+            self.lang_transform = None
+
         if self.config.confluence_publish:
             self.publish = True
             self.publisher.connect()

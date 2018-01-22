@@ -251,6 +251,24 @@ combination of "``docname`` + ``confluence_file_suffix``".
 .. _get_outdated_docs: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
 .. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
 
+confluence_lang_transform
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A function to override the translation of literal block-based directive
+language values to Confluence-support code block macro language values. The
+default translation accepts `Pygments documented language types`_ to
+`Confluence-supported syntax highlight languages`_.
+
+.. code-block:: python
+
+    def my_language_translation(lang):
+        return 'default'
+
+    confluence_lang_transform = my_language_translation
+
+.. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
+.. _Pygments documented language types: http://pygments.org/docs/lexers/
+
 confluence_link_suffix
 ~~~~~~~~~~~~~~~~~~~~~~
 
