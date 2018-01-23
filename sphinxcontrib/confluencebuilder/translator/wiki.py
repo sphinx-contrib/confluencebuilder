@@ -722,6 +722,8 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         if node.get('linenos', False) == True:
             nums='true'
+        elif data.count('\n') >= self._linenothreshold:
+            nums='true'
         else:
             nums='false'
 

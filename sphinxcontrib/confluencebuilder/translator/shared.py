@@ -11,6 +11,7 @@ from __future__ import (absolute_import, print_function, unicode_literals)
 from ..std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from sphinx.writers.text import TextTranslator
+import sys
 
 # supported confluence list types
 class ConflueceListType(object):
@@ -26,6 +27,7 @@ class ConfluenceTranslator(TextTranslator):
             self._highlight = self.builder.config.highlight_language
         else:
             self._highlight = DEFAULT_HIGHLIGHT_STYLE
+        self._linenothreshold = sys.maxsize
 
     def visit_centered(self, node):
         # centered is deprecated; ignore
@@ -39,6 +41,7 @@ class ConfluenceTranslator(TextTranslator):
         # update the translator's highlight language from the defined directive
         # http://www.sphinx-doc.org/en/stable/markup/code.html#directive-highlight
         self._highlight = node.get('lang', DEFAULT_HIGHLIGHT_STYLE)
+        self._linenothreshold = node.get('linenothreshold', sys.maxsize)
         raise nodes.SkipNode
 
     def visit_start_of_file(self, node):
