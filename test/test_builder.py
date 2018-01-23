@@ -54,9 +54,6 @@ class TestConfluenceBuilder(unittest.TestCase):
                 diff_data = ''.join(list(diff))
                 self.assertTrue(diff_data == '', msg=diff_data)
 
-    def test_heading(self):
-        self._assertExpectedWithOutput('heading')
-
     def test_code(self):
         self._assertExpectedWithOutput('code')
 
