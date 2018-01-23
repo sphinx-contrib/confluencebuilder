@@ -38,7 +38,8 @@ except ImportError:
     import xmlrpclib
 
 class ConfluencePublisher():
-    space_display_name = None
+    def __init__(self):
+        self.space_display_name = None
 
     def init(self, config):
         self.config = config
