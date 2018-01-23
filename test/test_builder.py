@@ -57,8 +57,5 @@ class TestConfluenceBuilder(unittest.TestCase):
     def test_code(self):
         self._assertExpectedWithOutput('code')
 
-    def test_toctree(self):
-        self._assertExpectedWithOutput('toctree')
-
 if __name__ == '__main__':
     sys.exit(unittest.main())
