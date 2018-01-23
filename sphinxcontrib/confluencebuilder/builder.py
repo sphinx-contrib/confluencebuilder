@@ -64,6 +64,10 @@ class ConfluenceBuilder(Builder):
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
 
+        # state tracking is set at initialization (not cleanup) so its content's
+        # can be checked/validated on after the builder has executed (testing)
+        ConfluenceState.reset()
+
     def init(self, suppress_conf_check=False):
         if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')

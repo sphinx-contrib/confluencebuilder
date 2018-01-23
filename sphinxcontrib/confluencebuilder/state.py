@@ -129,6 +129,20 @@ class ConfluenceState:
             "tracking docname %s's upload id: %s" % (docname, id))
 
     @staticmethod
+    def reset():
+        """
+        reset all state information
+
+        Provides the ability for uses of a Confluence state singleton to reset
+        known tracked data.
+        """
+        ConfluenceState.doc2uploadId.clear()
+        ConfluenceState.doc2parentDoc.clear()
+        ConfluenceState.doc2title.clear()
+        ConfluenceState.doc2ttd.clear()
+        ConfluenceState.refid2target.clear()
+
+    @staticmethod
     def parentDocname(docname):
         """
         return the parent docname (if any) for a provided docname
