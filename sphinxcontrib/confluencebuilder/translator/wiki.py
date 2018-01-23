@@ -714,17 +714,25 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             ConfluenceLogger.warn('unknown code language: {0}'.format(lang))
             lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
 
+        # literalincludes will commonly end with a line ending. Taking the
+        # content and placing it into an already line-formatted code macro will
+        # always cause an extra line before the close '{code}'. Always pre-trim
+        # the trailing line ending (if any) before we re-add one (below).
+        data = node.astext().rstrip('\n')
+
         if node.get('linenos', False) == True:
             nums='true'
         else:
             nums='false'
 
+        self.new_state(0)
         self.add_text('{code:linenumbers=%s|language=%s}' % (nums, lang))
         self.add_text(self.nl)
-        self.add_text(node.astext())
+        self.add_text(data)
         self.add_text(self.nl)
         self.add_text('{code}')
         self.add_text(self.nl)
+        self.end_state()
         raise nodes.SkipNode
 
     def visit_doctest_block(self, node):
