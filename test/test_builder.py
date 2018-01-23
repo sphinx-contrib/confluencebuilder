@@ -54,40 +54,14 @@ class TestConfluenceBuilder(unittest.TestCase):
                 diff_data = ''.join(list(diff))
                 self.assertTrue(diff_data == '', msg=diff_data)
 
-    def test_registry(self):
-        if hasattr(self.app, 'extensions'):
-            self.assertTrue('sphinxcontrib.confluencebuilder' in
-                            self.app.extensions.keys())
-        else:
-            self.assertTrue('sphinxcontrib.confluencebuilder' in
-                            self.app._extensions.keys())
-
     def test_heading(self):
         self._assertExpectedWithOutput('heading')
-
-    def test_list(self):
-        self._assertExpectedWithOutput('list')
-
-    def test_formatting(self):
-        self._assertExpectedWithOutput('formatting')
-
-    def test_admonitions(self):
-        self._assertExpectedWithOutput('admonitions')
 
     def test_code(self):
         self._assertExpectedWithOutput('code')
 
-    def test_references(self):
-        self._assertExpectedWithOutput('ref')
-
     def test_toctree(self):
         self._assertExpectedWithOutput('toctree')
-
-    def test_table(self):
-        self._assertExpectedWithOutput('tables')
-
-    def test_bad_values(self):
-        self._assertExpectedWithOutput('badvalues')
 
 if __name__ == '__main__':
     sys.exit(unittest.main())

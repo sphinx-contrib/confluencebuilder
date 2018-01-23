@@ -21,9 +21,9 @@ Leading text http://example.com/ with trailing text.
 
 Leading text `Custom Link Name <http://example.com/>`_ with trailing text.
 
-:doc:`toctree`
+:doc:`contents`
 
-:doc:`Custom Link Name <toctree>`
+:doc:`Custom Link Name <contents>`
 
 .. _my-reference-label:
 
