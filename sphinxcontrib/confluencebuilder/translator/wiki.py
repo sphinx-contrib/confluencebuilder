@@ -88,12 +88,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         else:
             self.indent = STDINDENT
 
-        toctrees = self.builder.env.get_doctree(self.docname).traverse(
-            addnodes.toctree)
-        if toctrees and toctrees[0].get('maxdepth') > 0:
-            self.tocdepth = toctrees[0].get('maxdepth')
-        else:
-            self.tocdepth = 1
+        self.tocdepth = ConfluenceState.toctreeDepth(self.docname)
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -191,7 +186,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_compound(self, node):
         if 'toctree-wrapper' in node['classes']:
             if self.apply_hierarchy_children_macro:
-                self.add_text('{children:depth=%s}' % self.tocdepth)
+                if self.tocdepth:
+                    self.add_text('{{children:depth={}}}'.format(self.tocdepth))
+                else:
+                    self.add_text('{children:all=true}')
                 self.add_text(self.nl)
                 raise nodes.SkipNode
 

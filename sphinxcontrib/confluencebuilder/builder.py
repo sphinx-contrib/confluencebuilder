@@ -190,6 +190,11 @@ class ConfluenceBuilder(Builder):
             if docname in ordered_docnames:
                 self.publish_docnames.append(docname)
 
+            toctrees = doctree.traverse(addnodes.toctree)
+            if toctrees and toctrees[0].get('maxdepth') > 0:
+                ConfluenceState.registerToctreeDepth(
+                    docname, toctrees[0].get('maxdepth'))
+
             target_refs = []
             for node in doctree.traverse(nodes.target):
                 if 'refid' in node:
