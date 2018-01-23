@@ -81,11 +81,5 @@ class TestConfluenceBuilder(unittest.TestCase):
         parent_doc = ConfluenceState.parentDocname('toctree-doc2a')
         self.assertEqual(parent_doc, 'toctree-doc2')
 
-    def test_publish(self):
-        builder = ConfluenceBuilder(self.app)
-        builder.config.confluence_publish = True
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
-
 if __name__ == '__main__':
     sys.exit(unittest.main())
