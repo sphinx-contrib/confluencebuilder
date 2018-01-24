@@ -1,3 +1,12 @@
+master
+======
+
+* fixed a series of content escaping issues
+* fixed detailed configuration errors from being hidden
+* improve support in handling literal block languages
+* support automatic title generation for documents (if missing)
+* support maximum page depth (nesting documents)
+
 0.8.0 (2017-12-05)
 ==================
 
