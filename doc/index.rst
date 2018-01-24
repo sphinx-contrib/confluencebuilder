@@ -18,6 +18,7 @@ documentation contents
    install
    tutorial
    configuration
+   markup
    documentation
    changelog
 
