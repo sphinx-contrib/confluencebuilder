@@ -45,6 +45,16 @@ While the use of Python_/pip_ is almost consistent between Linux distributions,
 the following are a series of helpful steps to install this package under
 specific distributions of Linux. From a terminal, invoke the following commands:
 
+arch
+++++
+
+.. code-block:: shell
+
+    $ sudo pacman -S python-pip
+    $ pip install --user sphinxcontrib-confluencebuilder
+    $ python -m sphinxcontrib.confluencebuilder --version
+    sphinxcontrib.confluencebuilder <version>
+
 centos
 ++++++
 
