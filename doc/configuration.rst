@@ -51,15 +51,22 @@ confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
 The URL for Confluence. The URL should be prefixed with ``https://`` or
-``http://``, depending on the URL target. The target API folder should not be
-included -- for example, if the target Confluence server's REST API is
-``https://intranet-wiki.example.com/rest/api/`` or XML-RPC API is at
-``https://intranet-wiki.example.com/rpc/xmlrpc``, the URL configuration provided
-should be as follows:
+``http://`` (depending on the URL target). The target API folder should not be
+included in the URL (for example, excluding ``/rest/api/`` or ``/rpc/xmlrpc/``).
+For a Confluence Cloud instance, an example URL configuration is as follows:
 
 .. code-block:: python
 
-    confluence_space_name = 'https://intranet-wiki.example.com'
+    confluence_server_url = 'https://example.atlassian.net/wiki'
+
+For a Confluence Server instance, an example URL configuration, if the
+instance's REST API is ``https://intranet-wiki.example.com/rest/api/`` or
+XML-RPC API is at ``https://intranet-wiki.example.com/rpc/xmlrpc``, should be as
+follows:
+
+.. code-block:: python
+
+    confluence_server_url = 'https://intranet-wiki.example.com'
 
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
