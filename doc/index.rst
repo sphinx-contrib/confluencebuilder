@@ -5,7 +5,7 @@ Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
 publish them to a Confluence server.
 
 * License: BSD
-* Confluence_ 4.0+ and Python_ 2.7, 3.3+
+* Confluence_ |supported_confluence_ver| and Python_ |supported_python_ver|
 * Home: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder
 * Documentation: http://sphinxcontrib-confluencebuilder.readthedocs.io
 
