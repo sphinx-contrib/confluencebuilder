@@ -1,0 +1,10 @@
+
+.wy-table-responsive table td {
+    /* allow table contents to wrap (corrects bullet list issues) */
+    white-space: normal !important;
+}
+
+.wy-table-responsive table ul {
+    /* remove bottom margin for lists in tables (corrects excessive spacing) */
+    margin-bottom: unset !important;
+}
