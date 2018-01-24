@@ -290,6 +290,20 @@ get_relative_uri_ method. The default translation will be the combination of
 
 .. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
 
+confluence_remove_title
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not automatically remove the title section from
+all published pages. In Confluence, page names are already presented at the top.
+With this option enabled, this reduces having two leading headers with the
+document's title. In some cases, a user may wish to not remove titles when
+custom prefixes or other custom modifications are in play. By default, this
+option is enabled with a value of ``True``.
+
+.. code-block:: python
+
+    confluence_remove_title = True
+
 advanced configuration - publishing
 -----------------------------------
 
