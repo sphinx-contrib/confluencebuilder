@@ -3,7 +3,7 @@
     sphinxcontrib.confluencebuilder.state
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
     :license: BSD, see LICENSE.txt for details.
 """
 
@@ -30,6 +30,7 @@ class ConfluenceState:
     doc2uploadId = {}
     doc2parentDoc = {}
     doc2title = {}
+    doc2ttd = {}
     refid2target = {}
 
     @staticmethod
@@ -95,6 +96,21 @@ class ConfluenceState:
         return title
 
     @staticmethod
+    def registerToctreeDepth(docname, depth):
+        """
+        register the toctree-depth for the provided document name
+
+        Documents using toctree's will only use the first toctree's 'maxdepth'
+        option [1]. This method provides the ability to track the depth of a
+        document before toctree resolution removes any hints at the maximum
+        depth desired.
+
+        [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#id3
+        """
+        ConfluenceState.doc2ttd[docname] = depth
+        ConfluenceLogger.verbose("track %s toc-depth: %s" % (docname, depth))
+
+    @staticmethod
     def registerUploadId(docname, id):
         """
         register a page (upload) identifier for a docname
@@ -111,6 +127,20 @@ class ConfluenceState:
         ConfluenceState.doc2uploadId[docname] = id
         ConfluenceLogger.verbose(
             "tracking docname %s's upload id: %s" % (docname, id))
+
+    @staticmethod
+    def reset():
+        """
+        reset all state information
+
+        Provides the ability for uses of a Confluence state singleton to reset
+        known tracked data.
+        """
+        ConfluenceState.doc2uploadId.clear()
+        ConfluenceState.doc2parentDoc.clear()
+        ConfluenceState.doc2title.clear()
+        ConfluenceState.doc2ttd.clear()
+        ConfluenceState.refid2target.clear()
 
     @staticmethod
     def parentDocname(docname):
@@ -158,6 +188,15 @@ class ConfluenceState:
                 if (d[key_a] == d[key_b]):
                     ConfluenceLogger.warn("title conflict detected with "
                         "'%s' and '%s'" % (key_a, key_b))
+
+    @staticmethod
+    def toctreeDepth(docname):
+        """
+        return the toctree-depth value for a provided docname
+
+        See `registerToctreeDepth` for more information.
+        """
+        return ConfluenceState.doc2ttd.get(docname)
 
     @staticmethod
     def uploadId(docname):

@@ -49,16 +49,24 @@ def relative_uri(base, to):
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
 class ConfluenceBuilder(Builder):
-    cache_doctrees = {}
-    current_docname = None
-    omitted_docnames = []
-    publish_docnames = []
     name = 'confluence'
     format = 'confluence'
-    file_suffix = '.conf'
-    link_suffix = None  # defaults to file_suffix
-    master_doc_page_id = None
-    publisher = ConfluencePublisher()
+
+    def __init__(self, app):
+        super(ConfluenceBuilder, self).__init__(app)
+
+        self.cache_doctrees = {}
+        self.current_docname = None
+        self.file_suffix = '.conf'
+        self.link_suffix = None
+        self.master_doc_page_id = None
+        self.omitted_docnames = []
+        self.publish_docnames = []
+        self.publisher = ConfluencePublisher()
+
+        # state tracking is set at initialization (not cleanup) so its content's
+        # can be checked/validated on after the builder has executed (testing)
+        ConfluenceState.reset()
 
     def init(self, suppress_conf_check=False):
         if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
@@ -189,6 +197,11 @@ class ConfluenceBuilder(Builder):
                 self.config.confluence_publish_prefix)
             if docname in ordered_docnames:
                 self.publish_docnames.append(docname)
+
+            toctrees = doctree.traverse(addnodes.toctree)
+            if toctrees and toctrees[0].get('maxdepth') > 0:
+                ConfluenceState.registerToctreeDepth(
+                    docname, toctrees[0].get('maxdepth'))
 
             target_refs = []
             for node in doctree.traverse(nodes.target):

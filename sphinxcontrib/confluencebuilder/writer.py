@@ -17,11 +17,10 @@ class ConfluenceWriter(writers.Writer):
     settings_spec = ('No options here.', '', ())
     settings_defaults = {}
 
-    output = None
-
     def __init__(self, builder):
         writers.Writer.__init__(self)
         self.builder = builder
+        self.output = None
 
     def translate(self):
         visitor = ConfluenceWikiTranslator(self.document, self.builder)

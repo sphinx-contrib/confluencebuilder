@@ -88,12 +88,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         else:
             self.indent = STDINDENT
 
-        toctrees = self.builder.env.get_doctree(self.docname).traverse(
-            addnodes.toctree)
-        if toctrees and toctrees[0].get('maxdepth') > 0:
-            self.tocdepth = toctrees[0].get('maxdepth')
-        else:
-            self.tocdepth = 1
+        self.tocdepth = ConfluenceState.toctreeDepth(self.docname)
 
     def add_text(self, text):
         self.states[-1].append((-1, text))
@@ -191,7 +186,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_compound(self, node):
         if 'toctree-wrapper' in node['classes']:
             if self.apply_hierarchy_children_macro:
-                self.add_text('{children:depth=%s}' % self.tocdepth)
+                if self.tocdepth:
+                    self.add_text('{{children:depth={}}}'.format(self.tocdepth))
+                else:
+                    self.add_text('{children:all=true}')
                 self.add_text(self.nl)
                 raise nodes.SkipNode
 
@@ -714,17 +712,27 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             ConfluenceLogger.warn('unknown code language: {0}'.format(lang))
             lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
 
+        # literalincludes will commonly end with a line ending. Taking the
+        # content and placing it into an already line-formatted code macro will
+        # always cause an extra line before the close '{code}'. Always pre-trim
+        # the trailing line ending (if any) before we re-add one (below).
+        data = node.astext().rstrip('\n')
+
         if node.get('linenos', False) == True:
+            nums='true'
+        elif data.count('\n') >= self._linenothreshold:
             nums='true'
         else:
             nums='false'
 
+        self.new_state(0)
         self.add_text('{code:linenumbers=%s|language=%s}' % (nums, lang))
         self.add_text(self.nl)
-        self.add_text(node.astext())
+        self.add_text(data)
         self.add_text(self.nl)
         self.add_text('{code}')
         self.add_text(self.nl)
+        self.end_state()
         raise nodes.SkipNode
 
     def visit_doctest_block(self, node):
