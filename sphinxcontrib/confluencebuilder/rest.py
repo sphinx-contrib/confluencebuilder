@@ -144,5 +144,8 @@ class Rest:
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.BIND_PATH + "\n"
         err += "API: " + key + "\n"
-        err += "MSG: " + rsp.json()['message']
+        try:
+            err += 'MSG: {}'.format(rsp.json()['message'])
+        except ValueError:
+            err += 'MSG: <not-or-invalid-json>'
         return err
