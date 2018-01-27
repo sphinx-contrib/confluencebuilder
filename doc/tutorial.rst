@@ -33,15 +33,26 @@ Next, include a series of publish-related settings to the configuration file:
 
     confluence_publish = True
     confluence_space_name = 'TEST'
-    confluence_parent_page = 'Documentation'
+    # (for confluence cloud)
+    confluence_server_url = 'https://example.atlassian.net/wiki'
+    confluence_server_user = 'myawesomeuser@example.com'
+    confluence_server_pass = 'myapikey'
+    # (or for confluence server)
     confluence_server_url = 'https://intranet-wiki.example.com'
-    confluence_server_user = 'username'
-    confluence_server_pass = 'password'
+    confluence_server_user = 'myawesomeuser'
+    confluence_server_pass = 'mypassword'
 
 Make appropriate changes to the above configuration for the environment being
-prepared. The configuration ``confluence_parent_page`` should be supplied with
+targeted.
+
+If one wishes to publish documents as children of a parent page inside a space,
+the configuration ``confluence_parent_page`` should be supplied with
 the name of the page to append published documents. If omitted, the builder will
-publish documents in the root of the space.
+publish documents in the root of the space. For example:
+
+.. code-block:: python
+
+    confluence_parent_page = 'MyDocumentation'
 
 .. tip::
 
