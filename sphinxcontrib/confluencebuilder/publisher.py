@@ -142,7 +142,9 @@ class ConfluencePublisher():
                     raise ConfluenceBadServerUrlError(self.server_url, ex)
 
     def disconnect(self):
-        if self.use_xmlrpc and self.token:
+        if self.use_rest:
+            self.rest_client.close()
+        elif self.use_xmlrpc and self.token:
             self.xmlrpc.logout(self.token)
 
     def getBasePageId(self):
