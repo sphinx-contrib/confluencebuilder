@@ -186,7 +186,7 @@ class ConfluenceBuilder(Builder):
         # add orphans (if any) to the publish list
         ordered_docnames.extend(x for x in docnames if x not in traversed)
 
-        for docname in docnames:
+        for docname in ordered_docnames:
             doctree = self.env.get_doctree(docname)
 
             doctitle = self._parse_doctree_title(docname, doctree)
@@ -195,8 +195,7 @@ class ConfluenceBuilder(Builder):
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
-            if docname in ordered_docnames:
-                self.publish_docnames.append(docname)
+            self.publish_docnames.append(docname)
 
             toctrees = doctree.traverse(addnodes.toctree)
             if toctrees and toctrees[0].get('maxdepth') > 0:
