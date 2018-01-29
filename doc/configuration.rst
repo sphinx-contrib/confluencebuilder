@@ -227,6 +227,23 @@ example, if an original request publishes ten documents and purges excess
 documents, a following publish attempt with only one of the documents will purge
 the other nine pages.
 
+confluence_purge_from_master
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to which indicates that any purging attempt should be done from
+the root of a published master_doc_ page (instead of a configured parent page;
+i.e. ``confluence_parent_page``). In specific publishing scenarios, a user may
+wish to publish multiple documentation sets based off a single parent/container
+page. To prevent any purging between multiple documentation sets, this option
+can be set to ``True``. When generating legacy pages to be removed, this
+extension will only attempt to populate legacy pages based off the children of
+the master_doc_ page. This option still requires ``confluence_purge`` to be set
+to ``True`` before taking effect.
+
+.. code-block:: python
+
+    confluence_purge_from_master = False
+
 advanced configuration - processing
 -----------------------------------
 
