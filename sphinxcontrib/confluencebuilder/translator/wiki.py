@@ -1000,6 +1000,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         raise nodes.SkipNode
 
     def visit_raw(self, node):
-        if 'text' in node.get('format', '').split():
-            self.body = self.body + node.astext()
+        if 'confluence' in node.get('format', '').split():
+            self.add_text(node.astext())
         raise nodes.SkipNode
