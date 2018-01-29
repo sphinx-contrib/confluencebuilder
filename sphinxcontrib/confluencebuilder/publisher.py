@@ -219,6 +219,19 @@ class ConfluencePublisher():
 
         return descendents
 
+    def getDescendentsCompat(self, page_id):
+        visited_pages = set()
+
+        def find_legacy_pages(page_id, pages):
+            descendents = self.getDescendents(page_id)
+            for descendent in descendents:
+                if descendent not in pages:
+                    pages.add(descendent)
+                    find_legacy_pages(descendent, pages)
+
+        find_legacy_pages(page_id, visited_pages)
+        return list(visited_pages)
+
     def storePage(self, page_name, raw_data, parent_id=None):
         uploaded_page_id = None
 

@@ -113,7 +113,8 @@ class ConfluenceBuilder(Builder):
             self.publish = True
             self.publisher.connect()
             self.parent_id = self.publisher.getBasePageId()
-            self.legacy_pages = self.publisher.getDescendents(self.parent_id)
+            self.legacy_pages = self.publisher.getDescendentsCompat(
+                self.parent_id)
         else:
             self.publish = False
             self.parent_id = None
