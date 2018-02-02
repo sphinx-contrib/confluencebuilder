@@ -37,7 +37,7 @@ confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The password value used to authenticate with the Confluence instance. If using
-Confluence cloud, it is recommended to use an API token (if supported) for the
+Confluence Cloud, it is recommended to use an API token (if supported) for the
 configured username value (see api_tokens_). If API tokens are not being used,
 the plain password for the configured username value should be used.
 
@@ -59,13 +59,19 @@ should be as follows:
 
 .. code-block:: python
 
-    confluence_space_name = 'https://intranet-wiki.example.com'
+    confluence_server_url = 'https://intranet-wiki.example.com'
+
+For Confluence Cloud you may need to use something like ``https://mycompany.atlassian.net/wiki``, for example:
+
+.. code-block:: python
+
+    confluence_server_url = 'https://mycompany.atlassian.net/wiki'
 
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The username value used to authenticate with the Confluence instance. If using
-Confluence cloud, this value will most likely be the account's E-mail address.
+Confluence Cloud, this value will most likely be the account's E-mail address.
 If using Confluence server, this value will most likely be the username value.
 
 .. code-block:: python
@@ -82,6 +88,7 @@ Key of the space in Confluence to be used to publish generated documents to.
 .. code-block:: python
 
     confluence_space_name = 'MyAwesomeSpace'
+
 
 general configuration
 ---------------------
