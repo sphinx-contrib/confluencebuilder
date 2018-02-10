@@ -151,6 +151,7 @@ class ConfluencePublisher():
     def disconnect(self):
         if self.use_xmlrpc and self.token:
             self.xmlrpc.logout(self.token)
+            self.xmlrpc_transport.close()
 
     def getBasePageId(self):
         base_page_id = None
