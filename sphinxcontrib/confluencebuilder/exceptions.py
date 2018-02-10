@@ -3,8 +3,8 @@
     sphinxcontrib.confluencebuilder.exceptions
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE for details.
 """
 
 from sphinx.errors import ConfigError
@@ -79,6 +79,16 @@ class ConfluencePermissionError(ConfluenceError):
             """Do not have permission for this action on the Confluence """
             """server.\n\n"""
             """%s\n""" % details +
+            """---\n"""
+        )
+
+class ConfluenceProxyPermissionError(ConfluenceError):
+    def __init__(self):
+        SphinxError.__init__(self,
+            """---\n"""
+            """Unable to authenticate with the proxy server.\n"""
+            """\n"""
+            """Ensure your proxy's username and password are correct.\n"""
             """---\n"""
         )
 

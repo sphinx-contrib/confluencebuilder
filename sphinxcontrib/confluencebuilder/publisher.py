@@ -3,8 +3,8 @@
     sphinxcontrib.confluencebuilder.publisher
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE for details.
 
     See also:
      Confluence Cloud REST API Reference
@@ -110,6 +110,8 @@ class ConfluencePublisher():
                 except xmlrpclib.ProtocolError as ex:
                     if ex.errcode == 403:
                         raise ConfluenceRemoteApiDisabledError(self.server_url)
+                    if ex.errcode == 407:
+                        raise ConfluenceProxyPermissionError
                     raise ConfluenceBadServerUrlError(self.server_url, ex)
                 except (httplib.InvalidURL, socket.error) as ex:
                     raise ConfluenceBadServerUrlError(self.server_url, ex)
