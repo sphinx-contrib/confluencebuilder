@@ -112,12 +112,8 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_publish:
             self.publish = True
             self.publisher.connect()
-            self.parent_id = self.publisher.getBasePageId()
-            self.legacy_pages = self.publisher.getDescendents(self.parent_id)
         else:
             self.publish = False
-            self.parent_id = None
-            self.legacy_pages = []
 
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
@@ -299,6 +295,7 @@ class ConfluenceBuilder(Builder):
                     "%s: %s" % (outfilename, err))
 
     def publish_doc(self, docname, output):
+        conf = self.config
         title = ConfluenceState.title(docname)
 
         parent_id = None
@@ -315,7 +312,14 @@ class ConfluenceBuilder(Builder):
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
 
-        if self.config.confluence_purge:
+        if conf.confluence_purge and not self.legacy_pages:
+            if conf.confluence_purge_from_master and self.master_doc_page_id:
+                baseid = self.master_doc_page_id
+            else:
+                baseid = self.parent_id
+            self.legacy_pages = self.publisher.getDescendents(baseid)
+
+        if conf.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
@@ -337,6 +341,9 @@ class ConfluenceBuilder(Builder):
         self.env.get_doctree = self._original_get_doctree
 
         if self.publish:
+            self.legacy_pages = None
+            self.parent_id = self.publisher.getBasePageId()
+
             for docname in ConfluenceCompat.status_iterator(self,
                     self.publish_docnames, 'publishing... ',
                     length=len(self.publish_docnames)):
