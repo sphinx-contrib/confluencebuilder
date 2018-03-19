@@ -3,8 +3,8 @@
     sphinxcontrib.confluencebuilder.publisher
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE for details.
 
     See also:
      Confluence Cloud REST API Reference
@@ -21,16 +21,24 @@ from .exceptions import ConfluenceBadSpaceError
 from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
+from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .experimental import ConfluenceExperimentalQuoteSupport
 from .logger import ConfluenceLogger
 from .rest import Rest
+import os
 import socket
+import sys
 
 try:
     import http.client as httplib
 except ImportError:
     import httplib
+
+try:
+    import urllib.parse as urllib
+except ImportError:
+    import urllib
 
 try:
     import xmlrpc.client as xmlrpclib
@@ -82,17 +90,14 @@ class ConfluencePublisher():
 
         if self.use_xmlrpc:
             try:
-                transport = None
-                if self.proxy or self.timeout:
-                    transport = ConfluenceTransport()
-                    if self.proxy:
-                        transport.set_proxy(self.proxy)
-                    if self.timeout:
-                        transport.set_timeout(self.timeout)
+                self.xmlrpc_transport = ConfluenceTransport(
+                    self.server_url, self.proxy, self.timeout)
+                if self.config.confluence_disable_ssl_validation:
+                    self.xmlrpc_transport.disable_ssl_verification()
 
                 self.xmlrpc = xmlrpclib.ServerProxy(
                     self.server_url + '/rpc/xmlrpc',
-                    transport=transport, allow_none=True)
+                    transport=self.xmlrpc_transport, allow_none=True)
             except IOError as ex:
                 raise ConfluenceBadServerUrlError(self.server_url, ex)
 
@@ -110,6 +115,8 @@ class ConfluencePublisher():
                 except xmlrpclib.ProtocolError as ex:
                     if ex.errcode == 403:
                         raise ConfluenceRemoteApiDisabledError(self.server_url)
+                    if ex.errcode == 407:
+                        raise ConfluenceProxyPermissionError
                     raise ConfluenceBadServerUrlError(self.server_url, ex)
                 except (httplib.InvalidURL, socket.error) as ex:
                     raise ConfluenceBadServerUrlError(self.server_url, ex)
@@ -144,6 +151,7 @@ class ConfluencePublisher():
     def disconnect(self):
         if self.use_xmlrpc and self.token:
             self.xmlrpc.logout(self.token)
+            self.xmlrpc_transport.close()
 
     def getBasePageId(self):
         base_page_id = None
@@ -413,24 +421,126 @@ class ConfluencePublisher():
                 raise
 
 class ConfluenceTransport(xmlrpclib.Transport):
-    proxy = None
-    timeout = None
+    """
+    transport class for http/https transactions to an xml-rpc server
+
+    This transport class has been introduced to allow proxy settings and timeout
+    settings to be applied to XML-RPC ServerProxy sessions.
+
+    [1]: https://github.com/python/cpython/blob/2.7/Lib/xmlrpclib.py
+    [2]: https://github.com/python/cpython/blob/2.7/Lib/httplib.py
+    [4]: https://github.com/python/cpython/blob/3.4/Lib/http/client.py
+    [3]: https://github.com/python/cpython/blob/3.4/Lib/xmlrpc/client.py
+    [5]: https://github.com/python/cpython/blob/3.5/Lib/http/client.py
+    [6]: https://github.com/python/cpython/blob/3.5/Lib/xmlrpc/client.py
+    [7]: https://github.com/python/cpython/blob/3.6/Lib/http/client.py
+    [8]: https://github.com/python/cpython/blob/3.6/Lib/xmlrpc/client.py
+    """
+    def __init__(self, server_url, proxy=None,
+            timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+        """
+        initialize the transport class
+        """
+        xmlrpclib.Transport.__init__(self)
+
+        self.disable_ssl_validation = False
+        self.scheme = urllib.splittype(server_url)[0]
+        self.https = (self.scheme == 'https')
+        self.proxy = None
+        self.timeout = timeout
+
+        # pull system proxy if no proxy is forced
+        if not proxy:
+            if self.https:
+                proxy = os.environ.get('https_proxy', None)
+            else:
+                proxy = os.environ.get('http_proxy', None)
+
+        if proxy:
+            scheme, proxy_url = urllib.splittype(proxy)
+            self.proxy = urllib.splithost(proxy_url)[0]
+
+            # re-check if we need to support https
+            self.https = (scheme == 'https')
 
     def make_connection(self, host):
-        self.realhost = host
+        """
+        make an http/https connection
+
+        Overrides the transport's `make_connection` implementation to forcefully
+        configure proxy and timeout settings.
+        """
+
+        # existing connection exist (keep-alive)?
+        if self._connection and host == self._connection[0]:
+            return self._connection[1]
+
+        # extract host, extra headers (if any) or x509 info (if any)
+        chost, self._extra_headers, x509 = self.get_host_info(host)
+        self.chost = chost
+
+        # if we have a proxy, override chost for connection and configure proxy
+        # authentication (if required)
         if self.proxy:
-            return httplib.HTTPConnection(self.proxy, timeout=self.timeout)
+            chost, proxy_headers, x509 = self.get_host_info(self.proxy)
+            for key, val in proxy_headers:
+                if key == 'Authorization':
+                    if not self._extra_headers:
+                        self._extra_headers = []
+                    self._extra_headers.append(
+                        tuple(['Proxy-Authorization',val]))
+                    break
+
+        # build connection
+        if self.https:
+            try:
+                context = None
+                if self.disable_ssl_validation:
+                    import ssl
+                    context = ssl._create_unverified_context()
+                self._connection = host, httplib.HTTPSConnection(chost,
+                    timeout=self.timeout, context=context, **(x509 or {}))
+            except AttributeError:
+                raise NotImplementedError('httplib does not support https')
         else:
-            return httplib.HTTPConnection(self.realhost, timeout=self.timeout)
+            self._connection = host, httplib.HTTPConnection(
+                chost, timeout=self.timeout)
 
-    def send_host(self, connection, host):
-        connection.putheader('Host', self.realhost)
+        return self._connection[1]
 
-    def send_request(self, connection, handler, request_body):
-        connection.putrequest('POST', 'http://%s%s' % (self.realhost, handler))
+    # handle variant versions of 'send_request', note that in:
+    #  - python 2: make_connection first, then send_request
+    #  - python 3: send_request first, then make_connection
+    if sys.version_info.major == 2:
+        def send_request(self, connection, handler, request_body):
+            """
+            handle an http/https request on the current connection
 
-    def set_proxy(self, proxy):
-        self.proxy = proxy
+            Overrides the transport's `send_request` implementation to ensure
+            proper scheme and host is set in the handler.
+            """
+            handler = '%s://%s%s' % (self.scheme, self.chost, handler)
+            return xmlrpclib.Transport.send_request(
+                self, connection, handler, request_body)
+    else:
+        def send_request(self, host, handler, request_body, debug):
+            """
+            handle an http/https request for the future connection
 
-    def set_timeout(self, timeout):
-        self.timeout = timeout
+            Overrides the transport's `send_request` implementation to ensure
+            proper scheme and host is set in the handler.
+            """
+            chost = self.get_host_info(host)[0]
+            handler = '%s://%s%s' % (self.scheme, chost, handler)
+            return xmlrpclib.Transport.send_request(
+                self, host, handler, request_body, debug)
+
+    def disable_ssl_verification(self):
+        """
+        disable ssl verification for an https connection
+
+        Pushes an "unverified" context to an HTTPSConnection to disable SSL
+        verification (although, this is never recommended).
+        """
+        self.disable_ssl_validation = True
+
