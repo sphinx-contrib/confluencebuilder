@@ -10,6 +10,16 @@
 from .sphinx import DEFAULT_HIGHLIGHT_STYLE
 
 """
+confluence trailing bind path for rest api
+"""
+API_REST_BIND_PATH = 'rest/api'
+
+"""
+confluence trailing bind path for xml-rpc api
+"""
+API_XMLRPC_BIND_PATH = 'rpc/xmlrpc'
+
+"""
 sphinx literal to confluence language map
 
 Provides a map of Sphinx literal language values to respective and supported*

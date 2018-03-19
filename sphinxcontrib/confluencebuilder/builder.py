@@ -14,6 +14,7 @@ from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
+from .util import ConfluenceUtil
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
@@ -76,9 +77,12 @@ class ConfluenceBuilder(Builder):
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
 
-        server_url = self.config.confluence_server_url
-        if server_url and server_url.endswith('/'):
-            self.config.confluence_server_url = server_url[:-1]
+        old_url = self.config.confluence_server_url
+        new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
+        if old_url != new_url:
+            ConfluenceLogger.warn('normalizing confluence url from '
+                '{} to {} '.format(old_url, new_url))
+            self.config.confluence_server_url = new_url
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix

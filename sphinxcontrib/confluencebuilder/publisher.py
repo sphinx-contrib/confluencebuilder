@@ -24,6 +24,7 @@ from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .experimental import ConfluenceExperimentalQuoteSupport
+from .std.confluence import API_XMLRPC_BIND_PATH
 from .logger import ConfluenceLogger
 from .rest import Rest
 import os
@@ -96,8 +97,8 @@ class ConfluencePublisher():
                     self.xmlrpc_transport.disable_ssl_verification()
 
                 self.xmlrpc = xmlrpclib.ServerProxy(
-                    self.server_url + '/rpc/xmlrpc',
-                    transport=self.xmlrpc_transport, allow_none=True)
+                    self.server_url + API_XMLRPC_BIND_PATH,
+                    transport=transport, allow_none=True)
             except IOError as ex:
                 raise ConfluenceBadServerUrlError(self.server_url, ex)
 

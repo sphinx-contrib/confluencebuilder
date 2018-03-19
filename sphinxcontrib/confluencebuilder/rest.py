@@ -17,9 +17,9 @@ from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
+from .std.confluence import API_REST_BIND_PATH
 
 class Rest:
-    BIND_PATH = "/rest/api/"
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
@@ -38,7 +38,7 @@ class Rest:
         self.verbosity = config.sphinx_verbosity
 
     def get(self, key, params):
-        restUrl = self.url + self.BIND_PATH + key
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key
         try:
             rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
@@ -66,7 +66,7 @@ class Rest:
         return json_data
 
     def post(self, key, data):
-        restUrl = self.url + self.BIND_PATH + key
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key
         try:
             rsp = self.session.post(restUrl, json=data)
         except requests.exceptions.Timeout:
@@ -98,7 +98,7 @@ class Rest:
         return json_data
 
     def put(self, key, value, data):
-        restUrl = self.url + self.BIND_PATH + key + "/" + value
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + value
         try:
             rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
@@ -130,7 +130,7 @@ class Rest:
         return json_data
 
     def delete(self, key, value):
-        restUrl = self.url + self.BIND_PATH + key + "/" + value
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + value
         try:
             rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
@@ -153,7 +153,7 @@ class Rest:
         err = ""
         err += "REQ: {0}\n".format(rsp.request.method)
         err += "RSP: " + str(rsp.status_code) + "\n"
-        err += "URL: " + self.url + self.BIND_PATH + "\n"
+        err += "URL: " + self.url + API_REST_BIND_PATH + "\n"
         err += "API: " + key + "\n"
         err += "MSG: " + rsp.json()['message']
         return err
