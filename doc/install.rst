@@ -3,10 +3,10 @@ installing
 
 Atlassian Confluence Builder for Sphinx |version| depends on:
 
-* Python_ 2.7 or 3.3+
+* Python_ |supported_python_ver|
 * Requests_
 * Sphinx_ 1.0 or later
-* Confluence_ 4.0 or later
+* Confluence_ Cloud or Server |supported_confluence_ver|
 
 The recommended method of installation is using pip_.
 
@@ -44,6 +44,16 @@ linux
 While the use of Python_/pip_ is almost consistent between Linux distributions,
 the following are a series of helpful steps to install this package under
 specific distributions of Linux. From a terminal, invoke the following commands:
+
+arch
+++++
+
+.. code-block:: shell
+
+    $ sudo pacman -S python-pip
+    $ pip install --user sphinxcontrib-confluencebuilder
+    $ python -m sphinxcontrib.confluencebuilder --version
+    sphinxcontrib.confluencebuilder <version>
 
 centos
 ++++++

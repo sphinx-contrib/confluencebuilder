@@ -51,21 +51,23 @@ confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
 The URL for Confluence. The URL should be prefixed with ``https://`` or
-``http://``, depending on the URL target. The target API folder should not be
-included -- for example, if the target Confluence server's REST API is
-``https://intranet-wiki.example.com/rest/api/`` or XML-RPC API is at
-``https://intranet-wiki.example.com/rpc/xmlrpc``, the URL configuration provided
-should be as follows:
+``http://`` (depending on the URL target). The target API folder should not be
+included in the URL (for example, excluding ``/rest/api/`` or ``/rpc/xmlrpc/``).
+For a Confluence Cloud instance, an example URL configuration is as follows:
+
+.. code-block:: python
+
+    confluence_server_url = 'https://example.atlassian.net/wiki'
+
+For a Confluence Server instance, an example URL configuration, if the
+instance's REST API is ``https://intranet-wiki.example.com/rest/api/`` or
+XML-RPC API is at ``https://intranet-wiki.example.com/rpc/xmlrpc``, should be as
+follows:
 
 .. code-block:: python
 
     confluence_server_url = 'https://intranet-wiki.example.com'
 
-For Confluence Cloud you may need to use something like ``https://mycompany.atlassian.net/wiki``, for example:
-
-.. code-block:: python
-
-    confluence_server_url = 'https://mycompany.atlassian.net/wiki'
 
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -313,6 +315,20 @@ get_relative_uri_ method. The default translation will be the combination of
 "``docname`` + ``confluence_link_suffix``".
 
 .. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+
+confluence_remove_title
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not automatically remove the title section from
+all published pages. In Confluence, page names are already presented at the top.
+With this option enabled, this reduces having two leading headers with the
+document's title. In some cases, a user may wish to not remove titles when
+custom prefixes or other custom modifications are in play. By default, this
+option is enabled with a value of ``True``.
+
+.. code-block:: python
+
+    confluence_remove_title = True
 
 advanced configuration - publishing
 -----------------------------------
