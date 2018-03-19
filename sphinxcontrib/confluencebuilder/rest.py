@@ -3,8 +3,8 @@
     sphinxcontrib.confluencebuilder.rest
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE for details.
 """
 
 import json
@@ -14,10 +14,10 @@ from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluencePermissionError
+from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 from .std.confluence import API_REST_BIND_PATH
-
 
 class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
@@ -49,6 +49,8 @@ class Rest:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST GET")
+        if rsp.status_code == 407:
+            raise ConfluenceProxyPermissionError
         if not rsp.ok:
             raise ConfluenceBadApiError(self._format_error(rsp, key))
         if not rsp.text:
@@ -75,6 +77,8 @@ class Rest:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST POST")
+        if rsp.status_code == 407:
+            raise ConfluenceProxyPermissionError
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -105,6 +109,8 @@ class Rest:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST PUT")
+        if rsp.status_code == 407:
+            raise ConfluenceProxyPermissionError
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -135,8 +141,13 @@ class Rest:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
             raise ConfluencePermissionError("REST DELETE")
+        if rsp.status_code == 407:
+            raise ConfluenceProxyPermissionError
         if not rsp.ok:
             raise ConfluenceBadApiError(self._format_error(rsp, key))
+
+    def close(self):
+        self.session.close()
 
     def _format_error(self, rsp, key):
         err = ""
