@@ -146,6 +146,9 @@ class Rest:
         if not rsp.ok:
             raise ConfluenceBadApiError(self._format_error(rsp, key))
 
+    def close(self):
+        self.session.close()
+
     def _format_error(self, rsp, key):
         err = ""
         err += "REQ: {0}\n".format(rsp.request.method)
