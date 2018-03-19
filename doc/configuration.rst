@@ -37,7 +37,7 @@ confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The password value used to authenticate with the Confluence instance. If using
-Confluence cloud, it is recommended to use an API token (if supported) for the
+Confluence Cloud, it is recommended to use an API token (if supported) for the
 configured username value (see api_tokens_). If API tokens are not being used,
 the plain password for the configured username value should be used.
 
@@ -68,11 +68,12 @@ follows:
 
     confluence_server_url = 'https://intranet-wiki.example.com'
 
+
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The username value used to authenticate with the Confluence instance. If using
-Confluence cloud, this value will most likely be the account's E-mail address.
+Confluence Cloud, this value will most likely be the account's E-mail address.
 If using Confluence server, this value will most likely be the username value.
 
 .. code-block:: python
@@ -89,6 +90,7 @@ Key of the space in Confluence to be used to publish generated documents to.
 .. code-block:: python
 
     confluence_space_name = 'MyAwesomeSpace'
+
 
 general configuration
 ---------------------
@@ -233,6 +235,23 @@ operation will remove all pages that are not publish in the request. For
 example, if an original request publishes ten documents and purges excess
 documents, a following publish attempt with only one of the documents will purge
 the other nine pages.
+
+confluence_purge_from_master
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to which indicates that any purging attempt should be done from
+the root of a published master_doc_ page (instead of a configured parent page;
+i.e. ``confluence_parent_page``). In specific publishing scenarios, a user may
+wish to publish multiple documentation sets based off a single parent/container
+page. To prevent any purging between multiple documentation sets, this option
+can be set to ``True``. When generating legacy pages to be removed, this
+extension will only attempt to populate legacy pages based off the children of
+the master_doc_ page. This option still requires ``confluence_purge`` to be set
+to ``True`` before taking effect.
+
+.. code-block:: python
+
+    confluence_purge_from_master = False
 
 advanced configuration - processing
 -----------------------------------

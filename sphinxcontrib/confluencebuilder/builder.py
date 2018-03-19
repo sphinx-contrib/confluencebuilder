@@ -14,6 +14,7 @@ from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
+from .util import ConfluenceUtil
 from .writer import ConfluenceWriter
 from docutils.io import StringOutput
 from docutils import nodes
@@ -76,9 +77,12 @@ class ConfluenceBuilder(Builder):
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
 
-        server_url = self.config.confluence_server_url
-        if server_url and server_url.endswith('/'):
-            self.config.confluence_server_url = server_url[:-1]
+        old_url = self.config.confluence_server_url
+        new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
+        if old_url != new_url:
+            ConfluenceLogger.warn('normalizing confluence url from '
+                '{} to {} '.format(old_url, new_url))
+            self.config.confluence_server_url = new_url
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
@@ -112,12 +116,8 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_publish:
             self.publish = True
             self.publisher.connect()
-            self.parent_id = self.publisher.getBasePageId()
-            self.legacy_pages = self.publisher.getDescendents(self.parent_id)
         else:
             self.publish = False
-            self.parent_id = None
-            self.legacy_pages = []
 
         if self.config.confluence_space_name is not None:
             self.space_name = self.config.confluence_space_name
@@ -186,7 +186,7 @@ class ConfluenceBuilder(Builder):
         # add orphans (if any) to the publish list
         ordered_docnames.extend(x for x in docnames if x not in traversed)
 
-        for docname in docnames:
+        for docname in ordered_docnames:
             doctree = self.env.get_doctree(docname)
 
             doctitle = self._parse_doctree_title(docname, doctree)
@@ -195,8 +195,7 @@ class ConfluenceBuilder(Builder):
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
-            if docname in ordered_docnames:
-                self.publish_docnames.append(docname)
+            self.publish_docnames.append(docname)
 
             toctrees = doctree.traverse(addnodes.toctree)
             if toctrees and toctrees[0].get('maxdepth') > 0:
@@ -299,6 +298,7 @@ class ConfluenceBuilder(Builder):
                     "%s: %s" % (outfilename, err))
 
     def publish_doc(self, docname, output):
+        conf = self.config
         title = ConfluenceState.title(docname)
 
         parent_id = None
@@ -315,7 +315,14 @@ class ConfluenceBuilder(Builder):
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
 
-        if self.config.confluence_purge:
+        if conf.confluence_purge and not self.legacy_pages:
+            if conf.confluence_purge_from_master and self.master_doc_page_id:
+                baseid = self.master_doc_page_id
+            else:
+                baseid = self.parent_id
+            self.legacy_pages = self.publisher.getDescendents(baseid)
+
+        if conf.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
@@ -337,6 +344,9 @@ class ConfluenceBuilder(Builder):
         self.env.get_doctree = self._original_get_doctree
 
         if self.publish:
+            self.legacy_pages = None
+            self.parent_id = self.publisher.getBasePageId()
+
             for docname in ConfluenceCompat.status_iterator(self,
                     self.publish_docnames, 'publishing... ',
                     length=len(self.publish_docnames)):
