@@ -123,4 +123,17 @@ however, no username has been configured. Ensure 'confluence_server_user' is
 properly set with the publisher's Confluence username.
 """)
 
+            if c.confluence_ca_cert:
+                if (not os.path.isfile(c.confluence_ca_cert) and
+                        not os.path.isdir(c.confluence_ca_cert)):
+                    errState = True
+                    if log:
+                        ConfluenceLogger.error(
+"""missing certificate authority
+
+The option 'confluence_ca_cert' has been provided to find a certificate 
+authority file or path from a relative location. Ensure the value is set to a 
+proper file path.
+""")
+
         return not errState

@@ -426,6 +426,19 @@ seconds, the following can be used:
 
     confluence_timeout = 10
 
+confluence_ca_cert
+~~~~~~~~~~~~~~~~~~
+
+Provide a CA certificate to use for server cert authentication. Can either be a 
+file or a path. If it is a path, the directory must have been processed using 
+the c_rehash utility supplied with OpenSSL. By default, verification is turned 
+on and can be turned off with the ``confluence_disable_ssl_validation`` config
+option. If it is turned off, this option is ignored.
+
+.. code-block:: python
+
+    confluence_ca_cert = '/path/to/ca.crt'
+
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc

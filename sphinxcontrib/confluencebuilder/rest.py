@@ -24,18 +24,29 @@ class Rest:
 
     def __init__(self, config):
         self.url = config.confluence_server_url
-        self.session = requests.Session()
-        self.session.timeout = config.confluence_timeout
-        self.session.proxies = {
+        self.session = self._setup_session(config)
+        self.verbosity = config.sphinx_verbosity
+
+    def _setup_session(self, config):
+        session = requests.Session()
+        session.timeout = config.confluence_timeout
+        session.proxies = {
             'http': config.confluence_proxy,
-            'https': config.confluence_proxy
+            'https': config.confluence_proxy,
         }
-        self.session.verify = not config.confluence_disable_ssl_validation
+
+        if config.confluence_disable_ssl_validation:
+            session.verify = False
+        elif config.confluence_ca_cert:
+            session.verify = config.confluence_ca_cert
+        else:
+            session.verify = True
+
         if config.confluence_server_user:
-            self.session.auth = (
+            session.auth = (
                 config.confluence_server_user,
                 config.confluence_server_pass)
-        self.verbosity = config.sphinx_verbosity
+        return session
 
     def get(self, key, params):
         restUrl = self.url + API_REST_BIND_PATH + '/' + key
