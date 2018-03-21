@@ -98,7 +98,7 @@ class ConfluencePublisher():
 
                 self.xmlrpc = xmlrpclib.ServerProxy(
                     self.server_url + API_XMLRPC_BIND_PATH,
-                    transport=transport, allow_none=True)
+                    transport=self.xmlrpc_transport, allow_none=True)
             except IOError as ex:
                 raise ConfluenceBadServerUrlError(self.server_url, ex)
 
