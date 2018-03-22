@@ -94,6 +94,8 @@ def setup(app):
     app.add_config_value('confluence_ca_cert', None, False)
     """Path to client certificate to use for publishing"""
     app.add_config_value('confluence_client_cert', None, False)
+    """Password for client certificate to use for publishing"""
+    app.add_config_value('confluence_client_cert_pass', None, False)
 
     """(advanced)"""
     """Enablement of the children macro for hierarchy mode."""

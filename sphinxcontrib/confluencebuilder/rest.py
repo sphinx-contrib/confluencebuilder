@@ -8,7 +8,9 @@
 """
 
 import json
+import ssl
 import requests
+from requests.adapters import HTTPAdapter
 
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
@@ -19,6 +21,30 @@ from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 from .exceptions import ConfluenceSSLError
 from .std.confluence import API_REST_BIND_PATH
+
+class SSLAdapter(HTTPAdapter):
+    def __init__(self, cert, password=None, *args, **kwargs):
+        if isinstance(cert, tuple) and len(cert) >= 2:
+            if len(cert) < 2:
+                self._certfile = cert[0]
+                self._keyfile = None
+            else:
+                self._certfile = cert[0]
+                self._keyfile = cert[1]
+        else:
+            self._certfile = cert
+            self._keyfile = None
+        self._password = password
+        super(SSLAdapter, self).__init__(*args, **kwargs)
+
+    def init_poolmanager(self, *args, **kwargs):
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        context.load_cert_chain(certfile=self._certfile,
+                                keyfile=self._keyfile,
+                                password=self._password)
+        kwargs['ssl_context'] = context
+        return super(SSLAdapter, self).init_poolmanager(*args, **kwargs)
+
 
 class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
@@ -43,8 +69,16 @@ class Rest:
         else:
             session.verify = True
 
+        # In order to support encrypted certificates, we need to
+        # use the Adapter pattern that requests uses. If requests
+        # ever adds native support for encrypted keys then we can
+        # remove the SSLAdapter and just use the native API.
+        # see: https://github.com/requests/requests/issues/2519 for more
+        # information.
         if config.confluence_client_cert:
-            session.cert = config.confluence_client_cert
+            adapter = SSLAdapter(config.confluence_client_cert,
+                                 config.confluence_client_cert_pass)
+            session.mount(self.url, adapter)
 
         if config.confluence_server_user:
             session.auth = (

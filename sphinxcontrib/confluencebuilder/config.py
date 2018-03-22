@@ -152,7 +152,7 @@ proper file path.
 The option 'confluence_client_cert' has been provided to find a client 
 certificate file from a relative location, but the file %s was not found. 
 Ensure the value is set to a proper file path and the file exists. 
-"""
+""" % cert_file
                             )
 
         return not errState

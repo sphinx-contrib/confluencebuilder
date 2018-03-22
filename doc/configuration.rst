@@ -440,7 +440,7 @@ option. If it is turned off, this option is ignored.
     confluence_ca_cert = '/path/to/ca.crt'
 
 confluence_client_cert
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 Provide a client certificate to use for two-way TLS/SSL authentication. Can
 either be a single file (containing the private key and the certificate) or
@@ -452,6 +452,17 @@ will be prompted for a password during the publishing step.
     confluence_client_cert = '/path/to/cert_and_key.pem'
     # or
     confluence_client_cert = ('/path/to/client.cert', '/path/to/client.key')
+
+confluence_client_cert_pass
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provide a password for the ``confluence_client_cert``. This prevents a prompt
+from requesting your client certificate password. If your client certificate
+is unencrypted, this value will be ignored.
+
+.. code-block:: python
+
+    confluence_client_cert_pass = 'password'
 
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
