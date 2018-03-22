@@ -134,3 +134,18 @@ class ConfluenceTimeoutError(ConfluenceError):
             """    %s\n""" % server_url +
             """---\n"""
         )
+
+class ConfluenceSSLError(ConfluenceError):
+    def __init__(self, server_url, ex):
+        SphinxError.__init__(self,
+            """---\n"""
+            """An SSL issue has been detected when trying to communicate """
+            """with Confluence server.\n"""
+            """\n"""
+            """Ensure the server is running or your Confluence server URL """
+            """is valid:\n\n"""
+            """    %s\n""" % server_url +
+            """\n(details: %s""" % ex +
+            """)\n"""
+            """---\n"""
+        )

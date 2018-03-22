@@ -17,6 +17,7 @@ from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
+from .exceptions import ConfluenceSSLError
 from .std.confluence import API_REST_BIND_PATH
 
 class Rest:
@@ -57,6 +58,8 @@ class Rest:
             rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -85,6 +88,8 @@ class Rest:
             rsp = self.session.post(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -117,6 +122,8 @@ class Rest:
             rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -149,6 +156,8 @@ class Rest:
             rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
