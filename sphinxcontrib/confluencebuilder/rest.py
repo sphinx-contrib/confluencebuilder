@@ -23,7 +23,8 @@ from .exceptions import ConfluenceSSLError
 from .std.confluence import API_REST_BIND_PATH
 
 class SSLAdapter(HTTPAdapter):
-    def __init__(self, cert, password=None, *args, **kwargs):
+    def __init__(self, cert, password=None, disable_validation=False,
+                 *args, **kwargs):
         if isinstance(cert, tuple) and len(cert) >= 2:
             if len(cert) < 2:
                 self._certfile = cert[0]
@@ -35,6 +36,7 @@ class SSLAdapter(HTTPAdapter):
             self._certfile = cert
             self._keyfile = None
         self._password = password
+        self._disable_validation = disable_validation
         super(SSLAdapter, self).__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
@@ -42,6 +44,9 @@ class SSLAdapter(HTTPAdapter):
         context.load_cert_chain(certfile=self._certfile,
                                 keyfile=self._keyfile,
                                 password=self._password)
+        if self._disable_validation:
+            context.check_hostname = False
+
         kwargs['ssl_context'] = context
         return super(SSLAdapter, self).init_poolmanager(*args, **kwargs)
 
@@ -77,7 +82,8 @@ class Rest:
         # information.
         if config.confluence_client_cert:
             adapter = SSLAdapter(config.confluence_client_cert,
-                                 config.confluence_client_cert_pass)
+                                 config.confluence_client_cert_pass,
+                                 config.confluence_disable_ssl_validation)
             session.mount(self.url, adapter)
 
         if config.confluence_server_user:
