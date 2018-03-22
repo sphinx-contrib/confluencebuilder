@@ -439,6 +439,20 @@ option. If it is turned off, this option is ignored.
 
     confluence_ca_cert = '/path/to/ca.crt'
 
+confluence_client_cert
+~~~~~~~~~~~~~~~~~~
+
+Provide a client certificate to use for two-way TLS/SSL authentication. Can
+either be a single file (containing the private key and the certificate) or
+as a tuple of both file's paths. If the certificate is encrypted, you
+will be prompted for a password during the publishing step.
+
+.. code-block:: python
+
+    confluence_client_cert = '/path/to/cert_and_key.pem'
+    # or
+    confluence_client_cert = ('/path/to/client.cert', '/path/to/client.key')
+
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc

@@ -92,6 +92,8 @@ def setup(app):
     app.add_config_value('confluence_timeout', None, False)
     """File/path to Certificate Authority"""
     app.add_config_value('confluence_ca_cert', None, False)
+    """Path to client certificate to use for publishing"""
+    app.add_config_value('confluence_client_cert', None, False)
 
     """(advanced)"""
     """Enablement of the children macro for hierarchy mode."""

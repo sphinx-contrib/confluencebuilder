@@ -136,4 +136,23 @@ authority file or path from a relative location. Ensure the value is set to a
 proper file path.
 """)
 
+            if c.confluence_client_cert:
+                if isinstance(c.confluence_client_cert, tuple):
+                    cert_files = c.confluence_client_cert
+                else:
+                    cert_files = (c.confluence_client_cert,)
+
+                for cert_file in cert_files:
+                    if not os.path.isfile(cert_file):
+                        errState = True
+                        if log:
+                            ConfluenceLogger.error(
+"""missing certificate file
+
+The option 'confluence_client_cert' has been provided to find a client 
+certificate file from a relative location, but the file %s was not found. 
+Ensure the value is set to a proper file path and the file exists. 
+"""
+                            )
+
         return not errState

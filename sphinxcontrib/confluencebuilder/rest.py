@@ -42,6 +42,9 @@ class Rest:
         else:
             session.verify = True
 
+        if config.confluence_client_cert:
+            session.cert = config.confluence_client_cert
+
         if config.confluence_server_user:
             session.auth = (
                 config.confluence_server_user,
