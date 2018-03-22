@@ -20,6 +20,7 @@ from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 from .exceptions import ConfluenceSSLError
+from .exceptions import ConfluenceCertificateError
 from .std.confluence import API_REST_BIND_PATH
 
 class SSLAdapter(HTTPAdapter):
@@ -41,9 +42,12 @@ class SSLAdapter(HTTPAdapter):
 
     def init_poolmanager(self, *args, **kwargs):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        context.load_cert_chain(certfile=self._certfile,
-                                keyfile=self._keyfile,
-                                password=self._password)
+        try:
+            context.load_cert_chain(certfile=self._certfile,
+                                    keyfile=self._keyfile,
+                                    password=self._password)
+        except ssl.SSLError as ex:
+            ConfluenceCertificateError(ex)
         if self._disable_validation:
             context.check_hostname = False
 

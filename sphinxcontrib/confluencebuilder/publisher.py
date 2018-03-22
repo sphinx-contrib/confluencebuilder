@@ -23,6 +23,7 @@ from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
+from .exceptions import ConfluenceCertificateError
 from .experimental import ConfluenceExperimentalQuoteSupport
 from .std.confluence import API_XMLRPC_BIND_PATH
 from .logger import ConfluenceLogger
@@ -577,9 +578,12 @@ class ConfluenceTransport(xmlrpclib.Transport):
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
                                              cafile=cafile, capath=capath)
-        context.load_cert_chain(certfile=self._certfile,
-                                keyfile=self._keyfile,
-                                password=self.client_cert_pass)
+        try:
+            context.load_cert_chain(certfile=self._certfile,
+                                    keyfile=self._keyfile,
+                                    password=self.client_cert_pass)
+        except ssl.SSLError as ex:
+            raise ConfluenceCertificateError(ex)
         if self.disable_ssl_validation:
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE

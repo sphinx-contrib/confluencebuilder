@@ -149,3 +149,13 @@ class ConfluenceSSLError(ConfluenceError):
             """)\n"""
             """---\n"""
         )
+
+class ConfluenceCertificateError(ConfluenceError):
+    def __init__(self, ex):
+        SphinxError.__init__(self,
+            """---\n"""
+            """An SSL issue has been detected when trying to load the """
+            """the certificates provided.\n"""
+            """details: %s\n""" % ex +
+            """---\n"""
+        )
