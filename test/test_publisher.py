@@ -45,12 +45,15 @@ class TestConfluencePublisher(unittest.TestCase):
         self.config['confluence_publish'] = False
         self.config['confluence_purge'] = not self.single_docname
 
-        self._conf('confluence_parent_page',    'CB_PAR', DEFAULT_TEST_PARENT)
-        self._conf('confluence_publish_prefix', 'CB_PFX')
-        self._conf('confluence_server_pass',    'CB_PWD')
-        self._conf('confluence_server_url',     'CB_URL', DEFAULT_TEST_URL)
-        self._conf('confluence_server_user',    'CB_USR', DEFAULT_TEST_USER)
-        self._conf('confluence_space_name',     'CB_SPC', DEFAULT_TEST_SPACE)
+        self._conf('confluence_parent_page',      'CB_PAR', DEFAULT_TEST_PARENT)
+        self._conf('confluence_publish_prefix',   'CB_PFX')
+        self._conf('confluence_server_pass',      'CB_PWD')
+        self._conf('confluence_server_url',       'CB_URL', DEFAULT_TEST_URL)
+        self._conf('confluence_server_user',      'CB_USR', DEFAULT_TEST_USER)
+        self._conf('confluence_space_name',       'CB_SPC', DEFAULT_TEST_SPACE)
+        self._conf('confluence_ca_cert',          'CB_CA')
+        self._conf('confluence_client_cert',      'CB_CRT')
+        self._conf('confluence_client_cert_pass', 'CB_CPW')
 
         if not self.is_automated:
             parent = self.config['confluence_parent_page']

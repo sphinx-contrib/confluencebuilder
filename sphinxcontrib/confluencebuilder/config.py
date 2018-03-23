@@ -135,15 +135,25 @@ The option 'confluence_ca_cert' has been provided to find a certificate
 authority file or path from a relative location. Ensure the value is set to a 
 proper file path.
 """)
-
             if c.confluence_client_cert:
                 if isinstance(c.confluence_client_cert, tuple):
                     cert_files = c.confluence_client_cert
                 else:
-                    cert_files = (c.confluence_client_cert,)
+                    cert_files = (c.confluence_client_cert, None)
+
+                if len(cert_files) != 2:
+                    errState = True
+                    if log:
+                        ConfluenceLogger.error(
+"""invalid client certificate
+
+The option 'confluence_client_cert' has been provided but there are too many
+values. The client cert can either be a file/path to a certificate & key pair
+or a tuple for the certificate and key in different files.
+""")
 
                 for cert_file in cert_files:
-                    if not os.path.isfile(cert_file):
+                    if cert_file and not os.path.isfile(cert_file):
                         errState = True
                         if log:
                             ConfluenceLogger.error(
@@ -154,5 +164,7 @@ certificate file from a relative location, but the file %s was not found.
 Ensure the value is set to a proper file path and the file exists. 
 """ % cert_file
                             )
+
+                c.confluence_client_cert = cert_files
 
         return not errState

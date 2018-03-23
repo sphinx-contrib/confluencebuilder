@@ -366,7 +366,7 @@ XML-RPC instead. By default, this option is set to ``False``.
 confluence_disable_ssl_validation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A boolean value to explicitly disable verification of sever SSL certificates when
+A boolean value to explicitly disable verification of server SSL certificates when
 making a publish request. By default, this option is set to ``False``.
 
 .. code-block:: python

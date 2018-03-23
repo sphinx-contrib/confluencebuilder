@@ -26,16 +26,7 @@ from .std.confluence import API_REST_BIND_PATH
 class SSLAdapter(HTTPAdapter):
     def __init__(self, cert, password=None, disable_validation=False,
                  *args, **kwargs):
-        if isinstance(cert, tuple) and len(cert) >= 2:
-            if len(cert) < 2:
-                self._certfile = cert[0]
-                self._keyfile = None
-            else:
-                self._certfile = cert[0]
-                self._keyfile = cert[1]
-        else:
-            self._certfile = cert
-            self._keyfile = None
+        self._certfile, self._keyfile = cert
         self._password = password
         self._disable_validation = disable_validation
         super(SSLAdapter, self).__init__(*args, **kwargs)

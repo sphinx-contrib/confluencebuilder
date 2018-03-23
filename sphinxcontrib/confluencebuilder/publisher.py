@@ -471,16 +471,7 @@ class ConfluenceTransport(xmlrpclib.Transport):
         self.https = (self.scheme == 'https')
         self.proxy = None
         self.timeout = timeout
-        if isinstance(client_cert, tuple) and len(client_cert) >= 2:
-            if len(client_cert) < 2:
-                self._certfile = client_cert[0]
-                self._keyfile = None
-            else:
-                self._certfile = client_cert[0]
-                self._keyfile = client_cert[1]
-        else:
-            self._certfile = client_cert
-            self._keyfile = None
+        self._certfile, self._keyfile = client_cert
         self.ca_cert = ca_cert
         self.client_cert_pass = client_cert_pass
 
