@@ -18,12 +18,12 @@ from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluenceBadSpaceError
+from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
-from .exceptions import ConfluenceCertificateError
 from .experimental import ConfluenceExperimentalQuoteSupport
 from .std.confluence import API_XMLRPC_BIND_PATH
 from .logger import ConfluenceLogger

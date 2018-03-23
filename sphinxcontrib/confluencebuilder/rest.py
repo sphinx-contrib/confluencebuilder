@@ -8,28 +8,28 @@
 """
 
 import json
-import ssl
 import requests
+import ssl
 from requests.adapters import HTTPAdapter
 
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
+from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
 from .exceptions import ConfluenceSSLError
-from .exceptions import ConfluenceCertificateError
 from .std.confluence import API_REST_BIND_PATH
 
-class SSLAdapter(HTTPAdapter):
+class SslAdapter(HTTPAdapter):
     def __init__(self, cert, password=None, disable_validation=False,
                  *args, **kwargs):
         self._certfile, self._keyfile = cert
         self._password = password
         self._disable_validation = disable_validation
-        super(SSLAdapter, self).__init__(*args, **kwargs)
+        super(SslAdapter, self).__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
@@ -38,13 +38,12 @@ class SSLAdapter(HTTPAdapter):
                                     keyfile=self._keyfile,
                                     password=self._password)
         except ssl.SSLError as ex:
-            ConfluenceCertificateError(ex)
+            raise ConfluenceCertificateError(ex)
         if self._disable_validation:
             context.check_hostname = False
 
         kwargs['ssl_context'] = context
-        return super(SSLAdapter, self).init_poolmanager(*args, **kwargs)
-
+        return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
 class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
@@ -76,7 +75,7 @@ class Rest:
         # see: https://github.com/requests/requests/issues/2519 for more
         # information.
         if config.confluence_client_cert:
-            adapter = SSLAdapter(config.confluence_client_cert,
+            adapter = SslAdapter(config.confluence_client_cert,
                                  config.confluence_client_cert_pass,
                                  config.confluence_disable_ssl_validation)
             session.mount(self.url, adapter)

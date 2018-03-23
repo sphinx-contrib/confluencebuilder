@@ -124,8 +124,7 @@ properly set with the publisher's Confluence username.
 """)
 
             if c.confluence_ca_cert:
-                if (not os.path.isfile(c.confluence_ca_cert) and
-                        not os.path.isdir(c.confluence_ca_cert)):
+                if not os.path.exists(c.confluence_ca_cert):
                     errState = True
                     if log:
                         ConfluenceLogger.error(
