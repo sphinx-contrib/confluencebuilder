@@ -333,6 +333,45 @@ option is enabled with a value of ``True``.
 advanced configuration - publishing
 -----------------------------------
 
+confluence_ca_cert
+~~~~~~~~~~~~~~~~~~
+
+Provide a CA certificate to use for server cert authentication. Can either be a
+file or a path. If you are using the rest interface, refer to the `Requests CA
+docs`_ for information on what is supported. If you are using the XML-RPC
+interface, refer to the `SSL CA docs`_. By default, verification is turned on
+and can be turned off with the ``confluence_disable_ssl_validation`` config
+option. If it is turned off, this option is ignored.
+
+.. code-block:: python
+
+    confluence_ca_cert = os.path.join('path', 'to', 'ca.crt')
+
+confluence_client_cert
+~~~~~~~~~~~~~~~~~~~~~~
+
+Provide a client certificate to use for two-way TLS/SSL authentication. Can
+either be a single file (containing the private key and the certificate) or
+as a tuple of both file's paths. If the certificate is encrypted, you
+will be prompted for a password during the publishing step.
+
+.. code-block:: python
+
+    confluence_client_cert = os.path.join('path', 'to', 'cert_and_key.pem')
+    # or
+    confluence_client_cert = ('client.cert', 'client.key')
+
+confluence_client_cert_pass
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provide a password for the ``confluence_client_cert``. This prevents a prompt
+from requesting your client certificate password. If your client certificate
+is unencrypted, this value will be ignored.
+
+.. code-block:: python
+
+    confluence_client_cert_pass = 'password'
+
 confluence_disable_autogen_title
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -366,7 +405,7 @@ XML-RPC instead. By default, this option is set to ``False``.
 confluence_disable_ssl_validation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A boolean value to explicitly disable any verification of SSL certificates when
+A boolean value to explicitly disable verification of server SSL certificates when
 making a publish request. By default, this option is set to ``False``.
 
 .. code-block:: python
@@ -426,7 +465,10 @@ seconds, the following can be used:
 
     confluence_timeout = 10
 
+
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
+.. _Requests CA docs: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+.. _SSL CA docs: https://docs.python.org/3/library/ssl.html#ssl.create_default_context

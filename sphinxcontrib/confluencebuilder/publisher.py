@@ -18,6 +18,7 @@ from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluenceBadSpaceError
+from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
@@ -30,6 +31,7 @@ from .rest import Rest
 import os
 import socket
 import sys
+import ssl
 
 try:
     import http.client as httplib
@@ -63,6 +65,9 @@ class ConfluencePublisher():
         self.timeout = config.confluence_timeout
         self.use_rest = not config.confluence_disable_rest
         self.use_xmlrpc = not config.confluence_disable_xmlrpc
+        self.ca_cert = config.confluence_ca_cert
+        self.client_cert = config.confluence_client_cert
+        self.client_cert_pass = config.confluence_client_cert_pass
 
     def connect(self):
         if not self.use_rest and not self.use_xmlrpc:
@@ -92,13 +97,14 @@ class ConfluencePublisher():
         if self.use_xmlrpc:
             try:
                 self.xmlrpc_transport = ConfluenceTransport(
-                    self.server_url, self.proxy, self.timeout)
+                    self.server_url, self.proxy, self.timeout,
+                    self.ca_cert, self.client_cert, self.client_cert_pass)
                 if self.config.confluence_disable_ssl_validation:
                     self.xmlrpc_transport.disable_ssl_verification()
 
                 self.xmlrpc = xmlrpclib.ServerProxy(
                     self.server_url + API_XMLRPC_BIND_PATH,
-                    transport=transport, allow_none=True)
+                    transport=self.xmlrpc_transport, allow_none=True)
             except IOError as ex:
                 raise ConfluenceBadServerUrlError(self.server_url, ex)
 
@@ -453,7 +459,8 @@ class ConfluenceTransport(xmlrpclib.Transport):
     [8]: https://github.com/python/cpython/blob/3.6/Lib/xmlrpc/client.py
     """
     def __init__(self, server_url, proxy=None,
-            timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+            timeout=socket._GLOBAL_DEFAULT_TIMEOUT, ca_cert=None,
+            client_cert=None, client_cert_pass=None):
         """
         initialize the transport class
         """
@@ -464,6 +471,9 @@ class ConfluenceTransport(xmlrpclib.Transport):
         self.https = (self.scheme == 'https')
         self.proxy = None
         self.timeout = timeout
+        self._certfile, self._keyfile = client_cert
+        self.ca_cert = ca_cert
+        self.client_cert_pass = client_cert_pass
 
         # pull system proxy if no proxy is forced
         if not proxy:
@@ -510,10 +520,7 @@ class ConfluenceTransport(xmlrpclib.Transport):
         # build connection
         if self.https:
             try:
-                context = None
-                if self.disable_ssl_validation:
-                    import ssl
-                    context = ssl._create_unverified_context()
+                context = self._setup_ssl_context()
                 self._connection = host, httplib.HTTPSConnection(chost,
                     timeout=self.timeout, context=context, **(x509 or {}))
             except AttributeError:
@@ -550,6 +557,29 @@ class ConfluenceTransport(xmlrpclib.Transport):
             handler = '%s://%s%s' % (self.scheme, chost, handler)
             return xmlrpclib.Transport.send_request(
                 self, host, handler, request_body, debug)
+
+    def _setup_ssl_context(self):
+        cafile = None
+        capath = None
+        if self.ca_cert:
+            if os.path.isdir(self.ca_cert):
+                capath = self.ca_cert
+            elif os.path.isfile(self.ca_cert):
+                cafile = self.ca_cert
+
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
+                                             cafile=cafile, capath=capath)
+        try:
+            context.load_cert_chain(certfile=self._certfile,
+                                    keyfile=self._keyfile,
+                                    password=self.client_cert_pass)
+        except ssl.SSLError as ex:
+            raise ConfluenceCertificateError(ex)
+        if self.disable_ssl_validation:
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+
+        return context
 
     def disable_ssl_verification(self):
         """

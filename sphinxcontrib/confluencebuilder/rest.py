@@ -9,33 +9,82 @@
 
 import json
 import requests
+import ssl
+from requests.adapters import HTTPAdapter
 
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadServerUrlError
+from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
+from .exceptions import ConfluenceSSLError
 from .std.confluence import API_REST_BIND_PATH
+
+class SslAdapter(HTTPAdapter):
+    def __init__(self, cert, password=None, disable_validation=False,
+                 *args, **kwargs):
+        self._certfile, self._keyfile = cert
+        self._password = password
+        self._disable_validation = disable_validation
+        super(SslAdapter, self).__init__(*args, **kwargs)
+
+    def init_poolmanager(self, *args, **kwargs):
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        try:
+            context.load_cert_chain(certfile=self._certfile,
+                                    keyfile=self._keyfile,
+                                    password=self._password)
+        except ssl.SSLError as ex:
+            raise ConfluenceCertificateError(ex)
+        if self._disable_validation:
+            context.check_hostname = False
+
+        kwargs['ssl_context'] = context
+        return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
 class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
         self.url = config.confluence_server_url
-        self.session = requests.Session()
-        self.session.timeout = config.confluence_timeout
-        self.session.proxies = {
+        self.session = self._setup_session(config)
+        self.verbosity = config.sphinx_verbosity
+
+    def _setup_session(self, config):
+        session = requests.Session()
+        session.timeout = config.confluence_timeout
+        session.proxies = {
             'http': config.confluence_proxy,
-            'https': config.confluence_proxy
+            'https': config.confluence_proxy,
         }
-        self.session.verify = not config.confluence_disable_ssl_validation
+
+        if config.confluence_disable_ssl_validation:
+            session.verify = False
+        elif config.confluence_ca_cert:
+            session.verify = config.confluence_ca_cert
+        else:
+            session.verify = True
+
+        # In order to support encrypted certificates, we need to
+        # use the Adapter pattern that requests uses. If requests
+        # ever adds native support for encrypted keys then we can
+        # remove the SSLAdapter and just use the native API.
+        # see: https://github.com/requests/requests/issues/2519 for more
+        # information.
+        if config.confluence_client_cert:
+            adapter = SslAdapter(config.confluence_client_cert,
+                                 config.confluence_client_cert_pass,
+                                 config.confluence_disable_ssl_validation)
+            session.mount(self.url, adapter)
+
         if config.confluence_server_user:
-            self.session.auth = (
+            session.auth = (
                 config.confluence_server_user,
                 config.confluence_server_pass)
-        self.verbosity = config.sphinx_verbosity
+        return session
 
     def get(self, key, params):
         restUrl = self.url + API_REST_BIND_PATH + '/' + key
@@ -43,6 +92,8 @@ class Rest:
             rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -71,6 +122,8 @@ class Rest:
             rsp = self.session.post(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -103,6 +156,8 @@ class Rest:
             rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -135,6 +190,8 @@ class Rest:
             rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
+        except requests.exceptions.SSLError as ex:
+            raise ConfluenceSSLError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
