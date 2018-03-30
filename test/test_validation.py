@@ -91,5 +91,17 @@ class TestConfluenceValidation(unittest.TestCase):
         app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
         app.build(force_all=True)
 
+    def test_header_footer(self):
+        config = dict(self.config)
+
+        dataset = os.path.join(self.datasets, 'header-footer')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-hf')
+
+        config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
+        config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))
