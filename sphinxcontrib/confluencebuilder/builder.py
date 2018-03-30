@@ -315,7 +315,7 @@ class ConfluenceBuilder(Builder):
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
 
-        if conf.confluence_purge and not self.legacy_pages:
+        if conf.confluence_purge and self.legacy_pages is None:
             if conf.confluence_purge_from_master and self.master_doc_page_id:
                 baseid = self.master_doc_page_id
             else:
