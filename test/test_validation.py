@@ -1,0 +1,86 @@
+# -*- coding: utf-8 -*-
+"""
+    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :license: BSD, see LICENSE for details.
+"""
+
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from subprocess import check_output
+import io
+import os
+import sys
+import unittest
+
+DEFAULT_TEST_BASE = 'sphinxcontrib-confluencebuilder Home'
+DEFAULT_TEST_DESC = 'test state'
+DEFAULT_TEST_KEY = 'test-holder'
+DEFAULT_TEST_SPACE = 'confluencebuilder'
+DEFAULT_TEST_URL = 'https://jdknight.atlassian.net/wiki/'
+DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder'
+
+class TestConfluenceValidation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _.enableVerbose()
+
+        # build configuration
+        cls.config = _.prepareConfiguration()
+        cls.config['confluence_disable_notifications'] = True
+        cls.config['confluence_disable_xmlrpc'] = True
+        cls.config['confluence_page_hierarchy'] = True
+        cls.config['confluence_parent_page'] = DEFAULT_TEST_BASE
+        cls.config['confluence_publish'] = True
+        cls.config['confluence_space_name'] = DEFAULT_TEST_SPACE
+        cls.config['confluence_server_url'] = DEFAULT_TEST_URL
+        cls.config['confluence_server_user'] = DEFAULT_TEST_USER
+        cls.config['confluence_timeout'] = 1
+        cls.test_desc = DEFAULT_TEST_DESC
+        cls.test_key = DEFAULT_TEST_KEY
+
+        # overrides from user
+        try:
+            from validation_test_overrides import config_overrides
+            cls.config.update(config_overrides)
+        except ImportError:
+            pass
+        try:
+            from validation_test_overrides import config_test_desc
+            cls.test_desc = config_test_desc
+        except ImportError:
+            pass
+        try:
+            from validation_test_overrides import config_test_key
+            cls.test_key = config_test_key
+        except ImportError:
+            pass
+
+        # finalize configuration
+        cls.config['confluence_publish_prefix'] = ''
+        cls.config['confluence_purge'] = False
+        cls.config['rst_epilog'] = """
+.. |test_key| replace:: {}
+.. |test_desc| replace:: {}
+""".format(cls.test_key, cls.test_desc)
+
+        # find validate-sets base folder
+        test_dir = os.path.dirname(os.path.realpath(__file__))
+        cls.datasets = os.path.join(test_dir, 'validation-sets')
+
+        # setup base structure
+        dataset = os.path.join(cls.datasets, 'base')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-base')
+
+        # build/publish test base page
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, cls.config)
+        app.build(force_all=True)
+
+        # finalize configuration for tests
+        cls.config['confluence_purge'] = True
+        cls.config['confluence_purge_from_master'] = True
+        if cls.test_key != DEFAULT_TEST_KEY:
+            cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
+        cls.config['confluence_parent_page'] = cls.test_key
+
+if __name__ == '__main__':
+    sys.exit(unittest.main(verbosity=0))
