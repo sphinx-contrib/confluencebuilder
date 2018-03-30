@@ -82,5 +82,14 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
         cls.config['confluence_parent_page'] = cls.test_key
 
+    def test_common(self):
+        config = dict(self.config)
+
+        dataset = os.path.join(self.datasets, 'common')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-common')
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))

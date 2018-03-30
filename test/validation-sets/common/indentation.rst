@@ -1,0 +1,21 @@
+.. reStructuredText Indentation documentation:
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#indentation
+
+   Confluence Storage Format - Text breaks
+   https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html#ConfluenceStorageFormat-Textbreaks
+
+indentation
+===========
+
+This is a top-level paragraph.
+
+    This paragraph belongs to a first-level block quote
+
+        This paragraph belongs to a second-level block quote.
+
+Another top-level paragraph.
+
+        This paragraph belongs to a second-level block quote.
+
+    | This paragraph belongs to a first-level block quote. The second-level
+	  block quote above is inside this first-level block quote.
