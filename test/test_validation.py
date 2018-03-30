@@ -114,5 +114,16 @@ class TestConfluenceValidation(unittest.TestCase):
         app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
         app.build(force_all=True)
 
+    def test_xmlrpc(self):
+        config = dict(self.config)
+        config['confluence_disable_rest'] = True
+        config['confluence_disable_xmlrpc'] = False
+
+        dataset = os.path.join(self.datasets, 'xmlrpc')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-xmlrpc')
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))
