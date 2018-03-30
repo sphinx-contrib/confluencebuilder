@@ -102,10 +102,6 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_context = {
-    'css_files': [ '_static/theme_overrides.css' ],
-    }
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
@@ -162,5 +158,8 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
+# append theme override
+def setup(app):
+    app.add_stylesheet('theme_overrides.css')
 
 
