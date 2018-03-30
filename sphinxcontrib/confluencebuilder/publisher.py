@@ -466,6 +466,7 @@ class ConfluenceTransport(xmlrpclib.Transport):
         """
         xmlrpclib.Transport.__init__(self)
 
+        client_cert = client_cert or (None, None)
         self.disable_ssl_validation = False
         self.scheme = urllib.splittype(server_url)[0]
         self.https = (self.scheme == 'https')
@@ -569,12 +570,14 @@ class ConfluenceTransport(xmlrpclib.Transport):
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
                                              cafile=cafile, capath=capath)
-        try:
-            context.load_cert_chain(certfile=self._certfile,
-                                    keyfile=self._keyfile,
-                                    password=self.client_cert_pass)
-        except ssl.SSLError as ex:
-            raise ConfluenceCertificateError(ex)
+        if self._certfile:
+            try:
+                context.load_cert_chain(certfile=self._certfile,
+                                        keyfile=self._keyfile,
+                                        password=self.client_cert_pass)
+            except ssl.SSLError as ex:
+                raise ConfluenceCertificateError(ex)
+
         if self.disable_ssl_validation:
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE
