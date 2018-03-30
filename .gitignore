@@ -15,4 +15,3 @@ doc/_build/
 
 # testing
 .tox/
-.test_publish_key
