@@ -103,5 +103,16 @@ class TestConfluenceValidation(unittest.TestCase):
         app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
         app.build(force_all=True)
 
+    def test_hierarchy(self):
+        config = dict(self.config)
+        config['confluence_max_doc_depth'] = 2
+        config['confluence_page_hierarchy'] = True
+
+        dataset = os.path.join(self.datasets, 'hierarchy')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-hierarchy')
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))
