@@ -76,6 +76,7 @@ class TestConfluenceValidation(unittest.TestCase):
         app.build(force_all=True)
 
         # finalize configuration for tests
+        cls.config['confluence_master_homepage'] = False
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_master'] = True
         if cls.test_key != DEFAULT_TEST_KEY:
