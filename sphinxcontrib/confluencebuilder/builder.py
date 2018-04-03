@@ -239,7 +239,8 @@ class ConfluenceBuilder(Builder):
         doctree = self.env.get_doctree(docname)
         for toctreenode in doctree.traverse(addnodes.toctree):
             if not omit and max_depth is not None:
-                if (depth + toctreenode['maxdepth']) > max_depth:
+                if (toctreenode['maxdepth'] == -1 or
+                        depth + toctreenode['maxdepth'] > max_depth):
                     new_depth = max_depth - depth
                     assert new_depth >= 0
                     toctreenode['maxdepth'] = new_depth

@@ -9,3 +9,7 @@ hyperlink references (part a)
 Validate `anonymous`__ hyperlink references.
 
 __ http://www.example.com/static/first-link.txt
+
+.. toctree::
+
+   toctree-doc2aa

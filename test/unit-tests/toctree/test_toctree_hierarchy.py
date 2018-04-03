@@ -38,6 +38,17 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
         _.assertExpectedWithOutput(
             self, 'toctree-doc3', self.expected, self.doc_dir)
 
+        test_paths = [
+            os.path.join(self.doc_dir, 'toctree-doc2a.conf'),
+            os.path.join(self.doc_dir, 'toctree-doc2aa.conf'),
+            os.path.join(self.doc_dir, 'toctree-doc2aaa.conf'),
+            os.path.join(self.doc_dir, 'toctree-doc2b.conf'),
+            os.path.join(self.doc_dir, 'toctree-doc2c.conf')
+            ]
+        for test_path in test_paths:
+            self.assertFalse(os.path.exists(test_path),
+                'unexpected file was generated: {}'.format(test_path))
+
     def test_parent_registration(self):
         root_doc = ConfluenceState.parentDocname('toctree')
         self.assertIsNone(root_doc, 'root toctree has a parent')
