@@ -19,7 +19,7 @@ class ConfluenceUtil:
         """
         normalize a confluence base url
 
-        A Confluence base URL refers to the URL porition excluding the target
+        A Confluence base URL refers to the URL portion excluding the target
         API bind point. This method attempts to handle a series of user-provided
         URL values and attempt to determine the proper base URL to use.
         """
