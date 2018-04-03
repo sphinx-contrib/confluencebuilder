@@ -1,5 +1,3 @@
-:orphan:
-
 .. Cross-referencing arbitrary locations documentation:
    http://www.sphinx-doc.org/en/stable/markup/inline.html#cross-referencing-arbitrary-locations
 

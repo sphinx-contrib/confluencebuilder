@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Admonitions documentation:
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions
 

@@ -1,5 +1,3 @@
-:orphan:
-
 .. (see cross-referencing-arbitrary-locations-a.rst)
 
 cross-referencing arbitrary locations b

@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Markup  Definition Lists documentation:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#definition-lists
 

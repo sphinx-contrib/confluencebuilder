@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Body Elements documentation:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#body-elements
 

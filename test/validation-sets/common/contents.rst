@@ -1,26 +1,25 @@
-:orphan:
-
 .. Sphinx Table-of-contents markup documentation:
    http://www.sphinx-doc.org/en/stable/markup/para.html#table-of-contents-markup
 
-toc
-===
+common
+======
 
 The following is a Sphinx generated table of contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    admonitions
    body-elements
    code
    cross-referencing-arbitrary-locations-a
+   cross-referencing-arbitrary-locations-b
    definitions
    indentation
    inline-markup
    paragraph-level-markup
    references
-   sections-a
+   sections
    tables
+   unicode
    verification-of-content
-   contents

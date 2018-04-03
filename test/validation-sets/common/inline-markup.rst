@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Inline Markup documentation:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#inline-markup
 

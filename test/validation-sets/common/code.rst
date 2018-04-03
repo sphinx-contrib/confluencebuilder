@@ -1,5 +1,3 @@
-:orphan:
-
 .. Sphinx Code documentation:
    http://www.sphinx-doc.org/en/stable/markup/code.html
 

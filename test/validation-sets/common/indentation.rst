@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Indentation documentation:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#indentation
 
@@ -11,7 +9,7 @@ indentation
 
 This is a top-level paragraph.
 
-    This paragraph belongs to a first-level block quote.
+    This paragraph belongs to a first-level block quote
 
         This paragraph belongs to a second-level block quote.
 

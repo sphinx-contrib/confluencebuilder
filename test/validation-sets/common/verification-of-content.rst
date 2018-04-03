@@ -1,5 +1,3 @@
-:orphan:
-
 verification of content
 =======================
 

@@ -1,5 +1,3 @@
-:orphan:
-
 .. reStructuredText Tables documentation:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#tables
 
