@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.writer
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from __future__ import (absolute_import, print_function, unicode_literals)

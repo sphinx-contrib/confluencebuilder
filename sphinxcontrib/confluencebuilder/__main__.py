@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.__main__
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 import sphinxcontrib.confluencebuilder

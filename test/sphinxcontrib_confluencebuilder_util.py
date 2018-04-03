@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.test.test_builder
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from sphinx.application import Sphinx

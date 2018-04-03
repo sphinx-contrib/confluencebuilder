@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.publisher
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 
     See also:
      Confluence Cloud REST API Reference

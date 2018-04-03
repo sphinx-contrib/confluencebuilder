@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.util
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from .std.confluence import API_REST_BIND_PATH

@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.std.confluence
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from .sphinx import DEFAULT_HIGHLIGHT_STYLE

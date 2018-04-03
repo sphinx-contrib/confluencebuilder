@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.__init__
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Sphinx extension to output Atlassian Confluence wiki files.
-
     :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from .builder import ConfluenceBuilder
