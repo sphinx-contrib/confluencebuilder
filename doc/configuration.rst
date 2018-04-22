@@ -465,6 +465,21 @@ seconds, the following can be used:
 
     confluence_timeout = 10
 
+confluence_fmt_glossary_term, confluence_fmt_glossary_desc
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Formatting for the term and the description of the term within a Glossary_.
+Basic `Confluence Wiki Markup`_ text formatting is supported and the markup
+should be defined without the followin period and space:
+
+.. code-block:: python
+
+    confluence_fmt_glossary_term = 'h6' (default '')
+    confluenct_fmt_glossary_desc = '' (default 'bg')
+
+The empty string, `''` can be given to indicate that no formatting should be
+applied.
+
 
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
@@ -472,3 +487,5 @@ seconds, the following can be used:
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
 .. _Requests CA docs: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 .. _SSL CA docs: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+.. _Glossary: http://www.sphinx-doc.org/en/master/glossary.html
+.. _Confluence Wiki Markup: https://confluence.atlassian.com/doc/confluence-wiki-markup-251003035.html

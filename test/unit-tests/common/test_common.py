@@ -42,6 +42,9 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_references(self):
         self._assertExpectedWithOutput('references')
 
+    def test_glossary(self):
+        self._assertExpectedWithOutput('glossary')
+
     def test_registry(self):
         # validate builder's registration into Sphinx
         if hasattr(self.app, 'extensions'):

@@ -13,7 +13,7 @@ requires = [
 
 setup(
     name='sphinxcontrib-confluencebuilder',
-    version='0.9.0.dev0',
+    version='0.9.0.dev1',
     url='https://github.com/tonybaloney/sphinxcontrib-confluencebuilder',
     download_url='https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
     license='BSD',  # 2-clause

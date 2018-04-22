@@ -14,7 +14,7 @@ from .logger import ConfluenceLogger
 from sphinx.writers.text import STDINDENT
 import argparse
 
-__version__='0.9.0.dev0'
+__version__='0.9.0.dev1'
 
 def main():
     parser = argparse.ArgumentParser(prog=__name__,
@@ -118,3 +118,8 @@ def setup(app):
     """(experimental)"""
     """Support experimental indentation support."""
     app.add_config_value('confluence_experimental_indentation', True, True)
+
+    """Formatting to use for glossary terms and descriptions"""
+    app.add_config_value('confluence_fmt_glossary_term', '', True)
+    app.add_config_value('confluence_fmt_glossary_defn', 'bq', True)
+

@@ -55,7 +55,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
-        restricted_macros = builder.config.confluence_adv_restricted_macros
+        restricted_macros = self.builder.config.confluence_adv_restricted_macros
         if not 'anchor' in restricted_macros:
             self.can_anchor = True
         else:
@@ -562,6 +562,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.new_state(0)
 
         self._li_terms.append(node.astext())
+        self.add_text('{anchor:term-%s}\n' % node.astext())
+        if self.builder.config.confluence_fmt_glossary_term:
+            self.add_text(
+                '%s. ' % self.builder.config.confluence_fmt_glossary_term)
 
     def depart_term(self, node):
         pass
@@ -580,7 +584,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         self.new_state(0)
         definition = ' '.join(node.astext().split(self.nl))
-        self.add_text('bq. %s' % definition)
+        if self.builder.config.confluence_fmt_glossary_defn:
+            self.add_text(
+                '%s. ' % self.builder.config.confluence_fmt_glossary_defn)
+        self.add_text(definition)
         self.end_state()
 
         raise nodes.SkipNode
