@@ -44,7 +44,9 @@ enumerated lists       completed     - `reStructuredText Enumerated Lists`_
                                        supported.
 epigraph               prospect      - `reStructuredText Epigraph`_
 footnotes              completed     - `reStructuredText Footnotes`_
-glossary               completed     - `Sphinx Glossary`_
+glossary               partial       - `Sphinx Glossary`_
+                                     - Visually renders definitions; references
+                                       to entries not yet supported.
 highlights             prospect      - `reStructuredText Highlights`_
 hlist                  unsupported   - `Sphinx Horizontal List`_
 hyperlink targets      completed     - `reStructuredText Hyperlink Targets`_
