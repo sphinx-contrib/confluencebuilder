@@ -44,6 +44,7 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_glossary(self):
         self._assertExpectedWithOutput('glossary')
+        self._assertExpectedWithOutput('glossary2')
 
     def test_registry(self):
         # validate builder's registration into Sphinx
