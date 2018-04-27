@@ -166,30 +166,4 @@ Ensure the value is set to a proper file path and the file exists.
 
                 c.confluence_client_cert = cert_files
 
-            if (c.confluence_fmt_glossary_term and 
-                    (len(c.confluence_fmt_glossary_term) != 2)):
-                errState = True
-                if log:
-                    ConfluenceLogger.error(
-"""invalid Glossary term custom formatting
-
-The option 'confluence_fmt_glossary_term' has been provided but does not
-contain both prefix and suffix formats.  Both prefix and suffix formats must
-be provided but either may be the empty string, '', signifying that no
-formatting is required.
-""")
-
-            if (c.confluence_fmt_glossary_defn and 
-                    (len(c.confluence_fmt_glossary_defn) != 2)):
-                errState = True
-                if log:
-                    ConfluenceLogger.error(
-"""invalid Glossary definition custom formatting
-
-The option 'confluence_fmt_glossary_defn' has been provided but does not
-contain both prefix and suffix formats.  Both prefix and suffix formats must
-be provided but either may be the empty string, '', signifying that no
-formatting is required.
-""")
-
         return not errState

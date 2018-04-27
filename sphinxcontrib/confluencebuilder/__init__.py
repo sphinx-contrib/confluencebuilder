@@ -118,9 +118,3 @@ def setup(app):
     """(experimental)"""
     """Support experimental indentation support."""
     app.add_config_value('confluence_experimental_indentation', True, True)
-
-    """(advanced-configuration - formatting)"""
-    """Formatting to use for glossary terms and definitions"""
-    app.add_config_value('confluence_fmt_glossary_term', [], True)
-    app.add_config_value('confluence_fmt_glossary_defn', ['bq. ', ''], True)
-
