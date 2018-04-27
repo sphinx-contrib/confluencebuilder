@@ -55,7 +55,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if SEP in self.docname:
             self.docparent = self.docname[0:self.docname.rfind(SEP)+1]
 
-        restricted_macros = self.builder.config.confluence_adv_restricted_macros
+        restricted_macros = builder.config.confluence_adv_restricted_macros
         if not 'anchor' in restricted_macros:
             self.can_anchor = True
         else:
@@ -563,12 +563,14 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         self._li_terms.append(node.astext())
         self.add_text('{anchor:term-%s}\n' % node.astext())
-        if self.builder.config.confluence_fmt_glossary_term:
-            self.add_text(
-                '%s. ' % self.builder.config.confluence_fmt_glossary_term)
+        if (self.builder.config.confluence_fmt_glossary_term and
+               self.builder.config.confluence_fmt_glossary_term[0]):
+            self.add_text(self.builder.config.confluence_fmt_glossary_term[0])
 
     def depart_term(self, node):
-        pass
+        if (self.builder.config.confluence_fmt_glossary_term and
+               self.builder.config.confluence_fmt_glossary_term[1]):
+            self.add_text(self.builder.config.confluence_fmt_glossary_term[1])
 
     def visit_termsep(self, node):
         raise nodes.SkipNode
@@ -584,16 +586,18 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         self.new_state(0)
         definition = ' '.join(node.astext().split(self.nl))
-        if self.builder.config.confluence_fmt_glossary_defn:
-            self.add_text(
-                '%s. ' % self.builder.config.confluence_fmt_glossary_defn)
+        if (self.builder.config.confluence_fmt_glossary_defn and
+               self.builder.config.confluence_fmt_glossary_defn[0]):
+            self.add_text(self.builder.config.confluence_fmt_glossary_defn[0])
         self.add_text(definition)
         self.end_state()
 
         raise nodes.SkipNode
 
     def depart_definition(self, node):
-        pass
+        if (self.builder.config.confluence_fmt_glossary_defn and
+               self.builder.config.confluence_fmt_glossary_defn[1]):
+            self.add_text(self.builder.config.confluence_fmt_glossary_defn[1])
 
     def visit_field_list(self, node):
         pass

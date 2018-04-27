@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
@@ -13,8 +13,8 @@ class TestConfluenceCustomFormatting(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = _.prepareConfiguration()
-        self.config['confluence_fmt_glossary_term'] = 'h6'
-        self.config['confluence_fmt_glossary_defn'] = ''
+        self.config['confluence_fmt_glossary_term'] = ['h6. ', '']
+        self.config['confluence_fmt_glossary_defn'] = ['', '']
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-custom-formatting')
         self.expected = os.path.join(test_dir, 'expected')
@@ -24,7 +24,6 @@ class TestConfluenceCustomFormatting(unittest.TestCase):
         app.build(force_all=True)
 
         self.doc_dir = doc_dir
-        self.app = app
 
     def _assertExpectedWithOutput(self, name):
         _.assertExpectedWithOutput(

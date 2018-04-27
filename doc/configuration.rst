@@ -465,20 +465,52 @@ seconds, the following can be used:
 
     confluence_timeout = 10
 
-confluence_fmt_glossary_term, confluence_fmt_glossary_desc
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+advanced configuration - formatting
+-----------------------------------
 
-Formatting for the term and the description of the term within a Glossary_.
-Basic `Confluence Wiki Markup`_ text formatting is supported and the markup
-should be defined without the followin period and space:
+Custom formatting may be applied to certain aspects of the Confluence output
+by specifying a prefix and/or suffix of `Confluence Wiki Markup`_. The
+prefix/suffix approach is used since it allows both simple formatting such as
+
+.. code-block:: python 
+
+    confluence_fmt_something = ['h2. ', '']
+
+which will make the `something` item into a second-level header or
+
+.. code-block:: python 
+
+    confluence_fmt_something = ['{warning:label=something}', '{warning}']
+
+which will embed the `something` into a warning block.
+
+Custom formatting can be tested in Confluence by creating a blank page and
+using the `wiki` macro to test `Confluence Wiki Markup`_ constructs.
+
+An empty array, `[]` indicates no formatting and the prefix or suffix may be
+an empty string, `''` to indicate no formatting.
+
+confluence_fmt_glossary_term
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Formatting for the Glossary_ term. Basic `Confluence Wiki Markup`_ text
+formatting is supported and a prefix and a suffix may be defined to bracket
+the term:
 
 .. code-block:: python
 
-    confluence_fmt_glossary_term = 'h6' (default '')
-    confluenct_fmt_glossary_desc = '' (default 'bg')
+    confluence_fmt_glossary_term = ['h6. ', '']    (default ['', ''])
 
-The empty string, `''` can be given to indicate that no formatting should be
-applied.
+confluence_fmt_glossary_defn
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Formatting for a Glossary_ definition. Basic `Confluence Wiki Markup`_ text
+formatting is supported and a prefix and a suffix may be defined to bracket
+the definition:
+
+.. code-block:: python
+
+    confluence_fmt_glossary_defn = ['bg. ', '']    (default ['bg. ', ''])
 
 
 .. _Requests: https://pypi.python.org/pypi/requests
