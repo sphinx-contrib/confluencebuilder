@@ -465,53 +465,6 @@ seconds, the following can be used:
 
     confluence_timeout = 10
 
-advanced configuration - formatting
------------------------------------
-
-Custom formatting may be applied to certain aspects of the Confluence output
-by specifying a prefix and/or suffix of `Confluence Wiki Markup`_. The
-prefix/suffix approach is used since it allows both simple formatting such as
-
-.. code-block:: python 
-
-    confluence_fmt_something = ['h2. ', '']
-
-which will make the `something` item into a second-level header or
-
-.. code-block:: python 
-
-    confluence_fmt_something = ['{warning:label=something}', '{warning}']
-
-which will embed the `something` into a warning block.
-
-Custom formatting can be tested in Confluence by creating a blank page and
-using the `wiki` macro to test `Confluence Wiki Markup`_ constructs.
-
-An empty array, `[]` indicates no formatting and the prefix or suffix may be
-an empty string, `''` to indicate no formatting.
-
-confluence_fmt_glossary_term
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Formatting for the Glossary_ term. Basic `Confluence Wiki Markup`_ text
-formatting is supported and a prefix and a suffix may be defined to bracket
-the term:
-
-.. code-block:: python
-
-    confluence_fmt_glossary_term = ['h6. ', '']    (default ['', ''])
-
-confluence_fmt_glossary_defn
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Formatting for a Glossary_ definition. Basic `Confluence Wiki Markup`_ text
-formatting is supported and a prefix and a suffix may be defined to bracket
-the definition:
-
-.. code-block:: python
-
-    confluence_fmt_glossary_defn = ['bg. ', '']    (default ['bg. ', ''])
-
 
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
@@ -519,5 +472,3 @@ the definition:
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
 .. _Requests CA docs: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 .. _SSL CA docs: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
-.. _Glossary: http://www.sphinx-doc.org/en/master/glossary.html
-.. _Confluence Wiki Markup: https://confluence.atlassian.com/doc/confluence-wiki-markup-251003035.html

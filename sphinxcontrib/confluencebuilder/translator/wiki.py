@@ -562,7 +562,10 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.new_state(0)
 
         self._li_terms.append(node.astext())
-        self.add_text('{anchor:term-%s}\n' % node.astext())
+        if 'ids' in node:
+            for anchor in node['ids']:
+                if self.can_anchor:
+                    self.add_text('{anchor:%s}\n' % anchor)
 
     def depart_term(self, node):
         pass

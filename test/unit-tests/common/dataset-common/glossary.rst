@@ -6,6 +6,10 @@ glossary test
 This section contains references to the :term:`something` and :term:`else`
 glossary entries.
 
+It also contains the multiple references :term:`multiple` and :term:`entries`
+to a ginel glossay entry plus the :term:`nowhere` that is a mistake and
+references a non-existant glossary entry.
+
 They should be converted to references.
 
 glossary
@@ -18,3 +22,7 @@ glossary
 
    else
       And this must too.
+
+   multiple
+   entries
+      For a single glossary entry
