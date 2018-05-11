@@ -13,6 +13,8 @@ class TestConfluenceCommon(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = _.prepareConfiguration()
+        self.config['extensions'].append('sphinx.ext.todo')
+        self.config['todo_include_todos'] = True
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-common')
         self.expected = os.path.join(test_dir, 'expected')
@@ -45,6 +47,9 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_glossary(self):
         self._assertExpectedWithOutput('glossary')
         self._assertExpectedWithOutput('glossary2')
+
+    def test_todo(self):
+        self._assertExpectedWithOutput('todo')
 
     def test_registry(self):
         # validate builder's registration into Sphinx

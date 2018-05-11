@@ -847,10 +847,6 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             docname = posixpath.normpath(
                 self.docparent + path.splitext(node['refuri'])[0])
             doctitle = ConfluenceState.title(docname)
-            if not doctitle:
-                ConfluenceLogger.warn("unable to build link to document due to "
-                    "missing title (in %s): %s" % (self.docname, docname))
-                raise nodes.SkipNode
 
             if '#' in node['refuri']:
                 anchor = node['refuri'].split('#')[1]
@@ -870,10 +866,18 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             label = node.astext()
             for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
                 label = label.replace(find, encoded)
-            if label == doctitle and not anchor:
+            if not doctitle:
+                # A link to an anchor on the current page.
+                assert anchor
+                self.add_text('[%s|%s]' % (label, anchor))
+            elif label == doctitle and not anchor:
+                # A link to a page.
                 self.add_text('[%s]' % label)
             else:
+                # Some text to display and the link is to an anchor in a
+                # different document.
                 self.add_text('[%s|%s%s]' % (label, doctitle, anchor))
+
             raise nodes.SkipNode
 
         # Anchor.
@@ -1007,3 +1011,9 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
         if 'confluence' in node.get('format', '').split():
             self.add_text(node.astext())
         raise nodes.SkipNode
+
+    def visit_todo_node(self, node):
+        self.visit_admonition(node)
+
+    def depart_todo_node(self, node):
+        self.depart_admonition(node)
