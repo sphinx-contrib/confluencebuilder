@@ -1,5 +1,5 @@
-master
-======
+0.9.0 (2018-06-02)
+==================
 
 * fixed a series of content escaping issues
 * fixed an issue when purging content would remove just-published pages
