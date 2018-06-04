@@ -4,6 +4,7 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from sphinx.util.console import nocolor, color_terminal
 from sphinx.application import Sphinx
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 import difflib
@@ -113,6 +114,12 @@ class ConfluenceTestUtil:
 
         [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
         """
+        # Enable coloring of warning and other messages.  Note that this can
+        # cause sys.stderr to be mocked which is why we pass the new value
+        # explicitly on the call to Sphinx() below.
+        if not color_terminal():
+            nocolor()
+
         sts = ConfluenceTestUtil.default_sphinx_status
         return Sphinx(
             src_dir,                # output for document sources
@@ -120,6 +127,7 @@ class ConfluenceTestUtil:
             out_dir,                # output for generated documents
             doctree_dir,            # output for doctree files
             ConfluenceBuilder.name, # use this extension's builder
-            dict(config),           # load the provided configuration (volatile)
-            sts                     # status output
-            )
+            confoverrides=dict(config), 
+                                    # load the provided configuration (volatile)
+            status=sts,             # status output
+            warning=sys.stderr)     # warnings output
