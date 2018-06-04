@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.publisher
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 
     See also:
      Confluence Cloud REST API Reference
@@ -25,13 +22,13 @@ from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
 from .experimental import ConfluenceExperimentalQuoteSupport
-from .std.confluence import API_XMLRPC_BIND_PATH
 from .logger import ConfluenceLogger
 from .rest import Rest
+from .std.confluence import API_XMLRPC_BIND_PATH
 import os
 import socket
-import sys
 import ssl
+import sys
 
 try:
     import http.client as httplib

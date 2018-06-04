@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
@@ -76,6 +76,7 @@ class TestConfluenceValidation(unittest.TestCase):
         app.build(force_all=True)
 
         # finalize configuration for tests
+        cls.config['confluence_master_homepage'] = False
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_master'] = True
         if cls.test_key != DEFAULT_TEST_KEY:

@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.rest
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
-
-import json
-import requests
-import ssl
-from requests.adapters import HTTPAdapter
 
 from .exceptions import ConfluenceAuthenticationFailedUrlError
 from .exceptions import ConfluenceBadApiError
@@ -18,10 +10,14 @@ from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
+from .exceptions import ConfluenceSSLError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from .exceptions import ConfluenceTimeoutError
-from .exceptions import ConfluenceSSLError
 from .std.confluence import API_REST_BIND_PATH
+from requests.adapters import HTTPAdapter
+import json
+import requests
+import ssl
 
 class SslAdapter(HTTPAdapter):
     def __init__(self, cert, password=None, disable_validation=False,

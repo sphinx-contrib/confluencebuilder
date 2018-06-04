@@ -2,10 +2,16 @@ master
 ======
 
 * fixed a series of content escaping issues
+* fixed an issue when purging content would remove just-published pages
 * fixed detailed configuration errors from being hidden
+* improve proxy support for xml-rpc on various python versions
+* improve support for various confluence url configurations
 * improve support in handling literal block languages
 * support automatic title generation for documents (if missing)
+* support linenothreshold option for hightlight directive
 * support maximum page depth (nesting documents)
+* support the raw directive
+* support two-way ssl connections
 
 0.8.0 (2017-12-05)
 ==================

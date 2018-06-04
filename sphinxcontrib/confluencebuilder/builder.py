@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.confluencebuilder.builder
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    :copyright: Copyright 2016-2017 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-from .config import ConfluenceConfig
 from .compat import ConfluenceCompat
+from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
 from .util import ConfluenceUtil
 from .writer import ConfluenceWriter
-from docutils.io import StringOutput
 from docutils import nodes
+from docutils.io import StringOutput
+from os import path
+from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
-from sphinx import addnodes
-from os import path
 import io
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes

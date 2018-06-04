@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinxcontrib.test.__main__
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Mainline for all unit tests for the Sphinx-contrib Atlassian Confluence
-    extension.
-
     :copyright: Copyright 2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil

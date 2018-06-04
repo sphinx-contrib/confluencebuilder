@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
-    :license: BSD, see LICENSE.txt for details.
+    :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
