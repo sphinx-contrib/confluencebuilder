@@ -285,7 +285,8 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.add_text(', ')
         else:
             self.first_param = 0
-        self.add_text(node.astext())
+        data = encode_for_wiki_converter(node.astext())
+        self.add_text(data)
         raise nodes.SkipNode
 
     def visit_desc_optional(self, node):
