@@ -586,6 +586,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         self.new_state(0)
         definition = ' '.join(node.astext().split(self.nl))
+        definition = encode_for_wiki_converter(definition)
         self.add_text('bq. %s' % definition)
         self.end_state()
 
