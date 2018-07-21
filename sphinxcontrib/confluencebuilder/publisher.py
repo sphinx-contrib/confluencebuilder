@@ -205,8 +205,8 @@ class ConfluencePublisher():
             if page_id:
                 search_fields = {'cql': 'ancestor=' + str(page_id)}
             else:
-                search_fields = {'cql': 'space=' + self.space_name +
-                    ' and type=page'}
+                search_fields = {'cql': 'space="' + self.space_name +
+                    '" and type=page'}
 
             # Observed issues with "content/{id}/descendant"; using search.
             rsp = self.rest_client.get('content/search', search_fields)
