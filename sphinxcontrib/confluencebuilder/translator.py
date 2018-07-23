@@ -7,12 +7,15 @@
 from __future__ import unicode_literals
 from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
+from .state import ConfluenceState
 from .std.confluence import LITERAL2LANG_MAP
 from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
+from sphinx.util.osutil import SEP
 import io
+import posixpath
 import sys
 
 class ConfluenceTranslator(BaseTranslator):
@@ -31,6 +34,18 @@ class ConfluenceTranslator(BaseTranslator):
         BaseTranslator.__init__(self, document)
         self.builder = builder
         config = builder.config
+
+        # acquire the active document name from the builder
+        assert builder.current_docname
+        self.docname = builder.current_docname
+
+        # determine the active document's parent path to assist it title mapping
+        # for relative document uris
+        # (see '_visit_reference_intern_uri')
+        if SEP in self.docname:
+            self.docparent = self.docname[0:self.docname.rfind(SEP) + 1]
+        else:
+            self.docparent = ''
 
         self.body = []
         self.context = []
@@ -620,6 +635,103 @@ class ConfluenceTranslator(BaseTranslator):
         raise nodes.SkipNode
 
     def visit_colspec(self, node):
+        raise nodes.SkipNode
+
+    # -------------------
+    # references - common
+    # -------------------
+
+    def visit_reference(self, node):
+        if not 'internal' in node and 'refuri' in node:
+            self._visit_reference_extern(node)
+        elif 'refid' in node:
+            self._visit_reference_intern_id(node)
+        elif 'refuri' in node:
+            self._visit_reference_intern_uri(node)
+        raise nodes.SkipNode
+
+    def _visit_reference_extern(self, node):
+        if 'name' in node:
+            name = node['name']
+        else:
+            name = node.astext()
+        uri = node['refuri']
+
+        name = self._escape_sf(name)
+        uri = self._escape_sf(uri)
+
+        self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+        self.body.append(name)
+        self.body.append(self._end_tag(node, suffix=''))
+
+    def _visit_reference_intern_id(self, node):
+        anchor = ''.join(node['refid'].split())
+
+        # check if this target is reachable without an anchor; if so, use the
+        # identifier value instead
+        target = ConfluenceState.target(anchor)
+        if target:
+            anchor_value = target
+        elif not self.can_anchor:
+            self.body.append(self._escape_sf(node.astext()))
+            raise nodes.SkipNode
+        else:
+            anchor_value = anchor
+
+        # build link to internal anchor (on the same page)
+        self.body.append(self._start_ac_link(node, anchor_value))
+        self.body.append(self._start_ac_plain_text_link_body_macro(node))
+        self.body.append(self._escape_cdata(node.astext()))
+        self.body.append(self._end_ac_plain_text_link_body_macro(node))
+        self.body.append(self._end_ac_link(node))
+
+    def _visit_reference_intern_uri(self, node):
+        docname = posixpath.normpath(
+            self.docparent + path.splitext(node['refuri'])[0])
+        doctitle = ConfluenceState.title(docname)
+        if not doctitle:
+            ConfluenceLogger.warn('unable to build link to document due to '
+                'missing title (in {}): {}'.format(self.docname, docname))
+            raise nodes.SkipNode
+
+        anchor_value = None
+        if '#' in node['refuri']:
+            anchor = node['refuri'].split('#')[1]
+            if 'anchorname' in node:
+                # an anchorname may be set (usually when using tocs)
+                target_name = '{}#{}'.format(docname, anchor)
+            else:
+                target_name = anchor
+
+            # check if this target is reachable without an anchor; if so, use
+            # the identifier value instead
+            target = ConfluenceState.target(target_name)
+            if target:
+                anchor_value = target
+            elif self.can_anchor:
+                anchor_value = anchor
+
+        # build link to internal anchor (on another page)
+        self.body.append(self._start_ac_link(node, anchor_value))
+        self.body.append(self._start_tag(node, 'ri:page',
+            suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
+        self.body.append(self._start_ac_plain_text_link_body_macro(node))
+        self.body.append(self._escape_cdata(node.astext()))
+        self.body.append(self._end_ac_plain_text_link_body_macro(node))
+        self.body.append(self._end_ac_link(node))
+
+    def visit_target(self, node):
+        if 'refid' in node and self.can_anchor:
+            anchor = ''.join(node['refid'].split())
+
+            # only build an anchor if required (e.x. is a reference label
+            # already provided by a build section element)
+            target = ConfluenceState.target(anchor)
+            if not target:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', anchor))
+                self.body.append(self._end_ac_macro(node))
+
         raise nodes.SkipNode
 
     # ##########################################################################
