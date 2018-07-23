@@ -37,6 +37,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.nl = '\n'
         self._quote_level = 0
         self._section_level = 1
+        self._thead_context = []
 
         if config.highlight_language:
             self._highlight = config.highlight_language
@@ -547,6 +548,79 @@ class ConfluenceTranslator(BaseTranslator):
     depart_tip = _depart_admonition
     visit_warning = _visit_warning
     depart_warning = _depart_admonition
+
+    # ------
+    # tables
+    # ------
+
+    def visit_table(self, node):
+        self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+        # track the thead context
+        #
+        # When writing a table cell (visit_entry), it needs to be known if the
+        # cell is in the header (th) or is a data cell (td). A "thead context"
+        # keeps track of whether or not an cell/entry being written is of the
+        # proper type. A context list is needed to support nested tables.
+        self._thead_context.append(False)
+
+    def depart_table(self, node):
+        self.body.append(self.context.pop()) # table
+        self._thead_context.pop()
+
+    def visit_tgroup(self, node):
+        pass
+
+    def depart_tgroup(self, node):
+        pass
+
+    def visit_thead(self, node):
+        self._thead_context.append(True) # thead context (see visit_table)
+        self.body.append(self._start_tag(node, 'thead', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_thead(self, node):
+        self.body.append(self.context.pop()) # thead context (see visit_table)
+        self._thead_context.pop()
+
+    def visit_tbody(self, node):
+        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_tbody(self, node):
+        self.body.append(self.context.pop()) # tbody
+
+    def visit_row(self, node):
+        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_row(self, node):
+        self.body.append(self.context.pop()) # tr
+
+    def visit_entry(self, node):
+        if self._thead_context[-1]:
+            target_tag = 'th'
+        else:
+            target_tag = 'td'
+
+        attribs = {}
+        if 'morecols' in node:
+            attribs['colspan'] = node['morecols'] + 1
+        if 'morerows' in node:
+            attribs['rowspan'] = node['morerows'] + 1
+
+        self.body.append(self._start_tag(node, target_tag, **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_entry(self, node):
+        self.body.append(self.context.pop()) # td/th
+
+    def visit_tabular_col_spec(self, node):
+        raise nodes.SkipNode
+
+    def visit_colspec(self, node):
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
