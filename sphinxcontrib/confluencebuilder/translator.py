@@ -46,6 +46,7 @@ class ConfluenceTranslator(BaseTranslator):
 
         # helpers for dealing with disabled/unsupported macros
         restricted_macros = config.confluence_adv_restricted_macros
+        self.can_admonition = not 'info' in restricted_macros
         self.can_anchor = not 'anchor' in restricted_macros
         self.can_code = not 'code' in restricted_macros
 
@@ -496,6 +497,56 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_attribution(self, node):
         pass
+
+    # -----------
+    # admonitions
+    # -----------
+
+    def _visit_admonition(self, node, atype, title=None):
+        if self.can_admonition:
+            self.body.append(self._start_ac_macro(node, atype))
+            if title:
+                self.body.append(self._build_ac_parameter(node, 'title', title))
+            self.body.append(self._start_ac_rich_text_body_macro(node))
+            self.context.append(self._end_ac_rich_text_body_macro(node) +
+                self._end_ac_macro(node))
+        else:
+            self.body.append(self._start_tag(node, 'blockquote'))
+            self.context.append(self._end_tag(node))
+
+    def _depart_admonition(self, node):
+        self.body.append(self.context.pop()) # macro (or blockquote)
+
+    def _visit_info(self, node):
+        self._visit_admonition(node, 'info')
+
+    def _visit_note(self, node):
+        self._visit_admonition(node, 'note')
+
+    def _visit_tip(self, node):
+        self._visit_admonition(node, 'tip')
+
+    def _visit_warning(self, node):
+        self._visit_admonition(node, 'warning')
+
+    visit_attention = _visit_note
+    depart_attention = _depart_admonition
+    visit_caution = _visit_note
+    depart_caution = _depart_admonition
+    visit_danger = _visit_warning
+    depart_danger = _depart_admonition
+    visit_error = _visit_warning
+    depart_error = _depart_admonition
+    visit_hint = _visit_tip
+    depart_hint = _depart_admonition
+    visit_important = _visit_warning
+    depart_important = _depart_admonition
+    visit_note = _visit_info
+    depart_note = _depart_admonition
+    visit_tip = _visit_tip
+    depart_tip = _depart_admonition
+    visit_warning = _visit_warning
+    depart_warning = _depart_admonition
 
     # ##########################################################################
     # #                                                                        #
