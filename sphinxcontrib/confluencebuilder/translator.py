@@ -6,8 +6,11 @@
 
 from __future__ import unicode_literals
 from .exceptions import ConfluenceError
+from .logger import ConfluenceLogger
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
+from os import path
+import io
 
 class ConfluenceTranslator(BaseTranslator):
     """
@@ -39,7 +42,31 @@ class ConfluenceTranslator(BaseTranslator):
         pass
 
     def depart_document(self, node):
-        self.document = ''.join(self.body)
+        self.document = '';
+
+        # prepend header (if any)
+        if self.builder.config.confluence_header_file is not None:
+            headerFile = path.join(self.builder.env.srcdir,
+                self.builder.config.confluence_header_file)
+            try:
+                with io.open(headerFile, encoding='utf-8') as file:
+                    self.document += file.read() + self.nl
+            except (IOError, OSError) as err:
+                ConfluenceLogger.warn('error reading file '
+                    '{}: {}'.format(headerFile, err))
+
+        self.document += ''.join(self.body)
+
+        # append footer (if any)
+        if self.builder.config.confluence_footer_file is not None:
+            footerFile = path.join(self.builder.env.srcdir,
+                self.builder.config.confluence_footer_file)
+            try:
+                with io.open(footerFile, encoding='utf-8') as file:
+                    self.document += file.read() + self.nl
+            except (IOError, OSError) as err:
+                ConfluenceLogger.warn('error reading file '
+                    '{}: {}'.format(footerFile, err))
 
     def visit_Text(self, node):
         text = node.astext()
