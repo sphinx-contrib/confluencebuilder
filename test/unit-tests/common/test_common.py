@@ -38,6 +38,7 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_references(self):
         self._assertExpectedWithOutput('references')
+        self._assertExpectedWithOutput('references2')
 
     def test_glossary(self):
         self._assertExpectedWithOutput('glossary')
