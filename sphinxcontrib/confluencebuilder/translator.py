@@ -50,6 +50,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.body = []
         self.context = []
         self.nl = '\n'
+        self._building_footnotes = False
         self._quote_level = 0
         self._section_level = 1
         self._thead_context = []
@@ -678,12 +679,25 @@ class ConfluenceTranslator(BaseTranslator):
         else:
             anchor_value = anchor
 
+        is_citation = 'ids' in node and node['ids']
+
+        if is_citation:
+            # build an anchor for back reference
+            self.body.append(self._start_ac_macro(node, 'anchor'))
+            self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
+            self.body.append(self._end_ac_macro(node))
+
+            self.body.append(self._start_tag(node, 'sup'))
+
         # build link to internal anchor (on the same page)
         self.body.append(self._start_ac_link(node, anchor_value))
         self.body.append(self._start_ac_plain_text_link_body_macro(node))
         self.body.append(self._escape_cdata(node.astext()))
         self.body.append(self._end_ac_plain_text_link_body_macro(node))
         self.body.append(self._end_ac_link(node))
+
+        if is_citation:
+            self.body.append(self._end_tag(node, suffix='')) # sup
 
     def _visit_reference_intern_uri(self, node):
         docname = posixpath.normpath(
@@ -733,6 +747,118 @@ class ConfluenceTranslator(BaseTranslator):
                 self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
+
+    # --------------------------------
+    # references - footnotes/citations
+    # --------------------------------
+
+    def visit_footnote(self, node):
+        label_node = node.next_node()
+        if not isinstance(label_node, nodes.label):
+            raise nodes.SkipNode
+
+        # if the first foonote/citation, start building a table
+        if not self._building_footnotes:
+            self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+            self.context.append(self._end_tag(node))
+            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
+            self.context.append(self._end_tag(node))
+            self._building_footnotes = True
+
+        label_text = label_node.astext()
+
+        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+        self.body.append(self._start_tag(node, 'td'))
+
+        # footnote anchor
+        if self.can_anchor:
+            self.body.append(self._start_ac_macro(node, 'anchor'))
+            self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
+            self.body.append(self._end_ac_macro(node))
+
+        # footnote label and back reference(s)
+        if not self.can_anchor:
+            label_text = self._escape_sf(label_text)
+            self.body.append(label_text)
+        elif len(node['backrefs']) > 1:
+            label_text = self._escape_sf(label_text)
+            self.body.append(label_text)
+
+            self.body.append(self._start_tag(node, 'div'))
+            self.body.append(self._start_tag(node, 'em'))
+            self.body.append('(')
+
+            for idx, backref in enumerate(node['backrefs']):
+                if idx != 0:
+                    self.body.append(', ')
+                self.body.append(self._start_ac_link(node, backref))
+                self.body.append(
+                    self._start_ac_plain_text_link_body_macro(node))
+                self.body.append(self._escape_cdata(str(idx + 1)))
+                self.body.append(self._end_ac_plain_text_link_body_macro(node))
+                self.body.append(self._end_ac_link(node))
+            self.body.append(')')
+            self.body.append(self._end_tag(node, suffix='')) # em
+            self.body.append(self._end_tag(node)) # div
+        else:
+            self.body.append(self._start_ac_link(node, node['backrefs'][0]))
+            self.body.append(self._start_ac_plain_text_link_body_macro(node))
+            self.body.append(self._escape_cdata(label_text))
+            self.body.append(self._end_ac_plain_text_link_body_macro(node))
+            self.body.append(self._end_ac_link(node))
+        self.body.append(self._end_tag(node))
+
+        self.body.append(self._start_tag(node, 'td'))
+        self.context.append(self._end_tag(node))
+
+    def depart_footnote(self, node):
+        self.body.append(self.context.pop()) # td
+        self.body.append(self.context.pop()) # tr
+
+        # if next entry is not another footnote or citation, close off the table
+        next_sibling = node.traverse(
+            include_self=False, descend=False, siblings=True)
+        if not next_sibling or not isinstance(
+                next_sibling[0], (nodes.citation, nodes.footnote)):
+            self.body.append(self.context.pop()) # tbody
+            self.body.append(self.context.pop()) # table
+            self._building_footnotes = False
+
+    def visit_footnote_reference(self, node):
+        text = "[{}]".format(node.astext())
+
+        if not self.can_anchor:
+            self.body.append(self._start_tag(node, 'sup'))
+            self.body.append(self._escape_sf(text))
+            self.body.append(self._end_tag(node, suffix='')) # sup
+            raise nodes.SkipNode
+
+        # build an anchor for back reference
+        self.body.append(self._start_ac_macro(node, 'anchor'))
+        self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
+        self.body.append(self._end_ac_macro(node))
+
+        # link to anchor
+        target_anchor = ''.join(node['refid'].split())
+
+        self.body.append(self._start_tag(node, 'sup'))
+        self.body.append(self._start_ac_link(node, target_anchor))
+        self.body.append(self._start_ac_plain_text_link_body_macro(node))
+        self.body.append(self._escape_cdata(text))
+        self.body.append(self._end_ac_plain_text_link_body_macro(node))
+        self.body.append(self._end_ac_link(node))
+        self.body.append(self._end_tag(node, suffix='')) # sup
+        raise nodes.SkipNode
+
+    def visit_label(self, node):
+        # Label entries are skipped as their context has been already processed
+        # from within footnote/citation processing (see visit_footnote).
+        raise nodes.SkipNode
+
+    visit_citation = visit_footnote
+    depart_citation = depart_footnote
 
     # ##########################################################################
     # #                                                                        #
