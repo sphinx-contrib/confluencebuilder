@@ -7,10 +7,13 @@
 from __future__ import unicode_literals
 from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
+from .std.confluence import LITERAL2LANG_MAP
+from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
 import io
+import sys
 
 class ConfluenceTranslator(BaseTranslator):
     """
@@ -34,9 +37,16 @@ class ConfluenceTranslator(BaseTranslator):
         self.nl = '\n'
         self._section_level = 1
 
+        if config.highlight_language:
+            self._highlight = config.highlight_language
+        else:
+            self._highlight = DEFAULT_HIGHLIGHT_STYLE
+        self._linenothreshold = sys.maxsize
+
         # helpers for dealing with disabled/unsupported macros
         restricted_macros = config.confluence_adv_restricted_macros
         self.can_anchor = not 'anchor' in restricted_macros
+        self.can_code = not 'code' in restricted_macros
 
     # ##########################################################################
     # #                                                                        #
@@ -342,6 +352,75 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_description(self, node):
         self.body.append(self.context.pop()) # td
+
+    # -------------------------------
+    # body elements -- literal blocks
+    # -------------------------------
+
+    def visit_literal_block(self, node):
+        lang = node.get('language', self._highlight)
+        if self.builder.lang_transform:
+            lang = self.builder.lang_transform(lang)
+        elif lang in LITERAL2LANG_MAP.keys():
+            lang = LITERAL2LANG_MAP[lang]
+        else:
+            ConfluenceLogger.warn('unknown code language: {}'.format(lang))
+            lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
+
+        data = self.nl.join(node.astext().splitlines())
+
+        if node.get('linenos', False) == True:
+            num = 'true'
+        elif data.count('\n') >= self._linenothreshold:
+            num = 'true'
+        else:
+            num = 'false'
+
+        if self.can_code:
+            self.body.append(self._start_ac_macro(node, 'code'))
+            self.body.append(self._build_ac_parameter(node, 'language', lang))
+            self.body.append(self._build_ac_parameter(node, 'linenumbers', num))
+            self.body.append(self._start_ac_plain_text_body_macro(node))
+            self.body.append(self._escape_cdata(data))
+            self.body.append(self._end_ac_plain_text_body_macro(node))
+            self.body.append(self._end_ac_macro(node))
+        else:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+            self.body.append(self._start_tag(node, 'pre'))
+            self.body.append(self._escape_sf(data))
+            self.body.append(self._end_tag(node))
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+
+        raise nodes.SkipNode
+
+    def visit_highlightlang(self, node):
+        self._highlight = node.get('lang', DEFAULT_HIGHLIGHT_STYLE)
+        self._linenothreshold = node.get('linenothreshold', sys.maxsize)
+        raise nodes.SkipNode
+
+    def visit_doctest_block(self, node):
+        data = self.nl.join(node.astext().splitlines())
+
+        if self.can_code:
+            self.body.append(self._start_ac_macro(node, 'code'))
+            self.body.append(self._build_ac_parameter(
+                node, 'language', 'python')) # python-specific
+            self.body.append(self._start_ac_plain_text_body_macro(node))
+            self.body.append(self._escape_cdata(data))
+            self.body.append(self._end_ac_plain_text_body_macro(node))
+            self.body.append(self._end_ac_macro(node))
+        else:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+            self.body.append(self._start_tag(node, 'pre'))
+            self.body.append(self._escape_sf(data))
+            self.body.append(self._end_tag(node))
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
