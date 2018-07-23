@@ -298,7 +298,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.context.append(self._end_tag(node))
 
         self.body.append(self._start_tag(node, 'strong'))
-        self.context.append(self._end_tag(node, suffix='')) # strong
+        self.context.append(self._end_tag(node, suffix=''))
 
     def depart_field_name(self, node):
         self.body.append(':')
@@ -905,6 +905,107 @@ class ConfluenceTranslator(BaseTranslator):
     depart_literal_strong = depart_strong
     visit_title_reference = visit_emphasis
     depart_title_reference = depart_emphasis
+
+    # -------------
+    # miscellaneous
+    # -------------
+
+    def visit_abbreviation(self, node):
+        attribs = {}
+        if 'explanation' in node:
+            title_value = node['explanation']
+            title_value = self._escape_sf(title_value)
+            attribs['title'] = title_value
+
+        self.body.append(self._start_tag(node, 'abbr', **attribs))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_abbreviation(self, node):
+        self.body.append(self.context.pop()) # abbr
+
+    def visit_acks(self, node):
+        raise nodes.SkipNode
+
+    def visit_acronym(self, node):
+        # Note: docutils indicates this directive is "to be completed"
+
+        self.body.append(self._start_tag(node, 'acronym'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_acronym(self, node):
+        self.body.append(self.context.pop()) # acronym
+
+    def visit_centered(self, node):
+        # centered is deprecated; ignore
+        pass
+
+    def depart_centered(self, node):
+        pass
+
+    def visit_comment(self, node):
+        raise nodes.SkipNode
+
+    def visit_download_reference(self, node):
+        uri = node['reftarget']
+        uri = self._escape_sf(uri)
+
+        self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_download_reference(self, node):
+        self.body.append(self.context.pop()) # a
+
+    def visit_figure(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_hlist(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_image(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_inline(self, node):
+        # ignoring; no need to handle specific inline entries
+        pass
+
+    def depart_inline(self, node):
+        pass
+
+    def visit_line(self, node):
+        # ignoring; no need to handle specific line entries
+        pass
+
+    def depart_line(self, node):
+        pass
+
+    def visit_line_block(self, node):
+        self.body.append(self._start_tag(node, 'p'))
+        self.context.append(self._end_tag(node))
+
+    def depart_line_block(self, node):
+        self.body.append(self.context.pop()) # p
+
+    def visit_raw(self, node):
+        if 'confluence' in node.get('format', '').split():
+            self.body.append(self.nl.join(node.astext().splitlines()))
+        raise nodes.SkipNode
+
+    def visit_sidebar(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_substitution_definition(self, node):
+        raise nodes.SkipNode
+
+    def visit_start_of_file(self, node):
+        # ignore managing state of inlined documents
+        pass
+
+    def depart_start_of_file(self, node):
+        pass
 
     # ##########################################################################
     # #                                                                        #
