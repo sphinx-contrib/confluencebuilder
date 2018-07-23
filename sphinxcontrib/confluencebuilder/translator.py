@@ -43,6 +43,7 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_Text(self, node):
         text = node.astext()
+        text = self._escape_sf(text)
         self.body.append(text)
 
     def depart_Text(self, node):
