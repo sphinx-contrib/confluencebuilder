@@ -46,10 +46,13 @@ class ConfluenceTestUtil:
         test.assertTrue(os.path.exists(test_path),
             'missing output file: {}'.format(test_path))
 
+        def relaxed_data(f):
+            return [o.strip() + '\n' for o in f.readlines()]
+
         with io.open(expected_path, encoding='utf8') as expected_file:
             with io.open(test_path, encoding='utf8') as test_file:
-                expected_data = expected_file.readlines()
-                test_data = test_file.readlines()
+                expected_data = relaxed_data(expected_file)
+                test_data = relaxed_data(test_file)
                 diff = difflib.unified_diff(
                     expected_data, test_data, lineterm='')
                 diff_hdr = 'expected and generated documents mismatch\n' \
