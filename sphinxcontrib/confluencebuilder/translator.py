@@ -1007,6 +1007,37 @@ class ConfluenceTranslator(BaseTranslator):
 
     depart_versionmodified = _depart_admonition
 
+    # -----------------------------------------------------
+    # docutils handling "to be completed" marked directives
+    # -----------------------------------------------------
+
+    def visit_caption(self, node):
+        raise nodes.SkipNode
+
+    def visit_citation_reference(self, node):
+        raise nodes.SkipNode
+
+    def visit_compact_paragraph(self, node):
+        pass
+
+    def depart_compact_paragraph(self, node):
+        pass
+
+    def visit_generated(self, node):
+        pass
+
+    def depart_generated(self, node):
+        pass
+
+    def visit_pending_xref(self, node):
+        raise nodes.SkipNode
+
+    def visit_problematic(self, node):
+        raise nodes.SkipNode
+
+    def visit_system_message(self, node):
+        raise nodes.SkipNode
+
     # -------------
     # miscellaneous
     # -------------
