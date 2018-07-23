@@ -27,11 +27,16 @@ class ConfluenceTranslator(BaseTranslator):
     def __init__(self, document, builder):
         BaseTranslator.__init__(self, document)
         self.builder = builder
+        config = builder.config
 
         self.body = []
         self.context = []
         self.nl = '\n'
         self._section_level = 1
+
+        # helpers for dealing with disabled/unsupported macros
+        restricted_macros = config.confluence_adv_restricted_macros
+        self.can_anchor = not 'anchor' in restricted_macros
 
     # ##########################################################################
     # #                                                                        #
@@ -167,6 +172,75 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_list_item(self, node):
         self.body.append(self.context.pop()) # li
+
+    # ---------------------------------
+    # body elements -- definition lists
+    # ---------------------------------
+
+    def visit_definition_list(self, node):
+        self.body.append(self._start_tag(node, 'dl', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_definition_list(self, node):
+        self.body.append(self.context.pop()) # dl
+
+    def visit_definition_list_item(self, node):
+        # When processing a definition list item (an entry), multiple terms may
+        # exist for the given entry (e.x. when using a glossary). Before
+        # displaying an actual definition of one or more terms, there may exist
+        # classifiers for a given entry. On the last term for an entry, all
+        # classifier information will be displayed in the definition-type. In
+        # order to achieve this, a list entry will be tracked to see if a term
+        # has been processed for an entry. If a new term is detected, the
+        # previous term's tag will be closed off. On the final term, the tag is
+        # not closed off until the definition (visit_definition) is processed.
+        # This allows classifier information to be populated into the last term
+        # element.
+        self._has_term = False
+
+    def depart_definition_list_item(self, node):
+        self._has_term = False
+
+    def visit_term(self, node):
+        # close of previous term (see visit_definition_list_item)
+        if self._has_term:
+            self.body.append(self.context.pop()) # dt
+
+        if 'ids' in node and self.can_anchor:
+            for id in node['ids']:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', id))
+                self.body.append(self._end_ac_macro(node))
+
+        self.body.append(self._start_tag(node, 'dt'))
+        self.context.append(self._end_tag(node))
+        self._has_term = True
+
+    def depart_term(self, node):
+        # note: Do not pop the context populated from 'visit_term'. The last
+        #       entry may need to hold classifier information inside it. Either
+        #       next term or a term's definition will pop the context.
+        pass
+
+    def visit_classifier(self, node):
+        self.body.append(' : ')
+        self.body.append(self._start_tag(node, 'em'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_classifier(self, node):
+        self.body.append(self.context.pop()) # em
+
+    def visit_definition(self, node):
+        self.body.append(self.context.pop()) # dt
+
+        self.body.append(self._start_tag(node, 'dd', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_definition(self, node):
+        self.body.append(self.context.pop()) # dd
+
+    def visit_termsep(self, node):
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
