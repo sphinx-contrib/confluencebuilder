@@ -906,6 +906,21 @@ class ConfluenceTranslator(BaseTranslator):
     visit_title_reference = visit_emphasis
     depart_title_reference = depart_emphasis
 
+    # ------------------
+    # sphinx -- glossary
+    # ------------------
+
+    def visit_glossary(self, node):
+        # ignore glossary wrapper; glossary is built with definition_list
+        pass
+
+    def depart_glossary(self, node):
+        pass
+
+    def visit_index(self, node):
+        # glossary index information is not needed; skipped
+        raise nodes.SkipNode
+
     # -------------
     # miscellaneous
     # -------------
