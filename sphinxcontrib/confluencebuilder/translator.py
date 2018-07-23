@@ -31,6 +31,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.body = []
         self.context = []
         self.nl = '\n'
+        self._section_level = 1
 
     # ##########################################################################
     # #                                                                        #
@@ -76,6 +77,46 @@ class ConfluenceTranslator(BaseTranslator):
 
     def unknown_visit(self, node):
         raise NotImplementedError('unknown node: ' + node.__class__.__name__)
+
+    # ---------
+    # structure
+    # ---------
+
+    def visit_section(self, node):
+        level = self._section_level
+
+        if not self.builder.config.confluence_adv_writer_no_section_cap:
+            MAX_CONFLUENCE_SECTIONS = 6
+            if self._section_level > MAX_CONFLUENCE_SECTIONS:
+                level = MAX_CONFLUENCE_SECTIONS
+
+        self._title_level = level
+        self._section_level += 1
+
+    def depart_section(self, node):
+        self._section_level -= 1
+
+    def visit_title(self, node):
+        if isinstance(node.parent, nodes.section):
+            self.body.append(
+                self._start_tag(node, 'h{}'.format(self._title_level)))
+            self.context.append(self._end_tag(node))
+
+    def depart_title(self, node):
+        if isinstance(node.parent, nodes.section):
+            self.body.append(self.context.pop()) # h<x>
+
+    def visit_paragraph(self, node):
+        self.body.append(self._start_tag(node, 'p'))
+        self.context.append(self._end_tag(node))
+
+    def depart_paragraph(self, node):
+        self.body.append(self.context.pop()) # p
+
+    def visit_transition(self, node):
+        self.body.append(self._start_tag(
+            node, 'hr', suffix=self.nl, empty=True))
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
