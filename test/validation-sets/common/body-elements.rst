@@ -67,10 +67,35 @@ And another list:
 
 2. Morbi et massa eget nisi fermentum commodo.
 
-   a) Sed varius dui sed dui maximus aliquet.
-   b) Fusce mollis risus ac finibus accumsan.
+   A) Sed varius dui sed dui maximus aliquet.
+   B) Fusce mollis risus ac finibus accumsan.
+
+3. Morbi et massa eget nisi fermentum commodo.
+
+   5) Sed varius dui sed dui maximus aliquet.
+   6) Fusce mollis risus ac finibus accumsan.
+
+4. Morbi et massa eget nisi fermentum commodo.
+
+   I) Sed varius dui sed dui maximus aliquet.
+   II) Fusce mollis risus ac finibus accumsan.
+
+5. Morbi et massa eget nisi fermentum commodo.
+
+   i) Sed varius dui sed dui maximus aliquet.
+   ii) Fusce mollis risus ac finibus accumsan.
+   iii) Fusce mollis risus ac finibus accumsan.
 
 Note: Only auto-enumeration is supported in this extension.
+
+block quote
+-----------
+
+This is an ordinary paragraph, introducing a block quote.
+
+    "It is my business to know things.  That is my trade."
+
+    -- Sherlock Holmes
 
 transition
 ----------
