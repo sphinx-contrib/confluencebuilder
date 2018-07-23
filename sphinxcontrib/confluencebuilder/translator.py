@@ -860,6 +860,52 @@ class ConfluenceTranslator(BaseTranslator):
     visit_citation = visit_footnote
     depart_citation = depart_footnote
 
+    # -------------
+    # inline markup
+    # -------------
+
+    def visit_emphasis(self, node):
+        self.body.append(self._start_tag(node, 'em'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_emphasis(self, node):
+        self.body.append(self.context.pop()) # em
+
+    def visit_literal(self, node):
+        self.body.append(self._start_tag(node, 'code'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_literal(self, node):
+        self.body.append(self.context.pop()) # code
+
+    def visit_strong(self, node):
+        self.body.append(self._start_tag(node, 'strong'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_strong(self, node):
+        self.body.append(self.context.pop()) # strong
+
+    def visit_subscript(self, node):
+        self.body.append(self._start_tag(node, 'sub'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_subscript(self, node):
+        self.body.append(self.context.pop()) # sub
+
+    def visit_superscript(self, node):
+        self.body.append(self._start_tag(node, 'sup'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_superscript(self, node):
+        self.body.append(self.context.pop()) # sup
+
+    visit_literal_emphasis = visit_emphasis
+    depart_literal_emphasis = depart_emphasis
+    visit_literal_strong = visit_strong
+    depart_literal_strong = depart_strong
+    visit_title_reference = visit_emphasis
+    depart_title_reference = depart_emphasis
+
     # ##########################################################################
     # #                                                                        #
     # # helpers                                                                #
