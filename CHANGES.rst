@@ -1,3 +1,15 @@
+master
+======
+
+* all confluence-based macros can be restricted by the user
+* block quotes with attribution are styled with confluence quotes
+* citations/footnotes now have back references
+* enumerated lists now support various styling types
+* improved paragraph indentation
+* initial autodoc support
+* nested tables and spanning cells are now supported
+* storage format support (two-pass publishing no longer needed)
+
 0.9.0 (2018-06-02)
 ==================
 
