@@ -242,6 +242,48 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_termsep(self, node):
         raise nodes.SkipNode
 
+    # ----------------------------
+    # body elements -- field lists
+    # ----------------------------
+
+    def visit_field_list(self, node):
+        self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_field_list(self, node):
+        self.body.append(self.context.pop()) # tbody
+        self.body.append(self.context.pop()) # table
+
+    def visit_field(self, node):
+        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_field(self, node):
+        self.body.append(self.context.pop()) # tr
+
+    def visit_field_name(self, node):
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
+
+        self.body.append(self._start_tag(node, 'strong'))
+        self.context.append(self._end_tag(node, suffix='')) # strong
+
+    def depart_field_name(self, node):
+        self.body.append(':')
+        self.body.append(self.context.pop()) # strong
+        self.body.append(self.context.pop()) # td
+
+    def visit_field_body(self, node):
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_field_body(self, node):
+        self.body.append(self.context.pop()) # td
+
     # ##########################################################################
     # #                                                                        #
     # # helpers                                                                #
