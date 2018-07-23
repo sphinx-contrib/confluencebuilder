@@ -45,9 +45,7 @@ class ConfluenceTranslator(BaseTranslator):
         text = node.astext()
         text = self._escape_sf(text)
         self.body.append(text)
-
-    def depart_Text(self, node):
-        pass
+        raise nodes.SkipNode
 
     def unknown_visit(self, node):
         raise NotImplementedError('unknown node: ' + node.__class__.__name__)
