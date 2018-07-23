@@ -13,6 +13,7 @@ from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
+from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 import io
 import posixpath
@@ -977,6 +978,34 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_compound(self, node):
         pass
+
+    # -----------------------
+    # sphinx -- miscellaneous
+    # -----------------------
+
+    def visit_rubric(self, node):
+        self.body.append(self._start_tag(node, 'h{}'.format(self._title_level)))
+        self.context.append(self._end_tag(node))
+
+    def depart_rubric(self, node):
+        self.body.append(self.context.pop()) # h<x>
+
+    def visit_seealso(self, node):
+        self._visit_admonition(node, 'info', admonitionlabels['seealso'])
+
+    depart_seealso = _depart_admonition
+
+    def visit_versionmodified(self, node):
+        if node['type'] == 'deprecated' or node['type'] == 'versionchanged':
+            self._visit_note(node)
+        elif node['type'] == 'versionadded':
+            self._visit_info(node)
+        else:
+            ConfluenceLogger.warn('unsupported version modification type: '
+                '{}'.format(node['type']))
+            self._visit_info(node)
+
+    depart_versionmodified = _depart_admonition
 
     # -------------
     # miscellaneous
