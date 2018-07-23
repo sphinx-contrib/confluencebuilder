@@ -17,9 +17,7 @@ type                   status        notes
 ====================== ============= =====
 admonitions            completed     - `reStructuredText Admonitions`_
 bibliographic fields   planned       - `reStructuredText Bibliographic Fields`_
-block quotes           partial       - `reStructuredText Block Quotes`_
-                                     - Multi-line block quotes may not work as
-                                       expected.
+block quotes           completed     - `reStructuredText Block Quotes`_
 bullet lists           completed     - `reStructuredText Bullet Lists`_
 centered               unsupported   - `Sphinx Centered`_
 citations              completed     - `reStructuredText Citations`_
@@ -44,9 +42,7 @@ enumerated lists       completed     - `reStructuredText Enumerated Lists`_
                                        supported.
 epigraph               prospect      - `reStructuredText Epigraph`_
 footnotes              completed     - `reStructuredText Footnotes`_
-glossary               partial       - `Sphinx Glossary`_
-                                     - Visually renders definitions; references
-                                       to entries not yet supported.
+glossary               completed     - `Sphinx Glossary`_
 highlights             prospect      - `reStructuredText Highlights`_
 hlist                  unsupported   - `Sphinx Horizontal List`_
 hyperlink targets      completed     - `reStructuredText Hyperlink Targets`_
@@ -58,14 +54,13 @@ list table             partial       - `reStructuredText List Table`_
                                        ``widths``.
 literal blocks         completed     - `reStructuredText Literal Blocks`_
 math                   unplanned     - `reStructuredText Math`_
-option lists           planned       - `reStructuredText Option Lists`_
-production list        planned       - `Sphinx Production List`_
+option lists           completed     - `reStructuredText Option Lists`_
+production list        completed     - `Sphinx Production List`_
 pull-quote             prospect      - `reStructuredText Pull-Quote`_
-raw                    planned       - `reStructuredText Raw Data Pass-Through`_
+raw                    completed     - `reStructuredText Raw Data Pass-Through`_
 rubric                 completed     - `Sphinx Rubric`_
 sections               completed     - `reStructuredText Sections`_
-tables                 partial       - `reStructuredText Tables`_
-                                     - Spanning not supported at this time.
+tables                 completed     - `reStructuredText Tables`_
 toctree                partial       - `Sphinx TOC Tree Markup`_
                                      - Pending work to validate/improve toctree
                                        options ``caption`` and ``numbered``.
@@ -79,14 +74,9 @@ versionchanged         completed     - `Sphinx Version Changed`_
 extensions
 ----------
 
-This extension has currently no official support for other Sphinx extensions at
-this time.
+The following extensions are supported:
 
-There is plans to support the following extensions in the future:
-
- - `sphinx.ext.autodoc`_ (`Issue 51`_)
-
-.. _Issue 51: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues/51
+ - `sphinx.ext.autodoc`_
 
 other
 -----
