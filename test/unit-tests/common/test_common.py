@@ -30,9 +30,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_admonitions(self):
         self._assertExpectedWithOutput('admonitions')
 
-    def test_bad_values(self):
-        self._assertExpectedWithOutput('badvalues')
-
     def test_formatting(self):
         self._assertExpectedWithOutput('formatting')
 
