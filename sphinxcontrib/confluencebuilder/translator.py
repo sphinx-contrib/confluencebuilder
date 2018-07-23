@@ -921,6 +921,30 @@ class ConfluenceTranslator(BaseTranslator):
         # glossary index information is not needed; skipped
         raise nodes.SkipNode
 
+    # -------------------------
+    # sphinx -- production list
+    # -------------------------
+
+    def visit_productionlist(self, node):
+        max_len = max(len(production['tokenname']) for production in node)
+
+        self.body.append(self._start_tag(node, 'pre'))
+
+        for production in node:
+            if production['tokenname']:
+                formatted_token = production['tokenname'].ljust(max_len)
+                formatted_token = self._escape_sf(formatted_token)
+                self.body.append('{} ::='.format(formatted_token))
+                lastname = production['tokenname']
+            else:
+                self.body.append('{}    '.format(' ' * len(lastname)))
+            text = production.astext()
+            text = self._escape_sf(text)
+            self.body.append(text + self.nl)
+
+        self.body.append(self._end_tag(node))
+        raise nodes.SkipNode
+
     # -------------
     # miscellaneous
     # -------------
