@@ -9,8 +9,6 @@ tables
 
 The following shows a series of table examples can that be formed.
 
-Note: Only non-spanning tables are supported in this extension at this time.
-
 grid tables
 -----------
 
@@ -22,12 +20,51 @@ Complex grid-like "ASCII art" tables can be used to form tables in Confluence:
 +========================+============+==========+==========+
 | body row 1, column 1   | column 2   | column 3 | column 4 |
 +------------------------+------------+----------+----------+
-| body row 2             | column 2   | column 3 | column 4 |
-+------------------------+------------+---------------------+
-| body row 3             | column 2   | column 3 | column 4 |
-+------------------------+------------+---------------------+
-| body row 4             | column 2   | column 3 | column 4 |
-+------------------------+------------+---------------------+
+| body row 2             | Cells may span columns.          |
++------------------------+------------+----------+----------+
+| body row 3             | Cells may  | - Cells can contain |
++------------------------+ span rows. | - items such as     |
+| body row 4             |            | - this list.        |
++------------------------+------------+----------+----------+
+
+Table-inside-table supported as well:
+
++---------+--------------------------------------------------------------------+
+| Index   | Content                                                            |
++=========+====================================================================+
+| First   | This cell contains another table:                                  |
+|         |                                                                    |
+|         | =====  =====  =======                                              |
+|         |   A      B    A and B                                              |
+|         | =====  =====  =======                                              |
+|         | False  False  False                                                |
+|         | True   False  False                                                |
+|         | False  True   False                                                |
+|         | True   True   True                                                 |
+|         | =====  =====  =======                                              |
++---------+--------------------------------------------------------------------+
+| Second  | This cell contains a table in another table.                       |
+|         |                                                                    |
+|         | +---------+------------------------------------------------------+ |
+|         | | Index2  | More Content                                         | |
+|         | +=========+======================================================+ |
+|         | | idx-a   | =====  =====  =======                                | |
+|         | |         |   A      B    A and B                                | |
+|         | |         | =====  =====  =======                                | |
+|         | |         | False  False  False                                  | |
+|         | |         | True   False  False                                  | |
+|         | |         | False  True   False                                  | |
+|         | |         | True   True   True                                   | |
+|         | |         | =====  =====  =======                                | |
+|         | +---------+------------------------------------------------------+ |
+|         | | idx-b   | =====  =====  =======                                | |
+|         | |         | False  False  False                                  | |
+|         | |         | True   False  False                                  | |
+|         | |         | False  True   False                                  | |
+|         | |         | True   True   True                                   | |
+|         | |         | =====  =====  =======                                | |
+|         | +---------+------------------------------------------------------+ |
++---------+--------------------------------------------------------------------+
 
 Complex tables without headers:
 
