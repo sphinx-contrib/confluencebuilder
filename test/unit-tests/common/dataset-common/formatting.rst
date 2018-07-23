@@ -7,7 +7,13 @@ this is a text test
 
 **strong emphasis**
 
-http://website.com/
+`interpreted`
+
+``inline``
+
+:sub:`subscript`
+
+:sup:`superscript`
 
 Transition test
 
