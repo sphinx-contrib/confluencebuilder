@@ -21,7 +21,6 @@ from .exceptions import ConfluenceLegacyError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
 from .exceptions import ConfluenceRemoteApiDisabledError
-from .experimental import ConfluenceExperimentalQuoteSupport
 from .logger import ConfluenceLogger
 from .rest import Rest
 from .std.confluence import API_XMLRPC_BIND_PATH
@@ -291,12 +290,6 @@ class ConfluencePublisher():
 
         if self.config.confluence_adv_trace_data:
             ConfluenceLogger.trace('storage', storage_data)
-
-        if self.config.confluence_experimental_indentation:
-            storage_data = \
-                ConfluenceExperimentalQuoteSupport.process(storage_data)
-            if self.config.confluence_adv_trace_data:
-                ConfluenceLogger.trace('storage-post-exp', storage_data)
 
         if self.use_rest:
             rsp = self.rest_client.get('content', {

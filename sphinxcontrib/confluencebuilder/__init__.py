@@ -110,7 +110,3 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
-
-    """(experimental - undocumented)"""
-    """Support experimental indentation support."""
-    app.add_config_value('confluence_experimental_indentation', True, True)
