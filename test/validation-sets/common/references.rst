@@ -95,9 +95,8 @@ footnotes
 | There are various types of footnote methods styles that can be applied. We
   can reference the first footnote [#note]_; and it show up as "[1]". We can
   also refer to the footnote again [#note]_ and it should again be seen as
-  "[1]". We can also use its label form, note_ or
-  :ref:`custom note label <note>`, to refer to the footnote (i.e. as an internal
-  hyperlink reference).
+  "[1]". We can also use its label form, note_, to refer to the footnote
+  (i.e. as an internal hyperlink reference).
 
 .. [#note] This is the footnote labeled "note".
 .. [#] This is the footnote labeled "note".
