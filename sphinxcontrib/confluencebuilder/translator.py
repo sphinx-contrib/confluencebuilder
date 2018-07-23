@@ -35,6 +35,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.body = []
         self.context = []
         self.nl = '\n'
+        self._quote_level = 0
         self._section_level = 1
 
         if config.highlight_language:
@@ -421,6 +422,80 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
         raise nodes.SkipNode
+
+    # -----------------------------
+    # body elements -- block quotes
+    # -----------------------------
+
+    def visit_block_quote(self, node):
+        if node.traverse(nodes.attribution):
+            self.body.append(self._start_tag(node, 'blockquote'))
+            self.context.append(self._end_tag(node))
+        else:
+            self._quote_level += 1
+            style = ''
+
+            # Confluece's WYSIWYG, when indenting paragraphs, will produce
+            # paragraphs will margin values offset by 30 pixels units. The same
+            # indentation is applied here via a style value (multiplied by the
+            # current quote level).
+            CONFLUENCE_DEFAULT_INDENT_VAL = 30;
+            indent_val = CONFLUENCE_DEFAULT_INDENT_VAL * self._quote_level
+            style += 'margin-left: {}px;'.format(indent_val)
+
+            # Confluence's provided styles remove first-child elements leading
+            # margins. This causes some unexpected styling issues when various
+            # indentation patterns are applied (between div elements and
+            # multiple paragraphs). To overcome this, the indent container being
+            # added will be given a top-padding-offset matching Confluence's
+            # common non-first-child element top-margins (i.e. 10 pixels).
+            #
+            # Note that this offset does not style well when multiple
+            # indentations are observed; sub-level containers can result in
+            # stacked padding (not desired). For example:
+            #
+            #     first-line
+            #         (10px of padding)
+            #             (10px of padding)
+            #             first-line
+            #         first-line
+            #
+            # To prevent this from happening, if the next child container is
+            # another block quote, no padding is added:
+            #
+            #     first-line
+            #             (10px of padding)
+            #             first-line
+            #         first-line
+            #
+            # Ideally, a padding-offset is not desired (as it may required
+            # tweaking if Confluence's themes change); however, the quirk works
+            # for now.
+            firstchild_margin = True
+            next_child = node.traverse(include_self=False)
+            if isinstance(next_child[0], nodes.block_quote):
+                firstchild_margin = False
+
+            if firstchild_margin:
+                CONFLUENCE_DEFAULT_FCI = 10;
+                style += 'padding-top: {}px;'.format(CONFLUENCE_DEFAULT_FCI)
+
+            self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                **{'style': style}))
+            self.context.append(self._end_tag(node))
+
+    def depart_block_quote(self, node):
+        if node.traverse(nodes.attribution):
+            self.body.append(self.context.pop()) # blockquote
+        else:
+            self._quote_level -= 1
+            self.body.append(self.context.pop()) # div
+
+    def visit_attribution(self, node):
+        self.body.append('-- ')
+
+    def depart_attribution(self, node):
+        pass
 
     # ##########################################################################
     # #                                                                        #
