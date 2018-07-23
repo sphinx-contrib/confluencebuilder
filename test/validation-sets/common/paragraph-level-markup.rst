@@ -31,4 +31,3 @@ Example of see also markup:
 .. rubric:: Rubric
 
 The above paragraph heading is hidden from the table of contents.
-
