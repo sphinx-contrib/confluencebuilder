@@ -118,6 +118,56 @@ class ConfluenceTranslator(BaseTranslator):
             node, 'hr', suffix=self.nl, empty=True))
         raise nodes.SkipNode
 
+    # ----------------------
+    # body elements -- lists
+    # ----------------------
+
+    def visit_bullet_list(self, node):
+        self.body.append(self._start_tag(node, 'ul', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_bullet_list(self, node):
+        self.body.append(self.context.pop()) # ul
+
+    def visit_enumerated_list(self, node):
+        # note: - Not all Confluence versions (if any) support populating the
+        #         'type' attribute of an ordered list tag; however, the 'style'
+        #         attribute is accepted.
+        #       - Not all Confluence versions (if any) support populating the
+        #         'start' attribute of an ordered list tag; limiting to
+        #         auto-enumeration items only.
+        list_style_type = None
+        if node['enumtype'] == 'upperalpha':
+            list_style_type = 'upper-alpha'
+        elif node['enumtype'] == 'loweralpha':
+            list_style_type = 'lower-alpha'
+        elif node['enumtype'] == 'upperroman':
+            list_style_type = 'upper-roman'
+        elif node['enumtype'] == 'lowerroman':
+            list_style_type = 'lower-roman'
+        elif node['enumtype'] == 'arabic':
+            list_style_type = 'decimal'
+        else:
+            ConfluenceLogger.warn(
+                'unknown enumerated list type: {}'.format(node['enumtype']))
+
+        attribs = {}
+        if list_style_type:
+            attribs['style'] = 'list-style-type: {};'.format(list_style_type)
+
+        self.body.append(self._start_tag(node, 'ol', suffix=self.nl, **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_enumerated_list(self, node):
+        self.body.append(self.context.pop()) # ol
+
+    def visit_list_item(self, node):
+        self.body.append(self._start_tag(node, 'li', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_list_item(self, node):
+        self.body.append(self.context.pop()) # li
+
     # ##########################################################################
     # #                                                                        #
     # # helpers                                                                #
