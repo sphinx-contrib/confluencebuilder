@@ -3,26 +3,20 @@
 glossary test
 -------------
 
-This section contains references to the :term:`something` and :term:`else`
-glossary entries.
-
-It also contains the multiple references :term:`multiple` and :term:`entries`
-to a single glossary entry plus the :term:`nowhere` that is a mistake and
-references a non-existent glossary entry.
-
-They should be converted to references.
+This section contains references to :term:`glossary-item-01` and
+:term:`glossary-item-03a` glossary entries.
 
 glossary
 --------
 
 .. glossary::
 
-   something
-      Don't care what this is, providing it exists.
+   glossary-item-01
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-   else
-      And this must too.
+   glossary-item-02
+        Cras vehicula rutrum nibh. Nullam mollis consequat fermentum.
 
-   multiple
-   entries
-      For a single glossary entry.
+   glossary-item-03a
+   glossary-item-03b
+        Pellentesque dictum ornare arcu a interdum.

@@ -1,12 +1,7 @@
 :orphan:
 
-glossary test (part 2)
-----------------------
+glossary2 test
+--------------
 
-This file exists to test references to terms defined in a glossary in a 
-different reStructuredText page/document.
-
-So here are some different references to the :term:`something` and :term:`else`
-glossary entries.
-
-They should be converted to references.
+This section contains references to :term:`glossary-item-02` and
+:term:`glossary-item-03b` glossary entries (found in another document).
