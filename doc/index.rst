@@ -1,7 +1,7 @@
 Atlassian Confluence Builder for Sphinx
 =======================================
 
-Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
+Sphinx_ extension to build Confluence storage format files and optionally
 publish them to a Confluence server.
 
 * License: BSD
