@@ -15,6 +15,8 @@ This is a top-level paragraph.
 
 Another top-level paragraph.
 
+            This paragraph belongs to a third-level block quote.
+
         This paragraph belongs to a second-level block quote.
 
     | This paragraph belongs to a first-level block quote. The second-level
