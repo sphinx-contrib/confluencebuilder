@@ -106,19 +106,10 @@ here:
 Supported Markup
 ================
 
-* Bulleted Lists
-* Citations
-* Code Blocks
-* Definitions
-* Enumerated Lists
-* Footnotes
-* Headings
-* Hyperlinks
-* Indentations
-* Inline Blocks/Literals
-* Paragraphs
-* Tables
-* TOC Tree
+For a complete list of supported markup, consult the following:
+
+ | Atlassian Confluence Builder for Sphinx - Markup
+ | http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/markup.html
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
