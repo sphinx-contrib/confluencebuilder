@@ -37,3 +37,22 @@ The following contains a series of code examples:
        std::cout << "Hello, world!";
        return 0;
    }
+
+.. code-block:: html
+
+    <html>
+    <header>
+        <title>my-example</title>
+        <script type="text/javascript">
+        /* <![CDATA[ */
+        alert('Hello, world!');
+        /* ]]> */
+        </script>
+    </header>
+    <body>
+        Hello, world!
+    </body>
+    </html>
+
+>>> print "This is a doctest block."
+This is a doctest block.
