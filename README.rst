@@ -16,7 +16,7 @@ Atlassian Confluence Builder for Sphinx
     :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
+Sphinx_ extension to build Confluence storage format files and optionally
 publish them to a Confluence instance.
 
 Requirements
