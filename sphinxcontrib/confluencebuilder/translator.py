@@ -284,6 +284,65 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_field_body(self, node):
         self.body.append(self.context.pop()) # td
 
+    # -----------------------------
+    # body elements -- option lists
+    # -----------------------------
+
+    def visit_option_list(self, node):
+        self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_option_list(self, node):
+        self.body.append(self.context.pop()) # tbody
+        self.body.append(self.context.pop()) # table
+
+    def visit_option_list_item(self, node):
+        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_option_list_item(self, node):
+        self.body.append(self.context.pop()) # tr
+
+    def visit_option_group(self, node):
+        self._first_option = True
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_option_group(self, node):
+        self.body.append(self.context.pop()) # td
+
+    def visit_option(self, node):
+        if self._first_option:
+            self._first_option = False
+        else:
+            self.body.append(', ')
+
+    def depart_option(self, node):
+        pass
+
+    def visit_option_string(self, node):
+        pass
+
+    def depart_option_string(self, node):
+        pass
+
+    def visit_option_argument(self, node):
+        self.body.append(node['delimiter'])
+
+    def depart_option_argument(self, node):
+        pass
+
+    def visit_description(self, node):
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_description(self, node):
+        self.body.append(self.context.pop()) # td
+
     # ##########################################################################
     # #                                                                        #
     # # helpers                                                                #
