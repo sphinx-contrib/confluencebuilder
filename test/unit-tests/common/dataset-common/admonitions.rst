@@ -1,6 +1,6 @@
 :orphan:
 
-Admonition Test
+admonition test
 ---------------
 
 .. http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions
