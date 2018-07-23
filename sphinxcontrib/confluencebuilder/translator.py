@@ -1007,6 +1007,92 @@ class ConfluenceTranslator(BaseTranslator):
 
     depart_versionmodified = _depart_admonition
 
+    # ------------------------------
+    # sphinx -- extension -- autodoc
+    # ------------------------------
+
+    def visit_desc(self, node):
+        self.body.append(self._start_tag(node, 'dl', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_desc(self, node):
+        self.body.append(self.context.pop()) # dl
+
+    def visit_desc_signature(self, node):
+        self.body.append(self._start_tag(node, 'dt'))
+        self.context.append(self._end_tag(node))
+
+    def depart_desc_signature(self, node):
+        self.body.append(self.context.pop()) # dt
+
+    def visit_desc_annotation(self, node):
+        self.body.append(self._start_tag(node, 'em'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_desc_annotation(self, node):
+        self.body.append(self.context.pop()) # em
+
+    def visit_desc_addname(self, node):
+        self.body.append(self._start_tag(node, 'code'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_desc_addname(self, node):
+        self.body.append(self.context.pop()) # code
+
+    def visit_desc_name(self, node):
+        self.body.append(self._start_tag(node, 'strong'))
+        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self._start_tag(node, 'code'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_desc_name(self, node):
+        self.body.append(self.context.pop()) # code
+        self.body.append(self.context.pop()) # strong
+
+    def visit_desc_type(self, node):
+        pass
+
+    def depart_desc_type(self, node):
+        pass
+
+    def visit_desc_returns(self, node):
+        self.body.append(' -&gt; ')
+
+    def depart_desc_returns(self, node):
+        pass
+
+    def visit_desc_optional(self, node):
+        self.body.append('[')
+
+    def depart_desc_optional(self, node):
+        self.body.append(']')
+
+    def visit_desc_parameterlist(self, node):
+        self._first_desc_parameter = True
+        self.body.append('(')
+
+    def depart_desc_parameterlist(self, node):
+        self.body.append(')')
+
+    def visit_desc_parameter(self, node):
+        if self._first_desc_parameter:
+            self._first_desc_parameter = False
+        else:
+            self.body.append(', ')
+
+        self.body.append(self._start_tag(node, 'em'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_desc_parameter(self, node):
+        self.body.append(self.context.pop()) # em
+
+    def visit_desc_content(self, node):
+        self.body.append(self._start_tag(node, 'dd'))
+        self.context.append(self._end_tag(node))
+
+    def depart_desc_content(self, node):
+        self.body.append(self.context.pop()) # dd
+
     # -----------------------------------------------------
     # docutils handling "to be completed" marked directives
     # -----------------------------------------------------
