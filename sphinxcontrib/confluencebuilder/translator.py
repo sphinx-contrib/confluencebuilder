@@ -54,6 +54,7 @@ class ConfluenceTranslator(BaseTranslator):
         self._quote_level = 0
         self._section_level = 1
         self._thead_context = []
+        self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
 
         if config.highlight_language:
             self._highlight = config.highlight_language
@@ -65,7 +66,15 @@ class ConfluenceTranslator(BaseTranslator):
         restricted_macros = config.confluence_adv_restricted_macros
         self.can_admonition = not 'info' in restricted_macros
         self.can_anchor = not 'anchor' in restricted_macros
+        self.can_children = not 'children' in restricted_macros
         self.can_code = not 'code' in restricted_macros
+
+        if (config.confluence_page_hierarchy
+                and config.confluence_adv_hierarchy_child_macro
+                and self.can_children):
+            self.apply_hierarchy_children_macro = True
+        else:
+            self.apply_hierarchy_children_macro = False
 
     # ##########################################################################
     # #                                                                        #
@@ -944,6 +953,30 @@ class ConfluenceTranslator(BaseTranslator):
 
         self.body.append(self._end_tag(node))
         raise nodes.SkipNode
+
+    # -----------------
+    # sphinx -- toctree
+    # -----------------
+
+    def visit_compound(self, node):
+        # If this has not been a manipulated toctree (refer to hierarchy mode
+        # and see builder's process_tree_structure) and the invoker wishes to
+        # use Confluence children macro instead, swap out of the toctree for the
+        # macro.
+        if 'toctree-wrapper' in node['classes']:
+            if self.apply_hierarchy_children_macro:
+                self.body.append(self._start_ac_macro(node, 'children'))
+                if self._tocdepth:
+                    self.body.append(self._build_ac_parameter(
+                        node, 'depth', str(self._tocdepth)))
+                else:
+                    self.body.append(self._build_ac_parameter(
+                        node, 'all', 'true'))
+                self.body.append(self._end_ac_macro(node))
+                raise nodes.SkipNode
+
+    def depart_compound(self, node):
+        pass
 
     # -------------
     # miscellaneous
