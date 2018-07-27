@@ -198,8 +198,20 @@ class ConfluencePublisher():
 
         return base_page_id
 
-    def getDescendents(self, page_id):
-        descendents = []
+    def getDescendants(self, page_id):
+        """
+        generate a list of descendants
+
+        Queries the configured Confluence instance for a set of descendants for
+        the provided `page_id` or (if set to `None`) the configured space.
+
+        Args:
+            page_id: the ancestor to search on (if not `None`)
+
+        Returns:
+            the descendants
+        """
+        descendants = set()
 
         if self.use_rest:
             if page_id:
@@ -213,7 +225,7 @@ class ConfluencePublisher():
             idx = 0
             while rsp['size'] > 0:
                 for result in rsp['results']:
-                    descendents.append(result['id'])
+                    descendants.add(result['id'])
 
                 if rsp['size'] != rsp['limit']:
                     break
@@ -229,22 +241,41 @@ class ConfluencePublisher():
                 pages = self.xmlrpc.getPages(self.token, self.space_name)
 
             for child_page in pages:
-                descendents.append(child_page['id'])
+                descendants.add(child_page['id'])
 
-        return descendents
+        return descendants
 
-    def getDescendentsCompat(self, page_id):
+    def getDescendantsCompat(self, page_id):
+        """
+        generate a list of descendants (aggressive)
+
+        Queries the configured Confluence instance for a set of descendants for
+        the provided `page_id` or (if set to `None`) the configured space. This
+        request is a more aggressive search for descendants when compared to
+        `getDescendants`. Each page found will be again searched on for
+        descendants. This is to handle rare cases where a Confluence instance
+        does not provide a complete set of descendants (this has been observed
+        on some instances of Confluence server; speculated to be possible
+        cache corruption). This search can be extremely slow for large document
+        sets.
+
+        Args:
+            page_id: the ancestor to search on (if not `None`)
+
+        Returns:
+            the descendants
+        """
         visited_pages = set()
 
         def find_legacy_pages(page_id, pages):
-            descendents = self.getDescendents(page_id)
-            for descendent in descendents:
-                if descendent not in pages:
-                    pages.add(descendent)
-                    find_legacy_pages(descendent, pages)
+            descendants = self.getDescendants(page_id)
+            for descendant in descendants:
+                if descendant not in pages:
+                    pages.add(descendant)
+                    find_legacy_pages(descendant, pages)
 
         find_legacy_pages(page_id, visited_pages)
-        return list(visited_pages)
+        return visited_pages
 
     def storePage(self, page_name, raw_data, parent_id=None):
         uploaded_page_id = None
