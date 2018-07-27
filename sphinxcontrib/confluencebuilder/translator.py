@@ -1109,6 +1109,12 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_compact_paragraph(self, node):
         pass
 
+    def visit_container(self, node):
+        pass
+
+    def depart_container(self, node):
+        pass
+
     def visit_generated(self, node):
         pass
 
