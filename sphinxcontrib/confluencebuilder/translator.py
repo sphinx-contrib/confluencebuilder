@@ -723,6 +723,13 @@ class ConfluenceTranslator(BaseTranslator):
         if not doctitle:
             ConfluenceLogger.warn('unable to build link to document due to '
                 'missing title (in {}): {}'.format(self.docname, docname))
+
+            # build a broken link
+            name = node.astext()
+            name = self._escape_sf(name)
+            self.body.append(self._start_tag(node, 'a', **{'href': '#'}))
+            self.body.append(name)
+            self.body.append(self._end_tag(node, suffix=''))
             raise nodes.SkipNode
 
         anchor_value = None
