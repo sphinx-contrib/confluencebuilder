@@ -752,6 +752,7 @@ class ConfluenceTranslator(BaseTranslator):
                 anchor_value = anchor
 
         # build link to internal anchor (on another page)
+        doctitle = self._escape_sf(doctitle)
         self.body.append(self._start_ac_link(node, anchor_value))
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
