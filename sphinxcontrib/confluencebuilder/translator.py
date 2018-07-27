@@ -690,6 +690,7 @@ class ConfluenceTranslator(BaseTranslator):
         target = ConfluenceState.target(anchor)
         if target:
             anchor_value = target
+            anchor_value = self._escape_sf(anchor_value)
         elif not self.can_anchor:
             self.body.append(self._escape_sf(node.astext()))
             raise nodes.SkipNode
@@ -746,6 +747,7 @@ class ConfluenceTranslator(BaseTranslator):
             target = ConfluenceState.target(target_name)
             if target:
                 anchor_value = target
+                anchor_value = self._escape_sf(anchor_value)
             elif self.can_anchor:
                 anchor_value = anchor
 
