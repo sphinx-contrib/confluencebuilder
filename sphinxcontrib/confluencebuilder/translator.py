@@ -141,13 +141,13 @@ class ConfluenceTranslator(BaseTranslator):
         self._section_level -= 1
 
     def visit_title(self, node):
-        if isinstance(node.parent, nodes.section):
+        if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
             self.context.append(self._end_tag(node))
 
     def depart_title(self, node):
-        if isinstance(node.parent, nodes.section):
+        if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(self.context.pop()) # h<x>
 
     def visit_paragraph(self, node):
@@ -161,6 +161,9 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(
             node, 'hr', suffix=self.nl, empty=True))
         raise nodes.SkipNode
+
+    visit_topic = visit_section
+    depart_topic = depart_section
 
     # ----------------------
     # body elements -- lists
