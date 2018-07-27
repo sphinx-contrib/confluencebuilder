@@ -20,6 +20,8 @@ import posixpath
 import sys
 
 class ConfluenceTranslator(BaseTranslator):
+    _tracked_unknown_code_lang = []
+
     """
     confluence extension translator
 
@@ -390,13 +392,15 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------------------
 
     def visit_literal_block(self, node):
-        lang = node.get('language', self._highlight)
+        lang = node.get('language', self._highlight).lower()
         if self.builder.lang_transform:
             lang = self.builder.lang_transform(lang)
         elif lang in LITERAL2LANG_MAP.keys():
             lang = LITERAL2LANG_MAP[lang]
         else:
-            ConfluenceLogger.warn('unknown code language: {}'.format(lang))
+            if lang not in self._tracked_unknown_code_lang:
+                ConfluenceLogger.warn('unknown code language: {}'.format(lang))
+                self._tracked_unknown_code_lang.append(lang)
             lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
 
         data = self.nl.join(node.astext().splitlines())
