@@ -220,7 +220,11 @@ class ConfluencePublisher():
                 search_fields = {'cql': 'space=' + self.space_name +
                     ' and type=page'}
 
-            # Observed issues with "content/{id}/descendant"; using search.
+            # Configure a larger limit value than the default (no provided
+            # limit defaults to 25). This should reduce the number of queries
+            # needed to fetch a complete descendants set (for larger sets).
+            search_fields['limit'] = 1000;
+
             rsp = self.rest_client.get('content/search', search_fields)
             idx = 0
             while rsp['size'] > 0:
