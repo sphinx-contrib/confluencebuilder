@@ -664,7 +664,15 @@ class ConfluenceTranslator(BaseTranslator):
             pass
         elif ((not 'internal' in node or not node['internal'])
                 and 'refuri' in node):
-            self._visit_reference_extern(node)
+            # If a document provides an anchor target directly in the reference,
+            # attempt to extract the anchor value and pass it into the internal
+            # reference processing instead.
+            if node['refuri'].startswith('#'):
+                node['refid'] = node['refuri'][1:]
+                del node['refuri']
+                self._visit_reference_intern_id(node)
+            else:
+                self._visit_reference_extern(node)
         elif 'refid' in node:
             self._visit_reference_intern_id(node)
         elif 'refuri' in node:
