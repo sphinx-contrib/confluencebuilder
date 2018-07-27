@@ -272,13 +272,9 @@ class ConfluenceBuilder(Builder):
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:
-            tmpnode = doctree.next_node()
-            while isinstance(tmpnode, (nodes.comment)):
-                tmpnode = tmpnode.next_node(descend=False, siblings=True)
-            if tmpnode:
-                title_element = tmpnode.next_node(nodes.title)
-                if title_element:
-                    tmpnode.remove(title_element)
+            title_element = self._find_title_element(doctree)
+            if title_element:
+                title_element.parent.remove(title_element)
 
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
@@ -366,6 +362,26 @@ class ConfluenceBuilder(Builder):
         if self.publish:
             self.publisher.disconnect()
 
+    def _find_title_element(self, doctree):
+        """
+        find (if any) the title element of a document
+
+        From a provided document's doctree, attempt to extract a possible title
+        value from known information. This call will look for the first section
+        node's title value as the title value for a document.
+
+        Args:
+            doctree: the document tree to find a title value element on
+
+        Returns:
+            the title element
+        """
+        node = doctree.next_node(nodes.section)
+        if isinstance(node, nodes.section):
+            return node.next_node(nodes.title)
+
+        return None
+
     def _fix_std_labels(self, olddocname, newdocname):
         """
         fix standard domain labels for squashed documents
@@ -419,15 +435,9 @@ class ConfluenceBuilder(Builder):
         generated (if configuration permits) or a `None` value is returned.
         """
         doctitle = None
-
-        # find the title value from the first element's title element (if any)
-        tmpnode = doctree.next_node()
-        while isinstance(tmpnode, (nodes.comment)):
-            tmpnode = tmpnode.next_node(descend=False, siblings=True)
-        if tmpnode:
-            title_element = tmpnode.next_node(nodes.title)
-            if title_element:
-                doctitle = title_element.astext()
+        title_element = self._find_title_element(doctree)
+        if title_element:
+            doctitle = title_element.astext()
 
         if not doctitle:
             if not self.config.confluence_disable_autogen_title:
