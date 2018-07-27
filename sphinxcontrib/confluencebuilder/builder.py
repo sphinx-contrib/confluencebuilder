@@ -199,11 +199,6 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctrees[0].get('maxdepth'))
 
-            target_refs = []
-            for node in doctree.traverse(nodes.target):
-                if 'refid' in node:
-                    target_refs.append(node['refid'])
-
             doc_used_names = {}
             for node in doctree.traverse(nodes.title):
                 if isinstance(node.parent, nodes.section):
@@ -216,8 +211,7 @@ class ConfluenceBuilder(Builder):
                             target = '%s.%d' % (target, section_id)
 
                         for id in section_node['ids']:
-                            if not id in target_refs:
-                                id = '%s#%s' % (docname, id)
+                            id = '{}#{}'.format(docname, id)
                             ConfluenceState.registerTarget(id, target)
 
         ConfluenceState.titleConflictCheck()

@@ -698,7 +698,8 @@ class ConfluenceTranslator(BaseTranslator):
 
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
-        target = ConfluenceState.target(anchor)
+        target_name = '{}#{}'.format(self.docname, anchor)
+        target = ConfluenceState.target(target_name)
         if target:
             anchor_value = target
             anchor_value = self._escape_sf(anchor_value)
@@ -748,11 +749,7 @@ class ConfluenceTranslator(BaseTranslator):
         anchor_value = None
         if '#' in node['refuri']:
             anchor = node['refuri'].split('#')[1]
-            if 'anchorname' in node:
-                # an anchorname may be set (usually when using tocs)
-                target_name = '{}#{}'.format(docname, anchor)
-            else:
-                target_name = anchor
+            target_name = '{}#{}'.format(docname, anchor)
 
             # check if this target is reachable without an anchor; if so, use
             # the identifier value instead
@@ -779,7 +776,8 @@ class ConfluenceTranslator(BaseTranslator):
 
             # only build an anchor if required (e.x. is a reference label
             # already provided by a build section element)
-            target = ConfluenceState.target(anchor)
+            target_name = '{}#{}'.format(self.docname, anchor)
+            target = ConfluenceState.target(target_name)
             if not target:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_parameter(node, '', anchor))
