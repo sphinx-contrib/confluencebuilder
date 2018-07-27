@@ -100,6 +100,8 @@ def setup(app):
     app.add_config_value('confluence_timeout', None, False)
 
     """(advanced - undocumented)"""
+    """Enablement for aggressive descendents search (for purge)."""
+    app.add_config_value('confluence_adv_aggressive_search', None, False)
     """Enablement of the children macro for hierarchy mode."""
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
     """List of extension-provided macros restricted for use."""
