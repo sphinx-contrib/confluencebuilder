@@ -708,7 +708,8 @@ class ConfluenceTranslator(BaseTranslator):
         else:
             anchor_value = anchor
 
-        is_citation = 'ids' in node and node['ids']
+        is_citation = ('ids' in node and node['ids']
+            and 'internal' in node and node['internal'])
 
         if is_citation:
             # build an anchor for back reference
