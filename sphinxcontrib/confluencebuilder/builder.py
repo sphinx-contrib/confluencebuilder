@@ -337,7 +337,9 @@ class ConfluenceBuilder(Builder):
 
     def publish_purge(self):
         if self.config.confluence_purge is True and self.legacy_pages:
-            ConfluenceLogger.info('removing legacy pages... ', nonl=0)
+            n = len(self.legacy_pages)
+            ConfluenceLogger.info(
+                'removing legacy pages... (total: {}) '.format(n), nonl=0)
             for legacy_page_id in self.legacy_pages:
                self.publisher.removePage(legacy_page_id)
             ConfluenceLogger.info('done\n')
