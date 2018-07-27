@@ -660,7 +660,9 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------
 
     def visit_reference(self, node):
-        if ((not 'internal' in node or not node['internal'])
+        if 'iscurrent' in node:
+            pass
+        elif ((not 'internal' in node or not node['internal'])
                 and 'refuri' in node):
             self._visit_reference_extern(node)
         elif 'refid' in node:
