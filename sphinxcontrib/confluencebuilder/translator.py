@@ -147,6 +147,10 @@ class ConfluenceTranslator(BaseTranslator):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
             self.context.append(self._end_tag(node))
+        else:
+            # Only render section/topic titles in headers. For all other nodes,
+            # they must explicitly manage their own title entries.
+            raise nodes.SkipNode
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
