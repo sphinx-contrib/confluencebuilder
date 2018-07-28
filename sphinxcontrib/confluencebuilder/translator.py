@@ -591,6 +591,14 @@ class ConfluenceTranslator(BaseTranslator):
     # ------
 
     def visit_table(self, node):
+        title_node = node.traverse(nodes.title)
+        if title_node:
+            self.body.append(self._start_tag(node, 'p'))
+            self.body.append(self._start_tag(node, 'strong'))
+            self.body.append(self._escape_sf(title_node[0].astext()))
+            self.body.append(self._end_tag(node))
+            self.body.append(self._end_tag(node))
+
         self.body.append(self._start_tag(node, 'table', suffix=self.nl))
         self.context.append(self._end_tag(node))
 
