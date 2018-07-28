@@ -29,7 +29,7 @@ class ConfluenceTestUtil:
     default_sphinx_status = None
 
     @staticmethod
-    def assertExpectedWithOutput(test, name, expected, output):
+    def assertExpectedWithOutput(test, name, expected, output, tpn=None):
         """
         compare two files for a unit test that should match
 
@@ -38,9 +38,10 @@ class ConfluenceTestUtil:
         to read each file's contents and compare to ensure they match. On
         failure, the file differences will be output.
         """
-        filename = name + '.conf'
-        expected_path = os.path.join(expected, filename)
-        test_path = os.path.join(output, filename)
+        if not tpn:
+            tpn = name
+        expected_path = os.path.join(expected, name + '.conf')
+        test_path = os.path.join(output, tpn + '.conf')
         test.assertTrue(os.path.exists(expected_path),
             'missing expected file: {}'.format(expected_path))
         test.assertTrue(os.path.exists(test_path),
