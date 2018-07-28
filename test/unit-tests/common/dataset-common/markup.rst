@@ -1,7 +1,9 @@
 :orphan:
 
-this is a text test
--------------------
+.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#inline-markup
+
+markup
+------
 
 *emphasis*
 
@@ -14,9 +16,3 @@ this is a text test
 :sub:`subscript`
 
 :sup:`superscript`
-
-Transition test
-
---------
-
-End of transition test

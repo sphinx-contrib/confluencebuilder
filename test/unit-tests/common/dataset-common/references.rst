@@ -1,9 +1,14 @@
 :orphan:
 
-references test
----------------
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#hyperlink-references
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#hyperlink-targets
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#reference-names
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#standalone-hyperlinks
 
-.. a series of link examples
+references
+----------
+
+.. a series of link examples ---------------------------------------------------
 
 http://example.com/
 
@@ -13,37 +18,37 @@ https://example.com/
 
 https://www.example.com/
 
-`Custom Link Name <http://example.com/>`_
+mailto:someone@example.com
 
-This is a paragraph that contains `a link`_.
+someone@example.com
 
-.. _a link: http://example.com/
+`custom name <https://example.com/>`_
 
-Leading text http://example.com/ with trailing text.
+`a link`_
 
-Leading text `Custom Link Name <http://example.com/>`_ with trailing text.
+.. _a link: https://example.com/
 
+leading https://example.com/ trailing
 
-.. example of document references
+leading `custom name <https://example.com/>`_ trailing
 
+.. example of document references ----------------------------------------------
 
-A link to document :doc:`references2`.
+document link :doc:`references-ref`
 
-A link to a document with a :doc:`custom name <references2>`.
+document with :doc:`custom name <references-ref>`
 
-
-.. example of a reference/label anchor
-
+.. example of a reference/label anchor -----------------------------------------
 
 .. _my-reference-label1:
 
-Dummy content to generate above anchor.
+dummy content to generate above anchor
 
 .. _my-reference-label2:
 
 sub-section
 -----------
 
-It refers to the section itself, see :ref:`my-reference-label2`.
+section :ref:`my-reference-label2`.
 
-A link to the internal anchor :ref:`Link title <my-reference-label1>`.
+:ref:`internal anchor <my-reference-label1>`.

@@ -1,22 +1,24 @@
 :orphan:
 
-glossary test
--------------
-
-This section contains references to :term:`glossary-item-01` and
-:term:`glossary-item-03a` glossary entries.
+.. http://www.sphinx-doc.org/en/stable/markup/para.html#glossary
 
 glossary
 --------
 
 .. glossary::
 
-   glossary-item-01
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+   glossary 1
+        content
 
-   glossary-item-02
-        Cras vehicula rutrum nibh. Nullam mollis consequat fermentum.
+   glossary 2
+   glossary 3
+        content
 
-   glossary-item-03a
-   glossary-item-03b
-        Pellentesque dictum ornare arcu a interdum.
+        - content one
+        - content two
+
+:term:`glossary 1`
+
+:term:`glossary 2`
+
+:term:`glossary 3`
