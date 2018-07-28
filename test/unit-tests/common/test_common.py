@@ -43,7 +43,7 @@ class TestConfluenceCommon(unittest.TestCase):
         self._assertExpectedWithOutput('citations')
 
     def test_contents(self):
-        #raise unittest.SkipTest('pending pull request #126')
+        raise unittest.SkipTest('pending pull request #126')
         self._assertExpectedWithOutput('contents')
 
     def test_definition_lists(self):
