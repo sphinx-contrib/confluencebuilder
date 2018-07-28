@@ -1291,7 +1291,7 @@ class ConfluenceTranslator(BaseTranslator):
         for key, value in kwargs.items():
             attribs[key.lower()] = value
 
-        for key, value in attribs.items():
+        for key, value in sorted(attribs.items()):
             data.append('{}="{}"'.format(key, value))
 
         if suffix is None:
