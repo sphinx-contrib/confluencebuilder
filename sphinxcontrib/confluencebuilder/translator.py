@@ -816,7 +816,8 @@ class ConfluenceTranslator(BaseTranslator):
             self.body.append(self._end_ac_macro(node))
 
         # footnote label and back reference(s)
-        if not self.can_anchor:
+        if (not self.can_anchor
+                or 'backrefs' not in node or not node['backrefs']):
             label_text = self._escape_sf(label_text)
             self.body.append(label_text)
         elif len(node['backrefs']) > 1:
