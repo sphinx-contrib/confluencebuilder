@@ -40,6 +40,11 @@ SPECIAL_VALUE_REPLACEMENTS = {
     ('~', '&#126;')  # subscript
 }
 
+def encode_for_wiki_converter(data):
+    for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
+        data = data.replace(find, encoded)
+    return data
+
 class ConfluenceWikiTranslator(ConfluenceTranslator):
     docparent = ''
 
@@ -280,7 +285,8 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             self.add_text(', ')
         else:
             self.first_param = 0
-        self.add_text(node.astext())
+        data = encode_for_wiki_converter(node.astext())
+        self.add_text(data)
         raise nodes.SkipNode
 
     def visit_desc_optional(self, node):
@@ -581,6 +587,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
 
         self.new_state(0)
         definition = ' '.join(node.astext().split(self.nl))
+        definition = encode_for_wiki_converter(definition)
         self.add_text('bq. %s' % definition)
         self.end_state()
 
@@ -864,9 +871,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
             else:
                 anchor = ''
 
-            label = node.astext()
-            for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
-                label = label.replace(find, encoded)
+            label = encode_for_wiki_converter(node.astext())
             if label == doctitle and not anchor:
                 self.add_text('[%s]' % label)
             else:
@@ -961,9 +966,7 @@ class ConfluenceWikiTranslator(ConfluenceTranslator):
     def visit_Text(self, node):
         conf = self.builder.config
 
-        s = node.astext()
-        for find, encoded in SPECIAL_VALUE_REPLACEMENTS:
-            s = s.replace(find, encoded)
+        s = encode_for_wiki_converter(node.astext())
 
         if self.escape_newlines or not conf.confluence_adv_strict_line_breaks:
             s = s.replace(self.nl, ' ')
