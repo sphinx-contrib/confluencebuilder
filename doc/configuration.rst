@@ -37,15 +37,29 @@ confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The password value used to authenticate with the Confluence instance. If using
-Confluence Cloud, it is recommended to use an API token (if supported) for the
-configured username value (see api_tokens_). If API tokens are not being used,
-the plain password for the configured username value should be used.
+Confluence Cloud, it is recommended to use an API token for the configured
+username value (see `API tokens`_):
 
 .. code-block:: python
 
    confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
-       (or)
+
+If `API tokens`_ are not being used, the plain password for the configured
+username value should be used:
+
+.. code-block:: python
+
    confluence_server_pass = 'myawesomepassword'
+
+.. caution::
+
+   It is never recommended to store an API token or raw password into a
+   committed/shared repository holding documentation. A documentation's
+   configuration can modified various ways with Python to pull an
+   authentication token for a publishing event (reading from a local file,
+   acquiring a password from ``getpass``, etc.). If desired, this extension
+   provides a method for prompting for a password (see
+   |confluence_ask_password|_).
 
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
@@ -353,6 +367,9 @@ option is enabled with a value of ``True``.
 advanced configuration - publishing
 -----------------------------------
 
+.. |confluence_ask_password| replace:: ``confluence_ask_password``
+.. _confluence_ask_password:
+
 confluence_ask_password
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -550,6 +567,7 @@ seconds, the following can be used:
 
 .. references ------------------------------------------------------------------
 
+.. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
 .. _Requests SSL Cert Verification: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
