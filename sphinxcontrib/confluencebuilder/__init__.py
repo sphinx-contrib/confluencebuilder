@@ -78,6 +78,8 @@ def setup(app):
     app.add_config_value('confluence_remove_title', True, False)
 
     """(advanced-configuration - publishing)"""
+    """Request for publish password to come from interactive session."""
+    app.add_config_value('confluence_ask_password', False, False)
     """File/path to Certificate Authority"""
     app.add_config_value('confluence_ca_cert', None, False)
     """Path to client certificate to use for publishing"""
