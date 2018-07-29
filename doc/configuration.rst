@@ -353,6 +353,39 @@ option is enabled with a value of ``True``.
 advanced configuration - publishing
 -----------------------------------
 
+confluence_ask_password
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   User's running Cygwin/MinGW may need to invoke with ``winpty`` to allow this
+   feature to work.
+
+Provides an override for an interactive shell to request publishing documents
+using an API key or password provided from the shell environment. While a
+password is typically defined in the option ``confluence_server_pass`` (either
+directly set/fetched from the project's ``config.py`` or passed via a command
+line argument ``-D confluence_server_pass=password``), select environments may
+wish to provide a way to provide an authentication token without needing to
+modify documentation sources or having a visible password value in the
+interactive session requesting the publish event. By default, this
+option is disabled with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_remove_title = False
+
+A user can request for a password prompt by invoking build event by passing the
+define through the command line:
+
+.. code-block:: none
+
+   sphinx-build [options] -D confluence_ask_password=1 <srcdir> <outdir>
+
+Note that some shell sessions may not be able to pull the password value
+properly from the user. For example, Cygwin/MinGW may not be able to accept a
+password unless invoked with ``winpty``.
+
 confluence_ca_cert
 ~~~~~~~~~~~~~~~~~~
 
