@@ -6,7 +6,7 @@
 lists
 -----
 
-.. bullet lists
+.. bullet lists (complex and condensed)
 
 * first bullet
 
@@ -16,7 +16,9 @@ lists
 
   third paragraph in the second item
 
-  * sublist
+  * sublist 1
+  * sublist 2
+  * sublist 3
 
 * third item
 * forth item
