@@ -8,6 +8,8 @@ from __future__ import unicode_literals
 from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
 from .state import ConfluenceState
+from .std.confluence import FCMMO
+from .std.confluence import INDENT
 from .std.confluence import LITERAL2LANG_MAP
 from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
@@ -478,8 +480,7 @@ class ConfluenceTranslator(BaseTranslator):
             # paragraphs will margin values offset by 30 pixels units. The same
             # indentation is applied here via a style value (multiplied by the
             # current quote level).
-            CONFLUENCE_DEFAULT_INDENT_VAL = 30;
-            indent_val = CONFLUENCE_DEFAULT_INDENT_VAL * self._quote_level
+            indent_val = INDENT * self._quote_level
             style += 'margin-left: {}px;'.format(indent_val)
 
             # Confluence's provided styles remove first-child elements leading
@@ -516,8 +517,7 @@ class ConfluenceTranslator(BaseTranslator):
                 firstchild_margin = False
 
             if firstchild_margin:
-                CONFLUENCE_DEFAULT_FCI = 10;
-                style += 'padding-top: {}px;'.format(CONFLUENCE_DEFAULT_FCI)
+                style += 'padding-top: {}px;'.format(FCMMO)
 
             self.body.append(self._start_tag(node, 'div', suffix=self.nl,
                 **{'style': style}))
