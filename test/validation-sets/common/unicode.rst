@@ -1,5 +1,5 @@
-unicode
-=======
+unicode ❤
+=========
 
 The following page tests a series of Unicode values.
 
@@ -161,4 +161,4 @@ cjk unified ideographs
 emomji
 ------
 
-    ☺ ☹ ☠ ☝ ✌ ✍ ❤ ❣ ♨ ✈ ⌛ ⌚ ☀ ☁ ☂ ❄ ☃ ☄ ♠ ♥ ♦ ♣ ☎ ⌨ ✉ ✏ ✒ ✂ ☢ ☣ ↗ ➡ ↘ ↙ ↖ ↕ ↔
+☺ ☹ ☠ ☝ ✌ ✍ ❤ ❣ ♨ ✈ ⌛ ⌚ ☀ ☁ ☂ ❄ ☃ ☄ ♠ ♥ ♦ ♣ ☎ ⌨ ✉ ✏ ✒ ✂ ☢ ☣ ↗ ➡ ↘ ↙ ↖ ↕ ↔
