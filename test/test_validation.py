@@ -83,6 +83,19 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
         cls.config['confluence_parent_page'] = cls.test_key
 
+    def test_autodocs(self):
+        config = dict(self.config)
+        config['extensions'].append('sphinx.ext.autodoc')
+
+        dataset = os.path.join(self.datasets, 'autodocs')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-autodocs')
+        sys.path.insert(0, os.path.join(dataset, 'src'))
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
+        sys.path.pop(0)
+
     def test_common(self):
         config = dict(self.config)
 
