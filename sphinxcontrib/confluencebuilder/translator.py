@@ -177,14 +177,83 @@ class ConfluenceTranslator(BaseTranslator):
     # body elements -- lists
     # ----------------------
 
+    def _apply_leading_list_item_offets(self, node, attribs):
+        # Confluence's provided styles remove first-child elements leading
+        # margins. This causes some unexpected styling issues when list entries
+        # which contain other block elements do not style appropriately. This
+        # extensions attempts to maintain compact list item entries; however,
+        # for a list which contains non-compact entries (e.x. multiple
+        # paragraphs), instead, each list item will be applied a respective
+        # margin offset.
+        #
+        # Previously, a pattern such as the following would occur:
+        #
+        #  - line
+        #    (spacing)
+        #    line
+        #    - line
+        #    - line
+        #    (spacing)
+        #    line
+        #  - line
+        #    (spacing)
+        #    line
+        #
+        # To prevent this from happening, a margin applied to non-compact
+        # entries will render as:
+        #
+        #  - line
+        #    (spacing)
+        #    line
+        #    (spacing) <-- spacing between complex list item
+        #    - line    <-- no spacing for compact list (desired)
+        #    - line
+        #    (spacing)
+        #    line
+        #    (spacing) <-- spacing between complex list item
+        #  - line
+        #    (spacing)
+        #    line
+        #
+
+        # If any item in this list contains two or more children (with the
+        # exception of a "paragraph" + list pair), consider the entire list a
+        # complex one and flag each list item to include a margin.
+        has_complex = False
+        for child in node.children: # list items
+            if len(child.children) > 2 or (len(child.children) == 2
+                    and not isinstance(child.children[1],
+                        (nodes.bullet_list, nodes.enumerated_list))):
+                has_complex = True
+                break
+
+        if has_complex:
+            for child in node.children:
+                child.__confluence_list_item_margin = True
+
+        # If this list is nested inside a complex list, ensure this list starts
+        # off with a margin (to offset it's position inside the complex list).
+        if isinstance(node.parent, nodes.list_item):
+            try:
+                if node.parent.__confluence_list_item_margin:
+                    attribs['style'] = 'margin-top: {}px;'.format(FCMMO)
+            except AttributeError:
+                pass
+
     def visit_bullet_list(self, node):
-        self.body.append(self._start_tag(node, 'ul', suffix=self.nl))
+        attribs = {}
+        self._apply_leading_list_item_offets(node, attribs)
+
+        self.body.append(self._start_tag(node, 'ul', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
 
     def depart_bullet_list(self, node):
         self.body.append(self.context.pop()) # ul
 
     def visit_enumerated_list(self, node):
+        attribs = {}
+        self._apply_leading_list_item_offets(node, attribs)
+
         # note: - Not all Confluence versions (if any) support populating the
         #         'type' attribute of an ordered list tag; however, the 'style'
         #         attribute is accepted.
@@ -206,9 +275,10 @@ class ConfluenceTranslator(BaseTranslator):
             ConfluenceLogger.warn(
                 'unknown enumerated list type: {}'.format(node['enumtype']))
 
-        attribs = {}
-        if list_style_type:
-            attribs['style'] = 'list-style-type: {};'.format(list_style_type)
+        if 'style' not in attribs:
+            attribs['style'] = ''
+        attribs['style'] = '{}list-style-type: {};'.format(
+            attribs['style'], list_style_type)
 
         self.body.append(self._start_tag(node, 'ol', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
@@ -217,7 +287,15 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # ol
 
     def visit_list_item(self, node):
-        self.body.append(self._start_tag(node, 'li', suffix=self.nl))
+        # apply margin offset if flagged (see _apply_leading_list_item_offets)
+        attribs = {}
+        try:
+            if node.__confluence_list_item_margin:
+                attribs['style'] = 'margin-top: {}px;'.format(FCMMO)
+        except AttributeError:
+            pass
+
+        self.body.append(self._start_tag(node, 'li', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
 
     def depart_list_item(self, node):
