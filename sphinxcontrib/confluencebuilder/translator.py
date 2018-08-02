@@ -716,28 +716,31 @@ class ConfluenceTranslator(BaseTranslator):
             anchor_value = target
             anchor_value = self._escape_sf(anchor_value)
         elif not self.can_anchor:
-            self.body.append(self._escape_sf(node.astext()))
-            raise nodes.SkipNode
+            anchor_value = None
         else:
             anchor_value = anchor
 
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
 
-        if is_citation:
+        if is_citation and anchor_value:
             # build an anchor for back reference
             self.body.append(self._start_ac_macro(node, 'anchor'))
             self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
             self.body.append(self._end_ac_macro(node))
 
+        if is_citation:
             self.body.append(self._start_tag(node, 'sup'))
 
-        # build link to internal anchor (on the same page)
-        self.body.append(self._start_ac_link(node, anchor_value))
-        self.body.append(self._start_ac_plain_text_link_body_macro(node))
-        self.body.append(self._escape_cdata(node.astext()))
-        self.body.append(self._end_ac_plain_text_link_body_macro(node))
-        self.body.append(self._end_ac_link(node))
+        if anchor_value:
+            # build link to internal anchor (on the same page)
+            self.body.append(self._start_ac_link(node, anchor_value))
+            self.body.append(self._start_ac_plain_text_link_body_macro(node))
+            self.body.append(self._escape_cdata(node.astext()))
+            self.body.append(self._end_ac_plain_text_link_body_macro(node))
+            self.body.append(self._end_ac_link(node))
+        else:
+            self.body.append(self._escape_sf(node.astext()))
 
         if is_citation:
             self.body.append(self._end_tag(node, suffix='')) # sup
