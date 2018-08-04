@@ -10,18 +10,18 @@ compatible with Confluence.
 standard
 --------
 
-.. keywords | partial, planned, prospect, unplanned, unsupported
+.. keywords | planned, prospect, supported, unplanned, unsupported
 
 ====================== ============= =====
 type                   status        notes
 ====================== ============= =====
-admonitions            completed     - `reStructuredText Admonitions`_
-bibliographic fields   planned       - `reStructuredText Bibliographic Fields`_
-block quotes           completed     - `reStructuredText Block Quotes`_
-bullet lists           completed     - `reStructuredText Bullet Lists`_
+admonitions            supported     - `reStructuredText Admonitions`_
+bibliographic fields   supported     - `reStructuredText Bibliographic Fields`_
+block quotes           supported     - `reStructuredText Block Quotes`_
+bullet lists           supported     - `reStructuredText Bullet Lists`_
 centered               unsupported   - `Sphinx Centered`_
-citations              completed     - `reStructuredText Citations`_
-code                   partial       - `Sphinx Code Markup`_
+citations              supported     - `reStructuredText Citations`_
+code                   supported     - `Sphinx Code Markup`_
                                      - code-block options ``emphasize-lines``
                                        and ``lines`` as well as highlight option
                                        ``linenothreshold`` are ignored due to
@@ -33,40 +33,40 @@ code                   partial       - `Sphinx Code Markup`_
                                      - Pending work to validate/improve code
                                        block options ``caption``, ``encoding``
                                        and ``pyobject``.
-compound paragraph     completed     - `reStructuredText Compound Paragraph`_
+compound paragraph     supported     - `reStructuredText Compound Paragraph`_
 container              prospect      - `reStructuredText Container`_
-definition lists       completed     - `reStructuredText Definition Lists`_
-deprecated             completed     - `Sphinx Deprecated`_
-enumerated lists       completed     - `reStructuredText Enumerated Lists`_
+definition lists       supported     - `reStructuredText Definition Lists`_
+deprecated             supported     - `Sphinx Deprecated`_
+enumerated lists       supported     - `reStructuredText Enumerated Lists`_
                                      - Only auto-enumerator lists (``#``) are
                                        supported.
-epigraph               prospect      - `reStructuredText Epigraph`_
-footnotes              completed     - `reStructuredText Footnotes`_
-glossary               completed     - `Sphinx Glossary`_
+epigraph               supported     - `reStructuredText Epigraph`_
+footnotes              supported     - `reStructuredText Footnotes`_
+glossary               supported     - `Sphinx Glossary`_
 highlights             prospect      - `reStructuredText Highlights`_
 hlist                  unsupported   - `Sphinx Horizontal List`_
-hyperlink targets      completed     - `reStructuredText Hyperlink Targets`_
+hyperlink targets      supported     - `reStructuredText Hyperlink Targets`_
 images                 prospect      - `reStructuredText Images`_
-list table             partial       - `reStructuredText List Table`_
+list table             supported     - `reStructuredText List Table`_
                                      - Argument ``title`` not yet supported.
                                      - Options not supported: ``align``,
                                        ``header-rows``, ``stub-columns`` and
                                        ``widths``.
-literal blocks         completed     - `reStructuredText Literal Blocks`_
+literal blocks         supported     - `reStructuredText Literal Blocks`_
 math                   unplanned     - `reStructuredText Math`_
-option lists           completed     - `reStructuredText Option Lists`_
-production list        completed     - `Sphinx Production List`_
+option lists           supported     - `reStructuredText Option Lists`_
+production list        supported     - `Sphinx Production List`_
 pull-quote             prospect      - `reStructuredText Pull-Quote`_
-raw                    completed     - `reStructuredText Raw Data Pass-Through`_
-rubric                 completed     - `Sphinx Rubric`_
-sections               completed     - `reStructuredText Sections`_
-tables                 completed     - `reStructuredText Tables`_
-toctree                partial       - `Sphinx TOC Tree Markup`_
+raw                    supported     - `reStructuredText Raw Data Pass-Through`_
+rubric                 supported     - `Sphinx Rubric`_
+sections               supported     - `reStructuredText Sections`_
+tables                 supported     - `reStructuredText Tables`_
+toctree                supported     - `Sphinx TOC Tree Markup`_
                                      - Pending work to validate/improve toctree
                                        options ``caption`` and ``numbered``.
-transitions            completed     - `reStructuredText Transitions`_
-versionadded           completed     - `Sphinx Version Added`_
-versionchanged         completed     - `Sphinx Version Changed`_
+transitions            supported     - `reStructuredText Transitions`_
+versionadded           supported     - `Sphinx Version Added`_
+versionchanged         supported     - `Sphinx Version Changed`_
 ====================== ============= =====
 
 *(note: directive options "class" and "name" are ignored)*
