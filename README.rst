@@ -23,8 +23,8 @@ Requirements
 ============
 
 * Python_ 2.7 or 3.4+
-* Requests_
-* Sphinx_ 1.0+
+* Requests_ 2.14.0+
+* Sphinx_ 1.6.3+
 
 If publishing:
 
