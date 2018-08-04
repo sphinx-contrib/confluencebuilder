@@ -28,7 +28,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ Cloud or Server 5.9+
+* Confluence_ Cloud or Server 6.0+
 
 Installing
 ==========
