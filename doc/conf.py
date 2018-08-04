@@ -61,7 +61,7 @@ release = ''
 
 # reStructuredText string included at the end of every source
 rst_epilog = """
-.. |supported_confluence_ver| replace:: 5.9+
+.. |supported_confluence_ver| replace:: 6.0+
 .. |supported_python_ver| replace:: 2.7 or 3.4+
 """
 
