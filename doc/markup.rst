@@ -1,11 +1,11 @@
 markup
 ======
 
-The following outlines the reStructuredText_ / Sphinx_ markup explicitly supported
-by this extension. The intent of this extension is to support as much markup as
-possible that can be rendered on a Confluence instance. Below will identify
-markup that has been tested, planned to be implemented in the future or is not
-compatible with Confluence.
+The following outlines the reStructuredText_/Sphinx_ markup supported by this
+extension. The intent of this extension is to support as much markup as possible
+that can be rendered on a Confluence instance. Below will identify markup that
+has been tested, planned to be implemented in the future or is not compatible
+with Confluence.
 
 standard
 --------
@@ -84,8 +84,8 @@ other
 If a markup type and/or extension is not listed in the above, is not working as
 expected or brings up another concern, feel free to bring up an issue:
 
-    | Atlassian Confluence Builder for Confluence - Issues
-    | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues
+   | Atlassian Confluence Builder for Confluence - Issues
+   | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues
 
 .. _code block macro: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
