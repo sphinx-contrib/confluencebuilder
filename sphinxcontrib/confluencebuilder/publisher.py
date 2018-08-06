@@ -216,8 +216,8 @@ class ConfluencePublisher():
             if page_id:
                 search_fields = {'cql': 'ancestor=' + str(page_id)}
             else:
-                search_fields = {'cql': 'space=' + self.space_name +
-                    ' and type=page'}
+                search_fields = {'cql': 'space="' + self.space_name +
+                    '" and type=page'}
 
             # Configure a larger limit value than the default (no provided
             # limit defaults to 25). This should reduce the number of queries
