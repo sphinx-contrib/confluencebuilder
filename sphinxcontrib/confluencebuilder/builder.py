@@ -312,7 +312,11 @@ class ConfluenceBuilder(Builder):
                 baseid = self.master_doc_page_id
             else:
                 baseid = self.parent_id
-            self.legacy_pages = self.publisher.getDescendents(baseid)
+            ConfluenceLogger.info('querying list of existing pages...')
+            if self.config.confluence_adv_aggressive_search is True:
+                self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
+            else:
+                self.legacy_pages = self.publisher.getDescendants(baseid)
 
         if conf.confluence_purge:
             if uploaded_id in self.legacy_pages:
@@ -327,7 +331,9 @@ class ConfluenceBuilder(Builder):
 
     def publish_purge(self):
         if self.config.confluence_purge is True and self.legacy_pages:
-            ConfluenceLogger.info('removing legacy pages... ', nonl=0)
+            n = len(self.legacy_pages)
+            ConfluenceLogger.info(
+                'removing legacy pages... (total: {}) '.format(n), nonl=0)
             for legacy_page_id in self.legacy_pages:
                self.publisher.removePage(legacy_page_id)
             ConfluenceLogger.info('done\n')
