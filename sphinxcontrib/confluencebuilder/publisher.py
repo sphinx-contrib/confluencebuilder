@@ -28,6 +28,7 @@ import os
 import socket
 import ssl
 import sys
+import time
 
 try:
     import http.client as httplib
@@ -342,7 +343,23 @@ class ConfluencePublisher():
                     if parent_id:
                         updatePage['ancestors'] = [{'id': parent_id}]
 
-                    self.rest_client.put('content', page['id'], updatePage)
+                    try:
+                        self.rest_client.put('content', page['id'], updatePage)
+                    except ConfluenceBadApiError as ex:
+                        # Confluence Cloud may (rarely) fail to complete a
+                        # content request with an OptimisticLockException/
+                        # StaleObjectStateException exception. It is suspected
+                        # that this is just an instance timing/processing issue.
+                        # If this is observed, wait a moment and retry the
+                        # content request. If it happens again, the put request
+                        # will fail as it normally would.
+                        if str(ex).find('OptimisticLockException') == -1:
+                            raise
+                        ConfluenceLogger.warn(
+                            'remote page updated failed; retrying...')
+                        time.sleep(1)
+                        self.rest_client.put('content', page['id'], updatePage)
+
                     uploaded_page_id = page['id']
             except ConfluencePermissionError:
                 raise ConfluencePermissionError(
