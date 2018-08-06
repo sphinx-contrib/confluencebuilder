@@ -8,7 +8,7 @@ Atlassian Confluence Builder for Sphinx
     :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
     :alt: pip Version
 
-.. image:: https://img.shields.io/travis/tonybaloney/sphinxcontrib-confluencebuilder.svg
+.. image:: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder.svg?branch=master
     :target: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder
     :alt: Build Status
 
