@@ -6,7 +6,7 @@
 
 from __future__ import (absolute_import, print_function, unicode_literals)
 from .logger import ConfluenceLogger
-from .translator.wiki import ConfluenceWikiTranslator
+from .translator import ConfluenceTranslator
 from docutils import writers
 
 class ConfluenceWriter(writers.Writer):
@@ -20,7 +20,7 @@ class ConfluenceWriter(writers.Writer):
         self.output = None
 
     def translate(self):
-        visitor = ConfluenceWikiTranslator(self.document, self.builder)
+        visitor = ConfluenceTranslator(self.document, self.builder)
         self.document.walkabout(visitor)
-        if hasattr(visitor, 'body'):
-            self.output = visitor.body
+        if hasattr(visitor, 'document'):
+            self.output = visitor.document

@@ -6,13 +6,13 @@ and publishing:
 
 .. code-block:: python
 
-    extensions = ['sphinxcontrib.confluencebuilder']
-    confluence_publish = True
-    confluence_space_name = 'TEST'
-    confluence_parent_page = 'Documentation'
-    confluence_server_url = 'https://intranet-wiki.example.com'
-    confluence_server_user = 'username'
-    confluence_server_pass = 'password'
+   extensions = ['sphinxcontrib.confluencebuilder']
+   confluence_publish = True
+   confluence_space_name = 'TEST'
+   confluence_parent_page = 'Documentation'
+   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_user = 'username'
+   confluence_server_pass = 'password'
 
 All Atlassian Confluence Builder configurations are prefixed with
 ``confluence_``. View the entire list of configuration options below.
@@ -31,7 +31,7 @@ value is set to ``False``.
 
 .. code-block:: python
 
-    confluence_publish = True
+   confluence_publish = True
 
 confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -43,9 +43,9 @@ the plain password for the configured username value should be used.
 
 .. code-block:: python
 
-    confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
-        (or)
-    confluence_server_pass = 'myawesomepassword'
+   confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
+       (or)
+   confluence_server_pass = 'myawesomepassword'
 
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,7 @@ For a Confluence Cloud instance, an example URL configuration is as follows:
 
 .. code-block:: python
 
-    confluence_server_url = 'https://example.atlassian.net/wiki'
+   confluence_server_url = 'https://example.atlassian.net/wiki'
 
 For a Confluence Server instance, an example URL configuration, if the
 instance's REST API is ``https://intranet-wiki.example.com/rest/api/`` or
@@ -66,21 +66,23 @@ follows:
 
 .. code-block:: python
 
-    confluence_server_url = 'https://intranet-wiki.example.com'
-
+   confluence_server_url = 'https://intranet-wiki.example.com'
 
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The username value used to authenticate with the Confluence instance. If using
 Confluence Cloud, this value will most likely be the account's E-mail address.
-If using Confluence server, this value will most likely be the username value.
+If using Confluence instance, this value will most likely be the username value.
 
 .. code-block:: python
 
-    confluence_server_user = 'myawesomeuser@example.com'
-        (or)
-    confluence_server_user = 'myawesomeuser'
+   confluence_server_user = 'myawesomeuser@example.com'
+       (or)
+   confluence_server_user = 'myawesomeuser'
+
+.. |confluence_space_name| replace:: ``confluence_space_name``
+.. _confluence_space_name:
 
 confluence_space_name
 ~~~~~~~~~~~~~~~~~~~~~
@@ -89,8 +91,10 @@ Key of the space in Confluence to be used to publish generated documents to.
 
 .. code-block:: python
 
-    confluence_space_name = 'MyAwesomeSpace'
+   confluence_space_name = 'MyAwesomeSpace'
 
+Note that the space name can be case-sensitive in most (if not all) versions of
+Confluence.
 
 general configuration
 ---------------------
@@ -104,7 +108,7 @@ notifications are enabled with a value of ``False``.
 
 .. code-block:: python
 
-    confluence_disable_notifications = True
+   confluence_disable_notifications = True
 
 confluence_header_file
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -116,7 +120,7 @@ For example:
 
 .. code-block:: python
 
-    confluence_header_file = 'assets/header.tpl'
+   confluence_header_file = 'assets/header.tpl'
 
 confluence_footer_file
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -128,7 +132,10 @@ For example:
 
 .. code-block:: python
 
-    confluence_footer_file = 'assets/footer.tpl'
+   confluence_footer_file = 'assets/footer.tpl'
+
+.. |confluence_master_homepage| replace:: ``confluence_master_homepage``
+.. _confluence_master_homepage:
 
 confluence_master_homepage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -139,7 +146,7 @@ the master_doc_ configuration is ignored with a value of ``False``.
 
 .. code-block:: python
 
-    confluence_master_homepage = False
+   confluence_master_homepage = False
 
 confluence_max_doc_depth
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +160,7 @@ depth is disabled with a value of ``None``.
 
 .. code-block:: python
 
-    confluence_max_doc_depth = 2
+   confluence_max_doc_depth = 2
 
 confluence_page_hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -166,17 +173,20 @@ markups. By default, the hierarchy mode is disabled with a value of ``False``.
 
 .. code-block:: python
 
-    confluence_page_hierarchy = False
+   confluence_page_hierarchy = False
 
 Note that even if hierarchy mode is enabled, the configured master_doc_ page and
 other published pages that are not defined in the complete toctree_, these
 documents will still be published based off the configured (or unconfigured)
-``confluence_parent_page`` setting.
+|confluence_parent_page|_ setting.
+
+.. |confluence_parent_page| replace:: ``confluence_parent_page``
+.. _confluence_parent_page:
 
 confluence_parent_page
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The root page found inside the configured space (``confluence_space_name``)
+The root page found inside the configured space (|confluence_space_name|_)
 where published pages will be a descendant of. The parent page value is used
 to match with the title of an existing page. If this option is not provided,
 pages will be published to the root of the configured space. If the parent page
@@ -186,10 +196,13 @@ page:
 
 .. code-block:: python
 
-    confluence_parent_page = 'MyAwesomeDocs'
+   confluence_parent_page = 'MyAwesomeDocs'
 
-If a parent page is not set, consider using the ``confluence_master_homepage``
-option as well.
+If a parent page is not set, consider using the |confluence_master_homepage|_
+option as well. Note that the page's name can be case-sensitive in most
+(if not all) versions of Confluence.
+
+.. _confluence_publish_prefix:
 
 confluence_publish_prefix
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -207,27 +220,30 @@ An example publish prefix is as follows:
 
 .. code-block:: python
 
-    confluence_publish_prefix = 'prefix-'
+   confluence_publish_prefix = 'prefix-'
+
+.. |confluence_purge| replace:: ``confluence_purge``
+.. _confluence_purge:
 
 confluence_purge
 ~~~~~~~~~~~~~~~~
 
 .. warning::
 
-    Publishing individual/subset of documents with this option may lead to
-    unexpected results.
+   Publishing individual/subset of documents with this option may lead to
+   unexpected results.
 
 A boolean value to whether or not purge legacy pages detected in a space or
 parent page. By default, this value is set to ``False`` to indicate that no
 pages will be removed. If this configuration is set to ``True``, detected pages
 in Confluence that do not match the set of published documents will be
-automatically removed. If the option ``confluence_parent_page`` is set, only
+automatically removed. If the option |confluence_parent_page|_ is set, only
 pages which are a descendant of the configured parent page can be removed;
-elsewise, all pages in the configured space could be removed.
+otherwise, all pages in the configured space could be removed.
 
 .. code-block:: python
 
-    confluence_purge = False
+   confluence_purge = False
 
 While this capability is useful for updating a series of pages, it may lead to
 unexpected results when attempting to publish a single-page update. The purge
@@ -241,30 +257,36 @@ confluence_purge_from_master
 
 A boolean value to which indicates that any purging attempt should be done from
 the root of a published master_doc_ page (instead of a configured parent page;
-i.e. ``confluence_parent_page``). In specific publishing scenarios, a user may
+i.e. |confluence_parent_page|_). In specific publishing scenarios, a user may
 wish to publish multiple documentation sets based off a single parent/container
 page. To prevent any purging between multiple documentation sets, this option
 can be set to ``True``. When generating legacy pages to be removed, this
 extension will only attempt to populate legacy pages based off the children of
-the master_doc_ page. This option still requires ``confluence_purge`` to be set
+the master_doc_ page. This option still requires |confluence_purge|_ to be set
 to ``True`` before taking effect.
 
 .. code-block:: python
 
-    confluence_purge_from_master = False
+   confluence_purge_from_master = False
 
 advanced configuration - processing
 -----------------------------------
+
+.. |confluence_file_suffix| replace:: ``confluence_file_suffix``
+.. _confluence_file_suffix:
 
 confluence_file_suffix
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The file name suffix to use for all generated files. By default, all generated
-files will use the extension ``.conf`` (see ``confluence_file_transform``).
+files will use the extension ``.conf`` (see |confluence_file_transform|_).
 
 .. code-block:: python
 
-    confluence_file_suffix = '.conf'
+   confluence_file_suffix = '.conf'
+
+.. |confluence_file_transform| replace:: ``confluence_file_transform``
+.. _confluence_file_transform:
 
 confluence_file_transform
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -272,10 +294,7 @@ confluence_file_transform
 A function to override the translation of a document name to a filename. The
 provided function is used to perform translations for both Sphinx's
 get_outdated_docs_ and write_doc_ methods. The default translation will be the
-combination of "``docname`` + ``confluence_file_suffix``".
-
-.. _get_outdated_docs: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
-.. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
+combination of "``docname`` + |confluence_file_suffix|_".
 
 confluence_lang_transform
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,24 +306,27 @@ default translation accepts `Pygments documented language types`_ to
 
 .. code-block:: python
 
-    def my_language_translation(lang):
-        return 'default'
+   def my_language_translation(lang):
+       return 'default'
 
-    confluence_lang_transform = my_language_translation
+   confluence_lang_transform = my_language_translation
 
-.. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
-.. _Pygments documented language types: http://pygments.org/docs/lexers/
+.. |confluence_link_suffix| replace:: ``confluence_link_suffix``
+.. _confluence_link_suffix:
 
 confluence_link_suffix
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The suffix name to use for for generated links to files. By default, all
-generated links will use the value defined by ``confluence_file_suffix`` (see
-``confluence_link_transform``).
+generated links will use the value defined by |confluence_file_suffix|_ (see
+|confluence_link_transform|_).
 
 .. code-block:: python
 
-    confluence_link_suffix = '.conf'
+   confluence_link_suffix = '.conf'
+
+.. |confluence_link_transform| replace:: ``confluence_link_transform``
+.. _confluence_link_transform:
 
 confluence_link_transform
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,9 +334,7 @@ confluence_link_transform
 A function to override the translation of a document name to a (partial) URI.
 The provided function is used to perform translations for both Sphinx's
 get_relative_uri_ method. The default translation will be the combination of
-"``docname`` + ``confluence_link_suffix``".
-
-.. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+"``docname`` + |confluence_link_suffix|_".
 
 confluence_remove_title
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -328,7 +348,7 @@ option is enabled with a value of ``True``.
 
 .. code-block:: python
 
-    confluence_remove_title = True
+   confluence_remove_title = True
 
 advanced configuration - publishing
 -----------------------------------
@@ -336,41 +356,54 @@ advanced configuration - publishing
 confluence_ca_cert
 ~~~~~~~~~~~~~~~~~~
 
-Provide a CA certificate to use for server cert authentication. Can either be a
-file or a path. If you are using the rest interface, refer to the `Requests CA
-docs`_ for information on what is supported. If you are using the XML-RPC
-interface, refer to the `SSL CA docs`_. By default, verification is turned on
-and can be turned off with the ``confluence_disable_ssl_validation`` config
-option. If it is turned off, this option is ignored.
+Provide a CA certificate to use for server certificate authentication. The value
+for this option can either be a file of a certificate or a path pointing to an
+OpenSSL-prepared directory. If configured to use REST API (default), refer to
+the `Requests SSL Cert Verification`_  documentation (``verify``) for
+information. If configured to use the XML-RPC API, refer to Python's
+`TLS/SSL wrapper for socket object`_ (``cafile`` or ``capath``) for more
+information. If server verification is explicitly disabled (see
+|confluence_disable_ssl_validation|_), this option is ignored. By default, this
+option is ignored with a value of ``None``.
 
 .. code-block:: python
 
-    confluence_ca_cert = os.path.join('path', 'to', 'ca.crt')
+   confluence_ca_cert = 'ca.crt'
+
+.. |confluence_client_cert| replace:: ``confluence_client_cert``
+.. _confluence_client_cert:
 
 confluence_client_cert
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Provide a client certificate to use for two-way TLS/SSL authentication. Can
-either be a single file (containing the private key and the certificate) or
-as a tuple of both file's paths. If the certificate is encrypted, you
-will be prompted for a password during the publishing step.
+Provide a client certificate to use for two-way TLS/SSL authentication. The
+value for this option can either be a file (containing a certificate and private
+key) or as a tuple where both certificate and private keys are explicitly
+provided. If a private key is protected with a passphrase, a user publishing a
+documentation set will be prompted for a password (see also
+|confluence_client_cert_pass|_). By default, this option is ignored with a value
+of ``None``.
 
 .. code-block:: python
 
-    confluence_client_cert = os.path.join('path', 'to', 'cert_and_key.pem')
-    # or
-    confluence_client_cert = ('client.cert', 'client.key')
+   confluence_client_cert = 'cert_and_key.pem'
+   # or
+   confluence_client_cert = ('client.cert', 'client.key')
+
+.. |confluence_client_cert_pass| replace:: ``confluence_client_cert_pass``
+.. _confluence_client_cert_pass:
 
 confluence_client_cert_pass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Provide a password for the ``confluence_client_cert``. This prevents a prompt
-from requesting your client certificate password. If your client certificate
-is unencrypted, this value will be ignored.
+Provide a passphrase for |confluence_client_cert|_. This prevents a user from
+being prompted to enter a passphrase for a private key when publishing. If a
+configured private key is not protected by a passphrase, this value will be
+ignored. By default, this option is ignored with a value of ``None``.
 
 .. code-block:: python
 
-    confluence_client_cert_pass = 'password'
+   confluence_client_cert_pass = 'passphrase'
 
 confluence_disable_autogen_title
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -386,10 +419,15 @@ option can be set to ``True``. By default, this option is set to ``False``.
 
 .. code-block:: python
 
-    confluence_disable_autogen_title = True
+   confluence_disable_autogen_title = True
 
 confluence_disable_rest
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   It is not recommended to use this option with a value of ``True`` as the
+   XML-RPC API has been deprecated by Atlassian. Only use if required.
 
 A boolean value to explicitly disable any REST API calls. This extension has the
 ability to publish using either Confluence's REST or XML-RPC API calls. When
@@ -400,17 +438,27 @@ XML-RPC instead. By default, this option is set to ``False``.
 
 .. code-block:: python
 
-    confluence_disable_rest = False
+   confluence_disable_rest = False
+
+.. |confluence_disable_ssl_validation| replace::
+   ``confluence_disable_ssl_validation``
+.. _confluence_disable_ssl_validation:
 
 confluence_disable_ssl_validation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A boolean value to explicitly disable verification of server SSL certificates when
-making a publish request. By default, this option is set to ``False``.
+.. warning::
+
+   It is not recommended to use this option.
+
+A boolean value to explicitly disable verification of server SSL certificates
+when making a publish request. By default, this option is set to ``False``.
 
 .. code-block:: python
 
-    confluence_disable_ssl_validation = False
+   confluence_disable_ssl_validation = False
+
+.. _confluence_disable_xmlrpc:
 
 confluence_disable_xmlrpc
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -424,31 +472,33 @@ default, this option is set to ``False``.
 
 .. code-block:: python
 
-    confluence_disable_xmlrpc = False
+   confluence_disable_xmlrpc = False
 
 confluence_parent_page_id_check
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The page identifier check for ``confluence_parent_page``. By providing an
+The page identifier check for |confluence_parent_page|_. By providing an
 identifier of the parent page, both the parent page's name and identifier must
-match before this extension will publish any content to a Confluence server.
+match before this extension will publish any content to a Confluence instance.
 This serves as a sanity-check configuration for the cautious.
 
 .. code-block:: python
 
-    confluence_parent_page_id_check = 1
+   confluence_parent_page_id_check = 1
 
 confluence_proxy
 ~~~~~~~~~~~~~~~~
 
-Provide the proxy needed to be used to interact with the Confluence server over
-the network. At this time, the proxy configuration only applies to XML-RPC calls
-(REST calls use the Requests_ library which will use system-defined proxy
+Provide the proxy needed to be used to interact with the Confluence instance
+over the network. At this time, the proxy configuration only applies to XML-RPC
+calls (REST calls use the Requests_ library which will use system-defined proxy
 configuration).
 
 .. code-block:: python
 
-    confluence_proxy = 'myawesomeproxy:8080'
+   confluence_proxy = 'myawesomeproxy:8080'
+
+.. _confluence_timeout:
 
 confluence_timeout
 ~~~~~~~~~~~~~~~~~~
@@ -456,19 +506,25 @@ confluence_timeout
 Force a timeout (in seconds) for network interaction. The timeout used by this
 extension is not explicitly configured (i.e. managed by Requests_ and other
 implementations). By default, assume that any network interaction will not
-timeout. Since the target Confluence server is most likely to be found on an
+timeout. Since the target Confluence instance is most likely to be found on an
 external server, is it recommended to explicitly configure a timeout value based
 on the environment being used. For example, to configure a timeout of ten
 seconds, the following can be used:
 
 .. code-block:: python
 
-    confluence_timeout = 10
+   confluence_timeout = 10
 
+.. references ------------------------------------------------------------------
 
+.. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
+.. _Pygments documented language types: http://pygments.org/docs/lexers/
+.. _Requests SSL Cert Verification: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
+.. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
+.. _get_outdated_docs: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
+.. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
-.. _Requests CA docs: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
-.. _SSL CA docs: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+.. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc

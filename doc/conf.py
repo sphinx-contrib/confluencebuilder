@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Sphinx Confluence Builder'
-copyright = '2017. Anthony Shaw and contributors'
+copyright = '2018. Anthony Shaw and contributors'
 author = 'Anthony Shaw and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -61,7 +61,7 @@ release = ''
 
 # reStructuredText string included at the end of every source
 rst_epilog = """
-.. |supported_confluence_ver| replace:: 5.9+
+.. |supported_confluence_ver| replace:: 6.0+
 .. |supported_python_ver| replace:: 2.7 or 3.4+
 """
 

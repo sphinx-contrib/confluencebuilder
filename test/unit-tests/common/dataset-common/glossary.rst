@@ -1,28 +1,24 @@
 :orphan:
 
-glossary test
--------------
-
-This section contains references to the :term:`something` and :term:`else`
-glossary entries.
-
-It also contains the multiple references :term:`multiple` and :term:`entries`
-to a single glossary entry plus the :term:`nowhere` that is a mistake and
-references a non-existent glossary entry.
-
-They should be converted to references.
+.. http://www.sphinx-doc.org/en/stable/markup/para.html#glossary
 
 glossary
 --------
 
 .. glossary::
 
-   something
-      Don't care what this is, providing it exists.
+   glossary 1
+        content
 
-   else
-      And this must too.
+   glossary 2
+   glossary 3
+        content
 
-   multiple
-   entries
-      For a single glossary entry.
+        - content one
+        - content two
+
+:term:`glossary 1`
+
+:term:`glossary 2`
+
+:term:`glossary 3`

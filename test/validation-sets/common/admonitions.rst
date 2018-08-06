@@ -1,20 +1,13 @@
-.. reStructuredText Admonitions documentation:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions
-
-   Sphinx Paragraph-level markup documentation:
-   http://www.sphinx-doc.org/en/stable/markup/para.html
-
-   Confluence - Info, Tip, Note, and Warning Macros
-   https://confluence.atlassian.com/doc/info-tip-note-and-warning-macros-51872369.html
-
 admonitions
 ===========
 
-This page shows the usage of the default admonitions set.
+This page shows the usage of the `reStructuredText's admonitions`_ set.
+Admonitions are translated to respective `Confluence's informative macros`_
+(info, tip, etc.).
 
 .. attention::
 
-   This is a "attention" block message.
+   This is an "attention" block message.
 
 .. caution::
 
@@ -26,7 +19,7 @@ This page shows the usage of the default admonitions set.
 
 .. error::
 
-   This is a "error" block message.
+   This is an "error" block message.
 
 .. hint::
 
@@ -47,3 +40,6 @@ This page shows the usage of the default admonitions set.
 .. warning::
 
    This is a "warning" block message.
+
+.. _Confluence's informative macros: https://confluence.atlassian.com/doc/info-tip-note-and-warning-macros-51872369.html
+.. _reStructuredText's admonitions: http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions

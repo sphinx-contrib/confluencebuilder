@@ -16,19 +16,19 @@ Atlassian Confluence Builder for Sphinx
     :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-Sphinx_ extension to build Confluence Wiki markup formatted files and optionally
+Sphinx_ extension to build Confluence storage format files and optionally
 publish them to a Confluence instance.
 
 Requirements
 ============
 
 * Python_ 2.7 or 3.4+
-* Requests_
-* Sphinx_ 1.0+
+* Requests_ 2.14.0+
+* Sphinx_ 1.6.3+
 
 If publishing:
 
-* Confluence_ Cloud or Server 5.9+
+* Confluence_ Cloud or Server 6.0+
 
 Installing
 ==========
@@ -95,7 +95,7 @@ The set of example documents used to assist in validation/testing can be found
 here:
 
  | Atlassian Confluence Builder for Sphinx - Validation Set
- | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/tree/master/test/validation-set
+ | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/tree/master/test/validation-sets
 
 The active and older versions of published validation documents can be found
 here:
@@ -106,19 +106,10 @@ here:
 Supported Markup
 ================
 
-* Bulleted Lists
-* Citations
-* Code Blocks
-* Definitions
-* Enumerated Lists
-* Footnotes
-* Headings
-* Hyperlinks
-* Indentations
-* Inline Blocks/Literals
-* Paragraphs
-* Tables
-* TOC Tree
+For a complete list of supported markup, consult the following:
+
+ | Atlassian Confluence Builder for Sphinx - Markup
+ | http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/markup.html
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/

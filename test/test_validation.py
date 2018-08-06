@@ -83,11 +83,42 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
         cls.config['confluence_parent_page'] = cls.test_key
 
+    def test_autodocs(self):
+        config = dict(self.config)
+        config['extensions'].append('sphinx.ext.autodoc')
+
+        dataset = os.path.join(self.datasets, 'autodocs')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-autodocs')
+        sys.path.insert(0, os.path.join(dataset, 'src'))
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
+        sys.path.pop(0)
+
     def test_common(self):
         config = dict(self.config)
 
         dataset = os.path.join(self.datasets, 'common')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-common')
+
+        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
+        app.build(force_all=True)
+
+    def test_common_macro_restricted(self):
+        config = dict(self.config)
+
+        dataset = os.path.join(self.datasets, 'common')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-common-nm')
+
+        config['confluence_adv_restricted_macros'] = [
+            'anchor',
+            'children',
+            'code',
+            'info',
+        ]
+        config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
+        config['confluence_publish_prefix'] += 'nomacro-'
 
         app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
         app.build(force_all=True)

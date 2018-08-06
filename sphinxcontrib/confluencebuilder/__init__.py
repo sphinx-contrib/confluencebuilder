@@ -104,13 +104,7 @@ def setup(app):
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
     """List of extension-provided macros restricted for use."""
     app.add_config_value('confluence_adv_restricted_macros', [], False)
-    """Enforce reStructuredText strict line breaks."""
-    app.add_config_value('confluence_adv_strict_line_breaks', None, False)
     """Enablement of tracing processed data."""
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
-
-    """(experimental - undocumented)"""
-    """Support experimental indentation support."""
-    app.add_config_value('confluence_experimental_indentation', True, True)

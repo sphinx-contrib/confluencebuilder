@@ -1,14 +1,11 @@
-:orphan:
-
-.. Sphinx Paragraph-level markup documentation:
-   http://www.sphinx-doc.org/en/stable/markup/para.html
-
 paragraph-level markup
 ======================
 
-A series of paragraph-level markup examples.
+The following contains a series of `paragraph-level markup`_ examples (``note``
+and ``warning`` directives are covered in :doc:`admonitions <admonitions>`.
 
-Example of version modification markup:
+First, the following shows an example of version modification-related markup
+(``versionadded``, ``versionchanged`` and ``deprecated``):
 
 .. versionadded:: 2.5
    The *spam* parameter.
@@ -19,7 +16,7 @@ Example of version modification markup:
 .. deprecated:: 3.1
    Use :func:`spam` instead.
 
-Example of see also markup:
+Sphinx also defines a ``seealso`` markup:
 
 .. seealso::
    Module `other`
@@ -32,3 +29,4 @@ Example of see also markup:
 
 The above paragraph heading is hidden from the table of contents.
 
+.. _paragraph-level markup: http://www.sphinx-doc.org/en/stable/markup/para.html

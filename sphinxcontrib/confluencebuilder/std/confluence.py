@@ -17,6 +17,16 @@ confluence trailing bind path for xml-rpc api
 API_XMLRPC_BIND_PATH = 'rpc/xmlrpc'
 
 """
+confluence default (paragraph) indent offset (in pixels)
+"""
+INDENT = 30
+
+"""
+confluence default first-child masked margin offset (in pixels)
+"""
+FCMMO = 10
+
+"""
 sphinx literal to confluence language map
 
 Provides a map of Sphinx literal language values to respective and supported*

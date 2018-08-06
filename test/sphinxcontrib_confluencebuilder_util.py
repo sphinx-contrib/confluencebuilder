@@ -29,7 +29,7 @@ class ConfluenceTestUtil:
     default_sphinx_status = None
 
     @staticmethod
-    def assertExpectedWithOutput(test, name, expected, output):
+    def assertExpectedWithOutput(test, name, expected, output, tpn=None):
         """
         compare two files for a unit test that should match
 
@@ -38,18 +38,22 @@ class ConfluenceTestUtil:
         to read each file's contents and compare to ensure they match. On
         failure, the file differences will be output.
         """
-        filename = name + '.conf'
-        expected_path = os.path.join(expected, filename)
-        test_path = os.path.join(output, filename)
+        if not tpn:
+            tpn = name
+        expected_path = os.path.join(expected, name + '.conf')
+        test_path = os.path.join(output, tpn + '.conf')
         test.assertTrue(os.path.exists(expected_path),
             'missing expected file: {}'.format(expected_path))
         test.assertTrue(os.path.exists(test_path),
             'missing output file: {}'.format(test_path))
 
+        def relaxed_data(f):
+            return [o.strip() + '\n' for o in f.readlines()]
+
         with io.open(expected_path, encoding='utf8') as expected_file:
             with io.open(test_path, encoding='utf8') as test_file:
-                expected_data = expected_file.readlines()
-                test_data = test_file.readlines()
+                expected_data = relaxed_data(expected_file)
+                test_data = relaxed_data(test_file)
                 diff = difflib.unified_diff(
                     expected_data, test_data, lineterm='')
                 diff_hdr = 'expected and generated documents mismatch\n' \

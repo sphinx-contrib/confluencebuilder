@@ -47,14 +47,21 @@ def main():
 
     # register tests
     if target_unit_test_name_pattern:
-        target_unit_test = find_test(unit_tests, target_unit_test_name_pattern)
-        if not target_unit_test:
+        target_unit_tests = find_tests(unit_tests, target_unit_test_name_pattern)
+        if not target_unit_tests:
             print('ERROR: unable to find test with pattern: '
                 '{}'.format(target_unit_test_name_pattern))
             sys.exit(1)
 
-        print('running specific test: {}'.format(target_unit_test.id()))
-        suite.addTest(target_unit_test)
+        print('')
+        print('running specific test(s) (total: {})'.format(
+            len(target_unit_tests)))
+        for target_unit_test in target_unit_tests:
+            print(' {}'.format(target_unit_test.id()))
+        print('')
+        sys.stdout.flush()
+
+        suite.addTests(target_unit_tests)
     else:
         suite.addTests(unit_tests)
 
@@ -62,23 +69,25 @@ def main():
     runner = unittest.TextTestRunner(verbosity=DEFAULT_VERBOSITY)
     return 0 if runner.run(suite).wasSuccessful() else 1
 
-def find_test(entity, pattern):
+def find_tests(entity, pattern):
     """
     search for a unit test with a matching wildcard pattern
 
     Looks for the first 'unittest.case.TestCase' instance where its identifier
     matches the provided wildcard pattern.
     """
+    found_tests = []
+
     if isinstance(entity, unittest.case.TestCase):
         if fnmatch.fnmatch(entity.id(), '*{}*'.format(pattern)):
-            return entity
+            return [entity]
     elif isinstance(entity, unittest.TestSuite):
         for subentity in entity:
-            found = find_test(subentity, pattern)
+            found = find_tests(subentity, pattern)
             if found:
-                return found
+                found_tests.extend(found)
 
-    return None
+    return found_tests
 
 if __name__ == "__main__":
     sys.exit(main())

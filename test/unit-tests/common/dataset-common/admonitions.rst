@@ -1,42 +1,42 @@
 :orphan:
 
-Admonition Test
----------------
-
 .. http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions
+
+admonitions
+-----------
 
 .. attention::
 
-   attention message
+   attention
 
 .. caution::
 
-   caution message
+   caution
 
 .. danger::
 
-   danger message
+   danger
 
 .. error::
 
-   error message
+   error
 
 .. hint::
 
-   hint message
+   hint
 
 .. important::
 
-   important message
+   important
 
 .. note::
 
-   note message
+   note
 
 .. tip::
 
-   tip message
+   tip
 
 .. warning::
 
-   warning message
+   warning
