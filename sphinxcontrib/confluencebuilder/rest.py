@@ -209,7 +209,7 @@ class Rest:
         err += "URL: " + self.url + API_REST_BIND_PATH + "\n"
         err += "API: " + key + "\n"
         try:
-            err += 'MSG: {}'.format(rsp.json()['message'])
-        except ValueError:
-            err += 'MSG: <not-or-invalid-json>'
+            err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
+        except TypeError:
+            err += 'DATA: <not-or-invalid-json>'
         return err
