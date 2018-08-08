@@ -24,6 +24,13 @@ inline links within a single paragraph.
    /home
    /index
 
+Hyperlinks should also attempt to maintain support for inline markup where
+possible. For example, |this example link|_ should be bolded.
+
+.. _this example link: http://www.example.com
+
+.. |this example link| replace:: **this example link**
+
 hyperlinks
 ----------
 
