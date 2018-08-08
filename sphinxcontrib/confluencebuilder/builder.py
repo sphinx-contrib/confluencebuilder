@@ -15,11 +15,13 @@ from .util import ConfluenceUtil
 from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
+from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, SEP
 import io
+import sys
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -69,6 +71,16 @@ class ConfluenceBuilder(Builder):
     def init(self, suppress_conf_check=False):
         if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
+
+        if self.config.confluence_ask_password:
+            print('(request to accept password from interactive session)')
+            print(' Instance: ' + self.config.confluence_server_url)
+            print('     User: ' + self.config.confluence_server_user)
+            sys.stdout.write(' Password: ')
+            sys.stdout.flush()
+            self.config.confluence_server_pass = getpass('')
+            if not self.config.confluence_server_pass:
+                raise ConfluenceConfigurationError('no password provided')
 
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self.app.verbosity
