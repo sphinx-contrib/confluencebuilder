@@ -26,7 +26,7 @@ def main():
     suite  = unittest.TestSuite()
 
     # toggle verbose mode (if provided)
-    if '-v' in sys.argv:
+    if '--verbose' in sys.argv or '-V' in sys.argv:
         ConfluenceTestUtil.enableVerbose()
 
     # discover unit tests
