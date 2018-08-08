@@ -52,3 +52,13 @@ sub-section
 section :ref:`my-reference-label2`.
 
 :ref:`internal anchor <my-reference-label1>`.
+
+.. escaped check --- > should be escaped ---------------------------------------
+
+`> <https://example.com/>`_
+
+.. inline markup should work inside (most) references --------------------------
+
+.. |a link| replace:: **a bolded link**
+
+|a link|_

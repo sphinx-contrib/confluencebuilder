@@ -57,6 +57,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.nl = '\n'
         self._building_footnotes = False
         self._quote_level = 0
+        self._reference_context = []
         self._section_level = 1
         self._thead_context = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
@@ -750,6 +751,9 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------
 
     def visit_reference(self, node):
+        # nested references should never happen
+        assert(not self._reference_context)
+
         if 'iscurrent' in node:
             pass
         elif ((not 'internal' in node or not node['internal'])
@@ -767,21 +771,13 @@ class ConfluenceTranslator(BaseTranslator):
             self._visit_reference_intern_id(node)
         elif 'refuri' in node:
             self._visit_reference_intern_uri(node)
-        raise nodes.SkipNode
 
     def _visit_reference_extern(self, node):
-        if 'name' in node:
-            name = node['name']
-        else:
-            name = node.astext()
         uri = node['refuri']
-
-        name = self._escape_sf(name)
         uri = self._escape_sf(uri)
 
         self.body.append(self._start_tag(node, 'a', **{'href': uri}))
-        self.body.append(name)
-        self.body.append(self._end_tag(node, suffix=''))
+        self._reference_context.append(self._end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
         anchor = ''.join(node['refid'].split())
@@ -812,16 +808,16 @@ class ConfluenceTranslator(BaseTranslator):
 
         if anchor_value:
             # build link to internal anchor (on the same page)
+            #  Note: plain-text-link body cannot have inline markup; content
+            #        will be added into body already and skip-children should be
+            #        invoked for this use case.
             self.body.append(self._start_ac_link(node, anchor_value))
-            self.body.append(self._start_ac_plain_text_link_body_macro(node))
-            self.body.append(self._escape_cdata(node.astext()))
-            self.body.append(self._end_ac_plain_text_link_body_macro(node))
-            self.body.append(self._end_ac_link(node))
-        else:
-            self.body.append(self._escape_sf(node.astext()))
+            self.body.append(self._start_ac_link_body(node))
+            self._reference_context.append(self._end_ac_link_body(node))
+            self._reference_context.append(self._end_ac_link(node))
 
         if is_citation:
-            self.body.append(self._end_tag(node, suffix='')) # sup
+            self._reference_context.append(self._end_tag(node, suffix='')) # sup
 
     def _visit_reference_intern_uri(self, node):
         docname = posixpath.normpath(
@@ -832,12 +828,9 @@ class ConfluenceTranslator(BaseTranslator):
                 'missing title (in {}): {}'.format(self.docname, docname))
 
             # build a broken link
-            name = node.astext()
-            name = self._escape_sf(name)
             self.body.append(self._start_tag(node, 'a', **{'href': '#'}))
-            self.body.append(name)
-            self.body.append(self._end_tag(node, suffix=''))
-            raise nodes.SkipNode
+            self._reference_context.append(self._end_tag(node, suffix=''))
+            return
 
         anchor_value = None
         if '#' in node['refuri']:
@@ -854,14 +847,20 @@ class ConfluenceTranslator(BaseTranslator):
                 anchor_value = anchor
 
         # build link to internal anchor (on another page)
+        #  Note: plain-text-link body cannot have inline markup; add the node
+        #        contents into body and skip processing the rest of this node.
         doctitle = self._escape_sf(doctitle)
         self.body.append(self._start_ac_link(node, anchor_value))
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
-        self.body.append(self._start_ac_plain_text_link_body_macro(node))
-        self.body.append(self._escape_cdata(node.astext()))
-        self.body.append(self._end_ac_plain_text_link_body_macro(node))
-        self.body.append(self._end_ac_link(node))
+        self.body.append(self._start_ac_link_body(node))
+        self._reference_context.append(self._end_ac_link_body(node))
+        self._reference_context.append(self._end_ac_link(node))
+
+    def depart_reference(self, node):
+        for element in self._reference_context:
+            self.body.append(element)
+        self._reference_context = []
 
     def visit_target(self, node):
         if 'refid' in node and self.can_anchor:
@@ -1512,6 +1511,39 @@ class ConfluenceTranslator(BaseTranslator):
         finalizes a storage format macro element. This method should* be used to
         help close a _start_ac_macro call (*with the exception of when
         _start_ac_macro is invoked with empty=True).
+
+        Args:
+            node: the node processing the macro
+
+        Returns:
+            the content
+        """
+        return self._end_tag(node)
+
+    def _start_ac_link_body(self, node):
+        """
+        generates a confluence link-body start tag
+
+        A helper used to return content to be appended to a document which
+        initializes the start of a storage format link-body element. The
+        'ac:link-body' element will be initialized. This method may use provided
+        `node` to tweak the final content.
+
+        Args:
+            node: the node processing the macro
+
+        Returns:
+            the content
+        """
+        return self._start_tag(node, 'ac:link-body')
+
+    def _end_ac_link_body(self, node):
+        """
+        generates confluence link-body end tag content for a node
+
+        A helper used to return content to be appended to a document which
+        finalizes a storage format link-body element. This method should be used
+        to help close a _start_ac_link_body call.
 
         Args:
             node: the node processing the macro
