@@ -27,6 +27,13 @@ def setup(app):
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
 
+    # Images defined by data uri schemas can be resolved into generated images
+    # after a document's post-transformation stage. After a document's doctree
+    # has been resolved, re-check for any images that have been translated.
+    def assetsDocTreeResolvedHook(app, doctree, docname):
+        app.builder.assets.processDocument(doctree, docname, True)
+    app.connect('doctree-resolved', assetsDocTreeResolvedHook)
+
     """(essential)"""
     """Enablement of publishing."""
     app.add_config_value('confluence_publish', None, False)

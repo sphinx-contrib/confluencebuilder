@@ -7,6 +7,7 @@
 from .std.confluence import INVALID_CHARS
 from .logger import ConfluenceLogger
 from .util import ConfluenceUtil
+from docutils import nodes
 from sphinx import addnodes
 from sphinx.util.images import guess_mimetype
 import os
@@ -143,6 +144,19 @@ class ConfluenceAssetManager:
             docname: the document's name
             standalone (optional): ignore hash mappings (defaults to False)
         """
+        image_nodes = doctree.traverse(nodes.image)
+        for node in image_nodes:
+            uri = node['uri']
+            if not uri.startswith('data:') and uri.find('://') == -1:
+                key, path = self.interpretAssetKeyPath(node)
+                if key not in self.key2asset:
+                    hash = ConfluenceUtil.hashAsset(path)
+                    type = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
+                else:
+                    hash = self.key2asset[key].hash
+                    type = self.key2asset[key].type
+                self._handleEntry(key, path, type, hash, docname, standalone)
+
         file_nodes = doctree.traverse(addnodes.download_reference)
         for node in file_nodes:
             target = node['reftarget']
@@ -214,7 +228,21 @@ class ConfluenceAssetManager:
             the key and absolute path
         """
         key = None
-        if isinstance(node, addnodes.download_reference):
+        if isinstance(node, nodes.image):
+            # uri's will be relative to documentation root. Normalize for a key
+            # value to handle assets found in parent directories.
+            uri = node['uri']
+            uri = os.path.normpath(uri)
+            path = uri
+
+            # If this URI is found outside the relative path of the
+            # documentation set, grab the basename and add a prefix for
+            # (hopefully) a unique name.
+            if os.path.isabs(uri):
+                key = 'extern_{}'.format(os.path.basename(uri))
+            else:
+                key = uri
+        elif isinstance(node, addnodes.download_reference):
             # reftarget will be a reference to the asset with respect to the
             # document (refdoc) holding this reference. Use reftarget and refdoc
             # to find a proper key value (normalized to handle parent directory

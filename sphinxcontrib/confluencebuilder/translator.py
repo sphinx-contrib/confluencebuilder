@@ -56,6 +56,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.body = []
         self.context = []
         self.nl = '\n'
+        self.warn = document.reporter.warning
         self._building_footnotes = False
         self._quote_level = 0
         self._reference_context = []
@@ -1038,6 +1039,105 @@ class ConfluenceTranslator(BaseTranslator):
     visit_title_reference = visit_emphasis
     depart_title_reference = depart_emphasis
 
+    # -------------
+    # images markup
+    # -------------
+
+    def visit_caption(self, node):
+        attribs = {}
+        if 'align' in node.parent and node.parent['align'] == 'center':
+            attribs['style'] = 'text-align: center;'
+
+        self.body.append(self._start_tag(node, 'p', **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_caption(self, node):
+        self.body.append(self.context.pop()) # p
+
+    def visit_figure(self, node):
+        if self.can_admonition:
+            self.body.append(self._start_ac_macro(node, 'info'))
+            self.body.append(self._build_ac_parameter(node, 'icon', 'false'))
+            self.body.append(self._start_ac_rich_text_body_macro(node))
+            self.context.append(self._end_ac_rich_text_body_macro(node) +
+                self._end_ac_macro(node))
+        else:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+            self.body.append(self._start_tag(node, 'div'))
+            self.context.append(self._end_tag(node) + self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
+
+    def depart_figure(self, node):
+        self.body.append(self.context.pop()) # <dynamic>
+
+    def visit_image(self, node):
+        uri = node['uri']
+        uri = self._escape_sf(uri)
+
+        attribs = {}
+
+        alignment = None
+        if 'align' in node:
+            alignment = node['align']
+        elif isinstance(node.parent, nodes.figure) and 'align' in node.parent:
+            alignment = node.parent['align']
+
+        if alignment:
+            alignment = self._escape_sf(alignment)
+            attribs['ac:align'] = alignment
+            if alignment == 'right':
+                attribs['ac:style'] = 'float: right;'
+
+        if 'alt' in node:
+            alt = node['alt']
+            alt = self._escape_sf(alt)
+            attribs['ac:alt'] = alt
+
+        if 'height' in node:
+            self.warn('height value for image is unsupported in confluence')
+
+        if 'width' in node:
+            width = node['width']
+            attribs['ac:width'] = width
+
+            if not width.endswith('px'):
+                self.warn('unsupported unit type for confluence: ' + width)
+
+        if uri.find('://') != -1 or uri.startswith('data:'):
+            # an external or embedded image
+            #
+            # Note: it would be rare that embedded images will be detected at
+            #       this stage as Sphinx's post-transform processor would
+            #       translate these images into embedded images. Nonetheless an
+            #       embedded image is still stacked into Confluence image
+            #       entity (although, currently, some (if not all) Confluence
+            #       versions do not consider embedded images as valid URI values
+            #       so users might see a "broken images" block).
+            self.body.append(self._start_ac_image(node, **attribs))
+            self.body.append(self._start_tag(node, 'ri:url',
+                suffix=self.nl, empty=True, **{'ri:value': uri}))
+            self.body.append(self._end_ac_image(node))
+        else:
+            image_key, _ = self.assets.interpretAssetKeyPath(node)
+            hosting_docname = self.assets.asset2docname(image_key)
+            hosting_doctitle = ConfluenceState.title(hosting_docname)
+            hosting_doctitle = self._escape_sf(hosting_doctitle)
+
+            self.body.append(self._start_ac_image(node, **attribs))
+            self.body.append(self._start_ri_attachment(node, image_key))
+            if hosting_docname != self.docname:
+                self.body.append(self._start_tag(node, 'ri:page',
+                   suffix=self.nl, empty=True,
+                   **{'ri:content-title': hosting_doctitle}))
+            self.body.append(self._end_ri_attachment(node))
+            self.body.append(self._end_ac_image(node))
+
+        raise nodes.SkipNode
+
+    visit_legend = visit_paragraph
+    depart_legend = depart_paragraph
+
     # ------------------
     # sphinx -- download
     # ------------------
@@ -1270,9 +1370,6 @@ class ConfluenceTranslator(BaseTranslator):
     # docutils handling "to be completed" marked directives
     # -----------------------------------------------------
 
-    def visit_caption(self, node):
-        raise nodes.SkipNode
-
     def visit_citation_reference(self, node):
         raise nodes.SkipNode
 
@@ -1342,15 +1439,7 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_comment(self, node):
         raise nodes.SkipNode
 
-    def visit_figure(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
     def visit_hlist(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
-    def visit_image(self, node):
         # unsupported
         raise nodes.SkipNode
 
@@ -1488,6 +1577,39 @@ class ConfluenceTranslator(BaseTranslator):
         """
         return (self._start_tag(node, 'ac:parameter', **{'ac:name': name}) +
             value + self._end_tag(node))
+
+    def _start_ac_image(self, node, **kwargs):
+        """
+        generates a confluence image start tag
+
+        A helper used to return content to be appended to a document which
+        initializes the start of a storage format image element. The 'ac:image'
+        element will be initialized. This method may use provided `node` to
+        tweak the final content.
+
+        Args:
+            node: the node processing the image
+
+        Returns:
+            the content
+        """
+        return self._start_tag(node, 'ac:image', suffix=self.nl, **kwargs)
+
+    def _end_ac_image(self, node):
+        """
+        generates confluence image end tag content for a node
+
+        A helper used to return content to be appended to a document which
+        finalizes a storage format image element. This method should be used to
+        help close a _start_ac_image call.
+
+        Args:
+            node: the node processing the image
+
+        Returns:
+            the content
+        """
+        return self._end_tag(node, suffix='')
 
     def _start_ac_link(self, node, anchor=None):
         """
