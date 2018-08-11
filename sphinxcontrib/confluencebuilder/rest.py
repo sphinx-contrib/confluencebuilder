@@ -112,10 +112,22 @@ class Rest:
 
         return json_data
 
-    def post(self, key, data):
+    def post(self, key, data, files=None):
         restUrl = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            rsp = self.session.post(restUrl, json=data)
+            headers = {}
+
+            # Atlassian's documenation indicates to the security token check
+            # when publishing attachments [1][2]. If adding files, set a
+            # 'nocheck' value to the token.
+            #
+            # [1]: https://developer.atlassian.com/cloud/confluence/rest/#api-content-id-child-attachment-post
+            # [2]: https://developer.atlassian.com/server/jira/platform/form-token-handling/
+            if files:
+                headers['X-Atlassian-Token'] = 'nocheck'
+
+            rsp = self.session.post(
+                restUrl, json=data, files=files, headers=headers)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
