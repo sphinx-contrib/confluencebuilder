@@ -371,7 +371,8 @@ class ConfluenceBuilder(Builder):
 
             for docname in status_iterator(
                     self.publish_docnames, 'publishing... ',
-                    length=len(self.publish_docnames)):
+                    length=len(self.publish_docnames),
+                    verbosity=self.app.verbosity):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
