@@ -281,11 +281,23 @@ class ConfluencePublisher():
         find_legacy_pages(page_id, visited_pages)
         return visited_pages
 
-    def storePage(self, page_name, data, parent_id=None):
-        uploaded_page_id = None
+    def getPage(self, page_name):
+        """
+        get page information with the provided page name
 
-        if self.config.confluence_adv_trace_data:
-            ConfluenceLogger.trace('data', data)
+        Performs an API call to acquire known information about a specific page.
+        This call can returns both the page identifier (for convenience) and the
+        page object. If the page cannot be found, the returned tuple will
+        return ``None`` entries.
+
+        Args:
+            page_name: the page name
+
+        Returns:
+            the page id and page object
+        """
+        page = None
+        page_id = None
 
         if self.use_rest:
             rsp = self.rest_client.get('content', {
@@ -295,8 +307,31 @@ class ConfluencePublisher():
                 'status': 'current',
                 'expand': 'version'
                 })
+
+            if rsp['size'] != 0:
+                page = rsp['results'][0]
+                page_id = page['id']
+        else:
             try:
-                if rsp['size'] == 0:
+                page = self.xmlrpc.getPage(
+                    self.token, self.space_name, page_name)
+                page_id = page['id']
+            except xmlrpclib.Fault:
+                pass
+
+        return page_id, page
+
+    def storePage(self, page_name, data, parent_id=None):
+        uploaded_page_id = None
+
+        if self.config.confluence_adv_trace_data:
+            ConfluenceLogger.trace('data', data)
+
+        _, page = self.getPage(page_name)
+
+        if self.use_rest:
+            try:
+                if not page:
                     newPage = {
                         'type': 'page',
                         'title': page_name,
@@ -317,7 +352,6 @@ class ConfluencePublisher():
                     rsp = self.rest_client.post('content', newPage)
                     uploaded_page_id = rsp['id']
                 else:
-                    page = rsp['results'][0]
                     last_version = int(page['version']['number'])
                     updatePage = {
                         'id': page['id'],
@@ -368,10 +402,7 @@ class ConfluencePublisher():
                 )
         else:
             isNewPage = False
-            try:
-                page = self.xmlrpc.getPage(
-                    self.token, self.space_name, page_name)
-            except xmlrpclib.Fault:
+            if not page:
                 page = {
                     'title': page_name,
                     'space': self.space_name
