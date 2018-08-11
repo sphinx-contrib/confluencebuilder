@@ -5,7 +5,6 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
-from .compat import ConfluenceCompat
 from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
@@ -19,6 +18,7 @@ from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
 import io
 import sys
@@ -369,7 +369,7 @@ class ConfluenceBuilder(Builder):
             self.legacy_pages = None
             self.parent_id = self.publisher.getBasePageId()
 
-            for docname in ConfluenceCompat.status_iterator(self,
+            for docname in status_iterator(
                     self.publish_docnames, 'publishing... ',
                     length=len(self.publish_docnames)):
                 docfile = path.join(self.outdir, self.file_transform(docname))
