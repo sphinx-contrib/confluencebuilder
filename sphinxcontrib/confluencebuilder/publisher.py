@@ -281,6 +281,91 @@ class ConfluencePublisher():
         find_legacy_pages(page_id, visited_pages)
         return visited_pages
 
+    def getAttachment(self, page_id, name):
+        """
+        get attachment information with the provided page id and name
+
+        Performs an API call to acquire known information about a specific
+        attachment. This call can returns both the attachment identifier (for
+        convenience) and the attachment object. If the attachment cannot be
+        found, the returned tuple will return ``None`` entries.
+
+        Args:
+            page_id: the page identifier
+            name: the attachment name
+
+        Returns:
+            the attachment id and attachment object
+        """
+        attachment = None
+        attachment_id = None
+
+        if self.use_rest:
+            url = 'content/{}/child/attachment'.format(page_id)
+            rsp = self.rest_client.get(url, {
+                #'type': 'attachment',
+                'filename': name,
+                })
+
+            if rsp['size'] != 0:
+                attachment = rsp['results'][0]
+                attachment_id = attachment['id']
+        else:
+            try:
+                MOST_RECENT_VERSION = '0'
+                attachment = self.xmlrpc.getAttachment(
+                    self.token, page_id, name, MOST_RECENT_VERSION)
+                attachment_id = attachment['id']
+            except xmlrpclib.Fault:
+                pass
+
+        return attachment_id, attachment
+
+    def getAttachments(self, page_id):
+        """
+        get all known attachments for a provided page id
+
+        Query a specific page identifier for all attachments being held by the
+        page.
+
+        Args:
+            page_id: the page identifier
+
+        Returns:
+            dictionary of attachment identifiers to their respective names
+        """
+        attachment_info = {}
+
+        if self.use_rest:
+            url = 'content/{}/child/attachment'.format(page_id)
+            search_fields = {}
+
+            # Configure a larger limit value than the default (no provided
+            # limit defaults to 25). This should reduce the number of queries
+            # needed to fetch a complete attachment set (for larger sets).
+            search_fields['limit'] = 1000;
+
+            rsp = self.rest_client.get(url, search_fields)
+            idx = 0
+            while rsp['size'] > 0:
+                for result in rsp['results']:
+                    attachment_info[result['id']] = result['title']
+
+                if rsp['size'] != rsp['limit']:
+                    break
+
+                idx += int(rsp['limit'])
+                sub_search_fields = dict(search_fields)
+                sub_search_fields['start'] = idx;
+                rsp = self.rest_client.get(url, sub_search_fields)
+        else:
+            rsp = self.xmlrpc.getAttachments(self.token, page_id)
+
+            for attachment in rsp:
+                attachment_info[attachment['id']] = attachment['fileName']
+
+        return attachment_info
+
     def getPage(self, page_name):
         """
         get page information with the provided page name
@@ -320,6 +405,107 @@ class ConfluencePublisher():
                 pass
 
         return page_id, page
+
+    def storeAttachment(self, page_id, name, data, mimetype, hash, force=False):
+        """
+        request to store an attachment on a provided page
+
+        Makes a request to a Confluence instance to either publish a new
+        attachment or update an existing attachment. If the attachment's hash
+        matches the tracked hash (via the comment field) of an existing
+        attachment, this call will assume the attachment is already published
+        and will return (unless forced).
+
+        Args:
+            page_id: the identifier of the page to attach to
+            name: the attachment name
+            data: the attachment data
+            mimetype: the mime type of this attachment
+            hash: the hash of the attachment
+            force (optional): force publishing if exists (defaults to False)
+
+        Returns:
+            the attachment identifier
+        """
+        HASH_KEY = 'SCB_KEY'
+        uploaded_attachment_id = None
+
+        _, attachment = self.getAttachment(page_id, name)
+
+        # check if attachment (of same hash) is already published to this page
+        comment = None
+        if self.use_rest:
+            if attachment and 'metadata' in attachment:
+                metadata = attachment['metadata']
+                if 'comment' in metadata:
+                    comment = metadata['comment']
+        else:
+            if attachment and 'comment' in attachment:
+                comment = attachment['comment']
+
+        if not force and comment:
+            parts = comment.split(HASH_KEY + ':')
+            if len(parts) > 1:
+                tracked_hash = parts[1]
+                if hash == tracked_hash:
+                    ConfluenceLogger.verbose('attachment ({}) is already '
+                        'published to document with same hash'.format(name))
+                    return attachment['id']
+
+        # publish attachment
+        if self.use_rest:
+            try:
+                data = {
+                    'comment': '{}:{}'.format(HASH_KEY, hash),
+                    'file': (name, data, mimetype),
+                }
+
+                if not self.notify:
+                    data['minorEdit'] = True
+
+                if not attachment:
+                    url = 'content/{}/child/attachment'.format(page_id)
+                    rsp = self.rest_client.post(url, None, files=data)
+                    uploaded_attachment_id = rsp['results'][0]['id']
+                else:
+                    url = 'content/{}/child/attachment/{}/data'.format(
+                        page_id, attachment['id'])
+                    rsp = self.rest_client.post(url, None, files=data)
+                    uploaded_attachment_id = rsp['id']
+
+            except ConfluencePermissionError:
+                raise ConfluencePermissionError(
+                    """Publish user does not have permission to add an """
+                    """attachment to the configured space."""
+                )
+        else:
+            isNewAttachment = False
+            if not attachment:
+                attachment = {
+                    'contentType': mimetype,
+                    'pageId': page_id,
+                    'fileName': name,
+                }
+                isNewAttachment = True
+
+            attachment['comment'] = '{}:{}'.format(HASH_KEY, hash)
+
+            if not self.notify:
+                attachment['minorEdit'] = True
+
+            try:
+                uploaded_attachment = self.xmlrpc.addAttachment(
+                    self.token, page_id, attachment, data)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('NotPermittedException') != -1:
+                    raise ConfluencePermissionError(
+                        """Publish user does not have permission to add an """
+                        """attachment to the configured space."""
+                    )
+                raise
+            uploaded_attachment_id = uploaded_attachment['id']
+
+        return uploaded_attachment_id
 
     def storePage(self, page_name, data, parent_id=None):
         uploaded_page_id = None
@@ -435,6 +621,37 @@ class ConfluencePublisher():
             uploaded_page_id = uploaded_page['id']
 
         return uploaded_page_id
+
+    def removeAttachment(self, page_id, id, name):
+        """
+        request to remove an attachment
+
+        Makes a request to a Confluence instance to remove an existing
+        attachment.
+
+        Args:
+            page_id: the identifier of the page to remove from (XML-RPC only)
+            id: the attachment (REST only)
+            name: name of the attachment (XML-RPC only)
+        """
+        if self.use_rest:
+            try:
+                self.rest_client.delete('content', id)
+            except ConfluencePermissionError:
+                raise ConfluencePermissionError(
+                    """Publish user does not have permission to delete """
+                    """from the configured space."""
+                )
+        else:
+            try:
+                self.xmlrpc.removeAttachment(self.token, page_id, name)
+            except xmlrpclib.Fault as ex:
+                if ex.faultString.find('NotPermittedException') != -1:
+                    raise ConfluencePermissionError(
+                        """Publish user does not have permission to delete """
+                        """from the configured space."""
+                    )
+                raise
 
     def removePage(self, page_id):
         if self.use_rest:

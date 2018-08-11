@@ -5,6 +5,7 @@
 """
 
 from __future__ import (print_function, unicode_literals, absolute_import)
+from .assets import ConfluenceAssetManager
 from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
@@ -82,6 +83,7 @@ class ConfluenceBuilder(Builder):
             if not self.config.confluence_server_pass:
                 raise ConfluenceConfigurationError('no password provided')
 
+        self.assets = ConfluenceAssetManager(self.config.master_doc, self.env)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
@@ -226,6 +228,16 @@ class ConfluenceBuilder(Builder):
                             id = '{}#{}'.format(docname, id)
                             ConfluenceState.registerTarget(id, target)
 
+        # Scan for assets that may exist in the documents to be published. This
+        # will find most if not all assets in the documentation set. The
+        # exception is assets which may be finalized during a document's post
+        # transformation stage (e.x. embedded images are converted into real
+        # images in Sphinx, which is then provided to a translator). Embedded
+        # images are detected during an 'doctree-resolved' hook (see __init__).
+        ConfluenceLogger.info('scanning for assets... ', nonl=0)
+        self.assets.process(ordered_docnames)
+        ConfluenceLogger.info('done\n')
+
         ConfluenceState.titleConflictCheck()
 
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
@@ -342,9 +354,52 @@ class ConfluenceBuilder(Builder):
             else:
                 self.legacy_pages = self.publisher.getDescendants(baseid)
 
+            # only populate a list of possible legacy assets when a user is
+            # configured to check or push assets to the target space
+            asset_override = conf.confluence_asset_override
+            if asset_override is None or asset_override:
+                for legacy_page in self.legacy_pages:
+                    attachments = self.publisher.getAttachments(legacy_page)
+                    self.legacy_assets[legacy_page] = attachments
+
         if conf.confluence_purge:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
+
+    def publish_asset(self, key, docname, output, type, hash):
+        conf = self.config
+        publisher = self.publisher
+
+        title = ConfluenceState.title(docname)
+        page_id = ConfluenceState.uploadId(docname)
+
+        if not page_id:
+            # A page identifier may not be tracked in cases where only a subset
+            # of documents are published and the target page an asset will be
+            # published to was not part of the request. In this case, ask the
+            # Confluence instance what the target page's identifier is.
+            page_id, _ = publisher.getPage(title)
+            if page_id:
+                ConfluenceState.registerUploadId(docname, page_id)
+            else:
+                ConfluenceLogger.warn('cannot publish asset since publishing '
+                    'point cannot be found ({}): {}'.format(key, docname))
+                return
+
+        if conf.confluence_asset_override is None:
+            # "automatic" management -- check if already published; if not, push
+            attachment_id = publisher.storeAttachment(
+                page_id, key, output, type, hash)
+        elif conf.confluence_asset_override:
+            # forced publishing of the asset
+            attachment_id = publisher.storeAttachment(
+                page_id, key, output, type, hash, force=True)
+
+        if attachment_id and conf.confluence_purge:
+            if page_id in self.legacy_assets:
+                legacy_asset_info = self.legacy_assets[page_id]
+                if attachment_id in legacy_asset_info:
+                    legacy_asset_info.pop(attachment_id, None)
 
     def publish_finalize(self):
         if self.master_doc_page_id:
@@ -354,23 +409,39 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
     def publish_purge(self):
-        if self.config.confluence_purge is True and self.legacy_pages:
-            n = len(self.legacy_pages)
-            ConfluenceLogger.info(
-                'removing legacy pages... (total: {}) '.format(n), nonl=0)
-            for legacy_page_id in self.legacy_pages:
-               self.publisher.removePage(legacy_page_id)
-            ConfluenceLogger.info('done\n')
+        if self.config.confluence_purge:
+            if self.legacy_pages:
+                n = len(self.legacy_pages)
+                ConfluenceLogger.info(
+                    'removing legacy pages... (total: {}) '.format(n), nonl=0)
+                for legacy_page_id in self.legacy_pages:
+                    self.publisher.removePage(legacy_page_id)
+                    # remove any pending assets to remove from the page (as they
+                    # are already been removed)
+                    self.legacy_assets.pop(legacy_page_id, None)
+                ConfluenceLogger.info('done\n')
+
+            n = 0
+            for page_id, legacy_asset_info in self.legacy_assets.items():
+                n += len(legacy_asset_info.keys())
+            if n > 0:
+                ConfluenceLogger.info(
+                    'removing legacy assets... (total: {}) '.format(n), nonl=0)
+                for page_id, legacy_asset_info in self.legacy_assets.items():
+                    for id, name in legacy_asset_info.items():
+                        self.publisher.removeAttachment(page_id, id, name)
+                ConfluenceLogger.info('done\n')
 
     def finish(self):
         self.env.get_doctree = self._original_get_doctree
 
         if self.publish:
+            self.legacy_assets = {}
             self.legacy_pages = None
             self.parent_id = self.publisher.getBasePageId()
 
             for docname in status_iterator(
-                    self.publish_docnames, 'publishing... ',
+                    self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
                     verbosity=self.app.verbosity):
                 docfile = path.join(self.outdir, self.file_transform(docname))
@@ -383,6 +454,23 @@ class ConfluenceBuilder(Builder):
                 except (IOError, OSError) as err:
                     ConfluenceLogger.warn("error reading file %s: "
                         "%s" % (docfile, err))
+
+            def to_asset_name(asset):
+                return asset[0]
+
+            assets = self.assets.build()
+            for asset in status_iterator(assets, 'publishing assets... ',
+                    length=len(assets), verbosity=self.app.verbosity,
+                    stringify_func=to_asset_name):
+                key, absfile, type, hash, docname = asset
+
+                try:
+                    with open(absfile, 'rb') as file:
+                        output = file.read()
+                        self.publish_asset(key, docname, output, type, hash)
+                except (IOError, OSError) as err:
+                    ConfluenceLogger.warn("error reading asset %s: "
+                        "%s" % (key, err))
 
             self.publish_purge()
             self.publish_finalize()

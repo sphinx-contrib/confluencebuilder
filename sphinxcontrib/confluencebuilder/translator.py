@@ -52,6 +52,7 @@ class ConfluenceTranslator(BaseTranslator):
         else:
             self.docparent = ''
 
+        self.assets = builder.assets
         self.body = []
         self.context = []
         self.nl = '\n'
@@ -74,6 +75,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.can_anchor = not 'anchor' in restricted_macros
         self.can_children = not 'children' in restricted_macros
         self.can_code = not 'code' in restricted_macros
+        self.can_viewfile = not 'viewfile' in restricted_macros
 
         if (config.confluence_page_hierarchy
                 and config.confluence_adv_hierarchy_child_macro
@@ -1037,6 +1039,57 @@ class ConfluenceTranslator(BaseTranslator):
     depart_title_reference = depart_emphasis
 
     # ------------------
+    # sphinx -- download
+    # ------------------
+
+    def visit_download_reference(self, node):
+        uri = node['reftarget']
+        uri = self._escape_sf(uri)
+
+        if uri.find('://') != -1:
+            self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+            self.context.append(self._end_tag(node, suffix=''))
+        else:
+            file_key, _ = self.assets.interpretAssetKeyPath(node)
+            hosting_docname = self.assets.asset2docname(file_key)
+            hosting_doctitle = ConfluenceState.title(hosting_docname)
+            hosting_doctitle = self._escape_sf(hosting_doctitle)
+
+            # If the view-file macro is permitted along with it not being an
+            # explicitly referenced asset.
+            if self.can_viewfile and (not 'refexplicit' in node or
+                    not node['refexplicit']):
+                # a 'view-file' macro takes an attachment tag as a body; build
+                # the tags in an interim list
+                attachment = []
+                attachment.append(self._start_ri_attachment(node, file_key))
+                if hosting_docname != self.docname:
+                    attachment.append(self._start_tag(node, 'ri:page',
+                       suffix=self.nl, empty=True,
+                       **{'ri:content-title': hosting_doctitle}))
+                attachment.append(self._end_ri_attachment(node))
+
+                self.body.append(self._start_ac_macro(node, 'view-file'))
+                self.body.append(self._build_ac_parameter(
+                    node, 'name', ''.join(attachment)))
+                self.body.append(self._end_ac_macro(node))
+            else:
+                self.body.append(self._start_ac_link(node))
+                self.body.append(self._start_ri_attachment(node, file_key))
+                if hosting_docname != self.docname:
+                    self.body.append(self._start_tag(node, 'ri:page',
+                       suffix=self.nl, empty=True,
+                       **{'ri:content-title': hosting_doctitle}))
+                self.body.append(self._end_ri_attachment(node))
+                self.body.append(
+                    self._start_ac_plain_text_link_body_macro(node))
+                self.body.append(self._escape_cdata(node.astext()))
+                self.body.append(self._end_ac_plain_text_link_body_macro(node))
+                self.body.append(self._end_ac_link(node))
+
+        raise nodes.SkipNode
+
+    # ------------------
     # sphinx -- glossary
     # ------------------
 
@@ -1288,16 +1341,6 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_comment(self, node):
         raise nodes.SkipNode
-
-    def visit_download_reference(self, node):
-        uri = node['reftarget']
-        uri = self._escape_sf(uri)
-
-        self.body.append(self._start_tag(node, 'a', **{'href': uri}))
-        self.context.append(self._end_tag(node, suffix=''))
-
-    def depart_download_reference(self, node):
-        self.body.append(self.context.pop()) # a
 
     def visit_figure(self, node):
         # unsupported
@@ -1653,6 +1696,41 @@ class ConfluenceTranslator(BaseTranslator):
             the content
         """
         return ']]>' + self._end_tag(node)
+
+    def _start_ri_attachment(self, node, filename):
+        """
+        generates a confluence attachment start tag
+
+        A helper used to return content to be appended to a document which
+        initializes the start of a storage format attachment element. The
+        'ri:attachment' element will be initialized. This method may use
+        provided `node` to tweak the final content.
+
+        Args:
+            node: the node processing the attachment
+            filename: the filename of the attachment
+
+        Returns:
+            the content
+        """
+        return self._start_tag(node, 'ri:attachment',
+            **{'ri:filename': filename})
+
+    def _end_ri_attachment(self, node):
+        """
+        generates confluence attachment end tag content for a node
+
+        A helper used to return content to be appended to a document which
+        finalizes a storage format attachment element. This method should be
+        used to help close a _start_ri_attachment call.
+
+        Args:
+            node: the node processing the attachment
+
+        Returns:
+            the content
+        """
+        return self._end_tag(node)
 
     def _escape_cdata(self, data):
         """
