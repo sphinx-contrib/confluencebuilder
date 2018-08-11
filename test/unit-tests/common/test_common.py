@@ -52,8 +52,14 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_deprecated(self):
         self._assertExpectedWithOutput('deprecated')
 
+    def test_download(self):
+        self._assertExpectedWithOutput('download')
+
     def test_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
+
+    def test_figure(self):
+        self._assertExpectedWithOutput('figure')
 
     def test_footnotes(self):
         self._assertExpectedWithOutput('footnotes')
@@ -61,6 +67,9 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_glossary(self):
         self._assertExpectedWithOutput('glossary')
         self._assertExpectedWithOutput('glossary-ref')
+
+    def test_image(self):
+        self._assertExpectedWithOutput('image')
 
     def test_lists(self):
         self._assertExpectedWithOutput('lists')
