@@ -22,6 +22,11 @@ confluence default (paragraph) indent offset (in pixels)
 INDENT = 30
 
 """
+confluence restricted filename (attachment) characters
+"""
+INVALID_CHARS = ['\\', '/', '"', ':', '?', '*', '|', '<', '>']
+
+"""
 confluence default first-child masked margin offset (in pixels)
 """
 FCMMO = 10
