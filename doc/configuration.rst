@@ -403,6 +403,25 @@ Note that some shell sessions may not be able to pull the password value
 properly from the user. For example, Cygwin/MinGW may not be able to accept a
 password unless invoked with ``winpty``.
 
+confluence_asset_override
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides an override for asset publishing to allow a user publishing to either
+force re-publishing assets or disable asset publishing. This extension will
+attempt to publish assets (images, downloads, etc.) to pages via Confluence's
+attachment feature. Attachments are assigned a comment value with a hash value
+of a published asset. If another publishing event occurs, the hash value is
+checked before attempting to re-publish an asset. In unique scenarios, are use
+may wish to override this ability. By configuring this option to ``True``, this
+extension will always publish asset files (whether or not an attachment with a
+matching hash exists). By configuring this option to ``False``, no assets will
+be published by this extension. By default, this automatic asset publishing
+occurs with a value of ``None``.
+
+.. code-block:: python
+
+   confluence_asset_override = None
+
 confluence_ca_cert
 ~~~~~~~~~~~~~~~~~~
 
