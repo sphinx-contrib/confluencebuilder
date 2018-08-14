@@ -1,4 +1,11 @@
 
+@media screen {
+    /* allow the use of the entire viewport width */
+    .wy-nav-content {
+        max-width: none;
+    }
+}
+ 
 .wy-table-responsive table td {
     /* allow table contents to wrap (corrects bullet list issues) */
     white-space: normal !important;
