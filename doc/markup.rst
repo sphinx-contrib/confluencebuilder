@@ -43,7 +43,7 @@ enumerated lists       supported     - `reStructuredText Enumerated Lists`_
 epigraph               supported     - `reStructuredText Epigraph`_
 footnotes              supported     - `reStructuredText Footnotes`_
 glossary               supported     - `Sphinx Glossary`_
-highlights             prospect      - `reStructuredText Highlights`_
+highlights             supported     - `reStructuredText Highlights`_
 hlist                  unsupported   - `Sphinx Horizontal List`_
 hyperlink targets      supported     - `reStructuredText Hyperlink Targets`_
 images                 prospect      - `reStructuredText Images`_
@@ -56,7 +56,7 @@ literal blocks         supported     - `reStructuredText Literal Blocks`_
 math                   unplanned     - `reStructuredText Math`_
 option lists           supported     - `reStructuredText Option Lists`_
 production list        supported     - `Sphinx Production List`_
-pull-quote             prospect      - `reStructuredText Pull-Quote`_
+pull-quote             supported     - `reStructuredText Pull-Quote`_
 raw                    supported     - `reStructuredText Raw Data Pass-Through`_
 rubric                 supported     - `Sphinx Rubric`_
 sections               supported     - `reStructuredText Sections`_
