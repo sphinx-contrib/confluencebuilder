@@ -477,6 +477,18 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------------------
 
     def visit_literal_block(self, node):
+        is_parsed_literal = node.rawsource != node.astext()
+        if is_parsed_literal:
+            self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                **{'class': 'panel pdl'}))
+            self.context.append(self._end_tag(node))
+            self.body.append(self._start_tag(node, 'pre',
+                **{'class': 'panelContent'}))
+            self.context.append(self._end_tag(node))
+            self.body.append(self._start_tag(node, 'code'))
+            self.context.append(self._end_tag(node))
+            return
+
         lang = node.get('language', self._highlight).lower()
         if self.builder.lang_transform:
             lang = self.builder.lang_transform(lang)
@@ -515,6 +527,12 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
         raise nodes.SkipNode
+
+    def depart_literal_block(self, node):
+        # note: depart is only invoked for parsed-literals
+        self.body.append(self.context.pop()) # code
+        self.body.append(self.context.pop()) # pre
+        self.body.append(self.context.pop()) # div
 
     def visit_highlightlang(self, node):
         self._highlight = node.get('lang', DEFAULT_HIGHLIGHT_STYLE)
