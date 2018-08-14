@@ -74,6 +74,9 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_option_lists(self):
         self._assertExpectedWithOutput('option-lists')
 
+    def test_parsed_literal(self):
+        self._assertExpectedWithOutput('parsed-literal')
+
     def test_production_list(self):
         self._assertExpectedWithOutput('production-list')
 
