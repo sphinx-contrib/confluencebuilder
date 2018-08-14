@@ -54,6 +54,7 @@ list table             supported     - `reStructuredText List Table`_
                                        ``widths``.
 literal blocks         supported     - `reStructuredText Literal Blocks`_
 math                   unplanned     - `reStructuredText Math`_
+parsed literal block   supported     - `reStructuredText Parsed Literal Block`_
 option lists           supported     - `reStructuredText Option Lists`_
 production list        supported     - `Sphinx Production List`_
 pull-quote             prospect      - `reStructuredText Pull-Quote`_
@@ -107,6 +108,7 @@ expected or brings up another concern, feel free to bring up an issue:
 .. _reStructuredText Literal Blocks: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#literal-blocks
 .. _reStructuredText Math: http://docutils.sourceforge.net/docs/ref/rst/directives.html#math
 .. _reStructuredText Option Lists: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#option-lists
+.. _reStructuredText Parsed Literal Block: http://docutils.sourceforge.net/docs/ref/rst/directives.html#parsed-literal-block
 .. _reStructuredText Pull-Quote: http://docutils.sourceforge.net/docs/ref/rst/directives.html#pull-quote
 .. _reStructuredText Raw Data Pass-Through: http://docutils.sourceforge.net/docs/ref/rst/directives.html#raw-data-pass-through
 .. _reStructuredText Sections: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#sections
