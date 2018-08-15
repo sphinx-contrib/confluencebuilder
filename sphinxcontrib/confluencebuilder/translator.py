@@ -592,7 +592,7 @@ class ConfluenceTranslator(BaseTranslator):
             # for now.
             firstchild_margin = True
             next_child = node.traverse(include_self=False)
-            if isinstance(next_child[0], nodes.block_quote):
+            if next_child and isinstance(next_child[0], nodes.block_quote):
                 firstchild_margin = False
 
             if firstchild_margin:
