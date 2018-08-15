@@ -53,6 +53,7 @@ list table             supported     - `reStructuredText List Table`_
                                        ``header-rows``, ``stub-columns`` and
                                        ``widths``.
 literal blocks         supported     - `reStructuredText Literal Blocks`_
+manpage                supported     - `Sphinx Manpage`_
 math                   unplanned     - `reStructuredText Math`_
 option lists           supported     - `reStructuredText Option Lists`_
 production list        supported     - `Sphinx Production List`_
@@ -120,6 +121,7 @@ expected or brings up another concern, feel free to bring up an issue:
 .. _Sphinx Paragraph-level Markup: http://www.sphinx-doc.org/en/stable/markup/para.html
 .. _Sphinx Production List: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-productionlist
 .. _Sphinx Horizontal List: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-hlist
+.. _Sphinx Manpage: http://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-manpage
 .. _Sphinx Rubric: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-rubric
 .. _Sphinx TOC Tree Markup: http://www.sphinx-doc.org/en/stable/markup/toctree.html
 .. _Sphinx Version Added: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-versionadded
