@@ -56,6 +56,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.context = []
         self.nl = '\n'
         self._building_footnotes = False
+        self._manpage_url = config.manpages_url
         self._quote_level = 0
         self._reference_context = []
         self._section_level = 1
@@ -1050,6 +1051,21 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_index(self, node):
         # glossary index information is not needed; skipped
         raise nodes.SkipNode
+
+    # -----------------
+    # sphinx -- manpage
+    # -----------------
+
+    def visit_manpage(self, node):
+        self.visit_emphasis(node)
+        if self._manpage_url:
+            node['refuri'] = self._manpage_url.format(**node.attributes)
+            self._visit_reference_extern(node)
+
+    def depart_manpage(self, node):
+        if self._manpage_url:
+            self.depart_reference(node)
+        self.depart_emphasis(node)
 
     # -------------------------
     # sphinx -- production list
