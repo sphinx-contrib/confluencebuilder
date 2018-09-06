@@ -31,7 +31,8 @@ def setup(app):
     # after a document's post-transformation stage. After a document's doctree
     # has been resolved, re-check for any images that have been translated.
     def assetsDocTreeResolvedHook(app, doctree, docname):
-        app.builder.assets.processDocument(doctree, docname, True)
+        if isinstance(app.builder, ConfluenceBuilder):
+            app.builder.assets.processDocument(doctree, docname, True)
     app.connect('doctree-resolved', assetsDocTreeResolvedHook)
 
     """(essential)"""
