@@ -821,7 +821,7 @@ class ConfluenceTranslator(BaseTranslator):
 
     def _visit_reference_intern_uri(self, node):
         docname = posixpath.normpath(
-            self.docparent + path.splitext(node['refuri'])[0])
+            self.docparent + path.splitext(node['refuri'].split('#')[0])[0])
         doctitle = ConfluenceState.title(docname)
         if not doctitle:
             ConfluenceLogger.warn('unable to build link to document due to '
