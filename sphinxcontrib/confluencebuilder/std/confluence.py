@@ -113,12 +113,16 @@ LITERAL2LANG_MAP = {
     'duby': 'ruby',
     'rb': 'ruby',
     'ruby': 'ruby',
+    # Sass
+    'sass': 'sass',
     # Scala
     'scala': 'scala',
     # SQL
     'sql': 'sql',
     # Visual Basic
     'vb': 'vb',
+    # YAML (Confluence Server >=6.7)
+    'yaml': 'yaml',
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.
     # To follow Sphinx's method of highlighting, use Confluence's 'python'
