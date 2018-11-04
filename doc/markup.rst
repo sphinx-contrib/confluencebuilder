@@ -37,6 +37,7 @@ compound paragraph     supported     - `reStructuredText Compound Paragraph`_
 container              prospect      - `reStructuredText Container`_
 definition lists       supported     - `reStructuredText Definition Lists`_
 deprecated             supported     - `Sphinx Deprecated`_
+download               supported     - `Sphinx Download`_
 enumerated lists       supported     - `reStructuredText Enumerated Lists`_
                                      - Only auto-enumerator lists (``#``) are
                                        supported.
@@ -46,7 +47,7 @@ glossary               supported     - `Sphinx Glossary`_
 highlights             prospect      - `reStructuredText Highlights`_
 hlist                  unsupported   - `Sphinx Horizontal List`_
 hyperlink targets      supported     - `reStructuredText Hyperlink Targets`_
-images                 prospect      - `reStructuredText Images`_
+images                 supported     - `reStructuredText Images`_
 list table             supported     - `reStructuredText List Table`_
                                      - Argument ``title`` not yet supported.
                                      - Options not supported: ``align``,
@@ -116,6 +117,7 @@ expected or brings up another concern, feel free to bring up an issue:
 .. _Sphinx Centered: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-centered
 .. _Sphinx Code Markup: http://www.sphinx-doc.org/en/stable/markup/code.html
 .. _Sphinx Deprecated: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-deprecated
+.. _Sphinx Download: http://www.sphinx-doc.org/en/stable/markup/inline.html#role-download
 .. _Sphinx Glossary: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-glossary
 .. _Sphinx Paragraph-level Markup: http://www.sphinx-doc.org/en/stable/markup/para.html
 .. _Sphinx Production List: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-productionlist

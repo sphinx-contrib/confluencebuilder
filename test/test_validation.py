@@ -116,6 +116,7 @@ class TestConfluenceValidation(unittest.TestCase):
             'children',
             'code',
             'info',
+            'viewfile',
         ]
         config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
         config['confluence_publish_prefix'] += 'nomacro-'
