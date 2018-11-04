@@ -63,4 +63,17 @@ doctest entries should display a code markup styled in Python:
 >>> print "This is a doctest block."
 This is a doctest block.
 
+Documentation may included `parsed literals`_. While parsed literals cannot take
+advantage of Confluence's code macros, it is important that the content is
+rendered with the document-defined inline markup:
+
+.. parsed-literal::
+
+   def main():
+       **print 'Hello, world!'**
+
+   if __name__ == '__main__':
+       main()
+
 .. _Sphinx's code markup: http://www.sphinx-doc.org/en/stable/markup/code.html
+.. _parsed literals: http://docutils.sourceforge.net/docs/ref/rst/directives.html#parsed-literal-block
