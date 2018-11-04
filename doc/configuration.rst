@@ -390,7 +390,7 @@ option is disabled with a value of ``False``.
 
 .. code-block:: python
 
-   confluence_remove_title = False
+   confluence_ask_password = False
 
 A user can request for a password prompt by invoking build event by passing the
 define through the command line:
