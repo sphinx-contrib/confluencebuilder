@@ -1222,6 +1222,22 @@ class ConfluenceTranslator(BaseTranslator):
         # glossary index information is not needed; skipped
         raise nodes.SkipNode
 
+    # --------------
+    # sphinx -- math
+    # --------------
+
+    def visit_math(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_displaymath(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
+    def visit_eqref(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
     # -------------------------
     # sphinx -- production list
     # -------------------------
