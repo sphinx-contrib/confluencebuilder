@@ -23,6 +23,7 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         self.doc_dir = doc_dir
 
     def test_code_blocks(self):
+        raise unittest.SkipTest('see issue #148')
         _.assertExpectedWithOutput(
             self, 'code_blocks', self.expected, self.doc_dir)
 
