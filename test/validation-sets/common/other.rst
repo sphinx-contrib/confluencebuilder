@@ -17,11 +17,25 @@ will be captured inside a Confluence quote block:
 
    -- Sherlock Holmes
 
-epigraph
---------
+epigraph, highlight and pull-quote
+----------------------------------
 
-reStructuredText's `epigraphs`_ should be captured inside a Confluence quote
-block:
+reStructuredText's `epigraphs`_, `highlights`_ and `pull-quotes`_ should be
+captured inside a Confluence quote block:
+
+.. epigraph::
+
+   No matter where you go, there you are.
+
+   -- Buckaroo Banzai
+
+.. highlights::
+
+   No matter where you go, there you are.
+
+   -- Buckaroo Banzai
+
+.. pull-quote::
 
    No matter where you go, there you are.
 
@@ -39,3 +53,5 @@ This is my content.
 .. _block quote: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#block-quotes
 .. _transitions: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#transitions
 .. _epigraphs: http://docutils.sourceforge.net/docs/ref/rst/directives.html#epigraph
+.. _highlights: http://docutils.sourceforge.net/docs/ref/rst/directives.html#highlights
+.. _pull-quotes: http://docutils.sourceforge.net/docs/ref/rst/directives.html#pull-quote

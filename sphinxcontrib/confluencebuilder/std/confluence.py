@@ -22,6 +22,11 @@ confluence default (paragraph) indent offset (in pixels)
 INDENT = 30
 
 """
+confluence restricted filename (attachment) characters
+"""
+INVALID_CHARS = ['\\', '/', '"', ':', '?', '*', '|', '<', '>']
+
+"""
 confluence default first-child masked margin offset (in pixels)
 """
 FCMMO = 10
@@ -113,12 +118,16 @@ LITERAL2LANG_MAP = {
     'duby': 'ruby',
     'rb': 'ruby',
     'ruby': 'ruby',
+    # Sass
+    'sass': 'sass',
     # Scala
     'scala': 'scala',
     # SQL
     'sql': 'sql',
     # Visual Basic
     'vb': 'vb',
+    # YAML (Confluence Server >=6.7)
+    'yaml': 'yaml',
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.
     # To follow Sphinx's method of highlighting, use Confluence's 'python'

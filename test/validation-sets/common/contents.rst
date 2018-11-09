@@ -9,6 +9,8 @@ The following is a Sphinx generated `table of contents`_:
    admonitions
    bibliographic
    code
+   download
+   images
    indentation
    lists
    markup

@@ -27,6 +27,14 @@ def setup(app):
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
 
+    # Images defined by data uri schemas can be resolved into generated images
+    # after a document's post-transformation stage. After a document's doctree
+    # has been resolved, re-check for any images that have been translated.
+    def assetsDocTreeResolvedHook(app, doctree, docname):
+        if isinstance(app.builder, ConfluenceBuilder):
+            app.builder.assets.processDocument(doctree, docname, True)
+    app.connect('doctree-resolved', assetsDocTreeResolvedHook)
+
     """(essential)"""
     """Enablement of publishing."""
     app.add_config_value('confluence_publish', None, False)
@@ -80,6 +88,9 @@ def setup(app):
     """(advanced-configuration - publishing)"""
     """Request for publish password to come from interactive session."""
     app.add_config_value('confluence_ask_password', False, False)
+    """File/path to Certificate Authority"""
+    """Tri-state asset handling (auto, force push or disable)."""
+    app.add_config_value('confluence_asset_override', None, False)
     """File/path to Certificate Authority"""
     app.add_config_value('confluence_ca_cert', None, False)
     """Path to client certificate to use for publishing"""

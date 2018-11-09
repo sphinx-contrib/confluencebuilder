@@ -6,6 +6,7 @@
 
 from .std.confluence import API_REST_BIND_PATH
 from .std.confluence import API_XMLRPC_BIND_PATH
+from hashlib import sha256
 
 class ConfluenceUtil:
     """
@@ -13,6 +14,31 @@ class ConfluenceUtil:
 
     This class is used to hold a series of utility methods.
     """
+
+    @staticmethod
+    def hashAsset(asset):
+        """
+        generate a hash of the provided asset
+
+        Calculate a hash for an asset file (e.x. an image file). When publishing
+        assets as attachments for a Confluence page, hashes can be used to check
+        if an attachment needs to be uploaded again.
+
+        Args:
+            asset: the asset (file)
+
+        Returns:
+            the hash
+        """
+        BLOCKSIZE = 65536
+        sha = sha256()
+        with open(asset, 'rb') as file:
+            buff = file.read(BLOCKSIZE)
+            while len(buff) > 0:
+                sha.update(buff)
+                buff = file.read(BLOCKSIZE)
+
+        return sha.hexdigest()
 
     @staticmethod
     def normalizeBaseUrl(url):
