@@ -5,10 +5,17 @@ master
 * block quotes with attribution are styled with confluence quotes
 * citations/footnotes now have back references
 * enumerated lists now support various styling types
+* fixed issues where table-of-contents may generate broken links
 * improved paragraph indentation
 * initial autodoc support
 * nested tables and spanning cells are now supported
+* provide option for a caller to request a password for publishing documents
 * storage format support (two-pass publishing no longer needed)
+* support for sass/yaml language types
+* support parsed literal content
+* support the download directive
+* support the image/figure directives
+* support the manpage role
 
 0.9.0 (2018-06-02)
 ==================
