@@ -16,6 +16,11 @@ Atlassian Confluence Builder for Sphinx
     :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. image:: https://img.shields.io/pypi/dm/sphinxcontrib-confluencebuilder.svg
+     :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder/
+     :alt: PyPI download month
+
+
 Sphinx_ extension to build Confluence storage format files and optionally
 publish them to a Confluence instance.
 
