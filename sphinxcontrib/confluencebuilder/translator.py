@@ -58,7 +58,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.nl = '\n'
         self.warn = document.reporter.warning
         self._building_footnotes = False
-        self._manpage_url = config.manpages_url
+        self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
         self._reference_context = []
         self._section_level = 1
