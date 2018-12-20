@@ -124,7 +124,7 @@ class ConfluenceBuilder(Builder):
         else:
             self.lang_transform = None
 
-        if self.config.confluence_publish and (self.config.confluence_publish.lower()
+        if self.config.confluence_publish and (str(self.config.confluence_publish).lower()
                                                not in ('0', 'false', 'n', 'no', 'off')):
             self.publish = True
             self.publisher.connect()
