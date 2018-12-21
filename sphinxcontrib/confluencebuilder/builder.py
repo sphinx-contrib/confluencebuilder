@@ -205,7 +205,9 @@ class ConfluenceBuilder(Builder):
                 continue
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
-                self.config.confluence_publish_prefix)
+                self.config.confluence_publish_prefix,
+                self.config.confluence_publish_postfix,
+                self.config.confluence_publish_numbered)
             self.publish_docnames.append(docname)
 
             toctrees = doctree.traverse(addnodes.toctree)

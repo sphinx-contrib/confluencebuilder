@@ -62,13 +62,17 @@ def setup(app):
     app.add_config_value('confluence_page_hierarchy', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
-    """Prefix to apply to published pages."""
+    """Prefix to apply to title of published pages."""
     app.add_config_value('confluence_publish_prefix', None, False)
+    """Postfix to apply to title of published pages."""
+    app.add_config_value('confluence_publish_postfix', None, False)
+    """Add running number to published pages (enforce order)."""
+    app.add_config_value('confluence_publish_numbered', 0, False)
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
     """Enablement of purging legacy child pages from a master page."""
     app.add_config_value('confluence_purge_from_master', None, False)
-    
+
     """(advanced-configuration - processing)"""
     """Filename suffix for generated files."""
     app.add_config_value('confluence_file_suffix', ".conf", False)

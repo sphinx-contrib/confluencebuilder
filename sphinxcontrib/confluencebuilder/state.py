@@ -29,6 +29,7 @@ class ConfluenceState:
     doc2title = {}
     doc2ttd = {}
     refid2target = {}
+    title_number = -1  # do not number the main document
 
     @staticmethod
     def registerParentDocname(docname, parent_docname):
@@ -66,7 +67,7 @@ class ConfluenceState:
         ConfluenceLogger.verbose("mapping %s to target: %s" % (refid, target))
 
     @staticmethod
-    def registerTitle(docname, title, prefix = None):
+    def registerTitle(docname, title, prefix=None, postfix=None, numbered=0):
         """
         register the title for the provided document name
 
@@ -80,13 +81,23 @@ class ConfluenceState:
         If a prefix value is provided, it will be added to the beginning of the
         provided title value.
         """
-        if prefix:
-            title = prefix + title
+        maxlen = CONFLUENCE_MAX_TITLE_LEN - len(prefix or '') - len(postfix or '')
+        if numbered:
+            maxlen -= numbered + 1
 
-        if len(title) > CONFLUENCE_MAX_TITLE_LEN:
-            title = title[0:CONFLUENCE_MAX_TITLE_LEN]
+        if len(title) > maxlen:
+            title = title[:maxlen]
             ConfluenceLogger.warn("document title has been trimmed due to "
                 "length: %s" % docname)
+
+        if prefix:
+            title = prefix + title
+        if postfix:
+            title += postfix
+        if numbered:
+            ConfluenceState.title_number += 1
+            if ConfluenceState.title_number > 0:
+                title = '{:{}d} {}'.format(ConfluenceState.title_number, '0' + str(numbered), title)
 
         ConfluenceState.doc2title[docname] = title
         ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
