@@ -299,14 +299,14 @@ class ConfluenceBuilder(Builder):
                 # generated title link.
                 if 'refid' in title_element:
                     for node in doctree.traverse(nodes.reference):
-                        if ('ids' in node
-                                and node['ids'][0] == title_element['refid']):
-                            def remove_until_has_children(node):
-                                parent = node.parent
-                                parent.remove(node)
-                                if not parent.children:
-                                    remove_until_has_children(parent)
-                            remove_until_has_children(node)
+                        if 'ids' in node and node['ids']:
+                            if node['ids'][0] == title_element['refid']:
+                                def remove_until_has_children(node):
+                                    parent = node.parent
+                                    parent.remove(node)
+                                    if not parent.children:
+                                        remove_until_has_children(parent)
+                                remove_until_has_children(node)
 
                 title_element.parent.remove(title_element)
 
