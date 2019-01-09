@@ -6,6 +6,7 @@
 
 from .builder import ConfluenceBuilder
 from .logger import ConfluenceLogger
+from .translator import ConfluenceTranslator
 from sphinx.writers.text import STDINDENT
 import argparse
 
@@ -26,6 +27,7 @@ def setup(app):
 
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
+    app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
