@@ -136,6 +136,11 @@ class ConfluenceBuilder(Builder):
         else:
             self.space_name = None
 
+        if self.config.confluence_doc_subset is not None:
+            self.doc_subset = set(self.config.confluence_doc_subset)
+        else:
+            self.doc_subset = None
+
     def get_outdated_docs(self):
         """
         Return an iterable of input files that are outdated.
@@ -244,7 +249,9 @@ class ConfluenceBuilder(Builder):
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
         omit = False
         max_depth = self.config.confluence_max_doc_depth
-        if max_depth is not None and depth > max_depth:
+        too_deep = max_depth is not None and depth > max_depth
+        skip = self.doc_subset and docname not in self.doc_subset
+        if too_deep or skip:
             omit = True
             self.omitted_docnames.append(docname)
 
@@ -410,7 +417,7 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
     def publish_purge(self):
-        if self.config.confluence_purge:
+        if self.config.confluence_purge and self.doc_subset is None:
             if self.legacy_pages:
                 n = len(self.legacy_pages)
                 ConfluenceLogger.info(
