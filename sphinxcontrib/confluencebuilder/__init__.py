@@ -86,6 +86,8 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
     """Remove a detected title from generated documents."""
     app.add_config_value('confluence_remove_title', True, False)
+    """Process this subset of docnames."""
+    app.add_config_value('confluence_doc_subset', None, False)
 
     """(advanced-configuration - publishing)"""
     """Request for publish password to come from interactive session."""

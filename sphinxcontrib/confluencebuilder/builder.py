@@ -70,7 +70,8 @@ class ConfluenceBuilder(Builder):
         ConfluenceState.reset()
 
     def init(self, suppress_conf_check=False):
-        if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
+        if not ConfluenceConfig.validate(self.config, self.env,
+                                         not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
 
         if self.config.confluence_ask_password:
