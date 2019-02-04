@@ -24,6 +24,7 @@ from sphinx.util.osutil import ensuredir, SEP
 import io
 import sys
 
+
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
 # This was fixed in Sphinx 1.2b.
@@ -49,9 +50,11 @@ def relative_uri(base, to):
         return '.' + SEP
     return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
 
+
 class ConfluenceBuilder(Builder):
     name = 'confluence'
     format = 'confluence'
+    allow_parallel = True
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
