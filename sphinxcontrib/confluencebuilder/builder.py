@@ -52,9 +52,9 @@ def relative_uri(base, to):
 
 
 class ConfluenceBuilder(Builder):
+    allow_parallel = True
     name = 'confluence'
     format = 'confluence'
-    allow_parallel = True
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
