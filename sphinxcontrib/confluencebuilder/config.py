@@ -64,11 +64,13 @@ string, etc.).
 """)
 
         if c.confluence_publish_subset:
-            if not isinstance(c.confluence_publish_subset, (tuple, list)):
+            if not (isinstance(c.confluence_publish_subset, (tuple, list, set))
+                    and all(isinstance(docname, str)
+                            for docname in c.confluence_publish_subset)):
                 errState = True
                 if log:
                     ConfluenceLogger.error(
-"""'confluence_publish_subset' should be a tuple or a list""")
+"""'confluence_publish_subset' should be a collection of strings""")
             else:
                 for docname in c.confluence_doc_subset:
                     if not any(os.path.isfile(os.path.join(env.srcdir,
