@@ -18,7 +18,7 @@ class ConfluenceConfig:
     """
 
     @staticmethod
-    def validate(c, env, log=True):
+    def validate(builder, log=True):
         """
         validate a provided configuration
 
@@ -27,6 +27,7 @@ class ConfluenceConfig:
         while returning False for a known bad configuration.
         """
         errState = False
+        c = builder.config
 
         if c.confluence_footer_file:
             if not os.path.isfile(c.confluence_footer_file):
@@ -73,7 +74,7 @@ string, etc.).
 """'confluence_publish_subset' should be a collection of strings""")
             else:
                 for docname in c.confluence_doc_subset:
-                    if not any(os.path.isfile(os.path.join(env.srcdir,
+                    if not any(os.path.isfile(os.path.join(builder.env.srcdir,
                                                            docname + suffix))
                                for suffix in c.source_suffix):
                         errState = True
