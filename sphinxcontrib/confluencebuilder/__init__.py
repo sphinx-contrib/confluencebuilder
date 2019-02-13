@@ -86,8 +86,6 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
     """Remove a detected title from generated documents."""
     app.add_config_value('confluence_remove_title', True, False)
-    """Process this subset of docnames."""
-    app.add_config_value('confluence_doc_subset', None, False)
 
     """(advanced-configuration - publishing)"""
     """Request for publish password to come from interactive session."""
@@ -115,6 +113,8 @@ def setup(app):
     app.add_config_value('confluence_proxy', None, False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
+    """Subset of document names to publish"""
+    app.add_config_value('confluence_publish_subset', None, False)
 
     """(advanced - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""

@@ -63,12 +63,12 @@ defined maximum document depth must be defined as an integer value (not a float,
 string, etc.).
 """)
 
-        if c.confluence_doc_subset:
-            if not isinstance(c.confluence_doc_subset, (tuple, list)):
+        if c.confluence_publish_subset:
+            if not isinstance(c.confluence_publish_subset, (tuple, list)):
                 errState = True
                 if log:
                     ConfluenceLogger.error(
-"""'confluence_doc_subset' should be a tuple or a list""")
+"""'confluence_publish_subset' should be a tuple or a list""")
             else:
                 for docname in c.confluence_doc_subset:
                     if not any(os.path.isfile(os.path.join(env.srcdir,
@@ -77,7 +77,7 @@ string, etc.).
                         errState = True
                         if log:
                             ConfluenceLogger.error(
-"""Document '%s' in 'confluence_doc_subset' not found""", docname)
+"""Document '%s' in 'confluence_publish_subset' not found""", docname)
 
         if c.confluence_publish:
             if c.confluence_disable_rest and c.confluence_disable_xmlrpc:
