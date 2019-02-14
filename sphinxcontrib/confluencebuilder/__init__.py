@@ -114,7 +114,7 @@ def setup(app):
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
     """Subset of document names to publish"""
-    app.add_config_value('confluence_publish_subset', None, False)
+    app.add_config_value('confluence_publish_subset', [], False)
 
     """(advanced - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""

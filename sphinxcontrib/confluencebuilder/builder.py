@@ -135,7 +135,7 @@ class ConfluenceBuilder(Builder):
         else:
             self.space_name = None
 
-        if self.config.confluence_publish_subset is not None:
+        if self.config.confluence_publish_subset:
             self.doc_subset = set(self.config.confluence_publish_subset)
         else:
             self.doc_subset = None
