@@ -73,7 +73,7 @@ string, etc.).
                     ConfluenceLogger.error(
 """'confluence_publish_subset' should be a collection of strings""")
             else:
-                for docname in c.confluence_doc_subset:
+                for docname in c.confluence_publish_subset:
                     if not any(os.path.isfile(os.path.join(builder.env.srcdir,
                                                            docname + suffix))
                                for suffix in c.source_suffix):
