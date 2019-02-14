@@ -584,6 +584,52 @@ seconds, the following can be used:
 
    confluence_timeout = 10
 
+
+.. |confluence_publish_subset| replace:: ``confluence_publish_subset``
+.. _confluence_publish_subset:
+
+confluence_publish_subset
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Control which documents to publish.
+Specify a collection of document names to filter publishing.
+
+.. note::
+
+    Document name is a relative file path **without** the file extension.
+
+When passing a list of documents to sphinx-build_,
+all dependencies of those documents get processed as well.
+If publishing such dependencies is undesirable,
+|confluence_publish_subset|_ enables skipping it.
+
+Subset of documents can be specified in the build command itself:
+
+.. code-block:: none
+
+    sphinx-build -b confluence \
+        -D confluence_publish_subset=index,foo/bar \
+        . _build/confluence index.rst foo/bar.rst
+
+The following code in ``conf.py`` would read the subset from a file
+where the path to the file is set as an environment variable.
+
+.. code-block:: python
+
+    subset_path = os.getenv('PUBLISH_SUBSET')
+    if subset_path and os.path.isfile(subset_path):
+        with open(subset_path) as f:
+            confluence_publish_subset = [line
+                                         for raw_line in f
+                                         for line in [raw_line.strip()]
+                                         if line and not line.startswith('#')]
+
+To ease maintenance, these files can contain blank lines
+and lines commented out with the *#* character.
+
+Disables |confluence_purge|_ setting when used.
+
+
 .. references ------------------------------------------------------------------
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
@@ -598,3 +644,4 @@ seconds, the following can be used:
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
 .. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
+.. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
