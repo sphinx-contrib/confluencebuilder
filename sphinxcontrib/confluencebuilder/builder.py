@@ -248,9 +248,7 @@ class ConfluenceBuilder(Builder):
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
         omit = False
         max_depth = self.config.confluence_max_doc_depth
-        too_deep = max_depth is not None and depth > max_depth
-        skip = self.doc_subset and docname not in self.doc_subset
-        if too_deep or skip:
+        if max_depth is not None and depth > max_depth:
             omit = True
             self.omitted_docnames.append(docname)
 
@@ -451,6 +449,8 @@ class ConfluenceBuilder(Builder):
                     self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
                     verbosity=self.app.verbosity):
+                if self.doc_subset and docname not in self.doc_subset:
+                    continue
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
@@ -470,6 +470,8 @@ class ConfluenceBuilder(Builder):
                     length=len(assets), verbosity=self.app.verbosity,
                     stringify_func=to_asset_name):
                 key, absfile, type, hash, docname = asset
+                if self.doc_subset and docname not in self.doc_subset:
+                    continue
 
                 try:
                     with open(absfile, 'rb') as file:
