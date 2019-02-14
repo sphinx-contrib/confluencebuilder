@@ -414,7 +414,12 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
     def publish_purge(self):
-        if self.config.confluence_purge and self.doc_subset is None:
+        if self.config.confluence_purge:
+            if self.doc_subset:
+                ConfluenceLogger.warn('confluence_purge disabled due to '
+                                      'confluence_publish_subset')
+                return
+
             if self.legacy_pages:
                 n = len(self.legacy_pages)
                 ConfluenceLogger.info(
