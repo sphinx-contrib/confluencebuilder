@@ -60,7 +60,6 @@ class ConfluenceBuilder(Builder):
         super(ConfluenceBuilder, self).__init__(app)
 
         self.cache_doctrees = {}
-        self.current_docname = None
         self.file_suffix = '.conf'
         self.link_suffix = None
         self.master_doc_page_id = None
@@ -289,7 +288,6 @@ class ConfluenceBuilder(Builder):
     def write_doc(self, docname, doctree):
         if docname in self.omitted_docnames:
             return
-        self.current_docname = docname
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:

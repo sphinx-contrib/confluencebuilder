@@ -41,8 +41,8 @@ class ConfluenceTranslator(BaseTranslator):
         config = builder.config
 
         # acquire the active document name from the builder
-        assert builder.current_docname
-        self.docname = builder.current_docname
+        assert 'source' in document
+        self.docname = self.builder.env.path2doc(document['source'])
 
         # determine the active document's parent path to assist it title mapping
         # for relative document uris
