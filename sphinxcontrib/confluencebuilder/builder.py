@@ -136,9 +136,9 @@ class ConfluenceBuilder(Builder):
             self.space_name = None
 
         if self.config.confluence_publish_subset:
-            self.doc_subset = set(self.config.confluence_publish_subset)
+            self.publish_subset = set(self.config.confluence_publish_subset)
         else:
-            self.doc_subset = None
+            self.publish_subset = None
 
     def get_outdated_docs(self):
         """
@@ -415,7 +415,7 @@ class ConfluenceBuilder(Builder):
 
     def publish_purge(self):
         if self.config.confluence_purge:
-            if self.doc_subset:
+            if self.publish_subset:
                 ConfluenceLogger.warn('confluence_purge disabled due to '
                                       'confluence_publish_subset')
                 return
@@ -454,7 +454,7 @@ class ConfluenceBuilder(Builder):
                     self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
                     verbosity=self.app.verbosity):
-                if self.doc_subset and docname not in self.doc_subset:
+                if self.publish_subset and docname not in self.publish_subset:
                     continue
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
@@ -475,7 +475,7 @@ class ConfluenceBuilder(Builder):
                     length=len(assets), verbosity=self.app.verbosity,
                     stringify_func=to_asset_name):
                 key, absfile, type, hash, docname = asset
-                if self.doc_subset and docname not in self.doc_subset:
+                if self.publish_subset and docname not in self.publish_subset:
                     continue
 
                 try:
