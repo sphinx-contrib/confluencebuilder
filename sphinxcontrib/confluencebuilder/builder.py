@@ -206,7 +206,9 @@ class ConfluenceBuilder(Builder):
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix)
-            self.publish_docnames.append(docname)
+            if docname in docnames:
+                # Only publish documents that Sphinx asked to prepare
+                self.publish_docnames.append(docname)
 
             toctrees = doctree.traverse(addnodes.toctree)
             if toctrees and toctrees[0].get('maxdepth') > 0:
