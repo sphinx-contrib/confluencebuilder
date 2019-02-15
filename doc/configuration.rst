@@ -567,24 +567,6 @@ configuration).
 
    confluence_proxy = 'myawesomeproxy:8080'
 
-.. _confluence_timeout:
-
-confluence_timeout
-~~~~~~~~~~~~~~~~~~
-
-Force a timeout (in seconds) for network interaction. The timeout used by this
-extension is not explicitly configured (i.e. managed by Requests_ and other
-implementations). By default, assume that any network interaction will not
-timeout. Since the target Confluence instance is most likely to be found on an
-external server, is it recommended to explicitly configure a timeout value based
-on the environment being used. For example, to configure a timeout of ten
-seconds, the following can be used:
-
-.. code-block:: python
-
-   confluence_timeout = 10
-
-
 .. |confluence_publish_subset| replace:: ``confluence_publish_subset``
 .. _confluence_publish_subset:
 
@@ -629,6 +611,22 @@ and lines commented out with the *#* character.
 
 Disables |confluence_purge|_ setting when used.
 
+.. _confluence_timeout:
+
+confluence_timeout
+~~~~~~~~~~~~~~~~~~
+
+Force a timeout (in seconds) for network interaction. The timeout used by this
+extension is not explicitly configured (i.e. managed by Requests_ and other
+implementations). By default, assume that any network interaction will not
+timeout. Since the target Confluence instance is most likely to be found on an
+external server, is it recommended to explicitly configure a timeout value based
+on the environment being used. For example, to configure a timeout of ten
+seconds, the following can be used:
+
+.. code-block:: python
+
+   confluence_timeout = 10
 
 .. references ------------------------------------------------------------------
 
