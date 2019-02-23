@@ -567,49 +567,37 @@ configuration).
 
    confluence_proxy = 'myawesomeproxy:8080'
 
-.. |confluence_publish_subset| replace:: ``confluence_publish_subset``
 .. _confluence_publish_subset:
 
 confluence_publish_subset
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Control which documents to publish.
-Specify a collection of document names to filter publishing.
-
 .. note::
 
-    Document name is a relative file path **without** the file extension.
+    If ``confluence_publish_subset`` is configured, this option disables
+    |confluence_purge|_.
 
-When passing a list of documents to sphinx-build_,
-all dependencies of those documents get processed as well.
-If publishing such dependencies is undesirable,
-|confluence_publish_subset|_ enables skipping it.
-
-Subset of documents can be specified in the build command itself:
-
-.. code-block:: none
-
-    sphinx-build -b confluence \
-        -D confluence_publish_subset=index,foo/bar \
-        . _build/confluence index.rst foo/bar.rst
-
-The following code in ``conf.py`` would read the subset from a file
-where the path to the file is set as an environment variable.
+Provides the ability for a publisher to explicitly list a subset of documents to
+be published to a Confluence instance. When a user invokes sphinx-build_, a user
+has the ability to process all documents (by default) or specifying individual
+filenames which use the provide files and detected dependencies. If the
+Sphinx-detected set of documents to process contain undesired documents to
+publish, ``confluence_publish_subset`` can be used to override this. Defined
+document names should be a relative file path without the file extension. For
+example:
 
 .. code-block:: python
 
-    subset_path = os.getenv('PUBLISH_SUBSET')
-    if subset_path and os.path.isfile(subset_path):
-        with open(subset_path) as f:
-            confluence_publish_subset = [line
-                                         for raw_line in f
-                                         for line in [raw_line.strip()]
-                                         if line and not line.startswith('#')]
+   confluence_publish_subset = ['index', 'foo/bar']
 
-To ease maintenance, these files can contain blank lines
-and lines commented out with the *#* character.
+A user can force a publishing subset through the command line:
 
-Disables |confluence_purge|_ setting when used.
+.. code-block:: none
+
+   sphinx-build [options] -D confluence_publish_subset=index,foo/bar \
+       <srcdir> <outdir> index.rst foo/bar.rst
+
+By default, this option is ignored with a value of ``[]``.
 
 .. _confluence_timeout:
 
