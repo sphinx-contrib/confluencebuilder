@@ -597,7 +597,8 @@ A user can force a publishing subset through the command line:
    sphinx-build [options] -D confluence_publish_subset=index,foo/bar \
        <srcdir> <outdir> index.rst foo/bar.rst
 
-By default, this option is ignored with a value of ``[]``.
+By default, this option is ignored with a value of ``[]``. See also
+:ref:`manage publishing a document subset<tip_manage_publish_subset>`.
 
 .. _confluence_timeout:
 

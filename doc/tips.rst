@@ -86,6 +86,35 @@ may not desire two failed attempts when publishing a documentation set. To
 disable attempts to publish using the XML-RPC API, see
 ``confluence_disable_xmlrpc`` (:ref:`jump<confluence_disable_xmlrpc>`).
 
+.. _tip_manage_publish_subset:
+
+manage publishing a document subset
+-----------------------------------
+
+Users have the ability to publish a subset of processed documents by using the
+``confluence_publish_subset`` (:ref:`jump<confluence_publish_subset>`) option.
+This can be useful for large documentation sets where a user may wish to only
+publish an update for one or more documents (instead of the entire set). While
+subset publishing can be commonly used by setting the
+``confluence_publish_subset`` option in a command line build, this may not be
+ideal for some environments. The following is a code snippet, which when
+included in a project's ``conf.py`` file, will provide a means for a user to
+specify a file outlining which documents are desire:
+
+.. code-block:: python
+
+    subset_path = os.getenv('PUBLISH_SUBSET')
+    if subset_path and os.path.isfile(subset_path):
+        with open(subset_path) as f:
+            confluence_publish_subset = [line
+                                         for raw_line in f
+                                         for line in [raw_line.strip()]
+                                         if line and not line.startswith('#')]
+
+Individual documents can be added into the file defined by the environment
+variable ``PUBLISH_SUBSET`` per line. In this snippet, blank lines and lines
+commented out with the ``#`` character are ignored.
+
 asking for help
 ---------------
 
