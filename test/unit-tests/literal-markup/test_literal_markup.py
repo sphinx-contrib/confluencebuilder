@@ -4,7 +4,9 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from pkg_resources import parse_version
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from sphinx.__init__ import __version__ as sphinx_version
 import os
 import unittest
 
@@ -23,7 +25,13 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         self.doc_dir = doc_dir
 
     def test_code_blocks(self):
-        raise unittest.SkipTest('see issue #148')
+        # skip code-block tests in Sphinx v1.8.x+ due to regression; when a new
+        # stable version is released, this can be re-enabled for the newer
+        # version and greater
+        #
+        # https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues/148
+        if parse_version(sphinx_version) > parse_version('1.7'):
+            raise unittest.SkipTest('not supported in sphinx-1.8.x+')
         _.assertExpectedWithOutput(
             self, 'code_blocks', self.expected, self.doc_dir)
 
