@@ -99,7 +99,7 @@ subset publishing can be commonly used by setting the
 ``confluence_publish_subset`` option in a command line build, this may not be
 ideal for some environments. The following is a code snippet, which when
 included in a project's ``conf.py`` file, will provide a means for a user to
-specify a file outlining which documents are desire:
+specify a file outlining which documents are desired:
 
 .. code-block:: python
 
