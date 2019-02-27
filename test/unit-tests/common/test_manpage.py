@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -30,14 +30,12 @@ class TestConfluenceManpage(unittest.TestCase):
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
         doc_dir, doctree_dir = _.prepareDirectories('manpage-conf')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         _.assertExpectedWithOutput(
             self, 'manpage-conf', self.expected, doc_dir, tpn='contents')
 
     def test_manpage_without_config(self):
         doc_dir, doctree_dir = _.prepareDirectories('manpage-noconf')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
+        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         _.assertExpectedWithOutput(
             self, 'manpage-noconf', self.expected, doc_dir, tpn='contents')

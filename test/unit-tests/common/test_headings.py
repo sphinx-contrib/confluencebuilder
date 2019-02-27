@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -9,8 +9,6 @@ from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 import os
 import unittest
-
-from pkg_resources import iter_entry_points
 
 class TestConfluenceCommonHeadings(unittest.TestCase):
     @classmethod
@@ -23,8 +21,7 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
 
     def test_headings_default(self):
         doc_dir, doctree_dir = _.prepareDirectories('headings-default')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
+        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         _.assertExpectedWithOutput(
             self, 'headings-default', self.expected, doc_dir, tpn='headings')
 
@@ -33,7 +30,6 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         config['confluence_remove_title'] = False
 
         doc_dir, doctree_dir = _.prepareDirectories('headings-with-title')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         _.assertExpectedWithOutput(
             self, 'headings-with-title', self.expected, doc_dir, tpn='headings')

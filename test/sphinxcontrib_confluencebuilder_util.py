@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from sphinx.util.console import nocolor, color_terminal
+from contextlib import contextmanager
 from sphinx.application import Sphinx
+from sphinx.util.console import nocolor, color_terminal
+from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 import difflib
 import io
@@ -110,6 +112,7 @@ class ConfluenceTestUtil:
         return doc_dir, doctree_dir
 
     @staticmethod
+    @contextmanager
     def prepareSphinx(src_dir, out_dir, doctree_dir, config):
         """
         prepare a sphinx application instance
@@ -125,13 +128,30 @@ class ConfluenceTestUtil:
             nocolor()
 
         sts = ConfluenceTestUtil.default_sphinx_status
-        return Sphinx(
-            src_dir,                # output for document sources
-            None,                   # ignore configuration directory
-            out_dir,                # output for generated documents
-            doctree_dir,            # output for doctree files
-            ConfluenceBuilder.name, # use this extension's builder
-            confoverrides=dict(config), 
-                                    # load the provided configuration (volatile)
-            status=sts,             # status output
-            warning=sys.stderr)     # warnings output
+
+        with docutils_namespace():
+            app = Sphinx(
+                src_dir,                # output for document sources
+                None,                   # ignore configuration directory
+                out_dir,                # output for generated documents
+                doctree_dir,            # output for doctree files
+                ConfluenceBuilder.name, # use this extension's builder
+                confoverrides=dict(config),
+                                        # load provided configuration (volatile)
+                status=sts,             # status output
+                warning=sys.stderr)     # warnings output
+
+            yield app
+
+    @staticmethod
+    def buildSphinx(src_dir, out_dir, doctree_dir, config):
+        """
+        prepare a sphinx application instance
+
+        Creates, invokes and cleans up a Sphinx application instance [1].
+
+        [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
+        """
+        with ConfluenceTestUtil.prepareSphinx(
+                src_dir, out_dir, doctree_dir, config) as app:
+            app.build(force_all=True)

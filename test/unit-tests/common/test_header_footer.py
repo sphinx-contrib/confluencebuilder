@@ -28,10 +28,11 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_header_file'] = header_tpl
 
         doc_dir, doctree_dir = _.prepareDirectories('header-footer')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
-        _.assertExpectedWithOutput(
-            self, 'header-footer', self.expected, doc_dir, tpn='header-footer')
+        
+        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+            app.build(force_all=True)
+            _.assertExpectedWithOutput(self, 'header-footer', self.expected,
+                doc_dir, tpn='header-footer')
 
     def test_headerfooter_relative(self):
         config = dict(self.config)
@@ -39,7 +40,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_header_file'] = '../templates/sample-header.tpl'
 
         doc_dir, doctree_dir = _.prepareDirectories('header-footer')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
-        _.assertExpectedWithOutput(
-            self, 'header-footer', self.expected, doc_dir, tpn='header-footer')
+        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+            app.build(force_all=True)
+            _.assertExpectedWithOutput(self, 'header-footer', self.expected,
+                doc_dir, tpn='header-footer')

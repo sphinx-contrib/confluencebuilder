@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -22,11 +22,9 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected-hierarchy')
 
         doc_dir, doctree_dir = _.prepareDirectories('toctree-hierarchy')
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
-
         self.doc_dir = doc_dir
-        self.app = app
+
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_max_depth(self):
         _.assertExpectedWithOutput(

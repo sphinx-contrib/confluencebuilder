@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -21,8 +21,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
     def test_highlights_default(self):
         expected = os.path.join(self.test_dir, 'expected-hd')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-hd')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
+        _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
 
     def test_highlights_set(self):
@@ -31,8 +30,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
 
         expected = os.path.join(self.test_dir, 'expected-hs')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-hs')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
 
     def test_override_lang(self):
@@ -41,6 +39,5 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
 
         expected = os.path.join(self.test_dir, 'expected-ol')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-ol')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)

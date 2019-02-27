@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -18,11 +18,16 @@ class TestConfluenceCommon(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected')
 
         doc_dir, doctree_dir = _.prepareDirectories('common')
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
-
         self.doc_dir = doc_dir
-        self.app = app
+
+        with _.prepareSphinx(dataset, doc_dir, doctree_dir, self.config) as app:
+            app.build(force_all=True)
+
+            # track registered extensions
+            if hasattr(app, 'extensions'):
+                self.extensions = list(app.extensions.keys())
+            else:
+                self.extensions = list(app._extensions.keys())
 
     def _assertExpectedWithOutput(self, name):
         _.assertExpectedWithOutput(self, name, self.expected, self.doc_dir)
@@ -97,10 +102,7 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_registry(self):
         # validate builder's registration into Sphinx
-        if hasattr(self.app, 'extensions'):
-            self.assertTrue(EXT_NAME in self.app.extensions.keys())
-        else:
-            self.assertTrue(EXT_NAME in self.app._extensions.keys())
+        self.assertTrue(EXT_NAME in self.extensions)
 
     def test_sections(self):
         self._assertExpectedWithOutput('sections')
