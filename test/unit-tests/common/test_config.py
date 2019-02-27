@@ -13,13 +13,20 @@ import unittest
 
 class TestConfluenceConfig(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         # prepare a dummy application; no need to actually build
-        config = { 'extensions': EXT_NAME }
-        self.test_dir = os.path.dirname(os.path.realpath(__file__))
-        mock_ds = os.path.join(self.test_dir, 'dataset-common')
-        doc_dir, doctree_dir = _.prepareDirectories('config-dummy')
-        self.app = _.prepareSphinx(mock_ds, doc_dir, doctree_dir, config)
+        cls.config = { 'extensions': EXT_NAME }
+        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
+        cls.mock_ds = os.path.join(cls.test_dir, 'dataset-common')
+        cls.doc_dir, cls.doctree_dir = _.prepareDirectories('config-dummy')
+
+        # legacy
+        cls.app = cls._build_app()
+
+    @classmethod
+    def _build_app(cls):
+        return _.prepareSphinx(
+            cls.mock_ds, cls.doc_dir, cls.doctree_dir, cls.config)
 
     def test_emptyconfig(self):
         builder = ConfluenceBuilder(self.app)
@@ -65,6 +72,31 @@ class TestConfluenceConfig(unittest.TestCase):
         builder.config.confluence_publish = True
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init(suppress_conf_check=True)
+
+    def test_publish_subset(self):
+        app = self._build_app()
+        builder = ConfluenceBuilder(app)
+        builder.config.source_suffix = {
+            '.rst': 'restructuredtext',
+        }
+
+        builder.config.confluence_publish_subset = 'doc' # expect list-like
+        with self.assertRaises(ConfluenceConfigurationError):
+            builder.init(suppress_conf_check=True)
+
+        builder.config.confluence_publish_subset = [True, False]
+        with self.assertRaises(ConfluenceConfigurationError):
+            builder.init(suppress_conf_check=True)
+
+        builder.config.confluence_publish_subset = ['admonitions.rst']
+        with self.assertRaises(ConfluenceConfigurationError):
+            builder.init(suppress_conf_check=True)
+
+        builder.config.confluence_publish_subset = ['admonitions']
+        try:
+            builder.init(suppress_conf_check=True)
+        except ConfluenceConfigurationError:
+            self.fail('configuration exception raised with valid subset')
 
     def test_invalid_ca_cert(self):
         builder = ConfluenceBuilder(self.app)
