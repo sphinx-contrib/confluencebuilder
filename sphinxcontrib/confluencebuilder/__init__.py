@@ -111,6 +111,8 @@ def setup(app):
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Proxy server needed to communicate with Confluence server."""
     app.add_config_value('confluence_proxy', None, False)
+    """Subset of document names to publish"""
+    app.add_config_value('confluence_publish_subset', [], False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
 

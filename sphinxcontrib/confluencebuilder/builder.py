@@ -72,7 +72,7 @@ class ConfluenceBuilder(Builder):
         ConfluenceState.reset()
 
     def init(self, suppress_conf_check=False):
-        if not ConfluenceConfig.validate(self.config, not suppress_conf_check):
+        if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
 
         if self.config.confluence_ask_password:
@@ -136,6 +136,11 @@ class ConfluenceBuilder(Builder):
             self.space_name = self.config.confluence_space_name
         else:
             self.space_name = None
+
+        if self.config.confluence_publish_subset:
+            self.publish_subset = set(self.config.confluence_publish_subset)
+        else:
+            self.publish_subset = None
 
     def get_outdated_docs(self):
         """
@@ -413,6 +418,11 @@ class ConfluenceBuilder(Builder):
 
     def publish_purge(self):
         if self.config.confluence_purge:
+            if self.publish_subset:
+                ConfluenceLogger.warn('confluence_purge disabled due to '
+                                      'confluence_publish_subset')
+                return
+
             if self.legacy_pages:
                 n = len(self.legacy_pages)
                 ConfluenceLogger.info(
@@ -447,6 +457,8 @@ class ConfluenceBuilder(Builder):
                     self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
                     verbosity=self.app.verbosity):
+                if self.publish_subset and docname not in self.publish_subset:
+                    continue
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
@@ -466,6 +478,8 @@ class ConfluenceBuilder(Builder):
                     length=len(assets), verbosity=self.app.verbosity,
                     stringify_func=to_asset_name):
                 key, absfile, type, hash, docname = asset
+                if self.publish_subset and docname not in self.publish_subset:
+                    continue
 
                 try:
                     with open(absfile, 'rb') as file:

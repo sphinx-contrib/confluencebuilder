@@ -7,6 +7,7 @@
 from .logger import ConfluenceLogger
 import os.path
 
+
 class ConfluenceConfig:
     """
     confluence configuration validation utility class
@@ -17,7 +18,7 @@ class ConfluenceConfig:
     """
 
     @staticmethod
-    def validate(c, log=True):
+    def validate(builder, log=True):
         """
         validate a provided configuration
 
@@ -26,6 +27,7 @@ class ConfluenceConfig:
         while returning False for a known bad configuration.
         """
         errState = False
+        c = builder.config
 
         if c.confluence_footer_file:
             if not os.path.isfile(c.confluence_footer_file):
@@ -61,6 +63,24 @@ When limiting the document depth permitted for a building/publishing event, the
 defined maximum document depth must be defined as an integer value (not a float,
 string, etc.).
 """)
+
+        if c.confluence_publish_subset:
+            if not (isinstance(c.confluence_publish_subset, (tuple, list, set))
+                    and all(isinstance(docname, str)
+                            for docname in c.confluence_publish_subset)):
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""'confluence_publish_subset' should be a collection of strings""")
+            else:
+                for docname in c.confluence_publish_subset:
+                    if not any(os.path.isfile(os.path.join(builder.env.srcdir,
+                                                           docname + suffix))
+                               for suffix in c.source_suffix):
+                        errState = True
+                        if log:
+                            ConfluenceLogger.error(
+"""Document '%s' in 'confluence_publish_subset' not found""", docname)
 
         if c.confluence_publish:
             if c.confluence_disable_rest and c.confluence_disable_xmlrpc:

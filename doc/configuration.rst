@@ -567,6 +567,39 @@ configuration).
 
    confluence_proxy = 'myawesomeproxy:8080'
 
+.. _confluence_publish_subset:
+
+confluence_publish_subset
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+    If ``confluence_publish_subset`` is configured, this option disables
+    |confluence_purge|_.
+
+Provides the ability for a publisher to explicitly list a subset of documents to
+be published to a Confluence instance. When a user invokes sphinx-build_, a user
+has the ability to process all documents (by default) or specifying individual
+filenames which use the provide files and detected dependencies. If the
+Sphinx-detected set of documents to process contain undesired documents to
+publish, ``confluence_publish_subset`` can be used to override this. Defined
+document names should be a relative file path without the file extension. For
+example:
+
+.. code-block:: python
+
+   confluence_publish_subset = ['index', 'foo/bar']
+
+A user can force a publishing subset through the command line:
+
+.. code-block:: none
+
+   sphinx-build [options] -D confluence_publish_subset=index,foo/bar \
+       <srcdir> <outdir> index.rst foo/bar.rst
+
+By default, this option is ignored with a value of ``[]``. See also
+:ref:`manage publishing a document subset<tip_manage_publish_subset>`.
+
 .. _confluence_timeout:
 
 confluence_timeout
@@ -598,3 +631,4 @@ seconds, the following can be used:
 .. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
 .. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
 .. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
+.. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
