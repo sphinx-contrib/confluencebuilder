@@ -266,24 +266,26 @@ class ConfluenceTranslator(BaseTranslator):
         #         'start' attribute of an ordered list tag; limiting to
         #         auto-enumeration items only.
         list_style_type = None
-        if node['enumtype'] == 'upperalpha':
-            list_style_type = 'upper-alpha'
-        elif node['enumtype'] == 'loweralpha':
-            list_style_type = 'lower-alpha'
-        elif node['enumtype'] == 'upperroman':
-            list_style_type = 'upper-roman'
-        elif node['enumtype'] == 'lowerroman':
-            list_style_type = 'lower-roman'
-        elif node['enumtype'] == 'arabic':
-            list_style_type = 'decimal'
-        else:
-            ConfluenceLogger.warn(
-                'unknown enumerated list type: {}'.format(node['enumtype']))
+        if 'enumtype' in node:
+            if node['enumtype'] == 'upperalpha':
+                list_style_type = 'upper-alpha'
+            elif node['enumtype'] == 'loweralpha':
+                list_style_type = 'lower-alpha'
+            elif node['enumtype'] == 'upperroman':
+                list_style_type = 'upper-roman'
+            elif node['enumtype'] == 'lowerroman':
+                list_style_type = 'lower-roman'
+            elif node['enumtype'] == 'arabic':
+                list_style_type = 'decimal'
+            else:
+                ConfluenceLogger.warn(
+                    'unknown enumerated list type: {}'.format(node['enumtype']))
 
-        if 'style' not in attribs:
-            attribs['style'] = ''
-        attribs['style'] = '{}list-style-type: {};'.format(
-            attribs['style'], list_style_type)
+        if list_style_type:
+            if 'style' not in attribs:
+                attribs['style'] = ''
+            attribs['style'] = '{}list-style-type: {};'.format(
+                attribs['style'], list_style_type)
 
         self.body.append(self._start_tag(node, 'ol', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
