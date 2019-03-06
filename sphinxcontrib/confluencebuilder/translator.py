@@ -1370,6 +1370,12 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'code'))
         self.context.append(self._end_tag(node, suffix=''))
 
+        # Add anchor for class and function
+        if node.parent['class'] == '':
+            self.body.append(self._start_ac_macro(node, 'anchor'))
+            self.body.append(self._build_ac_parameter(node, '', node.parent['ids'][0]))
+            self.body.append(self._end_ac_macro(node))
+
     def depart_desc_name(self, node):
         self.body.append(self.context.pop()) # code
         self.body.append(self.context.pop()) # strong
