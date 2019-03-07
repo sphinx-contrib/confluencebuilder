@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -19,8 +19,7 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected')
 
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup')
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, self.config)
 
         self.doc_dir = doc_dir
 

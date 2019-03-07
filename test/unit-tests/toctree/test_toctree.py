@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -22,8 +22,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
         expected = os.path.join(self.test_dir, 'expected-cm')
         doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-cm')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
         _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'doca', expected, doc_dir)
@@ -33,8 +32,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
     def test_toctree_default(self):
         expected = os.path.join(self.test_dir, 'expected-def')
         doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-def')
-        app = _.prepareSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        app.build(force_all=True)
+        _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
 
         _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'doca', expected, doc_dir)

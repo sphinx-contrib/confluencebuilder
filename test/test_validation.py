@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -72,8 +72,7 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-base')
 
         # build/publish test base page
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, cls.config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, cls.config)
 
         # finalize configuration for tests
         cls.config['confluence_master_homepage'] = False
@@ -91,8 +90,7 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-autodocs')
         sys.path.insert(0, os.path.join(dataset, 'src'))
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
         sys.path.pop(0)
 
@@ -102,8 +100,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'common')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-common')
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_common_macro_restricted(self):
         config = dict(self.config)
@@ -121,8 +118,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
         config['confluence_publish_prefix'] += 'nomacro-'
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_header_footer(self):
         config = dict(self.config)
@@ -133,8 +129,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
         config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_hierarchy(self):
         config = dict(self.config)
@@ -144,8 +139,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'hierarchy')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-hierarchy')
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_xmlrpc(self):
         config = dict(self.config)
@@ -155,8 +149,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'xmlrpc')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-xmlrpc')
 
-        app = _.prepareSphinx(dataset, doc_dir, doctree_dir, config)
-        app.build(force_all=True)
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))

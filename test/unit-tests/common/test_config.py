@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from contextlib import contextmanager
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
@@ -12,21 +13,22 @@ import os
 import unittest
 
 class TestConfluenceConfig(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
+    def run(self, result=None):
         # prepare a dummy application; no need to actually build
-        cls.config = { 'extensions': EXT_NAME }
-        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.mock_ds = os.path.join(cls.test_dir, 'dataset-common')
-        cls.doc_dir, cls.doctree_dir = _.prepareDirectories('config-dummy')
+        self.config = { 'extensions': EXT_NAME }
+        self.test_dir = os.path.dirname(os.path.realpath(__file__))
+        self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
+        self.doc_dir, self.doctree_dir = _.prepareDirectories('config-dummy')
 
         # legacy
-        cls.app = cls._build_app()
+        with self._build_app() as app:
+            self.app = app
 
-    @classmethod
-    def _build_app(cls):
-        return _.prepareSphinx(
-            cls.mock_ds, cls.doc_dir, cls.doctree_dir, cls.config)
+    @contextmanager
+    def _build_app(self):
+        with _.prepareSphinx(self.mock_ds, self.doc_dir, self.doctree_dir,
+                self.config) as app:
+            yield app
 
     def test_emptyconfig(self):
         builder = ConfluenceBuilder(self.app)
@@ -86,29 +88,29 @@ class TestConfluenceConfig(unittest.TestCase):
             builder.init(suppress_conf_check=True)
 
     def test_publish_subset(self):
-        app = self._build_app()
-        builder = ConfluenceBuilder(app)
-        builder.config.source_suffix = {
-            '.rst': 'restructuredtext',
-        }
+        with self._build_app() as app:
+            builder = ConfluenceBuilder(app)
+            builder.config.source_suffix = {
+                '.rst': 'restructuredtext',
+            }
 
-        builder.config.confluence_publish_subset = 'doc' # expect list-like
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+            builder.config.confluence_publish_subset = 'doc' # expect list-like
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
 
-        builder.config.confluence_publish_subset = [True, False]
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+            builder.config.confluence_publish_subset = [True, False]
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
 
-        builder.config.confluence_publish_subset = ['admonitions.rst']
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+            builder.config.confluence_publish_subset = ['admonitions.rst']
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
 
-        builder.config.confluence_publish_subset = ['admonitions']
-        try:
-            builder.init(suppress_conf_check=True)
-        except ConfluenceConfigurationError:
-            self.fail('configuration exception raised with valid subset')
+            builder.config.confluence_publish_subset = ['admonitions']
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with valid subset')
 
     def test_invalid_ca_cert(self):
         builder = ConfluenceBuilder(self.app)
