@@ -28,6 +28,7 @@ class ConfluenceConfig:
         """
         errState = False
         c = builder.config
+        env = builder.app.env
 
         if c.confluence_footer_file:
             if not os.path.isfile(c.confluence_footer_file):
@@ -74,7 +75,7 @@ string, etc.).
 """'confluence_publish_subset' should be a collection of strings""")
             else:
                 for docname in c.confluence_publish_subset:
-                    if not any(os.path.isfile(os.path.join(builder.env.srcdir,
+                    if not any(os.path.isfile(os.path.join(env.srcdir,
                                                            docname + suffix))
                                for suffix in c.source_suffix):
                         errState = True
