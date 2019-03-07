@@ -243,9 +243,7 @@ class ConfluenceBuilder(Builder):
         # transformation stage (e.x. embedded images are converted into real
         # images in Sphinx, which is then provided to a translator). Embedded
         # images are detected during an 'doctree-resolved' hook (see __init__).
-        ConfluenceLogger.info('scanning for assets... ', nonl=0)
         self.assets.process(ordered_docnames)
-        ConfluenceLogger.info('done\n')
 
         ConfluenceState.titleConflictCheck()
 
@@ -356,7 +354,7 @@ class ConfluenceBuilder(Builder):
                 baseid = self.master_doc_page_id
             else:
                 baseid = self.parent_id
-            ConfluenceLogger.info('querying list of existing pages...')
+
             if self.config.confluence_adv_aggressive_search is True:
                 self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
             else:
