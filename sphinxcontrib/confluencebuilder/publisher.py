@@ -461,7 +461,8 @@ class ConfluencePublisher():
                 }
 
                 if not self.notify:
-                    data['minorEdit'] = True
+                    # using str over bool to support requests pre-v2.19.0
+                    data['minorEdit'] = 'true'
 
                 if not attachment:
                     url = 'content/{}/child/attachment'.format(page_id)
