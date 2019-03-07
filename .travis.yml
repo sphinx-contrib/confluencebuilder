@@ -3,15 +3,39 @@ language: python
 matrix:
   include:
   - python: "2.7"
-    env: TOXENV=py27
+    env: TOXENV=py27-sphinx16
+  - python: "2.7"
+    env: TOXENV=py27-sphinx17
+  - python: "2.7"
+    env: TOXENV=py27-sphinx18
   - python: "3.4"
-    env: TOXENV=py34
+    env: TOXENV=py34-sphinx16
+  - python: "3.4"
+    env: TOXENV=py34-sphinx17
+  - python: "3.4"
+    env: TOXENV=py34-sphinx18
   - python: "3.5"
-    env: TOXENV=py35
+    env: TOXENV=py35-sphinx16
+  - python: "3.5"
+    env: TOXENV=py35-sphinx17
+  - python: "3.5"
+    env: TOXENV=py35-sphinx18
   - python: "3.6"
-    env: TOXENV=py36
+    env: TOXENV=py36-sphinx16
+  - python: "3.6"
+    env: TOXENV=py36-sphinx17
+  - python: "3.6"
+    env: TOXENV=py36-sphinx18
   - python: "3.7"
-    env: TOXENV=py37
+    env: TOXENV=py37-sphinx16
+    dist: xenial
+    sudo: true
+  - python: "3.7"
+    env: TOXENV=py37-sphinx17
+    dist: xenial
+    sudo: true
+  - python: "3.7"
+    env: TOXENV=py37-sphinx18
     dist: xenial
     sudo: true
   - python: "3.6"
