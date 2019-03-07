@@ -31,7 +31,8 @@ class ConfluenceConfig:
         env = builder.app.env
 
         if c.confluence_footer_file:
-            if not os.path.isfile(c.confluence_footer_file):
+            if not os.path.isfile(os.path.join(env.srcdir,
+                    c.confluence_footer_file)):
                 errState = True
                 if log:
                     ConfluenceLogger.error(
@@ -42,7 +43,8 @@ file from a relative location. Ensure the value is set to a proper file path.
 """)
 
         if c.confluence_header_file:
-            if not os.path.isfile(c.confluence_header_file):
+            if not os.path.isfile(os.path.join(env.srcdir,
+                    c.confluence_header_file)):
                 errState = True
                 if log:
                     ConfluenceLogger.error(

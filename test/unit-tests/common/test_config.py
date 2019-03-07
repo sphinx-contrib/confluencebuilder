@@ -51,19 +51,31 @@ class TestConfluenceConfig(unittest.TestCase):
         except ConfluenceConfigurationError:
             self.fail("configuration exception raised with valid header")
 
+        builder.config.confluence_header_file = '../templates/sample-header.tpl'
+        try:
+            builder.init(suppress_conf_check=True)
+        except ConfluenceConfigurationError:
+            self.fail("configuration exception raised with valid header")
+
         builder.config.confluence_header_file = None
 
         tpl = os.path.join(template_dir, 'sample-footer-x.tpl')
-        builder.config.confluence_header_file = tpl
+        builder.config.confluence_footer_file = tpl
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init(suppress_conf_check=True)
 
         tpl = os.path.join(template_dir, 'sample-footer.tpl')
-        builder.config.confluence_header_file = tpl
+        builder.config.confluence_footer_file = tpl
         try:
             builder.init(suppress_conf_check=True)
         except ConfluenceConfigurationError:
             self.fail("configuration exception raised with valid footer")
+
+        builder.config.confluence_footer_file = '../templates/sample-footer.tpl'
+        try:
+            builder.init(suppress_conf_check=True)
+        except ConfluenceConfigurationError:
+            self.fail("configuration exception raised with valid header")
 
         builder.config.confluence_footer_file = None
 
