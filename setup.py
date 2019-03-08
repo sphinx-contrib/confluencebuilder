@@ -6,9 +6,9 @@ with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()
 
 requires = [
-    'future',
-    'requests',
-    'Sphinx>=1.0',
+    'future>=0.16.0',
+    'requests>=2.14.0',
+    'sphinx>=1.6.3',
     ]
 
 setup(
