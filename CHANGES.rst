@@ -1,5 +1,5 @@
-master
-======
+1.0.0 (2019-03-14)
+==================
 
 * all confluence-based macros can be restricted by the user
 * block quotes with attribution are styled with confluence quotes
