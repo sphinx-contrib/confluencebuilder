@@ -10,7 +10,7 @@ from .translator import ConfluenceTranslator
 from sphinx.writers.text import STDINDENT
 import argparse
 
-__version__='0.10.0.dev0'
+__version__='0.10'
 
 def main():
     parser = argparse.ArgumentParser(prog=__name__,
