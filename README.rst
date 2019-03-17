@@ -13,7 +13,7 @@ Atlassian Confluence Builder for Sphinx
     :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
-    :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
+    :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/dm/sphinxcontrib-confluencebuilder.svg
@@ -114,7 +114,7 @@ Supported Markup
 For a complete list of supported markup, consult the following:
 
  | Atlassian Confluence Builder for Sphinx - Markup
- | http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/markup.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/markup.html
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
