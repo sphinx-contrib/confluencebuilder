@@ -8,8 +8,8 @@ Atlassian Confluence Builder for Sphinx
     :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
     :alt: pip Version
 
-.. image:: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder.svg?branch=master
-    :target: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder
+.. image:: https://travis-ci.org/sphinx-contrib/confluencebuilder.svg?branch=master
+    :target: https://travis-ci.org/sphinx-contrib/confluencebuilder
     :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
@@ -100,7 +100,7 @@ The set of example documents used to assist in validation/testing can be found
 here:
 
  | Atlassian Confluence Builder for Sphinx - Validation Set
- | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/tree/master/test/validation-sets
+ | https://github.com/sphinx-contrib/confluencebuilder/tree/master/test/validation-sets
 
 The active and older versions of published validation documents can be found
 here:
