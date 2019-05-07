@@ -143,6 +143,17 @@ however, no username has been configured. Ensure 'confluence_server_user' is
 properly set with the publisher's Confluence username.
 """)
 
+            if not c.confluence_server_cookies and c.confluence_server_pass:
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""confluence password and cookie provided
+
+A publishing cookie has been configured with 'confluence_server_cookies';
+however, a password has been configured as well. Ensure either 'confluence_server_cookies' is
+used or the combination of 'confluence_server_user' and 'confluence_server_pass'.
+""")
+
             if c.confluence_ca_cert:
                 if not os.path.exists(c.confluence_ca_cert):
                     errState = True

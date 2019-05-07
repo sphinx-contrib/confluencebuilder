@@ -95,6 +95,16 @@ If using Confluence instance, this value will most likely be the username value.
        (or)
    confluence_server_user = 'myawesomeuser'
 
+confluence_server_cookies
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Cookie(s) that can used to authenticate with the Confluence instance. This needs to
+be a dictionary.
+
+.. code-block:: python
+
+   confluence_server_cookies = {'SESSION_ID': 'random session id string', 'U_ID': 'some_user'}
+
 .. |confluence_space_name| replace:: ``confluence_space_name``
 .. _confluence_space_name:
 

@@ -44,6 +44,8 @@ def setup(app):
     app.add_config_value('confluence_server_pass', None, False)
     """Username to login to Confluence API with."""
     app.add_config_value('confluence_server_user', None, False)
+    """Cookie(s) to login to Confluence API with."""
+    app.add_config_value('confluence_server_cookies', None, False)
     """URL of the Confluence instance to publish to."""
     app.add_config_value('confluence_server_url', None, False)
     """Confluence Space to publish to."""
