@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -11,6 +11,7 @@ from .state import ConfluenceState
 from .std.confluence import FCMMO
 from .std.confluence import INDENT
 from .std.confluence import LITERAL2LANG_MAP
+from .std.sphinx import DEFAULT_ALIGNMENT
 from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
@@ -1066,8 +1067,12 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_caption(self, node):
         attribs = {}
-        if 'align' in node.parent and node.parent['align'] == 'center':
-            attribs['style'] = 'text-align: center;'
+        if 'align' in node.parent:
+            alignment = node.parent['align']
+            if alignment == 'default':
+                alignment = DEFAULT_ALIGNMENT
+            if alignment == 'center':
+                attribs['style'] = 'text-align: center;'
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.context.append(self._end_tag(node))
@@ -1103,6 +1108,9 @@ class ConfluenceTranslator(BaseTranslator):
             alignment = node['align']
         elif isinstance(node.parent, nodes.figure) and 'align' in node.parent:
             alignment = node.parent['align']
+
+        if alignment == 'default':
+            alignment = DEFAULT_ALIGNMENT
 
         if alignment:
             alignment = self._escape_sf(alignment)
