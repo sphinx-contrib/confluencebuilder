@@ -6,7 +6,7 @@ distributed on `Read the Docs`_. Sources of the documentation can be found
 inside this extension's repository ``doc`` folder:
 
    | Atlassian Confluence Builder for Confluence
-   | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder
+   | https://github.com/sphinx-contrib/confluencebuilder
 
 The documentation theme used by default is set to ``sphinx_rtd_theme``. If
 locally generating documentation, the theme can be installed on systems using

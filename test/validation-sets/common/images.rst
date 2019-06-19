@@ -155,12 +155,12 @@ link target):
    :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
    :alt: pip Version
 
-.. image:: https://img.shields.io/travis/tonybaloney/sphinxcontrib-confluencebuilder.svg
-   :target: https://travis-ci.org/tonybaloney/sphinxcontrib-confluencebuilder
+.. image:: https://travis-ci.org/sphinx-contrib/confluencebuilder.svg?branch=master
+   :target: https://travis-ci.org/sphinx-contrib/confluencebuilder
    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
-   :target: http://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
+   :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
 .. raw:: confluence

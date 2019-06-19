@@ -28,7 +28,7 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         # stable version is released, this can be re-enabled for the newer
         # version and greater
         #
-        # https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues/148
+        # https://github.com/sphinx-contrib/confluencebuilder/issues/148
         if parse_version(sphinx_version) > parse_version('1.7'):
             raise unittest.SkipTest('not supported in sphinx-1.8.x+')
         _.assertExpectedWithOutput(
