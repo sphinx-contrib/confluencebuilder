@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -19,6 +19,7 @@ from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.errors import ExtensionError
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
 import io
@@ -525,23 +526,57 @@ class ConfluenceBuilder(Builder):
         squashed page's labels can be moved into a parent document's label set.
         """
         # see also: sphinx/domains/std.py
-        domain = self.env.get_domain('std')
-        for key, (fn, _l, lineno) in list(domain.data['citations'].items()):
-            if fn == olddocname:
-                data = domain.data['citations'][key]
-                domain.data['citations'][key] = newdocname, data[1], data[2]
-        for key, docnames in list(domain.data['citation_refs'].items()):
-            if fn == olddocname:
-                data = domain.data['citation_refs'][key]
-                domain.data['citation_refs'][key] = newdocname
-        for key, (fn, _l, _l) in list(domain.data['labels'].items()):
-            if fn == olddocname:
-                data = domain.data['labels'][key]
-                domain.data['labels'][key] = newdocname, data[1], data[2]
-        for key, (fn, _l) in list(domain.data['anonlabels'].items()):
-            if fn == olddocname:
-                data = domain.data['anonlabels'][key]
-                domain.data['anonlabels'][key] = newdocname, data[1]
+        std_domain = self.env.get_domain('std')
+        try:
+            citation_domain = self.env.get_domain('citation')
+        except ExtensionError:
+            citation_domain = None
+
+        if 'anonlabels' in std_domain.data:
+            anonlabels = std_domain.data['anonlabels']
+            for key, (fn, _l) in list(anonlabels.items()):
+                if fn == olddocname:
+                    data = anonlabels[key]
+                    anonlabels[key] = newdocname, data[1]
+
+        citations = None
+        if 'citations' in std_domain.data: # Sphinx <2.1
+            citations = std_domain.data['citations']
+        elif citation_domain: # Sphinx >=2.1
+            citations = citation_domain.citations
+        if citations:
+            for key, (fn, _l, lineno) in list(citations.items()):
+                if fn == olddocname:
+                    data = citations[key]
+                    citations[key] = newdocname, data[1], data[2]
+
+        if 'citation_refs' in std_domain.data: # Sphinx <2.0
+            citation_refs = std_domain.data['citation_refs']
+            for key, docnames in list(citation_refs.items()):
+                if fn == olddocname:
+                    data = citation_refs[key]
+                    citation_refs[key] = newdocname
+
+        if 'labels' in std_domain.data:
+            labels = std_domain.data['labels']
+            for key, (fn, _l, _l) in list(labels.items()):
+                if fn == olddocname:
+                    data = labels[key]
+                    labels[key] = newdocname, data[1], data[2]
+
+        if 'objects' in std_domain.data:
+            objects = std_domain.data['objects']
+            for key, (fn, _l) in list(objects.items()):
+                if fn == olddocname:
+                    data = objects[key]
+                    objects[key] = newdocname, data[1]
+
+        if 'progoptions' in std_domain.data:
+            progoptions = std_domain.data['progoptions']
+            for key, (fn, _l) in list(progoptions.items()):
+                if fn == olddocname:
+                    data = progoptions[key]
+                    progoptions[key] = newdocname, data[1]
 
     def _get_doctree(self, docname):
         """
