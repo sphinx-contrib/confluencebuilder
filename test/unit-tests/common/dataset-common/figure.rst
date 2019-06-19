@@ -5,9 +5,19 @@
 figure
 ------
 
-.. external image
+.. external image (default align)
 
 .. figure:: https://www.example.com/image.png
+   :alt: alt text
+
+   caption
+
+   legend
+
+.. external image (left align)
+
+.. figure:: https://www.example.com/image.png
+   :align: left
    :alt: alt text
 
    caption
