@@ -1,0 +1,10 @@
+test sandbox
+============
+
+The following folder provides an easy setup to dump a fresh ``conf.py``,
+``requirements.txt`` and documentation to test against this extension when
+invoking with the following command:
+
+.. code-block:: shell
+
+   tox -e sandbox
