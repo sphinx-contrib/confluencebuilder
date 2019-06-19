@@ -22,7 +22,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
         expected = os.path.join(self.test_dir, 'expected-hd')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-hd')
         _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_highlights_set(self):
         config = dict(self.config)
@@ -31,7 +31,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
         expected = os.path.join(self.test_dir, 'expected-hs')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-hs')
         _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
-        _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_override_lang(self):
         config = dict(self.config)
@@ -40,4 +40,4 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
         expected = os.path.join(self.test_dir, 'expected-ol')
         doc_dir, doctree_dir = _.prepareDirectories('literal-markup-ol')
         _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
-        _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)

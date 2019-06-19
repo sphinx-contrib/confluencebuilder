@@ -32,10 +32,10 @@ class TestConfluenceManpage(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('manpage-conf')
         app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         _.assertExpectedWithOutput(
-            self, 'manpage-conf', self.expected, doc_dir, tpn='contents')
+            self, 'manpage-conf', self.expected, doc_dir, tpn='index')
 
     def test_manpage_without_config(self):
         doc_dir, doctree_dir = _.prepareDirectories('manpage-noconf')
         app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         _.assertExpectedWithOutput(
-            self, 'manpage-noconf', self.expected, doc_dir, tpn='contents')
+            self, 'manpage-noconf', self.expected, doc_dir, tpn='index')

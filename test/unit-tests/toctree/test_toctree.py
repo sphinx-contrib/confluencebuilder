@@ -24,7 +24,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-cm')
         _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
-        _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'doca', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'docb', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'docc', expected, doc_dir)
@@ -34,7 +34,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-def')
         _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
 
-        _.assertExpectedWithOutput(self, 'contents', expected, doc_dir)
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'doca', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'docb', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'docc', expected, doc_dir)
