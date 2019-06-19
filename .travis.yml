@@ -20,12 +20,20 @@ matrix:
     env: TOXENV=py35-sphinx17
   - python: "3.5"
     env: TOXENV=py35-sphinx18
+  - python: "3.5"
+    env: TOXENV=py35-sphinx20
+  - python: "3.5"
+    env: TOXENV=py35-sphinx21
   - python: "3.6"
     env: TOXENV=py36-sphinx16
   - python: "3.6"
     env: TOXENV=py36-sphinx17
   - python: "3.6"
     env: TOXENV=py36-sphinx18
+  - python: "3.6"
+    env: TOXENV=py36-sphinx20
+  - python: "3.6"
+    env: TOXENV=py36-sphinx21
   - python: "3.7"
     env: TOXENV=py37-sphinx16
     dist: xenial
@@ -36,6 +44,14 @@ matrix:
     sudo: true
   - python: "3.7"
     env: TOXENV=py37-sphinx18
+    dist: xenial
+    sudo: true
+  - python: "3.7"
+    env: TOXENV=py37-sphinx20
+    dist: xenial
+    sudo: true
+  - python: "3.7"
+    env: TOXENV=py37-sphinx21
     dist: xenial
     sudo: true
   - python: "3.6"
