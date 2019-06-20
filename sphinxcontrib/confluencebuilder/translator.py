@@ -16,7 +16,8 @@ from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
 from sphinx.locale import admonitionlabels
-from sphinx.util.osutil import SEP, canon_path
+from sphinx.util.osutil import SEP
+from sphinx.util.osutil import canon_path
 import io
 import posixpath
 import sys
