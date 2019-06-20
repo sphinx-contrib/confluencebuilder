@@ -82,12 +82,14 @@ class ConfluenceTestUtil:
 
         Prepares a minimum number of required configuration values into a
         dictionary for unit tests to extend. This dictionary can be passed into
-        a Sphinx applicaiton instance.
+        a Sphinx application instance.
         """
         config = {}
         config['extensions'] = [EXT_NAME]
         config['confluence_publish'] = False
         config['confluence_space_name'] = 'unit-test'
+        # support pre-Sphinx v2.0 installations which default to 'contents'
+        config['master_doc'] = 'index' 
         return config
 
     @staticmethod

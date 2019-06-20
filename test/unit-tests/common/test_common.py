@@ -4,6 +4,7 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 from sphinxcontrib_confluencebuilder_util import EXT_NAME
 import os
@@ -29,8 +30,9 @@ class TestConfluenceCommon(unittest.TestCase):
             else:
                 self.extensions = list(app._extensions.keys())
 
-    def _assertExpectedWithOutput(self, name):
-        _.assertExpectedWithOutput(self, name, self.expected, self.doc_dir)
+    def _assertExpectedWithOutput(self, name, expected=None):
+        expected = expected if expected else self.expected
+        _.assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
     def test_admonitions(self):
         self._assertExpectedWithOutput('admonitions')
@@ -47,9 +49,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_citations(self):
         self._assertExpectedWithOutput('citations')
 
-    def test_contents(self):
-        self._assertExpectedWithOutput('contents')
-
     def test_definition_lists(self):
         self._assertExpectedWithOutput('definition-lists')
 
@@ -63,7 +62,11 @@ class TestConfluenceCommon(unittest.TestCase):
         self._assertExpectedWithOutput('epigraph')
 
     def test_figure(self):
-        self._assertExpectedWithOutput('figure')
+        if DEFAULT_ALIGNMENT == 'center':
+            expected = self.expected + '-center'
+            self._assertExpectedWithOutput('figure', expected)
+        else:
+            self._assertExpectedWithOutput('figure')
 
     def test_footnotes(self):
         self._assertExpectedWithOutput('footnotes')
@@ -74,6 +77,9 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_image(self):
         self._assertExpectedWithOutput('image')
+
+    def test_index(self):
+        self._assertExpectedWithOutput('index')
 
     def test_lists(self):
         self._assertExpectedWithOutput('lists')
