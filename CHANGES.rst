@@ -87,7 +87,7 @@
 * purging support
 * use macros for admonitions
 * (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
-  tonybaloney/sphinxcontrib-confluencebuilder#10)
+  sphinx-contrib/confluencebuilder#10)
 
 0.4.0 (2017-02-21)
 ==================

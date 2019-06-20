@@ -142,5 +142,5 @@ This Code of Conduct is adapted from the `Contributor Covenant`_, version 1.4.
 
 .. _Contributor Covenant: http://contributor-covenant.org/version/1/4/
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
-.. _issue tracker: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues
-.. _pull requests: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/pulls
+.. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
+.. _pull requests: https://github.com/sphinx-contrib/confluencebuilder/pulls

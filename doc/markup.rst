@@ -88,7 +88,7 @@ If a markup type and/or extension is not listed in the above, is not working as
 expected or brings up another concern, feel free to bring up an issue:
 
    | Atlassian Confluence Builder for Confluence - Issues
-   | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues
+   | https://github.com/sphinx-contrib/confluencebuilder/issues
 
 .. _code block macro: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html

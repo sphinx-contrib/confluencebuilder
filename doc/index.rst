@@ -7,7 +7,7 @@ publish them to a Confluence instance.
 * License: BSD-2-Clause
 * Confluence_ Cloud or Server |supported_confluence_ver| with  Python_
   |supported_python_ver|
-* Home: https://github.com/tonybaloney/sphinxcontrib-confluencebuilder
+* Home: https://github.com/sphinx-contrib/confluencebuilder
 * Documentation: http://sphinxcontrib-confluencebuilder.readthedocs.io
 
 documentation contents

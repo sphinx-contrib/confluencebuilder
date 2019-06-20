@@ -122,4 +122,4 @@ Having trouble or concerns using this extension? Do not hesitate to bring up an
 issue:
 
    | Atlassian Confluence Builder for Confluence - Issues
-   | https://github.com/tonybaloney/sphinxcontrib-confluencebuilder/issues
+   | https://github.com/sphinx-contrib/confluencebuilder/issues
