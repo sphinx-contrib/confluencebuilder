@@ -4,13 +4,12 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-import os
 from collections import namedtuple
-
-import unittest
-
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil, EXT_NAME
 from sphinxcontrib.confluencebuilder.translator import ConfluenceTranslator
+from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from sphinxcontrib_confluencebuilder_util import EXT_NAME
+import os
+import unittest
 
 Reporter = namedtuple('Reporter', 'warning')
 
@@ -22,15 +21,18 @@ class DummyDocument(dict):
 class TestConfluenceTranslator(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        # prepare a dummy application; no need to actually build
-        self.config = { 'extensions': EXT_NAME }
+        self.config = _.prepareConfiguration()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
-        self.doc_dir, self.doctree_dir = ConfluenceTestUtil.prepareDirectories('config-dummy')
 
     def test_docname_and_docparent(self):
-        with ConfluenceTestUtil.prepareSphinx(self.mock_ds, self.doc_dir, self.doctree_dir, self.config) as app:
-            translator = ConfluenceTranslator(DummyDocument(os.path.join(self.mock_ds, 'foo', 'bar' , 'baz.rst')), app.builder)
+        mock_ds = os.path.join(self.test_dir, 'dataset-common')
+        doc_dir, doctree_dir = _.prepareDirectories('config-dummy')
+        mock_docpath = os.path.join(mock_ds, 'foo', 'bar' , 'baz.rst')
+        doc = DummyDocument(mock_docpath)
+
+        # prepare a dummy application; no need to actually build
+        with _.prepareSphinx(mock_ds, doc_dir, doctree_dir, self.config) as app:
+            translator = ConfluenceTranslator(doc, app.builder)
 
         self.assertEqual(translator.docname, 'foo/bar/baz')
         self.assertEqual(translator.docparent, 'foo/bar/')
