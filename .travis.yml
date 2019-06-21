@@ -14,12 +14,6 @@ matrix:
     env: TOXENV=py27-sphinx17
   - python: "2.7"
     env: TOXENV=py27-sphinx18
-  - python: "3.4"
-    env: TOXENV=py34-sphinx16
-  - python: "3.4"
-    env: TOXENV=py34-sphinx17
-  - python: "3.4"
-    env: TOXENV=py34-sphinx18
   - python: "3.5"
     env: TOXENV=py35-sphinx16
   - python: "3.5"

@@ -27,7 +27,7 @@ publish them to a Confluence instance.
 Requirements
 ============
 
-* Python_ 2.7 or 3.4+
+* Python_ 2.7 or 3.5+
 * Requests_ 2.14.0+
 * Sphinx_ 1.6.3+
 
