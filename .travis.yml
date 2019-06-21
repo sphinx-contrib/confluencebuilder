@@ -1,5 +1,11 @@
 language: python
 
+cache: pip
+
+branches:
+  only:
+  - master
+
 matrix:
   include:
   - python: "2.7"
@@ -62,3 +68,6 @@ install:
 
 script:
  - tox
+
+notifications:
+  email: false
