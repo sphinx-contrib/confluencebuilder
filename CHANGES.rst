@@ -1,3 +1,14 @@
+master
+======
+
+* fixed issues when using hierarchy on sphinx 2.1+ (new citations domain)
+* support default alignment in sphinx 2.1+
+
+1.1.0 (2019-03-16)
+==================
+
+* repackaged release (see sphinx-contrib/confluencebuilder#192)
+
 1.0.0 (2019-03-14)
 ==================
 
