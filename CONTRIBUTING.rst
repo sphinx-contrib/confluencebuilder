@@ -65,6 +65,33 @@ While maintainers will help strive to review, merge changes and provide support
 (when possible), the process may take some time. Please be patient and happy
 coding.
 
+guidelines
+----------
+
+This extension will support various Python interpreter versions, various Sphinx
+versions and various Confluence versions. The goal of this extension is to
+include support for all stable Python interpreters and Confluence versions which
+have yet to be marked as end-of-life (more flexibility will be given for Python
+2.7 due to systems like RHEL which may still use this interpreter by default;
+ideally Python 2.7 will have continued support in this extension for at least
+3-6 months after being marked as end-of-life). While multiple Sphinx versions
+will be supported, a maximum of only five major-minor trees will be supported at
+a given time.
+
+`PEP 8`_ is a standard styling guide for Python projects and is recommended for
+considerations when making contributions. On that note, please read the
+following:
+
+- Line lengths are recommended to be at maximum 79 characters (relaxed to even
+  80 characters) for implementation. This option is not explicitly enforced in
+  styling checks primarily since there can be valid cases where lines may exceed
+  such limits (e.g. a long URL in comments).
+- The recommendation of two blank lines (in various scenarios) are ignored.
+  Apply appropriate blank lines where it makes sense in the implementation.
+- Avoid multiple imports on a single line (even for ``from ...`` usages). This
+  is to help long term maintenance of imports with minimal clashing between
+  various modules/types/etc. being used.
+
 Code of Conduct
 ===============
 
@@ -142,5 +169,6 @@ This Code of Conduct is adapted from the `Contributor Covenant`_, version 1.4.
 
 .. _Contributor Covenant: http://contributor-covenant.org/version/1/4/
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
+.. _PEP 8: https://www.python.org/dev/peps/pep-0008
 .. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
 .. _pull requests: https://github.com/sphinx-contrib/confluencebuilder/pulls
