@@ -115,7 +115,7 @@ class ConfluenceTestUtil:
 
     @staticmethod
     @contextmanager
-    def prepareSphinx(src_dir, out_dir, doctree_dir, config):
+    def prepareSphinx(src_dir, out_dir, doctree_dir, config=None):
         """
         prepare a sphinx application instance
 
@@ -130,23 +130,24 @@ class ConfluenceTestUtil:
             nocolor()
 
         sts = ConfluenceTestUtil.default_sphinx_status
+        conf = dict(config) if config else None
+        conf_dir = src_dir if not conf else None
 
         with docutils_namespace():
             app = Sphinx(
                 src_dir,                # output for document sources
-                None,                   # ignore configuration directory
+                conf_dir,               # ignore configuration directory
                 out_dir,                # output for generated documents
                 doctree_dir,            # output for doctree files
                 ConfluenceBuilder.name, # use this extension's builder
-                confoverrides=dict(config),
-                                        # load provided configuration (volatile)
+                confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
                 warning=sys.stderr)     # warnings output
 
             yield app
 
     @staticmethod
-    def buildSphinx(src_dir, out_dir, doctree_dir, config):
+    def buildSphinx(src_dir, out_dir, doctree_dir, config=None):
         """
         prepare a sphinx application instance
 

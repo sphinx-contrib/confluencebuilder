@@ -1,0 +1,6 @@
+# ignore all in sandbox
+*
+
+# with the exceptions below
+!.gitignore
+!README
