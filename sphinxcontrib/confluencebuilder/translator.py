@@ -18,6 +18,7 @@ from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
 from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
+from sphinx.util.osutil import canon_path
 import io
 import posixpath
 import sys
@@ -43,7 +44,7 @@ class ConfluenceTranslator(BaseTranslator):
 
         # acquire the active document name from the builder
         assert 'source' in document
-        self.docname = self.builder.env.path2doc(document['source'])
+        self.docname = canon_path(self.builder.env.path2doc(document['source']))
 
         # determine the active document's parent path to assist it title mapping
         # for relative document uris
@@ -1381,7 +1382,7 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_desc_name(self, node):
         self.body.append(self.context.pop()) # code
         self.body.append(self.context.pop()) # strong
-        
+
         if (self.can_anchor
                 and node.parent
                 and getattr(node.parent.next_node(), 'tagname', None) == 'desc_annotation'
