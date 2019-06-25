@@ -1,6 +1,7 @@
 master
 ======
 
+* fixed issue with document names with path separators for windows users
 * fixed issues when using hierarchy on sphinx 2.1+ (new citations domain)
 * support default alignment in sphinx 2.1+
 
