@@ -7,6 +7,7 @@
 from __future__ import unicode_literals
 from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
+from .nodes import ConfluenceNavigationNode
 from .state import ConfluenceState
 from .std.confluence import FCMMO
 from .std.confluence import INDENT
@@ -1340,6 +1341,28 @@ class ConfluenceTranslator(BaseTranslator):
             self._visit_info(node)
 
     depart_versionmodified = _depart_admonition
+
+    # -----------------------------------------
+    # sphinx -- extension -- confluence builder
+    # -----------------------------------------
+
+    def visit_ConfluenceNavigationNode(self, node):
+        if node.bottom:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True,
+                **{'style': 'margin-top: 30px'}))
+
+        self.body.append(self._start_tag(node, 'p', suffix=self.nl,
+            **{'style': 'text-align: right'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_ConfluenceNavigationNode(self, node):
+        self.body.append(self.context.pop()) # p
+
+        if node.top:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True,
+                **{'style': 'margin-bottom: 30px'}))
 
     # ------------------------------
     # sphinx -- extension -- autodoc
