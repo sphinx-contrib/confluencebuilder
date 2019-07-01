@@ -38,7 +38,7 @@ minimalistic
 ^^^^^^^^^^^^
 
 For a minimalistic setup, create a new folder for the new documentation and
-configuration to be used. Create a document named ``contents.rst`` with the
+configuration to be used. Create a document named ``index.rst`` with the
 following content:
 
 .. code-block:: rst
