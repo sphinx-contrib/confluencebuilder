@@ -1359,6 +1359,13 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_desc_signature(self, node):
         self.body.append(self.context.pop()) # dt
 
+    def visit_desc_signature_line(self, node):
+        self.body.append(self._start_tag(node, 'dt'))
+        self.context.append(self._end_tag(node))
+
+    def depart_desc_signature_line(self, node):
+        self.body.append(self.context.pop()) # dt
+
     def visit_desc_annotation(self, node):
         self.body.append(self._start_tag(node, 'em'))
         self.context.append(self._end_tag(node, suffix=''))
@@ -1551,6 +1558,9 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_start_of_file(self, node):
         pass
+
+    def visit_toctree(self, node):
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
