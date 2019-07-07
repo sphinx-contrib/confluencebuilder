@@ -236,6 +236,25 @@ An example publish prefix is as follows:
 
    confluence_publish_prefix = 'prefix-'
 
+.. _confluence_publish_postfix:
+
+confluence_publish_postfix
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Same as `confluence_publish_prefix_` but added at then end of every published page title.
+
+An example publish postfix is as follows:
+
+.. code-block:: python
+
+   confluence_publish_postfix = '- postfix'
+
+.. note::
+   For confluence server products: if the page name ends with any
+   non-alphanumeric character, the page url will be displayed with PageId format
+   instead of Pretty view format. More info in
+   :ref:`Confluence url formats <https://confluence.atlassian.com/confkb/the-differences-between-various-url-formats-for-a-confluence-page-278692715.html>`_.
+
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
 
