@@ -328,6 +328,52 @@ to ``True`` before taking effect.
 
    confluence_purge_from_master = False
 
+confluence_jira_servers
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides a dictionary of named JIRA servers to reference when using the `jira` and `jira_issue` directives. You can have
+0 or more named servers:
+
+.. code-block:: python
+
+    confluence_jira_servers = {
+        'server-1': {
+            'id': '<ID of JIRA server in Confluence>',
+            'name': '<Name of JIRA Server in Confluence>'
+        }
+    }
+
+The `id` and `name` field are supplied as the `server` and `serverId` values to the JIRA macro respectively.
+The directive can indicate which named server is used via the `server_name` option:
+
+.. code-block:: rst
+
+    .. jira_issue:: AN-151
+        :server_name: server-1
+
+    .. jira:: project = "AN"
+        :server_name: server-1
+
+It is possible to override the server supplied values directly on the `jira` and `jira_issue` directives:
+
+.. code-block:: rst
+
+    .. jira_issue:: AN-151
+        :server_name: server-1
+        :server: new-server-name
+
+    .. jira:: project = "AN"
+        :server_name: server-1
+        :server: new-server-name
+
+The configuration value is optional, and if it is not supplied, Confluence will match the issue key / JQL query against
+the default connected JIRA server.
+
+.. warning::
+    It is possible to provide server ids and names that aren't integrated with, and therefore not recognized by, your
+    Confluence installation. This plugin has no way to verify this information is correct, and will publish the
+    incorrectly configured macros to Confluence, which will not display properly
+
 .. _confluence_advanced_conf_auth:
 
 advanced configuration - authentication

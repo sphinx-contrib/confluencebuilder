@@ -118,3 +118,6 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_transitions(self):
         self._assertExpectedWithOutput('transitions')
+
+    def test_jira(self):
+        self._assertExpectedWithOutput('jira')

@@ -83,6 +83,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.can_children = not 'children' in restricted_macros
         self.can_code = not 'code' in restricted_macros
         self.can_viewfile = not 'viewfile' in restricted_macros
+        self.can_jira = not 'jira' in restricted_macros
 
         if (config.confluence_page_hierarchy
                 and config.confluence_adv_hierarchy_child_macro
@@ -1498,6 +1499,31 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_desc_content(self, node):
         self.body.append(self.context.pop()) # dd
+
+    def visit_jira(self, node):
+        self._visit_jira_node(node)
+
+    def depart_jira(self, node):
+        self._depart_jira_node(node)
+
+    def visit_jira_issue(self, node):
+        self._visit_jira_node(node)
+
+    def depart_jira_issue(self, node):
+        self._depart_jira_node(node)
+
+    def _visit_jira_node(self, node):
+        if self.can_jira:
+            self.body.append(self._start_ac_macro(node, 'jira'))
+
+            for k, v in node.config.items():
+                self.body.append(self._build_ac_parameter(node, k, str(v)))
+
+            self.context.append(self._end_ac_macro(node))
+
+    def _depart_jira_node(self, node):
+        if self.can_jira:
+            self.body.append(self.context.pop())
 
     # -----------------------------------------------------
     # docutils handling "to be completed" marked directives

@@ -8,6 +8,8 @@ from .builder import ConfluenceBuilder
 from .logger import ConfluenceLogger
 from .translator import ConfluenceTranslator
 from sphinx.writers.text import STDINDENT
+from .directives import jira_issue, jira, JIRADirective, JIRAIssueDirective
+from docutils import nodes
 import argparse
 
 __version__='1.2.0-dev0'
@@ -21,6 +23,11 @@ def main():
     parser.parse_args()
     parser.print_help()
     return 0
+
+def is_node_registered(node):
+    """Check the *node* is already registered.
+    This function was added in Sphinx 18, however, we have reproduced it here for backwards compatibilities sake"""
+    return hasattr(nodes.GenericNodeVisitor, 'visit_' + node.__name__)
 
 def setup(app):
     ConfluenceLogger.initialize()
@@ -123,6 +130,8 @@ def setup(app):
     app.add_config_value('confluence_publish_subset', [], False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
+    """Configuration for named JIRA Servers"""
+    app.add_config_value('confluence_jira_servers', {}, True)
 
     """(advanced - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""
@@ -135,6 +144,16 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
+
+    """JIRA directives"""
+    """Adds the custom nodes needed for JIRA directives"""
+    if not is_node_registered(jira):
+        app.add_node(jira)
+    if not is_node_registered(jira_issue):
+        app.add_node(jira_issue)
+    """Wires up the directives themselves"""
+    app.add_directive('jira', JIRADirective)
+    app.add_directive('jira_issue', JIRAIssueDirective)
 
     return {
         'version': __version__,
