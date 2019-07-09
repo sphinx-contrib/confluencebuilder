@@ -20,6 +20,7 @@ from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.locale import _
 from sphinx.util import status_iterator
@@ -64,6 +65,7 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
     format = 'confluence'
+    supported_image_types = StandaloneHTMLBuilder.supported_image_types
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
@@ -255,6 +257,7 @@ class ConfluenceBuilder(Builder):
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix,
                 self.config.confluence_publish_postfix)
+
             if docname in docnames:
                 # Only publish documents that Sphinx asked to prepare
                 self.publish_docnames.append(docname)
@@ -310,6 +313,9 @@ class ConfluenceBuilder(Builder):
                     except imgmath.MathExtError as exc:
                         ConfluenceLogger.warn('inline latex {}: {}'.format(
                             node.astext(), exc))
+
+            # for every doctree, pick the best image candidate
+            self.post_process_images(doctree)
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
