@@ -1,0 +1,6 @@
+Documentation
+=============
+
+.. toctree::
+
+   subindex

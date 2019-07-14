@@ -8,6 +8,7 @@ from contextlib import contextmanager
 from sphinx.application import Sphinx
 from sphinx.util.console import nocolor, color_terminal
 from sphinx.util.docutils import docutils_namespace
+from sphinx import __version__ as sphinx_version
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 import difflib
 import io
@@ -15,6 +16,8 @@ import os
 import shutil
 import sys
 import unittest
+from pkg_resources import parse_version
+import platform
 
 """
 full extension name
@@ -158,3 +161,26 @@ class ConfluenceTestUtil:
         with ConfluenceTestUtil.prepareSphinx(
                 src_dir, out_dir, doctree_dir, config) as app:
             app.build(force_all=True)
+
+    @staticmethod
+    def skip_test_function_if(skip_condition):
+        ''' decorator of decorator to receive the condition as argument '''
+        def decorator(func):
+            def wrapper(*args, **kwargs):
+                if skip_condition:
+                    return lambda : None  # do nothing
+                return func(*args, **kwargs)
+            return wrapper
+        return decorator
+
+    @staticmethod
+    def minimum_python_version(min_version):
+        skip_condition = parse_version(platform.python_version()) < \
+                         parse_version(min_version)
+        return ConfluenceTestUtil.skip_test_function_if(skip_condition)
+
+    @staticmethod
+    def minimum_sphinx_version(min_version):
+        skip_condition = parse_version(sphinx_version) < \
+                         parse_version(min_version)
+        return ConfluenceTestUtil.skip_test_function_if(skip_condition)

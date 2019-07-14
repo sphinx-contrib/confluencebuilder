@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="classNutshell" kind="class" language="C++" prot="public">
+    <compoundname>Nutshell</compoundname>
+    <includes refid="fakec_09_09code_8h" local="no">fakec++code.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classNutshell_1ae42034231cf912d095d57cbeed6cda79" prot="public" static="no">
+        <name>Tool</name>
+        <enumvalue id="classNutshell_1ae42034231cf912d095d57cbeed6cda79ad6ed1c9289f0734f74d197b967effb2c" prot="public">
+          <name>kHammer</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>What? It does the job. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classNutshell_1ae42034231cf912d095d57cbeed6cda79ad32e3ec374a927a0b6edf29d51e6fcf9" prot="public">
+          <name>kNutCrackers</name>
+          <briefdescription>
+<para>Boring. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classNutshell_1ae42034231cf912d095d57cbeed6cda79a1c6cc79780165c195ff7cb7384aba51a" prot="public">
+          <name>kNinjaThrowingStars</name>
+          <briefdescription>
+<para>Stealthy. </para>          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Our tool set. </para>        </briefdescription>
+        <detaileddescription>
+<para>The various tools we can opt to use to crack this particular nut </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="16" column="1" bodyfile="fakec++code.h" bodystart="15" bodyend="20"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classNutshell_1a144928f8a485dbe64a4db63c2ca5a200" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Nutshell::m_isCracked</definition>
+        <argsstring></argsstring>
+        <name>m_isCracked</name>
+        <briefdescription>
+<para>Our cracked state. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="42" column="1" bodyfile="fakec++code.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classNutshell_1a68edae1c44c7a85b889b0cf88e79939f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Nutshell::Nutshell</definition>
+        <argsstring>()</argsstring>
+        <name>Nutshell</name>
+        <briefdescription>
+<para><ref refid="classNutshell" kindref="compound">Nutshell</ref> constructor. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="23" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classNutshell_1aa7e84b812e4489584093a76da864297e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Nutshell::~Nutshell</definition>
+        <argsstring>()</argsstring>
+        <name>~Nutshell</name>
+        <briefdescription>
+<para><ref refid="classNutshell" kindref="compound">Nutshell</ref> destructor. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="26" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classNutshell_1a57fc2641156575ef8d655b6c90a1a17d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Nutshell::crack</definition>
+        <argsstring>(Tool tool)</argsstring>
+        <name>crack</name>
+        <param>
+          <type><ref refid="classNutshell_1ae42034231cf912d095d57cbeed6cda79" kindref="member">Tool</ref></type>
+          <declname>tool</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Crack that shell with specified tool</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tool</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the tool with which to crack the nut </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="32" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classNutshell_1a510c746ef3f7c1b54139124afa657b66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Nutshell::isCracked</definition>
+        <argsstring>()</argsstring>
+        <name>isCracked</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether or not the nut is cracked </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fakec++code.h" line="37" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>With a little bit of a elaboration, should you feel it necessary. </para>    </detaileddescription>
+    <location file="fakec++code.h" line="10" column="1" bodyfile="fakec++code.h" bodystart="9" bodyend="44"/>
+    <listofallmembers>
+      <member refid="classNutshell_1a57fc2641156575ef8d655b6c90a1a17d" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>crack</name></member>
+      <member refid="classNutshell_1a510c746ef3f7c1b54139124afa657b66" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>isCracked</name></member>
+      <member refid="classNutshell_1ae42034231cf912d095d57cbeed6cda79ad6ed1c9289f0734f74d197b967effb2c" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>kHammer</name></member>
+      <member refid="classNutshell_1ae42034231cf912d095d57cbeed6cda79a1c6cc79780165c195ff7cb7384aba51a" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>kNinjaThrowingStars</name></member>
+      <member refid="classNutshell_1ae42034231cf912d095d57cbeed6cda79ad32e3ec374a927a0b6edf29d51e6fcf9" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>kNutCrackers</name></member>
+      <member refid="classNutshell_1a144928f8a485dbe64a4db63c2ca5a200" prot="private" virt="non-virtual"><scope>Nutshell</scope><name>m_isCracked</name></member>
+      <member refid="classNutshell_1a68edae1c44c7a85b889b0cf88e79939f" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>Nutshell</name></member>
+      <member refid="classNutshell_1ae42034231cf912d095d57cbeed6cda79" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>Tool</name></member>
+      <member refid="classNutshell_1aa7e84b812e4489584093a76da864297e" prot="public" virt="non-virtual"><scope>Nutshell</scope><name>~Nutshell</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
