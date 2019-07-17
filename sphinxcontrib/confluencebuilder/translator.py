@@ -16,6 +16,7 @@ from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
+from sphinx.locale import _
 from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.util.osutil import canon_path
@@ -669,6 +670,9 @@ class ConfluenceTranslator(BaseTranslator):
     def _visit_tip(self, node):
         self._visit_admonition(node, 'tip')
 
+    def _visit_todo_node(self, node):
+        self._visit_admonition(node, 'info', title=_('Todo'))
+
     def _visit_warning(self, node):
         self._visit_admonition(node, 'warning')
 
@@ -688,6 +692,8 @@ class ConfluenceTranslator(BaseTranslator):
     depart_note = _depart_admonition
     visit_tip = _visit_tip
     depart_tip = _depart_admonition
+    visit_todo_node = _visit_todo_node
+    depart_todo_node = _depart_admonition
     visit_warning = _visit_warning
     depart_warning = _depart_admonition
 
