@@ -216,6 +216,18 @@ If a parent page is not set, consider using the |confluence_master_homepage|_
 option as well. Note that the page's name can be case-sensitive in most
 (if not all) versions of Confluence.
 
+confluence_prev_next_buttons_location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A string value to where to include previous/next buttons (if any) based on the
+detected order of documents to be included in processing. Values accepted are
+either ``bottom``, ``both``, ``top`` or ``None``. By default, no previous/next
+links are generated with a value of ``None``.
+
+.. code-block:: python
+
+   confluence_prev_next_buttons_location = 'top'
+
 .. _confluence_publish_prefix:
 
 confluence_publish_prefix

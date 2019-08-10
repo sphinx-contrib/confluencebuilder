@@ -9,6 +9,7 @@ from .assets import ConfluenceAssetManager
 from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
+from .nodes import ConfluenceNavigationNode
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
 from .util import ConfluenceUtil
@@ -20,11 +21,11 @@ from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.errors import ExtensionError
+from sphinx.locale import _
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
 import io
 import sys
-
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -112,6 +113,8 @@ class ConfluenceBuilder(Builder):
         # Function to convert the docname to a relative URI.
         def link_transform(docname):
             return docname + self.link_suffix
+
+        self.prev_next_loc = self.config.confluence_prev_next_buttons_location
 
         if self.config.confluence_file_transform is not None:
             self.file_transform = self.config.confluence_file_transform
@@ -201,6 +204,18 @@ class ConfluenceBuilder(Builder):
         #     depth value)
         self.process_tree_structure(
             ordered_docnames, self.config.master_doc, traversed)
+
+        # track relations between accepted documents
+        #
+        # Prepares a relation mapping between each non-orphan documents which
+        # can be used by navigational elements.
+        prevdoc = ordered_docnames[0] if ordered_docnames else None
+        self.nav_next = {}
+        self.nav_prev = {}
+        for docname in ordered_docnames[1:]:
+            self.nav_prev[docname] = prevdoc
+            self.nav_next[prevdoc] = docname
+            prevdoc = docname
 
         # add orphans (if any) to the publish list
         ordered_docnames.extend(x for x in docnames if x not in traversed)
@@ -295,6 +310,18 @@ class ConfluenceBuilder(Builder):
     def write_doc(self, docname, doctree):
         if docname in self.omitted_docnames:
             return
+
+        if self.prev_next_loc in ('top', 'both'):
+            navnode = self._build_navigation_node(docname)
+            if navnode:
+                navnode.top = True
+                doctree.insert(0, navnode)
+
+        if self.prev_next_loc in ('bottom', 'both'):
+            navnode = self._build_navigation_node(docname)
+            if navnode:
+                navnode.bottom = True
+                doctree.append(navnode)
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:
@@ -495,6 +522,42 @@ class ConfluenceBuilder(Builder):
     def cleanup(self):
         if self.publish:
             self.publisher.disconnect()
+
+    def _build_navigation_node(self, docname):
+        """
+        build a navigation node for a document
+
+        Requests to build a navigation node for a provided document name. If
+        this document has no navigational hints to apply, this method will
+        return a `None` value.
+
+        Args:
+            docname: the document name
+
+        Returns:
+            returns a navigation node; ``None`` if no nav-node for document
+        """
+        if docname not in self.nav_prev and docname not in self.nav_next:
+            return None
+
+        navnode = ConfluenceNavigationNode()
+
+        if docname in self.nav_prev:
+            prev_label = '← ' + _('Previous')
+            reference = nodes.reference(prev_label, prev_label, internal=True,
+                refuri=self.nav_prev[docname])
+            navnode.append(reference)
+
+        if docname in self.nav_prev and docname in self.nav_next:
+            navnode.append(nodes.Text(' | '))
+
+        if docname in self.nav_next:
+            next_label = _('Next') + ' →'
+            reference = nodes.reference(next_label, next_label, internal=True,
+                refuri=self.nav_next[docname])
+            navnode.append(reference)
+
+        return navnode
 
     def _find_title_element(self, doctree):
         """

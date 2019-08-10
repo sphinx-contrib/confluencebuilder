@@ -110,6 +110,17 @@ the 'confluence_parent_page' option. Ensure the name of the parent page name
 is provided as well.
 """)
 
+            prev_next_loc = c.confluence_prev_next_buttons_location
+            if prev_next_loc and prev_next_loc not in ('bottom', 'both', 'top'):
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""prev-next button location invalid
+
+When defining the previous/next button locations, only the following values are
+permitted: bottom, top, both, or None.
+""")
+
             if not c.confluence_server_url:
                 errState = True
                 if log:
