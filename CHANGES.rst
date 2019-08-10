@@ -5,6 +5,7 @@ master
 * fixed issue with document names with path separators for windows users
 * fixed issues when using hierarchy on sphinx 2.1+ (new citations domain)
 * support default alignment in sphinx 2.1+
+* support ``sphinx.ext.todo``
 
 1.1.0 (2019-03-16)
 ==================
