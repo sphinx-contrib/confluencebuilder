@@ -517,10 +517,21 @@ class ConfluenceTranslator(BaseTranslator):
         else:
             num = 'false'
 
+        firstline = None
+        if num == 'true':
+            try:
+                firstline = node.attributes['highlight_args']['linenostart']
+            except KeyError:
+                pass
+
         if self.can_code:
             self.body.append(self._start_ac_macro(node, 'code'))
             self.body.append(self._build_ac_parameter(node, 'language', lang))
             self.body.append(self._build_ac_parameter(node, 'linenumbers', num))
+            if firstline is not None and firstline > 1:
+                self.body.append(
+                    self._build_ac_parameter(node, 'firstline', str(firstline))
+                )
             self.body.append(self._start_ac_plain_text_body_macro(node))
             self.body.append(self._escape_cdata(data))
             self.body.append(self._end_ac_plain_text_body_macro(node))

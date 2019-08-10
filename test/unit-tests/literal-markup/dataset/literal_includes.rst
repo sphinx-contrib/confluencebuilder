@@ -22,3 +22,7 @@ literal include tests
 .. highlight:: py
 
 .. literalinclude:: assets/example.py
+
+.. literalinclude:: assets/example.py
+    :pyobject: main
+    :lineno-match:
