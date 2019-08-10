@@ -213,7 +213,8 @@ class ConfluenceBuilder(Builder):
                 continue
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
-                self.config.confluence_publish_prefix)
+                self.config.confluence_publish_prefix,
+                self.config.confluence_publish_postfix)
             if docname in docnames:
                 # Only publish documents that Sphinx asked to prepare
                 self.publish_docnames.append(docname)

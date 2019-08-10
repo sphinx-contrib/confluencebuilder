@@ -66,7 +66,7 @@ class ConfluenceState:
         ConfluenceLogger.verbose("mapping %s to target: %s" % (refid, target))
 
     @staticmethod
-    def registerTitle(docname, title, prefix = None):
+    def registerTitle(docname, title, prefix=None, postfix=None):
         """
         register the title for the provided document name
 
@@ -77,11 +77,14 @@ class ConfluenceState:
         a document's title name name, so it may provide a document's contents
         and target title when passed to the publish operation.
 
-        If a prefix value is provided, it will be added to the beginning of the
-        provided title value.
+        If a prefix (or postfix) value is provided, it will be added to the
+        beginning (or at the end) of the provided title value.
         """
         if prefix:
             title = prefix + title
+
+        if postfix:
+            title += postfix
 
         if len(title) > CONFLUENCE_MAX_TITLE_LEN:
             title = title[0:CONFLUENCE_MAX_TITLE_LEN]
