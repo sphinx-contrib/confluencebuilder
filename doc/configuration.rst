@@ -64,6 +64,11 @@ username value should be used:
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
+.. warning::
+
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   XML-RPC API support will be removed from this extension in v1.3.
+
 The URL for Confluence. The URL should be prefixed with ``https://`` or
 ``http://`` (depending on the URL target). The target API folder should not be
 included in the URL (for example, excluding ``/rest/api/`` or ``/rpc/xmlrpc/``).
@@ -527,7 +532,8 @@ confluence_disable_rest
 .. warning::
 
    It is not recommended to use this option with a value of ``True`` as the
-   XML-RPC API has been deprecated by Atlassian. Only use if required.
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   This configuration option will have no effect in v1.3. Only use if required.
 
 A boolean value to explicitly disable any REST API calls. This extension has the
 ability to publish using either Confluence's REST or XML-RPC API calls. When
@@ -562,6 +568,11 @@ when making a publish request. By default, this option is set to ``False``.
 
 confluence_disable_xmlrpc
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   XML-RPC API support will be removed from this extension in v1.3.
 
 A boolean value to explicitly disable any XML-RPC API calls. This extension has
 the ability to publish using either Confluence's REST or XML-RPC API calls. When
