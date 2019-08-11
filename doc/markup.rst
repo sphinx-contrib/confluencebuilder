@@ -80,6 +80,7 @@ extensions
 The following extensions are supported:
 
  - `sphinx.ext.autodoc`_
+ - `sphinx.ext.todo`_
 
 other
 -----
@@ -131,3 +132,4 @@ expected or brings up another concern, feel free to bring up an issue:
 .. _Sphinx Version Added: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-versionadded
 .. _Sphinx Version Changed: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-versionchanged
 .. _sphinx.ext.autodoc: http://www.sphinx-doc.org/en/stable/ext/autodoc.html
+.. _sphinx.ext.todo: https://www.sphinx-doc.org/en/master/usage/extensions/todo.html
