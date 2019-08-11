@@ -119,5 +119,5 @@ For a complete list of supported markup, consult the following:
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
 .. _Requests: https://pypi.python.org/pypi/requests
-.. _Sphinx: http://sphinx-doc.org/
+.. _Sphinx: https://www.sphinx-doc.org/
 .. _pip: https://pip.pypa.io/
