@@ -683,6 +683,11 @@ class ConfluenceTranslator(BaseTranslator):
         self._visit_admonition(node, 'tip')
 
     def _visit_todo_node(self, node):
+        if 'ids' in node and node['ids'] and self.can_anchor:
+            self.body.append(self._start_ac_macro(node, 'anchor'))
+            self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
+            self.body.append(self._end_ac_macro(node))
+
         self._visit_admonition(node, 'info', title=_('Todo'))
 
     def _visit_warning(self, node):
