@@ -675,9 +675,9 @@ seconds, the following can be used:
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
-.. _get_outdated_docs: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
-.. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
-.. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
-.. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
-.. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
+.. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
+.. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+.. _master_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-master_doc
+.. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
+.. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html

@@ -17,5 +17,5 @@ the following command:
    pip install sphinx_rtd_theme
 
 .. _Read the Docs: https://readthedocs.org/
-.. _Sphinx: http://sphinx-doc.org/
+.. _Sphinx: https://www.sphinx-doc.org/
 .. _sphinx_rtd_theme: https://github.com/rtfd/sphinx_rtd_theme#installation
