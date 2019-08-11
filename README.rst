@@ -63,7 +63,7 @@ Usage
 
 .. code-block:: shell
 
-    sphinx-build -b confluence _build/confluence -E -a
+    sphinx-build -b confluence . _build/confluence -E -a
         (or)
     python -m sphinx -b confluence . _build/confluence -E -a
 
