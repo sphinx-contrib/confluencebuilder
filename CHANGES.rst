@@ -1,11 +1,13 @@
 master
 ======
 
-* support 'firstline' parameter in the code block macro
 * fixed issue with document names with path separators for windows users
 * fixed issues when using hierarchy on sphinx 2.1+ (new citations domain)
-* support default alignment in sphinx 2.1+
+* support 'firstline' parameter in the code block macro
 * support ``sphinx.ext.todo``
+* support default alignment in sphinx 2.1+
+* support document postfixes
+* support previous/next navigation
 
 1.1.0 (2019-03-16)
 ==================
