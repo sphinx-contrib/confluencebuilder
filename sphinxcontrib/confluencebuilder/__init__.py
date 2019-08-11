@@ -66,10 +66,10 @@ def setup(app):
     app.add_config_value('confluence_parent_page', None, False)
     """Show previous/next buttons (bottom, top, both, None)."""
     app.add_config_value('confluence_prev_next_buttons_location', None, False)
-    """Prefix to apply to published pages."""
-    app.add_config_value('confluence_publish_prefix', None, False)
     """Postfix to apply to title of published pages."""
     app.add_config_value('confluence_publish_postfix', None, False)
+    """Prefix to apply to published pages."""
+    app.add_config_value('confluence_publish_prefix', None, False)
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
     """Enablement of purging legacy child pages from a master page."""
