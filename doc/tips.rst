@@ -65,7 +65,8 @@ is moved as a child of the container page:
 
 Users needing to restrict the extension from possibly mangling manually prepared
 content can use the ``confluence_publish_prefix``
-(:ref:`jump<confluence_publish_prefix>`) option.
+(:ref:`jump<confluence_publish_prefix>`) or ``confluence_publish_postfix``
+(:ref:`jump<confluence_publish_postfix>`) options.
 
 setting a publishing timeout
 ----------------------------

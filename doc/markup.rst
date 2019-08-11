@@ -80,6 +80,7 @@ extensions
 The following extensions are supported:
 
  - `sphinx.ext.autodoc`_
+ - `sphinx.ext.todo`_
 
 other
 -----
@@ -116,18 +117,19 @@ expected or brings up another concern, feel free to bring up an issue:
 .. _reStructuredText Sections: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#sections
 .. _reStructuredText Tables: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#tables
 .. _reStructuredText Transitions: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#transitions
-.. _Sphinx: http://sphinx-doc.org/
-.. _Sphinx Centered: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-centered
-.. _Sphinx Code Markup: http://www.sphinx-doc.org/en/stable/markup/code.html
-.. _Sphinx Deprecated: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-deprecated
-.. _Sphinx Download: http://www.sphinx-doc.org/en/stable/markup/inline.html#role-download
-.. _Sphinx Glossary: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-glossary
-.. _Sphinx Paragraph-level Markup: http://www.sphinx-doc.org/en/stable/markup/para.html
-.. _Sphinx Production List: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-productionlist
-.. _Sphinx Horizontal List: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-hlist
-.. _Sphinx Manpage: http://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-manpage
-.. _Sphinx Rubric: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-rubric
-.. _Sphinx TOC Tree Markup: http://www.sphinx-doc.org/en/stable/markup/toctree.html
-.. _Sphinx Version Added: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-versionadded
-.. _Sphinx Version Changed: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-versionchanged
-.. _sphinx.ext.autodoc: http://www.sphinx-doc.org/en/stable/ext/autodoc.html
+.. _Sphinx: http://www.sphinx-doc.org/
+.. _Sphinx Centered: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-centered
+.. _Sphinx Code Markup: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block
+.. _Sphinx Deprecated: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-deprecated
+.. _Sphinx Download: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-download
+.. _Sphinx Glossary: https://www.sphinx-doc.org/en/master/glossary.html
+.. _Sphinx Paragraph-level Markup: https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
+.. _Sphinx Production List: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-productionlist
+.. _Sphinx Horizontal List: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-hlist
+.. _Sphinx Manpage: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-manpage
+.. _Sphinx Rubric: http://docutils.sourceforge.net/docs/ref/rst/directives.html#rubric
+.. _Sphinx TOC Tree Markup: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
+.. _Sphinx Version Added: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-versionadded
+.. _Sphinx Version Changed: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-versionchanged
+.. _sphinx.ext.autodoc: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+.. _sphinx.ext.todo: https://www.sphinx-doc.org/en/master/usage/extensions/todo.html

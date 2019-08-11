@@ -33,7 +33,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ Cloud or Server 6.1+
+* Confluence_ Cloud or Server 6.4+
 
 Installing
 ==========
@@ -63,7 +63,7 @@ Usage
 
 .. code-block:: shell
 
-    sphinx-build -b confluence _build/confluence -E -a
+    sphinx-build -b confluence . _build/confluence -E -a
         (or)
     python -m sphinx -b confluence . _build/confluence -E -a
 
@@ -119,5 +119,5 @@ For a complete list of supported markup, consult the following:
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
 .. _Requests: https://pypi.python.org/pypi/requests
-.. _Sphinx: http://sphinx-doc.org/
+.. _Sphinx: https://www.sphinx-doc.org/
 .. _pip: https://pip.pypa.io/

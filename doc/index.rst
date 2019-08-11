@@ -8,7 +8,7 @@ publish them to a Confluence instance.
 * Confluence_ Cloud or Server |supported_confluence_ver| with  Python_
   |supported_python_ver|
 * Home: https://github.com/sphinx-contrib/confluencebuilder
-* Documentation: http://sphinxcontrib-confluencebuilder.readthedocs.io
+* Documentation: https://sphinxcontrib-confluencebuilder.readthedocs.io
 
 documentation contents
 ----------------------
@@ -26,4 +26,4 @@ documentation contents
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
-.. _Sphinx: http://sphinx-doc.org/
+.. _Sphinx: https://www.sphinx-doc.org/

@@ -64,6 +64,11 @@ username value should be used:
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
+.. warning::
+
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   XML-RPC API support will be removed from this extension in v1.3.
+
 The URL for Confluence. The URL should be prefixed with ``https://`` or
 ``http://`` (depending on the URL target). The target API folder should not be
 included in the URL (for example, excluding ``/rest/api/`` or ``/rpc/xmlrpc/``).
@@ -228,12 +233,36 @@ links are generated with a value of ``None``.
 
    confluence_prev_next_buttons_location = 'top'
 
+.. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
+.. _confluence_publish_postfix:
+
+confluence_publish_postfix
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If set, the postfix value is added to the title of all published documents. In
+Confluence, page names need to be unique for a space. A postfix can be set to
+either:
+
+* Add a unique naming schema to generated/published documents in a space which
+  has manually created pages; or,
+* Allow multiple published sets of documentation, each each with their own
+  postfix value.
+
+An example publish postfix is as follows:
+
+.. code-block:: python
+
+   confluence_publish_postfix = '-postfix'
+
+By default, no postfix is used. See also |confluence_publish_prefix|_.
+
+.. |confluence_publish_prefix| replace:: ``confluence_publish_prefix``
 .. _confluence_publish_prefix:
 
 confluence_publish_prefix
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If set, the prefix value is added to the title of all published document. In
+If set, the prefix value is added to the title of all published documents. In
 Confluence, page names need to be unique for a space. A prefix can be set to
 either:
 
@@ -248,24 +277,7 @@ An example publish prefix is as follows:
 
    confluence_publish_prefix = 'prefix-'
 
-.. _confluence_publish_postfix:
-
-confluence_publish_postfix
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Same as `confluence_publish_prefix_` but added at then end of every published page title.
-
-An example publish postfix is as follows:
-
-.. code-block:: python
-
-   confluence_publish_postfix = '- postfix'
-
-.. note::
-   For confluence server products: if the page name ends with any
-   non-alphanumeric character, the page url will be displayed with PageId format
-   instead of Pretty view format. More info in
-   :ref:`Confluence url formats <https://confluence.atlassian.com/confkb/the-differences-between-various-url-formats-for-a-confluence-page-278692715.html>`_.
+By default, no prefix is used. See also |confluence_publish_postfix|_.
 
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
@@ -527,7 +539,8 @@ confluence_disable_rest
 .. warning::
 
    It is not recommended to use this option with a value of ``True`` as the
-   XML-RPC API has been deprecated by Atlassian. Only use if required.
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   This configuration option will have no effect in v1.3. Only use if required.
 
 A boolean value to explicitly disable any REST API calls. This extension has the
 ability to publish using either Confluence's REST or XML-RPC API calls. When
@@ -562,6 +575,11 @@ when making a publish request. By default, this option is set to ``False``.
 
 confluence_disable_xmlrpc
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   XML-RPC API has been deprecated by Atlassian as well as in this extension.
+   XML-RPC API support will be removed from this extension in v1.3.
 
 A boolean value to explicitly disable any XML-RPC API calls. This extension has
 the ability to publish using either Confluence's REST or XML-RPC API calls. When
@@ -657,9 +675,9 @@ seconds, the following can be used:
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
-.. _get_outdated_docs: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
-.. _get_relative_uri: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
-.. _master_doc: http://www.sphinx-doc.org/en/stable/config.html#confval-master_doc
-.. _toctree: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
-.. _write_doc: http://www.sphinx-doc.org/en/stable/extdev/builderapi.html#sphinx.builders.Builder.write_doc
+.. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
+.. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+.. _master_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-master_doc
+.. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
+.. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
