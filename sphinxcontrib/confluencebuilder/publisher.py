@@ -92,6 +92,9 @@ class ConfluencePublisher():
                 self.use_rest = False
 
         if self.use_xmlrpc:
+            ConfluenceLogger.warn(
+                '(deprecated) attempting to authenticate using xml-rpc')
+
             try:
                 self.xmlrpc_transport = ConfluenceTransport(
                     self.server_url, self.proxy, self.timeout,
