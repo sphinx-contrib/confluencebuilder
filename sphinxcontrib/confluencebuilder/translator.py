@@ -658,11 +658,14 @@ class ConfluenceTranslator(BaseTranslator):
     # admonitions
     # -----------
 
-    def _visit_admonition(self, node, atype, title=None):
+    def _visit_admonition(self, node, atype, title=None, logo=True):
         if self.can_admonition:
             self.body.append(self._start_ac_macro(node, atype))
             if title:
                 self.body.append(self._build_ac_parameter(node, 'title', title))
+            if not logo:
+                self.body.append(
+                    self._build_ac_parameter(node, 'icon', 'false'))
             self.body.append(self._start_ac_rich_text_body_macro(node))
             self.context.append(self._end_ac_rich_text_body_macro(node) +
                 self._end_ac_macro(node))
@@ -693,6 +696,15 @@ class ConfluenceTranslator(BaseTranslator):
     def _visit_warning(self, node):
         self._visit_admonition(node, 'warning')
 
+    def visit_admonition(self, node):
+        title_node = node.traverse(nodes.title)
+        if title_node:
+            title = title_node[0].astext()
+            self._visit_admonition(node, 'info', title, logo=False)
+        else:
+            self._visit_admonition(node, 'info', logo=False)
+
+    depart_admonition = _depart_admonition
     visit_attention = _visit_note
     depart_attention = _depart_admonition
     visit_caution = _visit_note
