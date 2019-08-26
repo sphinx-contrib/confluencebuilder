@@ -5,6 +5,10 @@
 admonitions
 -----------
 
+.. admonition:: title
+
+   admonition
+
 .. attention::
 
    attention
