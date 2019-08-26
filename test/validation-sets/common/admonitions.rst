@@ -5,6 +5,10 @@ This page shows the usage of the `reStructuredText's admonitions`_ set.
 Admonitions are translated to respective `Confluence's informative macros`_
 (info, tip, etc.).
 
+.. admonition:: title
+
+   This is an "admonition" block message.
+
 .. attention::
 
    This is an "attention" block message.
