@@ -1184,8 +1184,7 @@ class ConfluenceTranslator(BaseTranslator):
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
-            image_key, _ = self.assets.interpretAssetKeyPath(node)
-            hosting_docname = self.assets.asset2docname(image_key)
+            image_key, hosting_docname = self.assets.fetch(node)
             hosting_doctitle = ConfluenceState.title(hosting_docname)
             hosting_doctitle = self._escape_sf(hosting_doctitle)
 
@@ -1215,8 +1214,7 @@ class ConfluenceTranslator(BaseTranslator):
             self.body.append(self._start_tag(node, 'a', **{'href': uri}))
             self.context.append(self._end_tag(node, suffix=''))
         else:
-            file_key, _ = self.assets.interpretAssetKeyPath(node)
-            hosting_docname = self.assets.asset2docname(file_key)
+            file_key, hosting_docname = self.assets.fetch(node)
             hosting_doctitle = ConfluenceState.title(hosting_docname)
             hosting_doctitle = self._escape_sf(hosting_doctitle)
 
