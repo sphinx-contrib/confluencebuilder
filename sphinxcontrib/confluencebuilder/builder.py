@@ -77,6 +77,13 @@ class ConfluenceBuilder(Builder):
         if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
 
+        if self.config.confluence_ask_user:
+            print('(request to accept username from interactive session)')
+            print(' Instance: ' + self.config.confluence_server_url)
+            self.config.confluence_server_user = input(' User: ')
+            if not self.config.confluence_server_user:
+                raise ConfluenceConfigurationError('no user provided')
+
         if self.config.confluence_ask_password:
             print('(request to accept password from interactive session)')
             print(' Instance: ' + self.config.confluence_server_url)
