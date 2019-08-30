@@ -74,7 +74,7 @@ def setup(app):
     app.add_config_value('confluence_purge', None, False)
     """Enablement of purging legacy child pages from a master page."""
     app.add_config_value('confluence_purge_from_master', None, False)
-    
+
     """(advanced-configuration - processing)"""
     """Filename suffix for generated files."""
     app.add_config_value('confluence_file_suffix', ".conf", False)
@@ -92,6 +92,8 @@ def setup(app):
     app.add_config_value('confluence_remove_title', True, False)
 
     """(advanced-configuration - publishing)"""
+    """Request for publish username to come from interactive session."""
+    app.add_config_value('confluence_ask_user', False, False)
     """Request for publish password to come from interactive session."""
     app.add_config_value('confluence_ask_password', False, False)
     """File/path to Certificate Authority"""

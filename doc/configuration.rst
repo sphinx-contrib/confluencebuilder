@@ -446,6 +446,16 @@ Note that some shell sessions may not be able to pull the password value
 properly from the user. For example, Cygwin/MinGW may not be able to accept a
 password unless invoked with ``winpty``.
 
+confluence_ask_user
+~~~~~~~~~~~~~~~~~~~
+
+Similar to ``confluence_ask_password`` but applies to ``confluence_server_user``
+
+.. code-block:: python
+
+   confluence_ask_user = False
+
+
 confluence_asset_override
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
