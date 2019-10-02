@@ -18,4 +18,6 @@ This is :sub:`subscript` text.
 
 This is :sup:`superscript` text.
 
+This is a :guilabel:`&guilabel`.
+
 .. _inline markup: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#inline-markup

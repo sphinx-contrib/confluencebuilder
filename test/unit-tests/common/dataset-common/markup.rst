@@ -16,3 +16,5 @@ markup
 :sub:`subscript`
 
 :sup:`superscript`
+
+:guilabel:`&guilabel`
