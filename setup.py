@@ -8,7 +8,7 @@ with open('README.rst', 'r') as readme_rst:
 requires = [
     'future>=0.16.0',
     'requests>=2.14.0',
-    'sphinx>=1.6.3',
+    'sphinx>=1.6.3'
     ]
 
 setup(

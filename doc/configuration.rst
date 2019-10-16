@@ -513,7 +513,12 @@ password unless invoked with ``winpty``.
 confluence_ask_user
 ~~~~~~~~~~~~~~~~~~~
 
-Similar to ``confluence_ask_password`` but applies to ``confluence_server_user``
+Provides an override for an interactive shell to request publishing documents
+using a user provided from the shell environment. While a
+user is typically defined in the option ``confluence_server_user``, select
+environments may wish to provide a way to provide a user without needing to
+modify documentation sources.
+By default, this option is disabled with a value of ``False``.
 
 .. code-block:: python
 
