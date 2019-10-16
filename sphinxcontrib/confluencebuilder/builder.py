@@ -80,7 +80,7 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_ask_user:
             print('(request to accept username from interactive session)')
             print(' Instance: ' + self.config.confluence_server_url)
-            self.config.confluence_server_user = input(' User: ')
+            self.config.confluence_server_user = input(' User [current-user-conf]: ')
             if not self.config.confluence_server_user:
                 raise ConfluenceConfigurationError('no user provided')
 
