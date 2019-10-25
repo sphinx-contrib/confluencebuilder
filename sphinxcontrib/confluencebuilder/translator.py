@@ -62,6 +62,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.nl = '\n'
         self.warn = document.reporter.warning
         self._building_footnotes = False
+        self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
         self._reference_context = []
@@ -128,6 +129,8 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_Text(self, node):
         text = node.astext()
+        if not self._literal:
+            text = text.replace(self.nl, ' ')
         text = self._escape_sf(text)
         self.body.append(text)
         raise nodes.SkipNode
@@ -487,6 +490,8 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------------------
 
     def visit_literal_block(self, node):
+        self._literal = True
+
         is_parsed_literal = node.rawsource != node.astext()
         if is_parsed_literal:
             self.body.append(self._start_tag(node, 'div', suffix=self.nl,
@@ -550,6 +555,8 @@ class ConfluenceTranslator(BaseTranslator):
         raise nodes.SkipNode
 
     def depart_literal_block(self, node):
+        self._literal = False
+
         # note: depart is only invoked for parsed-literals
         self.body.append(self.context.pop()) # code
         self.body.append(self.context.pop()) # pre
