@@ -112,8 +112,8 @@ Key of the space in Confluence to be used to publish generated documents to.
 
    confluence_space_name = 'MyAwesomeSpace'
 
-Note that the space name can be case-sensitive in most (if not all) versions of
-Confluence.
+Note that the space name can be **case-sensitive** in most (if not all) versions
+of Confluence.
 
 general configuration
 ---------------------
