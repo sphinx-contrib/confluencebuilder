@@ -1131,6 +1131,8 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
     def depart_figure(self, node):
+        # force clear from a floating confluence image
+        self.body.append('<div style="clear: both"> </div>')
         self.body.append(self.context.pop()) # <dynamic>
 
     def visit_image(self, node):
