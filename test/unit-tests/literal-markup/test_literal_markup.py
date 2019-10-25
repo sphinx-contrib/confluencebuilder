@@ -24,13 +24,11 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         self.doc_dir = doc_dir
 
     def test_code_blocks(self):
-        # skip code-block tests in Sphinx v1.8.x+ due to regression; when a new
-        # stable version is released, this can be re-enabled for the newer
-        # version and greater
-        #
-        # https://github.com/sphinx-contrib/confluencebuilder/issues/148
-        if parse_version(sphinx_version) > parse_version('1.7'):
-            raise unittest.SkipTest('not supported in sphinx-1.8.x+')
+        # skip code-block tests in Sphinx v1.8.x due to regression
+        #  https://github.com/sphinx-contrib/confluencebuilder/issues/148
+        if (parse_version(sphinx_version) >= parse_version('1.8') and
+                parse_version(sphinx_version) < parse_version('2.0')):
+            raise unittest.SkipTest('not supported in sphinx-1.8.x')
         _.assertExpectedWithOutput(
             self, 'code_blocks', self.expected, self.doc_dir)
 
