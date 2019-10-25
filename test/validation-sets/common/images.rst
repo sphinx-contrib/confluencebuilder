@@ -177,6 +177,7 @@ into a document.
 
 .. figure:: assets/confluence.png
    :alt: Confluence Logo
+   :align: left
 
    This is the caption of the figure (a simple paragraph).
 
