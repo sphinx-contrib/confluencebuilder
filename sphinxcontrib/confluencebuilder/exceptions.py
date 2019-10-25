@@ -39,6 +39,8 @@ class ConfluenceBadSpaceError(ConfluenceError):
             """---\n"""
             """The configured Confluence space does not appear to be """
             """valid: %s\n""" % space_name +
+            """\n"""
+            """Note: Confluence space names are case-sensitive.\n"""
             """---\n"""
         )
 
