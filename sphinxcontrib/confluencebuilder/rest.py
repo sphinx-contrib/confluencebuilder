@@ -80,8 +80,10 @@ class Rest:
             session.auth = (
                 config.confluence_server_user,
                 config.confluence_server_pass)
-        elif config.confluence_server_cookies:
+
+        if config.confluence_server_cookies:
             session.cookies.update(config.confluence_server_cookies)
+
         return session
 
     def get(self, key, params):
