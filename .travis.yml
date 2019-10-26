@@ -24,6 +24,8 @@ matrix:
     env: TOXENV=py35-sphinx20
   - python: "3.5"
     env: TOXENV=py35-sphinx21
+  - python: "3.5"
+    env: TOXENV=py35-sphinx22
   - python: "3.6"
     env: TOXENV=py36-sphinx16
   - python: "3.6"
@@ -34,6 +36,8 @@ matrix:
     env: TOXENV=py36-sphinx20
   - python: "3.6"
     env: TOXENV=py36-sphinx21
+  - python: "3.6"
+    env: TOXENV=py36-sphinx22
   - python: "3.7"
     env: TOXENV=py37-sphinx16
     dist: xenial
@@ -54,6 +58,9 @@ matrix:
     env: TOXENV=py37-sphinx21
     dist: xenial
     sudo: true
+  - python: "3.7"
+    env: TOXENV=py37-sphinx22
+    dist: xenial
   - python: "3.8"
     env: TOXENV=py38-sphinx16
     dist: bionic
@@ -68,6 +75,9 @@ matrix:
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx21
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx22
     dist: bionic
   - python: "3.6"
     env: TOXENV=pylint
