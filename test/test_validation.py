@@ -17,7 +17,7 @@ DEFAULT_TEST_DESC = 'test state'
 DEFAULT_TEST_KEY = 'test-holder'
 DEFAULT_TEST_SPACE = 'confluencebuilder'
 DEFAULT_TEST_URL = 'https://jdknight.atlassian.net/wiki/'
-DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder'
+DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder@jdknight.me'
 
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
