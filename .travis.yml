@@ -54,6 +54,21 @@ matrix:
     env: TOXENV=py37-sphinx21
     dist: xenial
     sudo: true
+  - python: "3.8"
+    env: TOXENV=py38-sphinx16
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx17
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx18
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx20
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx21
+    dist: bionic
   - python: "3.6"
     env: TOXENV=pylint
 
