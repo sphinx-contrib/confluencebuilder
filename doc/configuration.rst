@@ -51,6 +51,8 @@ username value should be used:
 
    confluence_server_pass = 'myawesomepassword'
 
+See also :ref:`advanced authentication options<confluence_advanced_conf_auth>`.
+
 .. caution::
 
    It is never recommended to store an API token or raw password into a
@@ -325,6 +327,26 @@ to ``True`` before taking effect.
 .. code-block:: python
 
    confluence_purge_from_master = False
+
+.. _confluence_advanced_conf_auth:
+
+advanced configuration - authentication
+---------------------------------------
+
+confluence_server_cookies
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A dictionary value which allows a user to pass key-value cookie information for
+authentication purposes. This is useful for users who need to authenticate with
+a single sign-on (SSO) provider to access a target Confluence instance. By
+default, no cookies are set with a value of ``None``.
+
+.. code-block:: python
+
+   confluence_server_cookies = {
+       'SESSION_ID': '<session id string>',
+       'U_ID': '<username>'
+   }
 
 advanced configuration - processing
 -----------------------------------
