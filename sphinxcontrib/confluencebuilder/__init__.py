@@ -44,8 +44,6 @@ def setup(app):
     app.add_config_value('confluence_server_pass', None, False)
     """Username to login to Confluence API with."""
     app.add_config_value('confluence_server_user', None, False)
-    """Cookie(s) to login to Confluence API with."""
-    app.add_config_value('confluence_server_cookies', None, False)
     """URL of the Confluence instance to publish to."""
     app.add_config_value('confluence_server_url', None, False)
     """Confluence Space to publish to."""
@@ -72,7 +70,11 @@ def setup(app):
     app.add_config_value('confluence_purge', None, False)
     """Enablement of purging legacy child pages from a master page."""
     app.add_config_value('confluence_purge_from_master', None, False)
-    
+
+    """(advanced-configuration - authentication)"""
+    """Cookie(s) to use for Confluence REST interaction."""
+    app.add_config_value('confluence_server_cookies', None, False)
+
     """(advanced-configuration - processing)"""
     """Filename suffix for generated files."""
     app.add_config_value('confluence_file_suffix', ".conf", False)
