@@ -1500,30 +1500,25 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_desc_content(self, node):
         self.body.append(self.context.pop()) # dd
 
-    def visit_jira(self, node):
-        self._visit_jira_node(node)
-
-    def depart_jira(self, node):
-        self._depart_jira_node(node)
-
-    def visit_jira_issue(self, node):
-        self._visit_jira_node(node)
-
-    def depart_jira_issue(self, node):
-        self._depart_jira_node(node)
+    # ------------------------------------------
+    # confluence-builder -- enhancements -- jira
+    # ------------------------------------------
 
     def _visit_jira_node(self, node):
-        if self.can_jira:
-            self.body.append(self._start_ac_macro(node, 'jira'))
+        if not self.can_jira:
+            raise nodes.SkipNode
 
-            for k, v in node.config.items():
-                self.body.append(self._build_ac_parameter(node, k, str(v)))
+        self.body.append(self._start_ac_macro(node, 'jira'))
 
-            self.context.append(self._end_ac_macro(node))
+        for k, v in node.config.items():
+            self.body.append(self._build_ac_parameter(node, k, str(v)))
 
-    def _depart_jira_node(self, node):
-        if self.can_jira:
-            self.body.append(self.context.pop())
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
+
+    visit_jira = _visit_jira_node
+    visit_jira_issue = _visit_jira_node
 
     # -----------------------------------------------------
     # docutils handling "to be completed" marked directives
