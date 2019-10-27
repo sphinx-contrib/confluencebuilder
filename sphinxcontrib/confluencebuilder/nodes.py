@@ -4,6 +4,7 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from collections import OrderedDict
 from docutils import nodes
 
 class ConfluenceNavigationNode(nodes.General, nodes.Element):
@@ -24,3 +25,41 @@ class ConfluenceNavigationNode(nodes.General, nodes.Element):
 
         self.bottom = False
         self.top = False
+
+class jira(nodes.Element, nodes.Structural):
+    """
+    jira (query) node
+
+    Defines a "JIRA" node to represent a Confluence JIRA macro configured to
+    display a prepared JQL query.
+
+    Args:
+        rawsource: raw text from which this element was constructed
+        *children: list of child nodes
+        **attributes: dictionary of attribute to apply to the element
+
+    Attributes:
+        config: dictionary of options to pass into a jira macro
+    """
+    def __init__(self, rawsource='', *children, **attributes):
+        nodes.Element.__init__(self, rawsource, *children, **attributes)
+        self.config = OrderedDict()
+
+class jira_issue(nodes.Element, nodes.Structural):
+    """
+    jira (single) issue node
+
+    Defines a "JIRA" node to represent a Confluence JIRA macro configured to
+    display a single JIRA issue.
+
+    Args:
+        rawsource: raw text from which this element was constructed
+        *children: list of child nodes
+        **attributes: dictionary of attribute to apply to the element
+
+    Attributes:
+        config: dictionary of options to pass into a jira macro
+    """
+    def __init__(self, rawsource='', *children, **attributes):
+        nodes.Element.__init__(self, rawsource, *children, **attributes)
+        self.config = OrderedDict()

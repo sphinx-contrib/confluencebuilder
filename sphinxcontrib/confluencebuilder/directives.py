@@ -4,6 +4,8 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from .nodes import jira
+from .nodes import jira_issue
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 from collections import OrderedDict
@@ -13,14 +15,6 @@ def snake_case_to_camel_case(s):
     s = ''.join(list(map(lambda x: x.capitalize(), s.split('_'))))
     s = s[0].lower() + s[1:]
     return s
-
-
-class jira(nodes.Element, nodes.Structural):
-    config = OrderedDict()
-
-
-class jira_issue(nodes.Element, nodes.Structural):
-    config = OrderedDict()
 
 
 class JIRABaseDirective(Directive):
