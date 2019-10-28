@@ -5,12 +5,15 @@
 """
 
 from .builder import ConfluenceBuilder
+from .directives import JiraDirective
+from .directives import JiraIssueDirective
 from .logger import ConfluenceLogger
+from .nodes import jira
+from .nodes import jira_issue
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
-from sphinx.writers.text import STDINDENT
-from .directives import jira_issue, jira, JIRADirective, JIRAIssueDirective
 from docutils import nodes
+from sphinx.writers.text import STDINDENT
 import argparse
 
 __version__='1.2.0-dev0'
@@ -148,8 +151,8 @@ def setup(app):
     if not ConfluenceUtil.is_node_registered(jira_issue):
         app.add_node(jira_issue)
     """Wires up the directives themselves"""
-    app.add_directive('jira', JIRADirective)
-    app.add_directive('jira_issue', JIRAIssueDirective)
+    app.add_directive('jira', JiraDirective)
+    app.add_directive('jira_issue', JiraIssueDirective)
 
     return {
         'version': __version__,

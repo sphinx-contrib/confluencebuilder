@@ -6,104 +6,117 @@
 
 from .nodes import jira
 from .nodes import jira_issue
-from docutils import nodes
-from docutils.parsers.rst import Directive, directives
-from collections import OrderedDict
+from docutils.parsers.rst import Directive
+from docutils.parsers.rst import directives
+from uuid import UUID
 
-
-def snake_case_to_camel_case(s):
-    s = ''.join(list(map(lambda x: x.capitalize(), s.split('_'))))
-    s = s[0].lower() + s[1:]
-    return s
-
-
-class JIRABaseDirective(Directive):
-
+class JiraBaseDirective(Directive):
     has_content = False
     required_arguments = 1
-    option_spec = {
-        'server_name': directives.unchanged,
-        'server': directives.unchanged,
-        'server_id': directives.unchanged,
-        'columns': directives.unchanged,
-        'count': lambda x: directives.choice(x, ('true', 'false')),
-        'maximum_issues': directives.positive_int
-    }
-
-    def get_base_node_object(self):
-        raise NotImplementedError()
-
-    def get_required_option_name(self):
-        raise NotImplementedError()
-
-    def get_required_option_value(self):
-        raise NotImplementedError()
-
-    def get_keys_to_remove(self):
-        raise NotImplementedError()
 
     def run(self):
-        node = self.get_base_node_object()
+        node = self._build_jira_node()
+        params = node.params
 
-        keys_to_skip = self.get_keys_to_remove()
+        # confluence expects camel case parameters
+        for k, v in self.options.items():
+            params[kebab_case_to_camel_case(k)] = v
 
-        # Add either the JQL query or Key to the content
-        self.options[self.get_required_option_name()] = self.get_required_option_value()
+        # extract target server helper
+        #
+        # If a user defines a `server` key (`confluence_jira_servers` mapping),
+        # remove it and track it inside `target_server`. The `server` key is a
+        # reversed option for the JIRA macro; however, we dance between
+        # `server` and `server-name` so that users can use the option `server`
+        # as simpler directive option to use. If `server-name` is set, prepare
+        # it to be set as the `server` option in the macro.
+        target_server = params.pop('server', None)
 
-        # Resolve server name to the appropriate server values supplied in config
+        if 'serverName' in params:
+            params['server'] = params.pop('serverName', None)
 
-        if 'server_name' in self.options:
-            # We don't want this field in the final output
-            server_name = self.options.pop('server_name')
+        # if explicit server is provided, ensure both options are set
+        if 'server' in params or 'serverId' in params:
+            if 'server' not in params:
+                raise self.error(':server-name: required when server-id is '
+                                 'set; but none supplied')
+            if 'serverId' not in params:
+                raise self.error(':server-id: required when server-name is '
+                                 'set; but none supplied')
+        # if a server key is provided, fetch values from configuration
+        elif target_server:
             config = self.state.document.settings.env.config
+            if 'confluence_jira_servers' not in config:
+                raise self.error(':server: is set but no '
+                                 'confluence_jira_servers defined in config')
             jira_servers = config['confluence_jira_servers']
+            if target_server not in jira_servers:
+                raise self.error(':server: is set but does not exist in '
+                                 'confluence_jira_servers config')
+            jira_server_config = jira_servers[target_server]
+            if 'name' not in jira_server_config:
+                raise self.error(':server: is set but missing name entry in '
+                                 'confluence_jira_servers config')
+            params['server'] = jira_server_config['name']
+            if 'id' not in jira_server_config:
+                raise self.error(':server: is set but missing id entry in '
+                                 'confluence_jira_servers config')
+            params['serverId'] = jira_server_config['id']
 
-            jira_server_config = jira_servers[server_name]
-
-            # We only apply the jira_server_config values if they weren't manually overwritten on the directive
-            if 'server' not in self.options:
-                self.options['server'] = jira_server_config['name']
-            if 'server_id' not in self.options:
-                self.options['server_id'] = jira_server_config['id']
-
-        # Sort the keys. This is for having a reliable parameter order for using the assertExpectedWithOutput
-        # method; Confluence doesn't require the parameters to be in any particular order
-        options_copy = OrderedDict((k, self.options[k]) for k in sorted(self.options.keys()))
-
-        for k, v in options_copy.items():
-            if k not in keys_to_skip:
-                node.config[snake_case_to_camel_case(k)] = v
+        if 'serverId' in params:
+            try:
+                UUID(params['serverId'], version=4)
+            except ValueError:
+                raise self.error('server-id is not a valid uuid')
 
         return [node]
 
+    def _build_jira_node(self):
+        raise NotImplementedError()
 
-class JIRADirective(JIRABaseDirective):
-
+class JiraDirective(JiraBaseDirective):
+    option_spec = {
+        'columns': directives.unchanged,
+        'count': lambda x: directives.choice(x, ('true', 'false')),
+        'maximum-issues': directives.positive_int,
+        'server': directives.unchanged,
+        'server-id': directives.unchanged,
+        'server-name': directives.unchanged,
+    }
     final_argument_whitespace = True
 
-    def get_keys_to_remove(self):
-        return []
+    def _build_jira_node(self):
+        node = jira()
+        self.options['jql-query'] = self.arguments[0]
+        return node
 
-    def get_base_node_object(self):
-        return jira()
+class JiraIssueDirective(JiraBaseDirective):
+    option_spec = {
+        'server': directives.unchanged,
+        'server-id': directives.unchanged,
+        'server-name': directives.unchanged,
+    }
 
-    def get_required_option_name(self):
-        return 'jql_query'
+    def _build_jira_node(self):
+        node = jira_issue()
+        self.options['key'] = self.arguments[0]
+        return node
 
-    def get_required_option_value(self):
-        return self.arguments[0]
+def kebab_case_to_camel_case(s):
+    """
+    convert a kebab case string to a camel case string
 
+    A utility function to help convert a kebab case string into a camel case
+    string. This is to help convert directive options typically defined in kebab
+    case to Confluence macro parameters values which are typically required to
+    be in camel case.
 
-class JIRAIssueDirective(JIRABaseDirective):
+    Args:
+        s: the string to convert
 
-    def get_base_node_object(self):
-        return jira_issue()
-
-    def get_required_option_name(self):
-        return 'key'
-
-    def get_required_option_value(self):
-        return self.arguments[0]
-
-    def get_keys_to_remove(self):
-        return ['maximum_issues', 'count']
+    Returns:
+        the converted string
+    """
+    s = ''.join(list(map(lambda x: x.capitalize(), s.split('-'))))
+    s = s[0].lower() + s[1:]
+    return s

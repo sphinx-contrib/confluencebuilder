@@ -1509,10 +1509,8 @@ class ConfluenceTranslator(BaseTranslator):
             raise nodes.SkipNode
 
         self.body.append(self._start_ac_macro(node, 'jira'))
-
-        for k, v in node.config.items():
+        for k, v in sorted(node.params.items()):
             self.body.append(self._build_ac_parameter(node, k, str(v)))
-
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode

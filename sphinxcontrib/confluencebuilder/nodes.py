@@ -4,7 +4,6 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from collections import OrderedDict
 from docutils import nodes
 
 class ConfluenceNavigationNode(nodes.General, nodes.Element):
@@ -39,11 +38,11 @@ class jira(nodes.Element, nodes.Structural):
         **attributes: dictionary of attribute to apply to the element
 
     Attributes:
-        config: dictionary of options to pass into a jira macro
+        params: dictionary of parameters to pass into a jira macro
     """
     def __init__(self, rawsource='', *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.config = OrderedDict()
+        self.params = {}
 
 class jira_issue(nodes.Element, nodes.Structural):
     """
@@ -58,8 +57,8 @@ class jira_issue(nodes.Element, nodes.Structural):
         **attributes: dictionary of attribute to apply to the element
 
     Attributes:
-        config: dictionary of options to pass into a jira macro
+        params: dictionary of parameters to pass into a jira macro
     """
     def __init__(self, rawsource='', *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.config = OrderedDict()
+        self.params = {}
