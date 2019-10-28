@@ -20,6 +20,7 @@ documentation contents
    tutorial
    configuration
    markup
+   directives
    tips
    documentation
    changelog
