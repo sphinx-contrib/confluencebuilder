@@ -151,7 +151,8 @@ class ConfluenceTestUtil:
                 ConfluenceBuilder.name, # use this extension's builder
                 confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
-                warning=sys.stderr)     # warnings output
+                warning=sys.stderr,     # warnings output
+                warningiserror=True)    # treat warnings as errors
 
             yield app
 
