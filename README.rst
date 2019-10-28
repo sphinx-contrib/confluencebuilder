@@ -96,26 +96,10 @@ For a complete list of configuration changes, see also:
 Directives
 ==========
 
-`confluencebuilder` supports two custom directives, `jira` and `jira_issue` to act as wrappers to the JIRA structured
-macro. `jira` requires a valid JQL query as an argument, and `jira_issue` requires a valid JIRA key as an argument.
+For a complete list of directives supported by this extension, please consult:
 
-Both directives support the following optional arguments:
-
-* `server_name` - Indicates a named JIRA server provided via the `confluence_jira_servers` configuration value
-    (see | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/configuration.html)
-* `server` - Supplies a JIRA server name to the JIRA macro (corresponds to the "server" macro parameter
-* `server_id` - Supplies a JIRA server ID to the JIRA macro (corresponds to the "serverId" macro parameter)
-* `columns` - Supplies a comma-separated list of columns to use when displaying the macro (corresponds to the "column" macro parameter)
-
-In addition, the `jira` directive supports the following optional arguments
-
-* `maximum_issues` - Supplies a upper limit on the number of issues a `jira` directive will display (corresponds the
-"maximumIssues" macro parameter)
-* `count` - Indicates whether the macro should display a table or just the number of issues. Valid values are `true` or
-`false` (Corresponds to the "count" macro parameter)
-
-Adding `'jira'` to the list of `'confluence_adv_restricted_macros'` configuration value will cause the `jira` and
-`jira_issue` directives to be ignored
+ | Atlassian Confluence Builder for Sphinx - Directives
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/directives.html
 
 Demonstration
 =============
