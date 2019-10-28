@@ -91,14 +91,6 @@ class ConfluenceTestUtil:
         # support pre-Sphinx v2.0 installations which default to 'contents'
         config['master_doc'] = 'index'
 
-        # Add JIRA server name configuration
-        config['confluence_jira_servers'] = {
-            'test-jira-server': {
-                'name': 'test-server-name',
-                'id': 'abcdefg-1234-10fajf'
-            }
-        }
-
         return config
 
     @staticmethod
