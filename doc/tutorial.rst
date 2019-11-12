@@ -109,8 +109,8 @@ To process and publish the documentation set, invoke Sphinx with the
 
        make confluence
            (or)
-       sphinx-build -b confluence . _build/confluence
+       sphinx-build -b confluence . _build/confluence -E -a
            (or)
-       python -m sphinx -b confluence . _build/confluence
+       python -m sphinx -b confluence . _build/confluence -E -a
 
 Documentation of the project should now be published to the Confluence site.
