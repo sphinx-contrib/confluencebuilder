@@ -96,8 +96,9 @@ class ConfluenceBuilder(Builder):
 
         if self.config.confluence_ask_password:
             print('(request to accept password from interactive session)')
-            print(' Instance: ' + self.config.confluence_server_url)
-            print('     User: ' + self.config.confluence_server_user)
+            if not self.config.confluence_ask_user:
+                print(' Instance: ' + self.config.confluence_server_url)
+                print('     User: ' + self.config.confluence_server_user)
             sys.stdout.write(' Password: ')
             sys.stdout.flush()
             self.config.confluence_server_pass = getpass('')
