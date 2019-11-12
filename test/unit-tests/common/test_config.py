@@ -112,6 +112,14 @@ class TestConfluenceConfig(unittest.TestCase):
         except ConfluenceConfigurationError:
             self.fail('configuration exception raised with valid subset')
 
+        # explicitly force unicode strings to help verify python 2.x series
+        # dealing with unicode strings inside the document subset
+        builder.config.confluence_publish_subset = [u'admonitions']
+        try:
+            builder.init(suppress_conf_check=True)
+        except ConfluenceConfigurationError:
+            self.fail('configuration exception raised with unicode subset')
+
     def test_invalid_ca_cert(self):
         builder = ConfluenceBuilder(self.app)
         ca_cert = os.path.join(self.test_dir, 'certs', 'non_existant.crt')
