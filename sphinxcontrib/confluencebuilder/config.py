@@ -7,6 +7,10 @@
 from .logger import ConfluenceLogger
 import os.path
 
+try:
+    basestring
+except NameError:
+    basestring = str
 
 class ConfluenceConfig:
     """
@@ -69,7 +73,7 @@ string, etc.).
 
         if c.confluence_publish_subset:
             if not (isinstance(c.confluence_publish_subset, (tuple, list, set))
-                    and all(isinstance(docname, str)
+                    and all(isinstance(docname, basestring)
                             for docname in c.confluence_publish_subset)):
                 errState = True
                 if log:
