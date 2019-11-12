@@ -510,6 +510,21 @@ Note that some shell sessions may not be able to pull the password value
 properly from the user. For example, Cygwin/MinGW may not be able to accept a
 password unless invoked with ``winpty``.
 
+confluence_ask_user
+~~~~~~~~~~~~~~~~~~~
+
+Provides an override for an interactive shell to request publishing documents
+using a user provided from the shell environment. While a
+user is typically defined in the option ``confluence_server_user``, select
+environments may wish to provide a way to provide a user without needing to
+modify documentation sources.
+By default, this option is disabled with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_ask_user = False
+
+
 confluence_asset_override
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
