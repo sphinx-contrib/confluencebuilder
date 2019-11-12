@@ -1308,6 +1308,10 @@ class ConfluenceTranslator(BaseTranslator):
         # unsupported
         raise nodes.SkipNode
 
+    def visit_math_block(self, node):
+        # unsupported
+        raise nodes.SkipNode
+
     # -------------------------
     # sphinx -- production list
     # -------------------------
