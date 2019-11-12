@@ -89,7 +89,8 @@ class ConfluenceTestUtil:
         config['confluence_publish'] = False
         config['confluence_space_name'] = 'unit-test'
         # support pre-Sphinx v2.0 installations which default to 'contents'
-        config['master_doc'] = 'index' 
+        config['master_doc'] = 'index'
+
         return config
 
     @staticmethod
@@ -142,7 +143,8 @@ class ConfluenceTestUtil:
                 ConfluenceBuilder.name, # use this extension's builder
                 confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
-                warning=sys.stderr)     # warnings output
+                warning=sys.stderr,     # warnings output
+                warningiserror=True)    # treat warnings as errors
 
             yield app
 

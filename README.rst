@@ -93,6 +93,14 @@ For a complete list of configuration changes, see also:
  | Atlassian Confluence Builder for Sphinx - Configuration
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/configuration.html
 
+Directives
+==========
+
+For a complete list of directives supported by this extension, please consult:
+
+ | Atlassian Confluence Builder for Sphinx - Directives
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/directives.html
+
 Demonstration
 =============
 

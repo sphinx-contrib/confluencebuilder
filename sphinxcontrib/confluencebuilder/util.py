@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from .std.confluence import API_REST_BIND_PATH
 from .std.confluence import API_XMLRPC_BIND_PATH
+from docutils import nodes
 from hashlib import sha256
 
 class ConfluenceUtil:
@@ -39,6 +41,18 @@ class ConfluenceUtil:
                 buff = file.read(BLOCKSIZE)
 
         return sha.hexdigest()
+
+    @staticmethod
+    def is_node_registered(node):
+        """
+        check if a node is registered in sphinx
+
+        Verifies if a node type has already been registered into Sphinx. This
+        utility method has been ported over from Sphinx's implementation
+        (available since v1.8); however, since this extension still supports at
+        least Sphinx v1.6.3+, adding the method here for the interim.
+        """
+        return hasattr(nodes.GenericNodeVisitor, 'visit_' + node.__name__)
 
     @staticmethod
     def normalizeBaseUrl(url):

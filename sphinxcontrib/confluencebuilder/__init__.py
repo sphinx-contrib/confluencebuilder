@@ -5,8 +5,14 @@
 """
 
 from .builder import ConfluenceBuilder
+from .directives import JiraDirective
+from .directives import JiraIssueDirective
 from .logger import ConfluenceLogger
+from .nodes import jira
+from .nodes import jira_issue
 from .translator import ConfluenceTranslator
+from .util import ConfluenceUtil
+from docutils import nodes
 from sphinx.writers.text import STDINDENT
 import argparse
 
@@ -123,6 +129,8 @@ def setup(app):
     app.add_config_value('confluence_publish_subset', [], False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
+    """Configuration for named JIRA Servers"""
+    app.add_config_value('confluence_jira_servers', {}, True)
 
     """(advanced - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""
@@ -135,6 +143,16 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
+
+    """JIRA directives"""
+    """Adds the custom nodes needed for JIRA directives"""
+    if not ConfluenceUtil.is_node_registered(jira):
+        app.add_node(jira)
+    if not ConfluenceUtil.is_node_registered(jira_issue):
+        app.add_node(jira_issue)
+    """Wires up the directives themselves"""
+    app.add_directive('jira', JiraDirective)
+    app.add_directive('jira_issue', JiraIssueDirective)
 
     return {
         'version': __version__,
