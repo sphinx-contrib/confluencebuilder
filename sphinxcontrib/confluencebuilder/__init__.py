@@ -139,6 +139,8 @@ def setup(app):
     app.add_config_value('confluence_adv_aggressive_search', None, False)
     """Enablement of the children macro for hierarchy mode."""
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
+    """List of node types to ignore if no translator support exists."""
+    app.add_config_value('confluence_adv_ignore_nodes', [], False)
     """List of extension-provided macros restricted for use."""
     app.add_config_value('confluence_adv_restricted_macros', [], False)
     """Enablement of tracing processed data."""
