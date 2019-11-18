@@ -5,6 +5,7 @@
 """
 
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 from subprocess import check_output
 import io
@@ -150,6 +151,15 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-xmlrpc')
 
         _.buildSphinx(dataset, doc_dir, doctree_dir, config)
+
+    def test_nonjsonresponse(self):
+        config = dict(self.config)
+        config['confluence_server_url'] = 'https://example.com/'
+        dataset = os.path.join(self.datasets, 'base')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-nonjsonresponse')
+
+        with self.assertRaises(ConfluenceBadApiError):
+            _.buildSphinx(dataset, doc_dir, doctree_dir, config)
 
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))
