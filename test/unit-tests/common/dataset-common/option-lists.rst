@@ -19,3 +19,6 @@ option lists
 
 --long-option
            description 5
+
+--long-option=value
+           description 6

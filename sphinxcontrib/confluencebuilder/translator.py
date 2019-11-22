@@ -449,8 +449,11 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'td',
             **{'style': 'border: none'}))
         self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'code'))
+        self.context.append(self._end_tag(node, suffix=''))
 
     def depart_option_group(self, node):
+        self.body.append(self.context.pop()) # code
         self.body.append(self.context.pop()) # td
 
     def visit_option(self, node):
@@ -470,9 +473,11 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_option_argument(self, node):
         self.body.append(node['delimiter'])
+        self.body.append(self._start_tag(node, 'em'))
+        self.context.append(self._end_tag(node, suffix=''))
 
     def depart_option_argument(self, node):
-        pass
+        self.body.append(self.context.pop()) # em
 
     def visit_description(self, node):
         self.body.append(self._start_tag(node, 'td',
