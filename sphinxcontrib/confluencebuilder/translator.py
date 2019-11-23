@@ -137,7 +137,13 @@ class ConfluenceTranslator(BaseTranslator):
         raise nodes.SkipNode
 
     def unknown_visit(self, node):
-        raise NotImplementedError('unknown node: ' + node.__class__.__name__)
+        node_name = node.__class__.__name__
+        ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
+        if node_name in ignore_nodes:
+            ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
+            raise nodes.SkipNode
+
+        raise NotImplementedError('unknown node: ' + node_name)
 
     # ---------
     # structure
