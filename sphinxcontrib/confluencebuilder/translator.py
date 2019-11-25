@@ -1104,6 +1104,21 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_superscript(self, node):
         self.body.append(self.context.pop()) # sup
 
+    def visit_inline(self, node):
+        classes = node.get('classes', [])
+        if classes in [['guilabel']]:
+            self.body.append(self._start_tag(node, 'em'))
+            self.context.append(self._end_tag(node, suffix=''))
+        elif classes in [['accelerator']]:
+            self.body.append(self._start_tag(node, 'u'))
+            self.context.append(self._end_tag(node, suffix=''))
+        else:
+            # ignoring; no special handling of other inline entries
+            self.context.append('')
+
+    def depart_inline(self, node):
+        self.body.append(self.context.pop())
+
     visit_literal_emphasis = visit_emphasis
     depart_literal_emphasis = depart_emphasis
     visit_literal_strong = visit_strong
@@ -1604,13 +1619,6 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_hlist(self, node):
         # unsupported
         raise nodes.SkipNode
-
-    def visit_inline(self, node):
-        # ignoring; no need to handle specific inline entries
-        pass
-
-    def depart_inline(self, node):
-        pass
 
     def visit_line(self, node):
         # ignoring; no need to handle specific line entries
