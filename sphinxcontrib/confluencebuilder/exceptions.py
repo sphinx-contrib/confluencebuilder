@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -56,6 +56,16 @@ class ConfluenceBadServerUrlError(ConfluenceError):
             """    %s\n""" % server_url +
             """\n(details: %s""" % ex +
             """)\n"""
+            """---\n"""
+        )
+
+class ConfluenceCertificateError(ConfluenceError):
+    def __init__(self, ex):
+        SphinxError.__init__(self,
+            """---\n"""
+            """An SSL issue has been detected when trying to load the """
+            """the certificates provided.\n"""
+            """details: %s\n""" % ex +
             """---\n"""
         )
 
@@ -121,20 +131,7 @@ class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
             """---\n"""
         )
 
-class ConfluenceTimeoutError(ConfluenceError):
-    def __init__(self, server_url):
-        SphinxError.__init__(self,
-            """---\n"""
-            """A request to communicate with the Confluence server has """
-            """timed out.\n"""
-            """\n"""
-            """Ensure the server is running or your Confluence server URL """
-            """is valid:\n\n"""
-            """    %s\n""" % server_url +
-            """---\n"""
-        )
-
-class ConfluenceSSLError(ConfluenceError):
+class ConfluenceSslError(ConfluenceError):
     def __init__(self, server_url, ex):
         SphinxError.__init__(self,
             """---\n"""
@@ -149,12 +146,15 @@ class ConfluenceSSLError(ConfluenceError):
             """---\n"""
         )
 
-class ConfluenceCertificateError(ConfluenceError):
-    def __init__(self, ex):
+class ConfluenceTimeoutError(ConfluenceError):
+    def __init__(self, server_url):
         SphinxError.__init__(self,
             """---\n"""
-            """An SSL issue has been detected when trying to load the """
-            """the certificates provided.\n"""
-            """details: %s\n""" % ex +
+            """A request to communicate with the Confluence server has """
+            """timed out.\n"""
+            """\n"""
+            """Ensure the server is running or your Confluence server URL """
+            """is valid:\n\n"""
+            """    %s\n""" % server_url +
             """---\n"""
         )
