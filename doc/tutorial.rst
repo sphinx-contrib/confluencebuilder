@@ -28,6 +28,8 @@ documentation should be generated and invoke the following:
 
        sphinx-quickstart
            (or)
+       python -m sphinx.cmd.quickstart
+           (or)
        python -m sphinx.quickstart
 
 After completing the quick-start, ``conf.py`` can be tweaked as desired.

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -10,8 +10,8 @@ from .exceptions import ConfluenceBadServerUrlError
 from .exceptions import ConfluenceCertificateError
 from .exceptions import ConfluencePermissionError
 from .exceptions import ConfluenceProxyPermissionError
-from .exceptions import ConfluenceSSLError
 from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
+from .exceptions import ConfluenceSslError
 from .exceptions import ConfluenceTimeoutError
 from .std.confluence import API_REST_BIND_PATH
 from requests.adapters import HTTPAdapter
@@ -93,7 +93,7 @@ class Rest:
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
-            raise ConfluenceSSLError(self.url, ex)
+            raise ConfluenceSslError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -135,7 +135,7 @@ class Rest:
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
-            raise ConfluenceSSLError(self.url, ex)
+            raise ConfluenceSslError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -169,7 +169,7 @@ class Rest:
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
-            raise ConfluenceSSLError(self.url, ex)
+            raise ConfluenceSslError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
@@ -203,7 +203,7 @@ class Rest:
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
-            raise ConfluenceSSLError(self.url, ex)
+            raise ConfluenceSslError(self.url, ex)
         except requests.exceptions.ConnectionError as ex:
             raise ConfluenceBadServerUrlError(self.url, ex)
         if rsp.status_code == 401:
