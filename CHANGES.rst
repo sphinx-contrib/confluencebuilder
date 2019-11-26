@@ -1,13 +1,24 @@
 master
 ======
 
+* (note) sphinx v1.6 support for this extension is deprecated
+* (note) xml-rpc support for this extension is deprecated
+* fixed issue when using hierarchy on sphinx 2.1+ (new citations domain)
 * fixed issue with document names with path separators for windows users
-* fixed issues when using hierarchy on sphinx 2.1+ (new citations domain)
+* fixed issue with unicode paths with confluence_publish_subset and python 2.7
+* improved formatting for option list arguments
+* improved handling and feedback when configured with incorrect publish instance
+* improved name management for published assets
+* introduce a series of jira directives
 * support 'firstline' parameter in the code block macro
-* support ``sphinx.ext.todo``
+* support base admonition directive
+* support confluence 7 series newline management
 * support default alignment in sphinx 2.1+
 * support document postfixes
 * support previous/next navigation
+* support prompting for publish username
+* support sphinx.ext.todo extension
+* support users injecting cookie data (for authentication) into rest calls
 
 1.1.0 (2019-03-16)
 ==================
