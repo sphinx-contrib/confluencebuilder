@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -13,8 +13,11 @@ from .nodes import jira_issue
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
 from docutils import nodes
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.writers.text import STDINDENT
 import argparse
+import os
 
 __version__='1.2.0-dev0'
 
@@ -34,6 +37,14 @@ def setup(app):
     app.require_sphinx('1.0')
     app.add_builder(ConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
+
+    # sphinx v1.6 is deprecated and is planned to be dropped in v1.3+
+    # (ignore when tox is running; TOX_WORK_DIR)
+    if (parse_version(sphinx_version) < parse_version('1.7') and not
+            'TOX_WORK_DIR' in os.environ):
+        ConfluenceLogger.warn('(deprecated) builder {} deprecated for '
+            'Sphinx v1.6 and older'.format(ConfluenceBuilder.name))
+    proxy = os.environ.get('http_proxy', None)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
