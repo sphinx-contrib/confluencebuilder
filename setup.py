@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :license: BSD-2-Clause, see LICENSE for details.
+"""
 
 from setuptools import setup, find_packages
 
@@ -19,8 +23,8 @@ setup(
     license='BSD',  # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',
-    description="""Sphinx extension to output Atlassian Confluence Wiki """
-                """files and publish to Confluence Servers.""",
+    description="""Sphinx extension to output Atlassian Confluence Storage """
+                """Markup documents and publish to Confluence instances.""",
     long_description=long_desc,
     zip_safe=False,
     classifiers=[
