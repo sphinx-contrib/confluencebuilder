@@ -116,7 +116,7 @@ class ConfluenceTestUtil:
 
     @staticmethod
     @contextmanager
-    def prepareSphinx(src_dir, out_dir, doctree_dir, config=None):
+    def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, relax=False):
         """
         prepare a sphinx application instance
 
@@ -133,6 +133,7 @@ class ConfluenceTestUtil:
         sts = ConfluenceTestUtil.default_sphinx_status
         conf = dict(config) if config else None
         conf_dir = src_dir if not conf else None
+        warnerr = not relax
 
         with docutils_namespace():
             app = Sphinx(
@@ -144,12 +145,12 @@ class ConfluenceTestUtil:
                 confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
                 warning=sys.stderr,     # warnings output
-                warningiserror=True)    # treat warnings as errors
+                warningiserror=warnerr) # treat warnings as errors
 
             yield app
 
     @staticmethod
-    def buildSphinx(src_dir, out_dir, doctree_dir, config=None):
+    def buildSphinx(src_dir, out_dir, doctree_dir, config=None, relax=False):
         """
         prepare a sphinx application instance
 
@@ -158,5 +159,5 @@ class ConfluenceTestUtil:
         [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
         """
         with ConfluenceTestUtil.prepareSphinx(
-                src_dir, out_dir, doctree_dir, config) as app:
+                src_dir, out_dir, doctree_dir, config, relax=relax) as app:
             app.build(force_all=True)
