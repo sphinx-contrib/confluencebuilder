@@ -151,7 +151,8 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'xmlrpc')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-xmlrpc')
 
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
+        # relax build since xml-rpc has been marked as deprecated
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config, relax=True)
 
     def test_nonjsonresponse(self):
         config = dict(self.config)
