@@ -79,6 +79,24 @@ matrix:
   - python: "3.8"
     env: TOXENV=py38-sphinx22
     dist: bionic
+  - os: osx
+    env: TOXENV=py27-sphinx18
+    language: minimal
+  - os: osx
+    env: TOXENV=py36-sphinx22
+    language: minimal
+  - os: windows
+    env: TOXENV=py27-sphinx18
+    language: sh
+    before_install:
+      - choco install python2
+      - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
+  - os: windows
+    env: TOXENV=py38-sphinx22
+    language: sh
+    before_install:
+      - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
+      - export PATH="/c/Python:/c/Python/Scripts:$PATH"
   - python: "3.6"
     env: TOXENV=pylint
 
