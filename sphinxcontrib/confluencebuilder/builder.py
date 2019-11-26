@@ -71,9 +71,13 @@ class ConfluenceBuilder(Builder):
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
 
+        # section numbers for headings in the currently visited document
+        self.secnumbers = {}  # type: Dict[str, Tuple[int, ...]]
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
+        self.add_pagesecnumbers = self.config.confluence_add_pagesecnumbers
+        self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
         self.omitted_docnames = []
         self.publish_docnames = []
@@ -388,6 +392,17 @@ class ConfluenceBuilder(Builder):
             if navnode:
                 navnode.bottom = True
                 doctree.append(navnode)
+
+        # Add section number to page
+        if self.add_pagesecnumbers:
+            self.secnumbers = self.env.toc_secnumbers.get(docname, {})
+            doctitle = self._parse_doctree_title(docname, doctree)
+            if self.secnumbers.get(''):
+                numbers = self.secnumbers['']
+                doctitle = '.'.join(map(str, numbers)) + self.secnumber_suffix + doctitle
+                doctitle = ConfluenceState.registerTitle(docname, doctitle,
+                    self.config.confluence_publish_prefix,
+                    self.config.confluence_publish_postfix)
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:

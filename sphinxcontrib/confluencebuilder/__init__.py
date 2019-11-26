@@ -181,6 +181,10 @@ def setup(app):
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
 
+    app.add_config_value('confluence_add_secnumbers', True, False)
+    app.add_config_value('confluence_add_pagesecnumbers', True, False)
+    app.add_config_value('confluence_secnumber_suffix', '. ', False)
+
     """JIRA directives"""
     """Adds the custom nodes needed for JIRA directives"""
     if not ConfluenceUtil.is_node_registered(jira):
