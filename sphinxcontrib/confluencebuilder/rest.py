@@ -76,7 +76,9 @@ class Rest:
                                  config.confluence_disable_ssl_validation)
             session.mount(self.url, adapter)
 
-        if config.confluence_server_user:
+        if config.confluence_server_auth:
+            session.auth = config.confluence_server_auth
+        elif config.confluence_server_user:
             session.auth = (
                 config.confluence_server_user,
                 config.confluence_server_pass)

@@ -93,6 +93,8 @@ def setup(app):
     app.add_config_value('confluence_purge_from_master', None, False)
 
     """(advanced-configuration - authentication)"""
+    """Authentication passthrough for Confluence REST interaction."""
+    app.add_config_value('confluence_server_auth', None, False)
     """Cookie(s) to use for Confluence REST interaction."""
     app.add_config_value('confluence_server_cookies', None, False)
 
