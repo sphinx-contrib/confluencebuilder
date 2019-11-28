@@ -19,6 +19,12 @@ from sphinx.writers.text import STDINDENT
 import argparse
 import os
 
+# Load autosummary extension if available to add additional nodes
+try:
+    from sphinx.ext import autosummary
+except ImportError:
+    pass
+
 __version__='1.2.0-dev0'
 
 def main():
@@ -171,8 +177,27 @@ def setup(app):
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
 
+    if 'sphinx.ext.autosummary' in app.config.extensions:
+        add_autosummary_nodes(app)
+
     return {
         'version': __version__,
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
+
+
+def add_autosummary_nodes(app):
+    """Register custom nodes from autosummary extension
+
+    The autosummary extensions adds custom nodes to the doctree.
+    Add the reqiured translation handlers manually.
+    """
+    app.registry.add_translation_handlers(
+        autosummary.autosummary_table,
+        confluence=(autosummary.autosummary_table_visit_html, autosummary.autosummary_noop)
+    )
+    app.registry.add_translation_handlers(
+        autosummary.autosummary_toc,
+        confluence=(autosummary.autosummary_toc_visit_html, autosummary.autosummary_noop)
+    )
