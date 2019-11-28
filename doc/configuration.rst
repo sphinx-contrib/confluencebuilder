@@ -375,6 +375,33 @@ to ``True`` before taking effect.
 advanced configuration - authentication
 ---------------------------------------
 
+confluence_server_auth
+~~~~~~~~~~~~~~~~~~~~~~
+
+An authentication handler which can be directly provided to a REST API request.
+REST calls in this extension use the Requests_ library, which provide various
+methods for a client to perform authentication. While this extension already
+provided simple authentication support (via ``confluence_server_user`` and
+``confluence_server_pass``), a publisher may need to configure an advanced
+authentication handler to support a target Confluence instance.
+
+Note that this extension does not define custom authentication handlers. This
+configuration is a passthrough option only. For more details on various ways to
+use authentication handlers, please consult `Requests -- Authentication`_. By
+default, no custom authentication handler is provided to generated REST API
+requests (if any).
+
+.. code-block:: python
+
+   from requests_oauthlib import OAuth1
+
+   ...
+
+   confluence_server_auth = OAuth1(client_key,
+       client_secret=client_secret,
+       resource_owner_key=resource_owner_key,
+       resource_owner_secret=resource_owner_secret)
+
 confluence_server_cookies
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -752,6 +779,7 @@ seconds, the following can be used:
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
 .. _Requests SSL Cert Verification: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
+.. _Requests -- Authentication: https://2.python-requests.org/projects/3/user/authentication/
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs

@@ -40,6 +40,9 @@ class ConfluenceBadSpaceError(ConfluenceError):
             """The configured Confluence space does not appear to be """
             """valid: %s\n""" % space_name +
             """\n"""
+            """Ensure the server is running or your Confluence URL is valid. """
+            """Also ensure your authentication options are properly set.\n"""
+            """\n"""
             """Note: Confluence space names are case-sensitive.\n"""
             """---\n"""
         )
