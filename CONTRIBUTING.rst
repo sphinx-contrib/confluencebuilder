@@ -74,7 +74,7 @@ include support for all stable Python interpreters and Confluence versions which
 have yet to be marked as end-of-life (more flexibility will be given for Python
 2.7 due to systems like RHEL which may still use this interpreter by default;
 ideally Python 2.7 will have continued support in this extension for at least
-3-6 months after being marked as end-of-life). While multiple Sphinx versions
+12 months after being marked as end-of-life). While multiple Sphinx versions
 will be supported, a maximum of only five major-minor trees will be supported at
 a given time.
 
