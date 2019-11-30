@@ -86,9 +86,10 @@ class TestConfluenceValidation(unittest.TestCase):
     def test_autodocs(self):
         config = dict(self.config)
         config['extensions'].append('sphinx.ext.autodoc')
+        config['extensions'].append('sphinx.ext.autosummary')
 
-        dataset = os.path.join(self.datasets, 'autodocs')
-        doc_dir, doctree_dir = _.prepareDirectories('validation-set-autodocs')
+        dataset = os.path.join(self.datasets, 'auto-ext')
+        doc_dir, doctree_dir = _.prepareDirectories('validation-set-auto')
         sys.path.insert(0, os.path.join(dataset, 'src'))
 
         _.buildSphinx(dataset, doc_dir, doctree_dir, config)
