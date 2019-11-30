@@ -24,7 +24,7 @@ class Hello(object):
         """
         print ('Hello %s' % self.name)
 
-    def foo(arg1, arg2):
+    def foo(self, arg1, arg2):
         """
         A method's docstring with parameters and return value.
 
