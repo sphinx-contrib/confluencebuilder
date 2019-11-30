@@ -42,6 +42,8 @@ The recommended method to installing this extension is using pip_:
 .. code-block:: shell
 
    pip install sphinxcontrib-confluencebuilder
+    (or)
+   python -m pip install sphinxcontrib-confluencebuilder
 
 For a more in-depth installation information, see also:
 
