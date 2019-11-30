@@ -289,8 +289,8 @@ either:
 
 * Add a unique naming schema to generated/published documents in a space which
   has manually created pages; or,
-* Allow multiple published sets of documentation, each each with their own
-  postfix value.
+* Allow multiple published sets of documentation, each with their own postfix
+  value.
 
 An example publish postfix is as follows:
 
@@ -312,8 +312,8 @@ either:
 
 * Add a unique naming schema to generated/published documents in a space which
   has manually created pages; or,
-* Allow multiple published sets of documentation, each each with their own
-  prefix value.
+* Allow multiple published sets of documentation, each with their own prefix
+  value.
 
 An example publish prefix is as follows:
 
@@ -465,8 +465,8 @@ default translation accepts `Pygments documented language types`_ to
 confluence_link_suffix
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The suffix name to use for for generated links to files. By default, all
-generated links will use the value defined by |confluence_file_suffix|_ (see
+The suffix name to use for generated links to files. By default, all generated
+links will use the value defined by |confluence_file_suffix|_ (see
 |confluence_link_transform|_).
 
 .. code-block:: python
