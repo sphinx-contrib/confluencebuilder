@@ -24,6 +24,7 @@ from .exceptions import ConfluenceRemoteApiDisabledError
 from .logger import ConfluenceLogger
 from .rest import Rest
 from .std.confluence import API_XMLRPC_BIND_PATH
+import json
 import os
 import socket
 import ssl
@@ -540,6 +541,18 @@ class ConfluencePublisher():
                         newPage['ancestors'] = [{'id': parent_id}]
 
                     rsp = self.rest_client.post('content', newPage)
+
+                    if 'id' not in rsp:
+                        api_err = ('Confluence reports a successful page ' +
+                                  'creation; however, provided no ' +
+                                  'identifier.\n\n')
+                        try:
+                            api_err += 'DATA: {}'.format(json.dumps(
+                                rsp, indent=2))
+                        except TypeError:
+                            api_err += 'DATA: <not-or-invalid-json>'
+                        raise ConfluenceBadApiError(api_err)
+
                     uploaded_page_id = rsp['id']
                 else:
                     last_version = int(page['version']['number'])
