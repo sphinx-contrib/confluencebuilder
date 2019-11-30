@@ -14,6 +14,7 @@ The following is a Sphinx generated `table of contents`_:
    indentation
    lists
    markup
+   math
    other
    paragraph-level-markup
    references
