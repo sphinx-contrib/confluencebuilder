@@ -170,7 +170,7 @@ attribution
 
 This Code of Conduct is adapted from the `Contributor Covenant`_, version 1.4.
 
-.. _Contributor Covenant: http://contributor-covenant.org/version/1/4/
+.. _Contributor Covenant: https://contributor-covenant.org/version/1/4/
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
 .. _PEP 8: https://www.python.org/dev/peps/pep-0008
 .. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
