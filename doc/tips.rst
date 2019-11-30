@@ -78,7 +78,7 @@ is recommended to provide a timeout value based on the environment being used
 disable xml-rpc
 ---------------
 
-When published, the default configuration will attempt to first publish using
+When publishing, the default configuration will attempt to first publish using
 REST API. If publishing fails, the extension automatically attempts to publish
 using the XML-RPC API. This is solely for compatibility reasons (i.e.
 environments which for some reason cannot support the REST API). If in an

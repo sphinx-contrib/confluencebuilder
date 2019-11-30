@@ -15,9 +15,12 @@ master
 * support confluence 7 series newline management
 * support default alignment in sphinx 2.1+
 * support document postfixes
+* support passthrough authentication handlers for rest calls
 * support previous/next navigation
 * support prompting for publish username
+* support sphinx.ext.autosummary extension
 * support sphinx.ext.todo extension
+* support the math directive
 * support users injecting cookie data (for authentication) into rest calls
 
 1.1.0 (2019-03-16)
