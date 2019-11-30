@@ -14,7 +14,7 @@ def process_sandbox():
     sandbox_dir = os.path.join(test_dir, 'sandbox')
 
     doc_dir, doctree_dir = _.prepareDirectories('sandbox-test')
-    _.buildSphinx(sandbox_dir, doc_dir, doctree_dir)
+    _.buildSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True)
 
 def process_raw_upload():
     test_dir = os.path.dirname(os.path.realpath(__file__))
@@ -26,7 +26,7 @@ def process_raw_upload():
         return
 
     doc_dir, doctree_dir = _.prepareDirectories('sandbox-test')
-    with _.prepareSphinx(sandbox_dir, doc_dir, doctree_dir) as app:
+    with _.prepareSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)
         publisher.connect()
