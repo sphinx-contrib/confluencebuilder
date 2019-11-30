@@ -19,7 +19,7 @@ from sphinx.writers.text import STDINDENT
 import argparse
 import os
 
-# Load autosummary extension if available to add additional nodes
+# load autosummary extension if available to add additional nodes
 try:
     from sphinx.ext import autosummary
 except ImportError:
@@ -186,18 +186,22 @@ def setup(app):
         'parallel_write_safe': True,
     }
 
-
 def add_autosummary_nodes(app):
-    """Register custom nodes from autosummary extension
+    """
+    register custom nodes from autosummary extension
 
     The autosummary extensions adds custom nodes to the doctree.
-    Add the reqiured translation handlers manually.
+    Add the required translation handlers manually.
     """
     app.registry.add_translation_handlers(
         autosummary.autosummary_table,
-        confluence=(autosummary.autosummary_table_visit_html, autosummary.autosummary_noop)
+        confluence=(
+            autosummary.autosummary_table_visit_html,
+            autosummary.autosummary_noop)
     )
     app.registry.add_translation_handlers(
         autosummary.autosummary_toc,
-        confluence=(autosummary.autosummary_toc_visit_html, autosummary.autosummary_noop)
+        confluence=(
+            autosummary.autosummary_toc_visit_html,
+            autosummary.autosummary_noop)
     )
