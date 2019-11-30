@@ -5,21 +5,20 @@ Atlassian Confluence Builder for Sphinx
 =======================================
 
 .. image:: https://img.shields.io/pypi/v/sphinxcontrib-confluencebuilder.svg
-    :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
-    :alt: pip Version
+   :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
+   :alt: pip Version
 
 .. image:: https://travis-ci.org/sphinx-contrib/confluencebuilder.svg?branch=master
-    :target: https://travis-ci.org/sphinx-contrib/confluencebuilder
-    :alt: Build Status
+   :target: https://travis-ci.org/sphinx-contrib/confluencebuilder
+   :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
-    :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
+   :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/dm/sphinxcontrib-confluencebuilder.svg
-     :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder/
-     :alt: PyPI download month
-
+   :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder/
+   :alt: PyPI download month
 
 Sphinx_ extension to build Confluence storage format files and optionally
 publish them to a Confluence instance.
@@ -42,7 +41,7 @@ The recommended method to installing this extension is using pip_:
 
 .. code-block:: shell
 
-    pip install sphinxcontrib-confluencebuilder
+   pip install sphinxcontrib-confluencebuilder
 
 For a more in-depth installation information, see also:
 
@@ -52,20 +51,20 @@ For a more in-depth installation information, see also:
 Usage
 =====
 
-- Set the builder ``sphinxcontrib.confluencebuilder`` in the as an extension in
-  ``conf.py``:
+- Register the extension ``sphinxcontrib.confluencebuilder`` in the project's
+  configuration script (``conf.py``):
 
 .. code-block:: python
 
-    extensions = ['sphinxcontrib.confluencebuilder']
+   extensions = ['sphinxcontrib.confluencebuilder']
 
 - Run sphinx-build with the builder ``confluence``:
 
 .. code-block:: shell
 
-    sphinx-build -b confluence . _build/confluence -E -a
-        (or)
-    python -m sphinx -b confluence . _build/confluence -E -a
+   sphinx-build -b confluence . _build/confluence -E -a
+    (or)
+   python -m sphinx -b confluence . _build/confluence -E -a
 
 For more information on the usage of this extension, see also:
 
@@ -75,20 +74,20 @@ For more information on the usage of this extension, see also:
 Configuration
 =============
 
-The following is an example of simple configuration for Confluence generation
+The following is an example of a simple configuration for Confluence generation
 and publishing:
 
 .. code-block:: python
 
-    extensions = ['sphinxcontrib.confluencebuilder']
-    confluence_publish = True
-    confluence_space_name = 'TEST'
-    confluence_parent_page = 'Documentation'
-    confluence_server_url = 'https://intranet-wiki.example.com'
-    confluence_server_user = 'username'
-    confluence_server_pass = 'password'
+   extensions = ['sphinxcontrib.confluencebuilder']
+   confluence_publish = True
+   confluence_space_name = 'TEST'
+   confluence_parent_page = 'Documentation'
+   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_user = 'username'
+   confluence_server_pass = 'password'
 
-For a complete list of configuration changes, see also:
+For a complete list of configuration options, see also:
 
  | Atlassian Confluence Builder for Sphinx - Configuration
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/configuration.html
