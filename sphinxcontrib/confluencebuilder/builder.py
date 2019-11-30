@@ -27,6 +27,13 @@ from sphinx.util.osutil import ensuredir, SEP
 import io
 import sys
 
+# load imgmath extension if available to handle math node pre-processing
+try:
+    from sphinx.ext import imgmath
+    import itertools
+except:
+    imgmath = None
+
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
 # This was fixed in Sphinx 1.2b.
@@ -271,6 +278,38 @@ class ConfluenceBuilder(Builder):
                         for id in section_node['ids']:
                             id = '{}#{}'.format(docname, id)
                             ConfluenceState.registerTarget(id, target)
+
+            # replace math blocks with images
+            #
+            # Math blocks are pre-processed and replaced with respective images
+            # in the list of documents to process. This is to help prepare
+            # additional images into the asset management for this extension.
+            # Math support will work on systems which have latex/dvipng
+            # installed; with Sphinx 1.8+ or Sphinx 1.6+ with the extension
+            # "sphinx.ext.imgmath" registered.
+            if imgmath is not None:
+                # imgmath's render_math call expects a translator to be passed
+                # in; mock a translator tied to our self-builder
+                class MockTranslator:
+                    def __init__(self, builder):
+                        self.builder = builder
+                mock_translator = MockTranslator(self)
+
+                for node in itertools.chain(doctree.traverse(nodes.math),
+                        doctree.traverse(nodes.math_block)):
+                    try:
+                        mf, _ = imgmath.render_math(mock_translator,
+                            '$' + node.astext() + '$')
+                        if not mf:
+                            continue
+
+                        new_node = nodes.image(uri=path.join(self.outdir, mf))
+                        if not isinstance(node, nodes.math):
+                            new_node['align'] = 'center'
+                        node.replace_self(new_node)
+                    except imgmath.MathExtError as exc:
+                        ConfluenceLogger.warn('inline latex {}: {}'.format(
+                            node.astext(), exc))
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The

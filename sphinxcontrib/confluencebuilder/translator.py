@@ -1322,10 +1322,6 @@ class ConfluenceTranslator(BaseTranslator):
     # sphinx -- math
     # --------------
 
-    def visit_math(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
     def visit_displaymath(self, node):
         # unsupported
         raise nodes.SkipNode
@@ -1334,8 +1330,12 @@ class ConfluenceTranslator(BaseTranslator):
         # unsupported
         raise nodes.SkipNode
 
+    def visit_math(self, node):
+        # handled in "builder" at this time
+        raise nodes.SkipNode
+
     def visit_math_block(self, node):
-        # unsupported
+        # handled in "builder" at this time
         raise nodes.SkipNode
 
     # -------------------------

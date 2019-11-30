@@ -55,7 +55,9 @@ list table             supported     - `reStructuredText List Table`_
                                        ``widths``.
 literal blocks         supported     - `reStructuredText Literal Blocks`_
 manpage                supported     - `Sphinx Manpage`_
-math                   unplanned     - `reStructuredText Math`_
+math                   supported     - `reStructuredText Math`_
+                                     - Requires a LaTeX and dvipng/dvisvgm
+                                       installation.
 parsed literal block   supported     - `reStructuredText Parsed Literal Block`_
 option lists           supported     - `reStructuredText Option Lists`_
 production list        supported     - `Sphinx Production List`_

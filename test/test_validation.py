@@ -98,6 +98,7 @@ class TestConfluenceValidation(unittest.TestCase):
 
     def test_common(self):
         config = dict(self.config)
+        config['imgmath_image_format'] = 'svg'
 
         dataset = os.path.join(self.datasets, 'common')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-common')

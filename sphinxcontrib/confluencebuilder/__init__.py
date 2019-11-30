@@ -25,6 +25,12 @@ try:
 except ImportError:
     pass
 
+# load imgmath extension if available to handle math configuration options
+try:
+    from sphinx.ext import imgmath
+except:
+    imgmath = None
+
 __version__='1.2.0-dev0'
 
 def main():
@@ -179,6 +185,18 @@ def setup(app):
 
     if 'sphinx.ext.autosummary' in app.config.extensions:
         add_autosummary_nodes(app)
+
+    # lazy bind sphinx.ext.imgmath to provide configuration options
+    #
+    # If 'sphinx.ext.imgmath' is not already explicitly loaded, bind it into the
+    # setup process to a configurer can use the same configuration options
+    # outlined in the sphinx.ext.imgmath in this extension. This applies for
+    # Sphinx 1.8 and higher which math support is embedded; for older versions,
+    # users will need to explicitly load 'sphinx.ext.mathbase'.
+    if (imgmath is not None and
+            'sphinx.ext.imgmath' not in app.config.extensions and
+            parse_version(sphinx_version) >= parse_version('1.8')):
+        imgmath.setup(app)
 
     return {
         'version': __version__,
