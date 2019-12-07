@@ -20,6 +20,7 @@ from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.locale import _
 from sphinx.util import status_iterator
@@ -64,6 +65,8 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
     format = 'confluence'
+    supported_image_types = StandaloneHTMLBuilder.supported_image_types
+    supported_remote_images = True
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
@@ -255,6 +258,7 @@ class ConfluenceBuilder(Builder):
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix,
                 self.config.confluence_publish_postfix)
+
             if docname in docnames:
                 # Only publish documents that Sphinx asked to prepare
                 self.publish_docnames.append(docname)
@@ -303,13 +307,18 @@ class ConfluenceBuilder(Builder):
                         if not mf:
                             continue
 
-                        new_node = nodes.image(uri=path.join(self.outdir, mf))
+                        new_node = nodes.image(
+                            candidates={'?'},
+                            uri=path.join(self.outdir, mf))
                         if not isinstance(node, nodes.math):
                             new_node['align'] = 'center'
                         node.replace_self(new_node)
                     except imgmath.MathExtError as exc:
                         ConfluenceLogger.warn('inline latex {}: {}'.format(
                             node.astext(), exc))
+
+            # for every doctree, pick the best image candidate
+            self.post_process_images(doctree)
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
