@@ -135,6 +135,13 @@ class ConfluenceTestUtil:
         conf_dir = src_dir if not conf else None
         warnerr = not relax
 
+        verbosity = 0
+        if 'SPHINX_VERBOSITY' in os.environ:
+            try:
+                verbosity = int(os.environ['SPHINX_VERBOSITY'])
+            except:
+                pass
+
         with docutils_namespace():
             app = Sphinx(
                 src_dir,                # output for document sources
@@ -145,7 +152,8 @@ class ConfluenceTestUtil:
                 confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
                 warning=sys.stderr,     # warnings output
-                warningiserror=warnerr) # treat warnings as errors
+                warningiserror=warnerr, # treat warnings as errors
+                verbosity=verbosity)    # verbosity
 
             yield app
 
