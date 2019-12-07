@@ -66,6 +66,7 @@ class ConfluenceBuilder(Builder):
     name = 'confluence'
     format = 'confluence'
     supported_image_types = StandaloneHTMLBuilder.supported_image_types
+    supported_remote_images = True
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
