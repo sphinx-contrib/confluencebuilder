@@ -307,7 +307,9 @@ class ConfluenceBuilder(Builder):
                         if not mf:
                             continue
 
-                        new_node = nodes.image(uri=path.join(self.outdir, mf))
+                        new_node = nodes.image(
+                            candidates={'?'},
+                            uri=path.join(self.outdir, mf))
                         if not isinstance(node, nodes.math):
                             new_node['align'] = 'center'
                         node.replace_self(new_node)
