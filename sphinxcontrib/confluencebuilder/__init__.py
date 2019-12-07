@@ -166,6 +166,12 @@ def setup(app):
     app.add_config_value('confluence_timeout', None, False)
     """Configuration for named JIRA Servers"""
     app.add_config_value('confluence_jira_servers', {}, True)
+    """Add section numbers if doctree has :numbered: option"""
+    app.add_config_value('confluence_add_secnumbers', False, False)
+    """Add section numbers to page titles if doctree has :numbered: option"""
+    app.add_config_value('confluence_add_pagesecnumbers', False, False)
+    """Suffix to put after section numbers, before section name"""
+    app.add_config_value('confluence_secnumber_suffix', '. ', False)
 
     """(advanced - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""
@@ -180,10 +186,6 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
-
-    app.add_config_value('confluence_add_secnumbers', True, False)
-    app.add_config_value('confluence_add_pagesecnumbers', True, False)
-    app.add_config_value('confluence_secnumber_suffix', '. ', False)
 
     """JIRA directives"""
     """Adds the custom nodes needed for JIRA directives"""
