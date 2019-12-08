@@ -77,6 +77,7 @@ class ConfluenceBuilder(Builder):
         self.file_suffix = '.conf'
         self.link_suffix = None
         self.add_pagesecnumbers = self.config.confluence_add_pagesecnumbers
+        self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
         self.omitted_docnames = []
@@ -393,9 +394,12 @@ class ConfluenceBuilder(Builder):
                 navnode.bottom = True
                 doctree.append(navnode)
 
+        if self.add_pagesecnumbers or self.add_secnumbers:
+            # Add section numbers from toctree to builder
+            self.secnumbers = self.env.toc_secnumbers.get(docname, {})
+
         # Add section number to page
         if self.add_pagesecnumbers:
-            self.secnumbers = self.env.toc_secnumbers.get(docname, {})
             doctitle = self._parse_doctree_title(docname, doctree)
             if self.secnumbers.get(''):
                 numbers = self.secnumbers['']
