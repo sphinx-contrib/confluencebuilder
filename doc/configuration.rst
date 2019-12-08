@@ -323,6 +323,37 @@ An example publish prefix is as follows:
 
 By default, no prefix is used. See also |confluence_publish_postfix|_.
 
+confluence_add_secnumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add section numbers to section titles in pages if ``doctree`` uses the
+``:numbered:`` option. By default, this is disabled:
+
+.. code-block:: python
+
+    confluence_add_secnumbers = False
+
+
+confluence_add_pagesecnumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add section numbers to the page titles if ``doctree`` uses the ``:numbered:``
+option. By default, this is disabled:
+
+.. code-block:: python
+
+    confluence_add_pagesecnumbers = False
+
+
+confluence_secnumber_suffix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The suffix to put after section numbers, before section name.
+
+.. code-block:: python
+
+    confluence_secnumber_suffix = '. '
+
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
 
@@ -771,38 +802,6 @@ seconds, the following can be used:
 .. code-block:: python
 
    confluence_timeout = 10
-
-
-confluence_add_secnumbers
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Add section numbers to section titles in pages if ``doctree`` uses the
-``:numbered:`` option. By default, this is disabled:
-
-.. code-block:: python
-
-    confluence_add_secnumbers = False
-
-
-confluence_add_pagesecnumbers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Add section numbers to the page titles if ``doctree`` uses the ``:numbered:``
-option. By default, this is disabled:
-
-.. code-block:: python
-
-    confluence_add_pagesecnumbers = False
-
-
-confluence_secnumber_suffix
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The suffix to put after section numbers, before section name.  
-
-.. code-block:: python
-
-    confluence_secnumber_suffix = '. '
 
 
 .. references ------------------------------------------------------------------
