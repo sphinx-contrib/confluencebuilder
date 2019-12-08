@@ -327,7 +327,7 @@ confluence_add_secnumbers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add section numbers to section titles in pages if ``doctree`` uses the
-``:numbered:`` option. By default, this is disabled:
+``:numbered:`` option. This causes Confluence to display the pages in the correct order in the page tree, since it orders them using lexicographical sorting. By default, this is disabled:
 
 .. code-block:: python
 
