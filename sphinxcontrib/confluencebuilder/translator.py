@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -167,6 +168,7 @@ class ConfluenceTranslator(BaseTranslator):
 
     def add_secnumber(self, node):
         # type: (nodes.Element) -> None
+        # From sphinx.writers.HTML5Translator.add_secnumber
         if node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
                              self.secnumber_suffix)
