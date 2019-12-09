@@ -260,6 +260,14 @@ class ConfluenceBuilder(Builder):
             if not doctitle:
                 continue
 
+            if self.add_pagesecnumbers:
+                secnumbers = self.env.toc_secnumbers.get(docname, {})
+                if secnumbers.get(''):
+                    # Add section number to page
+                    doctitle = ('.'.join(map(str, secnumbers[''])) +
+                                self.secnumber_suffix +
+                                doctitle)
+
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config.confluence_publish_prefix,
                 self.config.confluence_publish_postfix)
@@ -395,18 +403,9 @@ class ConfluenceBuilder(Builder):
                 doctree.append(navnode)
 
         if self.add_pagesecnumbers or self.add_secnumbers:
-            # Add section numbers from toctree to builder
+            # Add section numbers from toctree to builder so that they
+            # are available to the writer and translator
             self.secnumbers = self.env.toc_secnumbers.get(docname, {})
-
-        # Add section number to page
-        if self.add_pagesecnumbers:
-            doctitle = self._parse_doctree_title(docname, doctree)
-            if self.secnumbers.get(''):
-                numbers = self.secnumbers['']
-                doctitle = '.'.join(map(str, numbers)) + self.secnumber_suffix + doctitle
-                doctitle = ConfluenceState.registerTitle(docname, doctitle,
-                    self.config.confluence_publish_prefix,
-                    self.config.confluence_publish_postfix)
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:
