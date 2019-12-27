@@ -78,11 +78,11 @@ Next, include a series of publish-related settings to the configuration file:
    confluence_publish = True
    confluence_space_name = 'TEST'
    # (for confluence cloud)
-   confluence_server_url = 'https://example.atlassian.net/wiki'
+   confluence_server_url = 'https://example.atlassian.net/wiki/'
    confluence_server_user = 'myawesomeuser@example.com'
    confluence_server_pass = 'myapikey'
    # (or for confluence server)
-   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_url = 'https://intranet-wiki.example.com/'
    confluence_server_user = 'myawesomeuser'
    confluence_server_pass = 'mypassword'
 
