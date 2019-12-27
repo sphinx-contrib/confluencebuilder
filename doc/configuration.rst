@@ -326,24 +326,12 @@ By default, no prefix is used. See also |confluence_publish_postfix|_.
 confluence_add_secnumbers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add section numbers to section titles in pages if ``doctree`` uses the
+Add section numbers to page and section titles if ``doctree`` uses the
 ``:numbered:`` option. By default, this is enabled:
 
 .. code-block:: python
 
     confluence_add_secnumbers = True
-
-
-confluence_add_pagesecnumbers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Add section numbers to the page titles if ``doctree`` uses the ``:numbered:``
-option. By default, this is enabled:
-
-.. code-block:: python
-
-    confluence_add_pagesecnumbers = True
-
 
 confluence_secnumber_suffix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

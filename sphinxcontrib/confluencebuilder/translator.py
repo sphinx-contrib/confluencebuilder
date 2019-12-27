@@ -1911,6 +1911,16 @@ class ConfluenceTranslator(BaseTranslator):
         Returns:
             the content
         """
+
+        if self.add_secnumbers and node.get('secnumber'):
+            return  self._start_tag(
+                        node,
+                        'ac:link-body',
+                        suffix=(
+                            '.'.join(map(str, node['secnumber'])) +
+                             self.secnumber_suffix
+                        )
+                    )
         return self._start_tag(node, 'ac:link-body')
 
     def _end_ac_link_body(self, node):

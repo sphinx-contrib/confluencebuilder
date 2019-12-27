@@ -107,10 +107,8 @@ def setup(app):
     app.add_config_value('confluence_publish_postfix', None, False)
     """Prefix to apply to published pages."""
     app.add_config_value('confluence_publish_prefix', None, False)
-    """Add section numbers if doctree has :numbered: option"""
+    """Add page and section numbers if doctree has :numbered: option"""
     app.add_config_value('confluence_add_secnumbers', True, False)
-    """Add section numbers to page titles if doctree has :numbered: option"""
-    app.add_config_value('confluence_add_pagesecnumbers', True, False)
     """Suffix to put after section numbers, before section name"""
     app.add_config_value('confluence_secnumber_suffix', '. ', False)
     """Enablement of purging legacy child pages from a parent page."""

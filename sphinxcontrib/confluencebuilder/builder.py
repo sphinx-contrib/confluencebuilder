@@ -76,7 +76,6 @@ class ConfluenceBuilder(Builder):
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
-        self.add_pagesecnumbers = self.config.confluence_add_pagesecnumbers
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
@@ -260,7 +259,7 @@ class ConfluenceBuilder(Builder):
             if not doctitle:
                 continue
 
-            if self.add_pagesecnumbers:
+            if self.add_secnumbers:
                 secnumbers = self.env.toc_secnumbers.get(docname, {})
                 if secnumbers.get(''):
                     # Add section number to page
@@ -402,7 +401,7 @@ class ConfluenceBuilder(Builder):
                 navnode.bottom = True
                 doctree.append(navnode)
 
-        if self.add_pagesecnumbers or self.add_secnumbers:
+        if self.add_secnumbers:
             # Add section numbers from toctree to builder so that they
             # are available to the writer and translator
             self.secnumbers = self.env.toc_secnumbers.get(docname, {})

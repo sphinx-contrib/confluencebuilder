@@ -61,7 +61,6 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
     def test_toctree_numbered_disable(self):
         config = dict(self.config)
-        config['confluence_add_pagesecnumbers'] = False
         config['confluence_add_secnumbers'] = False
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-disabled')
@@ -72,35 +71,8 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         _.assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
         _.assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
 
-    def test_toctree_numbered_pagesecnumbers(self):
-        config = dict(self.config)
-        config['confluence_add_pagesecnumbers'] = True
-        config['confluence_add_secnumbers'] = False
-        dataset = os.path.join(self.test_dir, 'dataset-numbered')
-        expected = os.path.join(self.test_dir, 'expected-numbered-page')
-        doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-numbered-page')
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
-
-        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
-        _.assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
-        _.assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
-
-    def test_toctree_numbered_secnumbers(self):
-        config = dict(self.config)
-        config['confluence_add_pagesecnumbers'] = False
-        config['confluence_add_secnumbers'] = True
-        dataset = os.path.join(self.test_dir, 'dataset-numbered')
-        expected = os.path.join(self.test_dir, 'expected-numbered-sec')
-        doc_dir, doctree_dir = _.prepareDirectories('toctree-markup-numbered')
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
-
-        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
-        _.assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
-        _.assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
-
     def test_toctree_numbered_secnumbers_suffix(self):
         config = dict(self.config)
-        config['confluence_add_pagesecnumbers'] = False
         config['confluence_add_secnumbers'] = True
         config['confluence_secnumber_suffix'] = '!Z /+4'
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
