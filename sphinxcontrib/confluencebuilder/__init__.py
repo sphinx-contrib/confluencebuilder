@@ -46,7 +46,7 @@ def main():
 def setup(app):
     ConfluenceLogger.initialize()
 
-    app.require_sphinx('1.0')
+    app.require_sphinx('1.6')
     app.add_builder(ConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
 
