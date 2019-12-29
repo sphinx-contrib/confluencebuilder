@@ -10,7 +10,7 @@ and publishing:
    confluence_publish = True
    confluence_space_name = 'TEST'
    confluence_parent_page = 'Documentation'
-   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_url = 'https://intranet-wiki.example.com/'
    confluence_server_user = 'username'
    confluence_server_pass = 'password'
 
@@ -78,7 +78,7 @@ For a Confluence Cloud instance, an example URL configuration is as follows:
 
 .. code-block:: python
 
-   confluence_server_url = 'https://example.atlassian.net/wiki'
+   confluence_server_url = 'https://example.atlassian.net/wiki/'
 
 For a Confluence Server instance, an example URL configuration, if the
 instance's REST API is ``https://intranet-wiki.example.com/rest/api/`` or
@@ -87,7 +87,7 @@ follows:
 
 .. code-block:: python
 
-   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_url = 'https://intranet-wiki.example.com/'
 
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~

@@ -46,7 +46,7 @@ def main():
 def setup(app):
     ConfluenceLogger.initialize()
 
-    app.require_sphinx('1.0')
+    app.require_sphinx('1.6')
     app.add_builder(ConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
 
@@ -65,6 +65,15 @@ def setup(app):
         if isinstance(app.builder, ConfluenceBuilder):
             app.builder.assets.processDocument(doctree, docname, True)
     app.connect('doctree-resolved', assetsDocTreeResolvedHook)
+
+    # remove math-node-migration post-transform as this extension manages both
+    # future and legacy math implementations (removing this transform removes
+    # a warning notification to the user)
+    if parse_version(sphinx_version) >= parse_version('1.7'):
+        for transform in app.registry.get_post_transforms():
+            if transform.__name__ == 'MathNodeMigrator':
+                app.registry.get_post_transforms().remove(transform)
+                break
 
     """(essential)"""
     """Enablement of publishing."""

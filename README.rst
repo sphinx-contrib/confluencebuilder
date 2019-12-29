@@ -32,7 +32,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ Cloud or Server 6.6+
+* Confluence_ Cloud or Server 6.7+
 
 Installing
 ==========
@@ -85,9 +85,9 @@ and publishing:
    confluence_publish = True
    confluence_space_name = 'TEST'
    confluence_parent_page = 'Documentation'
-   confluence_server_url = 'https://intranet-wiki.example.com'
+   confluence_server_url = 'https://intranet-wiki.example.com/'
    confluence_server_user = 'username'
-   confluence_server_pass = 'password'
+   confluence_server_pass = 'api-key-or-password'
 
 For a complete list of configuration options, see also:
 
