@@ -56,7 +56,6 @@ def setup(app):
             'TOX_WORK_DIR' in os.environ):
         ConfluenceLogger.warn('(deprecated) builder {} deprecated for '
             'Sphinx v1.6 and older'.format(ConfluenceBuilder.name))
-    proxy = os.environ.get('http_proxy', None)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
