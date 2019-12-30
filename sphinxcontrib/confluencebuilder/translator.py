@@ -1386,6 +1386,10 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_compound(self, node):
         pass
 
+    def visit_toctree(self, node):
+        # skip hidden toctree entries
+        raise nodes.SkipNode
+
     # -----------------------
     # sphinx -- miscellaneous
     # -----------------------
@@ -1664,9 +1668,6 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_start_of_file(self, node):
         pass
-
-    def visit_toctree(self, node):
-        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #
