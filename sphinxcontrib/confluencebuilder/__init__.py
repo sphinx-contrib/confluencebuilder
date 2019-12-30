@@ -50,13 +50,12 @@ def setup(app):
     app.add_builder(ConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
 
-    # sphinx v1.6 is deprecated and is planned to be dropped in v1.3+
+    # sphinx v1.[6-7] is deprecated and is planned to be dropped in v1.3+
     # (ignore when tox is running; TOX_WORK_DIR)
-    if (parse_version(sphinx_version) < parse_version('1.7') and not
+    if (parse_version(sphinx_version) < parse_version('1.8') and not
             'TOX_WORK_DIR' in os.environ):
         ConfluenceLogger.warn('(deprecated) builder {} deprecated for '
-            'Sphinx v1.6 and older'.format(ConfluenceBuilder.name))
-    proxy = os.environ.get('http_proxy', None)
+            'Sphinx v1.7 and older'.format(ConfluenceBuilder.name))
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
