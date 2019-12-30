@@ -1452,11 +1452,12 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # dl
 
     def visit_desc_signature(self, node):
-        self.body.append(self._start_tag(node, 'dt'))
-        self.context.append(self._end_tag(node))
+        if not node.get('is_multiline'):
+            self.visit_desc_signature_line(node)
 
     def depart_desc_signature(self, node):
-        self.body.append(self.context.pop()) # dt
+        if not node.get('is_multiline'):
+            self.depart_desc_signature_line(node)
 
     def visit_desc_signature_line(self, node):
         self.body.append(self._start_tag(node, 'dt'))
