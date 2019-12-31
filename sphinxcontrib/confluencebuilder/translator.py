@@ -1402,6 +1402,10 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # dl
 
     def visit_desc_signature(self, node):
+        # capture ids which anchors can be generated and placed into the first
+        # dt tag (since multiple may be generated)
+        self._desc_sig_ids = node.attributes.get('ids', [])
+
         if not node.get('is_multiline'):
             self.visit_desc_signature_line(node)
 
@@ -1411,6 +1415,14 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_desc_signature_line(self, node):
         self.body.append(self._start_tag(node, 'dt'))
+
+        if self._desc_sig_ids and self.can_anchor:
+            for id in self._desc_sig_ids:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', id))
+                self.body.append(self._end_ac_macro(node))
+        self._desc_sig_ids = None
+
         self.context.append(self._end_tag(node))
 
     def depart_desc_signature_line(self, node):
@@ -1439,14 +1451,6 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_desc_name(self, node):
         self.body.append(self.context.pop()) # code
         self.body.append(self.context.pop()) # strong
-
-        if (self.can_anchor
-                and node.parent
-                and getattr(node.parent.next_node(), 'tagname', None) == 'desc_annotation'
-                and node.parent.attributes.get('ids', [])):
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_parameter(node, '', node.parent['ids'][0]))
-            self.body.append(self._end_ac_macro(node))
 
     def visit_desc_type(self, node):
         pass
