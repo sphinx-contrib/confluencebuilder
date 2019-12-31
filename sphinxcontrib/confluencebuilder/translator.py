@@ -1386,59 +1386,13 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_compound(self, node):
         pass
 
-    # -----------------------
-    # sphinx -- miscellaneous
-    # -----------------------
+    def visit_toctree(self, node):
+        # skip hidden toctree entries
+        raise nodes.SkipNode
 
-    def visit_rubric(self, node):
-        self.body.append(self._start_tag(node, 'h{}'.format(self._title_level)))
-        self.context.append(self._end_tag(node))
-
-    def depart_rubric(self, node):
-        self.body.append(self.context.pop()) # h<x>
-
-    def visit_seealso(self, node):
-        self._visit_admonition(node, 'info', admonitionlabels['seealso'])
-
-    depart_seealso = _depart_admonition
-
-    def visit_versionmodified(self, node):
-        if node['type'] == 'deprecated' or node['type'] == 'versionchanged':
-            self._visit_note(node)
-        elif node['type'] == 'versionadded':
-            self._visit_info(node)
-        else:
-            ConfluenceLogger.warn('unsupported version modification type: '
-                '{}'.format(node['type']))
-            self._visit_info(node)
-
-    depart_versionmodified = _depart_admonition
-
-    # -----------------------------------------
-    # sphinx -- extension -- confluence builder
-    # -----------------------------------------
-
-    def visit_ConfluenceNavigationNode(self, node):
-        if node.bottom:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-top: 30px'}))
-
-        self.body.append(self._start_tag(node, 'p', suffix=self.nl,
-            **{'style': 'text-align: right'}))
-        self.context.append(self._end_tag(node))
-
-    def depart_ConfluenceNavigationNode(self, node):
-        self.body.append(self.context.pop()) # p
-
-        if node.top:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-bottom: 30px'}))
-
-    # ------------------------------
-    # sphinx -- extension -- autodoc
-    # ------------------------------
+    # -----------------
+    # sphinx -- domains
+    # -----------------
 
     def visit_desc(self, node):
         self.body.append(self._start_tag(node, 'dl', suffix=self.nl))
@@ -1448,10 +1402,18 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # dl
 
     def visit_desc_signature(self, node):
+        if not node.get('is_multiline'):
+            self.visit_desc_signature_line(node)
+
+    def depart_desc_signature(self, node):
+        if not node.get('is_multiline'):
+            self.depart_desc_signature_line(node)
+
+    def visit_desc_signature_line(self, node):
         self.body.append(self._start_tag(node, 'dt'))
         self.context.append(self._end_tag(node))
 
-    def depart_desc_signature(self, node):
+    def depart_desc_signature_line(self, node):
         self.body.append(self.context.pop()) # dt
 
     def visit_desc_annotation(self, node):
@@ -1529,6 +1491,56 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_desc_content(self, node):
         self.body.append(self.context.pop()) # dd
+
+    # -----------------------
+    # sphinx -- miscellaneous
+    # -----------------------
+
+    def visit_rubric(self, node):
+        self.body.append(self._start_tag(node, 'h{}'.format(self._title_level)))
+        self.context.append(self._end_tag(node))
+
+    def depart_rubric(self, node):
+        self.body.append(self.context.pop()) # h<x>
+
+    def visit_seealso(self, node):
+        self._visit_admonition(node, 'info', admonitionlabels['seealso'])
+
+    depart_seealso = _depart_admonition
+
+    def visit_versionmodified(self, node):
+        if node['type'] == 'deprecated' or node['type'] == 'versionchanged':
+            self._visit_note(node)
+        elif node['type'] == 'versionadded':
+            self._visit_info(node)
+        else:
+            ConfluenceLogger.warn('unsupported version modification type: '
+                '{}'.format(node['type']))
+            self._visit_info(node)
+
+    depart_versionmodified = _depart_admonition
+
+    # -----------------------------------------
+    # sphinx -- extension -- confluence builder
+    # -----------------------------------------
+
+    def visit_ConfluenceNavigationNode(self, node):
+        if node.bottom:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True,
+                **{'style': 'margin-top: 30px'}))
+
+        self.body.append(self._start_tag(node, 'p', suffix=self.nl,
+            **{'style': 'text-align: right'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_ConfluenceNavigationNode(self, node):
+        self.body.append(self.context.pop()) # p
+
+        if node.top:
+            self.body.append(self._start_tag(
+                node, 'hr', suffix=self.nl, empty=True,
+                **{'style': 'margin-bottom: 30px'}))
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
