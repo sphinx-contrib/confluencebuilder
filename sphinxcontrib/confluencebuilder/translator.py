@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -60,6 +61,8 @@ class ConfluenceTranslator(BaseTranslator):
         self.body = []
         self.context = []
         self.nl = '\n'
+        self.add_secnumbers = config.confluence_add_secnumbers
+        self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
         self._literal = False
@@ -163,10 +166,27 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_section(self, node):
         self._section_level -= 1
 
+    def add_secnumber(self, node):
+        # type: (nodes.Element) -> None
+        # From sphinx.writers.HTML5Translator.add_secnumber
+        if node.get('secnumber'):
+            self.body.append('.'.join(map(str, node['secnumber'])) +
+                             self.secnumber_suffix)
+        elif isinstance(node.parent, nodes.section):
+            anchorname = '#' + node.parent['ids'][0]
+            if anchorname not in self.builder.secnumbers:
+                anchorname = ''  # try first heading which has no anchor
+            if self.builder.secnumbers.get(anchorname):
+                numbers = self.builder.secnumbers[anchorname]
+                self.body.append('.'.join(map(str, numbers)) +
+                                 self.secnumber_suffix)
+
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
+            if self.add_secnumbers:
+                self.add_secnumber(node)
             self.context.append(self._end_tag(node))
         else:
             # Only render section/topic titles in headers. For all other nodes,
@@ -934,6 +954,9 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
         self.body.append(self._start_ac_link_body(node))
+        if self.add_secnumbers and node.get('secnumber'):
+            self.body.append('.'.join(map(str, node['secnumber'])) +
+                             self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
 

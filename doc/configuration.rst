@@ -323,6 +323,25 @@ An example publish prefix is as follows:
 
 By default, no prefix is used. See also |confluence_publish_postfix|_.
 
+confluence_add_secnumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add section numbers to page and section titles if ``doctree`` uses the
+``:numbered:`` option. By default, this is enabled:
+
+.. code-block:: python
+
+    confluence_add_secnumbers = True
+
+confluence_secnumber_suffix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The suffix to put after section numbers, before section name.
+
+.. code-block:: python
+
+    confluence_secnumber_suffix = '. '
+
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
 
@@ -771,6 +790,7 @@ seconds, the following can be used:
 .. code-block:: python
 
    confluence_timeout = 10
+
 
 .. references ------------------------------------------------------------------
 
