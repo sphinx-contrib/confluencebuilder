@@ -954,6 +954,9 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
         self.body.append(self._start_ac_link_body(node))
+        if self.add_secnumbers and node.get('secnumber'):
+            self.body.append('.'.join(map(str, node['secnumber'])) +
+                             self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
 
@@ -1911,16 +1914,6 @@ class ConfluenceTranslator(BaseTranslator):
         Returns:
             the content
         """
-
-        if self.add_secnumbers and node.get('secnumber'):
-            return  self._start_tag(
-                        node,
-                        'ac:link-body',
-                        suffix=(
-                            '.'.join(map(str, node['secnumber'])) +
-                             self.secnumber_suffix
-                        )
-                    )
         return self._start_tag(node, 'ac:link-body')
 
     def _end_ac_link_body(self, node):
