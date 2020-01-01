@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Sphinx Confluence Builder'
-copyright = '2019. Anthony Shaw and contributors'
+copyright = '2020. Anthony Shaw and contributors'
 author = 'Anthony Shaw and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
