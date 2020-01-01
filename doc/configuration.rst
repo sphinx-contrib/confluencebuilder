@@ -19,8 +19,10 @@ All Atlassian Confluence Builder configurations are prefixed with
 
 .. contents:: :local:
 
-essential configuration
------------------------
+.. #############################################################################
+
+essential
+---------
 
 confluence_publish
 ~~~~~~~~~~~~~~~~~~
@@ -50,8 +52,6 @@ username value should be used:
 .. code-block:: python
 
    confluence_server_pass = 'myawesomepassword'
-
-See also :ref:`advanced authentication options<confluence_advanced_conf_auth>`.
 
 .. caution::
 
@@ -117,19 +117,20 @@ Key of the space in Confluence to be used to publish generated documents to.
 Note that the space name can be **case-sensitive** in most (if not all) versions
 of Confluence.
 
-general configuration
----------------------
+.. #############################################################################
 
-confluence_disable_notifications
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+generic
+-------
 
-A boolean value which explicitly disable any page update notifications (i.e.
-treats page updates from a publish request as minor updates). By default,
-notifications are enabled with a value of ``False``.
+confluence_add_secnumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add section numbers to page and section titles if ``doctree`` uses the
+``:numbered:`` option. By default, this is enabled:
 
 .. code-block:: python
 
-   confluence_disable_notifications = True
+    confluence_add_secnumbers = True
 
 confluence_header_file
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -154,62 +155,6 @@ For example:
 .. code-block:: python
 
    confluence_footer_file = 'assets/footer.tpl'
-
-.. _confluence_jira_servers:
-
-confluence_jira_servers
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Provides a dictionary of named JIRA servers to reference when using the ``jira``
-or ``jira_issue`` directives. In a typical Confluence environment which is
-linked with a JIRA instance, users do not need to take advantage of this
-configuration -- Confluence should automatically be able to link to respectively
-JIRA issues or map JIRA query languages with a configured JIRA instance. In
-select cases where an instance has more than one JIRA instance attached, a user
-may need to explicitly reference a JIRA instance to properly render a JIRA
-macro. JIRA-related directives have the ability to reference JIRA instances,
-with a combination of a UUID and name; for example:
-
-.. code-block:: rst
-
-    .. jira_issue:: TEST-151
-        :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
-        :server-name: MyAwesomeJiraServer
-
-It may be tedious for some projects to add this information in each document. As
-an alternative, a configuration can define JIRA instance information inside a
-configuration option as follows:
-
-.. code-block:: python
-
-    confluence_jira_servers = {
-        'server-1': {
-            'id': '<UUID of JIRA Instance>',
-            'name': '<Name of JIRA Instance>'
-        }
-    }
-
-With the above option defined in a project's configuration, the following can be
-used instance inside a document:
-
-.. code-block:: rst
-
-    .. jira_issue:: TEST-151
-        :server: server-1
-
-.. |confluence_master_homepage| replace:: ``confluence_master_homepage``
-.. _confluence_master_homepage:
-
-confluence_master_homepage
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A boolean value to whether or not force the configured space's homepage to be
-set to the page defined by the Sphinx configuration's master_doc_. By default,
-the master_doc_ configuration is ignored with a value of ``False``.
-
-.. code-block:: python
-
-   confluence_master_homepage = False
 
 confluence_max_doc_depth
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -243,28 +188,6 @@ other published pages that are not defined in the complete toctree_, these
 documents will still be published based off the configured (or unconfigured)
 |confluence_parent_page|_ setting.
 
-.. |confluence_parent_page| replace:: ``confluence_parent_page``
-.. _confluence_parent_page:
-
-confluence_parent_page
-~~~~~~~~~~~~~~~~~~~~~~
-
-The root page found inside the configured space (|confluence_space_name|_)
-where published pages will be a descendant of. The parent page value is used
-to match with the title of an existing page. If this option is not provided,
-pages will be published to the root of the configured space. If the parent page
-cannot be found, the publish attempt will stop with an error message. For
-example, the following will publish documentation under the ``MyAwesomeDocs``
-page:
-
-.. code-block:: python
-
-   confluence_parent_page = 'MyAwesomeDocs'
-
-If a parent page is not set, consider using the |confluence_master_homepage|_
-option as well. Note that the page's name can be case-sensitive in most
-(if not all) versions of Confluence.
-
 confluence_prev_next_buttons_location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -277,62 +200,6 @@ links are generated with a value of ``None``.
 
    confluence_prev_next_buttons_location = 'top'
 
-.. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
-.. _confluence_publish_postfix:
-
-confluence_publish_postfix
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If set, the postfix value is added to the title of all published documents. In
-Confluence, page names need to be unique for a space. A postfix can be set to
-either:
-
-* Add a unique naming schema to generated/published documents in a space which
-  has manually created pages; or,
-* Allow multiple published sets of documentation, each with their own postfix
-  value.
-
-An example publish postfix is as follows:
-
-.. code-block:: python
-
-   confluence_publish_postfix = '-postfix'
-
-By default, no postfix is used. See also |confluence_publish_prefix|_.
-
-.. |confluence_publish_prefix| replace:: ``confluence_publish_prefix``
-.. _confluence_publish_prefix:
-
-confluence_publish_prefix
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If set, the prefix value is added to the title of all published documents. In
-Confluence, page names need to be unique for a space. A prefix can be set to
-either:
-
-* Add a unique naming schema to generated/published documents in a space which
-  has manually created pages; or,
-* Allow multiple published sets of documentation, each with their own prefix
-  value.
-
-An example publish prefix is as follows:
-
-.. code-block:: python
-
-   confluence_publish_prefix = 'prefix-'
-
-By default, no prefix is used. See also |confluence_publish_postfix|_.
-
-confluence_add_secnumbers
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Add section numbers to page and section titles if ``doctree`` uses the
-``:numbered:`` option. By default, this is enabled:
-
-.. code-block:: python
-
-    confluence_add_secnumbers = True
-
 confluence_secnumber_suffix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -342,183 +209,10 @@ The suffix to put after section numbers, before section name.
 
     confluence_secnumber_suffix = '. '
 
-.. |confluence_purge| replace:: ``confluence_purge``
-.. _confluence_purge:
+.. #############################################################################
 
-confluence_purge
-~~~~~~~~~~~~~~~~
-
-.. warning::
-
-   Publishing individual/subset of documents with this option may lead to
-   unexpected results.
-
-A boolean value to whether or not purge legacy pages detected in a space or
-parent page. By default, this value is set to ``False`` to indicate that no
-pages will be removed. If this configuration is set to ``True``, detected pages
-in Confluence that do not match the set of published documents will be
-automatically removed. If the option |confluence_parent_page|_ is set, only
-pages which are a descendant of the configured parent page can be removed;
-otherwise, all pages in the configured space could be removed.
-
-.. code-block:: python
-
-   confluence_purge = False
-
-While this capability is useful for updating a series of pages, it may lead to
-unexpected results when attempting to publish a single-page update. The purge
-operation will remove all pages that are not publish in the request. For
-example, if an original request publishes ten documents and purges excess
-documents, a following publish attempt with only one of the documents will purge
-the other nine pages.
-
-confluence_purge_from_master
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A boolean value to which indicates that any purging attempt should be done from
-the root of a published master_doc_ page (instead of a configured parent page;
-i.e. |confluence_parent_page|_). In specific publishing scenarios, a user may
-wish to publish multiple documentation sets based off a single parent/container
-page. To prevent any purging between multiple documentation sets, this option
-can be set to ``True``. When generating legacy pages to be removed, this
-extension will only attempt to populate legacy pages based off the children of
-the master_doc_ page. This option still requires |confluence_purge|_ to be set
-to ``True`` before taking effect.
-
-.. code-block:: python
-
-   confluence_purge_from_master = False
-
-.. _confluence_advanced_conf_auth:
-
-advanced configuration - authentication
----------------------------------------
-
-confluence_server_auth
-~~~~~~~~~~~~~~~~~~~~~~
-
-An authentication handler which can be directly provided to a REST API request.
-REST calls in this extension use the Requests_ library, which provide various
-methods for a client to perform authentication. While this extension already
-provided simple authentication support (via ``confluence_server_user`` and
-``confluence_server_pass``), a publisher may need to configure an advanced
-authentication handler to support a target Confluence instance.
-
-Note that this extension does not define custom authentication handlers. This
-configuration is a passthrough option only. For more details on various ways to
-use authentication handlers, please consult `Requests -- Authentication`_. By
-default, no custom authentication handler is provided to generated REST API
-requests (if any).
-
-.. code-block:: python
-
-   from requests_oauthlib import OAuth1
-
-   ...
-
-   confluence_server_auth = OAuth1(client_key,
-       client_secret=client_secret,
-       resource_owner_key=resource_owner_key,
-       resource_owner_secret=resource_owner_secret)
-
-confluence_server_cookies
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A dictionary value which allows a user to pass key-value cookie information for
-authentication purposes. This is useful for users who need to authenticate with
-a single sign-on (SSO) provider to access a target Confluence instance. By
-default, no cookies are set with a value of ``None``.
-
-.. code-block:: python
-
-   confluence_server_cookies = {
-       'SESSION_ID': '<session id string>',
-       'U_ID': '<username>'
-   }
-
-advanced configuration - processing
------------------------------------
-
-.. |confluence_file_suffix| replace:: ``confluence_file_suffix``
-.. _confluence_file_suffix:
-
-confluence_file_suffix
-~~~~~~~~~~~~~~~~~~~~~~
-
-The file name suffix to use for all generated files. By default, all generated
-files will use the extension ``.conf`` (see |confluence_file_transform|_).
-
-.. code-block:: python
-
-   confluence_file_suffix = '.conf'
-
-.. |confluence_file_transform| replace:: ``confluence_file_transform``
-.. _confluence_file_transform:
-
-confluence_file_transform
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A function to override the translation of a document name to a filename. The
-provided function is used to perform translations for both Sphinx's
-get_outdated_docs_ and write_doc_ methods. The default translation will be the
-combination of "``docname`` + |confluence_file_suffix|_".
-
-confluence_lang_transform
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A function to override the translation of literal block-based directive
-language values to Confluence-support code block macro language values. The
-default translation accepts `Pygments documented language types`_ to
-`Confluence-supported syntax highlight languages`_.
-
-.. code-block:: python
-
-   def my_language_translation(lang):
-       return 'default'
-
-   confluence_lang_transform = my_language_translation
-
-.. |confluence_link_suffix| replace:: ``confluence_link_suffix``
-.. _confluence_link_suffix:
-
-confluence_link_suffix
-~~~~~~~~~~~~~~~~~~~~~~
-
-The suffix name to use for generated links to files. By default, all generated
-links will use the value defined by |confluence_file_suffix|_ (see
-|confluence_link_transform|_).
-
-.. code-block:: python
-
-   confluence_link_suffix = '.conf'
-
-.. |confluence_link_transform| replace:: ``confluence_link_transform``
-.. _confluence_link_transform:
-
-confluence_link_transform
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A function to override the translation of a document name to a (partial) URI.
-The provided function is used to perform translations for both Sphinx's
-get_relative_uri_ method. The default translation will be the combination of
-"``docname`` + |confluence_link_suffix|_".
-
-confluence_remove_title
-~~~~~~~~~~~~~~~~~~~~~~~
-
-A boolean value to whether or not automatically remove the title section from
-all published pages. In Confluence, page names are already presented at the top.
-With this option enabled, this reduces having two leading headers with the
-document's title. In some cases, a user may wish to not remove titles when
-custom prefixes or other custom modifications are in play. By default, this
-option is enabled with a value of ``True``.
-
-.. code-block:: python
-
-   confluence_remove_title = True
-
-advanced configuration - publishing
------------------------------------
+publishing
+----------
 
 .. |confluence_ask_password| replace:: ``confluence_ask_password``
 .. _confluence_ask_password:
@@ -570,6 +264,183 @@ By default, this option is disabled with a value of ``False``.
 
    confluence_ask_user = False
 
+confluence_disable_autogen_title
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to explicitly disable the automatic generation of titles for
+documents which do not have a title set. When this extension processes a set of
+documents to publish, a document needs a title value to know which Confluence
+page to create/update. In the event where a title value cannot be extracted from
+a document, a title value will be automatically generated for the document. For
+automatically generated titles, the value will always be prefixed with
+``autogen-``. For users who wish to ignore pages which have no title, this
+option can be set to ``True``. By default, this option is set to ``False``.
+
+.. code-block:: python
+
+   confluence_disable_autogen_title = True
+
+confluence_disable_notifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value which explicitly disable any page update notifications (i.e.
+treats page updates from a publish request as minor updates). By default,
+notifications are enabled with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_disable_notifications = True
+
+.. |confluence_master_homepage| replace:: ``confluence_master_homepage``
+.. _confluence_master_homepage:
+
+confluence_master_homepage
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not force the configured space's homepage to be
+set to the page defined by the Sphinx configuration's master_doc_. By default,
+the master_doc_ configuration is ignored with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_master_homepage = False
+
+.. |confluence_parent_page| replace:: ``confluence_parent_page``
+.. _confluence_parent_page:
+
+confluence_parent_page
+~~~~~~~~~~~~~~~~~~~~~~
+
+The root page found inside the configured space (|confluence_space_name|_)
+where published pages will be a descendant of. The parent page value is used
+to match with the title of an existing page. If this option is not provided,
+pages will be published to the root of the configured space. If the parent page
+cannot be found, the publish attempt will stop with an error message. For
+example, the following will publish documentation under the ``MyAwesomeDocs``
+page:
+
+.. code-block:: python
+
+   confluence_parent_page = 'MyAwesomeDocs'
+
+If a parent page is not set, consider using the |confluence_master_homepage|_
+option as well. Note that the page's name can be case-sensitive in most
+(if not all) versions of Confluence.
+
+.. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
+.. _confluence_publish_postfix:
+
+confluence_publish_postfix
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If set, the postfix value is added to the title of all published documents. In
+Confluence, page names need to be unique for a space. A postfix can be set to
+either:
+
+* Add a unique naming schema to generated/published documents in a space which
+  has manually created pages; or,
+* Allow multiple published sets of documentation, each with their own postfix
+  value.
+
+An example publish postfix is as follows:
+
+.. code-block:: python
+
+   confluence_publish_postfix = '-postfix'
+
+By default, no postfix is used. See also |confluence_publish_prefix|_.
+
+.. |confluence_publish_prefix| replace:: ``confluence_publish_prefix``
+.. _confluence_publish_prefix:
+
+confluence_publish_prefix
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If set, the prefix value is added to the title of all published documents. In
+Confluence, page names need to be unique for a space. A prefix can be set to
+either:
+
+* Add a unique naming schema to generated/published documents in a space which
+  has manually created pages; or,
+* Allow multiple published sets of documentation, each with their own prefix
+  value.
+
+An example publish prefix is as follows:
+
+.. code-block:: python
+
+   confluence_publish_prefix = 'prefix-'
+
+By default, no prefix is used. See also |confluence_publish_postfix|_.
+
+.. |confluence_purge| replace:: ``confluence_purge``
+.. _confluence_purge:
+
+confluence_purge
+~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   Publishing individual/subset of documents with this option may lead to
+   unexpected results.
+
+A boolean value to whether or not purge legacy pages detected in a space or
+parent page. By default, this value is set to ``False`` to indicate that no
+pages will be removed. If this configuration is set to ``True``, detected pages
+in Confluence that do not match the set of published documents will be
+automatically removed. If the option |confluence_parent_page|_ is set, only
+pages which are a descendant of the configured parent page can be removed;
+otherwise, all pages in the configured space could be removed.
+
+.. code-block:: python
+
+   confluence_purge = False
+
+While this capability is useful for updating a series of pages, it may lead to
+unexpected results when attempting to publish a single-page update. The purge
+operation will remove all pages that are not publish in the request. For
+example, if an original request publishes ten documents and purges excess
+documents, a following publish attempt with only one of the documents will purge
+the other nine pages.
+
+confluence_purge_from_master
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to which indicates that any purging attempt should be done from
+the root of a published master_doc_ page (instead of a configured parent page;
+i.e. |confluence_parent_page|_). In specific publishing scenarios, a user may
+wish to publish multiple documentation sets based off a single parent/container
+page. To prevent any purging between multiple documentation sets, this option
+can be set to ``True``. When generating legacy pages to be removed, this
+extension will only attempt to populate legacy pages based off the children of
+the master_doc_ page. This option still requires |confluence_purge|_ to be set
+to ``True`` before taking effect.
+
+.. code-block:: python
+
+   confluence_purge_from_master = False
+
+.. _confluence_timeout:
+
+confluence_timeout
+~~~~~~~~~~~~~~~~~~
+
+Force a timeout (in seconds) for network interaction. The timeout used by this
+extension is not explicitly configured (i.e. managed by Requests_ and other
+implementations). By default, assume that any network interaction will not
+timeout. Since the target Confluence instance is most likely to be found on an
+external server, is it recommended to explicitly configure a timeout value based
+on the environment being used. For example, to configure a timeout of ten
+seconds, the following can be used:
+
+.. code-block:: python
+
+   confluence_timeout = 10
+
+.. #############################################################################
+
+advanced publishing
+-------------------
 
 confluence_asset_override
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -641,22 +512,6 @@ ignored. By default, this option is ignored with a value of ``None``.
 .. code-block:: python
 
    confluence_client_cert_pass = 'passphrase'
-
-confluence_disable_autogen_title
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A boolean value to explicitly disable the automatic generation of titles for
-documents which do not have a title set. When this extension processes a set of
-documents to publish, a document needs a title value to know which Confluence
-page to create/update. In the event where a title value cannot be extracted from
-a document, a title value will be automatically generated for the document. For
-automatically generated titles, the value will always be prefixed with
-``autogen-``. For users who wish to ignore pages which have no title, this
-option can be set to ``True``. By default, this option is set to ``False``.
-
-.. code-block:: python
-
-   confluence_disable_autogen_title = True
 
 confluence_disable_rest
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -774,23 +629,174 @@ A user can force a publishing subset through the command line:
 By default, this option is ignored with a value of ``[]``. See also
 :ref:`manage publishing a document subset<tip_manage_publish_subset>`.
 
-.. _confluence_timeout:
+confluence_server_auth
+~~~~~~~~~~~~~~~~~~~~~~
 
-confluence_timeout
-~~~~~~~~~~~~~~~~~~
+An authentication handler which can be directly provided to a REST API request.
+REST calls in this extension use the Requests_ library, which provide various
+methods for a client to perform authentication. While this extension already
+provided simple authentication support (via ``confluence_server_user`` and
+``confluence_server_pass``), a publisher may need to configure an advanced
+authentication handler to support a target Confluence instance.
 
-Force a timeout (in seconds) for network interaction. The timeout used by this
-extension is not explicitly configured (i.e. managed by Requests_ and other
-implementations). By default, assume that any network interaction will not
-timeout. Since the target Confluence instance is most likely to be found on an
-external server, is it recommended to explicitly configure a timeout value based
-on the environment being used. For example, to configure a timeout of ten
-seconds, the following can be used:
+Note that this extension does not define custom authentication handlers. This
+configuration is a passthrough option only. For more details on various ways to
+use authentication handlers, please consult `Requests -- Authentication`_. By
+default, no custom authentication handler is provided to generated REST API
+requests (if any).
 
 .. code-block:: python
 
-   confluence_timeout = 10
+   from requests_oauthlib import OAuth1
 
+   ...
+
+   confluence_server_auth = OAuth1(client_key,
+       client_secret=client_secret,
+       resource_owner_key=resource_owner_key,
+       resource_owner_secret=resource_owner_secret)
+
+confluence_server_cookies
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A dictionary value which allows a user to pass key-value cookie information for
+authentication purposes. This is useful for users who need to authenticate with
+a single sign-on (SSO) provider to access a target Confluence instance. By
+default, no cookies are set with a value of ``None``.
+
+.. code-block:: python
+
+   confluence_server_cookies = {
+       'SESSION_ID': '<session id string>',
+       'U_ID': '<username>'
+   }
+
+.. #############################################################################
+
+advanced processing
+-------------------
+
+.. |confluence_file_suffix| replace:: ``confluence_file_suffix``
+.. _confluence_file_suffix:
+
+confluence_file_suffix
+~~~~~~~~~~~~~~~~~~~~~~
+
+The file name suffix to use for all generated files. By default, all generated
+files will use the extension ``.conf`` (see |confluence_file_transform|_).
+
+.. code-block:: python
+
+   confluence_file_suffix = '.conf'
+
+.. |confluence_file_transform| replace:: ``confluence_file_transform``
+.. _confluence_file_transform:
+
+confluence_file_transform
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A function to override the translation of a document name to a filename. The
+provided function is used to perform translations for both Sphinx's
+get_outdated_docs_ and write_doc_ methods. The default translation will be the
+combination of "``docname`` + |confluence_file_suffix|_".
+
+.. _confluence_jira_servers:
+
+confluence_jira_servers
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides a dictionary of named JIRA servers to reference when using the ``jira``
+or ``jira_issue`` directives. In a typical Confluence environment which is
+linked with a JIRA instance, users do not need to take advantage of this
+configuration -- Confluence should automatically be able to link to respectively
+JIRA issues or map JIRA query languages with a configured JIRA instance. In
+select cases where an instance has more than one JIRA instance attached, a user
+may need to explicitly reference a JIRA instance to properly render a JIRA
+macro. JIRA-related directives have the ability to reference JIRA instances,
+with a combination of a UUID and name; for example:
+
+.. code-block:: rst
+
+    .. jira_issue:: TEST-151
+        :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
+        :server-name: MyAwesomeJiraServer
+
+It may be tedious for some projects to add this information in each document. As
+an alternative, a configuration can define JIRA instance information inside a
+configuration option as follows:
+
+.. code-block:: python
+
+    confluence_jira_servers = {
+        'server-1': {
+            'id': '<UUID of JIRA Instance>',
+            'name': '<Name of JIRA Instance>'
+        }
+    }
+
+With the above option defined in a project's configuration, the following can be
+used instance inside a document:
+
+.. code-block:: rst
+
+    .. jira_issue:: TEST-151
+        :server: server-1
+
+confluence_lang_transform
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A function to override the translation of literal block-based directive
+language values to Confluence-support code block macro language values. The
+default translation accepts `Pygments documented language types`_ to
+`Confluence-supported syntax highlight languages`_.
+
+.. code-block:: python
+
+   def my_language_translation(lang):
+       return 'default'
+
+   confluence_lang_transform = my_language_translation
+
+.. |confluence_link_suffix| replace:: ``confluence_link_suffix``
+.. _confluence_link_suffix:
+
+confluence_link_suffix
+~~~~~~~~~~~~~~~~~~~~~~
+
+The suffix name to use for generated links to files. By default, all generated
+links will use the value defined by |confluence_file_suffix|_ (see
+|confluence_link_transform|_).
+
+.. code-block:: python
+
+   confluence_link_suffix = '.conf'
+
+.. |confluence_link_transform| replace:: ``confluence_link_transform``
+.. _confluence_link_transform:
+
+confluence_link_transform
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A function to override the translation of a document name to a (partial) URI.
+The provided function is used to perform translations for both Sphinx's
+get_relative_uri_ method. The default translation will be the combination of
+"``docname`` + |confluence_link_suffix|_".
+
+confluence_remove_title
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not automatically remove the title section from
+all published pages. In Confluence, page names are already presented at the top.
+With this option enabled, this reduces having two leading headers with the
+document's title. In some cases, a user may wish to not remove titles when
+custom prefixes or other custom modifications are in play. By default, this
+option is enabled with a value of ``True``.
+
+.. code-block:: python
+
+   confluence_remove_title = True
+
+.. #############################################################################
 
 .. references ------------------------------------------------------------------
 
