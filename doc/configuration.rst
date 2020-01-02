@@ -19,10 +19,8 @@ All Atlassian Confluence Builder configurations are prefixed with
 
 .. contents:: :local:
 
-.. #############################################################################
-
-essential
----------
+essential configuration
+-----------------------
 
 confluence_publish
 ~~~~~~~~~~~~~~~~~~
@@ -34,6 +32,8 @@ value is set to ``False``.
 .. code-block:: python
 
    confluence_publish = True
+
+--------------------------------------------------------------------------------
 
 confluence_server_pass
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -63,6 +63,8 @@ username value should be used:
    provides a method for prompting for a password (see
    |confluence_ask_password|_).
 
+--------------------------------------------------------------------------------
+
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -89,6 +91,8 @@ follows:
 
    confluence_server_url = 'https://intranet-wiki.example.com/'
 
+--------------------------------------------------------------------------------
+
 confluence_server_user
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -101,6 +105,8 @@ If using Confluence instance, this value will most likely be the username value.
    confluence_server_user = 'myawesomeuser@example.com'
        (or)
    confluence_server_user = 'myawesomeuser'
+
+--------------------------------------------------------------------------------
 
 .. |confluence_space_name| replace:: ``confluence_space_name``
 .. _confluence_space_name:
@@ -117,13 +123,18 @@ Key of the space in Confluence to be used to publish generated documents to.
 Note that the space name can be **case-sensitive** in most (if not all) versions
 of Confluence.
 
-.. #############################################################################
+--------------------------------------------------------------------------------
 
-generic
--------
+generic configuration
+---------------------
+
+.. |confluence_add_secnumbers| replace:: ``confluence_add_secnumbers``
+.. _confluence_add_secnumbers:
 
 confluence_add_secnumbers
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 Add section numbers to page and section titles if ``doctree`` uses the
 ``:numbered:`` option. By default, this is enabled:
@@ -131,6 +142,13 @@ Add section numbers to page and section titles if ``doctree`` uses the
 .. code-block:: python
 
     confluence_add_secnumbers = True
+
+See also |confluence_publish_prefix|_.
+
+--------------------------------------------------------------------------------
+
+.. |confluence_header_file| replace:: ``confluence_header_file``
+.. _confluence_header_file:
 
 confluence_header_file
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -144,6 +162,13 @@ For example:
 
    confluence_header_file = 'assets/header.tpl'
 
+See also |confluence_footer_file|_.
+
+--------------------------------------------------------------------------------
+
+.. |confluence_footer_file| replace:: ``confluence_footer_file``
+.. _confluence_footer_file:
+
 confluence_footer_file
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -155,6 +180,10 @@ For example:
 .. code-block:: python
 
    confluence_footer_file = 'assets/footer.tpl'
+
+See also |confluence_header_file|_.
+
+--------------------------------------------------------------------------------
 
 confluence_max_doc_depth
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,6 +198,8 @@ depth is disabled with a value of ``None``.
 .. code-block:: python
 
    confluence_max_doc_depth = 2
+
+--------------------------------------------------------------------------------
 
 confluence_page_hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -188,8 +219,12 @@ other published pages that are not defined in the complete toctree_, these
 documents will still be published based off the configured (or unconfigured)
 |confluence_parent_page|_ setting.
 
+--------------------------------------------------------------------------------
+
 confluence_prev_next_buttons_location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 A string value to where to include previous/next buttons (if any) based on the
 detected order of documents to be included in processing. Values accepted are
@@ -200,8 +235,15 @@ links are generated with a value of ``None``.
 
    confluence_prev_next_buttons_location = 'top'
 
+--------------------------------------------------------------------------------
+
+.. |confluence_secnumber_suffix| replace:: ``confluence_secnumber_suffix``
+.. _confluence_secnumber_suffix:
+
 confluence_secnumber_suffix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 The suffix to put after section numbers, before section name.
 
@@ -209,10 +251,12 @@ The suffix to put after section numbers, before section name.
 
     confluence_secnumber_suffix = '. '
 
-.. #############################################################################
+See also |confluence_add_secnumbers|_.
 
-publishing
-----------
+--------------------------------------------------------------------------------
+
+publishing configuration
+------------------------
 
 .. |confluence_ask_password| replace:: ``confluence_ask_password``
 .. _confluence_ask_password:
@@ -250,8 +294,12 @@ Note that some shell sessions may not be able to pull the password value
 properly from the user. For example, Cygwin/MinGW may not be able to accept a
 password unless invoked with ``winpty``.
 
+--------------------------------------------------------------------------------
+
 confluence_ask_user
 ~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 Provides an override for an interactive shell to request publishing documents
 using a user provided from the shell environment. While a
@@ -263,6 +311,8 @@ By default, this option is disabled with a value of ``False``.
 .. code-block:: python
 
    confluence_ask_user = False
+
+--------------------------------------------------------------------------------
 
 confluence_disable_autogen_title
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -280,6 +330,8 @@ option can be set to ``True``. By default, this option is set to ``False``.
 
    confluence_disable_autogen_title = True
 
+--------------------------------------------------------------------------------
+
 confluence_disable_notifications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -290,6 +342,8 @@ notifications are enabled with a value of ``False``.
 .. code-block:: python
 
    confluence_disable_notifications = True
+
+--------------------------------------------------------------------------------
 
 .. |confluence_master_homepage| replace:: ``confluence_master_homepage``
 .. _confluence_master_homepage:
@@ -304,6 +358,8 @@ the master_doc_ configuration is ignored with a value of ``False``.
 .. code-block:: python
 
    confluence_master_homepage = False
+
+--------------------------------------------------------------------------------
 
 .. |confluence_parent_page| replace:: ``confluence_parent_page``
 .. _confluence_parent_page:
@@ -327,11 +383,15 @@ If a parent page is not set, consider using the |confluence_master_homepage|_
 option as well. Note that the page's name can be case-sensitive in most
 (if not all) versions of Confluence.
 
+--------------------------------------------------------------------------------
+
 .. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
 .. _confluence_publish_postfix:
 
 confluence_publish_postfix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 If set, the postfix value is added to the title of all published documents. In
 Confluence, page names need to be unique for a space. A postfix can be set to
@@ -349,6 +409,8 @@ An example publish postfix is as follows:
    confluence_publish_postfix = '-postfix'
 
 By default, no postfix is used. See also |confluence_publish_prefix|_.
+
+--------------------------------------------------------------------------------
 
 .. |confluence_publish_prefix| replace:: ``confluence_publish_prefix``
 .. _confluence_publish_prefix:
@@ -372,6 +434,8 @@ An example publish prefix is as follows:
    confluence_publish_prefix = 'prefix-'
 
 By default, no prefix is used. See also |confluence_publish_postfix|_.
+
+--------------------------------------------------------------------------------
 
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
@@ -403,6 +467,8 @@ example, if an original request publishes ten documents and purges excess
 documents, a following publish attempt with only one of the documents will purge
 the other nine pages.
 
+--------------------------------------------------------------------------------
+
 confluence_purge_from_master
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -419,6 +485,8 @@ to ``True`` before taking effect.
 .. code-block:: python
 
    confluence_purge_from_master = False
+
+--------------------------------------------------------------------------------
 
 .. _confluence_timeout:
 
@@ -437,10 +505,10 @@ seconds, the following can be used:
 
    confluence_timeout = 10
 
-.. #############################################################################
+--------------------------------------------------------------------------------
 
-advanced publishing
--------------------
+advanced publishing configuration
+---------------------------------
 
 confluence_asset_override
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -461,6 +529,8 @@ occurs with a value of ``None``.
 
    confluence_asset_override = None
 
+--------------------------------------------------------------------------------
+
 confluence_ca_cert
 ~~~~~~~~~~~~~~~~~~
 
@@ -477,6 +547,8 @@ option is ignored with a value of ``None``.
 .. code-block:: python
 
    confluence_ca_cert = 'ca.crt'
+
+--------------------------------------------------------------------------------
 
 .. |confluence_client_cert| replace:: ``confluence_client_cert``
 .. _confluence_client_cert:
@@ -498,6 +570,8 @@ of ``None``.
    # or
    confluence_client_cert = ('client.cert', 'client.key')
 
+--------------------------------------------------------------------------------
+
 .. |confluence_client_cert_pass| replace:: ``confluence_client_cert_pass``
 .. _confluence_client_cert_pass:
 
@@ -513,11 +587,12 @@ ignored. By default, this option is ignored with a value of ``None``.
 
    confluence_client_cert_pass = 'passphrase'
 
+--------------------------------------------------------------------------------
+
 confluence_disable_rest
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. warning::
-
+.. deprecated:: 1.2
    It is not recommended to use this option with a value of ``True`` as the
    XML-RPC API has been deprecated by Atlassian as well as in this extension.
    This configuration option will have no effect in v1.3. Only use if required.
@@ -532,6 +607,8 @@ XML-RPC instead. By default, this option is set to ``False``.
 .. code-block:: python
 
    confluence_disable_rest = False
+
+--------------------------------------------------------------------------------
 
 .. |confluence_disable_ssl_validation| replace::
    ``confluence_disable_ssl_validation``
@@ -551,13 +628,14 @@ when making a publish request. By default, this option is set to ``False``.
 
    confluence_disable_ssl_validation = False
 
+--------------------------------------------------------------------------------
+
 .. _confluence_disable_xmlrpc:
 
 confluence_disable_xmlrpc
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. warning::
-
+.. deprecated:: 1.2
    XML-RPC API has been deprecated by Atlassian as well as in this extension.
    XML-RPC API support will be removed from this extension in v1.3.
 
@@ -572,6 +650,8 @@ default, this option is set to ``False``.
 
    confluence_disable_xmlrpc = False
 
+--------------------------------------------------------------------------------
+
 confluence_parent_page_id_check
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -584,8 +664,15 @@ This serves as a sanity-check configuration for the cautious.
 
    confluence_parent_page_id_check = 1
 
+--------------------------------------------------------------------------------
+
 confluence_proxy
 ~~~~~~~~~~~~~~~~
+
+.. deprecated:: 1.2
+   This proxy configuration only applies to XML-RPC API which has been
+   deprecated by Atlassian as well as in this extension. Setting this option in
+   v1.3 of this extension will have no effect.
 
 Provide the proxy needed to be used to interact with the Confluence instance
 over the network. At this time, the proxy configuration only applies to XML-RPC
@@ -595,6 +682,8 @@ configuration).
 .. code-block:: python
 
    confluence_proxy = 'myawesomeproxy:8080'
+
+--------------------------------------------------------------------------------
 
 .. _confluence_publish_subset:
 
@@ -629,6 +718,8 @@ A user can force a publishing subset through the command line:
 By default, this option is ignored with a value of ``[]``. See also
 :ref:`manage publishing a document subset<tip_manage_publish_subset>`.
 
+--------------------------------------------------------------------------------
+
 confluence_server_auth
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -656,6 +747,8 @@ requests (if any).
        resource_owner_key=resource_owner_key,
        resource_owner_secret=resource_owner_secret)
 
+--------------------------------------------------------------------------------
+
 confluence_server_cookies
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -671,10 +764,10 @@ default, no cookies are set with a value of ``None``.
        'U_ID': '<username>'
    }
 
-.. #############################################################################
+--------------------------------------------------------------------------------
 
-advanced processing
--------------------
+advanced processing configuration
+---------------------------------
 
 .. |confluence_file_suffix| replace:: ``confluence_file_suffix``
 .. _confluence_file_suffix:
@@ -689,6 +782,8 @@ files will use the extension ``.conf`` (see |confluence_file_transform|_).
 
    confluence_file_suffix = '.conf'
 
+--------------------------------------------------------------------------------
+
 .. |confluence_file_transform| replace:: ``confluence_file_transform``
 .. _confluence_file_transform:
 
@@ -700,10 +795,14 @@ provided function is used to perform translations for both Sphinx's
 get_outdated_docs_ and write_doc_ methods. The default translation will be the
 combination of "``docname`` + |confluence_file_suffix|_".
 
+--------------------------------------------------------------------------------
+
 .. _confluence_jira_servers:
 
 confluence_jira_servers
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
 
 Provides a dictionary of named JIRA servers to reference when using the ``jira``
 or ``jira_issue`` directives. In a typical Confluence environment which is
@@ -742,6 +841,8 @@ used instance inside a document:
     .. jira_issue:: TEST-151
         :server: server-1
 
+--------------------------------------------------------------------------------
+
 confluence_lang_transform
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -757,6 +858,8 @@ default translation accepts `Pygments documented language types`_ to
 
    confluence_lang_transform = my_language_translation
 
+--------------------------------------------------------------------------------
+
 .. |confluence_link_suffix| replace:: ``confluence_link_suffix``
 .. _confluence_link_suffix:
 
@@ -771,6 +874,8 @@ links will use the value defined by |confluence_file_suffix|_ (see
 
    confluence_link_suffix = '.conf'
 
+--------------------------------------------------------------------------------
+
 .. |confluence_link_transform| replace:: ``confluence_link_transform``
 .. _confluence_link_transform:
 
@@ -781,6 +886,8 @@ A function to override the translation of a document name to a (partial) URI.
 The provided function is used to perform translations for both Sphinx's
 get_relative_uri_ method. The default translation will be the combination of
 "``docname`` + |confluence_link_suffix|_".
+
+--------------------------------------------------------------------------------
 
 confluence_remove_title
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -796,7 +903,6 @@ option is enabled with a value of ``True``.
 
    confluence_remove_title = True
 
-.. #############################################################################
 
 .. references ------------------------------------------------------------------
 
