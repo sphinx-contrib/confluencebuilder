@@ -1,26 +1,31 @@
 master
 ======
 
-* (note) sphinx v1.6 support for this extension is deprecated
+* (note) sphinx v1.[6-7] support for this extension is deprecated
 * (note) xml-rpc support for this extension is deprecated
 * fixed issue when using hierarchy on sphinx 2.1+ (new citations domain)
 * fixed issue with document names with path separators for windows users
+* fixed issue with multi-line description signatures (e.g. c++ autodocs)
+* fixed issue with processing hidden toctrees
 * fixed issue with unicode paths with confluence_publish_subset and python 2.7
 * improved formatting for option list arguments
 * improved handling and feedback when configured with incorrect publish instance
 * improved name management for published assets
+* improved reference linking for sphinx domains capability (meth, attr, etc.)
 * introduce a series of jira directives
 * support 'firstline' parameter in the code block macro
 * support base admonition directive
 * support confluence 7 series newline management
 * support default alignment in sphinx 2.1+
 * support document postfixes
+* support for generated image assets (asterisk marked)
 * support passthrough authentication handlers for rest calls
 * support previous/next navigation
 * support prompting for publish username
 * support sphinx.ext.autosummary extension
 * support sphinx.ext.todo extension
 * support the math directive
+* support toctree's numbered option
 * support users injecting cookie data (for authentication) into rest calls
 
 1.1.0 (2019-03-16)

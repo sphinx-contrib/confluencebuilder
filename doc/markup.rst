@@ -67,8 +67,7 @@ rubric                 supported     - `Sphinx Rubric`_
 sections               supported     - `reStructuredText Sections`_
 tables                 supported     - `reStructuredText Tables`_
 toctree                supported     - `Sphinx TOC Tree Markup`_
-                                     - Pending work to validate/improve toctree
-                                       options ``caption`` and ``numbered``.
+                                     - Argument ``caption`` not yet supported.
 transitions            supported     - `reStructuredText Transitions`_
 versionadded           supported     - `Sphinx Version Added`_
 versionchanged         supported     - `Sphinx Version Changed`_
