@@ -79,9 +79,10 @@ class Rest:
         if config.confluence_server_auth:
             session.auth = config.confluence_server_auth
         elif config.confluence_server_user:
-            session.auth = (
-                config.confluence_server_user,
-                config.confluence_server_pass)
+            passwd = config.confluence_server_pass
+            if passwd is None:
+                passwd = ''
+            session.auth = (config.confluence_server_user, passwd)
 
         if config.confluence_server_cookies:
             session.cookies.update(config.confluence_server_cookies)
