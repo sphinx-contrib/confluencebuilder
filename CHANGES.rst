@@ -1,5 +1,5 @@
-master
-======
+1.2.0 (2020-01-03)
+==================
 
 * (note) sphinx v1.[6-7] support for this extension is deprecated
 * (note) xml-rpc support for this extension is deprecated
