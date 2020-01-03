@@ -966,7 +966,10 @@ class ConfluenceTranslator(BaseTranslator):
         self._reference_context = []
 
     def visit_target(self, node):
-        if 'refid' in node and self.can_anchor:
+        if not self.can_anchor:
+            raise nodes.SkipNode
+    
+        if 'refid' in node:
             anchor = ''.join(node['refid'].split())
 
             # only build an anchor if required (e.x. is a reference label
@@ -976,6 +979,11 @@ class ConfluenceTranslator(BaseTranslator):
             if not target:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_parameter(node, '', anchor))
+                self.body.append(self._end_ac_macro(node))
+        elif 'ids' in node and 'refuri' not in node:
+            for id in node['ids']:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', id))
                 self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
