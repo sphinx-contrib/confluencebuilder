@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -12,7 +12,7 @@ with open('README.rst', 'r') as readme_rst:
 requires = [
     'future>=0.16.0',
     'requests>=2.14.0',
-    'sphinx>=1.6.3',
+    'sphinx>=1.8',
     ]
 
 setup(

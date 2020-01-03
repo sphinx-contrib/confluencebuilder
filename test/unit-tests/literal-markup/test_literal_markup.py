@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -26,8 +26,7 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
     def test_code_blocks(self):
         # skip code-block tests in Sphinx v1.8.x due to regression
         #  https://github.com/sphinx-contrib/confluencebuilder/issues/148
-        if (parse_version(sphinx_version) >= parse_version('1.8') and
-                parse_version(sphinx_version) < parse_version('2.0')):
+        if parse_version(sphinx_version) < parse_version('2.0'):
             raise unittest.SkipTest('not supported in sphinx-1.8.x')
         _.assertExpectedWithOutput(
             self, 'code_blocks', self.expected, self.doc_dir)

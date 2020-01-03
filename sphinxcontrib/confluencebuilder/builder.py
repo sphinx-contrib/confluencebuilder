@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -301,8 +301,7 @@ class ConfluenceBuilder(Builder):
             # in the list of documents to process. This is to help prepare
             # additional images into the asset management for this extension.
             # Math support will work on systems which have latex/dvipng
-            # installed; with Sphinx 1.8+ or Sphinx 1.6+ with the extension
-            # "sphinx.ext.imgmath" registered.
+            # installed.
             if imgmath is not None:
                 # imgmath's render_math call expects a translator to be passed
                 # in; mock a translator tied to our self-builder

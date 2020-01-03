@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -13,8 +13,7 @@ from .nodes import jira_issue
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
 from docutils import nodes
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
+from sphinx.util import docutils
 from sphinx.writers.text import STDINDENT
 import argparse
 import os
@@ -46,16 +45,9 @@ def main():
 def setup(app):
     ConfluenceLogger.initialize()
 
-    app.require_sphinx('1.6')
+    app.require_sphinx('1.8')
     app.add_builder(ConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
-
-    # sphinx v1.[6-7] is deprecated and is planned to be dropped in v1.3+
-    # (ignore when tox is running; TOX_WORK_DIR)
-    if (parse_version(sphinx_version) < parse_version('1.8') and not
-            'TOX_WORK_DIR' in os.environ):
-        ConfluenceLogger.warn('(deprecated) builder {} deprecated for '
-            'Sphinx v1.7 and older'.format(ConfluenceBuilder.name))
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
@@ -68,11 +60,10 @@ def setup(app):
     # remove math-node-migration post-transform as this extension manages both
     # future and legacy math implementations (removing this transform removes
     # a warning notification to the user)
-    if parse_version(sphinx_version) >= parse_version('1.7'):
-        for transform in app.registry.get_post_transforms():
-            if transform.__name__ == 'MathNodeMigrator':
-                app.registry.get_post_transforms().remove(transform)
-                break
+    for transform in app.registry.get_post_transforms():
+        if transform.__name__ == 'MathNodeMigrator':
+            app.registry.get_post_transforms().remove(transform)
+            break
 
     # ##########################################################################
 
@@ -190,9 +181,9 @@ def setup(app):
 
     """JIRA directives"""
     """Adds the custom nodes needed for JIRA directives"""
-    if not ConfluenceUtil.is_node_registered(jira):
+    if not docutils.is_node_registered(jira):
         app.add_node(jira)
-    if not ConfluenceUtil.is_node_registered(jira_issue):
+    if not docutils.is_node_registered(jira_issue):
         app.add_node(jira_issue)
     """Wires up the directives themselves"""
     app.add_directive('jira', JiraDirective)
@@ -209,8 +200,7 @@ def setup(app):
     # Sphinx 1.8 and higher which math support is embedded; for older versions,
     # users will need to explicitly load 'sphinx.ext.mathbase'.
     if (imgmath is not None and
-            'sphinx.ext.imgmath' not in app.config.extensions and
-            parse_version(sphinx_version) >= parse_version('1.8')):
+            'sphinx.ext.imgmath' not in app.config.extensions):
         imgmath.setup(app)
 
     return {
