@@ -75,18 +75,6 @@ By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
 (see ``confluence_timeout``; :ref:`jump<confluence_timeout>`).
 
-disable xml-rpc
----------------
-
-When publishing, the default configuration will attempt to first publish using
-REST API. If publishing fails, the extension automatically attempts to publish
-using the XML-RPC API. This is solely for compatibility reasons (i.e.
-environments which for some reason cannot support the REST API). If in an
-environment where access to a Confluence instance is limited by the network, one
-may not desire two failed attempts when publishing a documentation set. To
-disable attempts to publish using the XML-RPC API, see
-``confluence_disable_xmlrpc`` (:ref:`jump<confluence_disable_xmlrpc>`).
-
 .. _tip_manage_publish_subset:
 
 manage publishing a document subset
