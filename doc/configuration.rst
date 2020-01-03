@@ -618,15 +618,9 @@ This serves as a sanity-check configuration for the cautious.
 confluence_proxy
 ~~~~~~~~~~~~~~~~
 
-.. deprecated:: 1.2
-   This proxy configuration only applies to XML-RPC API which has been
-   deprecated by Atlassian as well as in this extension. Setting this option in
-   v1.3 of this extension will have no effect.
-
-Provide the proxy needed to be used to interact with the Confluence instance
-over the network. At this time, the proxy configuration only applies to XML-RPC
-calls (REST calls use the Requests_ library which will use system-defined proxy
-configuration).
+REST calls use the Requests_ library which will use system-defined proxy
+configuration; however, a user can override the system-defined proxy by
+providing a proxy server using this configuration.
 
 .. code-block:: python
 
