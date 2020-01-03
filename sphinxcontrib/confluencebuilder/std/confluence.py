@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -10,11 +10,6 @@ from .sphinx import DEFAULT_HIGHLIGHT_STYLE
 confluence trailing bind path for rest api
 """
 API_REST_BIND_PATH = 'rest/api'
-
-"""
-confluence trailing bind path for xml-rpc api
-"""
-API_XMLRPC_BIND_PATH = 'rpc/xmlrpc'
 
 """
 confluence default (paragraph) indent offset (in pixels)

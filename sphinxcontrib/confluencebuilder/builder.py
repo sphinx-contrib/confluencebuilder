@@ -544,14 +544,14 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
             n = 0
-            for page_id, legacy_asset_info in self.legacy_assets.items():
+            for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
                 ConfluenceLogger.info(
                     'removing legacy assets... (total: {}) '.format(n), nonl=0)
-                for page_id, legacy_asset_info in self.legacy_assets.items():
-                    for id, name in legacy_asset_info.items():
-                        self.publisher.removeAttachment(page_id, id, name)
+                for legacy_asset_info in self.legacy_assets.values():
+                    for id in legacy_asset_info.keys():
+                        self.publisher.removeAttachment(id)
                 ConfluenceLogger.info('done\n')
 
     def finish(self):

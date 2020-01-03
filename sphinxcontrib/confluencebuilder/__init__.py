@@ -128,12 +128,8 @@ def setup(app):
     app.add_config_value('confluence_client_cert', None, False)
     """Password for client certificate to use for publishing"""
     app.add_config_value('confluence_client_cert_pass', None, False)
-    """Explicitly prevent any Confluence REST API callers."""
-    app.add_config_value('confluence_disable_rest', None, False)
     """Disable SSL validation with Confluence server."""
     app.add_config_value('confluence_disable_ssl_validation', None, False)
-    """Explicitly prevent any Confluence XML-RPC API callers."""
-    app.add_config_value('confluence_disable_xmlrpc', None, False)
     """Root/parent page's identifier to publish documents into."""
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Proxy server needed to communicate with Confluence server."""

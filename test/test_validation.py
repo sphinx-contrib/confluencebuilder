@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -28,7 +28,6 @@ class TestConfluenceValidation(unittest.TestCase):
         # build configuration
         cls.config = _.prepareConfiguration()
         cls.config['confluence_disable_notifications'] = True
-        cls.config['confluence_disable_xmlrpc'] = True
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_parent_page'] = DEFAULT_TEST_BASE
         cls.config['confluence_publish'] = True
@@ -144,17 +143,6 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-hierarchy')
 
         _.buildSphinx(dataset, doc_dir, doctree_dir, config)
-
-    def test_xmlrpc(self):
-        config = dict(self.config)
-        config['confluence_disable_rest'] = True
-        config['confluence_disable_xmlrpc'] = False
-
-        dataset = os.path.join(self.datasets, 'xmlrpc')
-        doc_dir, doctree_dir = _.prepareDirectories('validation-set-xmlrpc')
-
-        # relax build since xml-rpc has been marked as deprecated
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config, relax=True)
 
     def test_nonjsonresponse(self):
         config = dict(self.config)

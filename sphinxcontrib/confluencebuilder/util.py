@@ -5,7 +5,6 @@
 """
 
 from .std.confluence import API_REST_BIND_PATH
-from .std.confluence import API_XMLRPC_BIND_PATH
 from hashlib import sha256
 
 class ConfluenceUtil:
@@ -53,14 +52,10 @@ class ConfluenceUtil:
             # removing any trailing forward slash user provided
             if url.endswith('/'):
                 url = url[:-1]
-            # check for xml-rpc bind path; strip and return if found
-            if url.endswith(API_XMLRPC_BIND_PATH):
-                url = url[:-len(API_XMLRPC_BIND_PATH)]
-            else:
-                # check for rest bind path; strip and return if found
-                if url.endswith(API_REST_BIND_PATH):
-                    url = url[:-len(API_REST_BIND_PATH)]
-                # restore trailing forward flash
-                elif not url.endswith('/'):
-                    url += '/'
+            # check for rest bind path; strip and return if found
+            if url.endswith(API_REST_BIND_PATH):
+                url = url[:-len(API_REST_BIND_PATH)]
+            # restore trailing forward flash
+            elif not url.endswith('/'):
+                url += '/'
         return url
