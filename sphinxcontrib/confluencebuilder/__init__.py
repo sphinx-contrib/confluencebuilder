@@ -169,6 +169,8 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
     """Remove a detected title from generated documents."""
     app.add_config_value('confluence_remove_title', True, False)
+    """Generate all of the documentation on a single page."""
+    app.add_config_value('confluence_single_page', False, False)
 
     """(configuration - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""
