@@ -49,6 +49,9 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_citations(self):
         self._assertExpectedWithOutput('citations')
 
+    def test_contents(self):
+        self._assertExpectedWithOutput('contents')
+
     def test_definition_lists(self):
         self._assertExpectedWithOutput('definition-lists')
 
