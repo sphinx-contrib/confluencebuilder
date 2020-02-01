@@ -10,6 +10,7 @@ from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
 from .nodes import ConfluenceNavigationNode
 from .state import ConfluenceState
+from .std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from .std.confluence import FCMMO
 from .std.confluence import INDENT
 from .std.confluence import LITERAL2LANG_MAP
@@ -545,7 +546,7 @@ class ConfluenceTranslator(BaseTranslator):
             if lang not in self._tracked_unknown_code_lang:
                 ConfluenceLogger.warn('unknown code language: {}'.format(lang))
                 self._tracked_unknown_code_lang.append(lang)
-            lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
+            lang = LITERAL2LANG_MAP[FALLBACK_HIGHLIGHT_STYLE]
 
         data = self.nl.join(node.astext().splitlines())
 

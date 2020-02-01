@@ -131,3 +131,11 @@ LITERAL2LANG_MAP = {
     # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
     DEFAULT_HIGHLIGHT_STYLE: 'python'
 }
+
+"""
+fallback highlight language
+
+When provided a language type that is not supported by Confluence is detected on
+a code block, this fallback style will be applied instead.
+"""
+FALLBACK_HIGHLIGHT_STYLE = 'none'
