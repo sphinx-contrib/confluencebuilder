@@ -146,6 +146,18 @@ class ConfluenceTranslator(BaseTranslator):
             ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
             raise nodes.SkipNode
 
+        # allow users to override unknown nodes
+        #
+        # A node handler allows an advanced user to provide implementation to
+        # process a node not supported by this extension. This is to assist in
+        # providing a quick alternative to supporting another third party
+        # extension in this translator (without having to take the time in
+        # building a third extension).
+        handler = self.builder.config.confluence_adv_node_handler
+        if handler and isinstance(handler, dict) and node_name in handler:
+            handler[node_name](self, node)
+            raise nodes.SkipNode
+
         raise NotImplementedError('unknown node: ' + node_name)
 
     # ---------
