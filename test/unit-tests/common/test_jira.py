@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2019-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from pkg_resources import parse_version
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
-from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.errors import SphinxWarning
 import os
 import unittest

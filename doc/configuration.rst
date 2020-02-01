@@ -68,24 +68,18 @@ username value should be used:
 confluence_server_url
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. warning::
-
-   XML-RPC API has been deprecated by Atlassian as well as in this extension.
-   XML-RPC API support will be removed from this extension in v1.3.
-
 The URL for Confluence. The URL should be prefixed with ``https://`` or
 ``http://`` (depending on the URL target). The target API folder should not be
-included in the URL (for example, excluding ``/rest/api/`` or ``/rpc/xmlrpc/``).
-For a Confluence Cloud instance, an example URL configuration is as follows:
+included in the URL (i.e. excluding ``rest/api/``). For a Confluence Cloud
+instance, an example URL configuration is as follows:
 
 .. code-block:: python
 
    confluence_server_url = 'https://example.atlassian.net/wiki/'
 
 For a Confluence Server instance, an example URL configuration, if the
-instance's REST API is ``https://intranet-wiki.example.com/rest/api/`` or
-XML-RPC API is at ``https://intranet-wiki.example.com/rpc/xmlrpc``, should be as
-follows:
+instance's REST API is ``https://intranet-wiki.example.com/rest/api/``, should
+be as follows:
 
 .. code-block:: python
 
@@ -538,8 +532,6 @@ Provide a CA certificate to use for server certificate authentication. The value
 for this option can either be a file of a certificate or a path pointing to an
 OpenSSL-prepared directory. If configured to use REST API (default), refer to
 the `Requests SSL Cert Verification`_  documentation (``verify``) for
-information. If configured to use the XML-RPC API, refer to Python's
-`TLS/SSL wrapper for socket object`_ (``cafile`` or ``capath``) for more
 information. If server verification is explicitly disabled (see
 |confluence_disable_ssl_validation|_), this option is ignored. By default, this
 option is ignored with a value of ``None``.
@@ -589,27 +581,6 @@ ignored. By default, this option is ignored with a value of ``None``.
 
 --------------------------------------------------------------------------------
 
-confluence_disable_rest
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. deprecated:: 1.2
-   It is not recommended to use this option with a value of ``True`` as the
-   XML-RPC API has been deprecated by Atlassian as well as in this extension.
-   This configuration option will have no effect in v1.3. Only use if required.
-
-A boolean value to explicitly disable any REST API calls. This extension has the
-ability to publish using either Confluence's REST or XML-RPC API calls. When
-publishing, this extension will first attempt to publish using REST and fallback
-to using XML-RPC. If the target Confluence instance cannot use REST for
-publishing, it is recommended to set the option to ``True`` to always use
-XML-RPC instead. By default, this option is set to ``False``.
-
-.. code-block:: python
-
-   confluence_disable_rest = False
-
---------------------------------------------------------------------------------
-
 .. |confluence_disable_ssl_validation| replace::
    ``confluence_disable_ssl_validation``
 .. _confluence_disable_ssl_validation:
@@ -630,28 +601,6 @@ when making a publish request. By default, this option is set to ``False``.
 
 --------------------------------------------------------------------------------
 
-.. _confluence_disable_xmlrpc:
-
-confluence_disable_xmlrpc
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. deprecated:: 1.2
-   XML-RPC API has been deprecated by Atlassian as well as in this extension.
-   XML-RPC API support will be removed from this extension in v1.3.
-
-A boolean value to explicitly disable any XML-RPC API calls. This extension has
-the ability to publish using either Confluence's REST or XML-RPC API calls. When
-publishing, this extension will first attempt to publish using REST and fallback
-to using XML-RPC. If the target Confluence instance supports REST or has XML-RPC
-explicitly disabled, it is recommended to set this option to ``True``. By
-default, this option is set to ``False``.
-
-.. code-block:: python
-
-   confluence_disable_xmlrpc = False
-
---------------------------------------------------------------------------------
-
 confluence_parent_page_id_check
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -669,15 +618,9 @@ This serves as a sanity-check configuration for the cautious.
 confluence_proxy
 ~~~~~~~~~~~~~~~~
 
-.. deprecated:: 1.2
-   This proxy configuration only applies to XML-RPC API which has been
-   deprecated by Atlassian as well as in this extension. Setting this option in
-   v1.3 of this extension will have no effect.
-
-Provide the proxy needed to be used to interact with the Confluence instance
-over the network. At this time, the proxy configuration only applies to XML-RPC
-calls (REST calls use the Requests_ library which will use system-defined proxy
-configuration).
+REST calls use the Requests_ library which will use system-defined proxy
+configuration; however, a user can override the system-defined proxy by
+providing a proxy server using this configuration.
 
 .. code-block:: python
 

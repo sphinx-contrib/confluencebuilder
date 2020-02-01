@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -75,15 +75,6 @@ class ConfluenceCertificateError(ConfluenceError):
 class ConfluenceConfigurationError(ConfluenceError, ConfigError):
     pass
 
-class ConfluenceLegacyError(ConfluenceError):
-    def __init__(self):
-        SphinxError.__init__(self,
-            """---\n"""
-            """Your Confluence server is too old. Need at least Confluence """
-            """v4.0 or higher.\n"""
-            """---\n"""
-        )
-
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
         SphinxError.__init__(self,
@@ -101,22 +92,6 @@ class ConfluenceProxyPermissionError(ConfluenceError):
             """Unable to authenticate with the proxy server.\n"""
             """\n"""
             """Ensure your proxy's username and password are correct.\n"""
-            """---\n"""
-        )
-
-class ConfluenceRemoteApiDisabledError(ConfluenceError):
-    def __init__(self, server_url):
-        SphinxError.__init__(self,
-            """---\n"""
-            """Confluence Remote API appears to be disabled.\n"""
-            """\n"""
-            """First, ensure the server is running or your Confluence """
-            """server URL is valid:\n\n"""
-            """    %s\n""" % server_url +
-            """\n"""
-            """If you are sure your server URL is correct, you will need """
-            """to ask your Confluence administrator to enable """
-            """'Remote API (XML-RPC & SOAP)'.\n"""
             """---\n"""
         )
 

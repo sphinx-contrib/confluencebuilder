@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -90,17 +90,6 @@ string, etc.).
 """Document '%s' in 'confluence_publish_subset' not found""", docname)
 
         if c.confluence_publish:
-            if c.confluence_disable_rest and c.confluence_disable_xmlrpc:
-                errState = True
-                if log:
-                    ConfluenceLogger.error(
-"""all publish protocols explicitly disabled
-
-While publishing has been configured using 'confluence_publish', both REST and
-XML-RPC have been explicitly disabled in the user configuration. This extension
-cannot publish documents without a single publish protocol enabled.
-""")
-
             if not c.confluence_parent_page:
                 if c.confluence_parent_page_id_check:
                     errState = True

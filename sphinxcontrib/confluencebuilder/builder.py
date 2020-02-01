@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -301,8 +301,7 @@ class ConfluenceBuilder(Builder):
             # in the list of documents to process. This is to help prepare
             # additional images into the asset management for this extension.
             # Math support will work on systems which have latex/dvipng
-            # installed; with Sphinx 1.8+ or Sphinx 1.6+ with the extension
-            # "sphinx.ext.imgmath" registered.
+            # installed.
             if imgmath is not None:
                 # imgmath's render_math call expects a translator to be passed
                 # in; mock a translator tied to our self-builder
@@ -545,14 +544,14 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
             n = 0
-            for page_id, legacy_asset_info in self.legacy_assets.items():
+            for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
                 ConfluenceLogger.info(
                     'removing legacy assets... (total: {}) '.format(n), nonl=0)
-                for page_id, legacy_asset_info in self.legacy_assets.items():
-                    for id, name in legacy_asset_info.items():
-                        self.publisher.removeAttachment(page_id, id, name)
+                for legacy_asset_info in self.legacy_assets.values():
+                    for id in legacy_asset_info.keys():
+                        self.publisher.removeAttachment(id)
                 ConfluenceLogger.info('done\n')
 
     def finish(self):

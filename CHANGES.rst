@@ -1,3 +1,9 @@
+master
+======
+
+* support for sphinx v1.[6-7] has been dropped
+* support for xml-rpc has been dropped
+
 1.2.0 (2020-01-03)
 ==================
 
