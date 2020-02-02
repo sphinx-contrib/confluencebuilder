@@ -35,6 +35,12 @@ try:
 except:
     imgmath = None
 
+# handle proper input request in python 2.7
+try:
+    input = raw_input
+except NameError:
+    pass
+
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
 # This was fixed in Sphinx 1.2b.
@@ -101,8 +107,6 @@ class ConfluenceBuilder(Builder):
                 u_str = ' [{}]'.format(default_user)
 
             target_user = input(' User{}: '.format(u_str)) or default_user
-
-            print('target_user', target_user)
             if not target_user:
                 raise ConfluenceConfigurationError('no user provided')
 
