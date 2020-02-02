@@ -864,8 +864,12 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------
 
     def visit_reference(self, node):
-        # nested references should never happen
-        assert(not self._reference_context)
+        # ignore reference if it is wrapped by another reference; observed
+        # when a local table of contents contains a section name which is a
+        # reference to another document
+        if self._reference_context:
+            ConfluenceLogger.verbose('skipping nested reference container')
+            return
 
         if 'iscurrent' in node:
             pass
