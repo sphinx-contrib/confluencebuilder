@@ -59,3 +59,19 @@ class ConfluenceUtil:
             elif not url.endswith('/'):
                 url += '/'
         return url
+
+def first(it):
+    """
+    returns the first element in an iterable
+
+    Returns the first element found in a provided iterable no matter if it is a
+    list or generator type. If no element is found, this call will return a
+    `None` value.
+
+    Args:
+        it: an iterable type
+
+    Returns:
+        the first element
+    """
+    return next(iter(it), None)

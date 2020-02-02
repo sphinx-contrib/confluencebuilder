@@ -13,6 +13,7 @@ from .nodes import ConfluenceNavigationNode
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
 from .util import ConfluenceUtil
+from .util import first
 from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
@@ -280,10 +281,10 @@ class ConfluenceBuilder(Builder):
                 # Only publish documents that Sphinx asked to prepare
                 self.publish_docnames.append(docname)
 
-            toctrees = doctree.traverse(addnodes.toctree)
-            if toctrees and toctrees[0].get('maxdepth') > 0:
+            toctree = first(doctree.traverse(addnodes.toctree))
+            if toctree and toctree.get('maxdepth') > 0:
                 ConfluenceState.registerToctreeDepth(
-                    docname, toctrees[0].get('maxdepth'))
+                    docname, toctree.get('maxdepth'))
 
             doc_used_names = {}
             for node in doctree.traverse(nodes.title):

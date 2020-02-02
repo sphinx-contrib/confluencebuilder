@@ -16,6 +16,7 @@ from .std.confluence import INDENT
 from .std.confluence import LITERAL2LANG_MAP
 from .std.sphinx import DEFAULT_ALIGNMENT
 from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from .util import first
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
@@ -682,8 +683,9 @@ class ConfluenceTranslator(BaseTranslator):
             # tweaking if Confluence's themes change); however, the quirk works
             # for now.
             firstchild_margin = True
-            next_child = node.traverse(include_self=False)
-            if next_child and isinstance(next_child[0], nodes.block_quote):
+            
+            next_child = first(node.traverse(include_self=False))
+            if isinstance(next_child, nodes.block_quote):
                 firstchild_margin = False
 
             if firstchild_margin:
@@ -749,9 +751,9 @@ class ConfluenceTranslator(BaseTranslator):
         self._visit_admonition(node, 'warning')
 
     def visit_admonition(self, node):
-        title_node = node.traverse(nodes.title)
+        title_node = first(node.traverse(nodes.title))
         if title_node:
-            title = title_node[0].astext()
+            title = title_node.astext()
             self._visit_admonition(node, 'info', title, logo=False)
         else:
             self._visit_admonition(node, 'info', logo=False)
@@ -783,11 +785,11 @@ class ConfluenceTranslator(BaseTranslator):
     # ------
 
     def visit_table(self, node):
-        title_node = node.traverse(nodes.title)
+        title_node = first(node.traverse(nodes.title))
         if title_node:
             self.body.append(self._start_tag(node, 'p'))
             self.body.append(self._start_tag(node, 'strong'))
-            self.body.append(self._escape_sf(title_node[0].astext()))
+            self.body.append(self._escape_sf(title_node.astext()))
             self.body.append(self._end_tag(node))
             self.body.append(self._end_tag(node))
 
@@ -1076,10 +1078,9 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # tr
 
         # if next entry is not another footnote or citation, close off the table
-        next_sibling = node.traverse(
-            include_self=False, descend=False, siblings=True)
-        if not next_sibling or not isinstance(
-                next_sibling[0], (nodes.citation, nodes.footnote)):
+        next_sibling = first(node.traverse(
+            include_self=False, descend=False, siblings=True))
+        if not isinstance(next_sibling, (nodes.citation, nodes.footnote)):
             self.body.append(self.context.pop()) # tbody
             self.body.append(self.context.pop()) # table
             self._building_footnotes = False
