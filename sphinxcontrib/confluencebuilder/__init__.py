@@ -164,6 +164,8 @@ def setup(app):
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
     """List of node types to ignore if no translator support exists."""
     app.add_config_value('confluence_adv_ignore_nodes', [], False)
+    """Unknown node handler dictionary for advanced integrations."""
+    app.add_config_value('confluence_adv_node_handler', None, '')
     """List of extension-provided macros restricted for use."""
     app.add_config_value('confluence_adv_restricted_macros', [], False)
     """Enablement of tracing processed data."""
