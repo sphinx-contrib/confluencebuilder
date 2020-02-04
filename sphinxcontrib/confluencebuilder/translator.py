@@ -1284,8 +1284,20 @@ class ConfluenceTranslator(BaseTranslator):
 
         raise nodes.SkipNode
 
-    visit_legend = visit_paragraph
-    depart_legend = depart_paragraph
+    def visit_legend(self, node):
+        attribs = {}
+        if 'align' in node.parent:
+            alignment = node.parent['align']
+            if alignment == 'default':
+                alignment = DEFAULT_ALIGNMENT
+            if alignment == 'center':
+                attribs['style'] = 'text-align: center;'
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_legend(self, node):
+        self.body.append(self.context.pop()) # div
 
     # ------------------
     # sphinx -- download
