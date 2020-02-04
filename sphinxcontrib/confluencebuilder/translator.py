@@ -67,6 +67,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
+        self._figure_context = []
         self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
@@ -1192,6 +1193,7 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_caption(self, node):
         attribs = {}
         attribs['style'] = 'clear: both;'
+        self._figure_context.append('')
 
         if 'align' in node.parent:
             alignment = node.parent['align']
@@ -1223,8 +1225,12 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
     def depart_figure(self, node):
-        # force clear from a floating confluence image
-        self.body.append('<div style="clear: both"> </div>')
+        # force clear from a floating confluence image if not handled in caption
+        if self._figure_context:
+            self._figure_context.pop()
+        else:
+            self.body.append('<div style="clear: both"> </div>\n')
+
         self.body.append(self.context.pop()) # <dynamic>
 
     def visit_image(self, node):
