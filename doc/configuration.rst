@@ -141,6 +141,23 @@ See also |confluence_publish_prefix|_.
 
 --------------------------------------------------------------------------------
 
+confluence_default_alignment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.3
+
+Explicitly set which alignment type to use when a default alignment value is
+detected. As of Sphinx 2.0+, the default alignment is set to ``center``. Legacy
+versions of Sphinx had a default alignment of ``left``. By default, this
+extension will use a Sphinx-defined default alignment unless explicitly set by
+this configuration value. Accepted values are ``left``, ``center`` or ``right``.
+
+.. code-block:: python
+
+    confluence_default_alignment = 'left'
+
+--------------------------------------------------------------------------------
+
 .. |confluence_header_file| replace:: ``confluence_header_file``
 .. _confluence_header_file:
 
