@@ -82,6 +82,8 @@ def setup(app):
     """(configuration - generic)"""
     """Add page and section numbers if doctree has :numbered: option"""
     app.add_config_value('confluence_add_secnumbers', True, False)
+    """Default alignment for tables, figures, etc."""
+    app.add_config_value('confluence_default_alignment', None, 'env')
     """File to get page header information from."""
     app.add_config_value('confluence_header_file', None, False)
     """File to get page footer information from."""

@@ -75,6 +75,11 @@ class ConfluenceTranslator(BaseTranslator):
         self._thead_context = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
 
+        if config.confluence_default_alignment:
+            self._default_alignment = config.confluence_default_alignment
+        else:
+            self._default_alignment = DEFAULT_ALIGNMENT
+
         if config.highlight_language:
             self._highlight = config.highlight_language
         else:
@@ -1186,12 +1191,16 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_caption(self, node):
         attribs = {}
+        attribs['style'] = 'clear: both;'
+
         if 'align' in node.parent:
             alignment = node.parent['align']
+
             if alignment == 'default':
-                alignment = DEFAULT_ALIGNMENT
-            if alignment == 'center':
-                attribs['style'] = 'text-align: center;'
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = '{}text-align: {};'.format(
+                    attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.context.append(self._end_tag(node))
@@ -1231,7 +1240,7 @@ class ConfluenceTranslator(BaseTranslator):
             alignment = node.parent['align']
 
         if alignment == 'default':
-            alignment = DEFAULT_ALIGNMENT
+            alignment = self._default_alignment
 
         if alignment:
             alignment = self._escape_sf(alignment)
@@ -1289,9 +1298,9 @@ class ConfluenceTranslator(BaseTranslator):
         if 'align' in node.parent:
             alignment = node.parent['align']
             if alignment == 'default':
-                alignment = DEFAULT_ALIGNMENT
-            if alignment == 'center':
-                attribs['style'] = 'text-align: center;'
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = 'text-align: {};'.format(alignment)
 
         self.body.append(self._start_tag(node, 'div', **attribs))
         self.context.append(self._end_tag(node))
