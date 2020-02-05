@@ -599,15 +599,18 @@ class ConfluenceBuilder(Builder):
             prev_label = '← ' + _('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
+            reference._navnode = True
+            reference._navnode_next = False
+            reference._navnode_previous = True
             navnode.append(reference)
-
-        if docname in self.nav_prev and docname in self.nav_next:
-            navnode.append(nodes.Text(' | '))
 
         if docname in self.nav_next:
             next_label = _('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
+            reference._navnode = True
+            reference._navnode_next = True
+            reference._navnode_previous = False
             navnode.append(reference)
 
         return navnode

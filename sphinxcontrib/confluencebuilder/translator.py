@@ -971,6 +971,13 @@ class ConfluenceTranslator(BaseTranslator):
             elif self.can_anchor:
                 anchor_value = anchor
 
+        navnode = getattr(node, '_navnode', False)
+
+        if navnode:
+            float = 'right' if node._navnode_next else 'left'
+            self.body.append(self._start_tag(node, 'div',
+                **{'style': 'float: ' + float + ';'}))
+
         # build link to internal anchor (on another page)
         #  Note: plain-text-link body cannot have inline markup; add the node
         #        contents into body and skip processing the rest of this node.
@@ -979,11 +986,21 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
         self.body.append(self._start_ac_link_body(node))
+
+        # style navigation references with an aui-button look
+        if navnode:
+            self.body.append(self._start_tag(
+                node, 'span', **{'class': 'aui-button'}))
+            self._reference_context.append(self._end_tag(node, suffix=''))
+
         if self.add_secnumbers and node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
                              self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
+
+        if navnode:
+            self._reference_context.append(self._end_tag(node))
 
     def depart_reference(self, node):
         for element in self._reference_context:
@@ -1608,19 +1625,16 @@ class ConfluenceTranslator(BaseTranslator):
         if node.bottom:
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-top: 30px'}))
-
-        self.body.append(self._start_tag(node, 'p', suffix=self.nl,
-            **{'style': 'text-align: right'}))
-        self.context.append(self._end_tag(node))
+                **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
 
     def depart_ConfluenceNavigationNode(self, node):
-        self.body.append(self.context.pop()) # p
-
         if node.top:
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-bottom: 30px'}))
+                **{'style':
+                    'clear: both; padding-top: 10px; margin-bottom: 30px'}))
+        else:
+            self.body.append('<div style="clear: both"> </div>\n')
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
