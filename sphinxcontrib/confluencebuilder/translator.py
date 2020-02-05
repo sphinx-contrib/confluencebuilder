@@ -67,6 +67,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
+        self._figure_context = []
         self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
@@ -74,6 +75,11 @@ class ConfluenceTranslator(BaseTranslator):
         self._section_level = 1
         self._thead_context = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
+
+        if config.confluence_default_alignment:
+            self._default_alignment = config.confluence_default_alignment
+        else:
+            self._default_alignment = DEFAULT_ALIGNMENT
 
         if config.highlight_language:
             self._highlight = config.highlight_language
@@ -1186,12 +1192,17 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_caption(self, node):
         attribs = {}
+        attribs['style'] = 'clear: both;'
+        self._figure_context.append('')
+
         if 'align' in node.parent:
             alignment = node.parent['align']
+
             if alignment == 'default':
-                alignment = DEFAULT_ALIGNMENT
-            if alignment == 'center':
-                attribs['style'] = 'text-align: center;'
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = '{}text-align: {};'.format(
+                    attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.context.append(self._end_tag(node))
@@ -1214,8 +1225,12 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
     def depart_figure(self, node):
-        # force clear from a floating confluence image
-        self.body.append('<div style="clear: both"> </div>')
+        # force clear from a floating confluence image if not handled in caption
+        if self._figure_context:
+            self._figure_context.pop()
+        else:
+            self.body.append('<div style="clear: both"> </div>\n')
+
         self.body.append(self.context.pop()) # <dynamic>
 
     def visit_image(self, node):
@@ -1231,7 +1246,7 @@ class ConfluenceTranslator(BaseTranslator):
             alignment = node.parent['align']
 
         if alignment == 'default':
-            alignment = DEFAULT_ALIGNMENT
+            alignment = self._default_alignment
 
         if alignment:
             alignment = self._escape_sf(alignment)
@@ -1284,8 +1299,20 @@ class ConfluenceTranslator(BaseTranslator):
 
         raise nodes.SkipNode
 
-    visit_legend = visit_paragraph
-    depart_legend = depart_paragraph
+    def visit_legend(self, node):
+        attribs = {}
+        if 'align' in node.parent:
+            alignment = node.parent['align']
+            if alignment == 'default':
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = 'text-align: {};'.format(alignment)
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_legend(self, node):
+        self.body.append(self.context.pop()) # div
 
     # ------------------
     # sphinx -- download

@@ -34,6 +34,19 @@ class ConfluenceConfig:
         c = builder.config
         env = builder.app.env
 
+        if c.confluence_default_alignment:
+            if not c.confluence_default_alignment in (
+                    'left', 'center', 'right'):
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""invalid default alignment
+
+The option 'confluence_default_alignment' has been provided to override the
+default alignment for tables, figures, etc. Accepted values include 'left',
+'center' and 'right'.
+""")
+
         if c.confluence_footer_file:
             if not os.path.isfile(os.path.join(env.srcdir,
                     c.confluence_footer_file)):

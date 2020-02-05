@@ -5,6 +5,11 @@
 figure
 ------
 
+.. external image (default align; no caption)
+
+.. figure:: https://www.example.com/image.png
+   :alt: alt text
+
 .. external image (default align)
 
 .. figure:: https://www.example.com/image.png
