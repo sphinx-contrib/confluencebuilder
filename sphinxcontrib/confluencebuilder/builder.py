@@ -216,8 +216,8 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         for docname in ordered_docnames[1:]:
-            self.nav_prev[docname] = prevdoc
-            self.nav_next[prevdoc] = docname
+            self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
+            self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
             prevdoc = docname
 
         # add orphans (if any) to the publish list
