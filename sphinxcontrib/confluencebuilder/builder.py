@@ -42,32 +42,6 @@ try:
 except NameError:
     pass
 
-# Clone of relative_uri() sphinx.util.osutil, with bug-fixes
-# since the original code had a few errors.
-# This was fixed in Sphinx 1.2b.
-def relative_uri(base, to):
-    """Return a relative URL from ``base`` to ``to``."""
-    if to.startswith(SEP):
-        return to
-    b2 = base.split(SEP)
-    t2 = to.split(SEP)
-    # remove common segments (except the last segment)
-    for x, y in zip(b2[:-1], t2[:-1]):
-        if x != y:
-            break
-        b2.pop(0)
-        t2.pop(0)
-    if b2 == t2:
-        # Special case: relative_uri('f/index.html','f/index.html')
-        # returns '', not 'index.html'
-        return ''
-    if len(b2) == 1 and t2 == ['']:
-        # Special case: relative_uri('f/index.html','f/') should
-        # return './', not ''
-        return '.' + SEP
-    return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
-
-
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
@@ -214,15 +188,6 @@ class ConfluenceBuilder(Builder):
     def get_target_uri(self, docname, typ=None):
         return self.link_transform(docname)
 
-    def get_relative_uri(self, from_, to, typ=None):
-        """
-        Return a relative URI between two source filenames.
-        """
-        # This is slightly different from Builder.get_relative_uri,
-        # as it contains a small bug (which was fixed in Sphinx 1.2).
-        return relative_uri(self.get_target_uri(from_),
-                            self.get_target_uri(to, typ))
-
     def prepare_writing(self, docnames):
         ordered_docnames = []
         traversed = [self.config.master_doc]
@@ -251,8 +216,8 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         for docname in ordered_docnames[1:]:
-            self.nav_prev[docname] = prevdoc
-            self.nav_next[prevdoc] = docname
+            self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
+            self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
             prevdoc = docname
 
         # add orphans (if any) to the publish list
@@ -634,15 +599,18 @@ class ConfluenceBuilder(Builder):
             prev_label = '← ' + _('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
+            reference._navnode = True
+            reference._navnode_next = False
+            reference._navnode_previous = True
             navnode.append(reference)
-
-        if docname in self.nav_prev and docname in self.nav_next:
-            navnode.append(nodes.Text(' | '))
 
         if docname in self.nav_next:
             next_label = _('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
+            reference._navnode = True
+            reference._navnode_next = True
+            reference._navnode_previous = False
             navnode.append(reference)
 
         return navnode
