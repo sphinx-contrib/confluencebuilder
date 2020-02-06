@@ -956,6 +956,14 @@ document's title. In some cases, a user may wish to not remove titles when
 custom prefixes or other custom modifications are in play. By default, this
 option is enabled with a value of ``True``.
 
+confluence_single_page
+~~~~~~~~~~~~~~~~~~~~~~
+
+A boolean value to whether or not generate a single confluence page. Normally,
+each .rst file becomes its own confluence page. With this option enabled, every
+.rst file is consolidated into a single page. By default, this option is enabled
+with a value of ``False``.
+
 .. code-block:: python
 
    confluence_remove_title = True
