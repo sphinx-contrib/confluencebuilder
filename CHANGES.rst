@@ -1,3 +1,8 @@
+master
+=======
+
+* Added support for confluence_single_page
+
 1.2.0 (2020-01-03)
 ==================
 
