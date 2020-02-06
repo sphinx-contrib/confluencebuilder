@@ -28,14 +28,14 @@ from sphinx.util.osutil import ensuredir, SEP
 import io
 import sys
 
-from typing                 import Any, Dict, Iterable, List, Sequence, Set, Tuple, Union
+from typing import Any, Dict, Iterable, List, Sequence, Set, Tuple, Union
 
-from docutils.nodes         import Node
+from docutils.nodes import Node
 
-from sphinx.util.nodes      import inline_all_toctrees
-from sphinx.util.console    import darkgreen
-from sphinx.util            import progress_message
-from sphinx.locale          import __
+from sphinx.util.nodes import inline_all_toctrees
+from sphinx.util.console import darkgreen
+from sphinx.util import progress_message
+from sphinx.locale import __
 
 
 # load imgmath extension if available to handle math node pre-processing
@@ -44,6 +44,7 @@ try:
     import itertools
 except:
     imgmath = None
+
 
 # Clone of relative_uri() sphinx.util.osutil, with bug-fixes
 # since the original code had a few errors.
@@ -201,7 +202,7 @@ class ConfluenceBuilder(Builder):
             sourcename = path.join(self.env.srcdir, docname +
                                    self.file_suffix)
             targetname = path.join(self.outdir, self.file_transform(docname))
-            print (sourcename, targetname)
+            print(sourcename, targetname)
 
             try:
                 targetmtime = path.getmtime(targetname)
@@ -453,47 +454,41 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.warn("error writing file "
                     "%s: %s" % (outfilename, err))
 
-
-
-    def fix_refuris( self, tree: Node ) -> None:
+    def fix_refuris(self, tree: Node) -> None:
         #
         # fix refuris with double anchor
         #
         fname = self.config.master_doc + self.file_suffix
 
-        for refnode in tree.traverse( nodes.reference ):
+        for refnode in tree.traverse(nodes.reference):
 
             if 'refuri' not in refnode:
                 continue
 
-            refuri      = refnode['refuri']
-            hashindex   = refuri.find( '#' )
+            refuri = refnode['refuri']
+            hashindex = refuri.find('#')
 
             if hashindex < 0:
                 continue
 
-            hashindex = refuri.find( '#', hashindex + 1 )
+            hashindex = refuri.find('#', hashindex + 1)
 
             if hashindex >= 0:
                 refnode['refuri'] = fname + refuri[hashindex:]
 
-
-
     def assemble_doctree(self) -> nodes.document:
 
-        master              = self.config.master_doc
-        tree                = self.env.get_doctree( master )
-        tree                = inline_all_toctrees( self, set(), master, tree, darkgreen, [master] )
-        tree[ 'docname' ]   = master
+        master = self.config.master_doc
+        tree = self.env.get_doctree(master)
+        tree = inline_all_toctrees(self, set(), master, tree, darkgreen, [master])
+        tree['docname'] = master
 
-        self.env.resolve_references( tree, master, self )
-        self.fix_refuris( tree )
+        self.env.resolve_references(tree, master, self)
+        self.fix_refuris(tree)
 
         return tree
 
-
-
-    def assemble_toc_secnumbers( self ) -> Dict[str, Dict[str, Tuple[int, ...]]]:
+    def assemble_toc_secnumbers(self) -> Dict[str, Dict[str, Tuple[int, ...]]]:
         #
         # Assemble toc_secnumbers to resolve section numbers on SingleHTML.
         # Merge all secnumbers to single secnumber.
@@ -511,12 +506,10 @@ class ConfluenceBuilder(Builder):
 
             for id, secnum in secnums.items():
 
-                alias                 = "%s/%s" % ( docname, id )
+                alias = "%s/%s" % (docname, id)
                 new_secnumbers[alias] = secnum
 
-        return { self.config.master_doc: new_secnumbers }
-
-
+        return {self.config.master_doc: new_secnumbers}
 
     def assemble_toc_fignumbers(self) -> Dict[str, Dict[str, Dict[str, Tuple[int, ...]]]]:
         #
@@ -540,16 +533,14 @@ class ConfluenceBuilder(Builder):
 
             for figtype, fignums in fignumlist.items():
 
-                alias = "%s/%s" % ( docname, figtype )
+                alias = "%s/%s" % (docname, figtype)
 
                 new_fignumbers.setdefault(alias, {})
 
                 for id, fignum in fignums.items():
                     new_fignumbers[alias][id] = fignum
 
-        return { self.config.master_doc: new_fignumbers }
-
-
+        return {self.config.master_doc: new_fignumbers}
 
     def write(self, build_docnames: Iterable[str], updated_docnames: Sequence[str], method: str = 'update') -> None:
 
@@ -557,22 +548,20 @@ class ConfluenceBuilder(Builder):
 
             docnames = self.env.all_docs
 
-            with progress_message(__( 'preparing documents for single confluence document' ) ):
-                self.prepare_writing( docnames )  # type: ignore
+            with progress_message(__('preparing documents for single confluence document')):
+                self.prepare_writing(docnames)  # type: ignore
 
-            with progress_message(__( 'assembling single confluence document' ) ):
-                doctree                 = self.assemble_doctree()
+            with progress_message(__('assembling single confluence document')):
+                doctree = self.assemble_doctree()
                 self.env.toc_secnumbers = self.assemble_toc_secnumbers()
                 self.env.toc_fignumbers = self.assemble_toc_fignumbers()
 
-            with progress_message(__( 'writing single confluence document' ) ):
-                self.write_doc( self.config.master_doc, doctree )
+            with progress_message(__('writing single confluence document')):
+                self.write_doc(self.config.master_doc, doctree)
 
         else:
 
-            super().write( build_docnames, updated_docnames, method )
-
-
+            super().write(build_docnames, updated_docnames, method)
 
     def publish_doc(self, docname, output):
         conf = self.config
