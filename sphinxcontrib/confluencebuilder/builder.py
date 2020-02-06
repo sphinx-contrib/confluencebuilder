@@ -454,7 +454,7 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.warn("error writing file "
                     "%s: %s" % (outfilename, err))
 
-    def fix_refuris(self, tree: Node) -> None:
+    def fix_refuris(self, tree):
         #
         # fix refuris with double anchor
         #
@@ -476,7 +476,7 @@ class ConfluenceBuilder(Builder):
             if hashindex >= 0:
                 refnode['refuri'] = fname + refuri[hashindex:]
 
-    def assemble_doctree(self) -> nodes.document:
+    def assemble_doctree(self):
 
         master = self.config.master_doc
         tree = self.env.get_doctree(master)
@@ -488,7 +488,7 @@ class ConfluenceBuilder(Builder):
 
         return tree
 
-    def assemble_toc_secnumbers(self) -> Dict[str, Dict[str, Tuple[int, ...]]]:
+    def assemble_toc_secnumbers(self):
         #
         # Assemble toc_secnumbers to resolve section numbers on SingleHTML.
         # Merge all secnumbers to single secnumber.
@@ -511,7 +511,7 @@ class ConfluenceBuilder(Builder):
 
         return {self.config.master_doc: new_secnumbers}
 
-    def assemble_toc_fignumbers(self) -> Dict[str, Dict[str, Dict[str, Tuple[int, ...]]]]:
+    def assemble_toc_fignumbers(self):
         #
         # Assemble toc_fignumbers to resolve figure numbers on SingleHTML.
         # Merge all fignumbers to single fignumber.
@@ -542,7 +542,7 @@ class ConfluenceBuilder(Builder):
 
         return {self.config.master_doc: new_fignumbers}
 
-    def write(self, build_docnames: Iterable[str], updated_docnames: Sequence[str], method: str = 'update') -> None:
+    def write(self, build_docnames, updated_docnames, method = 'update'):
 
         if self.config.confluence_single_page:
 
