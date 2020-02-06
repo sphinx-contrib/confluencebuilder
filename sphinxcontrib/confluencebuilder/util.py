@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018-2019 by the contributors (see AUTHORS file).
-    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
 from .std.confluence import API_REST_BIND_PATH
-from .std.confluence import API_XMLRPC_BIND_PATH
-from docutils import nodes
 from hashlib import sha256
 
 class ConfluenceUtil:
@@ -43,18 +40,6 @@ class ConfluenceUtil:
         return sha.hexdigest()
 
     @staticmethod
-    def is_node_registered(node):
-        """
-        check if a node is registered in sphinx
-
-        Verifies if a node type has already been registered into Sphinx. This
-        utility method has been ported over from Sphinx's implementation
-        (available since v1.8); however, since this extension still supports at
-        least Sphinx v1.6.3+, adding the method here for the interim.
-        """
-        return hasattr(nodes.GenericNodeVisitor, 'visit_' + node.__name__)
-
-    @staticmethod
     def normalizeBaseUrl(url):
         """
         normalize a confluence base url
@@ -67,14 +52,26 @@ class ConfluenceUtil:
             # removing any trailing forward slash user provided
             if url.endswith('/'):
                 url = url[:-1]
-            # check for xml-rpc bind path; strip and return if found
-            if url.endswith(API_XMLRPC_BIND_PATH):
-                url = url[:-len(API_XMLRPC_BIND_PATH)]
-            else:
-                # check for rest bind path; strip and return if found
-                if url.endswith(API_REST_BIND_PATH):
-                    url = url[:-len(API_REST_BIND_PATH)]
-                # restore trailing forward flash
-                elif not url.endswith('/'):
-                    url += '/'
+            # check for rest bind path; strip and return if found
+            if url.endswith(API_REST_BIND_PATH):
+                url = url[:-len(API_REST_BIND_PATH)]
+            # restore trailing forward flash
+            elif not url.endswith('/'):
+                url += '/'
         return url
+
+def first(it):
+    """
+    returns the first element in an iterable
+
+    Returns the first element found in a provided iterable no matter if it is a
+    list or generator type. If no element is found, this call will return a
+    `None` value.
+
+    Args:
+        it: an iterable type
+
+    Returns:
+        the first element
+    """
+    return next(iter(it), None)

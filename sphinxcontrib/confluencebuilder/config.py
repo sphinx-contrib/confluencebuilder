@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -33,6 +33,19 @@ class ConfluenceConfig:
         errState = False
         c = builder.config
         env = builder.app.env
+
+        if c.confluence_default_alignment:
+            if not c.confluence_default_alignment in (
+                    'left', 'center', 'right'):
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""invalid default alignment
+
+The option 'confluence_default_alignment' has been provided to override the
+default alignment for tables, figures, etc. Accepted values include 'left',
+'center' and 'right'.
+""")
 
         if c.confluence_footer_file:
             if not os.path.isfile(os.path.join(env.srcdir,
@@ -90,17 +103,6 @@ string, etc.).
 """Document '%s' in 'confluence_publish_subset' not found""", docname)
 
         if c.confluence_publish:
-            if c.confluence_disable_rest and c.confluence_disable_xmlrpc:
-                errState = True
-                if log:
-                    ConfluenceLogger.error(
-"""all publish protocols explicitly disabled
-
-While publishing has been configured using 'confluence_publish', both REST and
-XML-RPC have been explicitly disabled in the user configuration. This extension
-cannot publish documents without a single publish protocol enabled.
-""")
-
             if not c.confluence_parent_page:
                 if c.confluence_parent_page_id_check:
                     errState = True

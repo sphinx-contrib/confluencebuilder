@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -14,14 +14,10 @@ class TestConfluenceUtil(unittest.TestCase):
 'https://example.atlassian.net/wiki/':            'https://example.atlassian.net/wiki/',
 'https://example.atlassian.net/wiki/rest/api':    'https://example.atlassian.net/wiki/',
 'https://example.atlassian.net/wiki/rest/api/':   'https://example.atlassian.net/wiki/',
-'https://example.atlassian.net/wiki/rpc/xmlrpc':  'https://example.atlassian.net/wiki/',
-'https://example.atlassian.net/wiki/rpc/xmlrpc/': 'https://example.atlassian.net/wiki/',
 'https://intranet-wiki.example.com':              'https://intranet-wiki.example.com/',
 'https://intranet-wiki.example.com/':             'https://intranet-wiki.example.com/',
 'https://intranet-wiki.example.com/rest/api':     'https://intranet-wiki.example.com/',
 'https://intranet-wiki.example.com/rest/api/':    'https://intranet-wiki.example.com/',
-'https://intranet-wiki.example.com/rpc/xmlrpc':   'https://intranet-wiki.example.com/',
-'https://intranet-wiki.example.com/rpc/xmlrpc/':  'https://intranet-wiki.example.com/',
 'http://example.atlassian.net/wiki':              'http://example.atlassian.net/wiki/',
             }
         for key in data:

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2019-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from pkg_resources import parse_version
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
-from sphinx.__init__ import __version__ as sphinx_version
 import os
 import unittest
 
@@ -33,12 +31,6 @@ class TestConfluenceDomains(unittest.TestCase):
         self._assertExpectedWithOutput('c')
 
     def test_domains_cpp(self):
-        # cpp domain in v1.6 output processes differently when dealing with
-        # namespaces; and since v1.6 is deprecated, we care less about its
-        # output as support will go away in the future
-        if parse_version(sphinx_version) < parse_version('1.7'):
-            raise unittest.SkipTest('ignoring cpp domains verification in 1.6')
-
         self._assertExpectedWithOutput('cpp')
 
     def test_domains_js(self):

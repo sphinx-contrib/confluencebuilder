@@ -10,11 +10,13 @@ from .exceptions import ConfluenceError
 from .logger import ConfluenceLogger
 from .nodes import ConfluenceNavigationNode
 from .state import ConfluenceState
+from .std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from .std.confluence import FCMMO
 from .std.confluence import INDENT
 from .std.confluence import LITERAL2LANG_MAP
 from .std.sphinx import DEFAULT_ALIGNMENT
 from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from .util import first
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
@@ -65,6 +67,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
+        self._figure_context = []
         self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
@@ -72,6 +75,11 @@ class ConfluenceTranslator(BaseTranslator):
         self._section_level = 1
         self._thead_context = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
+
+        if config.confluence_default_alignment:
+            self._default_alignment = config.confluence_default_alignment
+        else:
+            self._default_alignment = DEFAULT_ALIGNMENT
 
         if config.highlight_language:
             self._highlight = config.highlight_language
@@ -144,6 +152,18 @@ class ConfluenceTranslator(BaseTranslator):
         ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
         if node_name in ignore_nodes:
             ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
+            raise nodes.SkipNode
+
+        # allow users to override unknown nodes
+        #
+        # A node handler allows an advanced user to provide implementation to
+        # process a node not supported by this extension. This is to assist in
+        # providing a quick alternative to supporting another third party
+        # extension in this translator (without having to take the time in
+        # building a third extension).
+        handler = self.builder.config.confluence_adv_node_handler
+        if handler and isinstance(handler, dict) and node_name in handler:
+            handler[node_name](self, node)
             raise nodes.SkipNode
 
         raise NotImplementedError('unknown node: ' + node_name)
@@ -545,7 +565,7 @@ class ConfluenceTranslator(BaseTranslator):
             if lang not in self._tracked_unknown_code_lang:
                 ConfluenceLogger.warn('unknown code language: {}'.format(lang))
                 self._tracked_unknown_code_lang.append(lang)
-            lang = LITERAL2LANG_MAP[DEFAULT_HIGHLIGHT_STYLE]
+            lang = LITERAL2LANG_MAP[FALLBACK_HIGHLIGHT_STYLE]
 
         data = self.nl.join(node.astext().splitlines())
 
@@ -669,8 +689,9 @@ class ConfluenceTranslator(BaseTranslator):
             # tweaking if Confluence's themes change); however, the quirk works
             # for now.
             firstchild_margin = True
-            next_child = node.traverse(include_self=False)
-            if next_child and isinstance(next_child[0], nodes.block_quote):
+            
+            next_child = first(node.traverse(include_self=False))
+            if isinstance(next_child, nodes.block_quote):
                 firstchild_margin = False
 
             if firstchild_margin:
@@ -736,9 +757,9 @@ class ConfluenceTranslator(BaseTranslator):
         self._visit_admonition(node, 'warning')
 
     def visit_admonition(self, node):
-        title_node = node.traverse(nodes.title)
+        title_node = first(node.traverse(nodes.title))
         if title_node:
-            title = title_node[0].astext()
+            title = title_node.astext()
             self._visit_admonition(node, 'info', title, logo=False)
         else:
             self._visit_admonition(node, 'info', logo=False)
@@ -770,11 +791,11 @@ class ConfluenceTranslator(BaseTranslator):
     # ------
 
     def visit_table(self, node):
-        title_node = node.traverse(nodes.title)
+        title_node = first(node.traverse(nodes.title))
         if title_node:
             self.body.append(self._start_tag(node, 'p'))
             self.body.append(self._start_tag(node, 'strong'))
-            self.body.append(self._escape_sf(title_node[0].astext()))
+            self.body.append(self._escape_sf(title_node.astext()))
             self.body.append(self._end_tag(node))
             self.body.append(self._end_tag(node))
 
@@ -851,8 +872,12 @@ class ConfluenceTranslator(BaseTranslator):
     # -------------------
 
     def visit_reference(self, node):
-        # nested references should never happen
-        assert(not self._reference_context)
+        # ignore reference if it is wrapped by another reference; observed
+        # when a local table of contents contains a section name which is a
+        # reference to another document
+        if self._reference_context:
+            ConfluenceLogger.verbose('skipping nested reference container')
+            return
 
         if 'iscurrent' in node:
             pass
@@ -946,6 +971,13 @@ class ConfluenceTranslator(BaseTranslator):
             elif self.can_anchor:
                 anchor_value = anchor
 
+        navnode = getattr(node, '_navnode', False)
+
+        if navnode:
+            float = 'right' if node._navnode_next else 'left'
+            self.body.append(self._start_tag(node, 'div',
+                **{'style': 'float: ' + float + ';'}))
+
         # build link to internal anchor (on another page)
         #  Note: plain-text-link body cannot have inline markup; add the node
         #        contents into body and skip processing the rest of this node.
@@ -954,11 +986,21 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
         self.body.append(self._start_ac_link_body(node))
+
+        # style navigation references with an aui-button look
+        if navnode:
+            self.body.append(self._start_tag(
+                node, 'span', **{'class': 'aui-button'}))
+            self._reference_context.append(self._end_tag(node, suffix=''))
+
         if self.add_secnumbers and node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
                              self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
+
+        if navnode:
+            self._reference_context.append(self._end_tag(node))
 
     def depart_reference(self, node):
         for element in self._reference_context:
@@ -1059,10 +1101,9 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self.context.pop()) # tr
 
         # if next entry is not another footnote or citation, close off the table
-        next_sibling = node.traverse(
-            include_self=False, descend=False, siblings=True)
-        if not next_sibling or not isinstance(
-                next_sibling[0], (nodes.citation, nodes.footnote)):
+        next_sibling = first(node.traverse(
+            include_self=False, descend=False, siblings=True))
+        if not isinstance(next_sibling, (nodes.citation, nodes.footnote)):
             self.body.append(self.context.pop()) # tbody
             self.body.append(self.context.pop()) # table
             self._building_footnotes = False
@@ -1168,12 +1209,17 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_caption(self, node):
         attribs = {}
+        attribs['style'] = 'clear: both;'
+        self._figure_context.append('')
+
         if 'align' in node.parent:
             alignment = node.parent['align']
+
             if alignment == 'default':
-                alignment = DEFAULT_ALIGNMENT
-            if alignment == 'center':
-                attribs['style'] = 'text-align: center;'
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = '{}text-align: {};'.format(
+                    attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.context.append(self._end_tag(node))
@@ -1196,8 +1242,12 @@ class ConfluenceTranslator(BaseTranslator):
                 node, 'hr', suffix=self.nl, empty=True))
 
     def depart_figure(self, node):
-        # force clear from a floating confluence image
-        self.body.append('<div style="clear: both"> </div>')
+        # force clear from a floating confluence image if not handled in caption
+        if self._figure_context:
+            self._figure_context.pop()
+        else:
+            self.body.append('<div style="clear: both"> </div>\n')
+
         self.body.append(self.context.pop()) # <dynamic>
 
     def visit_image(self, node):
@@ -1213,7 +1263,7 @@ class ConfluenceTranslator(BaseTranslator):
             alignment = node.parent['align']
 
         if alignment == 'default':
-            alignment = DEFAULT_ALIGNMENT
+            alignment = self._default_alignment
 
         if alignment:
             alignment = self._escape_sf(alignment)
@@ -1266,8 +1316,20 @@ class ConfluenceTranslator(BaseTranslator):
 
         raise nodes.SkipNode
 
-    visit_legend = visit_paragraph
-    depart_legend = depart_paragraph
+    def visit_legend(self, node):
+        attribs = {}
+        if 'align' in node.parent:
+            alignment = node.parent['align']
+            if alignment == 'default':
+                alignment = self._default_alignment
+            if alignment != 'left':
+                attribs['style'] = 'text-align: {};'.format(alignment)
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.context.append(self._end_tag(node))
+
+    def depart_legend(self, node):
+        self.body.append(self.context.pop()) # div
 
     # ------------------
     # sphinx -- download
@@ -1563,19 +1625,16 @@ class ConfluenceTranslator(BaseTranslator):
         if node.bottom:
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-top: 30px'}))
-
-        self.body.append(self._start_tag(node, 'p', suffix=self.nl,
-            **{'style': 'text-align: right'}))
-        self.context.append(self._end_tag(node))
+                **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
 
     def depart_ConfluenceNavigationNode(self, node):
-        self.body.append(self.context.pop()) # p
-
         if node.top:
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'margin-bottom: 30px'}))
+                **{'style':
+                    'clear: both; padding-top: 10px; margin-bottom: 30px'}))
+        else:
+            self.body.append('<div style="clear: both"> </div>\n')
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira

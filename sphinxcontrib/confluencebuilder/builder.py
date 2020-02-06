@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -13,6 +13,7 @@ from .nodes import ConfluenceNavigationNode
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
 from .util import ConfluenceUtil
+from .util import first
 from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
@@ -45,32 +46,11 @@ try:
 except:
     imgmath = None
 
-
-# Clone of relative_uri() sphinx.util.osutil, with bug-fixes
-# since the original code had a few errors.
-# This was fixed in Sphinx 1.2b.
-def relative_uri(base, to):
-    """Return a relative URL from ``base`` to ``to``."""
-    if to.startswith(SEP):
-        return to
-    b2 = base.split(SEP)
-    t2 = to.split(SEP)
-    # remove common segments (except the last segment)
-    for x, y in zip(b2[:-1], t2[:-1]):
-        if x != y:
-            break
-        b2.pop(0)
-        t2.pop(0)
-    if b2 == t2:
-        # Special case: relative_uri('f/index.html','f/index.html')
-        # returns '', not 'index.html'
-        return ''
-    if len(b2) == 1 and t2 == ['']:
-        # Special case: relative_uri('f/index.html','f/') should
-        # return './', not ''
-        return '.' + SEP
-    return ('..' + SEP) * (len(b2)-1) + SEP.join(t2)
-
+# handle proper input request in python 2.7
+try:
+    input = raw_input
+except NameError:
+    pass
 
 class ConfluenceBuilder(Builder):
     allow_parallel = True
@@ -102,33 +82,32 @@ class ConfluenceBuilder(Builder):
         if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
 
-        if self.config.confluence_ask_user:
-            print('(request to accept username from interactive session)')
-            print(' Instance: ' + self.config.confluence_server_url)
-
-            default_user = self.config.confluence_server_user
-            u_str = ''
-            if default_user:
-                u_str = ' [{}]'.format(default_user)
-
-            target_user = input(' User{}: '.format(u_str)) or default_user
-
-            print('target_user', target_user)
-            if not target_user:
-                raise ConfluenceConfigurationError('no user provided')
-
-            self.config.confluence_server_user = target_user
-
-        if self.config.confluence_ask_password:
-            print('(request to accept password from interactive session)')
-            if not self.config.confluence_ask_user:
+        if self.config.confluence_publish:
+            if self.config.confluence_ask_user:
+                print('(request to accept username from interactive session)')
                 print(' Instance: ' + self.config.confluence_server_url)
-                print('     User: ' + self.config.confluence_server_user)
-            sys.stdout.write(' Password: ')
-            sys.stdout.flush()
-            self.config.confluence_server_pass = getpass('')
-            if not self.config.confluence_server_pass:
-                raise ConfluenceConfigurationError('no password provided')
+
+                default_user = self.config.confluence_server_user
+                u_str = ''
+                if default_user:
+                    u_str = ' [{}]'.format(default_user)
+
+                target_user = input(' User{}: '.format(u_str)) or default_user
+                if not target_user:
+                    raise ConfluenceConfigurationError('no user provided')
+
+                self.config.confluence_server_user = target_user
+
+            if self.config.confluence_ask_password:
+                print('(request to accept password from interactive session)')
+                if not self.config.confluence_ask_user:
+                    print(' Instance: ' + self.config.confluence_server_url)
+                    print('     User: ' + self.config.confluence_server_user)
+                sys.stdout.write(' Password: ')
+                sys.stdout.flush()
+                self.config.confluence_server_pass = getpass('')
+                if not self.config.confluence_server_pass:
+                    raise ConfluenceConfigurationError('no password provided')
 
         self.assets = ConfluenceAssetManager(self.config.master_doc, self.env)
         self.writer = ConfluenceWriter(self)
@@ -219,15 +198,6 @@ class ConfluenceBuilder(Builder):
     def get_target_uri(self, docname, typ=None):
         return self.link_transform(docname)
 
-    def get_relative_uri(self, from_, to, typ=None):
-        """
-        Return a relative URI between two source filenames.
-        """
-        # This is slightly different from Builder.get_relative_uri,
-        # as it contains a small bug (which was fixed in Sphinx 1.2).
-        return relative_uri(self.get_target_uri(from_),
-                            self.get_target_uri(to, typ))
-
     def prepare_writing(self, docnames):
         ordered_docnames = []
         traversed = [self.config.master_doc]
@@ -256,8 +226,8 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         for docname in ordered_docnames[1:]:
-            self.nav_prev[docname] = prevdoc
-            self.nav_next[prevdoc] = docname
+            self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
+            self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
             prevdoc = docname
 
         # add orphans (if any) to the publish list
@@ -286,10 +256,10 @@ class ConfluenceBuilder(Builder):
                 # Only publish documents that Sphinx asked to prepare
                 self.publish_docnames.append(docname)
 
-            toctrees = doctree.traverse(addnodes.toctree)
-            if toctrees and toctrees[0].get('maxdepth') > 0:
+            toctree = first(doctree.traverse(addnodes.toctree))
+            if toctree and toctree.get('maxdepth') > 0:
                 ConfluenceState.registerToctreeDepth(
-                    docname, toctrees[0].get('maxdepth'))
+                    docname, toctree.get('maxdepth'))
 
             doc_used_names = {}
             for node in doctree.traverse(nodes.title):
@@ -312,8 +282,7 @@ class ConfluenceBuilder(Builder):
             # in the list of documents to process. This is to help prepare
             # additional images into the asset management for this extension.
             # Math support will work on systems which have latex/dvipng
-            # installed; with Sphinx 1.8+ or Sphinx 1.6+ with the extension
-            # "sphinx.ext.imgmath" registered.
+            # installed.
             if imgmath is not None:
                 # imgmath's render_math call expects a translator to be passed
                 # in; mock a translator tied to our self-builder
@@ -665,14 +634,14 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
             n = 0
-            for page_id, legacy_asset_info in self.legacy_assets.items():
+            for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
                 ConfluenceLogger.info(
                     'removing legacy assets... (total: {}) '.format(n), nonl=0)
-                for page_id, legacy_asset_info in self.legacy_assets.items():
-                    for id, name in legacy_asset_info.items():
-                        self.publisher.removeAttachment(page_id, id, name)
+                for legacy_asset_info in self.legacy_assets.values():
+                    for id in legacy_asset_info.keys():
+                        self.publisher.removeAttachment(id)
                 ConfluenceLogger.info('done\n')
 
     def finish(self):
@@ -749,15 +718,18 @@ class ConfluenceBuilder(Builder):
             prev_label = '← ' + _('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
+            reference._navnode = True
+            reference._navnode_next = False
+            reference._navnode_previous = True
             navnode.append(reference)
-
-        if docname in self.nav_prev and docname in self.nav_next:
-            navnode.append(nodes.Text(' | '))
 
         if docname in self.nav_next:
             next_label = _('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
+            reference._navnode = True
+            reference._navnode_next = True
+            reference._navnode_previous = False
             navnode.append(reference)
 
         return navnode
