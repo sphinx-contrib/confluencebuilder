@@ -18,6 +18,8 @@ from .util import first
 from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
+from docutils.nodes import Node
+from sphinx.locale import __
 from getpass import getpass
 from os import path
 from sphinx import addnodes
@@ -27,15 +29,11 @@ from sphinx.errors import ExtensionError
 from sphinx.locale import _
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
-import io
-import sys
-
-from docutils.nodes import Node
-
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.console import darkgreen
 from sphinx.util import progress_message
-from sphinx.locale import __
+import io
+import sys
 
 # load imgmath extension if available to handle math node pre-processing
 try:
