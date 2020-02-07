@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
