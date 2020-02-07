@@ -501,7 +501,7 @@ class ConfluenceBuilder(Builder):
 
             for figtype, fignums in fignumlist.items():
 
-                alias = '{}/{}'.format(docname, id)
+                alias = '{}/{}'.format(docname, figtype)
 
                 new_fignumbers.setdefault(alias, {})
 
