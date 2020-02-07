@@ -16,4 +16,5 @@ doc/_build/
 # testing
 .tox/
 
+# misc
 .idea/
