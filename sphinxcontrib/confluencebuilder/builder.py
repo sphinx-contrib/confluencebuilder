@@ -31,7 +31,6 @@ from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.console import darkgreen
-from sphinx.util import progress_message
 import io
 import sys
 
@@ -517,16 +516,19 @@ class ConfluenceBuilder(Builder):
 
             docnames = self.env.all_docs
 
-            with progress_message(__('preparing documents for single confluence document')):
-                self.prepare_writing(docnames)  # type: ignore
+            ConfluenceLogger.info(__('preparing documents for single confluence document'), nonl=0)
+            self.prepare_writing(docnames)
+            ConfluenceLogger.info(__('done'))
 
-            with progress_message(__('assembling single confluence document')):
-                doctree = self.assemble_doctree()
-                self.env.toc_secnumbers = self.assemble_toc_secnumbers()
-                self.env.toc_fignumbers = self.assemble_toc_fignumbers()
+            ConfluenceLogger.info(__('assembling single confluence document'), nonl=0)
+            doctree = self.assemble_doctree()
+            self.env.toc_secnumbers = self.assemble_toc_secnumbers()
+            self.env.toc_fignumbers = self.assemble_toc_fignumbers()
+            ConfluenceLogger.info(__('done'))
 
-            with progress_message(__('writing single confluence document')):
-                self.write_doc(self.config.master_doc, doctree)
+            ConfluenceLogger.info(__('writing single confluence document'), nonl=0)
+            self.write_doc(self.config.master_doc, doctree)
+            ConfluenceLogger.info(__('done'))
 
         else:
 
