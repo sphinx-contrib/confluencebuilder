@@ -532,7 +532,7 @@ class ConfluenceBuilder(Builder):
 
         else:
 
-            super().write(build_docnames, updated_docnames, method)
+            super(ConfluenceBuilder, self).write(build_docnames, updated_docnames, method)
 
     def publish_doc(self, docname, output):
         conf = self.config
