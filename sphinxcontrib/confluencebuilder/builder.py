@@ -527,6 +527,7 @@ class ConfluenceBuilder(Builder):
             ConfluenceLogger.info(__('done'))
 
             ConfluenceLogger.info(__('writing single confluence document'), nonl=0)
+            self.write_doc_serialized(self.config.master_doc, doctree)
             self.write_doc(self.config.master_doc, doctree)
             ConfluenceLogger.info(__('done'))
 
