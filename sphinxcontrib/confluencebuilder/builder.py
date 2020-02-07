@@ -474,7 +474,7 @@ class ConfluenceBuilder(Builder):
 
             for id, secnum in secnums.items():
 
-                alias = "%s/%s" % (docname, id)
+                alias = '{}/{}'.format(docname, id)
                 new_secnumbers[alias] = secnum
 
         return {self.config.master_doc: new_secnumbers}
@@ -501,7 +501,7 @@ class ConfluenceBuilder(Builder):
 
             for figtype, fignums in fignumlist.items():
 
-                alias = "%s/%s" % (docname, figtype)
+                alias = '{}/{}'.format(docname, id)
 
                 new_fignumbers.setdefault(alias, {})
 
