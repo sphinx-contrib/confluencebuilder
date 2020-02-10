@@ -110,6 +110,8 @@ def setup(app):
     app.add_config_value('confluence_master_homepage', None, False)
     """Root/parent page's name to publish documents into."""
     app.add_config_value('confluence_parent_page', None, False)
+    """Perform a dry run of publishing to inspect what publishing will do."""
+    app.add_config_value('confluence_publish_dryrun', None, '')
     """Postfix to apply to title of published pages."""
     app.add_config_value('confluence_publish_postfix', None, False)
     """Prefix to apply to published pages."""

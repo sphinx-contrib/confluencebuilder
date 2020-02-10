@@ -21,9 +21,11 @@ import time
 class ConfluencePublisher():
     def __init__(self):
         self.space_display_name = None
+        self._name_cache = {}
 
     def init(self, config):
         self.config = config
+        self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
@@ -70,6 +72,7 @@ class ConfluencePublisher():
             raise ConfluenceConfigurationError("""Configured parent """
                 """page ID and name do not match.""")
         base_page_id = page['id']
+        self._name_cache[base_page_id] = self.parent_name
 
         if not base_page_id and self.parent_id:
             raise ConfluenceConfigurationError("""Unable to find the """
@@ -108,6 +111,7 @@ class ConfluencePublisher():
         while rsp['size'] > 0:
             for result in rsp['results']:
                 descendants.add(result['id'])
+                self._name_cache[result['id']] = result['title']
 
             if rsp['size'] != rsp['limit']:
                 break
@@ -179,6 +183,7 @@ class ConfluencePublisher():
         if rsp['size'] != 0:
             attachment = rsp['results'][0]
             attachment_id = attachment['id']
+            self._name_cache[attachment_id] = name
 
         return attachment_id, attachment
 
@@ -210,6 +215,7 @@ class ConfluencePublisher():
         while rsp['size'] > 0:
             for result in rsp['results']:
                 attachment_info[result['id']] = result['title']
+                self._name_cache[result['id']] = result['title']
 
             if rsp['size'] != rsp['limit']:
                 break
@@ -221,7 +227,7 @@ class ConfluencePublisher():
 
         return attachment_info
 
-    def getPage(self, page_name):
+    def getPage(self, page_name, expand='version'):
         """
         get page information with the provided page name
 
@@ -232,6 +238,7 @@ class ConfluencePublisher():
 
         Args:
             page_name: the page name
+            expand (optional): data to expand on
 
         Returns:
             the page id and page object
@@ -244,12 +251,13 @@ class ConfluencePublisher():
             'spaceKey': self.space_name,
             'title': page_name,
             'status': 'current',
-            'expand': 'version'
+            'expand': expand,
             })
 
         if rsp['size'] != 0:
             page = rsp['results'][0]
             page_id = page['id']
+            self._name_cache[page_id] = page_name
 
         return page_id, page
 
@@ -295,6 +303,14 @@ class ConfluencePublisher():
                         'published to document with same hash'.format(name))
                     return attachment['id']
 
+        if self.dryrun:
+            if not attachment:
+                self._dryrun('adding new attachment ' + name)
+                return None
+            else:
+                self._dryrun('updating existing attachment', attachment['id'])
+                return attachment['id']
+
         # publish attachment
         try:
             data = {
@@ -329,8 +345,27 @@ class ConfluencePublisher():
         if self.config.confluence_adv_trace_data:
             ConfluenceLogger.trace('data', data)
 
-        _, page = self.getPage(page_name)
+        if self.dryrun:
+            _, page = self.getPage(page_name, 'version,ancestors')
 
+            if not page:
+                self._dryrun('adding new page ' + page_name)
+                return None
+            else:
+                misc = ''
+                if parent_id and 'ancestors' in page:
+                    if not any(a['id'] == parent_id for a in page['ancestors']):
+                        #if parent_id not in page['ancestors']:
+                        if parent_id in self._name_cache:
+                            misc += '[new parent page {} ({})]'.format(
+                                self._name_cache[parent_id], parent_id)
+                        else:
+                            misc += '[new parent page]'
+
+                self._dryrun('updating existing page', page['id'], misc)
+                return page['id']
+
+        _, page = self.getPage(page_name)
         try:
             if not page:
                 newPage = {
@@ -426,6 +461,10 @@ class ConfluencePublisher():
         Args:
             id: the attachment
         """
+        if self.dryrun:
+            self._dryrun('removing attachment', id)
+            return
+
         try:
             self.rest_client.delete('content', id)
         except ConfluencePermissionError:
@@ -435,6 +474,10 @@ class ConfluencePublisher():
             )
 
     def removePage(self, page_id):
+        if self.dryrun:
+            self._dryrun('removing page', page_id)
+            return
+
         try:
             self.rest_client.delete('content', page_id)
         except ConfluencePermissionError:
@@ -445,6 +488,10 @@ class ConfluencePublisher():
 
     def updateSpaceHome(self, page_id):
         if not page_id:
+            return
+
+        if self.dryrun:
+            self._dryrun('updating space home to', page_id)
             return
 
         page = self.rest_client.get('content/' + page_id, None)
@@ -459,3 +506,26 @@ class ConfluencePublisher():
                 """Publish user does not have permission to update """
                 """space's homepage."""
             )
+
+    def _dryrun(self, msg, id=None, misc=''):
+        """
+        log a dry run mode message
+
+        Accepts a message to be printed out when running in "dry run" mode. A
+        message may be accompanied by an identifier which should be translated
+        to a name (if possible).
+
+        Args:
+            msg: the message
+            id (optional): identifier (name mapping) associated with the message
+            misc (optional): additional information to append
+        """
+        s = '[dryrun] '
+        s += msg
+        if id and id in self._name_cache:
+            s += ' ' + self._name_cache[id]
+        if id:
+            s += ' ({})'.format(id)
+        if misc:
+            s += ' ' + misc
+        ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
