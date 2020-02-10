@@ -32,6 +32,7 @@ class ConfluencePublisher():
         self.server_pass = config.confluence_server_pass
         self.space_name = config.confluence_space_name
         self.timeout = config.confluence_timeout
+        self.watch = config.confluence_watch
         self.ca_cert = config.confluence_ca_cert
         self.client_cert = config.confluence_client_cert
         self.client_cert_pass = config.confluence_client_cert_pass
@@ -315,6 +316,10 @@ class ConfluencePublisher():
                     page_id, attachment['id'])
                 rsp = self.rest_client.post(url, None, files=data)
                 uploaded_attachment_id = rsp['id']
+
+            if not self.watch:
+                self.rest_client.delete('user/watch/content',
+                    uploaded_attachment_id)
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to add an """
@@ -413,6 +418,9 @@ class ConfluencePublisher():
                 """Publish user does not have permission to add page """
                 """content to the configured space."""
             )
+
+        if not self.watch:
+            self.rest_client.delete('user/watch/content', uploaded_page_id)
 
         return uploaded_page_id
 

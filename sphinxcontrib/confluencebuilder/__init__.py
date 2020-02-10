@@ -120,6 +120,8 @@ def setup(app):
     app.add_config_value('confluence_purge_from_master', None, False)
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
+    """Whether or not new content should be watched."""
+    app.add_config_value('confluence_watch', None, False)
 
     """(configuration - advanced publishing)"""
     """Tri-state asset handling (auto, force push or disable)."""
