@@ -645,6 +645,29 @@ providing a proxy server using this configuration.
 
 --------------------------------------------------------------------------------
 
+.. |confluence_publish_dryrun| replace:: ``confluence_publish_dryrun``
+.. _confluence_publish_dryrun:
+
+confluence_publish_dryrun
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When a user wishes to start managing a new document set for publishing, there
+maybe concerns about conflicts with existing content. When the dry run feature
+is enabled to ``True``, a publish event will not edit or remove any existing
+content. Instead, the extension will inform the user which pages will be
+created, whether or not pages will be moved and whether or not pages/attachments
+will be removed. By default, the dry run feature is disabled with a value of
+``False``.
+
+.. code-block:: python
+
+   confluence_publish_dryrun = True
+
+See also
+:ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
+
+--------------------------------------------------------------------------------
+
 .. _confluence_publish_subset:
 
 confluence_publish_subset
