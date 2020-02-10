@@ -343,6 +343,9 @@ option can be set to ``True``. By default, this option is set to ``False``.
 
 --------------------------------------------------------------------------------
 
+.. |confluence_disable_notifications| replace:: ``confluence_disable_notifications``
+.. _confluence_disable_notifications:
+
 confluence_disable_notifications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -353,6 +356,8 @@ notifications are enabled with a value of ``False``.
 .. code-block:: python
 
    confluence_disable_notifications = True
+
+See also |confluence_watch|_.
 
 --------------------------------------------------------------------------------
 
@@ -515,6 +520,30 @@ seconds, the following can be used:
 .. code-block:: python
 
    confluence_timeout = 10
+
+--------------------------------------------------------------------------------
+
+.. |confluence_watch| replace:: ``confluence_watch``
+.. _confluence_watch:
+
+confluence_watch
+~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.3
+
+Indicate whether or not the user publishing content will automatically watch
+pages for changes. In Confluence, when creating a new page or updating an
+existing page, the editing user will automatically watch the page. Notifications
+on automatically published content is typically not relevant to publishers
+through this extension, especially if the content is volatile. If a publisher 
+wishes to be keep informed on notification for published pages, this option can
+be set to ``True``. By default, watching is disabled with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_watch = False
+
+See also |confluence_disable_notifications|_.
 
 --------------------------------------------------------------------------------
 
