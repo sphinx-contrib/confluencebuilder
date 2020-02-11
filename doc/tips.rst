@@ -70,7 +70,8 @@ content can use the ``confluence_publish_prefix``
 (:ref:`jump<confluence_publish_prefix>`) or ``confluence_publish_postfix``
 (:ref:`jump<confluence_publish_postfix>`) options.
 
-See also the :ref:`dry run capability <confluence_publish_dryrun>`.
+See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
+:ref:`title overrides capability <confluence_title_overrides>`.
 
 setting a publishing timeout
 ----------------------------

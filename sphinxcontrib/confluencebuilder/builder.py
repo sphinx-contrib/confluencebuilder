@@ -226,7 +226,13 @@ class ConfluenceBuilder(Builder):
         for docname in ordered_docnames:
             doctree = self.env.get_doctree(docname)
 
-            doctitle = self._parse_doctree_title(docname, doctree)
+            # acquire title from override (if any), or parse first title entity
+            if (self.config.confluence_title_overrides and
+                    docname in self.config.confluence_title_overrides):
+                doctitle = self.config.confluence_title_overrides[docname]
+            else:
+                doctitle = self._parse_doctree_title(docname, doctree)
+
             if not doctitle:
                 continue
 
