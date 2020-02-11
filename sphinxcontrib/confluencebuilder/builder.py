@@ -18,7 +18,7 @@ from .util import first
 from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
-from docutils.nodes import Node
+# from docutils.nodes import Node
 from sphinx.locale import __
 from getpass import getpass
 from os import path
@@ -30,7 +30,7 @@ from sphinx.locale import _
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir, SEP
 from sphinx.util.nodes import inline_all_toctrees
-from sphinx.util.console import darkgreen
+from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 import io
 import sys
 
