@@ -325,6 +325,9 @@ By default, this option is disabled with a value of ``False``.
 
 --------------------------------------------------------------------------------
 
+.. |confluence_disable_autogen_title| replace:: ``confluence_disable_autogen_title``
+.. _confluence_disable_autogen_title:
+
 confluence_disable_autogen_title
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -340,6 +343,11 @@ option can be set to ``True``. By default, this option is set to ``False``.
 .. code-block:: python
 
    confluence_disable_autogen_title = True
+
+See also:
+
+- |confluence_remove_title|_
+- |confluence_title_overrides|_
 
 --------------------------------------------------------------------------------
 
@@ -501,6 +509,40 @@ to ``True`` before taking effect.
 .. code-block:: python
 
    confluence_purge_from_master = False
+
+--------------------------------------------------------------------------------
+
+.. |confluence_title_overrides| replace:: ``confluence_title_overrides``
+.. _confluence_title_overrides:
+
+confluence_title_overrides
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.3
+
+Allows a user to override the title value for a specific document. When
+documents are parsed for title values, the first title element's content will be
+used as the publish page's title. Select documents name not include a title and
+are ignored; or, documents may conflict with each other but there is a desire to
+keep them the same name in reStructuredText form. With
+``confluence_title_overrides``, a user can define a dictionary which will map a
+given docname into a title element instead of the title element (if any) found
+in the respective document. By default, documents will give assigned titles
+values based off the first detected title element with a value of ``None``.
+
+.. code-block:: python
+
+    confluence_title_overrides = {
+        'index': 'Index Override',
+    }
+
+See also:
+
+- :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`
+- |confluence_disable_autogen_title|_
+- |confluence_publish_postfix|_
+- |confluence_publish_prefix|_
+- |confluence_remove_title|_
 
 --------------------------------------------------------------------------------
 
@@ -901,6 +943,9 @@ get_relative_uri_ method. The default translation will be the combination of
 
 --------------------------------------------------------------------------------
 
+.. |confluence_remove_title| replace:: ``confluence_remove_title``
+.. _confluence_remove_title:
+
 confluence_remove_title
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -914,6 +959,11 @@ option is enabled with a value of ``True``.
 .. code-block:: python
 
    confluence_remove_title = True
+
+See also:
+
+- |confluence_disable_autogen_title|_
+- |confluence_title_overrides|_
 
 
 .. references ------------------------------------------------------------------
