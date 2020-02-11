@@ -4,6 +4,8 @@ tips
 .. contents::
    :local:
 
+.. _confluence_unique_page_names:
+
 confluence spaces and unique page names
 ---------------------------------------
 
@@ -67,6 +69,8 @@ Users needing to restrict the extension from possibly mangling manually prepared
 content can use the ``confluence_publish_prefix``
 (:ref:`jump<confluence_publish_prefix>`) or ``confluence_publish_postfix``
 (:ref:`jump<confluence_publish_postfix>`) options.
+
+See also the :ref:`dry run capability <confluence_publish_dryrun>`.
 
 setting a publishing timeout
 ----------------------------

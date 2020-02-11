@@ -437,7 +437,13 @@ class ConfluenceBuilder(Builder):
             else:
                 baseid = self.parent_id
 
-            if self.config.confluence_adv_aggressive_search is True:
+            # if no base identifier and dry running, ignore legeacy page
+            # searching as there is no initial master document to reference
+            # against
+            if (conf.confluence_purge_from_master and
+                    conf.confluence_publish_dryrun and not baseid):
+                self.legacy_pages = []
+            elif self.config.confluence_adv_aggressive_search is True:
                 self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
             else:
                 self.legacy_pages = self.publisher.getDescendants(baseid)
