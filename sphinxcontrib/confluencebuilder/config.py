@@ -160,6 +160,17 @@ however, no username has been configured. Ensure 'confluence_server_user' is
 properly set with the publisher's Confluence username.
 """)
 
+            if c.confluence_title_overrides is not None:
+                if not isinstance(c.confluence_title_overrides, dict):
+                    errState = True
+                    if log:
+                        ConfluenceLogger.error(
+"""invalid type for confluence title overrides
+
+While providing title overrides using 'confluence_title_overrides', the option
+should be a dictionary of (str, str) entries.
+""")
+
             if c.confluence_ca_cert:
                 if not os.path.exists(c.confluence_ca_cert):
                     errState = True

@@ -120,6 +120,8 @@ def setup(app):
     app.add_config_value('confluence_purge', None, False)
     """Enablement of purging legacy child pages from a master page."""
     app.add_config_value('confluence_purge_from_master', None, False)
+    """docname-2-title dictionary for title overrides."""
+    app.add_config_value('confluence_title_overrides', None, 'env')
     """Timeout for network-related calls (publishing)."""
     app.add_config_value('confluence_timeout', None, False)
     """Whether or not new content should be watched."""
