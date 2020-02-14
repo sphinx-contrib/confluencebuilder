@@ -80,17 +80,22 @@ class ConfluenceState:
         If a prefix (or postfix) value is provided, it will be added to the
         beginning (or at the end) of the provided title value.
         """
+        try_max = CONFLUENCE_MAX_TITLE_LEN
+        base_tail = ''
+
         if prefix:
             title = prefix + title
 
         if postfix:
-            title += postfix
+            base_tail += postfix
+            try_max += len(postfix)
 
-        if len(title) > CONFLUENCE_MAX_TITLE_LEN:
-            title = title[0:CONFLUENCE_MAX_TITLE_LEN]
+        if len(title) > try_max:
+            title = title[0:try_max]
             ConfluenceLogger.warn("document title has been trimmed due to "
                 "length: %s" % docname)
 
+        title += base_tail
         ConfluenceState.doc2title[docname] = title
         ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
         return title
