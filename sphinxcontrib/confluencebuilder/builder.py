@@ -316,8 +316,6 @@ class ConfluenceBuilder(Builder):
         # images are detected during an 'doctree-resolved' hook (see __init__).
         self.assets.process(ordered_docnames)
 
-        ConfluenceState.titleConflictCheck()
-
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
         omit = False
         max_depth = self.config.confluence_max_doc_depth
