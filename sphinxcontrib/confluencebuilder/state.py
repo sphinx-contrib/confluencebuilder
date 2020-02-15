@@ -29,6 +29,7 @@ class ConfluenceState:
     doc2title = {}
     doc2ttd = {}
     refid2target = {}
+    title2doc = {}
 
     @staticmethod
     def registerParentDocname(docname, parent_docname):
@@ -80,18 +81,42 @@ class ConfluenceState:
         If a prefix (or postfix) value is provided, it will be added to the
         beginning (or at the end) of the provided title value.
         """
+        try_max = CONFLUENCE_MAX_TITLE_LEN
+        base_tail = ''
+
         if prefix:
             title = prefix + title
 
         if postfix:
-            title += postfix
+            base_tail += postfix
+            try_max += len(postfix)
 
-        if len(title) > CONFLUENCE_MAX_TITLE_LEN:
-            title = title[0:CONFLUENCE_MAX_TITLE_LEN]
+        if len(title) > try_max:
+            title = title[0:try_max]
             ConfluenceLogger.warn("document title has been trimmed due to "
                 "length: %s" % docname)
 
+        base_title = title
+        title += base_tail
+
+        # check if title is already used; if so, append a new value
+        offset = 2
+        while title.lower() in ConfluenceState.title2doc:
+            if offset == 2:
+                ConfluenceLogger.warn('title conflict detected with '
+                    "'{}' and '{}'".format(
+                        ConfluenceState.title2doc[title.lower()], docname))
+
+            tail = ' ({}){}'.format(offset, base_tail)
+            try_max = CONFLUENCE_MAX_TITLE_LEN + len(tail)
+            if len(base_title) > try_max:
+                base_title = base_title[0:try_max]
+
+            title = base_title + tail
+            offset += 1
+
         ConfluenceState.doc2title[docname] = title
+        ConfluenceState.title2doc[title.lower()] = docname
         ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
         return title
 
@@ -141,6 +166,7 @@ class ConfluenceState:
         ConfluenceState.doc2title.clear()
         ConfluenceState.doc2ttd.clear()
         ConfluenceState.refid2target.clear()
+        ConfluenceState.title2doc.clear()
 
     @staticmethod
     def parentDocname(docname):
@@ -168,26 +194,6 @@ class ConfluenceState:
         See `registerTitle` for more information.
         """
         return ConfluenceState.doc2title.get(docname)
-
-    @staticmethod
-    def titleConflictCheck():
-        """
-        check for title conflicts with known documents
-
-        The following cycles through known documents to see if any documents are
-        using the same title name. If multiple documents have the same title
-        value, the publish operation would update the contents of a page
-        multiple times (last served wins). This check only generates a warning
-        for the user (as this should not really happen).
-        """
-        d = ConfluenceState.doc2title
-        for key_a in d:
-            for key_b in d:
-                if key_a == key_b:
-                    break
-                if (d[key_a] == d[key_b]):
-                    ConfluenceLogger.warn("title conflict detected with "
-                        "'%s' and '%s'" % (key_a, key_b))
 
     @staticmethod
     def toctreeDepth(docname):
