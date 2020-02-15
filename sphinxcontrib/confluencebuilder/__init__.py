@@ -10,6 +10,7 @@ from .directives import JiraIssueDirective
 from .logger import ConfluenceLogger
 from .nodes import jira
 from .nodes import jira_issue
+from .singlebuilder import SingleConfluenceBuilder
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
 from docutils import nodes
@@ -47,7 +48,10 @@ def setup(app):
 
     app.require_sphinx('1.8')
     app.add_builder(ConfluenceBuilder)
+    app.add_builder(SingleConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
+    app.registry.add_translator(
+        SingleConfluenceBuilder.name, ConfluenceTranslator)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
@@ -164,8 +168,6 @@ def setup(app):
     app.add_config_value('confluence_link_transform', None, False)
     """Remove a detected title from generated documents."""
     app.add_config_value('confluence_remove_title', True, False)
-    """Generate all of the documentation on a single page."""
-    app.add_config_value('confluence_single_page', None, 'env' )
 
     """(configuration - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""

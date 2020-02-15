@@ -960,19 +960,6 @@ option is enabled with a value of ``True``.
 
    confluence_remove_title = True
 
-confluence_single_page
-~~~~~~~~~~~~~~~~~~~~~~
-
-A boolean value to whether or not generate a single Confluence document.
-Normally, each source document (e.g. ``.rst``) will be translated into their
-own respective Confluence-supported document. With this option enabled, every
-source document is consolidated into a single Confluence-supported document.
-By default, this option is disabled with a value of ``False``.
-
-.. code-block:: python
-
-   confluence_single_page = False
-
 See also:
 
 - |confluence_disable_autogen_title|_
