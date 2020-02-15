@@ -543,20 +543,27 @@ class ConfluenceTranslator(BaseTranslator):
 
     def visit_literal_block(self, node):
         self._literal = True
+        lang = None
 
-        is_parsed_literal = node.rawsource != node.astext()
-        if is_parsed_literal:
-            self.body.append(self._start_tag(node, 'div', suffix=self.nl,
-                **{'class': 'panel pdl'}))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'pre',
-                **{'class': 'panelContent'}))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'code'))
-            self.context.append(self._end_tag(node))
-            return
+        # non-raw literal
+        if node.rawsource != node.astext():
+            # include marked with a literal flag
+            if 'source' in node:
+                lang = 'none'
+            # parsed literal
+            else:
+                self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                    **{'class': 'panel pdl'}))
+                self.context.append(self._end_tag(node))
+                self.body.append(self._start_tag(node, 'pre',
+                    **{'class': 'panelContent'}))
+                self.context.append(self._end_tag(node))
+                self.body.append(self._start_tag(node, 'code'))
+                self.context.append(self._end_tag(node))
+                return
 
-        lang = node.get('language', self._highlight).lower()
+        if not lang:
+            lang = node.get('language', self._highlight).lower()
         if self.builder.lang_transform:
             lang = self.builder.lang_transform(lang)
         elif lang in LITERAL2LANG_MAP.keys():
