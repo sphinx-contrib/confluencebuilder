@@ -92,6 +92,8 @@ LITERAL2LANG_MAP = {
     'js': 'javascript',
     # Plain Text
     'none': 'none',
+    'raw': 'none',
+    'text': 'none',
     # Perl (Confluence <=5.10)
     'perl': 'perl',
     'pl': 'perl',
@@ -107,7 +109,9 @@ LITERAL2LANG_MAP = {
     'psm1': 'powershell',
     # Python
     'py': 'python',
+    'py3': 'python',
     'python': 'python',
+    'python3': 'python',
     'sage': 'python',
     # Ruby
     'duby': 'ruby',
@@ -121,6 +125,7 @@ LITERAL2LANG_MAP = {
     'sql': 'sql',
     # Visual Basic
     'vb': 'vb',
+    'vbscript': 'vb',
     # YAML (Confluence Server >=6.7)
     'yaml': 'yaml',
     # (special)
