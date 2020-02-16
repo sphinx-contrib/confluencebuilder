@@ -259,20 +259,8 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
-            doc_used_names = {}
-            for node in doctree.traverse(nodes.title):
-                if isinstance(node.parent, nodes.section):
-                    section_node = node.parent
-                    if 'ids' in section_node:
-                        target = ''.join(node.astext().split())
-                        section_id = doc_used_names.get(target, 0)
-                        doc_used_names[target] = section_id + 1
-                        if section_id > 0:
-                            target = '%s.%d' % (target, section_id)
-
-                        for id in section_node['ids']:
-                            id = '{}#{}'.format(docname, id)
-                            ConfluenceState.registerTarget(id, target)
+            # register targets for references
+            self._register_doctree_targets(docname, doctree)
 
             # replace math blocks with images
             #
@@ -724,6 +712,33 @@ class ConfluenceBuilder(Builder):
         if docname not in self.cache_doctrees:
             self.cache_doctrees[docname] = self._original_get_doctree(docname)
         return self.cache_doctrees[docname]
+
+    def _register_doctree_targets(self, docname, doctree):
+        """
+        register targets for a doctree
+
+        Compiles a list of targets which references can link against. This
+        tracked expected targets for sections which are automatically generated
+        in a rendered Confluence instance.
+
+        Args:
+            docname: the docname of the doctree
+            doctree: the doctree to search for targets
+        """
+        doc_used_names = {}
+        for node in doctree.traverse(nodes.title):
+            if isinstance(node.parent, nodes.section):
+                section_node = node.parent
+                if 'ids' in section_node:
+                    target = ''.join(node.astext().split())
+                    section_id = doc_used_names.get(target, 0)
+                    doc_used_names[target] = section_id + 1
+                    if section_id > 0:
+                        target = '{}.{}'.format(target, section_id)
+
+                    for id in section_node['ids']:
+                        id = '{}#{}'.format(docname, id)
+                        ConfluenceState.registerTarget(id, target)
 
     def _parse_doctree_title(self, docname, doctree):
         """
