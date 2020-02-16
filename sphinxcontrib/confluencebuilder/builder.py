@@ -62,9 +62,12 @@ class ConfluenceBuilder(Builder):
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
+        self.nav_next = {}
+        self.nav_prev = {}
         self.omitted_docnames = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
+        self._original_get_doctree = None
 
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
@@ -215,8 +218,6 @@ class ConfluenceBuilder(Builder):
         # Prepares a relation mapping between each non-orphan documents which
         # can be used by navigational elements.
         prevdoc = ordered_docnames[0] if ordered_docnames else None
-        self.nav_next = {}
-        self.nav_prev = {}
         for docname in ordered_docnames[1:]:
             self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
             self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
@@ -496,7 +497,9 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
     def finish(self):
-        self.env.get_doctree = self._original_get_doctree
+        # restore environment's get_doctree if it was temporarily replaced
+        if self._original_get_doctree:
+            self.env.get_doctree = self._original_get_doctree
 
         if self.publish:
             self.legacy_assets = {}
