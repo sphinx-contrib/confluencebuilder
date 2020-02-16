@@ -263,37 +263,7 @@ class ConfluenceBuilder(Builder):
             self._register_doctree_targets(docname, doctree)
 
             # replace math blocks with images
-            #
-            # Math blocks are pre-processed and replaced with respective images
-            # in the list of documents to process. This is to help prepare
-            # additional images into the asset management for this extension.
-            # Math support will work on systems which have latex/dvipng
-            # installed.
-            if imgmath is not None:
-                # imgmath's render_math call expects a translator to be passed
-                # in; mock a translator tied to our self-builder
-                class MockTranslator:
-                    def __init__(self, builder):
-                        self.builder = builder
-                mock_translator = MockTranslator(self)
-
-                for node in itertools.chain(doctree.traverse(nodes.math),
-                        doctree.traverse(nodes.math_block)):
-                    try:
-                        mf, _ = imgmath.render_math(mock_translator,
-                            '$' + node.astext() + '$')
-                        if not mf:
-                            continue
-
-                        new_node = nodes.image(
-                            candidates={'?'},
-                            uri=path.join(self.outdir, mf))
-                        if not isinstance(node, nodes.math):
-                            new_node['align'] = 'center'
-                        node.replace_self(new_node)
-                    except imgmath.MathExtError as exc:
-                        ConfluenceLogger.warn('inline latex {}: {}'.format(
-                            node.astext(), exc))
+            self._replace_math_blocks(doctree)
 
             # for every doctree, pick the best image candidate
             self.post_process_images(doctree)
@@ -739,6 +709,46 @@ class ConfluenceBuilder(Builder):
                     for id in section_node['ids']:
                         id = '{}#{}'.format(docname, id)
                         ConfluenceState.registerTarget(id, target)
+
+    def _replace_math_blocks(self, doctree):
+        """
+        replace math blocks with images
+
+        Math blocks are pre-processed and replaced with respective images in the
+        list of documents to process. This is to help prepare additional images
+        into the asset management for this extension. Math support will work on
+        systems which have latex/dvipng installed.
+
+        Args:
+            doctree: the doctree to replace blocks on
+        """
+        if imgmath is None:
+            return
+
+        # imgmath's render_math call expects a translator to be passed
+        # in; mock a translator tied to our self-builder
+        class MockTranslator:
+            def __init__(self, builder):
+                self.builder = builder
+        mock_translator = MockTranslator(self)
+
+        for node in itertools.chain(doctree.traverse(nodes.math),
+                doctree.traverse(nodes.math_block)):
+            try:
+                mf, _ = imgmath.render_math(mock_translator,
+                    '$' + node.astext() + '$')
+                if not mf:
+                    continue
+
+                new_node = nodes.image(
+                    candidates={'?'},
+                    uri=path.join(self.outdir, mf))
+                if not isinstance(node, nodes.math):
+                    new_node['align'] = 'center'
+                node.replace_self(new_node)
+            except imgmath.MathExtError as exc:
+                ConfluenceLogger.warn('inline latex {}: {}'.format(
+                    node.astext(), exc))
 
     def _parse_doctree_title(self, docname, doctree):
         """
