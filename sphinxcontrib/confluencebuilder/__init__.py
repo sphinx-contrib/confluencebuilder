@@ -57,9 +57,9 @@ def setup(app):
     # after a document's post-transformation stage. After a document's doctree
     # has been resolved, re-check for any images that have been translated.
     def assetsDocTreeResolvedHook(app, doctree, docname):
-        if isinstance(app.builder, ConfluenceBuilder):
-            app.builder.assets.processDocument(doctree, docname, True)
-    app.connect('doctree-resolved', assetsDocTreeResolvedHook)
+        app.builder.assets.processDocument(doctree, docname, True)
+    if type(app.builder) == ConfluenceBuilder:
+        app.connect('doctree-resolved', assetsDocTreeResolvedHook)
 
     # remove math-node-migration post-transform as this extension manages both
     # future and legacy math implementations (removing this transform removes
