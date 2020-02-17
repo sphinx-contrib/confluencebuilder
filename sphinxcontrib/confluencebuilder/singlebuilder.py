@@ -24,25 +24,6 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def __init__(self, app):
         super(SingleConfluenceBuilder, self).__init__(app)
 
-    def fix_refuris(self, tree):
-        #
-        # fix refuris with double anchor
-        #
-        fname = self.config.master_doc + self.file_suffix
-
-        for refnode in tree.traverse(nodes.reference):
-            if 'refuri' not in refnode:
-                continue
-
-            refuri = refnode['refuri']
-            hashindex = refuri.find('#')
-            if hashindex < 0:
-                continue
-
-            hashindex = refuri.find('#', hashindex + 1)
-            if hashindex >= 0:
-                refnode['refuri'] = fname + refuri[hashindex:]
-
     def assemble_doctree(self):
         master = self.config.master_doc
         tree = self.env.get_doctree(master)
@@ -51,7 +32,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         tree['docname'] = master
 
         self.env.resolve_references(tree, master, self)
-        self.fix_refuris(tree)
+        self._fix_refuris(tree)
 
         return tree
 
@@ -153,6 +134,43 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         with progress_message(__('writing single confluence document')):
             self.write_doc_serialized(self.config.master_doc, doctree)
             self.write_doc(self.config.master_doc, doctree)
+
+    def _fix_refuris(self, doctree):
+        """
+        process refuris that self-reference to the new toctree
+
+        When assembling a new single doctree, references between pages now
+        become references to specific targets on the single page. This call will
+        correct two scenarios. If a reference's `refuri` references the newly
+        generated page, replace the `refuri` with a `refid`. This allows a
+        translator to easily process the reference to a local target (which it
+        is) instead of treating it as a target on a possibly independent page.
+        Second, this change also removes the possibly of double-anchors
+        generated when combining into a single toctree. When inlining toctree's,
+        parses may stack target identifiers in a `refuri`. If this occurs, only
+        the last stacked target idenitifier is needed.
+
+        Args:
+            doctree: the doctree to parse
+        """
+        master_docuri = self.config.master_doc + self.file_suffix
+
+        for refnode in doctree.traverse(nodes.reference):
+            if 'refuri' not in refnode:
+                continue
+
+            refuri = refnode['refuri']
+            idx = refuri.find('#')
+            if idx < 0:
+                continue
+
+            idx2 = refuri.find('#', idx + 1)
+            if idx2 >= 0:
+                refnode['refid'] = refuri[idx2 + 1:]
+                del refnode['refuri']
+            elif refuri.startswith(master_docuri + '#'):
+                refnode['refid'] = refuri[idx + 1:]
+                del refnode['refuri']
 
     def _process_root_document(self):
         docname = self.config.master_doc
