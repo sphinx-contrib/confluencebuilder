@@ -116,7 +116,8 @@ class ConfluenceTestUtil:
 
     @staticmethod
     @contextmanager
-    def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, relax=False):
+    def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
+            relax=False):
         """
         prepare a sphinx application instance
 
@@ -142,13 +143,17 @@ class ConfluenceTestUtil:
             except:
                 pass
 
+        # default to using this extension's builder
+        if not builder:
+            builder = ConfluenceBuilder.name
+
         with docutils_namespace():
             app = Sphinx(
                 src_dir,                # output for document sources
                 conf_dir,               # ignore configuration directory
                 out_dir,                # output for generated documents
                 doctree_dir,            # output for doctree files
-                ConfluenceBuilder.name, # use this extension's builder
+                builder,                # builder to execute
                 confoverrides=conf,     # load provided configuration (volatile)
                 status=sts,             # status output
                 warning=sys.stderr,     # warnings output
@@ -158,7 +163,8 @@ class ConfluenceTestUtil:
             yield app
 
     @staticmethod
-    def buildSphinx(src_dir, out_dir, doctree_dir, config=None, relax=False):
+    def buildSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
+            relax=False):
         """
         prepare a sphinx application instance
 
@@ -167,5 +173,6 @@ class ConfluenceTestUtil:
         [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
         """
         with ConfluenceTestUtil.prepareSphinx(
-                src_dir, out_dir, doctree_dir, config, relax=relax) as app:
+                src_dir, out_dir, doctree_dir, config, builder=builder,
+                relax=relax) as app:
             app.build(force_all=True)
