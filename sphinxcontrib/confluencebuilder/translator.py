@@ -886,10 +886,10 @@ class ConfluenceTranslator(BaseTranslator):
             ConfluenceLogger.verbose('skipping nested reference container')
             return
 
-        internal = 'internal' in node and node['internal']
         if 'iscurrent' in node:
             pass
-        elif not internal and 'refuri' in node:
+        elif ((not 'internal' in node or not node['internal'])
+                and 'refuri' in node):
             # If a document provides an anchor target directly in the reference,
             # attempt to extract the anchor value and pass it into the internal
             # reference processing instead.
@@ -899,7 +899,7 @@ class ConfluenceTranslator(BaseTranslator):
                 self._visit_reference_intern_id(node)
             else:
                 self._visit_reference_extern(node)
-        elif 'refid' in node or (internal and 'ids' in node and node['ids']):
+        elif 'refid' in node:
             self._visit_reference_intern_id(node)
         elif 'refuri' in node:
             self._visit_reference_intern_uri(node)
@@ -912,12 +912,7 @@ class ConfluenceTranslator(BaseTranslator):
         self._reference_context.append(self._end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
-        if 'refid' not in node:
-            # citation that has been processed via resolve_references when
-            # merging multiple doctrees
-            anchor = node['refuri'].split('#')[1]
-        else:
-            anchor = ''.join(node['refid'].split())
+        anchor = ''.join(node['refid'].split())
 
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
