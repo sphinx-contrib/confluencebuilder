@@ -48,7 +48,7 @@ The recommended method to installing this extension is using pip_:
 For a more in-depth installation information, see also:
 
  | Atlassian Confluence Builder for Sphinx - Installation
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/install.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/install.html
 
 Usage
 =====
@@ -71,7 +71,7 @@ Usage
 For more information on the usage of this extension, see also:
 
  | Atlassian Confluence Builder for Sphinx - Tutorial
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/tutorial.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/tutorial.html
 
 Configuration
 =============
@@ -92,7 +92,7 @@ and publishing:
 For a complete list of configuration options, see also:
 
  | Atlassian Confluence Builder for Sphinx - Configuration
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/configuration.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/configuration.html
 
 Directives
 ==========
@@ -100,7 +100,7 @@ Directives
 For a complete list of directives supported by this extension, please consult:
 
  | Atlassian Confluence Builder for Sphinx - Directives
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/directives.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives.html
 
 Demonstration
 =============
@@ -123,7 +123,7 @@ Supported Markup
 For a complete list of supported markup, consult the following:
 
  | Atlassian Confluence Builder for Sphinx - Markup
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/markup.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/markup.html
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
