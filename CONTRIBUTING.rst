@@ -28,38 +28,33 @@ submitting changes
 ------------------
 
 Contributions can be provided as `pull requests`_ to this extension's GitHub
-project.
+project. New contributors should familiarize themselves with the following:
 
-Do:
-
-- (required) sign your work (`Developer’s Certificate of Origin`_). This is
+- **(required)** Sign your work (`Developer’s Certificate of Origin`_). This is
   confirmed with the inclusion of ``Signed-off-by`` in submitted commit
   messages.
-- ensure builds pass. When a pull request is submitted, a continues integration
-  test will be invoked. A developer can invoke ``tox`` at the root of the
+- Builds are required\* to pass to be accepted (\* with some exceptions in very
+  specific scenarios). When a pull request is submitted, continues integration
+  tests will be invoked. A developer can invoke ``tox`` at the root of the
   checked out repository to validate changes before submitting a pull request.
-- keep a narrow scope for proposed changes. Submitting multiple feature changes
+- Keep a narrow scope for proposed changes. Submitting multiple feature changes
   in a single pull request is not always helpful. Use multiple commits to
   separate changes over stacking all changes in a single commit (for example,
   related implementation and documentation changes can be submitted in a single
   pull request, but are best presented in their own individual commits).
-- (optional) add unit tests (if applicable). Adding unit tests to validate new
-  changes helps build confidence for the new modifications and helps prevent
-  future changes from breaking the new feature/fix.
-- (optional) ensure ``AUTHORS`` is updated. Contributors of this extension are
-  populated in the ``AUTHORS`` document. A pull request does not require to
-  include new authors to be added, authors will be added by a maintainer in a
-  future commit. If a contributor does not wish to add themselves to the
-  ``AUTHORS`` document, they may opt-out be explicitly indicating in a pull
-  request or issue.
-
-Do not:
-
-- ignore documentation. If a new change introduces, for example, a new
-  configuration entry or markup support has changed with a request, do not
+- Add unit tests (if applicable). Adding unit tests to validate new changes
+  helps build confidence for the new modifications and helps prevent future
+  changes from breaking the new feature/fix.
+- Update documentation (if applicable). If a new change introduces, for example,
+  a new configuration entry or markup support has changed with a request, do not
   forget to update respective documentation as well.
-- update ``CHANGES.rst``. Change log information is managed by this extension's
-  maintainers.
+- **Do not** update ``AUTHORS`` or ``CHANGES.rst``. Author information and
+  change log information are managed by this extension's maintainers. These
+  files may be updated during a development window and will always be updated
+  during a release. If a contributor does not wish to add themselves to the
+  ``AUTHORS`` document, they may opt-out be explicitly indicating in a pull
+  request or issue. In select cases, users may open pull requests for these
+  documents if corrections are needed.
 
 While maintainers will help strive to review, merge changes and provide support
 (when possible), the process may take some time. Please be patient and happy
