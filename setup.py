@@ -4,10 +4,30 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from setuptools import setup, find_packages
+from distutils.command.clean import clean
+from distutils import dir_util
+from setuptools import find_packages
+from setuptools import setup
+import os
 
 with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()
+
+# remove extra resources not removed by the default clean operation
+class ExtendedClean(clean):
+    def run(self):
+        clean.run(self)
+
+        if not self.all:
+            return
+
+        extras = [
+            'dist',
+            'sphinxcontrib_confluencebuilder.egg-info',
+        ]
+        for extra in extras:
+            if os.path.exists(extra):
+                dir_util.remove_tree(extra, dry_run=self.dry_run)
 
 requires = [
     'future>=0.16.0',
@@ -51,5 +71,8 @@ setup(
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
     test_suite='test',
-    tests_require=['sphinx']
+    tests_require=['sphinx'],
+    cmdclass={
+        'clean': ExtendedClean,
+    },
 )
