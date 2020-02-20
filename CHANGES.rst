@@ -1,8 +1,24 @@
 master
 ======
 
+* conflicting titles will be automatically adjusted to prevent publishing issues
+* enable page-specific title overrides via confluence_title_overrides
+* ensure configured title postfix is not trimmed in long titles
+* extend language mappings for supported storage format language types
+* fixed issue when building heading which reference another document
+* fixed issue where ask options would fail in python 2.7
+* fixed issue where ask options would prompt when not publishing
+* fixed issue where default alignment did not apply to a figure's legend
+* fixed issue where literal-marked includes would fail to publish
+* fixed issue where registering this extension caused issues with other builders
+* fixed issue with previous-next links not generated for nested pages
+* improve previous-next button visualization
+* improved handling unknown code languages to none-styled (instead of python)
 * support for sphinx v1.[6-7] has been dropped
 * support for xml-rpc has been dropped
+* support publish dry runs
+* support single-page builder
+* support users overriding default alignment
 
 1.2.0 (2020-01-03)
 ==================
