@@ -19,7 +19,7 @@ When reporting a bug, it is recommended to include at least the following:
 
 - sphinxcontrib-confluencebuilder's extension version
 - Python version
-- Sphinx verison
+- Sphinx version
 
 Additional logs from a ``sphinx-build`` attempt can be helpful as well (if
 applicable).
