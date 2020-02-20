@@ -105,7 +105,7 @@ documents in the root of the space. For example:
    confluence_parent_page = 'MyDocumentation'
 
 To process and publish the documentation set, invoke Sphinx with the
-``confluence`` builder to perform building/publishing:
+``confluence`` or ``singleconfluence``  builder to perform building/publishing:
 
    .. code-block:: shell
 

@@ -18,6 +18,7 @@ documentation contents
 
    install
    tutorial
+   builders
    configuration
    markup
    directives

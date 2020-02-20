@@ -10,6 +10,7 @@ from .directives import JiraIssueDirective
 from .logger import ConfluenceLogger
 from .nodes import jira
 from .nodes import jira_issue
+from .singlebuilder import SingleConfluenceBuilder
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
 from docutils import nodes
@@ -47,15 +48,18 @@ def setup(app):
 
     app.require_sphinx('1.8')
     app.add_builder(ConfluenceBuilder)
+    app.add_builder(SingleConfluenceBuilder)
     app.registry.add_translator(ConfluenceBuilder.name, ConfluenceTranslator)
+    app.registry.add_translator(
+        SingleConfluenceBuilder.name, ConfluenceTranslator)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
     # has been resolved, re-check for any images that have been translated.
     def assetsDocTreeResolvedHook(app, doctree, docname):
-        if isinstance(app.builder, ConfluenceBuilder):
-            app.builder.assets.processDocument(doctree, docname, True)
-    app.connect('doctree-resolved', assetsDocTreeResolvedHook)
+        app.builder.assets.processDocument(doctree, docname, True)
+    if type(app.builder) == ConfluenceBuilder:
+        app.connect('doctree-resolved', assetsDocTreeResolvedHook)
 
     # remove math-node-migration post-transform as this extension manages both
     # future and legacy math implementations (removing this transform removes

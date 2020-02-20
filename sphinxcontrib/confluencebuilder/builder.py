@@ -4,7 +4,9 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
-from __future__ import (print_function, unicode_literals, absolute_import)
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
 from .assets import ConfluenceAssetManager
 from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
@@ -23,9 +25,9 @@ from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
-from sphinx.locale import _
+from sphinx.locale import __
 from sphinx.util import status_iterator
-from sphinx.util.osutil import ensuredir, SEP
+from sphinx.util.osutil import ensuredir
 import io
 import sys
 
@@ -60,9 +62,12 @@ class ConfluenceBuilder(Builder):
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
+        self.nav_next = {}
+        self.nav_prev = {}
         self.omitted_docnames = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
+        self._original_get_doctree = None
 
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
@@ -213,8 +218,6 @@ class ConfluenceBuilder(Builder):
         # Prepares a relation mapping between each non-orphan documents which
         # can be used by navigational elements.
         prevdoc = ordered_docnames[0] if ordered_docnames else None
-        self.nav_next = {}
-        self.nav_prev = {}
         for docname in ordered_docnames[1:]:
             self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
             self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
@@ -257,53 +260,11 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
-            doc_used_names = {}
-            for node in doctree.traverse(nodes.title):
-                if isinstance(node.parent, nodes.section):
-                    section_node = node.parent
-                    if 'ids' in section_node:
-                        target = ''.join(node.astext().split())
-                        section_id = doc_used_names.get(target, 0)
-                        doc_used_names[target] = section_id + 1
-                        if section_id > 0:
-                            target = '%s.%d' % (target, section_id)
-
-                        for id in section_node['ids']:
-                            id = '{}#{}'.format(docname, id)
-                            ConfluenceState.registerTarget(id, target)
+            # register targets for references
+            self._register_doctree_targets(docname, doctree)
 
             # replace math blocks with images
-            #
-            # Math blocks are pre-processed and replaced with respective images
-            # in the list of documents to process. This is to help prepare
-            # additional images into the asset management for this extension.
-            # Math support will work on systems which have latex/dvipng
-            # installed.
-            if imgmath is not None:
-                # imgmath's render_math call expects a translator to be passed
-                # in; mock a translator tied to our self-builder
-                class MockTranslator:
-                    def __init__(self, builder):
-                        self.builder = builder
-                mock_translator = MockTranslator(self)
-
-                for node in itertools.chain(doctree.traverse(nodes.math),
-                        doctree.traverse(nodes.math_block)):
-                    try:
-                        mf, _ = imgmath.render_math(mock_translator,
-                            '$' + node.astext() + '$')
-                        if not mf:
-                            continue
-
-                        new_node = nodes.image(
-                            candidates={'?'},
-                            uri=path.join(self.outdir, mf))
-                        if not isinstance(node, nodes.math):
-                            new_node['align'] = 'center'
-                        node.replace_self(new_node)
-                    except imgmath.MathExtError as exc:
-                        ConfluenceLogger.warn('inline latex {}: {}'.format(
-                            node.astext(), exc))
+            self._replace_math_blocks(doctree)
 
             # for every doctree, pick the best image candidate
             self.post_process_images(doctree)
@@ -536,7 +497,9 @@ class ConfluenceBuilder(Builder):
                 ConfluenceLogger.info('done\n')
 
     def finish(self):
-        self.env.get_doctree = self._original_get_doctree
+        # restore environment's get_doctree if it was temporarily replaced
+        if self._original_get_doctree:
+            self.env.get_doctree = self._original_get_doctree
 
         if self.publish:
             self.legacy_assets = {}
@@ -606,7 +569,7 @@ class ConfluenceBuilder(Builder):
         navnode = ConfluenceNavigationNode()
 
         if docname in self.nav_prev:
-            prev_label = '← ' + _('Previous')
+            prev_label = '← ' + __('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
             reference._navnode = True
@@ -615,7 +578,7 @@ class ConfluenceBuilder(Builder):
             navnode.append(reference)
 
         if docname in self.nav_next:
-            next_label = _('Next') + ' →'
+            next_label = __('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
             reference._navnode = True
@@ -722,6 +685,73 @@ class ConfluenceBuilder(Builder):
         if docname not in self.cache_doctrees:
             self.cache_doctrees[docname] = self._original_get_doctree(docname)
         return self.cache_doctrees[docname]
+
+    def _register_doctree_targets(self, docname, doctree):
+        """
+        register targets for a doctree
+
+        Compiles a list of targets which references can link against. This
+        tracked expected targets for sections which are automatically generated
+        in a rendered Confluence instance.
+
+        Args:
+            docname: the docname of the doctree
+            doctree: the doctree to search for targets
+        """
+        doc_used_names = {}
+        for node in doctree.traverse(nodes.title):
+            if isinstance(node.parent, nodes.section):
+                section_node = node.parent
+                if 'ids' in section_node:
+                    target = ''.join(node.astext().split())
+                    section_id = doc_used_names.get(target, 0)
+                    doc_used_names[target] = section_id + 1
+                    if section_id > 0:
+                        target = '{}.{}'.format(target, section_id)
+
+                    for id in section_node['ids']:
+                        id = '{}#{}'.format(docname, id)
+                        ConfluenceState.registerTarget(id, target)
+
+    def _replace_math_blocks(self, doctree):
+        """
+        replace math blocks with images
+
+        Math blocks are pre-processed and replaced with respective images in the
+        list of documents to process. This is to help prepare additional images
+        into the asset management for this extension. Math support will work on
+        systems which have latex/dvipng installed.
+
+        Args:
+            doctree: the doctree to replace blocks on
+        """
+        if imgmath is None:
+            return
+
+        # imgmath's render_math call expects a translator to be passed
+        # in; mock a translator tied to our self-builder
+        class MockTranslator:
+            def __init__(self, builder):
+                self.builder = builder
+        mock_translator = MockTranslator(self)
+
+        for node in itertools.chain(doctree.traverse(nodes.math),
+                doctree.traverse(nodes.math_block)):
+            try:
+                mf, _ = imgmath.render_math(mock_translator,
+                    '$' + node.astext() + '$')
+                if not mf:
+                    continue
+
+                new_node = nodes.image(
+                    candidates={'?'},
+                    uri=path.join(self.outdir, mf))
+                if not isinstance(node, nodes.math):
+                    new_node['align'] = 'center'
+                node.replace_self(new_node)
+            except imgmath.MathExtError as exc:
+                ConfluenceLogger.warn('inline latex {}: {}'.format(
+                    node.astext(), exc))
 
     def _parse_doctree_title(self, docname, doctree):
         """
