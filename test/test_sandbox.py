@@ -54,9 +54,14 @@ def main():
         description='Atlassian Confluence Sphinx Extension Sandbox')
     parser.add_argument('--builder', '-b')
     parser.add_argument('--raw-upload', '-R', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true')
 
     args, ___ = parser.parse_known_args(sys.argv[1:])
     parser.parse_args()
+
+    if args.verbose:
+        if 'SPHINX_VERBOSITY' not in os.environ:
+            os.environ['SPHINX_VERBOSITY'] = '2'
 
     if args.raw_upload:
         print('[sandbox] raw-upload test')
