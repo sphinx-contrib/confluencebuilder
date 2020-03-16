@@ -59,6 +59,7 @@ class ConfluenceBuilder(Builder):
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
+        self.current_docname = None
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
@@ -367,6 +368,7 @@ class ConfluenceBuilder(Builder):
         # with minor changes to support :confval:`rst_file_transform`.
         destination = StringOutput(encoding='utf-8')
 
+        self.current_docname = docname
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
         if self.writer.output:
