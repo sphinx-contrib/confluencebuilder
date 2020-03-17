@@ -1294,7 +1294,7 @@ class ConfluenceTranslator(BaseTranslator):
                 '{}'.format(fulluri))
             else:
                 scale = node['scale'] / 100.0
-                node['width'] = str(math.ceil(size[0] * scale)) + 'px'
+                node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
 
         if 'height' in node:
             self.warn('height value for image is unsupported in confluence')
