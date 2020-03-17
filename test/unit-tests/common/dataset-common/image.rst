@@ -9,11 +9,16 @@ image
 
 .. image:: https://www.example.com/image.png
 
-.. internal image with using a series of attributes
+.. internal image using a series of attributes
 
 .. image:: ../assets/image01.png
    :width: 200px
    :alt: alt text
+
+.. internal image with scaling
+
+.. image:: ../assets/image01.png
+   :scale: 20%
 
 .. internal image shared with other pages (see figure); asset stored on master
 

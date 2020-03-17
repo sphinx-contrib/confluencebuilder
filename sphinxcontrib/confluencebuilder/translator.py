@@ -24,7 +24,10 @@ from sphinx.locale import _
 from sphinx.locale import admonitionlabels
 from sphinx.util.osutil import SEP
 from sphinx.util.osutil import canon_path
+from sphinx.util.images import get_image_size
 import io
+import os
+import math
 import posixpath
 import sys
 
@@ -1282,6 +1285,16 @@ class ConfluenceTranslator(BaseTranslator):
             alt = node['alt']
             alt = self._escape_sf(alt)
             attribs['ac:alt'] = alt
+
+        if 'scale' in node and 'width' not in node:
+            fulluri = os.path.join(self.builder.srcdir, uri)
+            size = get_image_size(fulluri)
+            if size is None:
+                ConfluenceLogger.warn('Could not obtain image size. :scale: option is ignored for '
+                '{}'.format(fulluri))
+            else:
+                scale = node['scale'] / 100.0
+                node['width'] = str(math.ceil(size[0] * scale)) + 'px'
 
         if 'height' in node:
             self.warn('height value for image is unsupported in confluence')
