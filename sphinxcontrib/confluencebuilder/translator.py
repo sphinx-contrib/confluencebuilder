@@ -67,7 +67,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
-        self._docnames = [self.builder.current_docname]
+        self._docnames = [self.docname]
         self._figure_context = []
         self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
