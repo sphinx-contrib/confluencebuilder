@@ -200,6 +200,14 @@ Another figure but with a right-aligned image:
 
    This is the caption of the figure.
 
+Another figure but scaled down:
+
+.. figure:: assets/confluence.png
+   :alt: Confluence Logo
+   :scale: 20%
+
+   This is the caption of the figure.
+
 .. _figure directive: http://docutils.sourceforge.net/docs/ref/rst/directives.html#figure
 .. _image directive: http://docutils.sourceforge.net/docs/ref/rst/directives.html#image
 .. _image-based directives: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
