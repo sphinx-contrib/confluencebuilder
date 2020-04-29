@@ -19,3 +19,15 @@ class TestConfluenceSinglePage(unittest.TestCase):
             builder='singleconfluence')
 
         _.assertExpectedWithOutput(self, 'index', expected, doc_dir)
+
+    def test_singlepage_numbered(self):
+        config = _.prepareConfiguration()
+        test_dir = os.path.dirname(os.path.realpath(__file__))
+
+        dataset = os.path.join(test_dir, 'dataset-numbered')
+        expected = os.path.join(test_dir, 'expected-numbered')
+        doc_dir, doctree_dir = _.prepareDirectories('singlepage-numbered')
+        _.buildSphinx(dataset, doc_dir, doctree_dir, config,
+            builder='singleconfluence')
+
+        _.assertExpectedWithOutput(self, 'index', expected, doc_dir)

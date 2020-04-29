@@ -70,6 +70,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
+        self._docnames = [self.docname]
         self._figure_context = []
         self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
@@ -196,9 +197,18 @@ class ConfluenceTranslator(BaseTranslator):
             self.body.append('.'.join(map(str, node['secnumber'])) +
                              self.secnumber_suffix)
         elif isinstance(node.parent, nodes.section):
-            anchorname = '#' + node.parent['ids'][0]
-            if anchorname not in self.builder.secnumbers:
-                anchorname = ''  # try first heading which has no anchor
+            if self.builder.name == 'singleconfluence':
+                docname = self._docnames[-1]
+                anchorname = "%s/#%s" % (docname, node.parent['ids'][0])
+                # try first heading which has no anchor
+                if anchorname not in self.builder.secnumbers:
+                    anchorname = "%s/" % docname
+            else:
+                anchorname = '#' + node.parent['ids'][0]
+                # try first heading which has no anchor
+                if anchorname not in self.builder.secnumbers:
+                    anchorname = ''
+
             if self.builder.secnumbers.get(anchorname):
                 numbers = self.builder.secnumbers[anchorname]
                 self.body.append('.'.join(map(str, numbers)) +
@@ -699,7 +709,7 @@ class ConfluenceTranslator(BaseTranslator):
             # tweaking if Confluence's themes change); however, the quirk works
             # for now.
             firstchild_margin = True
-            
+
             next_child = first(node.traverse(include_self=False))
             if isinstance(next_child, nodes.block_quote):
                 firstchild_margin = False
@@ -1020,7 +1030,7 @@ class ConfluenceTranslator(BaseTranslator):
     def visit_target(self, node):
         if not self.can_anchor:
             raise nodes.SkipNode
-    
+
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
 
@@ -1778,11 +1788,11 @@ class ConfluenceTranslator(BaseTranslator):
         raise nodes.SkipNode
 
     def visit_start_of_file(self, node):
-        # ignore managing state of inlined documents
-        pass
+        # track active inlined documents (singleconfluence builder) for anchors
+        self._docnames.append(node['docname'])
 
     def depart_start_of_file(self, node):
-        pass
+        self._docnames.pop()
 
     # ##########################################################################
     # #                                                                        #
