@@ -778,6 +778,23 @@ See also
 
 --------------------------------------------------------------------------------
 
+confluence_publish_onlynew
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A publish event will from this extension will typically upload new pages or
+update existing pages on future attempts. In select cases, a user may not wish
+to modify existing pages and only permit adding new content to a Confluence
+space. To achieve this, a user can enable a "only-new" flag which prevents the
+modification of existing content. This includes the restriction of updating
+existing pages/attachments as well as deleting content as well. By default, the
+only-new feature is disabled with a value of ``False``.
+
+.. code-block:: python
+
+   confluence_publish_onlynew = True
+
+--------------------------------------------------------------------------------
+
 .. _confluence_publish_subset:
 
 confluence_publish_subset
