@@ -28,6 +28,7 @@ class ConfluencePublisher():
         self.append_labels = config.confluence_append_labels
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
+        self.onlynew = config.confluence_publish_onlynew
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.server_url = config.confluence_server_url
@@ -316,6 +317,9 @@ class ConfluencePublisher():
             else:
                 self._dryrun('updating existing attachment', attachment['id'])
                 return attachment['id']
+        elif self.onlynew and attachment:
+            self._onlynew('skipping existing attachment', attachment['id'])
+            return attachment['id']
 
         # publish attachment
         try:
@@ -381,6 +385,11 @@ class ConfluencePublisher():
             expand += ',metadata.labels'
 
         _, page = self.getPage(page_name, expand=expand)
+
+        if self.onlynew and page:
+            self._onlynew('skipping existing page', page['id'])
+            return page['id']
+
         try:
             if not page:
                 newPage = {
@@ -495,6 +504,9 @@ class ConfluencePublisher():
         if self.dryrun:
             self._dryrun('removing attachment', id)
             return
+        elif self.onlynew:
+            self._onlynew('attachment removal restricted', id)
+            return
 
         try:
             self.rest_client.delete('content', id)
@@ -507,6 +519,9 @@ class ConfluencePublisher():
     def removePage(self, page_id):
         if self.dryrun:
             self._dryrun('removing page', page_id)
+            return
+        elif self.onlynew:
+            self._onlynew('page removal restricted', page_id)
             return
 
         try:
@@ -523,6 +538,9 @@ class ConfluencePublisher():
 
         if self.dryrun:
             self._dryrun('updating space home to', page_id)
+            return
+        elif self.onlynew:
+            self._onlynew('space home updates restricted')
             return
 
         page = self.rest_client.get('content/' + page_id, None)
@@ -559,6 +577,26 @@ class ConfluencePublisher():
             s += ' ({})'.format(id)
         if misc:
             s += ' ' + misc
+        ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+
+    def _onlynew(self, msg, id=None, misc=''):
+        """
+        log an only-new mode message
+
+        Accepts a message to be printed out when running in "only-new" mode. A
+        message may be accompanied by an identifier which should be translated
+        to a name (if possible).
+
+        Args:
+            msg: the message
+            id (optional): identifier (name mapping) associated with the message
+        """
+        s = '[only-new] '
+        s += msg
+        if id and id in self._name_cache:
+            s += ' ' + self._name_cache[id]
+        if id:
+            s += ' ({})'.format(id)
         ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
 
     def _populate_labels(self, page, labels):
