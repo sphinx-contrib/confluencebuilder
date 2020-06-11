@@ -51,6 +51,9 @@ class Rest:
 
     def _setup_session(self, config):
         session = requests.Session()
+        session.headers.update({
+            'User-Agent': 'Sphinx Confluence Builder',
+        })
         session.timeout = config.confluence_timeout
         session.proxies = {
             'http': config.confluence_proxy,
@@ -122,7 +125,7 @@ class Rest:
     def post(self, key, data, files=None):
         restUrl = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            headers = {}
+            headers = dict(self.session.headers)
 
             # Atlassian's documenation indicates to the security token check
             # when publishing attachments [1][2]. If adding files, set a
