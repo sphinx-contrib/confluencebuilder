@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from collections import namedtuple
-from sphinxcontrib.confluencebuilder.translator import ConfluenceTranslator
+from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 from sphinxcontrib_confluencebuilder_util import EXT_NAME
 import os
@@ -18,7 +18,7 @@ class DummyDocument(dict):
         self['source'] = source
         self.reporter = Reporter(warn)
 
-class TestConfluenceTranslator(unittest.TestCase):
+class TestConfluenceBaseTranslator(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = _.prepareConfiguration()
@@ -32,7 +32,7 @@ class TestConfluenceTranslator(unittest.TestCase):
 
         # prepare a dummy application; no need to actually build
         with _.prepareSphinx(mock_ds, doc_dir, doctree_dir, self.config) as app:
-            translator = ConfluenceTranslator(doc, app.builder)
+            translator = ConfluenceBaseTranslator(doc, app.builder)
 
         self.assertEqual(translator.docname, 'foo/bar/baz')
         self.assertEqual(translator.docparent, 'foo/bar/')
