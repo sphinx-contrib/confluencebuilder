@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import unicode_literals
-from .exceptions import ConfluenceError
-from .logger import ConfluenceLogger
-from .nodes import ConfluenceNavigationNode
-from .state import ConfluenceState
-from .std.confluence import FALLBACK_HIGHLIGHT_STYLE
-from .std.confluence import FCMMO
-from .std.confluence import INDENT
-from .std.confluence import LITERAL2LANG_MAP
-from .std.sphinx import DEFAULT_ALIGNMENT
-from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
-from .util import first
+from ..exceptions import ConfluenceError
+from ..logger import ConfluenceLogger
+from ..nodes import ConfluenceNavigationNode
+from ..state import ConfluenceState
+from ..std.confluence import FALLBACK_HIGHLIGHT_STYLE
+from ..std.confluence import FCMMO
+from ..std.confluence import INDENT
+from ..std.confluence import LITERAL2LANG_MAP
+from ..std.sphinx import DEFAULT_ALIGNMENT
+from ..std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from ..util import first
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
