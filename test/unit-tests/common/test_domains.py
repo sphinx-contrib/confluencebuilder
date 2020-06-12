@@ -4,6 +4,8 @@
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
 from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 import os
 import unittest
@@ -28,7 +30,12 @@ class TestConfluenceDomains(unittest.TestCase):
         _.assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
     def test_domains_c(self):
-        self._assertExpectedWithOutput('c')
+        if parse_version(sphinx_version) >= parse_version('3.0'):
+            self._assertExpectedWithOutput('c')
+        else:
+            # pre-v3.0 left-aligns pointer asterisk and embeds in variable
+            expected = self.expected + '-legacy'
+            self._assertExpectedWithOutput('c', expected)
 
     def test_domains_cpp(self):
         self._assertExpectedWithOutput('cpp')
