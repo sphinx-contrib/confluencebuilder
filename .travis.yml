@@ -13,33 +13,29 @@ matrix:
   - python: "3.5"
     env: TOXENV=py35-sphinx18
   - python: "3.5"
-    env: TOXENV=py35-sphinx20
-  - python: "3.5"
-    env: TOXENV=py35-sphinx21
-  - python: "3.5"
     env: TOXENV=py35-sphinx22
   - python: "3.5"
     env: TOXENV=py35-sphinx23
+  - python: "3.5"
+    env: TOXENV=py35-sphinx24
+  - python: "3.5"
+    env: TOXENV=py35-sphinx30
+  - python: "3.5"
+    env: TOXENV=py35-sphinx31
   - python: "3.6"
     env: TOXENV=py36-sphinx18
-  - python: "3.6"
-    env: TOXENV=py36-sphinx20
-  - python: "3.6"
-    env: TOXENV=py36-sphinx21
   - python: "3.6"
     env: TOXENV=py36-sphinx22
   - python: "3.6"
     env: TOXENV=py36-sphinx23
+  - python: "3.6"
+    env: TOXENV=py36-sphinx24
+  - python: "3.6"
+    env: TOXENV=py36-sphinx30
+  - python: "3.6"
+    env: TOXENV=py36-sphinx31
   - python: "3.7"
     env: TOXENV=py37-sphinx18
-    dist: xenial
-    sudo: true
-  - python: "3.7"
-    env: TOXENV=py37-sphinx20
-    dist: xenial
-    sudo: true
-  - python: "3.7"
-    env: TOXENV=py37-sphinx21
     dist: xenial
     sudo: true
   - python: "3.7"
@@ -48,20 +44,32 @@ matrix:
   - python: "3.7"
     env: TOXENV=py37-sphinx23
     dist: xenial
+  - python: "3.7"
+    env: TOXENV=py37-sphinx24
+    dist: xenial
+  - python: "3.7"
+    env: TOXENV=py37-sphinx30
+    dist: xenial
+  - python: "3.7"
+    env: TOXENV=py37-sphinx31
+    dist: xenial
   - python: "3.8"
     env: TOXENV=py38-sphinx18
-    dist: bionic
-  - python: "3.8"
-    env: TOXENV=py38-sphinx20
-    dist: bionic
-  - python: "3.8"
-    env: TOXENV=py38-sphinx21
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx22
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx23
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx24
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx30
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx31
     dist: bionic
   - os: osx
     env: TOXENV=py27-sphinx18
@@ -77,7 +85,7 @@ matrix:
       - choco install python2
       - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
   - os: windows
-    env: TOXENV=py38-sphinx23
+    env: TOXENV=py38-sphinx31
     language: sh
     before_install:
       - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
