@@ -53,13 +53,15 @@ class ConfluenceAssetManager:
     Args:
         master: the master document
         env: the build environment
+        outdir: configured output directory (where assets may be stored)
     """
-    def __init__(self, master, env):
+    def __init__(self, master, env, outdir):
         self.assets = []
         self.env = env
         self.hash2asset = {}
         self.keys = set()
         self.master = master
+        self.outdir = outdir
         self.path2asset = {}
 
     def build(self):
@@ -260,6 +262,16 @@ class ConfluenceAssetManager:
         abspath = None
         if path:
             path = os.path.normpath(path)
-            abspath = os.path.join(self.env.srcdir, path)
+            if os.path.isabs(path):
+                abspath = path
+            else:
+                abspath = os.path.join(self.env.srcdir, path)
+
+                # a third party extension may dump a generated asset in the
+                # output directory; if the absolute mapping to the source
+                # directory does not find the asset, attempt to bind the path
+                # based on the output directory
+                if not os.path.isfile(abspath):
+                    abspath = os.path.join(self.outdir, path)
 
         return abspath

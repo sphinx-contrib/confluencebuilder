@@ -104,7 +104,8 @@ class ConfluenceBuilder(Builder):
                 if not self.config.confluence_server_pass:
                     raise ConfluenceConfigurationError('no password provided')
 
-        self.assets = ConfluenceAssetManager(self.config.master_doc, self.env)
+        self.assets = ConfluenceAssetManager(self.config.master_doc, self.env,
+            self.outdir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
