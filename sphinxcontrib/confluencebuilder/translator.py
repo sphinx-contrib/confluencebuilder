@@ -99,6 +99,7 @@ class ConfluenceTranslator(BaseTranslator):
         self.can_code = not 'code' in restricted_macros
         self.can_viewfile = not 'viewfile' in restricted_macros
         self.can_jira = not 'jira' in restricted_macros
+        self.can_metadata = not 'confluence_metadata' in restricted_macros
 
         if (config.confluence_page_hierarchy
                 and config.confluence_adv_hierarchy_child_macro
@@ -1683,6 +1684,15 @@ class ConfluenceTranslator(BaseTranslator):
 
     visit_jira = _visit_jira_node
     visit_jira_issue = _visit_jira_node
+
+    def _visit_confluence_metadata_node(self, node):
+        if not self.can_metadata:
+            raise nodes.SkipNode
+        self.builder.config.confluence_metadata = node.params
+
+        raise nodes.SkipNode
+
+    visit_confluence_metadata = _visit_confluence_metadata_node
 
     # -----------------------------------------------------
     # docutils handling "to be completed" marked directives

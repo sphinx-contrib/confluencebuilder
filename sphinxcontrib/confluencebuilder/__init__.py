@@ -7,9 +7,11 @@
 from .builder import ConfluenceBuilder
 from .directives import JiraDirective
 from .directives import JiraIssueDirective
+from .directives import ConfluenceMetadataDirective
 from .logger import ConfluenceLogger
 from .nodes import jira
 from .nodes import jira_issue
+from .nodes import confluence_metadata
 from .singlebuilder import SingleConfluenceBuilder
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
@@ -200,6 +202,13 @@ def setup(app):
     """Wires up the directives themselves"""
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
+
+    """Confluence directives"""
+    """Adds the custom nodes needed for Confluence directives"""
+    if not docutils.is_node_registered(confluence_metadata):
+        app.add_node(confluence_metadata)
+    """Wires up the directives themselves"""
+    app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
 
     if 'sphinx.ext.autosummary' in app.config.extensions:
         add_autosummary_nodes(app)

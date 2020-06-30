@@ -62,3 +62,22 @@ class jira_issue(nodes.Element, nodes.Structural):
     def __init__(self, rawsource='', *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
         self.params = {}
+
+class confluence_metadata(nodes.Element, nodes.Structural):
+    """
+    confluece metadata node
+
+    Defines a "CONFLUENCE" node to represent a set of Confluence metadata for the
+    content.
+
+    Args:
+        rawsource: raw text from which this element was constructed
+        *children: list of child nodes
+        **attributes: dictionary of attribute to apply to the element
+
+    Attributes:
+        params: dictionary of parameters to pass to a confluence label
+    """
+    def __init__(self, rawsource='', *children, **attributes):
+        nodes.Element.__init__(self, rawsource, *children, **attributes)
+        self.params = {}

@@ -41,7 +41,7 @@ class ConfluencePublisher():
 
     def connect(self):
         self.rest_client = Rest(self.config);
-        
+
         rsp = self.rest_client.get('space', {
             'spaceKey': self.space_name,
             'limit': 1
@@ -351,7 +351,7 @@ class ConfluencePublisher():
             ConfluenceLogger.trace('data', data)
 
         if self.dryrun:
-            _, page = self.getPage(page_name, 'version,ancestors')
+            _, page = self.getPage(page_name, 'version,ancestors,metadata.labels')
 
             if not page:
                 self._dryrun('adding new page ' + page_name)
@@ -370,9 +370,11 @@ class ConfluencePublisher():
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
-        _, page = self.getPage(page_name)
+        _, page = self.getPage(page_name, expand='version,metadata.labels')
         try:
             if not page:
+                labels = [v for v in self.config.confluence_metadata['labels']]
+                metadata_labels = [{'name': v} for v in set(labels)]
                 newPage = {
                     'type': 'page',
                     'title': page_name,
@@ -384,6 +386,9 @@ class ConfluencePublisher():
                     },
                     'space': {
                         'key': self.space_name
+                    },
+                    'metadata': {
+                        'labels': metadata_labels
                     }
                 }
 
@@ -406,6 +411,11 @@ class ConfluencePublisher():
                 uploaded_page_id = rsp['id']
             else:
                 last_version = int(page['version']['number'])
+                labels = [l.get('name')
+                    for l in page.get('metadata', {}).get('labels', {}).get('results', {})
+                ]
+                labels.extend([v for v in self.config.confluence_metadata['labels']])
+                metadata_labels = [{'name': v} for v in set(labels)]
                 updatePage = {
                     'id': page['id'],
                     'type': 'page',
@@ -421,6 +431,9 @@ class ConfluencePublisher():
                     },
                     'version': {
                         'number': last_version + 1
+                    },
+                    'metadata': {
+                        'labels': metadata_labels
                     }
                 }
 
