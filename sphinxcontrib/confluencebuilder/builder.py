@@ -391,7 +391,12 @@ class ConfluenceBuilder(Builder):
         if not parent_id:
             parent_id = self.parent_id
 
-        uploaded_id = self.publisher.storePage(title, output, parent_id)
+        data = {
+            'content': output,
+            'labels': [v for v in self.config.confluence_metadata['labels']],
+        }
+
+        uploaded_id = self.publisher.storePage(title, data, parent_id)
         ConfluenceState.registerUploadId(docname, uploaded_id)
 
         if self.config.master_doc == docname:

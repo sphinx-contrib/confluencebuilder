@@ -348,7 +348,7 @@ class ConfluencePublisher():
         uploaded_page_id = None
 
         if self.config.confluence_adv_trace_data:
-            ConfluenceLogger.trace('data', data)
+            ConfluenceLogger.trace('data', data['content'])
 
         if self.dryrun:
             _, page = self.getPage(page_name, 'version,ancestors')
@@ -384,7 +384,7 @@ class ConfluencePublisher():
                     'body': {
                         'storage': {
                             'representation': 'storage',
-                            'value': data
+                            'value': data['content'],
                         }
                     },
                     'space': {
@@ -393,11 +393,7 @@ class ConfluencePublisher():
                 }
 
                 if can_labels:
-                    labels = [v for v in self.config.confluence_metadata['labels']]
-                    metadata_labels = [{'name': v} for v in set(labels)]
-                    newPage['metadata'] = {
-                        'labels': metadata_labels
-                    }
+                    self._populate_labels(newPage, data['labels'])
 
                 if parent_id:
                     newPage['ancestors'] = [{'id': parent_id}]
@@ -425,7 +421,7 @@ class ConfluencePublisher():
                     'body': {
                         'storage': {
                             'representation': 'storage',
-                            'value': data
+                            'value': data['content'],
                         }
                     },
                     'space': {
@@ -440,11 +436,8 @@ class ConfluencePublisher():
                     labels = [l.get('name')
                         for l in page.get('metadata', {}).get('labels', {}).get('results', {})
                     ]
-                    labels.extend([v for v in self.config.confluence_metadata['labels']])
-                    metadata_labels = [{'name': v} for v in set(labels)]
-                    updatePage['metadata'] = {
-                        'labels': metadata_labels
-                    }
+                    labels.extend(data['labels'])
+                    self._populate_labels(updatePage, labels)
 
                 if not self.notify:
                     updatePage['version']['minorEdit'] = True
@@ -559,3 +552,17 @@ class ConfluencePublisher():
         if misc:
             s += ' ' + misc
         ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+
+    def _populate_labels(self, page, labels):
+        """
+        populate a page with label metadata information
+
+        Accepts a page definition (new or existing page) and populates the
+        metadata portion with the provided label data.
+
+        Args:
+            page: the page
+            labels: the labels to set
+        """
+        metadata = page.setdefault('metadata', {})
+        metadata['labels'] = [{'name': v} for v in set(labels)]
