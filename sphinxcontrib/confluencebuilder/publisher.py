@@ -351,7 +351,7 @@ class ConfluencePublisher():
             ConfluenceLogger.trace('data', data)
 
         if self.dryrun:
-            _, page = self.getPage(page_name, 'version,ancestors,metadata.labels')
+            _, page = self.getPage(page_name, 'version,ancestors')
 
             if not page:
                 self._dryrun('adding new page ' + page_name)
