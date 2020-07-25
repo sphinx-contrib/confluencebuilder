@@ -592,6 +592,21 @@ See also |confluence_disable_notifications|_.
 advanced publishing configuration
 ---------------------------------
 
+confluence_append_labels
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Allows a user to decide how to manage labels for an update page. When a page
+update contains new labels to set, they can either be stacked on existing labels
+or replaced. In the event that a publisher wishes to replace any existing labels
+that are set on published pages, this option can be set to ``False``. By
+default, labels are always appended with a value of ``True``.
+
+.. code-block:: python
+
+   confluence_append_labels = True
+
+--------------------------------------------------------------------------------
+
 confluence_asset_override
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
