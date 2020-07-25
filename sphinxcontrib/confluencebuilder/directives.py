@@ -11,6 +11,23 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from uuid import UUID
 
+class ConfluenceMetadataDirective(Directive):
+    has_content = False
+    option_spec = {
+        'labels': directives.unchanged,
+    }
+    final_argument_whitespace = True
+
+    def run(self):
+        node = confluence_metadata()
+        params = node.params
+        for k, v in self.options.items():
+            params[kebab_case_to_camel_case(k)] = v
+
+        params['labels'] = self.options['labels'].split(' ')
+
+        return [node]
+
 class JiraBaseDirective(Directive):
     has_content = False
     required_arguments = 1
@@ -101,30 +118,6 @@ class JiraIssueDirective(JiraBaseDirective):
     def _build_jira_node(self):
         node = jira_issue()
         self.options['key'] = self.arguments[0]
-        return node
-
-class ConfluenceBaseDirective(Directive):
-    has_content = False
-    option_spec = {'labels': directives.unchanged }
-
-    def run(self):
-        node = self._build_confluence_node()
-        params = node.params
-        for k, v in self.options.items():
-            params[kebab_case_to_camel_case(k)] = v
-
-        params['labels'] = self.options['labels'].split(' ')
-
-        return [node]
-
-    def _build_confluence_node(self):
-        raise NotImplementedError()
-
-class ConfluenceMetadataDirective(ConfluenceBaseDirective):
-    final_argument_whitespace = True
-
-    def _build_confluence_node(self):
-        node = confluence_metadata()
         return node
 
 def kebab_case_to_camel_case(s):
