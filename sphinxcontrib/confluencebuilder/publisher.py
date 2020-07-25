@@ -370,11 +370,14 @@ class ConfluencePublisher():
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
-        _, page = self.getPage(page_name, expand='version,metadata.labels')
+        can_labels = not 'labels' in self.config.confluence_adv_restricted
+        expand = 'version'
+        if can_labels:
+            expand += ',metadata.labels'
+
+        _, page = self.getPage(page_name, expand=expand)
         try:
             if not page:
-                labels = [v for v in self.config.confluence_metadata['labels']]
-                metadata_labels = [{'name': v} for v in set(labels)]
                 newPage = {
                     'type': 'page',
                     'title': page_name,
@@ -387,10 +390,14 @@ class ConfluencePublisher():
                     'space': {
                         'key': self.space_name
                     },
-                    'metadata': {
+                }
+
+                if can_labels:
+                    labels = [v for v in self.config.confluence_metadata['labels']]
+                    metadata_labels = [{'name': v} for v in set(labels)]
+                    newPage['metadata'] = {
                         'labels': metadata_labels
                     }
-                }
 
                 if parent_id:
                     newPage['ancestors'] = [{'id': parent_id}]
@@ -411,11 +418,6 @@ class ConfluencePublisher():
                 uploaded_page_id = rsp['id']
             else:
                 last_version = int(page['version']['number'])
-                labels = [l.get('name')
-                    for l in page.get('metadata', {}).get('labels', {}).get('results', {})
-                ]
-                labels.extend([v for v in self.config.confluence_metadata['labels']])
-                metadata_labels = [{'name': v} for v in set(labels)]
                 updatePage = {
                     'id': page['id'],
                     'type': 'page',
@@ -432,10 +434,17 @@ class ConfluencePublisher():
                     'version': {
                         'number': last_version + 1
                     },
-                    'metadata': {
+                }
+
+                if can_labels:
+                    labels = [l.get('name')
+                        for l in page.get('metadata', {}).get('labels', {}).get('results', {})
+                    ]
+                    labels.extend([v for v in self.config.confluence_metadata['labels']])
+                    metadata_labels = [{'name': v} for v in set(labels)]
+                    updatePage['metadata'] = {
                         'labels': metadata_labels
                     }
-                }
 
                 if not self.notify:
                     updatePage['version']['minorEdit'] = True

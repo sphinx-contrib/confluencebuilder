@@ -182,8 +182,8 @@ def setup(app):
     app.add_config_value('confluence_adv_ignore_nodes', [], False)
     """Unknown node handler dictionary for advanced integrations."""
     app.add_config_value('confluence_adv_node_handler', None, '')
-    """List of extension-provided macros restricted for use."""
-    app.add_config_value('confluence_adv_restricted_macros', [], False)
+    """List of optional features/macros/etc. restricted for use."""
+    app.add_config_value('confluence_adv_restricted', [], False)
     """Enablement of tracing processed data."""
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""

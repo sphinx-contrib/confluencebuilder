@@ -91,15 +91,14 @@ class ConfluenceTranslator(BaseTranslator):
             self._highlight = DEFAULT_HIGHLIGHT_STYLE
         self._linenothreshold = sys.maxsize
 
-        # helpers for dealing with disabled/unsupported macros
-        restricted_macros = config.confluence_adv_restricted_macros
-        self.can_admonition = not 'info' in restricted_macros
-        self.can_anchor = not 'anchor' in restricted_macros
-        self.can_children = not 'children' in restricted_macros
-        self.can_code = not 'code' in restricted_macros
-        self.can_viewfile = not 'viewfile' in restricted_macros
-        self.can_jira = not 'jira' in restricted_macros
-        self.can_metadata = not 'confluence_metadata' in restricted_macros
+        # helpers for dealing with disabled/unsupported features
+        restricted = config.confluence_adv_restricted
+        self.can_admonition = not 'info' in restricted
+        self.can_anchor = not 'anchor' in restricted
+        self.can_children = not 'children' in restricted
+        self.can_code = not 'code' in restricted
+        self.can_jira = not 'jira' in restricted
+        self.can_viewfile = not 'viewfile' in restricted
 
         if (config.confluence_page_hierarchy
                 and config.confluence_adv_hierarchy_child_macro
@@ -1686,8 +1685,6 @@ class ConfluenceTranslator(BaseTranslator):
     visit_jira_issue = _visit_jira_node
 
     def _visit_confluence_metadata_node(self, node):
-        if not self.can_metadata:
-            raise nodes.SkipNode
         self.builder.config.confluence_metadata = node.params
 
         raise nodes.SkipNode
