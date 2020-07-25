@@ -25,6 +25,7 @@ class ConfluencePublisher():
 
     def init(self, config):
         self.config = config
+        self.append_labels = config.confluence_append_labels
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.parent_id = config.confluence_parent_page_id_check
@@ -38,6 +39,10 @@ class ConfluencePublisher():
         self.ca_cert = config.confluence_ca_cert
         self.client_cert = config.confluence_client_cert
         self.client_cert_pass = config.confluence_client_cert_pass
+
+        # append labels by default
+        if self.append_labels is None:
+            self.append_labels = True
 
     def connect(self):
         self.rest_client = Rest(self.config);
@@ -372,7 +377,7 @@ class ConfluencePublisher():
 
         can_labels = not 'labels' in self.config.confluence_adv_restricted
         expand = 'version'
-        if can_labels:
+        if can_labels and self.append_labels:
             expand += ',metadata.labels'
 
         _, page = self.getPage(page_name, expand=expand)
@@ -433,10 +438,13 @@ class ConfluencePublisher():
                 }
 
                 if can_labels:
-                    labels = [l.get('name')
-                        for l in page.get('metadata', {}).get('labels', {}).get('results', {})
-                    ]
-                    labels.extend(data['labels'])
+                    labels = list(data['labels'])
+                    if self.append_labels:
+                        labels.extend([l.get('name')
+                            for l in page.get('metadata', {}).get(
+                                'labels', {}).get('results', {})
+                        ])
+
                     self._populate_labels(updatePage, labels)
 
                 if not self.notify:

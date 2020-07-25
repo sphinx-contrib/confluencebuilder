@@ -136,6 +136,8 @@ def setup(app):
     app.add_config_value('confluence_watch', None, False)
 
     """(configuration - advanced publishing)"""
+    """Whether or not labels will be appended instead of overwriting them."""
+    app.add_config_value('confluence_append_labels', None, False)
     """Tri-state asset handling (auto, force push or disable)."""
     app.add_config_value('confluence_asset_override', None, False)
     """File/path to Certificate Authority"""
