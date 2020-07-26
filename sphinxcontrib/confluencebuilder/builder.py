@@ -12,6 +12,7 @@ from .config import ConfluenceConfig
 from .exceptions import ConfluenceConfigurationError
 from .logger import ConfluenceLogger
 from .nodes import ConfluenceNavigationNode
+from .nodes import confluence_metadata
 from .publisher import ConfluencePublisher
 from .state import ConfluenceState
 from .util import ConfluenceUtil
@@ -62,6 +63,7 @@ class ConfluenceBuilder(Builder):
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
+        self.metadata = {}
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
@@ -261,6 +263,9 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
+            # extract metadata information
+            self._extract_metadata(docname, doctree)
+
             # register targets for references
             self._register_doctree_targets(docname, doctree)
 
@@ -393,8 +398,12 @@ class ConfluenceBuilder(Builder):
 
         data = {
             'content': output,
-            'labels': [v for v in self.config.confluence_metadata['labels']],
+            'labels': [],
         }
+
+        metadata = self.metadata[docname]
+        if 'labels' in metadata:
+            data['labels'].extend([v for v in metadata['labels']])
 
         uploaded_id = self.publisher.storePage(title, data, parent_id)
         ConfluenceState.registerUploadId(docname, uploaded_id)
@@ -593,6 +602,25 @@ class ConfluenceBuilder(Builder):
             navnode.append(reference)
 
         return navnode
+
+    def _extract_metadata(self, docname, doctree):
+        """
+        extract metadata from a document
+
+        Documents may define metadata information which can be used during a
+        publication event. When processing a doctree, strip out the metadata
+        information and save it for when a publish event occurs.
+
+        Args:
+            docname: the document
+            doctree: the doctree to extract metadata from
+        """
+        metadata = self.metadata.setdefault(docname, {})
+
+        for node in doctree.traverse(confluence_metadata):
+            labels = metadata.setdefault('labels', [])
+            labels.extend(node['params']['labels'])
+            node.parent.remove(node)
 
     def _find_title_element(self, doctree):
         """

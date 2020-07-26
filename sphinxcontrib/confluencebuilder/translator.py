@@ -1684,13 +1684,6 @@ class ConfluenceTranslator(BaseTranslator):
     visit_jira = _visit_jira_node
     visit_jira_issue = _visit_jira_node
 
-    def _visit_confluence_metadata_node(self, node):
-        self.builder.config.confluence_metadata = node.params
-
-        raise nodes.SkipNode
-
-    visit_confluence_metadata = _visit_confluence_metadata_node
-
     # -----------------------------------------------------
     # docutils handling "to be completed" marked directives
     # -----------------------------------------------------

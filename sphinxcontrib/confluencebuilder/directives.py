@@ -11,20 +11,42 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from uuid import UUID
 
+def string_list(argument):
+    """
+    string-list validator
+
+    A directive validation which converts a raw string into a list of strings.
+
+    Args:
+        argument: the raw string argument
+
+    Returns:
+        the list
+    """
+    data = []
+
+    if argument:
+        for line in argument.splitlines():
+            for label in line.strip().split(' '):
+                label = label.strip()
+                if label:
+                    data.append(label)
+
+    return data
+
 class ConfluenceMetadataDirective(Directive):
     has_content = False
     option_spec = {
-        'labels': directives.unchanged,
+        'labels': string_list,
     }
     final_argument_whitespace = True
 
     def run(self):
         node = confluence_metadata()
-        params = node.params
+        params = node.setdefault('params', {})
+
         for k, v in self.options.items():
             params[kebab_case_to_camel_case(k)] = v
-
-        params['labels'] = self.options['labels'].split(' ')
 
         return [node]
 
