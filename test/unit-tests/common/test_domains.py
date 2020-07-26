@@ -14,7 +14,7 @@ class TestConfluenceDomains(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         config = _.prepareConfiguration()
-        config['confluence_adv_restricted_macros'] = ['anchor']
+        config['confluence_adv_restricted'] = ['anchor']
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-domains')
         self.expected = os.path.join(test_dir, 'expected-domains')
