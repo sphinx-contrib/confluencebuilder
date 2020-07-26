@@ -114,6 +114,8 @@ def setup(app):
     app.add_config_value('confluence_disable_autogen_title', None, False)
     """Explicitly prevent page notifications on update."""
     app.add_config_value('confluence_disable_notifications', None, False)
+    """Define a series of labels to apply to all published pages."""
+    app.add_config_value('confluence_global_labels', None, False)
     """Enablement of configuring master as space's homepage."""
     app.add_config_value('confluence_master_homepage', None, False)
     """Root/parent page's name to publish documents into."""

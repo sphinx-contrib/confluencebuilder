@@ -401,6 +401,9 @@ class ConfluenceBuilder(Builder):
             'labels': [],
         }
 
+        if self.config.confluence_global_labels:
+            data['labels'].extend(self.config.confluence_global_labels)
+
         metadata = self.metadata[docname]
         if 'labels' in metadata:
             data['labels'].extend([v for v in metadata['labels']])
