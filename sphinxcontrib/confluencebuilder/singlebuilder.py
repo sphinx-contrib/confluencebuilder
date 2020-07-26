@@ -118,11 +118,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             # replace math blocks with images
             self._replace_math_blocks(doctree)
 
+        with progress_message(__('assembling single confluence document')):
+            doctree = self.assemble_doctree()
+            
             # for every doctree, pick the best image candidate
             self.post_process_images(doctree)
 
-        with progress_message(__('assembling single confluence document')):
-            doctree = self.assemble_doctree()
             self.env.toc_secnumbers = self.assemble_toc_secnumbers()
             self.env.toc_fignumbers = self.assemble_toc_fignumbers()
 
