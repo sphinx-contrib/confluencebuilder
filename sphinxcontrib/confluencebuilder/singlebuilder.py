@@ -110,28 +110,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 'singleconfluence required title on master_doc')
             return
 
-        for docname in status_iterator(docnames,
-                __('preparing documents') + '... ',
-                length=len(docnames), verbosity=self.app.verbosity):
-            doctree = self.env.get_doctree(docname)
-
-            # replace math blocks with images
-            self._replace_math_blocks(doctree)
-
         with progress_message(__('assembling single confluence document')):
             doctree = self.assemble_doctree()
-            
-            # for every doctree, pick the best image candidate
-            self.post_process_images(doctree)
+            self._prepare_doctree_writing(self.config.master_doc, doctree)
 
             self.env.toc_secnumbers = self.assemble_toc_secnumbers()
             self.env.toc_fignumbers = self.assemble_toc_fignumbers()
-
-            # register targets for references
-            self._register_doctree_targets(self.config.master_doc, doctree)
-
-            # extract metadata information
-            self._extract_metadata(self.config.master_doc, doctree)
 
             self.assets.processDocument(doctree, self.config.master_doc)
 

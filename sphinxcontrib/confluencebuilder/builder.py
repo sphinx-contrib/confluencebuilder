@@ -263,17 +263,8 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
-            # extract metadata information
-            self._extract_metadata(docname, doctree)
-
-            # register targets for references
-            self._register_doctree_targets(docname, doctree)
-
-            # replace math blocks with images
-            self._replace_math_blocks(doctree)
-
             # for every doctree, pick the best image candidate
-            self.post_process_images(doctree)
+            self._prepare_doctree_writing(docname, doctree)
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
@@ -282,6 +273,19 @@ class ConfluenceBuilder(Builder):
         # images in Sphinx, which is then provided to a translator). Embedded
         # images are detected during an 'doctree-resolved' hook (see __init__).
         self.assets.process(ordered_docnames)
+
+    def _prepare_doctree_writing(self, docname, doctree):
+        # extract metadata information
+        self._extract_metadata(docname, doctree)
+
+        # register targets for references
+        self._register_doctree_targets(docname, doctree)
+
+        # replace math blocks with images
+        self._replace_math_blocks(doctree)
+
+        # for every doctree, pick the best image candidate
+        self.post_process_images(doctree)
 
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
         omit = False
