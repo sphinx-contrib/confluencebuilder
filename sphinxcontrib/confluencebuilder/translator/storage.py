@@ -1,95 +1,57 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import unicode_literals
-from .exceptions import ConfluenceError
-from .logger import ConfluenceLogger
-from .nodes import ConfluenceNavigationNode
-from .state import ConfluenceState
-from .std.confluence import FALLBACK_HIGHLIGHT_STYLE
-from .std.confluence import FCMMO
-from .std.confluence import INDENT
-from .std.confluence import LITERAL2LANG_MAP
-from .std.sphinx import DEFAULT_ALIGNMENT
-from .std.sphinx import DEFAULT_HIGHLIGHT_STYLE
-from .util import first
 from docutils import nodes
-from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
 from sphinx.locale import _
 from sphinx.locale import admonitionlabels
-from sphinx.util.osutil import SEP
-from sphinx.util.osutil import canon_path
 from sphinx.util.images import get_image_size
-import io
-import os
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
+from sphinxcontrib.confluencebuilder.std.confluence import INDENT
+from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
+from sphinxcontrib.confluencebuilder.util import first
 import math
 import posixpath
 import sys
 
-class ConfluenceTranslator(BaseTranslator):
+class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     _tracked_unknown_code_lang = []
 
     """
-    confluence extension translator
+    confluence storage format extension translator
 
-    Translator instance for the Confluence extension for Sphinx. This
-    implementation is responsible for processing individual documents based on
-    parsed node entries provided by docutils (used by Sphinx).
+    A storage format-specific translator instance for the Confluence extension
+    for Sphinx.
 
     Args:
         document: the document being translated
         builder: the sphinx builder instance
     """
     def __init__(self, document, builder):
-        BaseTranslator.__init__(self, document)
-        self.builder = builder
+        ConfluenceBaseTranslator.__init__(self, document, builder)
         config = builder.config
 
-        # acquire the active document name from the builder
-        assert 'source' in document
-        self.docname = canon_path(self.builder.env.path2doc(document['source']))
-
-        # determine the active document's parent path to assist it title mapping
-        # for relative document uris
-        # (see '_visit_reference_intern_uri')
-        if SEP in self.docname:
-            self.docparent = self.docname[0:self.docname.rfind(SEP) + 1]
-        else:
-            self.docparent = ''
-
-        self.assets = builder.assets
-        self.body = []
-        self.context = []
-        self.nl = '\n'
         self.add_secnumbers = config.confluence_add_secnumbers
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
         self._building_footnotes = False
-        self._docnames = [self.docname]
         self._figure_context = []
-        self._literal = False
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._quote_level = 0
         self._reference_context = []
-        self._section_level = 1
         self._thead_context = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
-
-        if config.confluence_default_alignment:
-            self._default_alignment = config.confluence_default_alignment
-        else:
-            self._default_alignment = DEFAULT_ALIGNMENT
-
-        if config.highlight_language:
-            self._highlight = config.highlight_language
-        else:
-            self._highlight = DEFAULT_HIGHLIGHT_STYLE
-        self._linenothreshold = sys.maxsize
 
         # helpers for dealing with disabled/unsupported features
         restricted = config.confluence_adv_restricted
@@ -107,88 +69,12 @@ class ConfluenceTranslator(BaseTranslator):
         else:
             self.apply_hierarchy_children_macro = False
 
-    # ##########################################################################
-    # #                                                                        #
-    # # base translator overrides                                              #
-    # #                                                                        #
-    # ##########################################################################
-
-    def visit_document(self, node):
-        pass
-
-    def depart_document(self, node):
-        self.document = '';
-
-        # prepend header (if any)
-        if self.builder.config.confluence_header_file is not None:
-            headerFile = path.join(self.builder.env.srcdir,
-                self.builder.config.confluence_header_file)
-            try:
-                with io.open(headerFile, encoding='utf-8') as file:
-                    self.document += file.read() + self.nl
-            except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(headerFile, err))
-
-        self.document += ''.join(self.body)
-
-        # append footer (if any)
-        if self.builder.config.confluence_footer_file is not None:
-            footerFile = path.join(self.builder.env.srcdir,
-                self.builder.config.confluence_footer_file)
-            try:
-                with io.open(footerFile, encoding='utf-8') as file:
-                    self.document += file.read() + self.nl
-            except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(footerFile, err))
-
-    def visit_Text(self, node):
-        text = node.astext()
-        if not self._literal:
-            text = text.replace(self.nl, ' ')
-        text = self._escape_sf(text)
-        self.body.append(text)
-        raise nodes.SkipNode
-
-    def unknown_visit(self, node):
-        node_name = node.__class__.__name__
-        ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
-        if node_name in ignore_nodes:
-            ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
-            raise nodes.SkipNode
-
-        # allow users to override unknown nodes
-        #
-        # A node handler allows an advanced user to provide implementation to
-        # process a node not supported by this extension. This is to assist in
-        # providing a quick alternative to supporting another third party
-        # extension in this translator (without having to take the time in
-        # building a third extension).
-        handler = self.builder.config.confluence_adv_node_handler
-        if handler and isinstance(handler, dict) and node_name in handler:
-            handler[node_name](self, node)
-            raise nodes.SkipNode
-
-        raise NotImplementedError('unknown node: ' + node_name)
+    def _escape_text(self, node):
+        return self._escape_sf(node)
 
     # ---------
     # structure
     # ---------
-
-    def visit_section(self, node):
-        level = self._section_level
-
-        if not self.builder.config.confluence_adv_writer_no_section_cap:
-            MAX_CONFLUENCE_SECTIONS = 6
-            if self._section_level > MAX_CONFLUENCE_SECTIONS:
-                level = MAX_CONFLUENCE_SECTIONS
-
-        self._title_level = level
-        self._section_level += 1
-
-    def depart_section(self, node):
-        self._section_level -= 1
 
     def add_secnumber(self, node):
         # type: (nodes.Element) -> None
@@ -241,9 +127,6 @@ class ConfluenceTranslator(BaseTranslator):
         self.body.append(self._start_tag(
             node, 'hr', suffix=self.nl, empty=True))
         raise nodes.SkipNode
-
-    visit_topic = visit_section
-    depart_topic = depart_section
 
     # ----------------------
     # body elements -- lists
@@ -1297,7 +1180,7 @@ class ConfluenceTranslator(BaseTranslator):
             attribs['ac:alt'] = alt
 
         if 'scale' in node and 'width' not in node:
-            fulluri = os.path.join(self.builder.srcdir, uri)
+            fulluri = path.join(self.builder.srcdir, uri)
             size = get_image_size(fulluri)
             if size is None:
                 ConfluenceLogger.warn('Could not obtain image size. :scale: option is ignored for '
@@ -1411,21 +1294,6 @@ class ConfluenceTranslator(BaseTranslator):
 
         raise nodes.SkipNode
 
-    # ------------------
-    # sphinx -- glossary
-    # ------------------
-
-    def visit_glossary(self, node):
-        # ignore glossary wrapper; glossary is built with definition_list
-        pass
-
-    def depart_glossary(self, node):
-        pass
-
-    def visit_index(self, node):
-        # glossary index information is not needed; skipped
-        raise nodes.SkipNode
-
     # -----------------
     # sphinx -- manpage
     # -----------------
@@ -1440,26 +1308,6 @@ class ConfluenceTranslator(BaseTranslator):
         if self._manpage_url:
             self.depart_reference(node)
         self.depart_emphasis(node)
-
-    # --------------
-    # sphinx -- math
-    # --------------
-
-    def visit_displaymath(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
-    def visit_eqref(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
-    def visit_math(self, node):
-        # handled in "builder" at this time
-        raise nodes.SkipNode
-
-    def visit_math_block(self, node):
-        # handled in "builder" at this time
-        raise nodes.SkipNode
 
     # -------------------------
     # sphinx -- production list
@@ -1508,10 +1356,6 @@ class ConfluenceTranslator(BaseTranslator):
 
     def depart_compound(self, node):
         pass
-
-    def visit_toctree(self, node):
-        # skip hidden toctree entries
-        raise nodes.SkipNode
 
     # -----------------
     # sphinx -- domains
@@ -1684,40 +1528,6 @@ class ConfluenceTranslator(BaseTranslator):
     visit_jira = _visit_jira_node
     visit_jira_issue = _visit_jira_node
 
-    # -----------------------------------------------------
-    # docutils handling "to be completed" marked directives
-    # -----------------------------------------------------
-
-    def visit_citation_reference(self, node):
-        raise nodes.SkipNode
-
-    def visit_compact_paragraph(self, node):
-        pass
-
-    def depart_compact_paragraph(self, node):
-        pass
-
-    def visit_container(self, node):
-        pass
-
-    def depart_container(self, node):
-        pass
-
-    def visit_generated(self, node):
-        pass
-
-    def depart_generated(self, node):
-        pass
-
-    def visit_pending_xref(self, node):
-        raise nodes.SkipNode
-
-    def visit_problematic(self, node):
-        raise nodes.SkipNode
-
-    def visit_system_message(self, node):
-        raise nodes.SkipNode
-
     # -------------
     # miscellaneous
     # -------------
@@ -1735,9 +1545,6 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_abbreviation(self, node):
         self.body.append(self.context.pop()) # abbr
 
-    def visit_acks(self, node):
-        raise nodes.SkipNode
-
     def visit_acronym(self, node):
         # Note: docutils indicates this directive is "to be completed"
 
@@ -1747,52 +1554,12 @@ class ConfluenceTranslator(BaseTranslator):
     def depart_acronym(self, node):
         self.body.append(self.context.pop()) # acronym
 
-    def visit_centered(self, node):
-        # centered is deprecated; ignore
-        pass
-
-    def depart_centered(self, node):
-        pass
-
-    def visit_comment(self, node):
-        raise nodes.SkipNode
-
-    def visit_hlist(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
-    def visit_line(self, node):
-        # ignoring; no need to handle specific line entries
-        pass
-
-    def depart_line(self, node):
-        pass
-
     def visit_line_block(self, node):
         self.body.append(self._start_tag(node, 'p'))
         self.context.append(self._end_tag(node))
 
     def depart_line_block(self, node):
         self.body.append(self.context.pop()) # p
-
-    def visit_raw(self, node):
-        if 'confluence' in node.get('format', '').split():
-            self.body.append(self.nl.join(node.astext().splitlines()))
-        raise nodes.SkipNode
-
-    def visit_sidebar(self, node):
-        # unsupported
-        raise nodes.SkipNode
-
-    def visit_substitution_definition(self, node):
-        raise nodes.SkipNode
-
-    def visit_start_of_file(self, node):
-        # track active inlined documents (singleconfluence builder) for anchors
-        self._docnames.append(node['docname'])
-
-    def depart_start_of_file(self, node):
-        self._docnames.pop()
 
     # ##########################################################################
     # #                                                                        #
