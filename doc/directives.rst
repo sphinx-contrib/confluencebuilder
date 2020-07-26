@@ -5,6 +5,29 @@ The following outlines additional `directives`_ supported by this extension.
 
 .. contents:: :local:
 
+.. _confluence_metadata:
+
+confluence_metadata
+-------------------
+
+The ``confluence_metadata`` directive allows a user to define metadata
+information to be added during a publish event. At this time, this specifically
+is for the adding of Confluence labels to pages. For example:
+
+.. code-block:: rst
+
+   .. confluence_metadata::
+      :labels: label-a label-b
+
+The above example will result in the labels ``label-a`` and ``label-b`` being
+added to the document which defines this directive. This directive supports the
+following options:
+
+* ``labels`` *(optional)* -- A space-separated list of label strings to apply to
+  a page.
+
+See also ``confluence_global_labels`` (:ref:`jump<confluence_global_labels>`).
+
 jira
 ----
 

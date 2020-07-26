@@ -369,6 +369,25 @@ See also |confluence_watch|_.
 
 --------------------------------------------------------------------------------
 
+.. |confluence_global_labels| replace:: ``confluence_global_labels``
+.. _confluence_global_labels:
+
+confluence_global_labels
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Defines a list of labels to apply to each document being published. When a
+publish event either adds a new page or updates an existing page, the labels
+defined in this option will be added/set on the page. For example:
+
+.. code-block:: python
+
+   confluence_global_labels = ['label-a', 'label-b']
+
+For per-document labels, please consult the ``confluence_metadata``
+:ref:`directive <confluence_metadata>`. See also |confluence_append_labels|_.
+
+--------------------------------------------------------------------------------
+
 .. |confluence_master_homepage| replace:: ``confluence_master_homepage``
 .. _confluence_master_homepage:
 
@@ -592,6 +611,9 @@ See also |confluence_disable_notifications|_.
 advanced publishing configuration
 ---------------------------------
 
+.. |confluence_append_labels| replace:: ``confluence_append_labels``
+.. _confluence_append_labels:
+
 confluence_append_labels
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -604,6 +626,8 @@ default, labels are always appended with a value of ``True``.
 .. code-block:: python
 
    confluence_append_labels = True
+
+See also |confluence_global_labels|_.
 
 --------------------------------------------------------------------------------
 
