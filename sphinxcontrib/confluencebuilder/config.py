@@ -59,6 +59,22 @@ The option 'confluence_footer_file' has been provided to find a footer template
 file from a relative location. Ensure the value is set to a proper file path.
 """)
 
+        if c.confluence_global_labels:
+            if not (isinstance(c.confluence_global_labels, (tuple, list, set))
+                    and all(isinstance(label, basestring)
+                            for label in c.confluence_global_labels)):
+                errState = True
+                if log:
+                    ConfluenceLogger.error(
+"""'confluence_global_labels' should be a collection of strings""")
+            else:
+                for label in c.confluence_global_labels:
+                    if ' ' in label:
+                        errState = True
+                        if log:
+                            ConfluenceLogger.error(
+"""label '%s' contains a space (not supported in confluence)""", label)
+
         if c.confluence_header_file:
             if not os.path.isfile(os.path.join(env.srcdir,
                     c.confluence_header_file)):

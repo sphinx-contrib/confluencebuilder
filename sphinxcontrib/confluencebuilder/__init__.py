@@ -7,9 +7,11 @@
 from .builder import ConfluenceBuilder
 from .directives import JiraDirective
 from .directives import JiraIssueDirective
+from .directives import ConfluenceMetadataDirective
 from .logger import ConfluenceLogger
 from .nodes import jira
 from .nodes import jira_issue
+from .nodes import confluence_metadata
 from .singlebuilder import SingleConfluenceBuilder
 from .translator import ConfluenceTranslator
 from .util import ConfluenceUtil
@@ -112,6 +114,8 @@ def setup(app):
     app.add_config_value('confluence_disable_autogen_title', None, False)
     """Explicitly prevent page notifications on update."""
     app.add_config_value('confluence_disable_notifications', None, False)
+    """Define a series of labels to apply to all published pages."""
+    app.add_config_value('confluence_global_labels', None, False)
     """Enablement of configuring master as space's homepage."""
     app.add_config_value('confluence_master_homepage', None, False)
     """Root/parent page's name to publish documents into."""
@@ -134,6 +138,8 @@ def setup(app):
     app.add_config_value('confluence_watch', None, False)
 
     """(configuration - advanced publishing)"""
+    """Whether or not labels will be appended instead of overwriting them."""
+    app.add_config_value('confluence_append_labels', None, False)
     """Tri-state asset handling (auto, force push or disable)."""
     app.add_config_value('confluence_asset_override', None, False)
     """File/path to Certificate Authority"""
@@ -180,8 +186,8 @@ def setup(app):
     app.add_config_value('confluence_adv_ignore_nodes', [], False)
     """Unknown node handler dictionary for advanced integrations."""
     app.add_config_value('confluence_adv_node_handler', None, '')
-    """List of extension-provided macros restricted for use."""
-    app.add_config_value('confluence_adv_restricted_macros', [], False)
+    """List of optional features/macros/etc. restricted for use."""
+    app.add_config_value('confluence_adv_restricted', [], False)
     """Enablement of tracing processed data."""
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
@@ -200,6 +206,13 @@ def setup(app):
     """Wires up the directives themselves"""
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
+
+    """Confluence directives"""
+    """Adds the custom nodes needed for Confluence directives"""
+    if not docutils.is_node_registered(confluence_metadata):
+        app.add_node(confluence_metadata)
+    """Wires up the directives themselves"""
+    app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
 
     if 'sphinx.ext.autosummary' in app.config.extensions:
         add_autosummary_nodes(app)

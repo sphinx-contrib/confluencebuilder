@@ -25,6 +25,7 @@ class ConfluencePublisher():
 
     def init(self, config):
         self.config = config
+        self.append_labels = config.confluence_append_labels
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.parent_id = config.confluence_parent_page_id_check
@@ -39,9 +40,13 @@ class ConfluencePublisher():
         self.client_cert = config.confluence_client_cert
         self.client_cert_pass = config.confluence_client_cert_pass
 
+        # append labels by default
+        if self.append_labels is None:
+            self.append_labels = True
+
     def connect(self):
         self.rest_client = Rest(self.config);
-        
+
         rsp = self.rest_client.get('space', {
             'spaceKey': self.space_name,
             'limit': 1
@@ -348,7 +353,7 @@ class ConfluencePublisher():
         uploaded_page_id = None
 
         if self.config.confluence_adv_trace_data:
-            ConfluenceLogger.trace('data', data)
+            ConfluenceLogger.trace('data', data['content'])
 
         if self.dryrun:
             _, page = self.getPage(page_name, 'version,ancestors')
@@ -370,7 +375,12 @@ class ConfluencePublisher():
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
-        _, page = self.getPage(page_name)
+        can_labels = not 'labels' in self.config.confluence_adv_restricted
+        expand = 'version'
+        if can_labels and self.append_labels:
+            expand += ',metadata.labels'
+
+        _, page = self.getPage(page_name, expand=expand)
         try:
             if not page:
                 newPage = {
@@ -379,13 +389,16 @@ class ConfluencePublisher():
                     'body': {
                         'storage': {
                             'representation': 'storage',
-                            'value': data
+                            'value': data['content'],
                         }
                     },
                     'space': {
                         'key': self.space_name
-                    }
+                    },
                 }
+
+                if can_labels:
+                    self._populate_labels(newPage, data['labels'])
 
                 if parent_id:
                     newPage['ancestors'] = [{'id': parent_id}]
@@ -413,7 +426,7 @@ class ConfluencePublisher():
                     'body': {
                         'storage': {
                             'representation': 'storage',
-                            'value': data
+                            'value': data['content'],
                         }
                     },
                     'space': {
@@ -421,8 +434,18 @@ class ConfluencePublisher():
                     },
                     'version': {
                         'number': last_version + 1
-                    }
+                    },
                 }
+
+                if can_labels:
+                    labels = list(data['labels'])
+                    if self.append_labels:
+                        labels.extend([l.get('name')
+                            for l in page.get('metadata', {}).get(
+                                'labels', {}).get('results', {})
+                        ])
+
+                    self._populate_labels(updatePage, labels)
 
                 if not self.notify:
                     updatePage['version']['minorEdit'] = True
@@ -537,3 +560,17 @@ class ConfluencePublisher():
         if misc:
             s += ' ' + misc
         ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+
+    def _populate_labels(self, page, labels):
+        """
+        populate a page with label metadata information
+
+        Accepts a page definition (new or existing page) and populates the
+        metadata portion with the provided label data.
+
+        Args:
+            page: the page
+            labels: the labels to set
+        """
+        metadata = page.setdefault('metadata', {})
+        metadata['labels'] = [{'name': v} for v in set(labels)]

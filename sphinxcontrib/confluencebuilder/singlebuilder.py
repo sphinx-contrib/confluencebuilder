@@ -129,6 +129,9 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             # register targets for references
             self._register_doctree_targets(self.config.master_doc, doctree)
 
+            # extract metadata information
+            self._extract_metadata(self.config.master_doc, doctree)
+
             self.assets.processDocument(doctree, self.config.master_doc)
 
         with progress_message(__('writing single confluence document')):

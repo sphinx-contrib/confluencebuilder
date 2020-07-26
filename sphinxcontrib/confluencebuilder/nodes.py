@@ -25,6 +25,14 @@ class ConfluenceNavigationNode(nodes.General, nodes.Element):
         self.bottom = False
         self.top = False
 
+class confluence_metadata(nodes.Element):
+    """
+    confluence metadata node
+
+    A Confluence builder defined metadata node holds metadata information for a
+    given document.
+    """
+
 class jira(nodes.Element, nodes.Structural):
     """
     jira (query) node

@@ -110,7 +110,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'common')
         doc_dir, doctree_dir = _.prepareDirectories('validation-set-common-nm')
 
-        config['confluence_adv_restricted_macros'] = [
+        config['confluence_adv_restricted'] = [
             'anchor',
             'children',
             'code',
