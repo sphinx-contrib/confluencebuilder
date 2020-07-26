@@ -1221,8 +1221,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_ac_image(node, **attribs))
             self.body.append(self._start_ri_attachment(node, image_key))
             if hosting_docname != self.docname:
-                self.body.append(self._start_tag(node, 'ri:page',
-                   suffix=self.nl, empty=True,
+                self.body.append(self._start_tag(node, 'ri:page', empty=True,
                    **{'ri:content-title': hosting_doctitle}))
             self.body.append(self._end_ri_attachment(node))
             self.body.append(self._end_ac_image(node))
@@ -1270,8 +1269,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 attachment.append(self._start_ri_attachment(node, file_key))
                 if hosting_docname != self.docname:
                     attachment.append(self._start_tag(node, 'ri:page',
-                       suffix=self.nl, empty=True,
-                       **{'ri:content-title': hosting_doctitle}))
+                       empty=True, **{'ri:content-title': hosting_doctitle}))
                 attachment.append(self._end_ri_attachment(node))
 
                 self.body.append(self._start_ac_macro(node, 'view-file'))
@@ -1283,8 +1281,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._start_ri_attachment(node, file_key))
                 if hosting_docname != self.docname:
                     self.body.append(self._start_tag(node, 'ri:page',
-                       suffix=self.nl, empty=True,
-                       **{'ri:content-title': hosting_doctitle}))
+                       empty=True, **{'ri:content-title': hosting_doctitle}))
                 self.body.append(self._end_ri_attachment(node))
                 self.body.append(
                     self._start_ac_plain_text_link_body_macro(node))
