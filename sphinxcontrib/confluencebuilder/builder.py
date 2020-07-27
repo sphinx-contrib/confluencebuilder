@@ -808,6 +808,7 @@ class ConfluenceBuilder(Builder):
                 _, out_filename = render_dot(
                     mock_translator, dotcode, {}, 'png', 'inheritance')
                 if not out_filename:
+                    node.parent.remove(node)
                     continue
 
                 new_node = nodes.image(candidates={'?'}, uri=out_filename)
@@ -816,6 +817,7 @@ class ConfluenceBuilder(Builder):
                 node.replace_self(new_node)
             except GraphvizError as exc:
                 ConfluenceLogger.warn('dot code {}: {}'.format(dotcode, exc))
+                node.parent.remove(node)
 
     def _replace_math_blocks(self, doctree):
         """
