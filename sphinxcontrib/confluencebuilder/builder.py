@@ -39,6 +39,14 @@ try:
 except:
     imgmath = None
 
+# load inheritance_diagram extension if available to handle node pre-processing
+try:
+    from sphinx.ext import inheritance_diagram
+    from sphinx.ext.graphviz import GraphvizError
+    from sphinx.ext.graphviz import render_dot
+except:
+    inheritance_diagram = None
+
 # handle proper input request in python 2.7
 try:
     input = raw_input
@@ -263,17 +271,8 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
-            # extract metadata information
-            self._extract_metadata(docname, doctree)
-
-            # register targets for references
-            self._register_doctree_targets(docname, doctree)
-
-            # replace math blocks with images
-            self._replace_math_blocks(doctree)
-
             # for every doctree, pick the best image candidate
-            self.post_process_images(doctree)
+            self._prepare_doctree_writing(docname, doctree)
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
@@ -282,6 +281,22 @@ class ConfluenceBuilder(Builder):
         # images in Sphinx, which is then provided to a translator). Embedded
         # images are detected during an 'doctree-resolved' hook (see __init__).
         self.assets.process(ordered_docnames)
+
+    def _prepare_doctree_writing(self, docname, doctree):
+        # extract metadata information
+        self._extract_metadata(docname, doctree)
+
+        # register targets for references
+        self._register_doctree_targets(docname, doctree)
+
+        # replace inheritance diagram with images
+        self._replace_inheritance_diagram(doctree)
+
+        # replace math blocks with images
+        self._replace_math_blocks(doctree)
+
+        # for every doctree, pick the best image candidate
+        self.post_process_images(doctree)
 
     def process_tree_structure(self, ordered, docname, traversed, depth=0):
         omit = False
@@ -749,6 +764,60 @@ class ConfluenceBuilder(Builder):
                     for id in section_node['ids']:
                         id = '{}#{}'.format(docname, id)
                         ConfluenceState.registerTarget(id, target)
+
+    def _replace_inheritance_diagram(self, doctree):
+        """
+        replace inheritance diagrams with images
+
+        Inheritance diagrams are pre-processed and replaced with respective
+        images in the processed documentation set. Typically, the node support
+        from `sphinx.ext.inheritance_diagram` would be added to the builder;
+        however, this extension renders graphs during the translation phase
+        (which is not ideal for how assets are managed in this extension).
+        
+        Instead, this implementation just traverses for inheritance diagrams,
+        generates renderings and replaces the nodes with image nodes (which in
+        turn will be handled by the existing image-based implementation).
+        
+        Note that the interactive image map is not handled in this
+        implementation since Confluence does not support image maps (without
+        external extensions).
+
+        Args:
+            doctree: the doctree to replace blocks on
+        """
+        if inheritance_diagram is None:
+            return
+
+        # graphviz's render_dot call expects a translator to be passed in; mock
+        # a translator tied to our self-builder
+        class MockTranslator:
+            def __init__(self, builder):
+                self.builder = builder
+        mock_translator = MockTranslator(self)
+
+        for node in doctree.traverse(inheritance_diagram.inheritance_diagram):
+            graph = node['graph']
+
+            graph_hash = inheritance_diagram.get_graph_hash(node)
+            name = 'inheritance%s' % graph_hash
+
+            dotcode = graph.generate_dot(name, {}, env=self.env)
+
+            try:
+                _, out_filename = render_dot(
+                    mock_translator, dotcode, {}, 'png', 'inheritance')
+                if not out_filename:
+                    node.parent.remove(node)
+                    continue
+
+                new_node = nodes.image(candidates={'?'}, uri=out_filename)
+                if 'align' in node:
+                    new_node['align'] = node['align']
+                node.replace_self(new_node)
+            except GraphvizError as exc:
+                ConfluenceLogger.warn('dot code {}: {}'.format(dotcode, exc))
+                node.parent.remove(node)
 
     def _replace_math_blocks(self, doctree):
         """
