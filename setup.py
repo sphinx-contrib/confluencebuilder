@@ -70,7 +70,7 @@ setup(
     include_package_data=True,
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
-    test_suite='test',
+    test_suite='tests',
     tests_require=['sphinx'],
     cmdclass={
         'clean': ExtendedClean,
