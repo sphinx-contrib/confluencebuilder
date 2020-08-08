@@ -198,6 +198,8 @@ def setup(app):
     """Indent to use for generated documents."""
     app.add_config_value('confluence_indent', STDINDENT, False)
 
+    app.add_config_value('confluence_stub_columns_experimental', False, False)
+
     # ##########################################################################
 
     """JIRA directives"""

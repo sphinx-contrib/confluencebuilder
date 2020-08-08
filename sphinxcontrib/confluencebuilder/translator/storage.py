@@ -42,6 +42,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         ConfluenceBaseTranslator.__init__(self, document, builder)
         config = builder.config
 
+        self._stub_columns_experimental = config.confluence_stub_columns_experimental
+        self.colspecs = []
+
         self.add_secnumbers = config.confluence_add_secnumbers
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.warn = document.reporter.warning
@@ -718,7 +721,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._thead_context.pop()
 
     def visit_tgroup(self, node):
-        pass
+        node.stubs = []
 
     def depart_tgroup(self, node):
         pass
@@ -742,6 +745,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_row(self, node):
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
+        node.column = 0
 
     def depart_row(self, node):
         self.body.append(self.context.pop()) # tr
@@ -749,6 +753,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_entry(self, node):
         if self._thead_context[-1]:
             target_tag = 'th'
+        elif self._stub_columns_experimental and node.parent.parent.parent.stubs[node.parent.column]:
+            #print(f"node.parent.column: {node.parent.column}\nnode.parent.parent.parent.stubs[node.parent.column]:{node.parent.parent.parent.stubs[node.parent.column]}")
+            target_tag = 'th'
+            node.parent.column += 1
         else:
             target_tag = 'td'
 
@@ -768,8 +776,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         raise nodes.SkipNode
 
     def visit_colspec(self, node):
-        raise nodes.SkipNode
+        self.colspecs.append(node)
+        # "stubs" list is an attribute of the tgroup element:
+        node.parent.stubs.append(node.attributes.get('stub'))
 
+    def depart_colspec(self, node):
+        # write out <colgroup> when all colspecs are processed
+        pass
     # -------------------
     # references - common
     # -------------------
