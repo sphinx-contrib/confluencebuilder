@@ -34,8 +34,12 @@ def process_raw_upload():
         publisher.connect()
 
         while True:
+            data = {
+                'labels': [],
+            }
+
             with open(raw_file, 'r') as f:
-                data = f.read()
+                data['content'] = f.read()
 
             print('[sandbox] publishing page...')
             try:
