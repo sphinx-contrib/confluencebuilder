@@ -90,7 +90,7 @@ matrix:
     before_install:
       - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
       - export PATH="/c/Python:/c/Python/Scripts:$PATH"
-  - python: "3.6"
+  - python: "3.8"
     env: TOXENV=pylint
 
 install:
