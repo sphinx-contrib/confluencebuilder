@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from bs4 import BeautifulSoup
 from contextlib import contextmanager
 from sphinx.application import Sphinx
 from sphinx.util.console import nocolor, color_terminal
@@ -61,6 +62,34 @@ def enableSphinxStatus():
     requests in a verbose manner.
     """
     os.environ['SPHINX_STATUS'] = '1'
+
+@contextmanager
+def parse(filename, dirname=None):
+    """
+    parse the output of a generated sphinx document
+
+    Parses the provided filename for generated Confluence-supported markup which
+    can be examined for expected content. This function will return an instance
+    of BeautifulSoup which a tester can take advantage of the utility calls the
+    library provides.
+
+    Args:
+        filename: the filename to parse
+        dirname (optional): the directory the provided filename exists in
+
+    Returns:
+        the parsed output
+    """
+    if dirname:
+        target = os.path.join(dirname, filename)
+    else:
+        target = filename
+
+    target += '.conf'
+
+    with open(target, 'r') as fp:
+        soup = BeautifulSoup(fp, 'html.parser')
+        yield soup
 
 def prepareConfiguration():
     """
