@@ -13,8 +13,6 @@ jobs:
   - python: "3.5"
     env: TOXENV=py35-sphinx18
   - python: "3.5"
-    env: TOXENV=py35-sphinx22
-  - python: "3.5"
     env: TOXENV=py35-sphinx23
   - python: "3.5"
     env: TOXENV=py35-sphinx24
@@ -22,10 +20,10 @@ jobs:
     env: TOXENV=py35-sphinx30
   - python: "3.5"
     env: TOXENV=py35-sphinx31
+  - python: "3.5"
+    env: TOXENV=py35-sphinx32
   - python: "3.6"
     env: TOXENV=py36-sphinx18
-  - python: "3.6"
-    env: TOXENV=py36-sphinx22
   - python: "3.6"
     env: TOXENV=py36-sphinx23
   - python: "3.6"
@@ -34,11 +32,10 @@ jobs:
     env: TOXENV=py36-sphinx30
   - python: "3.6"
     env: TOXENV=py36-sphinx31
+  - python: "3.6"
+    env: TOXENV=py36-sphinx32
   - python: "3.7"
     env: TOXENV=py37-sphinx18
-    dist: xenial
-  - python: "3.7"
-    env: TOXENV=py37-sphinx22
     dist: xenial
   - python: "3.7"
     env: TOXENV=py37-sphinx23
@@ -52,11 +49,11 @@ jobs:
   - python: "3.7"
     env: TOXENV=py37-sphinx31
     dist: xenial
+  - python: "3.7"
+    env: TOXENV=py37-sphinx32
+    dist: xenial
   - python: "3.8"
     env: TOXENV=py38-sphinx18
-    dist: bionic
-  - python: "3.8"
-    env: TOXENV=py38-sphinx22
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx23
@@ -69,6 +66,9 @@ jobs:
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx31
+    dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx32
     dist: bionic
   - os: osx
     env: TOXENV=py27-sphinx18
@@ -84,7 +84,7 @@ jobs:
       - choco install python2
       - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
   - os: windows
-    env: TOXENV=py38-sphinx31
+    env: TOXENV=py38-sphinx32
     language: shell
     before_install:
       - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
