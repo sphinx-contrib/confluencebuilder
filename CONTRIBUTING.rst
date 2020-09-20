@@ -63,15 +63,26 @@ coding.
 guidelines
 ----------
 
-This extension will support various Python interpreter versions, various Sphinx
-versions and various Confluence versions. The goal of this extension is to
-include support for all stable Python interpreters and Confluence versions which
-have yet to be marked as end-of-life (more flexibility will be given for Python
-2.7 due to systems like RHEL which may still use this interpreter by default;
-ideally Python 2.7 will have continued support in this extension for at least
-12 months after being marked as end-of-life). While multiple Sphinx versions
-will be supported, a maximum of only five major-minor trees will be supported at
-a given time.
+This extension will support various Python interpreter versions, Sphinx versions
+and Confluence versions. The goal of this extension is to include support for
+all stable Python interpreters and Confluence versions which have yet to be
+marked as end-of-life and support Sphinx versions with a suggested maximum of
+five major-minor trees.
+
+- Python interpreters that have not been marked as end-of-life will be supported
+  by this extension. An exception exists for Python 2.7 at this time where
+  support _may_ extend to the RHEL's supported end-of-life date for Python 2.7
+  of June 2024 (see also `How is Python 2 supported in RHEL after 2020?`_). Note
+  that this is the maximum date for support; however, support may be dropped
+  earlier that this date (with a notification). At minimum, Python 2.7 will be
+  supported until the end of the 2020 calendar year (a year after Python's
+  end-of-life date for Python 2.7).
+- Supported Confluence versions will be supported versions listed in
+  `Atlassian Support End of Life Policy`_.
+- Supported Sphinx versions include the last five major-minor versions of the
+  application (for example: 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x). An exception
+  exists for Sphinx 1.8.x series, which will be supported until this extension's
+  support for Python 2.7 has been dropped.
 
 `PEP 8`_ is a standard styling guide for Python projects and is recommended for
 considerations when making contributions. On that note, please read the
@@ -165,8 +176,10 @@ attribution
 
 This Code of Conduct is adapted from the `Contributor Covenant`_, version 1.4.
 
+.. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
 .. _Contributor Covenant: https://contributor-covenant.org/version/1/4/
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
+.. _How is Python 2 supported in RHEL after 2020?: https://access.redhat.com/solutions/4455511
 .. _PEP 8: https://www.python.org/dev/peps/pep-0008
 .. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
 .. _pull requests: https://github.com/sphinx-contrib/confluencebuilder/pulls
