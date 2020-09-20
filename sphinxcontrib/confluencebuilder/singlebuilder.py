@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2020 by the contributors (see AUTHORS file).
-    :copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .builder import ConfluenceBuilder
 from .compat import progress_message
 from .logger import ConfluenceLogger
 from .state import ConfluenceState
-from .util import first
 from docutils import nodes
-from docutils.io import StringOutput
-from getpass import getpass
 from sphinx.locale import __
-from sphinx.util import status_iterator
 from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees
 
@@ -48,7 +44,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         #       There are related codes in inline_all_toctres() and
         #       HTMLTranslter#add_secnumber().
         #
-        new_secnumbers = {}  # type: Dict[str, Tuple[int, ...]]
+        new_secnumbers = {}
 
         for docname, secnums in self.env.toc_secnumbers.items():
             for id, secnum in secnums.items():
@@ -69,7 +65,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         #       There are related codes in inline_all_toctres() and
         #       HTMLTranslter#add_fignumber().
         #
-        new_fignumbers = {}  # type: Dict[str, Dict[str, Tuple[int, ...]]]
+        new_fignumbers = {}
 
         #
         # {'foo': {'figure': {'id2': (2,), 'id1': (1,)}},

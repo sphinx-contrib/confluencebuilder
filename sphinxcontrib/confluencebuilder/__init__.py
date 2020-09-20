@@ -13,13 +13,10 @@ from .nodes import jira
 from .nodes import jira_issue
 from .nodes import confluence_metadata
 from .singlebuilder import SingleConfluenceBuilder
-from .util import ConfluenceUtil
-from docutils import nodes
 from sphinx.util import docutils
 from sphinx.writers.text import STDINDENT
 from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 import argparse
-import os
 
 # load autosummary extension if available to add additional nodes
 try:
@@ -30,10 +27,10 @@ except ImportError:
 # load imgmath extension if available to handle math configuration options
 try:
     from sphinx.ext import imgmath
-except:
+except ImportError:
     imgmath = None
 
-__version__='1.3.0-dev0'
+__version__ = '1.3.0-dev0'
 
 def main():
     parser = argparse.ArgumentParser(prog=__name__,

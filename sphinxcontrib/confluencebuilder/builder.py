@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import absolute_import
@@ -36,7 +36,7 @@ import sys
 try:
     from sphinx.ext import imgmath
     import itertools
-except:
+except ImportError:
     imgmath = None
 
 # load inheritance_diagram extension if available to handle node pre-processing
@@ -44,7 +44,7 @@ try:
     from sphinx.ext import inheritance_diagram
     from sphinx.ext.graphviz import GraphvizError
     from sphinx.ext.graphviz import render_dot
-except:
+except ImportError:
     inheritance_diagram = None
 
 # handle proper input request in python 2.7
@@ -64,7 +64,7 @@ class ConfluenceBuilder(Builder):
         super(ConfluenceBuilder, self).__init__(app)
 
         # section numbers for headings in the currently visited document
-        self.secnumbers = {}  # type: Dict[str, Tuple[int, ...]]
+        self.secnumbers = {}
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
@@ -187,7 +187,6 @@ class ConfluenceBuilder(Builder):
             sourcename = path.join(self.env.srcdir, docname +
                                    self.file_suffix)
             targetname = path.join(self.outdir, self.file_transform(docname))
-            print (sourcename, targetname)
 
             try:
                 targetmtime = path.getmtime(targetname)
@@ -324,7 +323,7 @@ class ConfluenceBuilder(Builder):
                     traversed.append(child)
 
                     children = self.process_tree_structure(
-                        ordered, child, traversed, depth+1)
+                        ordered, child, traversed, depth + 1)
                     if children:
                         movednodes.append(children)
                         self._fix_std_labels(child, docname)

@@ -1,5 +1,0 @@
-# testing output directory
-output/
-
-# validation testing configuration overrides
-validation_test_overrides.py

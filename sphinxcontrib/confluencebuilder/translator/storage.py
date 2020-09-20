@@ -55,12 +55,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         # helpers for dealing with disabled/unsupported features
         restricted = config.confluence_adv_restricted
-        self.can_admonition = not 'info' in restricted
-        self.can_anchor = not 'anchor' in restricted
-        self.can_children = not 'children' in restricted
-        self.can_code = not 'code' in restricted
-        self.can_jira = not 'jira' in restricted
-        self.can_viewfile = not 'viewfile' in restricted
+        self.can_admonition = 'info' not in restricted
+        self.can_anchor = 'anchor' not in restricted
+        self.can_children = 'children' not in restricted
+        self.can_code = 'code' not in restricted
+        self.can_jira = 'jira' not in restricted
+        self.can_viewfile = 'viewfile' not in restricted
 
         if (config.confluence_page_hierarchy
                 and config.confluence_adv_hierarchy_child_macro
@@ -472,7 +472,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         data = self.nl.join(node.astext().splitlines())
 
-        if node.get('linenos', False) == True:
+        if node.get('linenos', False):
             num = 'true'
         elif data.count('\n') >= self._linenothreshold:
             num = 'true'
@@ -784,7 +784,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if 'iscurrent' in node:
             pass
-        elif ((not 'internal' in node or not node['internal'])
+        elif (('internal' not in node or not node['internal'])
                 and 'refuri' in node):
             # If a document provides an anchor target directly in the reference,
             # attempt to extract the anchor value and pass it into the internal
@@ -1261,7 +1261,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # If the view-file macro is permitted along with it not being an
             # explicitly referenced asset.
-            if self.can_viewfile and (not 'refexplicit' in node or
+            if self.can_viewfile and ('refexplicit' not in node or
                     not node['refexplicit']):
                 # a 'view-file' macro takes an attachment tag as a body; build
                 # the tags in an interim list
@@ -1625,7 +1625,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         try:
             tag = node.__confluence_tag.pop()
-        except:
+        except IndexError:
             raise ConfluenceError('end tag invoke without matching start tag')
 
         if suffix is None:

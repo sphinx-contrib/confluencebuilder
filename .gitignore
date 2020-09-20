@@ -14,7 +14,8 @@ doc/_build/
 .DS_Store
 
 # testing
-.tox/
+.tox*/
+validation_test_overrides.py
 
 # misc
 .idea/

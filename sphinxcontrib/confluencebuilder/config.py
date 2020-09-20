@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .logger import ConfluenceLogger
@@ -35,7 +35,7 @@ class ConfluenceConfig:
         env = builder.app.env
 
         if c.confluence_default_alignment:
-            if not c.confluence_default_alignment in (
+            if c.confluence_default_alignment not in (
                     'left', 'center', 'right'):
                 errState = True
                 if log:

@@ -1,2 +1,3 @@
+beautifulsoup4
 future>=0.16.0
 requests>=2.14.0
