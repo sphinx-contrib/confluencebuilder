@@ -50,3 +50,5 @@ def setup(app):
     # append theme override
     app.add_css_file('theme_overrides.css')
 
+    # append unreleased version-alert
+    app.add_js_file('version-alert.js')
