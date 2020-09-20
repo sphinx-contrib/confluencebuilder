@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from tests.lib import buildSphinx
+from tests.lib import enableSphinxStatus
+from tests.lib import prepareDirectories
+from tests.lib import prepareSphinx
 import argparse
 import os
 import sys
@@ -14,8 +18,8 @@ def process_sandbox(builder=None):
     test_dir = os.path.dirname(os.path.realpath(__file__))
     sandbox_dir = os.path.join(test_dir, 'sandbox')
 
-    doc_dir, doctree_dir = _.prepareDirectories('sandbox-test')
-    _.buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
+    doc_dir, doctree_dir = prepareDirectories('sandbox-test')
+    buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
         relax=True)
 
 def process_raw_upload():
@@ -27,8 +31,8 @@ def process_raw_upload():
         print('[sandbox] missing file', raw_file)
         return
 
-    doc_dir, doctree_dir = _.prepareDirectories('sandbox-test')
-    with _.prepareSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True) as app:
+    doc_dir, doctree_dir = prepareDirectories('sandbox-test')
+    with prepareSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)
         publisher.connect()
@@ -52,7 +56,7 @@ def process_raw_upload():
                 break
 
 def main():
-    _.enableVerbose()
+    enableSphinxStatus()
 
     parser = argparse.ArgumentParser(prog=__name__,
         description='Atlassian Confluence Sphinx Extension Sandbox')

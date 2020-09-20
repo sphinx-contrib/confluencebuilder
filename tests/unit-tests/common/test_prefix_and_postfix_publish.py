@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from tests.lib import assertExpectedWithOutput
+from tests.lib import buildSphinx
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
 import os
 import unittest
-
 
 class TestBase(unittest.TestCase):
 
@@ -17,7 +19,7 @@ class TestBase(unittest.TestCase):
         self.specific_configs = {}
 
     def setUp(self):
-        config = _.prepareConfiguration()
+        config = prepareConfiguration()
         for key, value in self.specific_configs.items():
             config[key] = value
 
@@ -25,17 +27,17 @@ class TestBase(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset-prefix-postfix')
         self.expected = os.path.join(test_dir, 'expected-prefix-postfix')
 
-        doc_dir, doctree_dir = _.prepareDirectories('prefix-postfix')
+        doc_dir, doctree_dir = prepareDirectories('prefix-postfix')
         self.doc_dir = doc_dir
 
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def _check_pages_content(self):
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'page1', self.expected, self.doc_dir)
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'page2', self.expected, self.doc_dir)
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'page3', self.expected, self.doc_dir)
 
 
@@ -46,7 +48,7 @@ class TestPrefix(TestBase):
         self.specific_configs['confluence_publish_prefix'] = 'prefix - '
 
     def test_prefix(self):
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'index_prefix', self.expected, self.doc_dir, tpn='index')
         self._check_pages_content()
 
@@ -58,7 +60,7 @@ class TestPostfix(TestBase):
         self.specific_configs['confluence_publish_postfix'] = ' - postfix'
 
     def test_postfix(self):
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'index_postfix', self.expected, self.doc_dir, tpn='index')
         self._check_pages_content()
 
@@ -71,6 +73,6 @@ class TestBothPrefixAndPostfix(TestBase):
         self.specific_configs['confluence_publish_postfix'] = ' - postfix'
 
     def test_both_prefix_and_postfix(self):
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'index_both', self.expected, self.doc_dir, tpn='index')
         self._check_pages_content()

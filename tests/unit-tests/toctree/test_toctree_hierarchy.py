@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from tests.lib import assertExpectedWithOutput
+from tests.lib import buildSphinx
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
 import os
 import unittest
 
 class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        config = _.prepareConfiguration()
+        config = prepareConfiguration()
         config['confluence_max_doc_depth'] = 1
         config['confluence_page_hierarchy'] = True
         config['master_doc'] = 'toctree'
@@ -21,19 +24,19 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset-hierarchy')
         self.expected = os.path.join(test_dir, 'expected-hierarchy')
 
-        doc_dir, doctree_dir = _.prepareDirectories('toctree-hierarchy')
+        doc_dir, doctree_dir = prepareDirectories('toctree-hierarchy')
         self.doc_dir = doc_dir
 
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_max_depth(self):
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'toctree', self.expected, self.doc_dir)
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'toctree-doc1', self.expected, self.doc_dir)
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'toctree-doc2', self.expected, self.doc_dir)
-        _.assertExpectedWithOutput(
+        assertExpectedWithOutput(
             self, 'toctree-doc3', self.expected, self.doc_dir)
 
         test_paths = [

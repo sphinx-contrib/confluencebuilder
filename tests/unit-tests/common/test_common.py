@@ -1,27 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
-from sphinxcontrib_confluencebuilder_util import EXT_NAME
+from tests.lib import EXT_NAME
+from tests.lib import assertExpectedWithOutput
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
+from tests.lib import prepareSphinx
 import os
 import unittest
 
 class TestConfluenceCommon(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = _.prepareConfiguration()
+        self.config = prepareConfiguration()
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-common')
         self.expected = os.path.join(test_dir, 'expected')
 
-        doc_dir, doctree_dir = _.prepareDirectories('common')
+        doc_dir, doctree_dir = prepareDirectories('common')
         self.doc_dir = doc_dir
 
-        with _.prepareSphinx(dataset, doc_dir, doctree_dir, self.config) as app:
+        with prepareSphinx(dataset, doc_dir, doctree_dir, self.config) as app:
             app.build(force_all=True)
 
             # track registered extensions
@@ -32,7 +35,7 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def _assertExpectedWithOutput(self, name, expected=None):
         expected = expected if expected else self.expected
-        _.assertExpectedWithOutput(self, name, expected, self.doc_dir)
+        assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
     def test_admonitions(self):
         self._assertExpectedWithOutput('admonitions')

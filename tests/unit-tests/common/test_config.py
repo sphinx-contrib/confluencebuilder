@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from contextlib import contextmanager
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
-from sphinxcontrib_confluencebuilder_util import EXT_NAME
+from tests.lib import EXT_NAME
+from tests.lib import prepareDirectories
+from tests.lib import prepareSphinx
 import os
 import unittest
 
@@ -18,7 +19,7 @@ class TestConfluenceConfig(unittest.TestCase):
         self.config = { 'extensions': EXT_NAME }
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
-        self.doc_dir, self.doctree_dir = _.prepareDirectories('config-dummy')
+        self.doc_dir, self.doctree_dir = prepareDirectories('config-dummy')
 
         # legacy
         with self._build_app() as app:
@@ -27,7 +28,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
     @contextmanager
     def _build_app(self):
-        with _.prepareSphinx(self.mock_ds, self.doc_dir, self.doctree_dir,
+        with prepareSphinx(self.mock_ds, self.doc_dir, self.doctree_dir,
                 self.config) as app:
             yield app
 

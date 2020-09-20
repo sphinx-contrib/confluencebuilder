@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from tests.lib import assertExpectedWithOutput
+from tests.lib import buildSphinx
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
 import os
 import re
 import shutil
 import tempfile
 import unittest
-
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
-from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-
 
 class TestImageStar(unittest.TestCase):
 
@@ -37,9 +38,9 @@ class TestImageStar(unittest.TestCase):
         return os.path.basename(filepath).rsplit('.')[1]
 
     def build_document_given_dataset(self, dataset):
-        config = _.prepareConfiguration()
-        doc_dir, doctree_dir = _.prepareDirectories('image-star')
-        _.buildSphinx(dataset, doc_dir, doctree_dir, config)
+        config = prepareConfiguration()
+        doc_dir, doctree_dir = prepareDirectories('image-star')
+        buildSphinx(dataset, doc_dir, doctree_dir, config)
         return doc_dir
 
     def write_index_file(self, indexfile):
@@ -85,7 +86,7 @@ class TestImageStar(unittest.TestCase):
         self.write_expected_index_file(expected_outfile, image_extension)
 
         doc_dir = self.build_document_given_dataset(self.datasetdir)
-        _.assertExpectedWithOutput(self,
+        assertExpectedWithOutput(self,
                                    self.file_basename(expected_outfile),
                                    self.datasetdir,
                                    doc_dir,

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from tests.lib import assertExpectedWithOutput
+from tests.lib import buildSphinx
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -13,7 +16,7 @@ class TestConfluenceManpage(unittest.TestCase):
     def setUpClass(self):
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = _.prepareConfiguration()
+        self.config = prepareConfiguration()
         self.dataset = os.path.join(test_dir, 'dataset-manpage')
         self.expected = os.path.join(test_dir, 'expected')
 
@@ -21,13 +24,13 @@ class TestConfluenceManpage(unittest.TestCase):
         config = dict(self.config)
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
-        doc_dir, doctree_dir = _.prepareDirectories('manpage-conf')
-        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, config)
-        _.assertExpectedWithOutput(
+        doc_dir, doctree_dir = prepareDirectories('manpage-conf')
+        app = buildSphinx(self.dataset, doc_dir, doctree_dir, config)
+        assertExpectedWithOutput(
             self, 'manpage-conf', self.expected, doc_dir, tpn='index')
 
     def test_manpage_without_config(self):
-        doc_dir, doctree_dir = _.prepareDirectories('manpage-noconf')
-        app = _.buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
-        _.assertExpectedWithOutput(
+        doc_dir, doctree_dir = prepareDirectories('manpage-noconf')
+        app = buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
+        assertExpectedWithOutput(
             self, 'manpage-noconf', self.expected, doc_dir, tpn='index')

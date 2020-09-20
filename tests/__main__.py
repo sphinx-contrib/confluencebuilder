@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil
+from tests.lib import enableSphinxStatus
 import fnmatch
 import os
 import sys
@@ -23,11 +23,11 @@ def main():
     perform a run.
     """
     loader = unittest.TestLoader()
-    suite  = unittest.TestSuite()
+    suite = unittest.TestSuite()
 
     # toggle verbose mode (if provided)
     if '--verbose' in sys.argv or '-V' in sys.argv:
-        ConfluenceTestUtil.enableVerbose()
+        enableSphinxStatus()
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))

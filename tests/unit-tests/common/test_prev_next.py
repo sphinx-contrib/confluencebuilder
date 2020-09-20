@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import unicode_literals
 from sphinx.application import Sphinx
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
+from tests.lib import prepareSphinx
 import io
 import os
 import unittest
@@ -16,7 +18,7 @@ class TestConfluencePrevNext(unittest.TestCase):
     def setUpClass(self):
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = _.prepareConfiguration()
+        self.config = prepareConfiguration()
         self.dataset = os.path.join(test_dir, 'dataset-prevnext')
         self.expected = os.path.join(test_dir, 'expected')
 
@@ -38,9 +40,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
-        doc_dir, doctree_dir = _.prepareDirectories('prevnext-bottom')
+        doc_dir, doctree_dir = prepareDirectories('prevnext-bottom')
 
-        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 1})
             self._character_check('middle', doc_dir, {'←': 1, '→': 1})
@@ -50,9 +52,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
-        doc_dir, doctree_dir = _.prepareDirectories('prevnext-both')
+        doc_dir, doctree_dir = prepareDirectories('prevnext-both')
 
-        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 2})
             self._character_check('middle', doc_dir, {'←': 2, '→': 2})
@@ -62,9 +64,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
-        doc_dir, doctree_dir = _.prepareDirectories('prevnext-none')
+        doc_dir, doctree_dir = prepareDirectories('prevnext-none')
 
-        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 0})
             self._character_check('middle', doc_dir, {'←': 0, '→': 0})
@@ -74,9 +76,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 
-        doc_dir, doctree_dir = _.prepareDirectories('prevnext-top')
+        doc_dir, doctree_dir = prepareDirectories('prevnext-top')
 
-        with _.prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 1})
             self._character_check('middle', doc_dir, {'←': 1, '→': 1})

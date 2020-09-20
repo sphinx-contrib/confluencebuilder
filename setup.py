@@ -66,7 +66,7 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     platforms='any',
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib_confluencebuilder_util import ConfluenceTestUtil as _
 from sphinx.errors import SphinxWarning
+from tests.lib import assertExpectedWithOutput
+from tests.lib import buildSphinx
+from tests.lib import prepareConfiguration
+from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -15,9 +18,9 @@ class TestConfluenceMetadata(unittest.TestCase):
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset_base = os.path.join(self.test_dir, 'dataset-metadata')
 
-        self.config = _.prepareConfiguration()
+        self.config = prepareConfiguration()
 
-        doc_dir, doctree_dir = _.prepareDirectories('metadata')
+        doc_dir, doctree_dir = prepareDirectories('metadata')
         self.doc_dir = doc_dir
         self.doctree_dir = doctree_dir
 
@@ -25,6 +28,6 @@ class TestConfluenceMetadata(unittest.TestCase):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 
-        _.buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
-        _.assertExpectedWithOutput(
+        buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
+        assertExpectedWithOutput(
             self, 'metadata', expected, self.doc_dir, tpn='index')
