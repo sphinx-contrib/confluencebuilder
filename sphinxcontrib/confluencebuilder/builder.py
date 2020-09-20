@@ -64,7 +64,7 @@ class ConfluenceBuilder(Builder):
         super(ConfluenceBuilder, self).__init__(app)
 
         # section numbers for headings in the currently visited document
-        self.secnumbers = {}  # type: Dict[str, Tuple[int, ...]]
+        self.secnumbers = {}
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
@@ -187,7 +187,6 @@ class ConfluenceBuilder(Builder):
             sourcename = path.join(self.env.srcdir, docname +
                                    self.file_suffix)
             targetname = path.join(self.outdir, self.file_transform(docname))
-            print (sourcename, targetname)
 
             try:
                 targetmtime = path.getmtime(targetname)
@@ -324,7 +323,7 @@ class ConfluenceBuilder(Builder):
                     traversed.append(child)
 
                     children = self.process_tree_structure(
-                        ordered, child, traversed, depth+1)
+                        ordered, child, traversed, depth + 1)
                     if children:
                         movednodes.append(children)
                         self._fix_std_labels(child, docname)

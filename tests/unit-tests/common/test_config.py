@@ -16,7 +16,7 @@ import unittest
 class TestConfluenceConfig(unittest.TestCase):
     def run(self, result=None):
         # prepare a dummy application; no need to actually build
-        self.config = { 'extensions': EXT_NAME }
+        self.config = {'extensions': EXT_NAME}
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
         self.doc_dir, self.doctree_dir = prepareDirectories('config-dummy')

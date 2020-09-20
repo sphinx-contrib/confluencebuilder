@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil as UTIL
@@ -19,6 +19,6 @@ class TestConfluenceUtil(unittest.TestCase):
 'https://intranet-wiki.example.com/rest/api':     'https://intranet-wiki.example.com/',
 'https://intranet-wiki.example.com/rest/api/':    'https://intranet-wiki.example.com/',
 'http://example.atlassian.net/wiki':              'http://example.atlassian.net/wiki/',
-            }
+        }
         for key in data:
             self.assertEqual(UTIL.normalizeBaseUrl(key), data[key])

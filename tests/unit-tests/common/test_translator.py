@@ -28,7 +28,7 @@ class TestConfluenceBaseTranslator(unittest.TestCase):
     def test_docname_and_docparent(self):
         mock_ds = os.path.join(self.test_dir, 'dataset-common')
         doc_dir, doctree_dir = prepareDirectories('config-dummy')
-        mock_docpath = os.path.join(mock_ds, 'foo', 'bar' , 'baz.rst')
+        mock_docpath = os.path.join(mock_ds, 'foo', 'bar', 'baz.rst')
         doc = DummyDocument(mock_docpath)
 
         # prepare a dummy application; no need to actually build

@@ -45,12 +45,12 @@ class ConfluencePublisher():
             self.append_labels = True
 
     def connect(self):
-        self.rest_client = Rest(self.config);
+        self.rest_client = Rest(self.config)
 
         rsp = self.rest_client.get('space', {
             'spaceKey': self.space_name,
             'limit': 1
-            })
+        })
         if rsp['size'] == 0:
             raise ConfluenceBadSpaceError(self.space_name)
         self.space_display_name = rsp['results'][0]['name']
@@ -69,7 +69,7 @@ class ConfluencePublisher():
             'spaceKey': self.space_name,
             'title': self.parent_name,
             'status': 'current'
-            })
+        })
         if rsp['size'] == 0:
             raise ConfluenceConfigurationError("""Configured parent """
                 """page name do not exist.""")
@@ -110,7 +110,7 @@ class ConfluencePublisher():
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete descendants set (for larger sets).
-        search_fields['limit'] = 1000;
+        search_fields['limit'] = 1000
 
         rsp = self.rest_client.get('content/search', search_fields)
         idx = 0
@@ -124,7 +124,7 @@ class ConfluencePublisher():
 
             idx += int(rsp['limit'])
             sub_search_fields = dict(search_fields)
-            sub_search_fields['start'] = idx;
+            sub_search_fields['start'] = idx
             rsp = self.rest_client.get('content/search', sub_search_fields)
 
         return descendants
@@ -182,9 +182,8 @@ class ConfluencePublisher():
 
         url = 'content/{}/child/attachment'.format(page_id)
         rsp = self.rest_client.get(url, {
-            #'type': 'attachment',
             'filename': name,
-            })
+        })
 
         if rsp['size'] != 0:
             attachment = rsp['results'][0]
@@ -214,7 +213,7 @@ class ConfluencePublisher():
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete attachment set (for larger sets).
-        search_fields['limit'] = 1000;
+        search_fields['limit'] = 1000
 
         rsp = self.rest_client.get(url, search_fields)
         idx = 0
@@ -228,7 +227,7 @@ class ConfluencePublisher():
 
             idx += int(rsp['limit'])
             sub_search_fields = dict(search_fields)
-            sub_search_fields['start'] = idx;
+            sub_search_fields['start'] = idx
             rsp = self.rest_client.get(url, sub_search_fields)
 
         return attachment_info
@@ -258,7 +257,7 @@ class ConfluencePublisher():
             'title': page_name,
             'status': 'current',
             'expand': expand,
-            })
+        })
 
         if rsp['size'] != 0:
             page = rsp['results'][0]
@@ -368,7 +367,6 @@ class ConfluencePublisher():
                 misc = ''
                 if parent_id and 'ancestors' in page:
                     if not any(a['id'] == parent_id for a in page['ancestors']):
-                        #if parent_id not in page['ancestors']:
                         if parent_id in self._name_cache:
                             misc += '[new parent page {} ({})]'.format(
                                 self._name_cache[parent_id], parent_id)
@@ -448,8 +446,8 @@ class ConfluencePublisher():
                 if can_labels:
                     labels = list(data['labels'])
                     if self.append_labels:
-                        labels.extend([l.get('name')
-                            for l in page.get('metadata', {}).get(
+                        labels.extend([lbl.get('name')
+                            for lbl in page.get('metadata', {}).get(
                                 'labels', {}).get('results', {})
                         ])
 

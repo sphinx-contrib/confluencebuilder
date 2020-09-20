@@ -29,7 +29,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_header_file'] = header_tpl
 
         doc_dir, doctree_dir = prepareDirectories('header-footer')
-        
+
         with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
             assertExpectedWithOutput(self, 'header-footer', self.expected,

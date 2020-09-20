@@ -44,7 +44,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         #       There are related codes in inline_all_toctres() and
         #       HTMLTranslter#add_secnumber().
         #
-        new_secnumbers = {}  # type: Dict[str, Tuple[int, ...]]
+        new_secnumbers = {}
 
         for docname, secnums in self.env.toc_secnumbers.items():
             for id, secnum in secnums.items():
@@ -65,7 +65,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         #       There are related codes in inline_all_toctres() and
         #       HTMLTranslter#add_fignumber().
         #
-        new_fignumbers = {}  # type: Dict[str, Dict[str, Tuple[int, ...]]]
+        new_fignumbers = {}
 
         #
         # {'foo': {'figure': {'id2': (2,), 'id1': (1,)}},

@@ -80,7 +80,7 @@ class TestSinglePageImageStar(unittest.TestCase):
                          self.image_basename + '.' + image_extension))
 
         self.write_index_file(os.path.join(self.datasetdir, 'index.rst'))
-            
+
         expected_outfile = os.path.join(self.datasetdir,
                                         'expected_index.conf')
         self.write_expected_index_file(expected_outfile, image_extension)

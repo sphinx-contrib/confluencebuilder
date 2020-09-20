@@ -45,7 +45,7 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
             os.path.join(self.doc_dir, 'toctree-doc2aaa.conf'),
             os.path.join(self.doc_dir, 'toctree-doc2b.conf'),
             os.path.join(self.doc_dir, 'toctree-doc2c.conf')
-            ]
+        ]
         for test_path in test_paths:
             self.assertFalse(os.path.exists(test_path),
                 'unexpected file was generated: {}'.format(test_path))
