@@ -92,6 +92,8 @@ matrix:
       - export PATH="/c/Python:/c/Python/Scripts:$PATH"
   - python: "3.8"
     env: TOXENV=pylint
+  - python: "3.8"
+    env: TOXENV=flake8
 
 install:
  - pip install --upgrade tox
