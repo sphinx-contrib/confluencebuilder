@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .logger import ConfluenceLogger
@@ -11,7 +11,7 @@ from sphinx.util.console import bold # pylint: disable=no-name-in-module
 # load sphinx's progress_message or use a compatible instance
 try:
     from sphinx.util import progress_message
-except:
+except ImportError:
     class progress_message:
         def __init__(self, msg):
             self.msg = msg

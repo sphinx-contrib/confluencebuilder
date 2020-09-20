@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .exceptions import ConfluenceAuthenticationFailedUrlError
@@ -232,6 +232,6 @@ class Rest:
         err += "API: " + key + "\n"
         try:
             err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
-        except:
+        except: # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import absolute_import
@@ -36,7 +36,7 @@ import sys
 try:
     from sphinx.ext import imgmath
     import itertools
-except:
+except ImportError:
     imgmath = None
 
 # load inheritance_diagram extension if available to handle node pre-processing
@@ -44,7 +44,7 @@ try:
     from sphinx.ext import inheritance_diagram
     from sphinx.ext.graphviz import GraphvizError
     from sphinx.ext.graphviz import render_dot
-except:
+except ImportError:
     inheritance_diagram = None
 
 # handle proper input request in python 2.7

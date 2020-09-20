@@ -27,7 +27,7 @@ except ImportError:
 # load imgmath extension if available to handle math configuration options
 try:
     from sphinx.ext import imgmath
-except:
+except ImportError:
     imgmath = None
 
 __version__='1.3.0-dev0'

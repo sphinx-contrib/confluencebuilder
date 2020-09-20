@@ -1625,7 +1625,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         try:
             tag = node.__confluence_tag.pop()
-        except:
+        except IndexError:
             raise ConfluenceError('end tag invoke without matching start tag')
 
         if suffix is None:
