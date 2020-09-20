@@ -376,7 +376,7 @@ class ConfluencePublisher():
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
-        can_labels = not 'labels' in self.config.confluence_adv_restricted
+        can_labels = 'labels' not in self.config.confluence_adv_restricted
         expand = 'version'
         if can_labels and self.append_labels:
             expand += ',metadata.labels'
