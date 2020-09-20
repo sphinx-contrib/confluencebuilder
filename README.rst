@@ -32,7 +32,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ Cloud or Server 6.7+
+* Confluence_ Cloud or Server 6.12+
 
 Installing
 ==========
