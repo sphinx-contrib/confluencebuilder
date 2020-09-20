@@ -6,7 +6,7 @@ branches:
   only:
   - master
 
-matrix:
+jobs:
   include:
   - python: "2.7"
     env: TOXENV=py27-sphinx18
@@ -37,7 +37,6 @@ matrix:
   - python: "3.7"
     env: TOXENV=py37-sphinx18
     dist: xenial
-    sudo: true
   - python: "3.7"
     env: TOXENV=py37-sphinx22
     dist: xenial
@@ -73,20 +72,20 @@ matrix:
     dist: bionic
   - os: osx
     env: TOXENV=py27-sphinx18
-    language: minimal
+    language: shell
   - os: osx
     env: TOXENV=py37-sphinx23
-    language: minimal
+    language: shell
     osx_image: xcode10.2 # python 3.7.3
   - os: windows
     env: TOXENV=py27-sphinx18
-    language: sh
+    language: shell
     before_install:
       - choco install python2
       - export PATH="/c/Python27:/c/Python27/Scripts:$PATH"
   - os: windows
     env: TOXENV=py38-sphinx31
-    language: sh
+    language: shell
     before_install:
       - choco install python3 --params "/InstallDir:C:\Python" --version=3.8.0
       - export PATH="/c/Python:/c/Python/Scripts:$PATH"
