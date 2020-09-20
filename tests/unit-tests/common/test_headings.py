@@ -22,7 +22,7 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
 
     def test_headings_default(self):
         doc_dir, doctree_dir = prepareDirectories('headings-default')
-        app = buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
+        buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         assertExpectedWithOutput(
             self, 'headings-default', self.expected, doc_dir, tpn='headings')
 
@@ -31,6 +31,6 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         config['confluence_remove_title'] = False
 
         doc_dir, doctree_dir = prepareDirectories('headings-with-title')
-        app = buildSphinx(self.dataset, doc_dir, doctree_dir, config)
+        buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         assertExpectedWithOutput(
             self, 'headings-with-title', self.expected, doc_dir, tpn='headings')
