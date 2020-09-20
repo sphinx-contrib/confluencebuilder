@@ -4,8 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinx.application import Sphinx
-from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from tests.lib import assertExpectedWithOutput
 from tests.lib import prepareConfiguration
 from tests.lib import prepareDirectories

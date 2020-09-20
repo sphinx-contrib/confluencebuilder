@@ -13,13 +13,10 @@ from .nodes import jira
 from .nodes import jira_issue
 from .nodes import confluence_metadata
 from .singlebuilder import SingleConfluenceBuilder
-from .util import ConfluenceUtil
-from docutils import nodes
 from sphinx.util import docutils
 from sphinx.writers.text import STDINDENT
 from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 import argparse
-import os
 
 # load autosummary extension if available to add additional nodes
 try:

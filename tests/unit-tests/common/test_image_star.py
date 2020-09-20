@@ -5,13 +5,11 @@
 """
 
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
 from tests.lib import prepareDirectories
 import os
-import re
 import shutil
 import tempfile
 import unittest

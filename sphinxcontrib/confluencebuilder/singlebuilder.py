@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2020 by the contributors (see AUTHORS file).
-    :copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .builder import ConfluenceBuilder
 from .compat import progress_message
 from .logger import ConfluenceLogger
 from .state import ConfluenceState
-from .util import first
 from docutils import nodes
-from docutils.io import StringOutput
-from getpass import getpass
 from sphinx.locale import __
-from sphinx.util import status_iterator
 from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees
 

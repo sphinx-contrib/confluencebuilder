@@ -6,8 +6,6 @@
 
 from collections import namedtuple
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from tests.lib import EXT_NAME
-from tests.lib import assertExpectedWithOutput
 from tests.lib import prepareConfiguration
 from tests.lib import prepareDirectories
 from tests.lib import prepareSphinx

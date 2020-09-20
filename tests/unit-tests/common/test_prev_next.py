@@ -5,7 +5,6 @@
 """
 
 from __future__ import unicode_literals
-from sphinx.application import Sphinx
 from tests.lib import prepareConfiguration
 from tests.lib import prepareDirectories
 from tests.lib import prepareSphinx

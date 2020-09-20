@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 
-    See also:
-     Confluence Cloud REST API Reference
-     https://docs.atlassian.com/confluence/REST/latest/
+See also:
+    Confluence Cloud REST API Reference
+    https://docs.atlassian.com/confluence/REST/latest/
 """
 
 from .exceptions import ConfluenceBadApiError
@@ -15,7 +15,6 @@ from .exceptions import ConfluencePermissionError
 from .logger import ConfluenceLogger
 from .rest import Rest
 import json
-import sys
 import time
 
 class ConfluencePublisher():

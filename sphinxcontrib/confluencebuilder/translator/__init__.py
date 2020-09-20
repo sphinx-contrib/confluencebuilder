@@ -9,9 +9,7 @@ from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
 from sphinx.util.osutil import SEP
 from sphinx.util.osutil import canon_path
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 import io
