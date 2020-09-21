@@ -14,6 +14,7 @@ master
 * fixed issue with previous-next links not generated for nested pages
 * improve previous-next button visualization
 * improved handling unknown code languages to none-styled (instead of python)
+* support for assigning confluence labels for pages
 * support for sphinx v1.[6-7] has been dropped
 * support for xml-rpc has been dropped
 * support publish dry runs

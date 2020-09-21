@@ -375,6 +375,8 @@ See also |confluence_watch|_.
 confluence_global_labels
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. versionadded:: 1.3
+
 Defines a list of labels to apply to each document being published. When a
 publish event either adds a new page or updates an existing page, the labels
 defined in this option will be added/set on the page. For example:
@@ -617,6 +619,8 @@ advanced publishing configuration
 confluence_append_labels
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. versionadded:: 1.3
+
 Allows a user to decide how to manage labels for an update page. When a page
 update contains new labels to set, they can either be stacked on existing labels
 or replaced. In the event that a publisher wishes to replace any existing labels
@@ -761,6 +765,8 @@ providing a proxy server using this configuration.
 confluence_publish_dryrun
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. versionadded:: 1.3
+
 When a user wishes to start managing a new document set for publishing, there
 maybe concerns about conflicts with existing content. When the dry run feature
 is enabled to ``True``, a publish event will not edit or remove any existing
@@ -780,6 +786,8 @@ See also
 
 confluence_publish_onlynew
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.3
 
 A publish event will from this extension will typically upload new pages or
 update existing pages on future attempts. In select cases, a user may not wish

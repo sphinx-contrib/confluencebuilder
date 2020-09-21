@@ -13,7 +13,7 @@ Atlassian Confluence Builder for Sphinx
    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
-   :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
+   :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/
    :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/dm/sphinxcontrib-confluencebuilder.svg
@@ -32,7 +32,7 @@ Requirements
 
 If publishing:
 
-* Confluence_ Cloud or Server 6.7+
+* Confluence_ Cloud or Server 6.12+
 
 Installing
 ==========
