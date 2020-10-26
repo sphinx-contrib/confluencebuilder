@@ -171,9 +171,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 return None
 
         # register the title for the root document (for references, assets, ...)
-        ConfluenceState.registerTitle(docname, doctitle,
-            self.config.confluence_publish_prefix,
-            self.config.confluence_publish_postfix)
+        ConfluenceState.registerTitle(docname, doctitle, self.config)
 
         # register the root document for publishing
         self.publish_docnames.append(docname)

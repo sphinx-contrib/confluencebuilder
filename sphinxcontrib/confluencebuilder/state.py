@@ -67,7 +67,7 @@ class ConfluenceState:
         ConfluenceLogger.verbose("mapping %s to target: %s" % (refid, target))
 
     @staticmethod
-    def registerTitle(docname, title, prefix=None, postfix=None):
+    def registerTitle(docname, title, config):
         """
         register the title for the provided document name
 
@@ -83,6 +83,14 @@ class ConfluenceState:
         """
         try_max = CONFLUENCE_MAX_TITLE_LEN
         base_tail = ''
+
+        if (config.confluence_ignore_titlefix_on_index and
+                docname == config.master_doc):
+            postfix = None
+            prefix = None
+        else:
+            postfix = config.confluence_publish_postfix
+            prefix = config.confluence_publish_prefix
 
         if prefix:
             title = prefix + title

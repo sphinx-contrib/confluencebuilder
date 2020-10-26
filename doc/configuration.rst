@@ -453,7 +453,8 @@ An example publish postfix is as follows:
 
    confluence_publish_postfix = '-postfix'
 
-By default, no postfix is used. See also |confluence_publish_prefix|_.
+By default, no postfix is used. See also |confluence_ignore_titlefix_on_index|_
+and |confluence_publish_prefix|_.
 
 --------------------------------------------------------------------------------
 
@@ -478,7 +479,8 @@ An example publish prefix is as follows:
 
    confluence_publish_prefix = 'prefix-'
 
-By default, no prefix is used. See also |confluence_publish_postfix|_.
+By default, no prefix is used. See also |confluence_ignore_titlefix_on_index|_
+and |confluence_publish_postfix|_.
 
 --------------------------------------------------------------------------------
 
@@ -598,7 +600,7 @@ Indicate whether or not the user publishing content will automatically watch
 pages for changes. In Confluence, when creating a new page or updating an
 existing page, the editing user will automatically watch the page. Notifications
 on automatically published content is typically not relevant to publishers
-through this extension, especially if the content is volatile. If a publisher 
+through this extension, especially if the content is volatile. If a publisher
 wishes to be keep informed on notification for published pages, this option can
 be set to ``True``. By default, watching is disabled with a value of ``False``.
 
@@ -729,6 +731,27 @@ when making a publish request. By default, this option is set to ``False``.
 .. code-block:: python
 
    confluence_disable_ssl_validation = False
+
+--------------------------------------------------------------------------------
+
+.. |confluence_ignore_titlefix_on_index| replace:: ``confluence_ignore_titlefix_on_index``
+.. _confluence_ignore_titlefix_on_index:
+
+confluence_ignore_titlefix_on_index
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.3
+
+When configured to add a prefix or postfix onto the titles of published
+documents, a user may not want to have any title modifications on the index
+page. To prevent modifying an index page's title, this option can be set to
+``True``. By default, this option is set to ``False``.
+
+.. code-block:: python
+
+   confluence_ignore_titlefix_on_index = True
+
+See also |confluence_publish_postfix|_ and |confluence_publish_prefix|_.
 
 --------------------------------------------------------------------------------
 

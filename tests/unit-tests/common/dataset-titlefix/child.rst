@@ -1,0 +1,4 @@
+child
+=====
+
+:doc:`index`
