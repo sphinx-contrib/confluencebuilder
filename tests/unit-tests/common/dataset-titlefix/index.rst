@@ -1,0 +1,5 @@
+index
+=====
+
+.. toctree::
+   child
