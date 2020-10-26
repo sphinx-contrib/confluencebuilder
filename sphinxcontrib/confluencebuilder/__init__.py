@@ -150,6 +150,8 @@ def setup(app):
     app.add_config_value('confluence_client_cert_pass', None, False)
     """Disable SSL validation with Confluence server."""
     app.add_config_value('confluence_disable_ssl_validation', None, False)
+    """Ignore adding a titlefix on the index document."""
+    app.add_config_value('confluence_ignore_titlefix_on_index', None, False)
     """Root/parent page's identifier to publish documents into."""
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Proxy server needed to communicate with Confluence server."""

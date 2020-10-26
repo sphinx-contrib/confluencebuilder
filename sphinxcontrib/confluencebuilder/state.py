@@ -83,8 +83,14 @@ class ConfluenceState:
         """
         try_max = CONFLUENCE_MAX_TITLE_LEN
         base_tail = ''
-        postfix = config.confluence_publish_postfix
-        prefix = config.confluence_publish_prefix
+
+        if (config.confluence_ignore_titlefix_on_index and
+                docname == config.master_doc):
+            postfix = None
+            prefix = None
+        else:
+            postfix = config.confluence_publish_postfix
+            prefix = config.confluence_publish_prefix
 
         if prefix:
             title = prefix + title
