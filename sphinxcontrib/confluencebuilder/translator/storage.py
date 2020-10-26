@@ -438,7 +438,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -------------------------------
 
     def visit_literal_block(self, node):
-        self._literal = True
         lang = None
 
         # non-raw literal
@@ -448,6 +447,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 lang = 'none'
             # parsed literal
             else:
+                self._literal = True
                 self.body.append(self._start_tag(node, 'div', suffix=self.nl,
                     **{'class': 'panel pdl'}))
                 self.context.append(self._end_tag(node))
