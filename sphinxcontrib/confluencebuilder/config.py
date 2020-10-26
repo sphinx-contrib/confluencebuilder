@@ -194,8 +194,8 @@ should be a dictionary of (str, str) entries.
                         ConfluenceLogger.error(
 """missing certificate authority
 
-The option 'confluence_ca_cert' has been provided to find a certificate 
-authority file or path from a relative location. Ensure the value is set to a 
+The option 'confluence_ca_cert' has been provided to find a certificate
+authority file or path from a relative location. Ensure the value is set to a
 proper file path.
 """)
             if c.confluence_client_cert:
@@ -222,9 +222,9 @@ or a tuple for the certificate and key in different files.
                             ConfluenceLogger.error(
 """missing certificate file
 
-The option 'confluence_client_cert' has been provided to find a client 
-certificate file from a relative location, but the file %s was not found. 
-Ensure the value is set to a proper file path and the file exists. 
+The option 'confluence_client_cert' has been provided to find a client
+certificate file from a relative location, but the file %s was not found.
+Ensure the value is set to a proper file path and the file exists.
 """ % cert_file
                             )
 
