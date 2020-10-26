@@ -772,11 +772,11 @@ class ConfluenceBuilder(Builder):
         from `sphinx.ext.inheritance_diagram` would be added to the builder;
         however, this extension renders graphs during the translation phase
         (which is not ideal for how assets are managed in this extension).
-        
+
         Instead, this implementation just traverses for inheritance diagrams,
         generates renderings and replaces the nodes with image nodes (which in
         turn will be handled by the existing image-based implementation).
-        
+
         Note that the interactive image map is not handled in this
         implementation since Confluence does not support image maps (without
         external extensions).
