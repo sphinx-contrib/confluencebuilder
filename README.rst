@@ -109,7 +109,7 @@ The set of example documents used to assist in validation/testing can be found
 here:
 
  | Atlassian Confluence Builder for Sphinx - Validation Set
- | https://github.com/sphinx-contrib/confluencebuilder/tree/master/test/validation-sets
+ | https://github.com/sphinx-contrib/confluencebuilder/tree/master/tests/validation-sets
 
 The active and older versions of published validation documents can be found
 here:
