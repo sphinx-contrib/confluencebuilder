@@ -1557,6 +1557,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_line_block(self, node):
         self.body.append(self.context.pop()) # p
 
+    def visit_raw(self, node):
+        if 'confluence_storage' in node.get('format', '').split():
+            self.body.append(self.nl.join(node.astext().splitlines()))
+        else:
+            # support deprecated 'confluence' format for an interim
+            ConfluenceBaseTranslator.visit_raw(self, node)
+        raise nodes.SkipNode
+
     # ##########################################################################
     # #                                                                        #
     # # helpers                                                                #
