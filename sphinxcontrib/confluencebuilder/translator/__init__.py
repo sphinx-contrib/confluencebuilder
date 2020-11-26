@@ -85,8 +85,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with io.open(headerFile, encoding='utf-8') as file:
                     self.document += file.read() + self.nl
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(headerFile, err))
+                self.warn('error reading file {}: {}'.format(headerFile, err))
 
         self.document += ''.join(self.body)
 
@@ -98,8 +97,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with io.open(footerFile, encoding='utf-8') as file:
                     self.document += file.read() + self.nl
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(footerFile, err))
+                self.warn('error reading file {}: {}'.format(footerFile, err))
 
     def visit_Text(self, node):
         text = node.astext()
