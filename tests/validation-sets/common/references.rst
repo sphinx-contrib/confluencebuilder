@@ -203,7 +203,7 @@ aliquam eget, congue quis magna. Phasellus tincidunt tincidunt ante.
 
 Long gap to easily observed anchor usage...
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <div style="height: 1000px">&nbsp;</div>
 

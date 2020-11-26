@@ -10,13 +10,13 @@ PDF file. When using the download directive without a label, the extension will
 generate a link to the file via Confluence's view-file macro. For example, the
 two files should appear with two view-file elements:
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <div style="text-align: center">
 
 :download:`assets/example.py` :download:`assets/example.pdf`
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    </div>
 

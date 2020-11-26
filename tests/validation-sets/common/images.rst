@@ -34,7 +34,7 @@ ut. Phasellus vehicula aliquam dolor vel sodales.
 
 Images are typically included inline as follows:
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <p>
 
@@ -42,7 +42,7 @@ Images are typically included inline as follows:
    :align: center
    :alt: alternate text
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    </p>
 
@@ -50,7 +50,7 @@ Embedded images should be translated by Sphinx and this extension should handle
 these images as well. One of these five images is embedded and also one of these
 five images links to the section below:
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <p style="text-align: center">
 
@@ -140,14 +140,14 @@ five images links to the section below:
 .. image:: assets/github.png
    :target: `figure_section`_
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    </p>
 
 The following is an example of an image found on an external server (with a
 link target):
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <p style="text-align: center">
 
@@ -163,7 +163,7 @@ link target):
    :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    </p>
 
