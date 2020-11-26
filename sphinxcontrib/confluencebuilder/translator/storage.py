@@ -44,7 +44,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.add_secnumbers = config.confluence_add_secnumbers
         self.secnumber_suffix = config.confluence_secnumber_suffix
-        self.warn = document.reporter.warning
         self._building_footnotes = False
         self._figure_context = []
         self._manpage_url = getattr(config, 'manpages_url', None)

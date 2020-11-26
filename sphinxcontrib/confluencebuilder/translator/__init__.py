@@ -31,6 +31,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def __init__(self, document, builder):
         BaseTranslator.__init__(self, document)
         self.builder = builder
+        self.warn = document.reporter.warning
         config = builder.config
 
         # acquire the active document name from the builder
