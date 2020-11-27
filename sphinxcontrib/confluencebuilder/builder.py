@@ -365,20 +365,17 @@ class ConfluenceBuilder(Builder):
             title_element = self._find_title_element(doctree)
             if title_element:
                 # If the removed title is referenced to from within the same
-                # document (i.e. a local table of contents entry), remove the
-                # entry (and parents if empty). This should, in the case of a
-                # table of contents (contents directive), remove the leading
-                # generated title link.
+                # document (i.e. a local table of contents entry), flag any
+                # references pointing to it as a "top" (anchor) reference. This
+                # can be used later in a translator to hint at what type of link
+                # to build.
                 if 'refid' in title_element:
                     for node in doctree.traverse(nodes.reference):
                         if 'ids' in node and node['ids']:
-                            if node['ids'][0] == title_element['refid']:
-                                def remove_until_has_children(node):
-                                    parent = node.parent
-                                    parent.remove(node)
-                                    if not parent.children:
-                                        remove_until_has_children(parent)
-                                remove_until_has_children(node)
+                            for id in node['ids']:
+                                if id == title_element['refid']:
+                                    node['top-reference'] = True
+                                    break
 
                 title_element.parent.remove(title_element)
 

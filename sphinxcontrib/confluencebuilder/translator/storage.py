@@ -784,6 +784,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if 'iscurrent' in node:
             pass
+        elif 'top-reference' in node:
+            self._visit_reference_top(node)
         elif (('internal' not in node or not node['internal'])
                 and 'refuri' in node):
             # If a document provides an anchor target directly in the reference,
@@ -904,6 +906,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if navnode:
             self._reference_context.append(self._end_tag(node))
+
+    def _visit_reference_top(self, node):
+        self.body.append(self._start_tag(node, 'a', **{'href': '#top'}))
+        self._reference_context.append(self._end_tag(node, suffix=''))
 
     def depart_reference(self, node):
         for element in self._reference_context:
