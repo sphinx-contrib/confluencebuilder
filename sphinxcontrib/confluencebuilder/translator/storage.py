@@ -847,7 +847,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 anchorname = '%s/' % raw_anchor
         else:
             anchorname = '{}#{}'.format(self.docname, raw_anchor)
-  
+
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
         target = ConfluenceState.target(anchorname)
