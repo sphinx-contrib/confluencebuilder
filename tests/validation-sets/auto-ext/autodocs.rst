@@ -17,8 +17,10 @@ The autoclass_ directive:
 
 .. autoclass:: Hello
    :members: say_hello
+   :noindex:
 
    .. method:: foo(arg1, arg2)
+      :noindex:
 
       An overwritten description of the method ``foo``.
 
