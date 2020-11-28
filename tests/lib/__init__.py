@@ -118,7 +118,8 @@ def prepareDirectories(container):
     directories are removed before returning.
     """
     assert container
-    base_dir = os.path.dirname(os.path.realpath(__file__))
+    lib_dir = os.path.dirname(os.path.realpath(__file__))
+    base_dir = os.path.join(lib_dir, os.pardir)
     output_dir = os.path.join(base_dir, 'output')
     container_dir = os.path.join(output_dir, container)
     doc_dir = os.path.join(container_dir, 'build')
