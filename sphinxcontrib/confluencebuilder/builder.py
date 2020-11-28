@@ -352,6 +352,7 @@ class ConfluenceBuilder(Builder):
                 doctree.append(navnode)
 
         self.secnumbers = self.env.toc_secnumbers.get(docname, {})
+        self.fignumbers = self.env.toc_fignumbers.get(docname, {})
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:

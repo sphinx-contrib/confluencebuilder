@@ -43,6 +43,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         config = builder.config
 
         self.add_secnumbers = config.confluence_add_secnumbers
+        self.numfig = config.numfig
+        self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self._building_footnotes = False
         self._figure_context = []
@@ -105,11 +107,33 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append('.'.join(map(str, secnumber)) +
                 self.secnumber_suffix)
 
+    def add_fignumber(self, node):
+        if not self.numfig:
+            return
+
+        def append_fignumber(figtype, figure_id):
+            if self.builder.name == 'singleconfluence':
+                key = '%s/%s' % (self._docnames[-1], figtype)
+            else:
+                key = figtype
+
+            if figure_id in self.builder.fignumbers.get(key, {}):
+                prefix = self.numfig_format.get(figtype)
+                if prefix:
+                    numbers = self.builder.fignumbers[key][figure_id]
+                    self.body.append(prefix % '.'.join(map(str, numbers)) + ' ')
+
+        figtype = self.builder.env.domains['std'].get_enumerable_node_type(node)
+        if figtype:
+            if len(node['ids']) > 0:
+                append_fignumber(figtype, node['ids'][0])
+
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
             self.add_secnumber(node)
+            self.add_fignumber(node.parent)
             self.context.append(self._end_tag(node))
         else:
             # Only render section/topic titles in headers. For all other nodes,
@@ -1142,6 +1166,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
+        self.add_fignumber(node.parent)
         self.context.append(self._end_tag(node))
 
     def depart_caption(self, node):
