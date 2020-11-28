@@ -495,6 +495,11 @@ class ConfluenceBuilder(Builder):
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 ConfluenceLogger.info('done\n')
 
+            ConfluenceLogger.info(
+                'Publish point: {}spaces/TEST/pages/{}'.format(
+                    self.config.confluence_server_url,
+                    self.master_doc_page_id))
+
     def publish_purge(self):
         if self.config.confluence_purge:
             if self.publish_subset:
