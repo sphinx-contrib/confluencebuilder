@@ -14,17 +14,17 @@ import argparse
 import os
 import sys
 
-def process_sandbox(builder=None):
+def process_sandbox(target_sandbox, builder=None):
     test_dir = os.path.dirname(os.path.realpath(__file__))
-    sandbox_dir = os.path.join(test_dir, 'sandbox')
+    sandbox_dir = os.path.join(test_dir, target_sandbox)
 
     doc_dir, doctree_dir = prepareDirectories('sandbox-test')
     buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
         relax=True)
 
-def process_raw_upload():
+def process_raw_upload(target_sandbox):
     test_dir = os.path.dirname(os.path.realpath(__file__))
-    sandbox_dir = os.path.join(test_dir, 'sandbox')
+    sandbox_dir = os.path.join(test_dir, target_sandbox)
     raw_file = os.path.join(sandbox_dir, 'raw.conf')
 
     if not os.path.exists(raw_file):
@@ -62,6 +62,7 @@ def main():
         description='Atlassian Confluence Sphinx Extension Sandbox')
     parser.add_argument('--builder', '-b')
     parser.add_argument('--raw-upload', '-R', action='store_true')
+    parser.add_argument('--sandbox', default='sandbox')
     parser.add_argument('--verbose', '-v', action='store_true')
 
     args, ___ = parser.parse_known_args(sys.argv[1:])
@@ -73,10 +74,10 @@ def main():
 
     if args.raw_upload:
         print('[sandbox] raw-upload test')
-        process_raw_upload()
+        process_raw_upload(args.sandbox)
     else:
         print('[sandbox] documentation test')
-        process_sandbox(args.builder)
+        process_sandbox(args.sandbox, args.builder)
 
     return 0
 
