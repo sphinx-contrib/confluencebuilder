@@ -13,8 +13,6 @@ jobs:
   - python: "3.6"
     env: TOXENV=py36-sphinx18
   - python: "3.6"
-    env: TOXENV=py36-sphinx23
-  - python: "3.6"
     env: TOXENV=py36-sphinx24
   - python: "3.6"
     env: TOXENV=py36-sphinx30
@@ -22,11 +20,10 @@ jobs:
     env: TOXENV=py36-sphinx31
   - python: "3.6"
     env: TOXENV=py36-sphinx32
+  - python: "3.6"
+    env: TOXENV=py36-sphinx33
   - python: "3.7"
     env: TOXENV=py37-sphinx18
-    dist: xenial
-  - python: "3.7"
-    env: TOXENV=py37-sphinx23
     dist: xenial
   - python: "3.7"
     env: TOXENV=py37-sphinx24
@@ -40,11 +37,11 @@ jobs:
   - python: "3.7"
     env: TOXENV=py37-sphinx32
     dist: xenial
+  - python: "3.7"
+    env: TOXENV=py37-sphinx33
+    dist: xenial
   - python: "3.8"
     env: TOXENV=py38-sphinx18
-    dist: bionic
-  - python: "3.8"
-    env: TOXENV=py38-sphinx23
     dist: bionic
   - python: "3.8"
     env: TOXENV=py38-sphinx24
@@ -62,7 +59,7 @@ jobs:
     env: TOXENV=py27-sphinx18
     language: shell
   - os: osx
-    env: TOXENV=py37-sphinx23
+    env: TOXENV=py37-sphinx33
     language: shell
     osx_image: xcode10.2 # python 3.7.3
   - os: windows
