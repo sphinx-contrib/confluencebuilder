@@ -25,6 +25,7 @@ release = ''
 rst_epilog = """
 .. |supported_confluence_ver| replace:: 6.12+
 .. |supported_python_ver| replace:: 2.7 or 3.6+
+.. |supported_sphinx_ver| replace:: 1.8 or 2.4+
 """
 
 # List of patterns, relative to source directory, that match files and
