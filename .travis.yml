@@ -10,18 +10,6 @@ jobs:
   include:
   - python: "2.7"
     env: TOXENV=py27-sphinx18
-  - python: "3.5"
-    env: TOXENV=py35-sphinx18
-  - python: "3.5"
-    env: TOXENV=py35-sphinx23
-  - python: "3.5"
-    env: TOXENV=py35-sphinx24
-  - python: "3.5"
-    env: TOXENV=py35-sphinx30
-  - python: "3.5"
-    env: TOXENV=py35-sphinx31
-  - python: "3.5"
-    env: TOXENV=py35-sphinx32
   - python: "3.6"
     env: TOXENV=py36-sphinx18
   - python: "3.6"
