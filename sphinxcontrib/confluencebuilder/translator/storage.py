@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 :copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
-:copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -75,29 +75,32 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # structure
     # ---------
 
-    def add_secnumber(self, node):
-        # type: (nodes.Element) -> None
-        # From sphinx.writers.HTML5Translator.add_secnumber
+    def get_secnumber(self, node):
         if node.get('secnumber'):
-            self.body.append('.'.join(map(str, node['secnumber'])) +
-                             self.secnumber_suffix)
-        elif isinstance(node.parent, nodes.section):
+            return node['secnumber']
+
+        if isinstance(node.parent, nodes.section):
             if self.builder.name == 'singleconfluence':
                 docname = self._docnames[-1]
-                anchorname = "%s/#%s" % (docname, node.parent['ids'][0])
-                # try first heading which has no anchor
+                raw_anchor = node.parent['ids'][0]
+                anchorname = '%s/#%s' % (docname, node.parent['ids'][0])
                 if anchorname not in self.builder.secnumbers:
-                    anchorname = "%s/" % docname
+                    anchorname = '%s/' % raw_anchor
             else:
                 anchorname = '#' + node.parent['ids'][0]
-                # try first heading which has no anchor
                 if anchorname not in self.builder.secnumbers:
                     anchorname = ''
 
             if self.builder.secnumbers.get(anchorname):
-                numbers = self.builder.secnumbers[anchorname]
-                self.body.append('.'.join(map(str, numbers)) +
-                                 self.secnumber_suffix)
+                return self.builder.secnumbers[anchorname]
+
+        return None
+
+    def add_secnumber(self, node):
+        secnumber = self.get_secnumber(node)
+        if secnumber:
+            self.body.append('.'.join(map(str, secnumber)) +
+                self.secnumber_suffix)
 
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
