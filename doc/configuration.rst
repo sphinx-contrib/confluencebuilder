@@ -1058,9 +1058,9 @@ See also:
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
-.. _Requests SSL Cert Verification: http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification
+.. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
-.. _Requests -- Authentication: https://2.python-requests.org/projects/3/user/authentication/
+.. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
