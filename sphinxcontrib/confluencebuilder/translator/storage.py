@@ -44,7 +44,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.add_secnumbers = config.confluence_add_secnumbers
         self.secnumber_suffix = config.confluence_secnumber_suffix
-        self.warn = document.reporter.warning
         self._building_footnotes = False
         self._figure_context = []
         self._manpage_url = getattr(config, 'manpages_url', None)
@@ -228,7 +227,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             elif node['enumtype'] == 'arabic':
                 list_style_type = 'decimal'
             else:
-                ConfluenceLogger.warn(
+                self.warn(
                     'unknown enumerated list type: {}'.format(node['enumtype']))
 
         if list_style_type:
@@ -466,7 +465,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             lang = LITERAL2LANG_MAP[lang]
         else:
             if lang not in self._tracked_unknown_code_lang:
-                ConfluenceLogger.warn('unknown code language: {}'.format(lang))
+                self.warn('unknown code language: {}'.format(lang))
                 self._tracked_unknown_code_lang.append(lang)
             lang = LITERAL2LANG_MAP[FALLBACK_HIGHLIGHT_STYLE]
 
@@ -854,7 +853,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.docparent + path.splitext(node['refuri'].split('#')[0])[0])
         doctitle = ConfluenceState.title(docname)
         if not doctitle:
-            ConfluenceLogger.warn('unable to build link to document due to '
+            self.warn('unable to build link to document due to '
                 'missing title (in {}): {}'.format(self.docname, docname))
 
             # build a broken link
@@ -1189,8 +1188,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             fulluri = path.join(self.builder.srcdir, uri)
             size = get_image_size(fulluri)
             if size is None:
-                ConfluenceLogger.warn('Could not obtain image size. :scale: option is ignored for '
-                '{}'.format(fulluri))
+                self.warn('could not obtain image size; :scale: option is '
+                    'ignored for {}'.format(fulluri))
             else:
                 scale = node['scale'] / 100.0
                 node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
@@ -1488,7 +1487,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         elif node['type'] == 'versionadded':
             self._visit_info(node)
         else:
-            ConfluenceLogger.warn('unsupported version modification type: '
+            self.warn('unsupported version modification type: '
                 '{}'.format(node['type']))
             self._visit_info(node)
 
@@ -1563,6 +1562,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_line_block(self, node):
         self.body.append(self.context.pop()) # p
+
+    def visit_raw(self, node):
+        if 'confluence_storage' in node.get('format', '').split():
+            self.body.append(self.nl.join(node.astext().splitlines()))
+        else:
+            # support deprecated 'confluence' format for an interim
+            ConfluenceBaseTranslator.visit_raw(self, node)
+        raise nodes.SkipNode
 
     # ##########################################################################
     # #                                                                        #

@@ -16,6 +16,8 @@ import io
 import sys
 
 class ConfluenceBaseTranslator(BaseTranslator):
+    _tracked_deprecated_raw_type = False
+
     """
     confluence base extension translator
 
@@ -31,6 +33,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def __init__(self, document, builder):
         BaseTranslator.__init__(self, document)
         self.builder = builder
+        self.warn = document.reporter.warning
         config = builder.config
 
         # acquire the active document name from the builder
@@ -84,8 +87,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with io.open(headerFile, encoding='utf-8') as file:
                     self.document += file.read() + self.nl
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(headerFile, err))
+                self.warn('error reading file {}: {}'.format(headerFile, err))
 
         self.document += ''.join(self.body)
 
@@ -97,8 +99,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with io.open(footerFile, encoding='utf-8') as file:
                     self.document += file.read() + self.nl
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn('error reading file '
-                    '{}: {}'.format(footerFile, err))
+                self.warn('error reading file {}: {}'.format(footerFile, err))
 
     def visit_Text(self, node):
         text = node.astext()
@@ -257,6 +258,11 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
     def visit_raw(self, node):
         if 'confluence' in node.get('format', '').split():
+            if not self._tracked_deprecated_raw_type:
+                self._tracked_deprecated_raw_type = True
+                self.warn('the raw "confluence" type is deprecated; '
+                    'use "confluence_storage" instead')
+
             self.body.append(self.nl.join(node.astext().splitlines()))
         raise nodes.SkipNode
 

@@ -6,7 +6,7 @@ arbitrary location to another page's section.
 
 Long gap to easily observed anchor usage...
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <div style="height: 1000px">&nbsp;</div>
 

@@ -5,6 +5,6 @@
 raw
 ---
 
-.. raw:: confluence
+.. raw:: confluence_storage
 
    <strong>raw content</strong>
