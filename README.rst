@@ -28,7 +28,7 @@ Requirements
 
 * Python_ 2.7 or 3.5+
 * Requests_ 2.14.0+
-* Sphinx_ 1.8+
+* Sphinx_ 1.8 or 2.4+
 
 If publishing:
 
