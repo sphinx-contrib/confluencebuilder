@@ -63,13 +63,10 @@ class ConfluenceBuilder(Builder):
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
 
-        # section numbers for headings in the currently visited document
-        self.secnumbers = {}
+        self.add_secnumbers = self.config.confluence_add_secnumbers
         self.cache_doctrees = {}
         self.file_suffix = '.conf'
         self.link_suffix = None
-        self.add_secnumbers = self.config.confluence_add_secnumbers
-        self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.master_doc_page_id = None
         self.metadata = {}
         self.nav_next = {}
@@ -77,6 +74,8 @@ class ConfluenceBuilder(Builder):
         self.omitted_docnames = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
+        self.secnumber_suffix = self.config.confluence_secnumber_suffix
+        self.secnumbers = {}
         self._original_get_doctree = None
 
         # state tracking is set at initialization (not cleanup) so its content's
@@ -249,13 +248,10 @@ class ConfluenceBuilder(Builder):
             if not doctitle:
                 continue
 
-            if self.add_secnumbers:
-                secnumbers = self.env.toc_secnumbers.get(docname, {})
-                if secnumbers.get(''):
-                    # Add section number to page
-                    doctitle = ('.'.join(map(str, secnumbers[''])) +
-                                self.secnumber_suffix +
-                                doctitle)
+            secnumbers = self.env.toc_secnumbers.get(docname, {})
+            if self.add_secnumbers and secnumbers.get(''):
+                doctitle = ('.'.join(map(str, secnumbers[''])) +
+                    self.secnumber_suffix + doctitle)
 
             doctitle = ConfluenceState.registerTitle(docname, doctitle,
                 self.config)
@@ -269,7 +265,10 @@ class ConfluenceBuilder(Builder):
                 ConfluenceState.registerToctreeDepth(
                     docname, toctree.get('maxdepth'))
 
-            # for every doctree, pick the best image candidate
+            # register title targets for references
+            self._register_doctree_title_targets(docname, doctree)
+
+            # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
 
         # Scan for assets that may exist in the documents to be published. This
@@ -283,9 +282,6 @@ class ConfluenceBuilder(Builder):
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
         self._extract_metadata(docname, doctree)
-
-        # register targets for references
-        self._register_doctree_targets(docname, doctree)
 
         # replace inheritance diagram with images
         self._replace_inheritance_diagram(doctree)
@@ -355,10 +351,7 @@ class ConfluenceBuilder(Builder):
                 navnode.bottom = True
                 doctree.append(navnode)
 
-        if self.add_secnumbers:
-            # Add section numbers from toctree to builder so that they
-            # are available to the writer and translator
-            self.secnumbers = self.env.toc_secnumbers.get(docname, {})
+        self.secnumbers = self.env.toc_secnumbers.get(docname, {})
 
         # remove title from page contents (if any)
         if self.config.confluence_remove_title:
@@ -733,11 +726,11 @@ class ConfluenceBuilder(Builder):
             self.cache_doctrees[docname] = self._original_get_doctree(docname)
         return self.cache_doctrees[docname]
 
-    def _register_doctree_targets(self, docname, doctree):
+    def _register_doctree_title_targets(self, docname, doctree):
         """
-        register targets for a doctree
+        register title targets for a doctree
 
-        Compiles a list of targets which references can link against. This
+        Compiles a list of title targets which references can link against. This
         tracked expected targets for sections which are automatically generated
         in a rendered Confluence instance.
 
@@ -745,12 +738,26 @@ class ConfluenceBuilder(Builder):
             docname: the docname of the doctree
             doctree: the doctree to search for targets
         """
+
         doc_used_names = {}
+        secnumbers = self.env.toc_secnumbers.get(docname, {})
+
         for node in doctree.traverse(nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
                 if 'ids' in section_node:
                     target = ''.join(node.astext().split())
+
+                    if self.add_secnumbers:
+                        anchorname = '#' + target
+                        if anchorname not in secnumbers:
+                            anchorname = ''
+
+                        secnumber = secnumbers.get(anchorname)
+                        if secnumber:
+                            target = ('.'.join(map(str, secnumber)) +
+                                self.secnumber_suffix + target)
+
                     section_id = doc_used_names.get(target, 0)
                     doc_used_names[target] = section_id + 1
                     if section_id > 0:

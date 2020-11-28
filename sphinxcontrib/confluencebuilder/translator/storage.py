@@ -97,6 +97,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return None
 
     def add_secnumber(self, node):
+        if not self.add_secnumbers:
+            return
+
         secnumber = self.get_secnumber(node)
         if secnumber:
             self.body.append('.'.join(map(str, secnumber)) +
@@ -106,8 +109,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
-            if self.add_secnumbers:
-                self.add_secnumber(node)
+            self.add_secnumber(node)
             self.context.append(self._end_tag(node))
         else:
             # Only render section/topic titles in headers. For all other nodes,
@@ -812,19 +814,26 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context.append(self._end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
-        anchor = ''.join(node['refid'].split())
+        raw_anchor = ''.join(node['refid'].split())
 
+        if self.builder.name == 'singleconfluence':
+            docname = self._docnames[-1]
+            anchorname = '%s/#%s' % (docname, raw_anchor)
+            if anchorname not in self.builder.secnumbers:
+                anchorname = '%s/' % raw_anchor
+        else:
+            anchorname = '{}#{}'.format(self.docname, raw_anchor)
+  
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
-        target_name = '{}#{}'.format(self.docname, anchor)
-        target = ConfluenceState.target(target_name)
+        target = ConfluenceState.target(anchorname)
         if target:
             anchor_value = target
             anchor_value = self._escape_sf(anchor_value)
         elif not self.can_anchor:
             anchor_value = None
         else:
-            anchor_value = anchor
+            anchor_value = raw_anchor
 
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
@@ -902,7 +911,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.add_secnumbers and node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
-                             self.secnumber_suffix)
+                self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
 
