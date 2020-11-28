@@ -33,17 +33,6 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         return tree
 
     def assemble_toc_secnumbers(self):
-        #
-        # Assemble toc_secnumbers to resolve section numbers on SingleHTML.
-        # Merge all secnumbers to single secnumber.
-        #
-        # Note: current Sphinx has refid confliction in singlehtml mode.
-        #       To avoid the problem, it replaces key of secnumbers to
-        #       tuple of docname and refid.
-        #
-        #       There are related codes in inline_all_toctres() and
-        #       HTMLTranslter#add_secnumber().
-        #
         new_secnumbers = {}
 
         for docname, secnums in self.env.toc_secnumbers.items():
@@ -54,23 +43,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         return {self.config.master_doc: new_secnumbers}
 
     def assemble_toc_fignumbers(self):
-        #
-        # Assemble toc_fignumbers to resolve figure numbers on SingleHTML.
-        # Merge all fignumbers to single fignumber.
-        #
-        # Note: current Sphinx has refid confliction in singlehtml mode.
-        #       To avoid the problem, it replaces key of secnumbers to
-        #       tuple of docname and refid.
-        #
-        #       There are related codes in inline_all_toctres() and
-        #       HTMLTranslter#add_fignumber().
-        #
         new_fignumbers = {}
 
-        #
-        # {'foo': {'figure': {'id2': (2,), 'id1': (1,)}},
-        #  'bar': {'figure': {'id1': (3,)}}}
-        #
         for docname, fignumlist in self.env.toc_fignumbers.items():
             for figtype, fignums in fignumlist.items():
                 alias = '{}/{}'.format(docname, figtype)
