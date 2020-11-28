@@ -6,6 +6,7 @@
 
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
+from tests.lib import parse
 from tests.lib import prepareConfiguration
 from tests.lib import prepareDirectories
 import os
@@ -16,6 +17,32 @@ class TestConfluenceSinglePage(unittest.TestCase):
     def setUpClass(self):
         self.config = prepareConfiguration()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
+
+    def test_singlepage_contents_default(self):
+        dataset = os.path.join(self.test_dir, 'dataset-contents')
+        doc_dir, doctree_dir = prepareDirectories('singlepage-contents')
+        buildSphinx(dataset, doc_dir, doctree_dir, self.config,
+            builder='singleconfluence')
+
+        with parse('index', doc_dir) as data:
+            links = data.find_all('ac:link')
+            self.assertEqual(len(links), 3)
+            self.assertEqual(links[0]['ac:anchor'], 'sub')
+            self.assertEqual(links[1]['ac:anchor'], 'section')
+            self.assertEqual(links[2]['ac:anchor'], 'section.1')
+
+    def test_singlepage_contents_numbered(self):
+        dataset = os.path.join(self.test_dir, 'dataset-contents-numbered')
+        doc_dir, doctree_dir = prepareDirectories('singlepage-contents-numberd')
+        buildSphinx(dataset, doc_dir, doctree_dir, self.config,
+            builder='singleconfluence')
+
+        with parse('index', doc_dir) as data:
+            links = data.find_all('ac:link')
+            self.assertEqual(len(links), 3)
+            self.assertEqual(links[0]['ac:anchor'], '1. sub')
+            self.assertEqual(links[1]['ac:anchor'], '1.1. section')
+            self.assertEqual(links[2]['ac:anchor'], '1.2. section')
 
     def test_singlepage_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
