@@ -52,11 +52,10 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_toctree_numbered_default(self):
-        config = dict(self.config)
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-default')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-default')
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, doctree_dir, self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
@@ -65,6 +64,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
     def test_toctree_numbered_disable(self):
         config = dict(self.config)
         config['confluence_add_secnumbers'] = False
+
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-disabled')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-disabled')
@@ -76,8 +76,8 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
     def test_toctree_numbered_secnumbers_suffix(self):
         config = dict(self.config)
-        config['confluence_add_secnumbers'] = True
         config['confluence_secnumber_suffix'] = '!Z /+4'
+
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-suffix')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-suffix')
@@ -88,11 +88,10 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
 
     def test_toctree_numbered_secnumbers_depth(self):
-        config = dict(self.config)
         dataset = os.path.join(self.test_dir, 'dataset-numbered-depth')
         expected = os.path.join(self.test_dir, 'expected-numbered-depth')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-depth')
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, doctree_dir, self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
