@@ -55,6 +55,27 @@ jobs:
   - python: "3.8"
     env: TOXENV=py38-sphinx32
     dist: bionic
+  - python: "3.8"
+    env: TOXENV=py38-sphinx33
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx18
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx24
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx30
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx31
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx32
+    dist: bionic
+  - python: "3.9"
+    env: TOXENV=py39-sphinx33
+    dist: bionic
   - os: osx
     env: TOXENV=py27-sphinx18
     language: shell
