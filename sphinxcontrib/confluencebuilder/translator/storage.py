@@ -785,8 +785,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             pass
         elif 'top-reference' in node:
             self._visit_reference_top(node)
-        elif (('internal' not in node or not node['internal'])
-                and 'refuri' in node):
+        elif 'refuri' in node:
             # If a document provides an anchor target directly in the reference,
             # attempt to extract the anchor value and pass it into the internal
             # reference processing instead.
@@ -794,12 +793,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 node['refid'] = node['refuri'][1:]
                 del node['refuri']
                 self._visit_reference_intern_id(node)
-            else:
+            elif 'internal' not in node or not node['internal']:
                 self._visit_reference_extern(node)
+            else:
+                self._visit_reference_intern_uri(node)
         elif 'refid' in node:
             self._visit_reference_intern_id(node)
-        elif 'refuri' in node:
-            self._visit_reference_intern_uri(node)
 
     def _visit_reference_extern(self, node):
         uri = node['refuri']
