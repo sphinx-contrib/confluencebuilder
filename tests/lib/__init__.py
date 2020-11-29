@@ -130,8 +130,8 @@ def prepareDirectories(container):
     return doc_dir, doctree_dir
 
 @contextmanager
-def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
-        relax=False):
+def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
+        builder=None, relax=False):
     """
     prepare a sphinx application instance
 
@@ -145,8 +145,10 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
     if not color_terminal():
         nocolor()
 
-    conf = dict(config) if config else None
-    conf_dir = src_dir if not conf else None
+    conf = dict(config) if config else {}
+    if extra_config:
+        conf.update(extra_config)
+    conf_dir = src_dir if config is None else None
     warnerr = not relax
 
     sts = None
@@ -167,7 +169,7 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
     with docutils_namespace():
         app = Sphinx(
             src_dir,                # output for document sources
-            conf_dir,               # ignore configuration directory
+            conf_dir,               # configuration directory
             out_dir,                # output for generated documents
             doctree_dir,            # output for doctree files
             builder,                # builder to execute
@@ -179,8 +181,8 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
 
         yield app
 
-def buildSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
-        relax=False):
+def buildSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
+        builder=None, relax=False):
     """
     prepare a sphinx application instance
 
@@ -189,6 +191,6 @@ def buildSphinx(src_dir, out_dir, doctree_dir, config=None, builder=None,
     [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
     """
     with prepareSphinx(
-            src_dir, out_dir, doctree_dir, config, builder=builder,
-            relax=relax) as app:
+            src_dir, out_dir, doctree_dir, config=config,
+            extra_config=extra_config, builder=builder, relax=relax) as app:
         app.build(force_all=True)
