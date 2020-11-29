@@ -216,8 +216,13 @@ def setup(app):
     """Wires up the directives themselves"""
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
 
-    if 'sphinx.ext.autosummary' in app.config.extensions:
-        add_autosummary_nodes(app)
+    # inject the compatible autosummary nodes if the extension is loaded
+    def inject_autosummary_notes_hook(app):
+        for ext in app.extensions.values():
+            if ext.name == 'sphinx.ext.autosummary':
+                add_autosummary_nodes(app)
+                break
+    app.connect('builder-inited', inject_autosummary_notes_hook)
 
     # lazy bind sphinx.ext.imgmath to provide configuration options
     #
