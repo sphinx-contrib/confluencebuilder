@@ -38,9 +38,6 @@ class TestConfluenceCommon(unittest.TestCase):
         expected = expected if expected else self.expected
         assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
-    def test_failure(self):
-            self.assertEqual(False, True)
-
     def test_admonitions(self):
         def verify_admonition_tags(data, text, expected_type):
             leaf = data.find(text=text)
