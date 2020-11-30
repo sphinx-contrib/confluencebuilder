@@ -8,9 +8,9 @@ Atlassian Confluence Builder for Sphinx
    :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder
    :alt: pip Version
 
-.. image:: https://travis-ci.com/sphinx-contrib/confluencebuilder.svg?branch=master
-   :target: https://travis-ci.com/sphinx-contrib/confluencebuilder
-   :alt: Build Status
+.. image:: https://github.com/sphinx-contrib/confluencebuilder/workflows/build/badge.svg?branch=master
+    :target: https://github.com/sphinx-contrib/confluencebuilder/actions?query=workflow%3Abuild
+    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/sphinxcontrib-confluencebuilder/badge/?version=latest
    :target: https://sphinxcontrib-confluencebuilder.readthedocs.io/
