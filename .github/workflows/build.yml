@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ${{ matrix.include.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
@@ -39,10 +39,10 @@ jobs:
             - { os: windows-latest, python: 3.9, env: TOXENV=py39-sphinx33 }
 
     steps:
-    - name: Set up Python ${{ matrix.include.python }}
+    - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.include.python }}
+        python-version: ${{ matrix.python }}
 
     - name: Python interpreter
       run: python -c "import sys; print(sys.version)"
