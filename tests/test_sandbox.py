@@ -14,13 +14,13 @@ import argparse
 import os
 import sys
 
-def process_sandbox(target_sandbox, builder=None):
+def process_sandbox(target_sandbox, builder=None, defines=None):
     test_dir = os.path.dirname(os.path.realpath(__file__))
     sandbox_dir = os.path.join(test_dir, target_sandbox)
 
     doc_dir, doctree_dir = prepareDirectories('sandbox-test')
     buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
-        relax=True)
+        extra_config=defines, relax=True)
 
 def process_raw_upload(target_sandbox):
     test_dir = os.path.dirname(os.path.realpath(__file__))
@@ -60,6 +60,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog=__name__,
         description='Atlassian Confluence Sphinx Extension Sandbox')
+    parser.add_argument('-D', action='append', default=[], dest='define')
     parser.add_argument('--builder', '-b')
     parser.add_argument('--raw-upload', '-R', action='store_true')
     parser.add_argument('--sandbox', default='sandbox')
@@ -67,6 +68,17 @@ def main():
 
     args, ___ = parser.parse_known_args(sys.argv[1:])
     parser.parse_args()
+
+    defines = {}
+    for val in args.define:
+        try:
+            key, val = val.split('=', 1)
+            defines[key] = val
+        except ValueError:
+            print('[sandbox] invalid define provided in command line')
+            return 1
+
+    print('[sandbox] target sandbox:', args.sandbox)
 
     if args.verbose:
         if 'SPHINX_VERBOSITY' not in os.environ:
@@ -77,7 +89,7 @@ def main():
         process_raw_upload(args.sandbox)
     else:
         print('[sandbox] documentation test')
-        process_sandbox(args.sandbox, args.builder)
+        process_sandbox(args.sandbox, args.builder, defines)
 
     return 0
 
