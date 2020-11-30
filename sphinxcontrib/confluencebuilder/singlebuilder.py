@@ -33,17 +33,6 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         return tree
 
     def assemble_toc_secnumbers(self):
-        #
-        # Assemble toc_secnumbers to resolve section numbers on SingleHTML.
-        # Merge all secnumbers to single secnumber.
-        #
-        # Note: current Sphinx has refid confliction in singlehtml mode.
-        #       To avoid the problem, it replaces key of secnumbers to
-        #       tuple of docname and refid.
-        #
-        #       There are related codes in inline_all_toctres() and
-        #       HTMLTranslter#add_secnumber().
-        #
         new_secnumbers = {}
 
         for docname, secnums in self.env.toc_secnumbers.items():
@@ -54,23 +43,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         return {self.config.master_doc: new_secnumbers}
 
     def assemble_toc_fignumbers(self):
-        #
-        # Assemble toc_fignumbers to resolve figure numbers on SingleHTML.
-        # Merge all fignumbers to single fignumber.
-        #
-        # Note: current Sphinx has refid confliction in singlehtml mode.
-        #       To avoid the problem, it replaces key of secnumbers to
-        #       tuple of docname and refid.
-        #
-        #       There are related codes in inline_all_toctres() and
-        #       HTMLTranslter#add_fignumber().
-        #
         new_fignumbers = {}
 
-        #
-        # {'foo': {'figure': {'id2': (2,), 'id1': (1,)}},
-        #  'bar': {'figure': {'id1': (3,)}}}
-        #
         for docname, fignumlist in self.env.toc_fignumbers.items():
             for figtype, fignums in fignumlist.items():
                 alias = '{}/{}'.format(docname, figtype)
@@ -107,12 +81,17 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             return
 
         with progress_message(__('assembling single confluence document')):
-            doctree = self.assemble_doctree()
-            self._prepare_doctree_writing(self.config.master_doc, doctree)
-
             self.env.toc_secnumbers = self.assemble_toc_secnumbers()
             self.env.toc_fignumbers = self.assemble_toc_fignumbers()
 
+            # register title targets for references before assembling doc
+            # re-works them into a single document
+            for docname in docnames:
+                doctree = self.env.get_doctree(docname)
+                self._register_doctree_title_targets(docname, doctree)
+
+            doctree = self.assemble_doctree()
+            self._prepare_doctree_writing(self.config.master_doc, doctree)
             self.assets.processDocument(doctree, self.config.master_doc)
 
         with progress_message(__('writing single confluence document')):
@@ -177,3 +156,45 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         self.publish_docnames.append(docname)
 
         return doctitle
+
+    def _register_doctree_title_targets(self, docname, doctree):
+        """
+        register title targets for a doctree
+
+        Compiles a list of title targets which references can link against. This
+        tracked expected targets for sections which are automatically generated
+        in a rendered Confluence instance.
+
+        Args:
+            docname: the docname of the doctree
+            doctree: the doctree to search for targets
+        """
+
+        doc_used_names = {}
+        secnumbers = self.env.toc_secnumbers.get(self.config.master_doc, {})
+
+        for node in doctree.traverse(nodes.title):
+            if isinstance(node.parent, nodes.section):
+                section_node = node.parent
+                if 'ids' in section_node:
+                    title_name = ''.join(node.astext().split())
+
+                    for id in section_node['ids']:
+                        target = title_name
+
+                        anchorname = '%s/#%s' % (docname, id)
+                        if anchorname not in secnumbers:
+                            anchorname = '%s/' % id
+
+                        if self.add_secnumbers:
+                            secnumber = secnumbers.get(anchorname)
+                            if secnumber:
+                                target = ('.'.join(map(str, secnumber)) +
+                                    self.secnumber_suffix + target)
+
+                        section_id = doc_used_names.get(target, 0)
+                        doc_used_names[target] = section_id + 1
+                        if section_id > 0:
+                            target = '{}.{}'.format(target, section_id)
+
+                        ConfluenceState.registerTarget(anchorname, target)

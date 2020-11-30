@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 :copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
-:copyright: Copyright 2018 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -43,6 +43,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         config = builder.config
 
         self.add_secnumbers = config.confluence_add_secnumbers
+        self.numfig = config.numfig
+        self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self._building_footnotes = False
         self._figure_context = []
@@ -75,36 +77,63 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # structure
     # ---------
 
-    def add_secnumber(self, node):
-        # type: (nodes.Element) -> None
-        # From sphinx.writers.HTML5Translator.add_secnumber
+    def get_secnumber(self, node):
         if node.get('secnumber'):
-            self.body.append('.'.join(map(str, node['secnumber'])) +
-                             self.secnumber_suffix)
-        elif isinstance(node.parent, nodes.section):
+            return node['secnumber']
+
+        if isinstance(node.parent, nodes.section):
             if self.builder.name == 'singleconfluence':
                 docname = self._docnames[-1]
-                anchorname = "%s/#%s" % (docname, node.parent['ids'][0])
-                # try first heading which has no anchor
+                raw_anchor = node.parent['ids'][0]
+                anchorname = '%s/#%s' % (docname, node.parent['ids'][0])
                 if anchorname not in self.builder.secnumbers:
-                    anchorname = "%s/" % docname
+                    anchorname = '%s/' % raw_anchor
             else:
                 anchorname = '#' + node.parent['ids'][0]
-                # try first heading which has no anchor
                 if anchorname not in self.builder.secnumbers:
                     anchorname = ''
 
             if self.builder.secnumbers.get(anchorname):
-                numbers = self.builder.secnumbers[anchorname]
-                self.body.append('.'.join(map(str, numbers)) +
-                                 self.secnumber_suffix)
+                return self.builder.secnumbers[anchorname]
+
+        return None
+
+    def add_secnumber(self, node):
+        if not self.add_secnumbers:
+            return
+
+        secnumber = self.get_secnumber(node)
+        if secnumber:
+            self.body.append('.'.join(map(str, secnumber)) +
+                self.secnumber_suffix)
+
+    def add_fignumber(self, node):
+        if not self.numfig:
+            return
+
+        def append_fignumber(figtype, figure_id):
+            if self.builder.name == 'singleconfluence':
+                key = '%s/%s' % (self._docnames[-1], figtype)
+            else:
+                key = figtype
+
+            if figure_id in self.builder.fignumbers.get(key, {}):
+                prefix = self.numfig_format.get(figtype)
+                if prefix:
+                    numbers = self.builder.fignumbers[key][figure_id]
+                    self.body.append(prefix % '.'.join(map(str, numbers)) + ' ')
+
+        figtype = self.builder.env.domains['std'].get_enumerable_node_type(node)
+        if figtype:
+            if len(node['ids']) > 0:
+                append_fignumber(figtype, node['ids'][0])
 
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
                 self._start_tag(node, 'h{}'.format(self._title_level)))
-            if self.add_secnumbers:
-                self.add_secnumber(node)
+            self.add_secnumber(node)
+            self.add_fignumber(node.parent)
             self.context.append(self._end_tag(node))
         else:
             # Only render section/topic titles in headers. For all other nodes,
@@ -808,19 +837,26 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context.append(self._end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
-        anchor = ''.join(node['refid'].split())
+        raw_anchor = ''.join(node['refid'].split())
+
+        if self.builder.name == 'singleconfluence':
+            docname = self._docnames[-1]
+            anchorname = '%s/#%s' % (docname, raw_anchor)
+            if anchorname not in self.builder.secnumbers:
+                anchorname = '%s/' % raw_anchor
+        else:
+            anchorname = '{}#{}'.format(self.docname, raw_anchor)
 
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
-        target_name = '{}#{}'.format(self.docname, anchor)
-        target = ConfluenceState.target(target_name)
+        target = ConfluenceState.target(anchorname)
         if target:
             anchor_value = target
             anchor_value = self._escape_sf(anchor_value)
         elif not self.can_anchor:
             anchor_value = None
         else:
-            anchor_value = anchor
+            anchor_value = raw_anchor
 
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
@@ -898,7 +934,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.add_secnumbers and node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
-                             self.secnumber_suffix)
+                self.secnumber_suffix)
         self._reference_context.append(self._end_ac_link_body(node))
         self._reference_context.append(self._end_ac_link(node))
 
@@ -1129,6 +1165,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
+        self.add_fignumber(node.parent)
         self.context.append(self._end_tag(node))
 
     def depart_caption(self, node):
