@@ -1256,7 +1256,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_image(node))
         else:
             image_key, hosting_docname = self.assets.fetch(node)
-            hosting_doctitle = ConfluenceState.title(hosting_docname)
+            hosting_doctitle = ConfluenceState.title(
+                hosting_docname, hosting_docname)
             hosting_doctitle = self._escape_sf(hosting_doctitle)
 
             self.body.append(self._start_ac_image(node, **attribs))
