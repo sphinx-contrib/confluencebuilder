@@ -252,21 +252,23 @@ class ConfluenceBuilder(Builder):
             else:
                 doctitle = self._parse_doctree_title(docname, doctree)
 
-            if not doctitle:
-                continue
+            # only register title/track for publishing if there is a title
+            # value that can be applied to this document
+            if doctitle:
+                secnumbers = self.env.toc_secnumbers.get(docname, {})
+                if self.add_secnumbers and secnumbers.get(''):
+                    doctitle = ('.'.join(map(str, secnumbers[''])) +
+                        self.secnumber_suffix + doctitle)
 
-            secnumbers = self.env.toc_secnumbers.get(docname, {})
-            if self.add_secnumbers and secnumbers.get(''):
-                doctitle = ('.'.join(map(str, secnumbers[''])) +
-                    self.secnumber_suffix + doctitle)
+                doctitle = ConfluenceState.registerTitle(docname, doctitle,
+                    self.config)
 
-            doctitle = ConfluenceState.registerTitle(docname, doctitle,
-                self.config)
+                # only publish documents that sphinx asked to prepare
+                if docname in docnames:
+                    self.publish_docnames.append(docname)
 
-            if docname in docnames:
-                # Only publish documents that Sphinx asked to prepare
-                self.publish_docnames.append(docname)
-
+            # track the toctree depth for a document, which a translator can
+            # use as a hint when dealing with max-depth capabilities
             toctree = first(doctree.traverse(addnodes.toctree))
             if toctree and toctree.get('maxdepth') > 0:
                 ConfluenceState.registerToctreeDepth(

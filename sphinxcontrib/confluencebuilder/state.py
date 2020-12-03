@@ -195,13 +195,13 @@ class ConfluenceState:
         return ConfluenceState.refid2target.get(refid)
 
     @staticmethod
-    def title(docname):
+    def title(docname, default=None):
         """
         return the title value for a provided docname
 
         See `registerTitle` for more information.
         """
-        return ConfluenceState.doc2title.get(docname)
+        return ConfluenceState.doc2title.get(docname, default)
 
     @staticmethod
     def toctreeDepth(docname):
