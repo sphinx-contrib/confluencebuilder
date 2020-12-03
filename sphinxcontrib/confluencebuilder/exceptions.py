@@ -136,3 +136,28 @@ class ConfluenceTimeoutError(ConfluenceError):
             """    %s\n""" % server_url +
             """---\n"""
         )
+
+class ConfluenceUnreconciledPageError(ConfluenceError):
+    def __init__(self, page_name, page_id, url, ex):
+        SphinxError.__init__(self,
+            """---\n"""
+            """Unable to update unreconciled page: %s """ % page_name +
+            """(id: %s)\n""" % str(page_id) +
+            """\n"""
+            """Unable to update the target page due to the Confluence """
+            """instance reporting an unreconciled page. A workaround for """
+            """this is to manually browse the page using a browser which """
+            """will force Confluence to reconcile the page. A link to the """
+            """page is a follows:\n"""
+            """\n"""
+            """   %spages/viewpage.action?pageId=%s""" % (url, str(page_id)) +
+            """\n\n"""
+            """If this is observed on Confluence v6.x, v7.3.3 or higher, """
+            """please report this issue to the developers of the Confluence """
+            """builder extension.\n"""
+            """\n"""
+            """See also: https://jira.atlassian.com/browse/CONFSERVER-59196\n"""
+            """\n(details: %s""" % ex +
+            """)\n"""
+            """---\n"""
+        )
