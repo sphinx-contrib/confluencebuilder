@@ -32,6 +32,14 @@ from sphinx.util.osutil import ensuredir
 import io
 import sys
 
+# load graphviz extension if available to handle node pre-processing
+try:
+    from sphinx.ext.graphviz import GraphvizError
+    from sphinx.ext.graphviz import graphviz
+    from sphinx.ext.graphviz import render_dot
+except ImportError:
+    graphviz = None
+
 # load imgmath extension if available to handle math node pre-processing
 try:
     from sphinx.ext import imgmath
@@ -40,12 +48,11 @@ except ImportError:
     imgmath = None
 
 # load inheritance_diagram extension if available to handle node pre-processing
-try:
-    from sphinx.ext import inheritance_diagram
-    from sphinx.ext.graphviz import GraphvizError
-    from sphinx.ext.graphviz import render_dot
-except ImportError:
-    inheritance_diagram = None
+if graphviz:
+    try:
+        from sphinx.ext import inheritance_diagram
+    except ImportError:
+        inheritance_diagram = None
 
 # handle proper input request in python 2.7
 try:
@@ -282,6 +289,9 @@ class ConfluenceBuilder(Builder):
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
         self._extract_metadata(docname, doctree)
+
+        # replace graphviz nodes with images
+        self._replace_graphviz_nodes(doctree)
 
         # replace inheritance diagram with images
         self._replace_inheritance_diagram(doctree)
@@ -772,6 +782,50 @@ class ConfluenceBuilder(Builder):
                     for id in section_node['ids']:
                         id = '{}#{}'.format(docname, id)
                         ConfluenceState.registerTarget(id, target)
+
+    def _replace_graphviz_nodes(self, doctree):
+        """
+        replace graphviz nodes with images
+
+        graphviz nodes are pre-processed and replaced with respective images in
+        the processed documentation set. Typically, the node support from
+        `sphinx.ext.graphviz` would be added to the builder; however, this
+        extension renders graphs during the translation phase (which is not
+        ideal for how assets are managed in this extension).
+
+        Instead, this implementation just traverses for graphviz nodes,
+        generates renderings and replaces the nodes with image nodes (which in
+        turn will be handled by the existing image-based implementation).
+
+        Args:
+            doctree: the doctree to replace blocks on
+        """
+        if graphviz is None:
+            return
+
+        # graphviz's render_dot call expects a translator to be passed in; mock
+        # a translator tied to our self-builder
+        class MockTranslator:
+            def __init__(self, builder):
+                self.builder = builder
+        mock_translator = MockTranslator(self)
+
+        for node in doctree.traverse(graphviz):
+            try:
+                _, out_filename = render_dot(mock_translator, node['code'],
+                    node['options'], 'png', 'graphviz')
+                if not out_filename:
+                    node.parent.remove(node)
+                    continue
+
+                new_node = nodes.image(candidates={'?'}, uri=out_filename)
+                if 'align' in node:
+                    new_node['align'] = node['align']
+                node.replace_self(new_node)
+            except GraphvizError as exc:
+                ConfluenceLogger.warn('dot code {}: {}'.format(
+                    node['code'], exc))
+                node.parent.remove(node)
 
     def _replace_inheritance_diagram(self, doctree):
         """
