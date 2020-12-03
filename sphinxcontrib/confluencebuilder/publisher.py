@@ -12,6 +12,7 @@ from .exceptions import ConfluenceBadApiError
 from .exceptions import ConfluenceBadSpaceError
 from .exceptions import ConfluenceConfigurationError
 from .exceptions import ConfluencePermissionError
+from .exceptions import ConfluenceUnreconciledPageError
 from .logger import ConfluenceLogger
 from .rest import Rest
 import json
@@ -462,6 +463,10 @@ class ConfluencePublisher():
                 try:
                     self.rest_client.put('content', page['id'], updatePage)
                 except ConfluenceBadApiError as ex:
+                    if str(ex).find('unreconciled'):
+                        raise ConfluenceUnreconciledPageError(
+                            page_name, page['id'], self.server_url, ex)
+
                     # Confluence Cloud may (rarely) fail to complete a
                     # content request with an OptimisticLockException/
                     # StaleObjectStateException exception. It is suspected
