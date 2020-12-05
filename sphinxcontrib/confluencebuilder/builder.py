@@ -29,6 +29,7 @@ from sphinx.errors import ExtensionError
 from sphinx.locale import __
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
+from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 import io
 import sys
 
@@ -583,6 +584,10 @@ class ConfluenceBuilder(Builder):
 
             self.publish_purge()
             self.publish_finalize()
+
+            ConfluenceLogger.info('building intersphinx... ', nonl=True)
+            build_intersphinx(self)
+            ConfluenceLogger.info('done\n')
 
     def cleanup(self):
         if self.publish:
