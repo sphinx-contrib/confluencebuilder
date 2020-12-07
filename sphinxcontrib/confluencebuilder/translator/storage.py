@@ -1506,6 +1506,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- miscellaneous
     # -----------------------
 
+    def visit_centered(self, node):
+        self.body.append(self._start_tag(node, 'h2',
+            **{'style': 'text-align: center'}))
+        self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'strong'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_centered(self, node):
+        self.body.append(self.context.pop()) # strong
+        self.body.append(self.context.pop()) # h2
+
     def visit_rubric(self, node):
         self.body.append(self._start_tag(node, 'h{}'.format(self._title_level)))
         self.context.append(self._end_tag(node))
