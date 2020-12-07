@@ -500,6 +500,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         data = self.nl.join(node.astext().splitlines())
 
+        title = node.get('scb-caption', None)
+        if title:
+            title = self._escape_sf(title)
+
         if node.get('linenos', False):
             num = 'true'
         elif data.count('\n') >= self._linenothreshold:
@@ -522,6 +526,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(
                     self._build_ac_parameter(node, 'firstline', str(firstline))
                 )
+            if title:
+                self.body.append(self._build_ac_parameter(node, 'title', title))
             self.body.append(self._start_ac_plain_text_body_macro(node))
             self.body.append(self._escape_cdata(data))
             self.body.append(self._end_ac_plain_text_body_macro(node))
@@ -1151,6 +1157,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -------------
 
     def visit_caption(self, node):
+        # if a caption for a literal block, pass the caption data to it can be
+        # rendered in the macro's title field
+        if self.can_code:
+            next_sibling = first(node.traverse(
+                include_self=False, descend=False, siblings=True))
+            if isinstance(next_sibling, nodes.literal_block):
+                # anything that is not a parsed literals
+                if node.rawsource == node.astext() or 'source' in node:
+                    next_sibling['scb-caption'] = node.astext()
+                    raise nodes.SkipNode
+
         attribs = {}
         attribs['style'] = 'clear: both;'
         self._figure_context.append('')
