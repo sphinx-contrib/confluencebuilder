@@ -235,13 +235,6 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def visit_acks(self, node):
         raise nodes.SkipNode
 
-    def visit_centered(self, node):
-        # centered is deprecated; ignore
-        pass
-
-    def depart_centered(self, node):
-        pass
-
     def visit_comment(self, node):
         raise nodes.SkipNode
 
