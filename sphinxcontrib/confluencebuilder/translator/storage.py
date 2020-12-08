@@ -856,7 +856,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = node['refuri']
         uri = self._escape_sf(uri)
 
-        self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+        attribs = {}
+        attribs['href'] = uri
+
+        if 'reftitle' in node:
+            title = node['reftitle']
+            title = self._escape_sf(title)
+            attribs['title'] = title
+
+        self.body.append(self._start_tag(node, 'a', **attribs))
         self._reference_context.append(self._end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
