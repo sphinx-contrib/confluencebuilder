@@ -46,6 +46,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.numfig = config.numfig
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
+        self.todo_include_todos = getattr(config, 'todo_include_todos', None)
         self._building_footnotes = False
         self._figure_context = []
         self._manpage_url = getattr(config, 'manpages_url', None)
@@ -677,6 +678,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._visit_admonition(node, 'tip')
 
     def _visit_todo_node(self, node):
+        if not self.todo_include_todos:
+            raise nodes.SkipNode
+
         if 'ids' in node and node['ids'] and self.can_anchor:
             self.body.append(self._start_ac_macro(node, 'anchor'))
             self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
