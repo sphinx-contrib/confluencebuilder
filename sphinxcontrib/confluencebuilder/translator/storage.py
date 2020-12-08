@@ -756,7 +756,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._thead_context.pop()
 
     def visit_tgroup(self, node):
-        pass
+        # if column widths are explicitly given, apply specific column widths
+        table_classes = node.parent.get('classes', [])
+        if 'colwidths-given' in table_classes:
+            has_colspec = False
+            for colspec in node.traverse(nodes.colspec):
+                if not has_colspec:
+                    self.body.append(self._start_tag(node, 'colgroup'))
+                    has_colspec = True
+
+                self.body.append(self._start_tag(node, 'col', empty=True,
+                    **{'style': 'width: {}px'.format(colspec['colwidth'])}))
+
+            if has_colspec:
+                self.body.append(self._end_tag(node))
 
     def depart_tgroup(self, node):
         pass
