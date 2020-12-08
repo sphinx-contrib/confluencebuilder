@@ -1367,6 +1367,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # ---------------
+    # sphinx -- hlist
+    # ---------------
+
+    def visit_hlist(self, node):
+        self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self._end_tag(node))
+
+    def depart_hlist(self, node):
+        self.body.append(self.context.pop()) # tr
+        self.body.append(self.context.pop()) # table
+
+    def visit_hlistcol(self, node):
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
+
+    def depart_hlistcol(self, node):
+        self.body.append(self.context.pop()) # td
+
     # -----------------
     # sphinx -- manpage
     # -----------------
