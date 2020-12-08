@@ -292,11 +292,12 @@ class ConfluenceBuilder(Builder):
         # extract metadata information
         self._extract_metadata(docname, doctree)
 
+        # replace inheritance diagram with images
+        # (always invoke before _replace_graphviz_nodes)
+        self._replace_inheritance_diagram(doctree)
+
         # replace graphviz nodes with images
         self._replace_graphviz_nodes(doctree)
-
-        # replace inheritance diagram with images
-        self._replace_inheritance_diagram(doctree)
 
         # replace math blocks with images
         self._replace_math_blocks(doctree)
