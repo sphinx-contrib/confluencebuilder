@@ -85,6 +85,11 @@ class ConfluenceBuilder(Builder):
         self.secnumbers = {}
         self._original_get_doctree = None
 
+        if 'graphviz_output_format' in self.config:
+            self.graphviz_output_format = self.config['graphviz_output_format']
+        else:
+            self.graphviz_output_format = 'png'
+
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
         ConfluenceState.reset()
@@ -816,7 +821,7 @@ class ConfluenceBuilder(Builder):
         for node in doctree.traverse(graphviz):
             try:
                 _, out_filename = render_dot(mock_translator, node['code'],
-                    node['options'], 'png', 'graphviz')
+                    node['options'], self.graphviz_output_format, 'graphviz')
                 if not out_filename:
                     node.parent.remove(node)
                     continue
@@ -870,8 +875,8 @@ class ConfluenceBuilder(Builder):
             dotcode = graph.generate_dot(name, {}, env=self.env)
 
             try:
-                _, out_filename = render_dot(
-                    mock_translator, dotcode, {}, 'png', 'inheritance')
+                _, out_filename = render_dot(mock_translator, dotcode, {},
+                    self.graphviz_output_format, 'inheritance')
                 if not out_filename:
                     node.parent.remove(node)
                     continue
