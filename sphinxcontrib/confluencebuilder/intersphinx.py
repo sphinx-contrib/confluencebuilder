@@ -5,6 +5,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from __future__ import unicode_literals
 from os import path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
@@ -83,6 +84,6 @@ def build_intersphinx(builder):
                     entry = ('%s %s:%s %s %s %s\n' %
                              (name, domainname, typ, prio, uri, dispname))
                     ConfluenceLogger.verbose('(intersphinx) ' + entry.strip())
-                    f.write(compressor.compress(entry.encode()))
+                    f.write(compressor.compress(entry.encode('utf-8')))
 
         f.write(compressor.flush())
