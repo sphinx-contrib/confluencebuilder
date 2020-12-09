@@ -32,6 +32,11 @@ def build_intersphinx(builder):
     def escape(string):
         return re.sub("\\s+", ' ', string)
 
+    if builder.cloud:
+        pages_part = 'pages/{}/'
+    else:
+        pages_part = 'pages/viewpage.action?pageId={}'
+
     with open(path.join(builder.outdir, INVENTORY_FILENAME), 'wb') as f:
         # header
         f.write((
@@ -70,7 +75,7 @@ def build_intersphinx(builder):
                     else:
                         anchor = ''
 
-                    uri = 'pages/{}/'.format(page_id)
+                    uri = pages_part.format(page_id)
                     if anchor:
                         uri += '#' + anchor
                     if dispname == name:
