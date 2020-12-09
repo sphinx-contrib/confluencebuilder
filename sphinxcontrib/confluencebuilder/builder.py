@@ -73,6 +73,7 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.cache_doctrees = {}
+        self.cloud = False
         self.file_suffix = '.conf'
         self.link_suffix = None
         self.master_doc_page_id = None
@@ -138,6 +139,10 @@ class ConfluenceBuilder(Builder):
             ConfluenceLogger.warn('normalizing confluence url from '
                 '{} to {} '.format(old_url, new_url))
             self.config.confluence_server_url = new_url
+
+        # detect if Confluence Cloud if using the Atlassian domain
+        if new_url:
+            self.cloud = new_url.endswith('.atlassian.net/wiki/')
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
@@ -508,9 +513,15 @@ class ConfluenceBuilder(Builder):
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 ConfluenceLogger.info('done\n')
 
+            if self.cloud:
+                point_url = '{0}spaces/{1}/pages/{2}'
+            else:
+                point_url = '{0}pages/viewpage.action?pageId={2}'
+
             ConfluenceLogger.info(
-                'Publish point: {}spaces/TEST/pages/{}'.format(
+                'Publish point: ' + point_url.format(
                     self.config.confluence_server_url,
+                    self.config.confluence_space_name,
                     self.master_doc_page_id))
 
     def publish_purge(self):
