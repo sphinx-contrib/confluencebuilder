@@ -510,7 +510,7 @@ class ConfluenceBuilder(Builder):
     def publish_finalize(self):
         if self.master_doc_page_id:
             if self.config.confluence_master_homepage is True:
-                self.info('updating space\'s homepage... ', nonl=0)
+                self.info('updating space\'s homepage... ', nonl=True)
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 self.info('done\n')
 
@@ -534,7 +534,7 @@ class ConfluenceBuilder(Builder):
             if self.legacy_pages:
                 n = len(self.legacy_pages)
                 self.info('removing legacy pages... (total: {}) '.format(n),
-                    nonl=0)
+                    nonl=True)
                 for legacy_page_id in self.legacy_pages:
                     self.publisher.removePage(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
@@ -547,7 +547,7 @@ class ConfluenceBuilder(Builder):
                 n += len(legacy_asset_info.keys())
             if n > 0:
                 self.info('removing legacy assets... (total: {}) '.format(n),
-                    nonl=0)
+                    nonl=True)
                 for legacy_asset_info in self.legacy_assets.values():
                     for id in legacy_asset_info.keys():
                         self.publisher.removeAttachment(id)
@@ -602,7 +602,7 @@ class ConfluenceBuilder(Builder):
             self.publish_purge()
             self.publish_finalize()
 
-            self.info('building intersphinx... ', nonl=0)
+            self.info('building intersphinx... ', nonl=True)
             build_intersphinx(self)
             self.info('done\n')
 
