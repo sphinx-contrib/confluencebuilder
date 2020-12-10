@@ -5,6 +5,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from __future__ import unicode_literals
 from os import path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
@@ -31,6 +32,11 @@ def build_intersphinx(builder):
     """
     def escape(string):
         return re.sub("\\s+", ' ', string)
+
+    if builder.cloud:
+        pages_part = 'pages/{}/'
+    else:
+        pages_part = 'pages/viewpage.action?pageId={}'
 
     with open(path.join(builder.outdir, INVENTORY_FILENAME), 'wb') as f:
         # header
@@ -70,7 +76,7 @@ def build_intersphinx(builder):
                     else:
                         anchor = ''
 
-                    uri = 'pages/{}/'.format(page_id)
+                    uri = pages_part.format(page_id)
                     if anchor:
                         uri += '#' + anchor
                     if dispname == name:
@@ -78,6 +84,6 @@ def build_intersphinx(builder):
                     entry = ('%s %s:%s %s %s %s\n' %
                              (name, domainname, typ, prio, uri, dispname))
                     ConfluenceLogger.verbose('(intersphinx) ' + entry.strip())
-                    f.write(compressor.compress(entry.encode()))
+                    f.write(compressor.compress(entry.encode('utf-8')))
 
         f.write(compressor.flush())

@@ -73,7 +73,9 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.cache_doctrees = {}
+        self.cloud = False
         self.file_suffix = '.conf'
+        self.info = ConfluenceLogger.info
         self.link_suffix = None
         self.master_doc_page_id = None
         self.metadata = {}
@@ -138,6 +140,10 @@ class ConfluenceBuilder(Builder):
             ConfluenceLogger.warn('normalizing confluence url from '
                 '{} to {} '.format(old_url, new_url))
             self.config.confluence_server_url = new_url
+
+        # detect if Confluence Cloud if using the Atlassian domain
+        if new_url:
+            self.cloud = new_url.endswith('.atlassian.net/wiki/')
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
@@ -504,14 +510,19 @@ class ConfluenceBuilder(Builder):
     def publish_finalize(self):
         if self.master_doc_page_id:
             if self.config.confluence_master_homepage is True:
-                ConfluenceLogger.info('updating space\'s homepage... ', nonl=0)
+                self.info('updating space\'s homepage... ', nonl=True)
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
-                ConfluenceLogger.info('done\n')
+                self.info('done\n')
 
-            ConfluenceLogger.info(
-                'Publish point: {}spaces/TEST/pages/{}'.format(
-                    self.config.confluence_server_url,
-                    self.master_doc_page_id))
+            if self.cloud:
+                point_url = '{0}spaces/{1}/pages/{2}'
+            else:
+                point_url = '{0}pages/viewpage.action?pageId={2}'
+
+            self.info('Publish point: ' + point_url.format(
+                self.config.confluence_server_url,
+                self.config.confluence_space_name,
+                self.master_doc_page_id))
 
     def publish_purge(self):
         if self.config.confluence_purge:
@@ -522,25 +533,25 @@ class ConfluenceBuilder(Builder):
 
             if self.legacy_pages:
                 n = len(self.legacy_pages)
-                ConfluenceLogger.info(
-                    'removing legacy pages... (total: {}) '.format(n), nonl=0)
+                self.info('removing legacy pages... (total: {}) '.format(n),
+                    nonl=True)
                 for legacy_page_id in self.legacy_pages:
                     self.publisher.removePage(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
-                ConfluenceLogger.info('done\n')
+                self.info('done\n')
 
             n = 0
             for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
-                ConfluenceLogger.info(
-                    'removing legacy assets... (total: {}) '.format(n), nonl=0)
+                self.info('removing legacy assets... (total: {}) '.format(n),
+                    nonl=True)
                 for legacy_asset_info in self.legacy_assets.values():
                     for id in legacy_asset_info.keys():
                         self.publisher.removeAttachment(id)
-                ConfluenceLogger.info('done\n')
+                self.info('done\n')
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
@@ -591,9 +602,9 @@ class ConfluenceBuilder(Builder):
             self.publish_purge()
             self.publish_finalize()
 
-            ConfluenceLogger.info('building intersphinx... ', nonl=True)
+            self.info('building intersphinx... ', nonl=True)
             build_intersphinx(self)
-            ConfluenceLogger.info('done\n')
+            self.info('done\n')
 
     def cleanup(self):
         if self.publish:

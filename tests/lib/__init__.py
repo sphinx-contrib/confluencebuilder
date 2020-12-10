@@ -6,6 +6,8 @@
 
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.application import Sphinx
 from sphinx.util.console import nocolor, color_terminal
 from sphinx.util.docutils import docutils_namespace
@@ -104,7 +106,8 @@ def prepareConfiguration():
     config['confluence_publish'] = False
     config['confluence_space_name'] = 'unit-test'
     # support pre-Sphinx v2.0 installations which default to 'contents'
-    config['master_doc'] = 'index'
+    if parse_version(sphinx_version) < parse_version('2.0'):
+        config['master_doc'] = 'index'
 
     return config
 
