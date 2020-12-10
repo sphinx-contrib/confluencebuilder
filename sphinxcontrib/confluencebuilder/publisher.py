@@ -267,6 +267,50 @@ class ConfluencePublisher():
 
         return page_id, page
 
+    def getPageCaseInsensitive(self, page_name):
+        """
+        get page information with the provided page name (case-insensitive)
+
+        Performs a case-insensitive search for a page with a given page name.
+        This is to aid in situations where `getPage` cannot find a page based
+        off a provided name since the exact casing is not known. This call will
+        perform a CQL search for similar pages (using the `~` hint), which each
+        will be cycled through for a matching instance to the provided page
+        name.
+
+        Args:
+            page_name: the page name
+
+        Returns:
+            the page id and page object
+        """
+        page = None
+        page_id = None
+
+        page_name = page_name.lower()
+        search_fields = {'cql': 'space="' + self.space_name +
+            '" and type=page and title~"' + page_name + '"'}
+        search_fields['limit'] = 1000
+
+        rsp = self.rest_client.get('content/search', search_fields)
+        idx = 0
+        while rsp['size'] > 0:
+            for result in rsp['results']:
+                result_title = result['title']
+                if page_name == result_title.lower():
+                    page_id, page = self.getPage(result_title)
+                    break
+
+            if page_id or rsp['size'] != rsp['limit']:
+                break
+
+            idx += int(rsp['limit'])
+            sub_search_fields = dict(search_fields)
+            sub_search_fields['start'] = idx
+            rsp = self.rest_client.get('content/search', sub_search_fields)
+
+        return page_id, page
+
     def storeAttachment(self, page_id, name, data, mimetype, hash, force=False):
         """
         request to store an attachment on a provided page
@@ -389,6 +433,7 @@ class ConfluencePublisher():
             return page['id']
 
         try:
+            # new page
             if not page:
                 newPage = {
                     'type': 'page',
@@ -410,21 +455,44 @@ class ConfluencePublisher():
                 if parent_id:
                     newPage['ancestors'] = [{'id': parent_id}]
 
-                rsp = self.rest_client.post('content', newPage)
+                try:
+                    rsp = self.rest_client.post('content', newPage)
 
-                if 'id' not in rsp:
-                    api_err = ('Confluence reports a successful page ' +
-                              'creation; however, provided no ' +
-                              'identifier.\n\n')
-                    try:
-                        api_err += 'DATA: {}'.format(json.dumps(
-                            rsp, indent=2))
-                    except TypeError:
-                        api_err += 'DATA: <not-or-invalid-json>'
-                    raise ConfluenceBadApiError(api_err)
+                    if 'id' not in rsp:
+                        api_err = ('Confluence reports a successful page ' +
+                                  'creation; however, provided no ' +
+                                  'identifier.\n\n')
+                        try:
+                            api_err += 'DATA: {}'.format(json.dumps(
+                                rsp, indent=2))
+                        except TypeError:
+                            api_err += 'DATA: <not-or-invalid-json>'
+                        raise ConfluenceBadApiError(api_err)
 
-                uploaded_page_id = rsp['id']
-            else:
+                    uploaded_page_id = rsp['id']
+                except ConfluenceBadApiError as ex:
+                    # Check if Confluence reports that the new page request
+                    # fails, indicating it already exists. This is usually
+                    # (outside of possible permission use cases) that the page
+                    # name's casing does not match. In this case, attempt to
+                    # re-check for the page in a case-insensitive fashion. If
+                    # found, attempt to perform an update request instead.
+                    if str(ex).find('title already exists') == -1:
+                        raise
+
+                    ConfluenceLogger.verbose('title already exists warning '
+                        'for page {}'.format(page_name))
+
+                    _, page = self.getPageCaseInsensitive(page_name)
+                    if not page:
+                        raise
+
+                    if self.onlynew:
+                        self._onlynew('skipping existing page', page['id'])
+                        return page['id']
+
+            # update existing page
+            if page:
                 last_version = int(page['version']['number'])
                 updatePage = {
                     'id': page['id'],
