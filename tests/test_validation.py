@@ -13,12 +13,12 @@ import os
 import sys
 import unittest
 
-DEFAULT_TEST_BASE = 'sphinxcontrib-confluencebuilder Home'
 DEFAULT_TEST_DESC = 'test state'
 DEFAULT_TEST_KEY = 'test-holder'
-DEFAULT_TEST_SPACE = 'confluencebuilder'
-DEFAULT_TEST_URL = 'https://jdknight.atlassian.net/wiki/'
+DEFAULT_TEST_SPACE = 'DEVELOP'
+DEFAULT_TEST_URL = 'https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/'
 DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder@jdknight.me'
+AUTH_ENV_KEY = 'CONFLUENCE_AUTH'
 
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
@@ -29,7 +29,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config = prepareConfiguration()
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
-        cls.config['confluence_parent_page'] = DEFAULT_TEST_BASE
+        cls.config['confluence_parent_page'] = None
         cls.config['confluence_publish'] = True
         cls.config['confluence_space_name'] = DEFAULT_TEST_SPACE
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
@@ -37,6 +37,9 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_timeout'] = 1
         cls.test_desc = DEFAULT_TEST_DESC
         cls.test_key = DEFAULT_TEST_KEY
+
+        # configure ci authentication key (if set)
+        cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
 
         # overrides from user
         try:
@@ -55,8 +58,10 @@ class TestConfluenceValidation(unittest.TestCase):
         except ImportError:
             pass
 
-        # finalize configuration
+        # finalize
+        cls.config['confluence_master_homepage'] = True
         cls.config['confluence_publish_prefix'] = ''
+        cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_purge'] = False
         cls.config['rst_epilog'] = """
 .. |test_key| replace:: {}
@@ -76,11 +81,10 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # finalize configuration for tests
         cls.config['confluence_master_homepage'] = False
+        cls.config['confluence_parent_page'] = cls.test_key
+        cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_master'] = True
-        if cls.test_key != DEFAULT_TEST_KEY:
-            cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
-        cls.config['confluence_parent_page'] = cls.test_key
 
     def test_extensions(self):
         config = dict(self.config)
