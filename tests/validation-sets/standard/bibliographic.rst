@@ -1,10 +1,25 @@
-bibliographic fields
+Bibliographic fields
 ====================
 
 reStructuredText provides a `bibliographic fields`_ directive to provide a field
-list designed to document bibliographic data.
+list designed to document bibliographic data. Example markup is as follows:
+
+.. code-block:: none
+
+    :Author: Jane Smith
+    :Address:
+        200 Broadway Av
+
+        WEST BEACH SA 5024
+
+        AUSTRALIA
+    :Contact: jane.smith@example.org
+
+Output
+------
 
 :Author: Jane Smith
+:Authors: J. Random Hacker; Jane Doe
 :Address:
     200 Broadway Av
 
@@ -31,4 +46,6 @@ list designed to document bibliographic data.
 
     Like this.
 
-.. _bibliographic fields: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#bibliographic-fields
+.. references ------------------------------------------------------------------
+
+.. _bibliographic fields: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bibliographic-fields

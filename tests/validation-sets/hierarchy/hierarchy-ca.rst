@@ -1,12 +1,12 @@
-hierarchy example (ca)
+Hierarchy example (ca)
 ======================
 
 .. toctree::
 
-   hierarchy-caa
+    hierarchy-caa
 
 And another toctree:
 
 .. toctree::
 
-   hierarchy-cab
+    hierarchy-cab

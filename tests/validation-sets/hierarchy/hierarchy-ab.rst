@@ -1,4 +1,4 @@
-hierarchy example (ab)
+Hierarchy example (ab)
 ======================
 
 This is a content page at placeholder hierarchy-AB.

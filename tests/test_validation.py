@@ -82,46 +82,25 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.config['confluence_publish_prefix'] = '{}-'.format(cls.test_key)
         cls.config['confluence_parent_page'] = cls.test_key
 
-    def test_autodocs(self):
+    def test_extensions(self):
         config = dict(self.config)
         config['extensions'].append('sphinx.ext.autodoc')
         config['extensions'].append('sphinx.ext.autosummary')
+        config['extensions'].append('sphinx.ext.graphviz')
+        config['extensions'].append('sphinx.ext.ifconfig')
+        config['extensions'].append('sphinx.ext.inheritance_diagram')
+        config['extensions'].append('sphinx.ext.todo')
+        config['graphviz_output_format'] = 'svg'
+        config['todo_include_todos'] = True
+        config['todo_link_only'] = True
 
-        dataset = os.path.join(self.datasets, 'auto-ext')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-auto')
+        dataset = os.path.join(self.datasets, 'extensions')
+        doc_dir, doctree_dir = prepareDirectories('validation-set-extensions')
         sys.path.insert(0, os.path.join(dataset, 'src'))
 
         buildSphinx(dataset, doc_dir, doctree_dir, config)
 
         sys.path.pop(0)
-
-    def test_common(self):
-        config = dict(self.config)
-        config['imgmath_image_format'] = 'svg'
-
-        dataset = os.path.join(self.datasets, 'common')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-common')
-
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
-
-    def test_common_macro_restricted(self):
-        config = dict(self.config)
-
-        dataset = os.path.join(self.datasets, 'common')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-common-nm')
-
-        config['confluence_adv_restricted'] = [
-            'anchor',
-            'children',
-            'code',
-            'info',
-            'viewfile',
-            'jira'
-        ]
-        config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
-        config['confluence_publish_prefix'] += 'nomacro-'
-
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
 
     def test_header_footer(self):
         config = dict(self.config)
@@ -152,6 +131,31 @@ class TestConfluenceValidation(unittest.TestCase):
 
         with self.assertRaises(ConfluenceBadApiError):
             buildSphinx(dataset, doc_dir, doctree_dir, config)
+
+    def test_standard_default(self):
+        dataset = os.path.join(self.datasets, 'standard')
+        doc_dir, doctree_dir = prepareDirectories('validation-set-standard')
+
+        buildSphinx(dataset, doc_dir, doctree_dir, self.config)
+
+    def test_standard_macro_restricted(self):
+        config = dict(self.config)
+
+        dataset = os.path.join(self.datasets, 'standard')
+        doc_dir, doctree_dir = prepareDirectories('validation-set-standard-nm')
+
+        config['confluence_adv_restricted'] = [
+            'anchor',
+            'children',
+            'code',
+            'info',
+            'viewfile',
+            'jira'
+        ]
+        config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
+        config['confluence_publish_postfix'] = ' (nomacro)'
+
+        buildSphinx(dataset, doc_dir, doctree_dir, config)
 
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))

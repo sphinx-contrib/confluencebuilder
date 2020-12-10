@@ -1,7 +1,7 @@
-hierarchy example (c)
+Hierarchy example (c)
 =====================
 
 .. toctree::
 
-   hierarchy-ca
-   hierarchy-cb
+    hierarchy-ca
+    hierarchy-cb

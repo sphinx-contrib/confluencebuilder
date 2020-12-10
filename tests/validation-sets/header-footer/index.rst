@@ -1,9 +1,11 @@
-header/footer example
+Header/footer example
 =====================
 
 This is a landing page to show header/footer example.
 
 .. toctree::
-   :maxdepth: 1
+    :maxdepth: 1
 
-   another-page
+    page-a
+    page-b
+    page-c

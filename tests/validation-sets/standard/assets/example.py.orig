@@ -1,0 +1,4 @@
+3c3
+< print('hello world')
+---
+> print('hello world legacy')
