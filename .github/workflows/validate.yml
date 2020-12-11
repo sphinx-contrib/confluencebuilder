@@ -1,0 +1,36 @@
+name: validate
+
+on:
+  workflow_dispatch:
+    inputs:
+      python:
+        description: 'Python interpreter'
+        required: true
+        default: '3.9'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ github.event.inputs.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ github.event.inputs.python }}
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      id: cache-pip
+      with:
+        path: ~/.cache/pip
+        key: ubuntu-latest-${{ github.event.inputs.python }}-pip-
+
+    - name: Install dependencies
+      run: python -m pip install --upgrade tox
+
+    - name: tox
+      env:
+        CONFLUENCE_AUTH: ${{ secrets.CONFLUENCE_AUTH }}
+      run: tox -e validation
