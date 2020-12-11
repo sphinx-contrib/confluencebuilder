@@ -1,4 +1,4 @@
-lists
+Lists
 =====
 
 The follow shows a series of lists related markup defined in reStructuredText
@@ -8,7 +8,7 @@ and handled by the Sphinx engine.
    :depth: 1
    :local:
 
-bullet lists
+Bullet lists
 ------------
 
 The following is an example of `bullet lists`_. Each list item should be tightly
@@ -76,7 +76,7 @@ multiple blocks.
 
 This paragraph is not part of the list.
 
-enumerated lists
+Enumerated lists
 ----------------
 
 Here is an example of `enumerated lists`_. Each list item should be tightly
@@ -139,8 +139,7 @@ Enumerated lists can also be styled:
    ii) Aliquam dictum justo vitae scelerisque tempus.
    iii) Fusce et libero quis erat mattis porta.
 
-
-definition lists
+Definition lists
 ----------------
 
 The following is an example of `definition lists`_. A user should be able to
@@ -161,7 +160,7 @@ term 3 : classifier
 term 4 : classifier one : classifier two
    Vivamus vel dolor eget mauris mollis dictum.
 
-glossary
+Glossary
 --------
 
 Sphinx defines `glossary markup`_ which is like a definition list; however, a
@@ -169,88 +168,103 @@ glossary provides referenceable terms.
 
 .. glossary::
 
-   glossary-item-01
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec velit
-      mauris. Ut eget enim at turpis semper finibus vel eget lorem. Mauris
-      metus ligula, scelerisque eget accumsan non, maximus in massa. In eget
-      ullamcorper lectus, quis dignissim quam. Nulla viverra, purus in gravida
-      dapibus, ex ipsum elementum felis, eget euismod massa nunc ut leo. Nam
-      feugiat orci tortor, ac lacinia eros dignissim vel. Cras bibendum
-      efficitur velit bibendum ultrices. Quisque id nisi magna. Ut porta
-      mauris velit, ut varius ligula rutrum sit amet. Praesent sagittis
-      egestas ex, consectetur porta felis egestas ac. Quisque vitae eros felis.
+    glossary-item-01
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec velit
+        mauris. Ut eget enim at turpis semper finibus vel eget lorem. Mauris
+        metus ligula, scelerisque eget accumsan non, maximus in massa. In eget
+        ullamcorper lectus, quis dignissim quam. Nulla viverra, purus in gravida
+        dapibus, ex ipsum elementum felis, eget euismod massa nunc ut leo. Nam
+        feugiat orci tortor, ac lacinia eros dignissim vel. Cras bibendum
+        efficitur velit bibendum ultrices. Quisque id nisi magna. Ut porta
+        mauris velit, ut varius ligula rutrum sit amet. Praesent sagittis
+        egestas ex, consectetur porta felis egestas ac. Quisque vitae eros
+        felis.
 
-   glossary-item-02
-      Cras vehicula rutrum nibh. Nullam mollis consequat fermentum. Praesent
-      dapibus, neque sed ultrices elementum, orci dolor sollicitudin enim, id
-      volutpat dolor ligula eu urna. Fusce eu venenatis est. Morbi rutrum mi
-      nisl, quis mattis est congue vitae. Duis at dui sit amet ex pulvinar
-      eleifend quis sed quam. Mauris nibh nisi, convallis at enim vel,
-      tincidunt porta augue. Nam sed tellus nec justo mollis sodales sed in
-      nunc. Aenean eu vestibulum nulla. Ut efficitur accumsan dolor ut
-      laoreet. Proin rutrum condimentum purus at ultrices. Fusce convallis felis
-      id ex viverra imperdiet. Nullam eget ipsum ipsum. Vestibulum eu nibh
-      dictum, pellentesque nibh ac, aliquet purus.
+    glossary-item-02
+        Cras vehicula rutrum nibh. Nullam mollis consequat fermentum. Praesent
+        dapibus, neque sed ultrices elementum, orci dolor sollicitudin enim, id
+        volutpat dolor ligula eu urna. Fusce eu venenatis est. Morbi rutrum mi
+        nisl, quis mattis est congue vitae. Duis at dui sit amet ex pulvinar
+        eleifend quis sed quam. Mauris nibh nisi, convallis at enim vel,
+        tincidunt porta augue. Nam sed tellus nec justo mollis sodales sed in
+        nunc. Aenean eu vestibulum nulla. Ut efficitur accumsan dolor ut
+        laoreet. Proin rutrum condimentum purus at ultrices. Fusce convallis
+        felis id ex viverra imperdiet. Nullam eget ipsum ipsum. Vestibulum eu
+        nibh dictum, pellentesque nibh ac, aliquet purus.
 
-   glossary-item-03a
-   glossary-item-03b
-      Pellentesque dictum ornare arcu a interdum. Mauris pellentesque commodo
-      lobortis. Quisque non lorem felis. Integer quis bibendum purus. Maecenas
-      cursus, odio nec ultricies vulputate, orci urna vulputate neque, vel
-      placerat sapien nisl vitae nibh. Ut aliquam mauris cursus varius
-      hendrerit. Donec justo odio, viverra a mi eu, egestas sollicitudin est.
+    glossary-item-03a
+    glossary-item-03b
+        Pellentesque dictum ornare arcu a interdum. Mauris pellentesque commodo
+        lobortis. Quisque non lorem felis. Integer quis bibendum purus. Maecenas
+        cursus, odio nec ultricies vulputate, orci urna vulputate neque, vel
+        placerat sapien nisl vitae nibh. Ut aliquam mauris cursus varius
+        hendrerit. Donec justo odio, viverra a mi eu, egestas sollicitudin est.
 
-glossary and referencing
+Glossary and referencing
 ########################
 
 Example of referencing glossary entries:
 
- * :term:`glossary-item-01`
- * :term:`glossary-item-03b`
+* :term:`glossary-item-01`
+* :term:`glossary-item-03b`
 
-list table
+Horizontal list
+---------------
+
+The following is an example of an `hlist`_:
+
+.. hlist::
+   :columns: 3
+
+   * A list of
+   * short items
+   * that should be
+   * displayed
+   * horizontally
+
+List table
 ----------
 
 The following is an example of a `list table`_:
 
-.. list-table:: name1
-   :header-rows: 1
+.. list-table:: Example List Table
+    :header-rows: 1
 
-   * - Treat
-     - Quantity
-     - Description
-   * - Albatross
-     - 2.99
-     - On a stick!
-   * - Crunchy Frog
-     - 1.49
-     - If we took the bones out, it wouldn't be crunchy, now would it?
-   * - Gannet Ripple
-     - 1.99
-     - On a stick!
+    * - Treat
+      - Quantity
+      - Description
+    * - Albatross
+      - 2.99
+      - On a stick!
+    * - Crunchy Frog
+      - 1.49
+      - If we took the bones out, it wouldn't be crunchy, now would it?
+    * - Gannet Ripple
+      - 1.99
+      - On a stick!
 
 Another example of a list table with multiple header rows:
 
-.. list-table:: name2
-   :header-rows: 2
+.. list-table:: Another Example List Table
+    :header-rows: 2
 
-   * - key1
-     - value1
-     - description1
-   * - key2
-     - value2
-     - description2
-   * - 1
-     - 2
-     - 3
-   * - 4
-     - 5
-     - 6
-   * - 7
-     - 8
-     - 9
+    * - key1
+      - value1
+      - description1
+    * - key2
+      - value2
+      - description2
+    * - 1
+      - 2
+      - 3
+    * - 4
+      - 5
+      - 6
+    * - 7
+      - 8
+      - 9
 
-option lists
+Option lists
 ------------
 
 The following is an example of an `option lists`_ for a (Linux) ``ping``
@@ -328,24 +342,27 @@ command:
            timeout in absence of any responses, otherwise ping waits for two
            RTTs.
 
-production list
+Production list
 ---------------
 
 The following is an example of a `production list`_:
 
 .. productionlist::
-   try_stmt: try1_stmt | try2_stmt
-   try1_stmt: "try" ":" `suite`
-            : ("except" [`expression` ["," `target`]] ":" `suite`)+
-            : ["else" ":" `suite`]
-            : ["finally" ":" `suite`]
-   try2_stmt: "try" ":" `suite`
-            : "finally" ":" `suite`
+     try_stmt: try1_stmt | try2_stmt
+    try1_stmt: "try" ":" `suite`
+             : ("except" [`expression` ["," `target`]] ":" `suite`)+
+             : ["else" ":" `suite`]
+             : ["finally" ":" `suite`]
+    try2_stmt: "try" ":" `suite`
+             : "finally" ":" `suite`
 
-.. _bullet lists: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#bullet-lists
-.. _definition lists: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#definition-lists
-.. _enumerated lists: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#enumerated-lists
-.. _glossary markup: http://www.sphinx-doc.org/en/stable/markup/para.html#glossary
-.. _list table: http://docutils.sourceforge.net/docs/ref/rst/directives.html#list-table
-.. _option lists: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#option-lists
-.. _production list: http://www.sphinx-doc.org/en/stable/markup/para.html#directive-productionlist
+.. references ------------------------------------------------------------------
+
+.. _bullet lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists
+.. _definition lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#definition-lists
+.. _enumerated lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#enumerated-lists
+.. _glossary markup: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-glossary
+.. _hlist: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-hlist
+.. _list table: https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table
+.. _option lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#option-lists
+.. _production list: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-productionlist

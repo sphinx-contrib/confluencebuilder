@@ -1,9 +1,17 @@
-download
+Download
 ========
 
-Sphinx defines a `download directive`_ to link to non-reST documents. This
-extension has the ability to publish these files as attachments under pages and
-generate links to these respective attachments.
+Sphinx defines a `download directive`_ to link to non-reStructuredText 
+documents. This extension has the ability to publish these files as attachments
+under pages and generate links to these respective attachments. Example markup
+is as follows:
+
+.. code-block:: none
+
+    :download:`assets/example.py`
+
+Output
+------
 
 This page will host two attachment types, an example Python script as well as a
 PDF file. When using the download directive without a label, the extension will
@@ -12,13 +20,13 @@ two files should appear with two view-file elements:
 
 .. raw:: confluence_storage
 
-   <div style="text-align: center">
+    <div style="text-align: center">
 
 :download:`assets/example.py` :download:`assets/example.pdf`
 
 .. raw:: confluence_storage
 
-   </div>
+    </div>
 
 A user may have a document which links to assets using a label. When a label is
 provided, only a link will be generated (instead of a view-file element). For
@@ -26,4 +34,6 @@ example, this is a
 :download:`link to the example Python script<assets/example.py>` and this is a
 :download:`link to the PDF file<assets/example.pdf>`.
 
-.. _download directive: http://www.sphinx-doc.org/en/stable/markup/inline.html#role-download
+.. references ------------------------------------------------------------------
+
+.. _download directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-download

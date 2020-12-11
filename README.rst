@@ -115,7 +115,7 @@ The active and older versions of published validation documents can be found
 here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
- | https://jdknight.atlassian.net/wiki/spaces/confluencebuilder/
+ | https://sphinxcontrib-confluencebuilder.atlassian.net/
 
 Supported Markup
 ================

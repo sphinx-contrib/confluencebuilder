@@ -1,63 +1,38 @@
-references and related
+References and related
 ======================
 
 This page provides example of references and related markup:
 
+.. toctree::
+    :hidden:
+
+    references-ref
+
 .. contents::
-   :local:
+    :local:
 
-generic references
-------------------
+Basic
+-----
 
-The most common method reference with Sphinx is a "`phrase-reference`_";
-consider the example of `this phrase being a link`_. Phrase-reference links can
-be on `two lines`_ or `various lines`_ -- all which should appear as several
-inline links within a single paragraph.
+A link can be built `in a paragraph`_. Links should also attempt to maintain
+support for inline markup where possible. For example, |this example link|_
+should be bolded.
 
-.. _this phrase being a link: http://www.example.com
-
-.. _two lines: https://
-   www.example.com
-
-.. _various lines:
-   http://www.example.com
-   /home
-   /index
-
-Hyperlinks should also attempt to maintain support for inline markup where
-possible. For example, |this example link|_ should be bolded.
-
+.. _in a paragraph: http://www.example.com
 .. _this example link: http://www.example.com
-
 .. |this example link| replace:: **this example link**
 
-hyperlinks
-----------
+Other examples of links include:
 
-`Hyperlinks`_ are handled automatically. A document can define a link using with
-various protocols, such as http://www.example.com,
-https://www.example.com/subsection/another-page.html or even
-ftp://www.example.com.
-
-Emails links can be formed as well using the mailto prefix such as
-mailto:someone@example.com or without the prefix (someone@example.com).
-
-hyperlink references
---------------------
-
-`Hyperlink references`_ are another method to form hyperlinks in a document. A
-document can define `in-line links <http://www.example.com/custom>`_ to specific
-URIs. Documents can also link to pages anonymously; for example, using
-`link a`__ and `link b`__. All reStructuredText hyperlink types should render
-appropriately in Confluence.
-
-__ http://www.example.com/static/doc-a.txt
-__ http://www.example.com/static/doc-b.txt
+* https://www.example.com/subsection/another-page.html
+* ftp://www.example.com
+* mailto:someone@example.com
+* someone@example.com
 
 .. _example-hyperlink-references:
 
-hyperlink targets
------------------
+Targets
+-------
 
 `Hyperlink targets`_ (anchors) can be built. Clicking on this internal hyperlink
 (targeta_) with being a user to an anchor above the following paragraph. A user
@@ -89,7 +64,7 @@ pharetra quis orci. Maecenas lobortis neque ipsum, quis ultricies velit auctor
 eu. Quisque pellentesque suscipit sodales. In sapien massa, tincidunt vel nisl
 id, sodales bibendum dui. Pellentesque consectetur a risus sed aliquam.
 
-citations
+Citations
 ---------
 
 A page can have multiple `citations`_ [CIT2001]_, and it does not matter on the
@@ -127,7 +102,7 @@ built [CIT2002]_.
 .. [CIT2003] Another citation example.
 .. [CIT2004] The last citation example.
 
-footnotes
+Footnotes
 ---------
 
 There are various types of `footnote`_ methods styles that can be applied. A
@@ -205,7 +180,7 @@ Long gap to easily observed anchor usage...
 
 .. raw:: confluence_storage
 
-   <div style="height: 1000px">&nbsp;</div>
+    <div style="height: 1000px">&nbsp;</div>
 
 End of gap.
 
@@ -216,9 +191,8 @@ mattis massa, ac tincidunt risus felis eget odio. Nullam lectus tellus, mollis
 et hendrerit sed, euismod ac sem. Etiam auctor sem enim, at tincidunt libero
 sodales vel.
 
-.. _Hyperlink references: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#hyperlink-references
-.. _Hyperlink targets: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#hyperlink-targets
-.. _Hyperlinks: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#standalone-hyperlinks
-.. _citations: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#citations
-.. _footnote: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#footnotes
-.. _phrase-reference: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#reference-names
+.. references ------------------------------------------------------------------
+
+.. _Hyperlink targets: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets
+.. _citations: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#citations
+.. _footnote: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#footnotes

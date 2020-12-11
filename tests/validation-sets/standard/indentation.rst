@@ -1,4 +1,4 @@
-indentation
+Indentation
 ===========
 
 reStructuredText supports the ability to `indent`_ content. The builder will
@@ -33,4 +33,6 @@ Another top-level paragraph.
 
    Content should be properly spaced.
 
-.. _indent: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#indentation
+.. references ------------------------------------------------------------------
+
+.. _indent: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#indentation

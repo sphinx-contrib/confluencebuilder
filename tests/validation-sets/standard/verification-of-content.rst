@@ -1,4 +1,4 @@
-verification of content
+Verification of content
 =======================
 
 The following page tests a series of content containing characters which may
@@ -16,14 +16,14 @@ Characters in a code block should be unaffected:
 
 .. code-block:: xml
 
-   <languages>
-       <language name="c" />
-       <language name="cpp" />
-       <language name="c#" />
-       <language name="xml">
-           <option key="key" value="value" />
-       </language>
-   </languages>
+    <languages>
+        <language name="c" />
+        <language name="cpp" />
+        <language name="c#" />
+        <language name="xml">
+            <option key="key" value="value" />
+        </language>
+    </languages>
 
 .. consider this failed if any inlined content has additional formatting
 

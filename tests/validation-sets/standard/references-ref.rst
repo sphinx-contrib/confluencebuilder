@@ -1,5 +1,5 @@
-references and related (page 2)
-===============================
+References (secondary)
+======================
 
 This is an example landing page to show an example of cross-referencing an
 arbitrary location to another page's section.
@@ -8,13 +8,13 @@ Long gap to easily observed anchor usage...
 
 .. raw:: confluence_storage
 
-   <div style="height: 1000px">&nbsp;</div>
+    <div style="height: 1000px">&nbsp;</div>
 
 End of gap.
 
 .. _example-references-otherpage-label:
 
-other page sub-section
+Other page sub-section
 ----------------------
 
 Nulla mattis elit vitae urna cursus, eu ullamcorper mi eleifend. Nulla eget
@@ -28,7 +28,7 @@ turpis ante ullamcorper sapien, in condimentum nunc nisi at tellus. Mauris
 luctus diam lorem. Praesent dignissim commodo euismod. Donec sit amet tellus
 eget dolor tincidunt dapibus a id est.
 
-cross-referencing back
+Cross-referencing back
 ======================
 
 Go :ref:`back<example-hyperlink-references>` to hyperlink references.

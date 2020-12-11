@@ -1,9 +1,9 @@
-tables
+Tables
 ======
 
 The following shows a series of `reStructuredText's tables`_ that can be formed.
 
-grid tables
+Grid tables
 -----------
 
 Complex grid-like "ASCII art" tables can be used to form tables in Confluence:
@@ -70,7 +70,7 @@ Complex tables can be built with headers excluded:
 | row 3, col 1 | column 2 | column 3  | column 4  |
 +--------------+----------+-----------+-----------+
 
-simple tables
+Simple tables
 -------------
 
 Simple tables are a common approach to represent data:
@@ -121,4 +121,34 @@ Column 1  *Column*:sup:`2`
 \         Row 4; column 1 will be empty.
 ========  =====
 
-.. _reStructuredText's tables: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#tables
+An example of a `list-table`_ with stub options:
+
+.. list-table::
+    :header-rows: 1
+    :stub-columns: 1
+
+    * - key
+      - value
+    * - 1
+      - 2
+    * - 3
+      - 4
+    * - 5
+      - 6
+
+An example of a `csv-table`_ with explicit width values:
+
+.. csv-table:: Frozen Delights!
+    :header: "Treat", "Quantity", "Description"
+    :widths: 150, 30, 500
+
+    "Albatross", 2.99, "On a stick!"
+    "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be
+    crunchy, now would it?"
+    "Gannet Ripple", 1.99, "On a stick!"
+
+.. references ------------------------------------------------------------------
+
+.. _csv-table: https://docutils.sourceforge.io/docs/ref/rst/directives.html#csv-table
+.. _list-table: https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table
+.. _reStructuredText's tables: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#tables

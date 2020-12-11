@@ -1,11 +1,14 @@
-auto-extensions
-===============
+Extensions
+==========
 
 The following is a base page to show an example of Sphinx's auto-based extension
 found inside the internal tree.
 
 .. toctree::
-   :maxdepth: 1
+    :maxdepth: 1
 
-   autodocs
-   autosummary
+    autodocs
+    autosummary
+    graphviz
+    inheritance_diagram
+    todo
