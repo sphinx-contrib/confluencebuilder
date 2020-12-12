@@ -4,7 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 import os.path
 
 try:

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2018-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from .std.confluence import API_REST_BIND_PATH
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from hashlib import sha256
 
 class ConfluenceUtil:

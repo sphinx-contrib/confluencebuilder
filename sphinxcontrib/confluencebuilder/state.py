@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2018 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from .logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 """
 maximum length for a confluence page title

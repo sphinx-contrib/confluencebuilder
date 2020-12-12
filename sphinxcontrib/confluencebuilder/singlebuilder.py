@@ -5,14 +5,14 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .builder import ConfluenceBuilder
-from .compat import progress_message
-from .logger import ConfluenceLogger
-from .state import ConfluenceState
 from docutils import nodes
 from sphinx.locale import __
 from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.compat import progress_message
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'

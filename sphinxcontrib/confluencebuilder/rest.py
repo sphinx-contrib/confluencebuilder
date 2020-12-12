@@ -4,16 +4,16 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .exceptions import ConfluenceAuthenticationFailedUrlError
-from .exceptions import ConfluenceBadApiError
-from .exceptions import ConfluenceBadServerUrlError
-from .exceptions import ConfluenceCertificateError
-from .exceptions import ConfluencePermissionError
-from .exceptions import ConfluenceProxyPermissionError
-from .exceptions import ConfluenceSeraphAuthenticationFailedUrlError
-from .exceptions import ConfluenceSslError
-from .exceptions import ConfluenceTimeoutError
-from .std.confluence import API_REST_BIND_PATH
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceCertificateError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthenticationFailedUrlError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from requests.adapters import HTTPAdapter
 import json
 import requests
