@@ -157,6 +157,9 @@ class ConfluenceAssetManager:
             uri = node['uri']
             if not uri.startswith('data:') and uri.find('://') == -1:
                 path = self._interpretAssetPath(node)
+                if not path:
+                    continue
+
                 if path not in self.path2asset:
                     hash = ConfluenceUtil.hashAsset(path)
                     type = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
@@ -170,6 +173,9 @@ class ConfluenceAssetManager:
             target = node['reftarget']
             if target.find('://') == -1:
                 path = self._interpretAssetPath(node)
+                if not path:
+                    continue
+
                 if path not in self.path2asset:
                     hash = ConfluenceUtil.hashAsset(path)
                     type = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
@@ -272,5 +278,9 @@ class ConfluenceAssetManager:
                 # based on the output directory
                 if not os.path.isfile(abspath):
                     abspath = os.path.join(self.outdir, path)
+
+        # if no asset can be found, ensure a `None` path is returned
+        if not os.path.isfile(abspath):
+            abspath = None
 
         return abspath
