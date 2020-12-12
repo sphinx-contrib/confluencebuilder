@@ -1373,7 +1373,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._end_ac_plain_text_link_body_macro(node))
                 self.body.append(self._end_ac_link(node))
 
-        raise nodes.SkipNode
+            raise nodes.SkipNode
+
+    def depart_download_reference(self, node):
+        self.body.append(self.context.pop()) # a
 
     # ---------------
     # sphinx -- hlist
