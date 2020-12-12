@@ -531,7 +531,7 @@ class ConfluencePublisher():
                 try:
                     self.rest_client.put('content', page['id'], updatePage)
                 except ConfluenceBadApiError as ex:
-                    if str(ex).find('unreconciled'):
+                    if str(ex).find('unreconciled') != -1:
                         raise ConfluenceUnreconciledPageError(
                             page_name, page['id'], self.server_url, ex)
 
