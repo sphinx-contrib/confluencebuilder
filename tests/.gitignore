@@ -1,5 +1,0 @@
-# testing output directory
-output/
-
-# duplicate sandbox environments (development environment)
-sandbox-*/

@@ -3,4 +3,4 @@
 
 # with the exceptions below
 !.gitignore
-!README
+!README.rst

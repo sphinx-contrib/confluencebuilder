@@ -7,4 +7,4 @@ invoking with the following command:
 
 .. code-block:: shell
 
-   tox -e sandbox
+    tox -e sandbox
