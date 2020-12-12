@@ -29,7 +29,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install graphviz texlive-latex-recommended
+        sudo apt-get install \
+            graphviz \
+            texlive-latex-extra \
+            texlive-latex-recommended \
+            -y
         python -m pip install --upgrade tox
 
     - name: tox
