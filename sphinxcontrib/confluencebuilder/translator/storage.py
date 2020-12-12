@@ -1336,6 +1336,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = self._escape_sf(uri)
 
         if uri.find('://') != -1:
+            self.body.append(self._start_tag(node, 'strong'))
+            self.context.append(self._end_tag(node, suffix=''))
             self.body.append(self._start_tag(node, 'a', **{'href': uri}))
             self.context.append(self._end_tag(node, suffix=''))
         else:
@@ -1373,7 +1375,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._end_ac_plain_text_link_body_macro(node))
                 self.body.append(self._end_ac_link(node))
 
-        raise nodes.SkipNode
+            raise nodes.SkipNode
+
+    def depart_download_reference(self, node):
+        self.body.append(self.context.pop()) # a
+        self.body.append(self.context.pop()) # strong
 
     # ---------------
     # sphinx -- hlist
