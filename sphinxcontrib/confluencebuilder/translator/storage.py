@@ -61,6 +61,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.can_anchor = 'anchor' not in restricted
         self.can_children = 'children' not in restricted
         self.can_code = 'code' not in restricted
+        self.can_expand = 'expand' not in restricted
         self.can_jira = 'jira' not in restricted
         self.can_viewfile = 'viewfile' not in restricted
 
@@ -1641,6 +1642,21 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     'clear: both; padding-top: 10px; margin-bottom: 30px'}))
         else:
             self.body.append('<div style="clear: both"> </div>\n')
+
+    def visit_confluence_expand(self, node):
+        if not self.can_expand:
+            raise nodes.SkipNode
+
+        self.body.append(self._start_ac_macro(node, 'expand'))
+        if 'title' in node:
+            self.body.append(
+                self._build_ac_parameter(node, 'title', node['title']))
+        self.body.append(self._start_ac_rich_text_body_macro(node))
+        self.context.append(self._end_ac_rich_text_body_macro(node) +
+            self._end_ac_macro(node))
+
+    def depart_confluence_expand(self, node):
+        self.body.append(self.context.pop()) # macro
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira

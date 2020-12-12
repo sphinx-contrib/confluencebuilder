@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from docutils import nodes
@@ -24,6 +24,14 @@ class ConfluenceNavigationNode(nodes.General, nodes.Element):
 
         self.bottom = False
         self.top = False
+
+class confluence_expand(nodes.Element):
+    """
+    confluence expand node
+
+    A Confluence builder defined expand node serves as a hint to wrap content
+    using Confluence's expand macro.
+    """
 
 class confluence_metadata(nodes.Element):
     """
