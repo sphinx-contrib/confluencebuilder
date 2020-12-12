@@ -295,7 +295,7 @@ class ConfluenceBuilder(Builder):
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
         # exception is assets which may be finalized during a document's post
-        # transformation stage (e.x. embedded images are converted into real
+        # transformation stage (e.g. embedded images are converted into real
         # images in Sphinx, which is then provided to a translator). Embedded
         # images are detected during an 'doctree-resolved' hook (see __init__).
         self.assets.process(ordered_docnames)
