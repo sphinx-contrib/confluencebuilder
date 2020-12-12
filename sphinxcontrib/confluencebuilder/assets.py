@@ -4,11 +4,11 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .std.confluence import INVALID_CHARS
-from .util import ConfluenceUtil
 from docutils import nodes
 from sphinx import addnodes
 from sphinx.util.images import guess_mimetype
+from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
+from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import os
 
 """

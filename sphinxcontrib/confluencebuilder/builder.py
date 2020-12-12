@@ -7,17 +7,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
-from .assets import ConfluenceAssetManager
-from .config import ConfluenceConfig
-from .exceptions import ConfluenceConfigurationError
-from .logger import ConfluenceLogger
-from .nodes import ConfluenceNavigationNode
-from .nodes import confluence_metadata
-from .publisher import ConfluencePublisher
-from .state import ConfluenceState
-from .util import ConfluenceUtil
-from .util import first
-from .writer import ConfluenceWriter
 from docutils import nodes
 from docutils.io import StringOutput
 from getpass import getpass
@@ -29,7 +18,18 @@ from sphinx.errors import ExtensionError
 from sphinx.locale import __
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
+from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
+from sphinxcontrib.confluencebuilder.config import ConfluenceConfig
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
+from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import first
+from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 import sys
 

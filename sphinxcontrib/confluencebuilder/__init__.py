@@ -4,18 +4,18 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .builder import ConfluenceBuilder
-from .directives import JiraDirective
-from .directives import JiraIssueDirective
-from .directives import ConfluenceExpandDirective
-from .directives import ConfluenceMetadataDirective
-from .logger import ConfluenceLogger
-from .nodes import jira
-from .nodes import jira_issue
-from .nodes import confluence_metadata
-from .singlebuilder import SingleConfluenceBuilder
 from sphinx.util import docutils
 from sphinx.writers.text import STDINDENT
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
+from sphinxcontrib.confluencebuilder.directives import JiraDirective
+from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import jira
+from sphinxcontrib.confluencebuilder.nodes import jira_issue
+from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 import argparse
 

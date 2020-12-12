@@ -4,9 +4,9 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from .logger import ConfluenceLogger
 from sphinx.locale import __
 from sphinx.util.console import bold # pylint: disable=no-name-in-module
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 # load sphinx's progress_message or use a compatible instance
 try:

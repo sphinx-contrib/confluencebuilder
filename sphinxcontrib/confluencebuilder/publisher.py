@@ -8,13 +8,13 @@ See also:
     https://docs.atlassian.com/confluence/REST/latest/
 """
 
-from .exceptions import ConfluenceBadApiError
-from .exceptions import ConfluenceBadSpaceError
-from .exceptions import ConfluenceConfigurationError
-from .exceptions import ConfluencePermissionError
-from .exceptions import ConfluenceUnreconciledPageError
-from .logger import ConfluenceLogger
-from .rest import Rest
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.rest import Rest
 import json
 import time
 

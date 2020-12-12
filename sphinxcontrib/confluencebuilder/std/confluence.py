@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2017-2020 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
-from .sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 
 """
 confluence trailing bind path for rest api
