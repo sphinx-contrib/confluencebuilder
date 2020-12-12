@@ -1298,6 +1298,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_image(node))
         else:
             image_key, hosting_docname = self.assets.fetch(node)
+            if not image_key:
+                self.warn('unable to find image: ' '{}'.format(node['uri']))
+                raise nodes.SkipNode
+
             hosting_doctitle = ConfluenceState.title(
                 hosting_docname, hosting_docname)
             hosting_doctitle = self._escape_sf(hosting_doctitle)
@@ -1342,6 +1346,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self._end_tag(node, suffix=''))
         else:
             file_key, hosting_docname = self.assets.fetch(node)
+            if not file_key:
+                self.warn('unable to find download: ' '{}'.format(
+                    node['reftarget']))
+                raise nodes.SkipNode
+
             hosting_doctitle = ConfluenceState.title(hosting_docname)
             hosting_doctitle = self._escape_sf(hosting_doctitle)
 
