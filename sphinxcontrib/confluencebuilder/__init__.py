@@ -7,6 +7,7 @@
 from .builder import ConfluenceBuilder
 from .directives import JiraDirective
 from .directives import JiraIssueDirective
+from .directives import ConfluenceExpandDirective
 from .directives import ConfluenceMetadataDirective
 from .logger import ConfluenceLogger
 from .nodes import jira
@@ -214,6 +215,7 @@ def setup(app):
     if not docutils.is_node_registered(confluence_metadata):
         app.add_node(confluence_metadata)
     """Wires up the directives themselves"""
+    app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
 
     # inject the compatible autosummary nodes if the extension is loaded

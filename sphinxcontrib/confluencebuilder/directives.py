@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
-    :license: BSD-2-Clause, see LICENSE for details.
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
 """
 
 from .nodes import jira
@@ -9,6 +9,7 @@ from .nodes import jira_issue
 from .nodes import confluence_metadata
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from uuid import UUID
 
 def string_list(argument):
@@ -33,6 +34,23 @@ def string_list(argument):
                     data.append(label)
 
     return data
+
+class ConfluenceExpandDirective(Directive):
+    has_content = True
+    option_spec = {
+        'title': directives.unchanged,
+    }
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_expand(rawsource=text)
+        if 'title' in self.options:
+            node['title'] = self.options['title']
+
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
 
 class ConfluenceMetadataDirective(Directive):
     has_content = False
