@@ -845,10 +845,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 node['refid'] = node['refuri'][1:]
                 del node['refuri']
                 self._visit_reference_intern_id(node)
-            elif 'internal' not in node or not node['internal']:
-                self._visit_reference_extern(node)
-            else:
+            elif 'refdocname' in node or (
+                    'internal' in node and node['internal']):
                 self._visit_reference_intern_uri(node)
+            else:
+                self._visit_reference_extern(node)
         elif 'refid' in node:
             self._visit_reference_intern_id(node)
 
