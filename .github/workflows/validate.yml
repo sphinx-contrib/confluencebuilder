@@ -30,6 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install \
+            dvipng \
             graphviz \
             texlive-latex-extra \
             texlive-latex-recommended \
