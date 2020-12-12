@@ -345,7 +345,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # em
 
     def visit_definition(self, node):
-        self.body.append(self.context.pop()) # dt
+        if self._has_term:
+            self.body.append(self.context.pop()) # dt
+            self._has_term = False
 
         self.body.append(self._start_tag(node, 'dd', suffix=self.nl))
         self.context.append(self._end_tag(node))
