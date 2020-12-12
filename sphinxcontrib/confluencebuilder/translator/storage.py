@@ -166,7 +166,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # margins. This causes some unexpected styling issues when list entries
         # which contain other block elements do not style appropriately. This
         # extensions attempts to maintain compact list item entries; however,
-        # for a list which contains non-compact entries (e.x. multiple
+        # for a list which contains non-compact entries (e.g. multiple
         # paragraphs), instead, each list item will be applied a respective
         # margin offset.
         #
@@ -300,7 +300,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_definition_list_item(self, node):
         # When processing a definition list item (an entry), multiple terms may
-        # exist for the given entry (e.x. when using a glossary). Before
+        # exist for the given entry (e.g. when using a glossary). Before
         # displaying an actual definition of one or more terms, there may exist
         # classifiers for a given entry. On the last term for an entry, all
         # classifier information will be displayed in the definition-type. In
@@ -988,7 +988,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
 
-            # only build an anchor if required (e.x. is a reference label
+            # only build an anchor if required (e.g. is a reference label
             # already provided by a build section element)
             target_name = '{}#{}'.format(self.docname, anchor)
             target = ConfluenceState.target(target_name)

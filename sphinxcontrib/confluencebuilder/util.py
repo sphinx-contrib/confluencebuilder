@@ -19,7 +19,7 @@ class ConfluenceUtil:
         """
         generate a hash of the provided asset
 
-        Calculate a hash for an asset file (e.x. an image file). When publishing
+        Calculate a hash for an asset file (e.g. an image file). When publishing
         assets as attachments for a Confluence page, hashes can be used to check
         if an attachment needs to be uploaded again.
 
