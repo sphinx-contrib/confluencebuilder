@@ -19,6 +19,9 @@ DEFAULT_TEST_SPACE = 'DEVELOP'
 DEFAULT_TEST_URL = 'https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/'
 DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder@jdknight.me'
 AUTH_ENV_KEY = 'CONFLUENCE_AUTH'
+SPACE_ENV_KEY = 'CONFLUENCE_SPACE'
+TESTDESC_ENV_KEY = 'CONFLUENCE_TEST_DESC'
+TESTKEY_ENV_KEY = 'CONFLUENCE_TEST_KEY'
 
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
@@ -31,15 +34,14 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_parent_page'] = None
         cls.config['confluence_publish'] = True
-        cls.config['confluence_space_name'] = DEFAULT_TEST_SPACE
+        cls.config['confluence_space_name'] = os.getenv(
+            SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
+        cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
         cls.config['confluence_timeout'] = 1
-        cls.test_desc = DEFAULT_TEST_DESC
-        cls.test_key = DEFAULT_TEST_KEY
-
-        # configure ci authentication key (if set)
-        cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
+        cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
+        cls.test_key = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_KEY)
 
         # overrides from user
         try:
