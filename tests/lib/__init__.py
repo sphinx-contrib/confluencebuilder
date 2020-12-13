@@ -122,7 +122,8 @@ def prepareDirectories(container):
     """
     assert container
     lib_dir = os.path.dirname(os.path.realpath(__file__))
-    base_dir = os.path.join(lib_dir, os.pardir)
+    test_dir = os.path.join(lib_dir, os.pardir)
+    base_dir = os.path.join(test_dir, os.pardir)
     output_dir = os.path.join(base_dir, 'output')
     container_dir = os.path.join(output_dir, container)
     doc_dir = os.path.join(container_dir, 'build')

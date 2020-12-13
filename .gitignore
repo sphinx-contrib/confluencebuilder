@@ -3,18 +3,20 @@ __pycache__/
 *.py[cod]
 
 # building, packaging, etc.
-*.egg-info/
-build/
-dist/
+/*.egg-info/
+/build/
+/dist/
 
 # documentation
-doc/_build/
+/doc/_build/
 
 # platform-specific
 .DS_Store
 
 # testing
-.tox*/
+/.tox*/
+/output/
+/sandbox-*/
 validation_test_overrides.py
 
 # misc
