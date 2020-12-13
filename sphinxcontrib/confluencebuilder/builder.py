@@ -64,7 +64,7 @@ except NameError:
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
-    format = 'confluence'
+    format = 'confluence_storage'
     supported_image_types = StandaloneHTMLBuilder.supported_image_types
     supported_remote_images = True
 
