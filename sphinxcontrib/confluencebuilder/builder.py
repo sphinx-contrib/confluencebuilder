@@ -198,17 +198,24 @@ class ConfluenceBuilder(Builder):
         else:
             self.space_name = None
 
-        def prepare_subset(value):
+        def prepare_subset(option):
+            value = getattr(config, option)
+            if value is None:
+                return None
+
+            # if provided via command line, treat as a list
+            if option in config['overrides']:
+                value = value.split(',')
+
             if isinstance(value, basestring):
                 files = extract_strings_from_file(value)
             else:
                 files = value
+
             return set(files) if files else None
 
-        self.publish_allowlist = prepare_subset(
-            config.confluence_publish_allowlist)
-        self.publish_denylist = prepare_subset(
-            config.confluence_publish_denylist)
+        self.publish_allowlist = prepare_subset('confluence_publish_allowlist')
+        self.publish_denylist = prepare_subset('confluence_publish_denylist')
 
     def get_outdated_docs(self):
         """

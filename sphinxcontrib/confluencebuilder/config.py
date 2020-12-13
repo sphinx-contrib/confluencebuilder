@@ -133,6 +133,10 @@ string, etc.).
             if value is None:
                 continue
 
+            # if provided via command line, treat as a list
+            if option in c['overrides']:
+                value = value.split(',')
+
             if not (isinstance(value, (tuple, list, set, basestring))):
                 errState = True
                 if log:
