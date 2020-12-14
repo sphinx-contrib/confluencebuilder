@@ -19,7 +19,11 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
     base_dir = os.path.join(test_dir, os.pardir)
     sandbox_dir = os.path.join(base_dir, target_sandbox)
 
-    doc_dir, doctree_dir = prepareDirectories('sandbox-test')
+    container = 'sandbox-test'
+    if builder:
+        container += '-' + builder
+
+    doc_dir, doctree_dir = prepareDirectories(container)
     buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
         extra_config=defines, relax=True)
 
