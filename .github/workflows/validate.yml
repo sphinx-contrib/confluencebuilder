@@ -7,6 +7,15 @@ on:
         description: 'Python interpreter'
         required: true
         default: '3.9'
+      space:
+        description: 'Space'
+        default: 'DEVELOP'
+      test_key:
+        description: 'Test Key (Base Page)'
+        default: 'test-holder'
+      test_desc:
+        description: 'Test Description'
+        default: 'test state'
 
 jobs:
   build:
@@ -40,4 +49,7 @@ jobs:
     - name: tox
       env:
         CONFLUENCE_AUTH: ${{ secrets.CONFLUENCE_AUTH }}
+        CONFLUENCE_SPACE: ${{ github.event.inputs.space }}
+        CONFLUENCE_TEST_DESC: ${{ github.event.inputs.test_desc }}
+        CONFLUENCE_TEST_KEY: ${{ github.event.inputs.test_key }}
       run: tox -e validation
