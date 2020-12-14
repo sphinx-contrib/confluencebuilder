@@ -1,11 +1,11 @@
-maintainers
+Maintainers
 ===========
 
 This document serves as a reminder/guide for maintainers for this extension. For
 users wishes to contribute to this extension, please consult `CONTRIBUTING.rst`_
 instead.
 
-system testing
+System testing
 --------------
 
 When a major release is made, it is recommended to perform system testing on all
@@ -14,13 +14,14 @@ Confluence Cloud with an organization account and a user account (tilde-leading)
 as well as all Confluence supported server revisions (consult
 `Atlassian Support End of Life Policy`_ for the most recent list).
 
-release steps
+Release steps
 -------------
 
 When implementation is deemed to be ready for a stable release, ensure the
 following steps are performed:
 
-- Update ``CHANGES.rst``, replacing master with release version and date.
+- Update ``CHANGES.rst``, replacing the development title with release version
+  and date.
 - Ensure version values in the implementation are incremented and tagged
   appropriately. The tagged commit should have a "clean" version string.
 - Ensure the release tag is signed.
@@ -41,7 +42,7 @@ A release can be made with the following commands:
     ...
     $ twine upload dist/*
 
-sanity checks and cleanup
+Sanity checks and cleanup
 -------------------------
 
 After a release has been published to PyPI and a tag is available for users to
@@ -52,6 +53,7 @@ reference, ensure the following post-release tasks are performed:
   match the ``stable`` documentation. Also, ensure the newly created tag is
   listed as a valid option for users to reference.
 - Generate online validation set (examples) based off the recent release tag.
+  This includes both the version space and the ``STABLE`` space.
 
 .. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
 .. _CONTRIBUTING.rst: https://github.com/sphinx-contrib/confluencebuilder/blob/master/CONTRIBUTING.rst
