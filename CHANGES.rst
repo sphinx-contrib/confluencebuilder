@@ -1,25 +1,44 @@
-master
-======
+development
+===========
 
+* (note) support for sphinx v1.[6-7] has been dropped
+* (note) support for xml-rpc has been dropped
 * conflicting titles will be automatically adjusted to prevent publishing issues
 * enable page-specific title overrides via confluence_title_overrides
 * ensure configured title postfix is not trimmed in long titles
 * extend language mappings for supported storage format language types
+* fixed a series of scenarios where titles/missing images will fail a build
 * fixed issue when building heading which reference another document
+* fixed issue when processing a download role with a url
+* fixed issue where an anchor target may not generate a proper link
 * fixed issue where ask options would fail in python 2.7
 * fixed issue where ask options would prompt when not publishing
+* fixed issue where autosummary registration may fail
 * fixed issue where default alignment did not apply to a figure's legend
 * fixed issue where literal-marked includes would fail to publish
 * fixed issue where registering this extension caused issues with other builders
+* fixed issue where todo entries would render when disabled in configuration
 * fixed issue with previous-next links not generated for nested pages
-* improve previous-next button visualization
+* improve code macros rendering a title value when a caption is set
+* improve publishing when dealing with changing page title casing
+* improved built references by including title (alt) data if set
+* improved figure/section numbering
 * improved handling unknown code languages to none-styled (instead of python)
+* improved previous-next button visualization
+* introduce the expand directive
+* promote confluence_storage over confluence for raw type
+* support disabling titlefix on an index page
 * support for assigning confluence labels for pages
-* support for sphinx v1.[6-7] has been dropped
-* support for xml-rpc has been dropped
+* support for both allow and deny lists for published documents
+* support for centered directive
+* support for graphviz extension
+* support for hlist directive
+* support for inheritance-diagram extension
 * support publish dry runs
 * support single-page builder
+* support the generation of an inventory file (for intersphinx)
 * support users overriding default alignment
+* support width hints for tables
 
 1.2.0 (2020-01-03)
 ==================
