@@ -1,14 +1,9 @@
-contributing
+Contributing
 ============
 
 Contributions to this extension are welcome and much appreciated.
 
-.. contents::
-   :depth: 2
-
-.. sectnum::
-
-reporting issues
+Reporting issues
 ----------------
 
 Bugs, enhancements and more can be reported to this extension's GitHub
@@ -24,7 +19,7 @@ When reporting a bug, it is recommended to include at least the following:
 Additional logs from a ``sphinx-build`` attempt can be helpful as well (if
 applicable).
 
-submitting changes
+Submitting changes
 ------------------
 
 Contributions can be provided as `pull requests`_ to this extension's GitHub
@@ -34,7 +29,7 @@ project. New contributors should familiarize themselves with the following:
   confirmed with the inclusion of ``Signed-off-by`` in submitted commit
   messages.
 - Builds are required\* to pass to be accepted (\* with some exceptions in very
-  specific scenarios). When a pull request is submitted, continues integration
+  specific scenarios). When a pull request is submitted, continuous integration
   tests will be invoked. A developer can invoke ``tox`` at the root of the
   checked out repository to validate changes before submitting a pull request.
 - Keep a narrow scope for proposed changes. Submitting multiple feature changes
@@ -60,29 +55,29 @@ While maintainers will help strive to review, merge changes and provide support
 (when possible), the process may take some time. Please be patient and happy
 coding.
 
-guidelines
+Guidelines
 ----------
 
 This extension will support various Python interpreter versions, Sphinx versions
 and Confluence versions. The goal of this extension is to include support for
 all stable Python interpreters and Confluence versions which have yet to be
-marked as end-of-life and support Sphinx versions with a suggested maximum of
-five major-minor trees.
+marked as end-of-life as well as support Sphinx versions with a suggested
+maximum of five major-minor trees.
 
 - Python interpreters that have not been marked as end-of-life will be supported
   by this extension. An exception exists for Python 2.7 at this time where
-  support _may_ extend to the RHEL's supported end-of-life date for Python 2.7
+  support *may* extend to the RHEL's supported end-of-life date for Python 2.7
   of June 2024 (see also `How is Python 2 supported in RHEL after 2020?`_). Note
   that this is the maximum date for support; however, support may be dropped
-  earlier that this date (with a notification). At minimum, Python 2.7 will be
+  earlier than this date (with a notification). At minimum, Python 2.7 will be
   supported until the end of the 2020 calendar year (a year after Python's
   end-of-life date for Python 2.7).
 - Supported Confluence versions will be supported versions listed in
   `Atlassian Support End of Life Policy`_.
 - Supported Sphinx versions include the last five major-minor versions of the
-  application (for example: 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x). An exception
-  exists for Sphinx 1.8.x series, which will be supported until this extension's
-  support for Python 2.7 has been dropped.
+  application (e.g. 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x). An exception exists for
+  Sphinx 1.8.x series, which will be supported until this extension's support
+  for Python 2.7 has been dropped.
 
 `PEP 8`_ is a standard styling guide for Python projects and is recommended for
 considerations when making contributions. On that note, please read the
