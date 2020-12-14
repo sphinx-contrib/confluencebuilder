@@ -6,6 +6,7 @@
 
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from hashlib import sha256
+import os
 
 class ConfluenceUtil:
     """
@@ -59,6 +60,32 @@ class ConfluenceUtil:
             elif not url.endswith('/'):
                 url += '/'
         return url
+
+def extract_strings_from_file(filename):
+    """
+    extracts strings from a provided filename
+
+    Returns the a list of extracted strings found in a provided filename.
+    Entries are stripped when processing and lines leading with a comment are
+    ignored.
+
+    Args:
+        filename: the filename
+
+    Returns:
+        the list of strings
+    """
+    filelist = []
+
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            for raw_line in f:
+                line = raw_line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                filelist.append(line)
+
+    return filelist
 
 def first(it):
     """

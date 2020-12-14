@@ -5,12 +5,32 @@
 """
 
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 import os.path
 
 try:
     basestring
 except NameError:
     basestring = str
+
+def handle_config_inited(app, config):
+    """
+    hook on when a configuration has been initialized
+
+    Invoked when a configuration has been initialized by the Sphinx application.
+    This event will be handled to process long term support for various options.
+
+    Args:
+        app: the application instance
+        config: the configuration
+    """
+
+    def handle_legacy(new, orig):
+        if getattr(config, new) is None and getattr(config, orig) is not None:
+            config[new] = config[orig]
+
+    # copy over deprecated configuration names to new names
+    handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
 
 class ConfluenceConfig:
     """
@@ -20,6 +40,7 @@ class ConfluenceConfig:
     configuration to ensure the building/publishing environment is using sane
     options.
     """
+    _tracked_deprecated = []
 
     @staticmethod
     def validate(builder, log=True):
@@ -100,23 +121,70 @@ defined maximum document depth must be defined as an integer value (not a float,
 string, etc.).
 """)
 
-        if c.confluence_publish_subset:
-            if not (isinstance(c.confluence_publish_subset, (tuple, list, set))
-                    and all(isinstance(docname, basestring)
-                            for docname in c.confluence_publish_subset)):
+        # ######################################################################
+
+        publish_list_options = [
+            'confluence_publish_allowlist',
+            'confluence_publish_denylist',
+        ]
+
+        for option in publish_list_options:
+            value = getattr(c, option)
+            if value is None:
+                continue
+
+            # if provided via command line, treat as a list
+            if option in c['overrides']:
+                value = value.split(',')
+
+            if not (isinstance(value, (tuple, list, set, basestring))):
                 errState = True
                 if log:
                     ConfluenceLogger.error(
-"""'confluence_publish_subset' should be a collection of strings""")
-            else:
-                for docname in c.confluence_publish_subset:
-                    if not any(os.path.isfile(os.path.join(env.srcdir,
-                                                           docname + suffix))
-                               for suffix in c.source_suffix):
+"""invalid {} value
+
+The value type permitted for this publish list option can either be a list of
+document names or a string pointing to a file containing documents.
+""".format(option))
+            elif value:
+                files = []
+                if isinstance(value, basestring):
+                    if os.path.isfile(value):
+                        files = extract_strings_from_file(value)
+                    else:
                         errState = True
                         if log:
                             ConfluenceLogger.error(
-"""Document '%s' in 'confluence_publish_subset' not found""", docname)
+"""invalid {} filename
+
+The filename provided in this option cannot be found on the system.
+""".format(option))
+                elif not (isinstance(value, (tuple, list, set)) and
+                        all(isinstance(doc, basestring) for doc in value)):
+                    errState = True
+                    if log:
+                        ConfluenceLogger.error(
+"""invalid contents in {}
+
+The values provided in this option should be a collection of strings.
+""".format(option))
+                else:
+                    files = value
+
+                for docname in files:
+                    if not any(
+                            os.path.isfile(
+                                os.path.join(env.srcdir, docname + suffix))
+                            for suffix in c.source_suffix):
+                        errState = True
+                        if log:
+                            ConfluenceLogger.error(
+"""missing document in {}
+
+The document name {} provided in this option cannot be found on the system.
+""".format(option, docname))
+
+        # ######################################################################
 
         if c.confluence_publish:
             if not c.confluence_parent_page:
@@ -229,5 +297,17 @@ Ensure the value is set to a proper file path and the file exists.
                             )
 
                 c.confluence_client_cert = cert_files
+
+        # inform users of a deprecated configuration being used
+        deprecated_configs = {
+            'confluence_publish_subset':
+                'use "confluence_publish_allowlist" instead',
+        }
+
+        cls = ConfluenceConfig
+        for key, msg in deprecated_configs.items():
+            if c[key] is not None and key not in cls._tracked_deprecated:
+                cls._tracked_deprecated.append(key)
+                ConfluenceLogger.warn('config "%s" deprecated; %s' % (key, msg))
 
         return not errState

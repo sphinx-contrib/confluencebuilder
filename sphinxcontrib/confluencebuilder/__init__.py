@@ -7,6 +7,7 @@
 from sphinx.util import docutils
 from sphinx.writers.text import STDINDENT
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import JiraDirective
@@ -157,8 +158,10 @@ def setup(app):
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Proxy server needed to communicate with Confluence server."""
     app.add_config_value('confluence_proxy', None, False)
-    """Subset of document names to publish"""
-    app.add_config_value('confluence_publish_subset', [], False)
+    """Subset of documents which are allowed to be published."""
+    app.add_config_value('confluence_publish_allowlist', None, False)
+    """Subset of documents which are denied to be published."""
+    app.add_config_value('confluence_publish_denylist', None, False)
     """Authentication passthrough for Confluence REST interaction."""
     app.add_config_value('confluence_server_auth', None, False)
     """Cookie(s) to use for Confluence REST interaction."""
@@ -198,6 +201,10 @@ def setup(app):
     """Indent to use for generated documents."""
     app.add_config_value('confluence_indent', STDINDENT, False)
 
+    """(configuration - deprecated)"""
+    # replaced by confluence_publish_allowlist
+    app.add_config_value('confluence_publish_subset', None, False)
+
     # ##########################################################################
 
     """JIRA directives"""
@@ -217,6 +224,10 @@ def setup(app):
     """Wires up the directives themselves"""
     app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
+
+    # hook onto configuration initialization to finalize its state before
+    # passing it to the builder (e.g. handling deprecated options)
+    app.connect('config-inited', handle_config_inited)
 
     # inject the compatible autosummary nodes if the extension is loaded
     def inject_autosummary_notes_hook(app):

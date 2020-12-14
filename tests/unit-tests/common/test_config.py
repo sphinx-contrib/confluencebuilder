@@ -89,37 +89,100 @@ class TestConfluenceConfig(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init(suppress_conf_check=True)
 
-    def test_publish_subset(self):
+    def test_publish_lists(self):
         builder = ConfluenceBuilder(self.app)
-        builder.config.source_suffix = {
+        config = builder.config
+        config.source_suffix = {
             '.rst': 'restructuredtext',
         }
 
-        builder.config.confluence_publish_subset = 'doc' # expect list-like
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+        assets_dir = os.path.join(self.test_dir, 'assets')
+        invalid_list = os.path.join(assets_dir, 'sample-invalid-publish-list')
+        missing_list = os.path.join(assets_dir, 'sample-missing-publish-list')
+        valid_list = os.path.join(assets_dir, 'sample-valid-publish-list')
 
-        builder.config.confluence_publish_subset = [True, False]
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+        options = [
+            'confluence_publish_allowlist',
+            'confluence_publish_denylist',
+        ]
 
-        builder.config.confluence_publish_subset = ['admonitions.rst']
-        with self.assertRaises(ConfluenceConfigurationError):
-            builder.init(suppress_conf_check=True)
+        for option in options:
+            # empty value (string; ignore state)
+            setattr(config, option, '')
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with '
+                    'empty (string) list: ' + option)
 
-        builder.config.confluence_publish_subset = ['admonitions']
-        try:
-            builder.init(suppress_conf_check=True)
-        except ConfluenceConfigurationError:
-            self.fail('configuration exception raised with valid subset')
+            # empty value (list; ignore state)
+            setattr(config, option, [])
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with '
+                    'empty (list) list: ' + option)
 
-        # explicitly force unicode strings to help verify python 2.x series
-        # dealing with unicode strings inside the document subset
-        builder.config.confluence_publish_subset = [u'admonitions']
-        try:
-            builder.init(suppress_conf_check=True)
-        except ConfluenceConfigurationError:
-            self.fail('configuration exception raised with unicode subset')
+            # document list with valid entries
+            setattr(config, option, ['admonitions'])
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with '
+                    'valid document list: ' + option)
+
+            # explicitly force unicode strings to help verify python 2.x series
+            # dealing with unicode strings inside the document subset
+            setattr(config, option, [u'admonitions'])
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with '
+                    'valid document (unicode) list: ' + option)
+
+            # file with a valid document list
+            self.assertTrue(os.path.isfile(valid_list))
+            setattr(config, option, valid_list)
+            try:
+                builder.init(suppress_conf_check=True)
+            except ConfluenceConfigurationError:
+                self.fail('configuration exception raised with '
+                    'valid document file list: ' + option)
+
+            # invalid content
+            setattr(config, option, True)
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # list with invalid content
+            setattr(config, option, [True, False])
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # missing document
+            setattr(config, option, ['missing'])
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # use of file extension
+            setattr(config, option, ['admonitions.rst'])
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # file with invalid document list
+            self.assertTrue(os.path.isfile(invalid_list))
+            setattr(config, option, invalid_list)
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # missing file
+            self.assertFalse(os.path.isfile(missing_list))
+            setattr(config, option, missing_list)
+            with self.assertRaises(ConfluenceConfigurationError):
+                builder.init(suppress_conf_check=True)
+
+            # clear back to the default state
+            setattr(config, option, None)
 
     def test_invalid_ca_cert(self):
         builder = ConfluenceBuilder(self.app)

@@ -28,10 +28,16 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 import sys
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 # load graphviz extension if available to handle node pre-processing
 try:
@@ -82,10 +88,14 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
+        self.publish_allowlist = []
+        self.publish_denylist = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.secnumbers = {}
+        self.verbose = ConfluenceLogger.verbose
+        self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
 
         if 'graphviz_output_format' in self.config:
@@ -100,6 +110,7 @@ class ConfluenceBuilder(Builder):
     def init(self, suppress_conf_check=False):
         if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
+        config = self.config
 
         if self.config.confluence_publish:
             if self.config.confluence_ask_user:
@@ -187,10 +198,24 @@ class ConfluenceBuilder(Builder):
         else:
             self.space_name = None
 
-        if self.config.confluence_publish_subset:
-            self.publish_subset = set(self.config.confluence_publish_subset)
-        else:
-            self.publish_subset = None
+        def prepare_subset(option):
+            value = getattr(config, option)
+            if value is None:
+                return None
+
+            # if provided via command line, treat as a list
+            if option in config['overrides']:
+                value = value.split(',')
+
+            if isinstance(value, basestring):
+                files = extract_strings_from_file(value)
+            else:
+                files = value
+
+            return set(files) if files else None
+
+        self.publish_allowlist = prepare_subset('confluence_publish_allowlist')
+        self.publish_denylist = prepare_subset('confluence_publish_denylist')
 
     def get_outdated_docs(self):
         """
@@ -526,9 +551,9 @@ class ConfluenceBuilder(Builder):
 
     def publish_purge(self):
         if self.config.confluence_purge:
-            if self.publish_subset:
-                ConfluenceLogger.warn('confluence_purge disabled due to '
-                                      'confluence_publish_subset')
+            if self.publish_allowlist or self.publish_denylist:
+                self.warn('confluence_purge disabled due to '
+                    'confluence_publish_allowlist/confluence_publish_denylist')
                 return
 
             if self.legacy_pages:
@@ -567,7 +592,8 @@ class ConfluenceBuilder(Builder):
                     self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
                     verbosity=self.app.verbosity):
-                if self.publish_subset and docname not in self.publish_subset:
+                if self._check_publish_skip(docname):
+                    self.verbose(docname + ' skipped due to configuration')
                     continue
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
@@ -588,7 +614,8 @@ class ConfluenceBuilder(Builder):
                     length=len(assets), verbosity=self.app.verbosity,
                     stringify_func=to_asset_name):
                 key, absfile, type, hash, docname = asset
-                if self.publish_subset and docname not in self.publish_subset:
+                if self._check_publish_skip(docname):
+                    self.verbose(key + ' skipped due to configuration')
                     continue
 
                 try:
@@ -648,6 +675,25 @@ class ConfluenceBuilder(Builder):
             navnode.append(reference)
 
         return navnode
+
+    def _check_publish_skip(self, docname):
+        """
+        check publishing should be skipped for the provided docname
+
+        A runner's configuration may have an explicit list of docnames to either
+        allow or deny publishing. Check if the provided docname has been flagged
+        to be skipped.
+
+        Args:
+            docname: the docname to check
+        """
+        if self.publish_denylist and docname in self.publish_denylist:
+            return True
+
+        if self.publish_allowlist and docname not in self.publish_allowlist:
+            return True
+
+        return False
 
     def _extract_metadata(self, docname, doctree):
         """
