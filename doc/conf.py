@@ -4,52 +4,94 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-# The master toctree document.
-master_doc = 'index'
+from docutils import nodes
+from sphinx.transforms.post_transforms import SphinxPostTransform
 
-# General information about the project.
 project = 'Sphinx Confluence Builder'
 copyright = '2020 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
-
-# The version info for the project you're documenting, acts as replacement for
-# |version| and |release|, also used in various other places throughout the
-# built documents.
-#
-# The short X.Y version.
 version = ''
-# The full version, including alpha/beta/rc tags.
 release = ''
+
+supported_confluence_ver = '6.13+'
+supported_python_ver = '2.7 or 3.6+'
+supported_sphinx_ver = '1.8 or 2.4+'
+
+master_doc = 'contents'
 
 # reStructuredText string included at the end of every source
 rst_epilog = """
-.. |supported_confluence_ver| replace:: 6.13+
-.. |supported_python_ver| replace:: 2.7 or 3.6+
-.. |supported_sphinx_ver| replace:: 1.8 or 2.4+
-"""
+.. |supported_confluence_ver| replace:: {}
+.. |supported_python_ver| replace:: {}
+.. |supported_sphinx_ver| replace:: {}
+""".format(supported_confluence_ver, supported_python_ver, supported_sphinx_ver)
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [
+    '_build',
+    '.DS_Store',
+    'Thumbs.db',
+]
 
 # -- Options for HTML output ----------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx13b'
+html_theme_path = ['_themes']
+templates_path = ['_templates']
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_additional_pages = {
+    'index': 'index.html',
+}
+
+html_sidebars = {
+    'index': [
+        'indexsidebar.html',
+        'searchbox.html',
+        'ethical-ads.html',
+    ],
+}
+
+html_context  = {
+    'supported_confluence_ver': supported_confluence_ver,
+    'supported_python_ver': supported_python_ver,
+    'supported_sphinx_ver': supported_sphinx_ver,
+}
+
+# -- Options for Latex output --------------------------------------------
+
+latex_elements = {
+    # remove empty pages
+    'extraclassoptions': 'openany,oneside',
+    # disable hyphenatation
+    'preamble': r'''\usepackage[none]{hyphenat}''',
+}
 
 # -- Application hook -----------------------------------------------------
 
-def setup(app):
-    # append theme override
-    app.add_css_file('theme_overrides.css')
+class DocumentationPostTransform(SphinxPostTransform):
+    default_priority = 400
 
+    def run(self, **kwargs):
+        for node in self.document.traverse(nodes.reference):
+            # tag references with `literal` child with a `literal-link` class
+            # (to suppress hover styling)
+            if isinstance(next(iter(node.children), None), nodes.literal):
+                classes = node.get('classes', [])
+                classes.append('literal-link')
+
+def setup(app):
     # append unreleased version-alert
     app.add_js_file('version-alert.js')
+
+    # custom directives/roles for documentation
+    app.add_object_type('builderval', 'builderval', objname='builders',
+        indextemplate='pair: %s; builder')
+    app.add_object_type('confval', 'confval', objname='configuration value',
+        indextemplate='pair: %s; configuration value')
+
+    # register post-transformation hook for additional tweaks
+    app.add_post_transform(DocumentationPostTransform)

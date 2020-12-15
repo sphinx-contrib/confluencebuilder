@@ -1,0 +1,451 @@
+/*
+:copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+*/
+
+@import url("basic.css");
+
+body {
+    font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva',
+                 'Verdana', sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    padding: 0;
+
+    margin: 0 auto;
+    min-width: 780px;
+    max-width: 1080px;
+}
+
+.pageheader {
+    height: 60px;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+.pageheader ul {
+    float: right;
+    color: white;
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.pageheader li {
+    float: left;
+    margin: 0 0 0 10px;
+}
+
+.pageheader li a {
+    border-radius: 1px;
+    padding: 8px 4px;
+    color: #222;
+    font-weight: bold;
+}
+
+.pageheader li a:hover {
+    background-color: #bbb;
+    color: #000;
+}
+
+div.document {
+    background-color: white;
+    text-align: left;
+}
+
+div.bodywrapper {
+    margin: 0 280px 0 0;
+}
+
+div.body {
+    margin: 0;
+    padding: 0.5em 20px 20px 20px;
+    min-height: 400px;
+}
+
+div.related {
+    border-top: 1px solid #ccc;
+    font-size: 1em;
+}
+
+div.related ul {
+    height: 1.9em;
+}
+
+div.related ul li {
+    margin: 0 5px 0 0;
+    padding: 0;
+    float: left;
+}
+
+div.related ul li.right {
+    float: right;
+    margin-right: 5px;
+}
+
+div.related ul li a {
+    margin: 0;
+    padding: 0 5px 0 5px;
+    line-height: 1.75em;
+    color: #060606;
+}
+
+div.related ul li a:hover {
+    color: #000;
+}
+
+div.sphinxsidebarwrapper {
+    position: relative;
+    top: 0px;
+    padding: 0;
+}
+
+div.sphinxsidebar {
+    margin: 0;
+    padding: 0 15px 15px 0;
+    width: 250px;
+    float: right;
+    font-size: 1em;
+    text-align: left;
+    max-height: 0px;
+    clear: right;
+}
+
+div.sphinxsidebar .logo {
+    font-size: 1.8em;
+    color: #343434;
+    font-weight: 300;
+    text-align: center;
+}
+
+div.sphinxsidebar .logo img {
+    vertical-align: middle;
+}
+
+div.sphinxsidebar .download a img {
+    vertical-align: middle;
+}
+
+div.sphinxsidebar input {
+    border: 1px solid #aaa;
+    font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva',
+                 'Verdana', sans-serif;
+}
+
+div.sphinxsidebar h3 {
+    font-size: 1.5em;
+    border-top: 1px solid #c7c7c7;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+div.sphinxsidebar h4 {
+    font-size: 1.2em;
+    margin-bottom: 0;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-right: 14px;
+    padding-left: 14px;
+    color: #333;
+    font-weight: 300;
+}
+
+div.sphinxsidebarwrapper > h3:first-child {
+    margin-top: 0.5em;
+    border: none;
+}
+
+div.sphinxsidebar h3 a {
+    color: #333;
+}
+
+div.sphinxsidebar ul {
+    color: #444;
+    margin-top: 7px;
+    padding: 0;
+    line-height: 130%;
+}
+
+div.sphinxsidebar ul ul {
+    margin-left: 20px;
+}
+
+div.footer {
+    padding: 3px 8px 3px 0;
+    clear: both;
+    font-size: 0.8em;
+    text-align: right;
+}
+
+div.footer a {
+}
+
+p {
+    margin: 0.8em 0 0.5em 0;
+}
+
+a {
+    color: #A2881D;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #E1C13F;
+}
+
+div.body a {
+    text-decoration: underline;
+}
+
+h1 {
+    margin: 10px 0 0 0;
+    font-size: 2.4em;
+    color: #343434;
+    font-weight: 300;
+}
+
+h2 {
+    margin: 1.em 0 0.2em 0;
+    font-size: 1.5em;
+    font-weight: 300;
+    padding: 0;
+    color: #174967;
+}
+
+h3 {
+    margin: 1em 0 -0.3em 0;
+    font-size: 1.3em;
+    font-weight: 300;
+}
+
+div.body h1 a, div.body h2 a, div.body h3 a, div.body h4 a, div.body h5 a, div.body h6 a {
+    text-decoration: none;
+}
+
+div.body h1 a tt, div.body h2 a tt, div.body h3 a tt, div.body h4 a tt, div.body h5 a tt, div.body h6 a tt {
+    color: #343434 !important;
+    font-size: inherit !important;
+}
+
+a.headerlink {
+    color: #343434 !important;
+    font-size: 12px;
+    margin-left: 6px;
+    padding: 0 4px 0 4px;
+    text-decoration: none !important;
+    float: right;
+}
+
+a.headerlink:hover {
+    background-color: #ccc;
+    color: white!important;
+}
+
+h1 code, h2 code, h3 code, h4 code {
+    font-size: inherit;
+}
+
+cite, code, tt {
+    font-family: 'Consolas', 'DejaVu Sans Mono',
+                 'Bitstream Vera Sans Mono', monospace;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+}
+
+table.deprecated code.literal {
+    word-break: break-all;
+}
+
+tt {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    color: #333;
+    padding: 1px 0.2em;
+}
+
+tt.descname, tt.descclassname, tt.xref {
+    border: 0;
+}
+
+hr {
+    border: 1px solid #ccc;
+    margin: 2em;
+}
+
+a tt {
+    border: 0;
+    color: #a2881d;
+}
+
+a tt:hover {
+    color: #e1c13f;
+}
+
+pre {
+    font-family: 'Consolas', 'Courier New', 'DejaVu Sans Mono',
+                 'Bitstream Vera Sans Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.015em;
+    line-height: 120%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #f8f8f8;
+}
+
+pre a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+td.linenos pre {
+    padding: 0.5em 0;
+}
+
+div.topic {
+    background-color: #f8f8f8;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 -0.5em 0 -0.5em;
+}
+
+table td, table th {
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+table.right {
+    float: right;
+    margin-left: 20px;
+}
+
+table.right td {
+    border: 1px solid #ccc;
+}
+
+div.admonition, div.warning {
+    font-size: 0.9em;
+    margin: 1em 0 1em 0;
+    border: 1px solid #86989B;
+    border-radius: 2px;
+    background-color: #f7f7f7;
+    padding: 0;
+}
+
+div.admonition p:last-child {
+    padding-bottom: 8px;
+}
+
+div.admonition > p, div.warning > p {
+    margin: 0.5em 1em 0.5em 1em;
+    padding: 0;
+}
+
+div.admonition > pre, div.warning > pre {
+    margin: 0.4em 1em 0.4em 1em;
+}
+
+div.admonition > p.admonition-title,
+div.warning > p.admonition-title {
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+div.warning {
+    border: 1px solid #940000;
+}
+
+div.admonition > ul,
+div.admonition > ol,
+div.warning > ul,
+div.warning > ol {
+    margin: 0.1em 0.5em 0.5em 3em;
+    padding: 0;
+}
+
+div.admonition div.highlight {
+    background: none;
+}
+
+.viewcode-back {
+    font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva',
+                 'Verdana', sans-serif;
+}
+
+div.viewcode-block:target {
+    background-color: #f4debf;
+    border-top: 1px solid #ac9;
+    border-bottom: 1px solid #ac9;
+}
+
+.contentstable {
+    margin-left: 30px;
+    margin: 0 auto;
+    table-layout: fixed;
+}
+
+.download-pypi {
+    float: right;
+    line-height: 4em;
+}
+
+.quick-grab-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.quick-grab {
+    background-color: #f8f8f8;
+    flex:1;
+    letter-spacing: 0.015em;
+    line-height: 120%;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.quick-grab:focus, .quick-grab:focus{
+    outline: none;
+}
+
+.index-trademark {
+    font-size: 0.8em;
+}
+
+.index-trademark p {
+    margin: 0px;
+}
+
+span.pre {
+    border: #ccc 1px solid;
+    padding: 0px 4px;
+    color: #CE0000;
+}
+
+code.xref, a code {
+    font-weight: normal;
+}
+
+.literal-link {
+    text-decoration: none !important;
+}
+
+p.rubric {
+    margin-top: 20px;
+}
+
+.literal {
+    white-space: nowrap;
+}
+
+.danger {
+    background-color: #efe9e8 !important;
+}

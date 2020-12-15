@@ -1,85 +1,219 @@
-directives
+Directives
 ==========
 
 The following outlines additional `directives`_ supported by this extension.
 
-.. contents:: :local:
+Directives listed below are only supported when using this extension. For users
+with documentation that is built with multiple builders, the following can be
+used to restrict these directives to supported builders by using the
+`:only: <only_>`_ directive. For example:
+
+.. code-block:: rst
+
+    .. only:: builder_confluence or builder_singleconfluence
+
+        .. confluence_metadata::
+            :labels: label-test
+
+Common
+------
+
+.. rst:directive:: confluence_expand
+
+    .. versionadded:: 1.3
+
+    The ``confluence_expand`` directive allows a user to define a Confluence
+    `Expand Macro`_ to help manage the visibility of content on a page. For
+    example:
+
+    .. code-block:: rst
+
+        .. confluence_expand::
+
+            This content is captured inside the expand macro.
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: title: value
+        :type: string
+
+        A string value to apply to the macros "title" field.
+
+        .. code-block:: rst
+
+            .. confluence_expand::
+                :title: View more details...
+
+                This content is captured inside the expand macro.
 
 .. _confluence_metadata:
 
-confluence_metadata
--------------------
+.. rst:directive:: confluence_metadata
 
-The ``confluence_metadata`` directive allows a user to define metadata
-information to be added during a publish event. At this time, this specifically
-is for the adding of Confluence labels to pages. For example:
+    .. versionadded:: 1.3
 
-.. code-block:: rst
+    The ``confluence_metadata`` directive allows a user to define metadata
+    information to be added during a publish event. This directive supports the
+    following options:
 
-   .. confluence_metadata::
-      :labels: label-a label-b
+    .. rst:directive:option:: labels: value
+        :type: space separated strings
 
-The above example will result in the labels ``label-a`` and ``label-b`` being
-added to the document which defines this directive. This directive supports the
-following options:
+        A space-separated list of label strings to apply to a page. The
+        following example will result in the labels ``label-a`` and ``label-b``
+        being added to the document which defines this directive.
 
-* ``labels`` *(optional)* -- A space-separated list of label strings to apply to
-  a page.
+        .. code-block:: rst
 
-See also ``confluence_global_labels`` (:ref:`jump<confluence_global_labels>`).
+            .. confluence_metadata::
+                :labels: label-a label-b
 
-jira
+    See also ``confluence_global_labels`` (:ref:`ref<confluence_global_labels>`).
+
+JIRA
 ----
 
-The ``jira`` directive allows a user to build a JIRA macro to be configured with
-a provided JQL query. For example:
+The following directives can be used to help include JIRA macros into generated
+Confluence documents.
 
-.. code-block:: rst
+.. rst:directive:: .. jira:: [jql]
 
-   .. jira:: project = "TEST"
-      :maximum-issues: 10
+    .. versionadded:: 1.2
 
-This directive supports the following options:
+    The ``jira`` directive allows a user to build a JIRA macro to be configured
+    with a provided JQL query. For example:
 
-* ``columns`` *(optional)* -- A comma-separated list of columns to use when
-  displaying the macro to show in the JIRA table. For example:
-  ``key,summary,updated,status,resolution``
-* ``count`` *(optional)* -- Whether the macro should display a table or just the
-  number of issues. Valid values are ``true`` or ``false``.
-* ``maximum_issues`` *(optional)* -- The maximum number of issues a ``jira``
-  directive will display. By default, Confluence defaults to ``20``.
-* ``server`` *(optional)* -- Indicates a named JIRA server provided via
-  ``confluence_jira_servers`` (:ref:`jump<confluence_jira_servers>`). When set,
-  options ``server-id`` and ``server-name`` cannot be set.
-* ``server-id`` *(optional)* -- The UUID of the JIRA server to link with. When
-  set, the option ``server-name`` needs to be set and the option ``server``
-  cannot be set.
-* ``server-name`` *(optional)* -- The name of the JIRA server to link with. When
-  set, the option ``server-id`` needs to be set and the option ``server``
-  cannot be set.
+    .. code-block:: rst
 
-jira_issue
-----------
+        .. jira:: project = "TEST"
 
-The ``jira_issue`` directive allows a user to build a JIRA macro to be
-configured with a provided JIRA key. For example:
+    This directive supports the following options:
 
-.. code-block:: rst
+    .. rst:directive:option:: columns: value
+        :type: comma separated numbers
 
-   .. jira_issue:: TEST-123
+        A comma-separated list of columns to use when displaying the macro to
+        show in the JIRA table.
 
-This directive supports the following options:
+        .. code-block:: rst
 
-* ``server`` *(optional)* -- Indicates a named JIRA server provided via
-  ``confluence_jira_servers`` (:ref:`jump<confluence_jira_servers>`). When set,
-  options ``server-id`` and ``server-name`` cannot be set.
-* ``server-id`` *(optional)* -- The UUID of the JIRA server to link with. When
-  set, the option ``server-name`` needs to be set and the option ``server``
-  cannot be set.
-* ``server-name`` *(optional)* -- The name of the JIRA server to link with. When
-  set, the option ``server-id`` needs to be set and the option ``server``
-  cannot be set.
+            .. jira:: project = "TEST"
+                :columns: key,summary,updated,status,resolution
+
+    .. rst:directive:option:: count: flag
+        :type: boolean
+
+        Whether the macro should display a table or just the number of issues.
+        Valid values are ``true`` or ``false``.
+
+        .. code-block:: rst
+
+            .. jira:: project = "TEST"
+                :count: true
+
+    .. rst:directive:option:: maximum_issues: count
+        :type: number
+
+        The maximum number of issues a ``jira`` directive will display. By
+        default, Confluence defaults to ``20``.
+
+        .. code-block:: rst
+
+            .. jira:: project = "TEST"
+                :maximum_issues: 10
+
+    .. rst:directive:option:: server: instance
+        :type: string
+
+        Indicates a named JIRA server provided via ``confluence_jira_servers``
+        (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
+        and ``server-name`` cannot be set.
+
+        .. code-block:: rst
+
+            .. jira:: project = "TEST"
+                :server: server-1
+
+    .. rst:directive:option:: server-id: uuid
+        :type: string
+
+        The UUID of the JIRA server to link with. When set, the option
+        ``server-name`` needs to be set and the option ``server`` cannot be set.
+
+        .. code-block:: rst
+            :emphasize-lines: 2
+
+            .. jira:: project = "TEST"
+                :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
+                :server-name: MyAwesomeJiraServer
+
+    .. rst:directive:option:: server-name: name
+        :type: string
+
+        The name of the JIRA server to link with. When set, the option
+        ``server-id`` needs to be set and the option ``server`` cannot be set.
+
+        .. code-block:: rst
+            :emphasize-lines: 3
+
+            .. jira:: project = "TEST"
+                :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
+                :server-name: MyAwesomeJiraServer
+
+
+.. rst:directive:: .. jira_issue:: [issue-id]
+
+    .. versionadded:: 1.2
+
+    The ``jira_issue`` directive allows a user to build a JIRA macro to be
+    configured with a provided JIRA key. For example:
+
+    .. code-block:: rst
+
+        .. jira_issue:: TEST-123
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: server: instance
+        :type: string
+
+        Indicates a named JIRA server provided via ``confluence_jira_servers``
+        (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
+        and ``server-name`` cannot be set.
+
+        .. code-block:: rst
+
+            .. jira_issue:: TEST-123
+                :server: server-1
+
+    .. rst:directive:option:: server-id: uuid
+        :type: string
+
+        The UUID of the JIRA server to link with. When set, the option
+        ``server-name`` needs to be set and the option ``server`` cannot be set.
+
+        .. code-block:: rst
+            :emphasize-lines: 2
+
+            .. jira_issue:: TEST-123
+                :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
+                :server-name: MyAwesomeJiraServer
+
+    .. rst:directive:option:: server-name: name
+        :type: string
+
+        The name of the JIRA server to link with. When set, the option
+        ``server-id`` needs to be set and the option ``server`` cannot be set.
+
+        .. code-block:: rst
+            :emphasize-lines: 3
+
+            .. jira_issue:: TEST-123
+                :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
+                :server-name: MyAwesomeJiraServer
 
 .. references ------------------------------------------------------------------
 
+.. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html
+.. _only: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-only

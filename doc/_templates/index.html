@@ -1,0 +1,104 @@
+{#
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+#}
+{% extends "layout.html" %}
+
+{% set title = _('Overview') %}
+{% set url_confluence = 'https://www.atlassian.com/software/confluence' %}
+{% set url_demo = 'https://sphinxcontrib-confluencebuilder.atlassian.net/' %}
+{% set url_home = 'https://github.com/sphinx-contrib/confluencebuilder' %}
+{% set url_issues = 'https://github.com/sphinx-contrib/confluencebuilder/issues' %}
+{% set url_python = 'https://www.python.org/' %}
+{% set url_sphinx = 'https://www.sphinx-doc.org/' %}
+
+{% block body %}
+  <h1>{{ _('Welcome') }}</h1>
+
+<p>
+{%trans%}Atlassian® Confluence® Builder for <a href="{{url_sphinx}}">Sphinx</a>
+is a community provided extension to help build
+<a href="{{url_confluence}}">Confluence</a> supported format files (e.g. storage
+format) and optionally publish them to a Confluence instance.{%endtrans%}
+</p>
+
+<ul>
+    <li>{%trans%}License{%endtrans%}: BSD-2-Clause</li>
+    <li>
+        <a href="{{url_confluence}}">Confluence</a>
+        Cloud / Server {{supported_confluence_ver}}
+    </li>
+    <li>
+        <a href="{{url_python}}">Python</a>
+        {{supported_python_ver}}
+    </li>
+    <li>
+        <a href="{{url_sphinx}}">Sphinx</a>
+        {{supported_sphinx_ver}}
+    </li>
+</ul>
+
+<p>
+    {%trans%}The community and development for this extension can all be found
+    at this project's GitHub repository:{%endtrans%}
+
+    <blockquote>
+        {%trans%}Atlassian Confluence Builder for Sphinx - GitHub{%endtrans%}
+            <br />
+        <a href="{{url_home}}">{{url_home}}</a>
+    </blockquote>
+</p>
+
+<h2 style="margin-bottom: 0">Documentation</h2>
+
+<table class="contentstable">
+<tr>
+  <td>
+    <p class="biglink"><a class="biglink" href="tutorial.html">Tutorial</a><br/>
+       <span class="linkdescr">overview of basic tasks</span></p>
+  </td><td><p class="biglink"><a class="biglink" href="search.html">Search</a><br/>
+       <span class="linkdescr">search the documentation</span></p>
+  </td>
+</tr><tr>
+  <td>
+    <p class="biglink"><a class="biglink" href="contents.html">Contents</a><br/>
+       <span class="linkdescr">for a complete overview</span></p>
+  </td><td><p class="biglink"><a class="biglink" href="changelog.html">Changelog</a><br/>
+       <span class="linkdescr">release history</span></p>
+  </td>
+</tr>
+</table>
+
+<h2>{%trans%}Demonstration{%endtrans%}</h2>
+<p>
+    {%trans%}Published validation examples can be found on the following
+    Confluence instance:{%endtrans%}
+
+    <blockquote>
+        {%trans%}Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud{%endtrans%}
+            <br />
+        <a href="{{url_demo}}">{{url_demo}}</a>
+    </blockquote>
+</p>
+
+<h2>{%trans%}Asking for help{%endtrans%}</h2>
+<p>
+    {%trans%}Having trouble or concerns using this extension? Do not hesitate to
+    bring up an issue:{%endtrans%}
+
+    <blockquote>
+        {%trans%}Atlassian Confluence Builder for Confluence - Issues{%endtrans%}
+            <br />
+        <a href="{{url_issues}}">{{url_issues}}</a>
+    </blockquote>
+</p>
+
+<hr />
+
+<div class="index-trademark">
+    <p>Atlassian Confluence Builder for Sphinx project is unaffiliated with Atlassian.</p>
+    <p>Atlassian is a registered trademark of Atlassian Pty Ltd.</p>
+    <p>Confluence is a registered trademark of Atlassian Pty Ltd.</p>
+</div>
+
+{% endblock %}

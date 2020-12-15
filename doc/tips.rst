@@ -1,12 +1,9 @@
-tips
+Tips
 ====
-
-.. contents::
-   :local:
 
 .. _confluence_unique_page_names:
 
-confluence spaces and unique page names
+Confluence spaces and unique page names
 ---------------------------------------
 
 An important consideration when using this extension is that Confluence has a
@@ -15,7 +12,7 @@ parses a document's title value, the title is used as either a creation point or
 an update point (i.e. if the page name does not exist, it will be created; if
 the page name does exist, it will be updated).
 
-One must be cautious when mixing a space with manually prepared content and
+A user must be cautious when mixing a space with manually prepared content and
 published content from this extension. Consider the following use case.
 
 A space MyAwesomeSpace already exists with the following content:
@@ -25,8 +22,8 @@ A space MyAwesomeSpace already exists with the following content:
 * Tutorials
 * See Also
 
-A user may desire to publish a series of Sphinx documentation into a "container"
-by, so the page "Documentation" is made:
+A user may desire to publish a series of Sphinx documentation into a
+"container" page, so the page "Documentation" is made:
 
 - MyHome
 - About
@@ -34,9 +31,9 @@ by, so the page "Documentation" is made:
 - Tutorials
 - See Also
 
-If the Sphinx documentation contains a page named "About", unexpected events
-may occur to new users after publishing for the first time. One might expect the
-following to be published:
+If the Sphinx documentation contains a page named "About", an unexpected event
+may occur for new users after publishing for the first time. A user might expect
+the following to be published:
 
 - MyHome
 - About
@@ -67,53 +64,44 @@ is moved as a child of the container page:
 
 Users needing to restrict the extension from possibly mangling manually prepared
 content can use the ``confluence_publish_prefix``
-(:ref:`jump<confluence_publish_prefix>`) or ``confluence_publish_postfix``
-(:ref:`jump<confluence_publish_postfix>`) options.
+(:ref:`ref<confluence_publish_prefix>`) or ``confluence_publish_postfix``
+(:ref:`ref<confluence_publish_postfix>`) options.
 
 See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
 :ref:`title overrides capability <confluence_title_overrides>`.
 
-setting a publishing timeout
+Setting a publishing timeout
 ----------------------------
 
 By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
-(see ``confluence_timeout``; :ref:`jump<confluence_timeout>`).
+(see ``confluence_timeout``; :ref:`ref<confluence_timeout>`).
 
 .. _tip_manage_publish_subset:
 
-manage publishing a document subset
------------------------------------
+Publishing with a CI secret key
+-------------------------------
 
-Users have the ability to publish a subset of processed documents by using the
-``confluence_publish_subset`` (:ref:`jump<confluence_publish_subset>`) option.
-This can be useful for large documentation sets where a user may wish to only
-publish an update for one or more documents (instead of the entire set). While
-subset publishing can be commonly used by setting the
-``confluence_publish_subset`` option in a command line build, this may not be
-ideal for some environments. The following is a code snippet, which when
-included in a project's ``conf.py`` file, will provide a means for a user to
-specify a file outlining which documents are desired:
+For users performing automatic publishing through a CI system, they may wish to
+authenticate their publish event with a secret key. A common approach to
+applying a secret key is through an environment variable. For example:
 
 .. code-block:: python
 
-    subset_path = os.getenv('PUBLISH_SUBSET')
-    if subset_path and os.path.isfile(subset_path):
-        with open(subset_path) as f:
-            confluence_publish_subset = [line
-                                         for raw_line in f
-                                         for line in [raw_line.strip()]
-                                         if line and not line.startswith('#')]
+    import os
 
-Individual documents can be added into the file defined by the environment
-variable ``PUBLISH_SUBSET`` per line. In this snippet, blank lines and lines
-commented out with the ``#`` character are ignored.
+    ...
 
-asking for help
+    confluence_server_pass = os.getenv('SECRET_KEY')
+
+The above will read an environment variable ``SECRET_KEY`` prepared by a CI
+script which will be set on the ``confluence_server_pass`` configuration.
+
+Asking for help
 ---------------
 
 Having trouble or concerns using this extension? Do not hesitate to bring up an
 issue:
 
-   | Atlassian Confluence Builder for Confluence - Issues
-   | https://github.com/sphinx-contrib/confluencebuilder/issues
+    | Atlassian Confluence Builder for Confluence - Issues
+    | https://github.com/sphinx-contrib/confluencebuilder/issues

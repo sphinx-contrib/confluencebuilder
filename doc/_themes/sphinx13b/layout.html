@@ -1,0 +1,73 @@
+{#
+:copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+#}
+{%- extends "basic/layout.html" %}
+
+{# put the sidebar before the body #}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+
+{% block extrahead %}
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+      rel='stylesheet' type='text/css' />
+<link href='https://use.fontawesome.com/releases/v5.9.0/css/all.css'
+      rel='stylesheet' type='text/css' />
+
+{{ super() }}
+
+{% if pagename == 'index' %}
+<style type="text/css">
+{# increase layout size to prevent rtd ad placement format issues #}
+div.body { min-height: 700px; }
+{# suppress top navigation bar when on index page #}
+.related { display: none; }
+</style>
+{% endif %}
+
+{# sidebar scrolling #}
+<script>
+$(window).scroll(function() {
+    var sb = $('.sphinxsidebarwrapper');
+    var win = $(window);
+    var sbh = sb.height();
+    var offset = $('.sphinxsidebar').position()['top'];
+    var wintop = win.scrollTop();
+    var winbot = wintop + win.innerHeight();
+    var curtop = sb.position()['top'];
+    var curbot = curtop + sbh;
+    if (sbh < win.innerHeight()) {
+        sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+        $(document).height() - sbh - 200]));
+    } else {
+        if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+        } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+            $(document).height() - sbh - 200]));
+        }
+    }
+});
+</script>
+{% endblock %}
+
+{% block rootrellink %}
+    <li><a href="{{ pathto('index') }}">Home</a>&#160;|</li>
+    <li><a href="{{ pathto('contents') }}">Documentation</a> &#187;</li>
+{% endblock %}
+
+{% block header %}
+<div class="pageheader">
+    <ul>
+        <li><a href="{{ pathto('install') }}">Install</a></li>
+        <li><a href="{{ pathto('contents') }}">Documentation</a></li>
+    </ul>
+    <div>
+        <a href="{{ pathto('index') }}">
+            <img style="width: 500px" src="{{ pathto('_static/logo.png', 1) }}" alt="Atlassian Confluence Builder for Sphinx" />
+        </a>
+    </div>
+</div>
+
+{% endblock %}

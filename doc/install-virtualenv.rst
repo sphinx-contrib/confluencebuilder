@@ -1,97 +1,70 @@
-Installing
-==========
+:orphan:
 
-Atlassian Confluence Builder for Sphinx |version| depends on:
+Installing (virtualenv)
+=======================
 
-* Python_ |supported_python_ver|
-* Requests_ 2.14.0 or later
-* Sphinx_ |supported_sphinx_ver|
-* Confluence_ Cloud or Server |supported_confluence_ver|
+For users wishing to use virtualenv_ for their environments, the following
+outlines the recommended commands to invoke for various environments. For users
+who do not desire to use virtualenv, please see :doc:`install` instead.
 
-The recommended method of installation is using pip_.
-
-.. code-block:: shell
-
-    pip install sphinxcontrib-confluencebuilder
-     (or)
-    python -m pip install sphinxcontrib-confluencebuilder
-
-To verify the package has been installed, the following command can be used:
-
-.. code-block:: shell
-
-    python -m sphinxcontrib.confluencebuilder --version
-
-.. raw:: html
-
-    ----
-
-For new users, following provides a series of steps to assist in preparing a new
-environment to use this package. For users wishing to use virtualenv, please
-consult the instructions in :doc:`install-virtualenv`.
-
-.. note::
-
-    If the installation process fails with the following error "AttributeError:
-    '_NamespacePath' object has no attribute 'sort'", try upgrading the
-    setuptools module:
-
-    .. code-block:: shell
-
-        pip install --upgrade setuptools
-         (or)
-        python -m pip install --upgrade setuptools
-
-.. raw:: latex
-
-    \newpage
-
-Linux
------
+Linux (virtualenv)
+------------------
 
 While the use of Python_/pip_ is almost consistent between Linux distributions,
 the following are a series of helpful steps to install this package under
 specific distributions of Linux. From a terminal, invoke the following commands:
 
-Arch
-~~~~
+Arch (virtualenv)
+~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell-session
 
     $ sudo pacman -Sy
     $ sudo pacman -S python-pip
+    $ sudo pacman -S python-virtualenv
+    $ virtualenv sphinx-venv
+    $ source sphinx-venv/bin/activate
     $ pip install sphinxcontrib-confluencebuilder
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-CentOS
-~~~~~~
+CentOS (virtualenv)
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell-session
 
     $ sudo yum install epel-release
     $ sudo yum install python-pip
+    $ sudo yum install python-virtualenv
+    $ virtualenv sphinx-venv
+    $ source sphinx-venv/bin/activate
     $ pip install sphinxcontrib-confluencebuilder
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-Fedora
-~~~~~~
+Fedora (virtualenv)
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell-session
 
     $ sudo dnf install python-pip
+    $ sudo dnf install python-virtualenv
+    $ virtualenv sphinx-venv
+    $ source sphinx-venv/bin/activate
     $ pip install sphinxcontrib-confluencebuilder
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-Ubuntu
-~~~~~~
+Ubuntu (virtualenv)
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: shell-session
 
     $ sudo apt-get update
     $ sudo apt-get install python-pip
+    $ sudo dnf install python-virtualenv
+    $ virtualenv sphinx-venv
+    $ source sphinx-venv/bin/activate
     $ pip install sphinxcontrib-confluencebuilder
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
@@ -100,20 +73,23 @@ Ubuntu
 
     \newpage
 
-OS X
-----
+OS X (virtualenv)
+-----------------
 
 From a terminal, invoke the following commands:
 
 .. code-block:: shell-session
 
     $ sudo easy_install pip
+    $ pip install virtualenv
+    $ virtualenv sphinx-venv
+    $ source sphinx-venv/bin/activate
     $ pip install sphinxcontrib-confluencebuilder
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-Windows
--------
+Windows (virtualenv)
+--------------------
 
 If not already installed, download the most recent version of Python_:
 
@@ -124,31 +100,28 @@ When invoking the installer, it is recommended to select the option to "Add
 Python to PATH"; however, users can explicitly invoked Python from an absolute
 path. The remainder of these steps will assume Python is available in the path.
 
-Open a Windows command prompt. Invoke the following:
+Open a Windows command prompt as an administrator. Invoke the following to
+install ``virtualenv``:
 
 .. code-block:: doscon
 
+    > pip install virtualenv
+
+The command prompt started as an administrator can be closed.
+
+Open a Windows command prompt (administrator mode is not required). Invoke the
+following:
+
+.. code-block:: doscon
+
+    > virtualenv sphinx-venv
+    > source sphinx-venv\Scripts\activate.bat
     > python -m pip install sphinxcontrib-confluencebuilder
     > python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-Development installation
-------------------------
+.. references ------------------------------------------------------------------
 
-To install the bleeding edge sources, the following pip_ command can be used:
-
-.. code-block:: shell
-
-    pip install \
-        git+https://github.com/sphinx-contrib/confluencebuilder.git
-
-.. pdf inclusion hack
-.. only:: latex
-
-    .. include:: install-virtualenv.rst
-
-.. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
-.. _Requests: https://pypi.python.org/pypi/requests
-.. _Sphinx: https://www.sphinx-doc.org/
 .. _pip: https://pip.pypa.io/
+.. _virtualenv: https://virtualenv.pypa.io/en/stable/
