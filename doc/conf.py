@@ -6,12 +6,13 @@
 
 from docutils import nodes
 from sphinx.transforms.post_transforms import SphinxPostTransform
+import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
 copyright = '2020 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
-version = ''
-release = ''
+version = sphinxcontrib.confluencebuilder.__version__
+release = sphinxcontrib.confluencebuilder.__version__
 
 supported_confluence_ver = '6.13+'
 supported_python_ver = '2.7 or 3.6+'
