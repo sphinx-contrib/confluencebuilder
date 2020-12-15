@@ -66,9 +66,32 @@ html_context  = {
 latex_elements = {
     # remove empty pages
     'extraclassoptions': 'openany,oneside',
+    # custom title
+    'maketitle': r'''
+\begin{titlepage}
+    \vspace*{\stretch{1.2}}
+    \sphinxlogo
+    \vspace*{\stretch{1.0}}
+    \begin{center}
+        \large Provided by Sphinx Confluence Builder Contributors
+        \par
+        \DTMsetdatestyle{iso}
+        \DTMtoday
+        \par
+        ''' + release + r'''
+    \end{center}
+    \vspace*{\stretch{1.0}}
+\end{titlepage}
+    ''',
+    # iso datetime support
     # disable hyphenatation
-    'preamble': r'''\usepackage[none]{hyphenat}''',
+    'preamble': r'''
+        \usepackage{datetime2}
+        \usepackage[none]{hyphenat}
+    ''',
 }
+
+latex_logo = '_static/logo.png'
 
 # -- Application hook -----------------------------------------------------
 
