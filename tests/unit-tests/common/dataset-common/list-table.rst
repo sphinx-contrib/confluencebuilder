@@ -35,3 +35,16 @@ list table
    * - 7
      - 8
      - 9
+
+.. list-table:: name3
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - key
+     - value
+   * - 1
+     - 2
+   * - 3
+     - 4
+   * - 5
+     - 6
