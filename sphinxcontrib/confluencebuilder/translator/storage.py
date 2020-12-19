@@ -53,6 +53,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._quote_level = 0
         self._reference_context = []
         self._thead_context = []
+        self.colspecs = []
         self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
 
         # helpers for dealing with disabled/unsupported features
@@ -759,6 +760,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._thead_context.pop()
 
     def visit_tgroup(self, node):
+        node.stubs = []
         # if column widths are explicitly given, apply specific column widths
         table_classes = node.parent.get('classes', [])
         if 'colwidths-given' in table_classes:
@@ -794,6 +796,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # tbody
 
     def visit_row(self, node):
+        node.column = 0
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
 
@@ -803,8 +806,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_entry(self, node):
         if self._thead_context[-1]:
             target_tag = 'th'
+        elif node.parent.parent.parent.stubs[node.parent.column]:
+            target_tag = 'th'
         else:
             target_tag = 'td'
+
+        node.parent.column += 1
 
         attribs = {}
         if 'morecols' in node:
@@ -822,7 +829,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         raise nodes.SkipNode
 
     def visit_colspec(self, node):
-        raise nodes.SkipNode
+        self.colspecs.append(node)
+        node.parent.stubs.append(node.attributes.get('stub'))
+
+    def depart_colspec(self, node):
+        pass
 
     # -------------------
     # references - common

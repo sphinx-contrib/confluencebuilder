@@ -264,6 +264,21 @@ Another example of a list table with multiple header rows:
       - 8
       - 9
 
+Another example of a list table with one header row and one stub column:
+
+.. list-table:: Table with stub columns
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - key
+     - value
+   * - 1
+     - 2
+   * - 3
+     - 4
+   * - 5
+     - 6
+
 Option lists
 ------------
 
