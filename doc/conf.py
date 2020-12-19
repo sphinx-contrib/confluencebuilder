@@ -46,6 +46,9 @@ html_static_path = ['_static']
 
 html_additional_pages = {
     'index': 'index.html',
+    # interim redirect of a markup-to-compatibilities for external links which
+    # may not have been updated yet
+    'markup': 'markup-redirect.html',
 }
 
 html_sidebars = {
