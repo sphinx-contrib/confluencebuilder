@@ -429,11 +429,12 @@ class ConfluenceBuilder(Builder):
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
-        if self.writer.output:
+        if self.writer.output is not None:
             ensuredir(path.dirname(outfilename))
             try:
                 with io.open(outfilename, 'w', encoding='utf-8') as file:
-                    file.write(self.writer.output)
+                    if self.writer.output:
+                        file.write(self.writer.output)
             except (IOError, OSError) as err:
                 ConfluenceLogger.warn("error writing file "
                     "%s: %s" % (outfilename, err))
