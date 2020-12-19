@@ -43,9 +43,7 @@ Type                    Notes
 `hyperlink targets`_    Supported
 `images`_               Supported
 `inline markup`_        Supported
-`list-table`_           Limited support.
-
-                        The option ``stub-columns`` is not yet supported.
+`list-table`_           Supported
 `literal blocks`_       Supported
 `math`_                 Supported with additional system tools.
 
