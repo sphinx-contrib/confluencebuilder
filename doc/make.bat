@@ -8,6 +8,10 @@ if errorlevel 1 (
     exit /b
 )
 
+REM find root directory to invoke in, to ensure the version of the project can
+REM be extracted from the source
+for %%i in ("%~dp0..") do set "root_dir=%%~fi"
+
 REM default html builder
 set builder=%1
 if "%builder%" == "" (
@@ -15,4 +19,6 @@ if "%builder%" == "" (
 )
 
 REM invoke build
+pushd %root_dir%
 python -m sphinx -M %builder% %~dp0 %~dp0_build -E -a
+popd
