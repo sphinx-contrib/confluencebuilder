@@ -4,9 +4,11 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from collections import deque
 from sphinx.util import logging
 from sphinx.util.console import bold # pylint: disable=no-name-in-module
 import io
+import sys
 
 class ConfluenceLogger():
     """
@@ -18,15 +20,33 @@ class ConfluenceLogger():
     logger = None
 
     @staticmethod
-    def initialize():
+    def initialize(preload=False):
         """
         initialize the confluence logger
 
         Before using the Confluence logger utility class, it needs to be
         initialized. This method should be invoked once (ideally before any
         attempts made to log).
+
+        Args:
+            preload (optional): attempt to mock a Sphinx application to pre-use
+                                 logging features before attempting to load a
+                                 Sphinx application
         """
-        ConfluenceLogger.logger = logging.getLogger("confluence")
+        ConfluenceLogger.logger = logging.getLogger('confluence')
+
+        # setup logging for features like coloring before starting Sphinx
+        if preload:
+            class MockSphinx:
+                def __init__(self):
+                    self.messagelog = deque(maxlen=10)
+                    self.verbosity = 0
+                    self.warningiserror = False
+                    self._warncount = 0
+            try:
+                logging.setup(MockSphinx(), sys.stdout, sys.stderr)
+            except Exception:
+                pass # fail silently if mocked application is missing something
 
     @staticmethod
     def error(msg, *args, **kwargs):
