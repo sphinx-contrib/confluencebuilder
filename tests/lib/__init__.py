@@ -213,6 +213,49 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
         yield app
 
+def prepare_sphinx_filenames(src_dir, filenames, configs=None):
+    """
+    prepare explicit filenames for a sphinx application instance
+
+    A Sphinx engine allows accepting a list of filenames it will process;
+    however, these filenames need to be set to full paths. This is not always
+    convenient for testing, so this utility allows generating a filename list 
+    with the source directory prefixed for each entry.
+
+    In addition, when passing a documentation set to process, Sphinx requires
+    that the documentation set has an existing root document. In some testing
+    datasets, they may not have one that exists. If this is detected, this
+    helper will adjust the configuration to adjust the root document to a
+    provided filename, which should prevent issues when the Sphinx application
+    prepares an environment. This is only performed when configurations are
+    provided in to this call. Multiple configuration entries can be provided,
+    and only the last configuration entry (must exist and) will be updated in
+    the event when a change is needed.
+
+    Args:
+        src_dir: document sources
+        filenames: the documents to process relative to src_dir (no extensions)
+        configs (optional): list of configurations to check for root doc issue
+
+    Returns:
+        the updated file name list
+    """
+    files = []
+    for filename in filenames:
+        files.append(os.path.join(src_dir, filename + '.rst'))
+
+    if configs:
+        root_doc = 'index'
+        for config in configs:
+            if config and 'master_doc' in config:
+                root_doc = config['master_doc']
+                break
+
+        if root_doc not in filenames:
+            configs[-1]['master_doc'] = filenames[0] # update last config
+
+    return files
+
 def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False, filenames=None):
     """
@@ -238,11 +281,21 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     if not out_dir:
         out_dir = prepare_dirs(f_back_count=2)
 
-    force_all = False if filenames else True
+    files = []
+    force_all = True
+
+    if filenames:
+        # force-all not supported when using explicit filenames
+        force_all = False
+
+        # sphinx application requires full paths for explicit filenames
+        extra_config = dict(extra_config) if extra_config else {}
+        files = prepare_sphinx_filenames(src_dir, filenames,
+            configs=(config, extra_config))
 
     with prepare_sphinx(
             src_dir, config=config, out_dir=out_dir, extra_config=extra_config,
             builder=builder, relax=relax) as app:
-        app.build(force_all=force_all, filenames=filenames)
+        app.build(force_all=force_all, filenames=files)
 
     return out_dir
