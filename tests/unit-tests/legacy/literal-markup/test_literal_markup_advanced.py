@@ -7,7 +7,6 @@
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -23,8 +22,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
 
     def test_legacy_highlights_default(self):
         expected = os.path.join(self.test_dir, 'expected-hd')
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, self.config)
+        doc_dir = buildSphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_legacy_highlights_set(self):
@@ -32,8 +30,7 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
         config['highlight_language'] = 'none'
 
         expected = os.path.join(self.test_dir, 'expected-hs')
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_legacy_override_lang(self):
@@ -41,6 +38,5 @@ class TestConfluenceLiteralMarkupAdvanced(unittest.TestCase):
         config['confluence_lang_transform'] = test_override_lang_method
 
         expected = os.path.join(self.test_dir, 'expected-ol')
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(self, 'index', expected, doc_dir)

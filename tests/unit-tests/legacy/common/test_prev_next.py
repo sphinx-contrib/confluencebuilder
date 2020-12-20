@@ -6,7 +6,6 @@
 
 from __future__ import unicode_literals
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 from tests.lib import prepareSphinx
 import io
 import os
@@ -39,46 +38,38 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
-        doc_dir = prepareDirectories()
-
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
-            self._character_check('index',  doc_dir, {'←': 0, '→': 1})
-            self._character_check('middle', doc_dir, {'←': 1, '→': 1})
-            self._character_check('final',  doc_dir, {'←': 1, '→': 0})
+            self._character_check('index',  app.outdir, {'←': 0, '→': 1})
+            self._character_check('middle', app.outdir, {'←': 1, '→': 1})
+            self._character_check('final',  app.outdir, {'←': 1, '→': 0})
 
     def test_legacy_prevnext_both(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
-        doc_dir = prepareDirectories()
-
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
-            self._character_check('index',  doc_dir, {'←': 0, '→': 2})
-            self._character_check('middle', doc_dir, {'←': 2, '→': 2})
-            self._character_check('final',  doc_dir, {'←': 2, '→': 0})
+            self._character_check('index',  app.outdir, {'←': 0, '→': 2})
+            self._character_check('middle', app.outdir, {'←': 2, '→': 2})
+            self._character_check('final',  app.outdir, {'←': 2, '→': 0})
 
     def test_legacy_prevnext_none(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
-        doc_dir = prepareDirectories()
-
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
-            self._character_check('index',  doc_dir, {'←': 0, '→': 0})
-            self._character_check('middle', doc_dir, {'←': 0, '→': 0})
-            self._character_check('final',  doc_dir, {'←': 0, '→': 0})
+            self._character_check('index',  app.outdir, {'←': 0, '→': 0})
+            self._character_check('middle', app.outdir, {'←': 0, '→': 0})
+            self._character_check('final',  app.outdir, {'←': 0, '→': 0})
 
     def test_legacy_prevnext_top(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 
-        doc_dir = prepareDirectories()
-
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
-            self._character_check('index',  doc_dir, {'←': 0, '→': 1})
-            self._character_check('middle', doc_dir, {'←': 1, '→': 1})
-            self._character_check('final',  doc_dir, {'←': 1, '→': 0})
+            self._character_check('index',  app.outdir, {'←': 0, '→': 1})
+            self._character_check('middle', app.outdir, {'←': 1, '→': 1})
+            self._character_check('final',  app.outdir, {'←': 1, '→': 0})

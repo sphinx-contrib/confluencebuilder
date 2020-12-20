@@ -7,7 +7,6 @@
 from tests.lib import buildSphinx
 from tests.lib import parse
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -19,8 +18,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         self.dataset = os.path.join(test_dir, 'dataset-titlefix')
 
     def test_legacy_titlefix_none(self):
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, self.config)
+        doc_dir = buildSphinx(self.dataset, config=self.config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -40,8 +38,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -61,8 +58,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -83,8 +79,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -108,8 +103,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_postfix'] = '-mypostfix'
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')

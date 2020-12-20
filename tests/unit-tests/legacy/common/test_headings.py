@@ -7,7 +7,6 @@
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -21,8 +20,7 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected')
 
     def test_legacy_headings_default(self):
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, self.config)
+        doc_dir = buildSphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'headings-default', self.expected, doc_dir, tpn='headings')
 
@@ -30,7 +28,6 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'headings-with-title', self.expected, doc_dir, tpn='headings')

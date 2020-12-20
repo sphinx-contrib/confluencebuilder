@@ -24,7 +24,7 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
         container += '-' + builder
 
     doc_dir = prepareDirectories(container)
-    buildSphinx(sandbox_dir, doc_dir, builder=builder,
+    buildSphinx(sandbox_dir, out_dir=doc_dir, builder=builder,
         extra_config=defines, relax=True)
 
 def process_raw_upload(target_sandbox):
@@ -38,7 +38,7 @@ def process_raw_upload(target_sandbox):
         return
 
     doc_dir = prepareDirectories('sandbox-raw')
-    with prepareSphinx(sandbox_dir, doc_dir, relax=True) as app:
+    with prepareSphinx(sandbox_dir, out_dir=doc_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)
         publisher.connect()

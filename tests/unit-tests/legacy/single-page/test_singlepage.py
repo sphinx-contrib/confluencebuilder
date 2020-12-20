@@ -8,7 +8,6 @@ from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import parse
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -20,8 +19,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
 
     def test_legacy_singlepage_contents_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents')
-        doc_dir = prepareDirectories()
-        buildSphinx(dataset, doc_dir, self.config, builder='singleconfluence')
+        doc_dir = buildSphinx(dataset, config=self.config, builder='singleconfluence')
 
         with parse('index', doc_dir) as data:
             links = data.find_all('ac:link')
@@ -32,8 +30,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
 
     def test_legacy_singlepage_contents_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents-numbered')
-        doc_dir = prepareDirectories()
-        buildSphinx(dataset, doc_dir, self.config, builder='singleconfluence')
+        doc_dir = buildSphinx(dataset, config=self.config, builder='singleconfluence')
 
         with parse('index', doc_dir) as data:
             links = data.find_all('ac:link')
@@ -45,15 +42,13 @@ class TestConfluenceSinglePage(unittest.TestCase):
     def test_legacy_singlepage_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected')
-        doc_dir = prepareDirectories()
-        buildSphinx(dataset, doc_dir, self.config, builder='singleconfluence')
+        doc_dir = buildSphinx(dataset, config=self.config, builder='singleconfluence')
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_legacy_singlepage_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered')
-        doc_dir = prepareDirectories()
-        buildSphinx(dataset, doc_dir, self.config, builder='singleconfluence')
+        doc_dir = buildSphinx(dataset, config=self.config, builder='singleconfluence')
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)

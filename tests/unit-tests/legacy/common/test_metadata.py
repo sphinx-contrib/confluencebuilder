@@ -7,7 +7,6 @@
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -19,13 +18,10 @@ class TestConfluenceMetadata(unittest.TestCase):
 
         self.config = prepareConfiguration()
 
-        doc_dir = prepareDirectories('metadata')
-        self.doc_dir = doc_dir
-
     def test_legacy_metadata(self):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 
-        buildSphinx(dataset, self.doc_dir, self.config)
+        doc_dir = buildSphinx(dataset, config=self.config)
         assertExpectedWithOutput(
-            self, 'metadata', expected, self.doc_dir, tpn='index')
+            self, 'metadata', expected, doc_dir, tpn='index')

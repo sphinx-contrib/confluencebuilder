@@ -28,7 +28,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
     @contextmanager
     def _build_app(self):
-        with prepareSphinx(self.mock_ds, self.doc_dir, self.config) as app:
+        with prepareSphinx(self.mock_ds, config=self.config, out_dir=self.doc_dir) as app:
             yield app
 
     def test_legacy_emptyconfig(self):

@@ -79,7 +79,7 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir = prepareDirectories('validation-set-base')
 
         # build/publish test base page
-        buildSphinx(dataset, doc_dir, cls.config)
+        buildSphinx(dataset, config=cls.config, out_dir=doc_dir)
 
         # finalize configuration for tests
         cls.config['confluence_master_homepage'] = False
@@ -104,7 +104,7 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir = prepareDirectories('validation-set-extensions')
         sys.path.insert(0, os.path.join(dataset, 'src'))
 
-        buildSphinx(dataset, doc_dir, config)
+        buildSphinx(dataset, config=config, out_dir=doc_dir)
 
         sys.path.pop(0)
 
@@ -117,7 +117,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
         config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
 
-        buildSphinx(dataset, doc_dir, config)
+        buildSphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_hierarchy(self):
         config = dict(self.config)
@@ -127,7 +127,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'hierarchy')
         doc_dir = prepareDirectories('validation-set-hierarchy')
 
-        buildSphinx(dataset, doc_dir, config)
+        buildSphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_nonjsonresponse(self):
         config = dict(self.config)
@@ -136,13 +136,13 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir = prepareDirectories('validation-set-nonjsonresponse')
 
         with self.assertRaises(ConfluenceBadApiError):
-            buildSphinx(dataset, doc_dir, config)
+            buildSphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_standard_default(self):
         dataset = os.path.join(self.datasets, 'standard')
         doc_dir = prepareDirectories('validation-set-standard')
 
-        buildSphinx(dataset, doc_dir, self.config)
+        buildSphinx(dataset, config=self.config, out_dir=doc_dir)
 
     def test_standard_macro_restricted(self):
         config = dict(self.config)
@@ -161,7 +161,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
         config['confluence_publish_postfix'] = ' (nomacro)'
 
-        buildSphinx(dataset, doc_dir, config)
+        buildSphinx(dataset, config=config, out_dir=doc_dir)
 
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))

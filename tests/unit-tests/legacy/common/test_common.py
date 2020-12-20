@@ -25,7 +25,7 @@ class TestConfluenceCommon(unittest.TestCase):
         doc_dir = prepareDirectories('common')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, doc_dir, self.config) as app:
+        with prepareSphinx(dataset, config=self.config, out_dir=doc_dir) as app:
             app.build(force_all=True)
 
             # track registered extensions

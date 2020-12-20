@@ -7,7 +7,6 @@
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -24,13 +23,11 @@ class TestConfluenceManpage(unittest.TestCase):
         config = dict(self.config)
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'manpage-conf', self.expected, doc_dir, tpn='index')
 
     def test_legacy_manpage_without_config(self):
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, self.config)
+        doc_dir = buildSphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'manpage-noconf', self.expected, doc_dir, tpn='index')

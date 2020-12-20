@@ -25,7 +25,7 @@ class TestConfluenceDomains(unittest.TestCase):
         doc_dir = prepareDirectories('domains')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, doc_dir, config) as app:
+        with prepareSphinx(dataset, config=config, out_dir=doc_dir) as app:
             app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name, expected=None):

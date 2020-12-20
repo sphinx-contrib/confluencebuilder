@@ -38,7 +38,8 @@ class TestSinglePageImageStar(unittest.TestCase):
     def build_document_given_dataset(self, dataset):
         config = prepareConfiguration()
         doc_dir = prepareDirectories('image-star')
-        buildSphinx(dataset, doc_dir, config, builder='singleconfluence')
+        buildSphinx(dataset, config=config, out_dir=doc_dir,
+            builder='singleconfluence')
         return doc_dir
 
     def write_index_file(self, indexfile):

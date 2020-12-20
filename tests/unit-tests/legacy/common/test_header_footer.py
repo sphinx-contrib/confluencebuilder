@@ -6,7 +6,6 @@
 
 from tests.lib import assertExpectedWithOutput
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 from tests.lib import prepareSphinx
 import os
 import unittest
@@ -28,20 +27,17 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_footer_file'] = footer_tpl
         config['confluence_header_file'] = header_tpl
 
-        doc_dir = prepareDirectories()
-
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             assertExpectedWithOutput(self, 'header-footer', self.expected,
-                doc_dir, tpn='header-footer')
+                app.outdir, tpn='header-footer')
 
     def test_legacy_headerfooter_relative(self):
         config = dict(self.config)
         config['confluence_footer_file'] = '../templates/sample-footer.tpl'
         config['confluence_header_file'] = '../templates/sample-header.tpl'
 
-        doc_dir = prepareDirectories()
-        with prepareSphinx(self.dataset, doc_dir, config) as app:
+        with prepareSphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             assertExpectedWithOutput(self, 'header-footer', self.expected,
-                doc_dir, tpn='header-footer')
+                app.outdir, tpn='header-footer')

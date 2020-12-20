@@ -112,7 +112,7 @@ def prepareConfiguration():
 
     return config
 
-def prepareDirectories(container=None):
+def prepareDirectories(container=None, f_back_count=1):
     """
     return the output directory base for all unit tests
 
@@ -122,12 +122,17 @@ def prepareDirectories(container=None):
 
     Args:
         container (optional): the output container name to use
+        f_back_count (optional): number of frame objects to move back when
+                                  attempting to auto-generate a container name
 
     Returns:
         the output directory
     """
     if not container:
-        container = inspect.currentframe().f_back.f_code.co_name
+        frame = inspect.currentframe()
+        for i in range(f_back_count):
+            frame = frame.f_back
+        container = frame.f_code.co_name
     lib_dir = os.path.dirname(os.path.realpath(__file__))
     test_dir = os.path.join(lib_dir, os.pardir)
     base_dir = os.path.join(test_dir, os.pardir)
@@ -139,7 +144,7 @@ def prepareDirectories(container=None):
     return container_dir
 
 @contextmanager
-def prepareSphinx(src_dir, out_dir, config=None, extra_config=None,
+def prepareSphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False):
     """
     prepare a sphinx application instance
@@ -150,8 +155,8 @@ def prepareSphinx(src_dir, out_dir, config=None, extra_config=None,
 
     Args:
         src_dir: document sources
-        out_dir: output for generated documents
         config (optional): configuration to use
+        out_dir (optional): output for generated documents
         extra_config (optional): additional configuration data to apply
         builder (optional): the builder to use
         relax (optional): do not generate warnings as errors
@@ -183,6 +188,9 @@ def prepareSphinx(src_dir, out_dir, config=None, extra_config=None,
     if not builder:
         builder = 'confluence'
 
+    if not out_dir:
+        out_dir = prepareDirectories(f_back_count=2)
+
     doctrees_dir = os.path.join(out_dir, '.doctrees')
 
     with docutils_namespace():
@@ -200,7 +208,7 @@ def prepareSphinx(src_dir, out_dir, config=None, extra_config=None,
 
         yield app
 
-def buildSphinx(src_dir, out_dir, config=None, extra_config=None,
+def buildSphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False, filenames=None):
     """
     prepare a sphinx application instance
@@ -211,17 +219,25 @@ def buildSphinx(src_dir, out_dir, config=None, extra_config=None,
 
     Args:
         src_dir: document sources
-        out_dir: output for generated documents
         config (optional): configuration to use
+        out_dir (optional): output for generated documents
         extra_config (optional): additional configuration data to apply
         builder (optional): the builder to use
         relax (optional): do not generate warnings as errors
         filenames (optional): specific documents to process
+
+    Returns:
+        the output directory
     """
+
+    if not out_dir:
+        out_dir = prepareDirectories(f_back_count=2)
 
     force_all = False if filenames else True
 
     with prepareSphinx(
-            src_dir, out_dir, config=config, extra_config=extra_config,
+            src_dir, config=config, out_dir=out_dir, extra_config=extra_config,
             builder=builder, relax=relax) as app:
         app.build(force_all=force_all, filenames=filenames)
+
+    return out_dir

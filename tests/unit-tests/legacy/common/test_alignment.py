@@ -9,7 +9,6 @@ from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib import assertExpectedWithOutput
 from tests.lib import buildSphinx
 from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
 import os
 import unittest
 
@@ -27,8 +26,7 @@ class TestConfluenceAlignment(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected')
 
     def test_legacy_alignment_default(self):
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, self.config)
+        doc_dir = buildSphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'alignment-center', self.expected, doc_dir, tpn='index')
 
@@ -36,8 +34,7 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'left'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-left', self.expected, doc_dir, tpn='index')
 
@@ -45,8 +42,7 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'center'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-center', self.expected, doc_dir, tpn='index')
 
@@ -54,7 +50,6 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'right'
 
-        doc_dir = prepareDirectories()
-        buildSphinx(self.dataset, doc_dir, config)
+        doc_dir = buildSphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-right', self.expected, doc_dir, tpn='index')
