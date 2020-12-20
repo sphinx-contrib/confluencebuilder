@@ -24,10 +24,10 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset-hierarchy')
         self.expected = os.path.join(test_dir, 'expected-hierarchy')
 
-        doc_dir, doctree_dir = prepareDirectories('toctree-hierarchy')
+        doc_dir = prepareDirectories('toctree-hierarchy')
         self.doc_dir = doc_dir
 
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, config)
 
     def test_legacy_max_depth(self):
         assertExpectedWithOutput(

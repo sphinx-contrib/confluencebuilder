@@ -21,8 +21,8 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset')
         self.expected = os.path.join(test_dir, 'expected')
 
-        doc_dir, doctree_dir = prepareDirectories('literal-markup')
-        buildSphinx(dataset, doc_dir, doctree_dir, self.config)
+        doc_dir = prepareDirectories('literal-markup')
+        buildSphinx(dataset, doc_dir, self.config)
 
         self.doc_dir = doc_dir
 

@@ -23,8 +23,8 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
     if builder:
         container += '-' + builder
 
-    doc_dir, doctree_dir = prepareDirectories(container)
-    buildSphinx(sandbox_dir, doc_dir, doctree_dir, builder=builder,
+    doc_dir = prepareDirectories(container)
+    buildSphinx(sandbox_dir, doc_dir, builder=builder,
         extra_config=defines, relax=True)
 
 def process_raw_upload(target_sandbox):
@@ -37,8 +37,8 @@ def process_raw_upload(target_sandbox):
         print('[sandbox] missing file', raw_file)
         return
 
-    doc_dir, doctree_dir = prepareDirectories('sandbox-raw')
-    with prepareSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True) as app:
+    doc_dir = prepareDirectories('sandbox-raw')
+    with prepareSphinx(sandbox_dir, doc_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)
         publisher.connect()

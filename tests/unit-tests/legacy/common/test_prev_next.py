@@ -39,9 +39,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
-        doc_dir, doctree_dir = prepareDirectories()
+        doc_dir = prepareDirectories()
 
-        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 1})
             self._character_check('middle', doc_dir, {'←': 1, '→': 1})
@@ -51,9 +51,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
-        doc_dir, doctree_dir = prepareDirectories()
+        doc_dir = prepareDirectories()
 
-        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 2})
             self._character_check('middle', doc_dir, {'←': 2, '→': 2})
@@ -63,9 +63,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
-        doc_dir, doctree_dir = prepareDirectories()
+        doc_dir = prepareDirectories()
 
-        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 0})
             self._character_check('middle', doc_dir, {'←': 0, '→': 0})
@@ -75,9 +75,9 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 
-        doc_dir, doctree_dir = prepareDirectories()
+        doc_dir = prepareDirectories()
 
-        with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(self.dataset, doc_dir, config) as app:
             app.build(force_all=True)
             self._character_check('index',  doc_dir, {'←': 0, '→': 1})
             self._character_check('middle', doc_dir, {'←': 1, '→': 1})

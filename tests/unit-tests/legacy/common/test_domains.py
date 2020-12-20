@@ -22,10 +22,10 @@ class TestConfluenceDomains(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset-domains')
         self.expected = os.path.join(test_dir, 'expected-domains')
 
-        doc_dir, doctree_dir = prepareDirectories('domains')
+        doc_dir = prepareDirectories('domains')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, doc_dir, doctree_dir, config) as app:
+        with prepareSphinx(dataset, doc_dir, config) as app:
             app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name, expected=None):

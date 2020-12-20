@@ -19,14 +19,13 @@ class TestConfluenceMetadata(unittest.TestCase):
 
         self.config = prepareConfiguration()
 
-        doc_dir, doctree_dir = prepareDirectories('metadata')
+        doc_dir = prepareDirectories('metadata')
         self.doc_dir = doc_dir
-        self.doctree_dir = doctree_dir
 
     def test_legacy_metadata(self):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 
-        buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
+        buildSphinx(dataset, self.doc_dir, self.config)
         assertExpectedWithOutput(
             self, 'metadata', expected, self.doc_dir, tpn='index')

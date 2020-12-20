@@ -19,7 +19,7 @@ class TestConfluenceConfig(unittest.TestCase):
         self.config = {'extensions': EXT_NAME}
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
-        self.doc_dir, self.doctree_dir = prepareDirectories('config-dummy')
+        self.doc_dir = prepareDirectories('config-dummy')
 
         # legacy
         with self._build_app() as app:
@@ -28,8 +28,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
     @contextmanager
     def _build_app(self):
-        with prepareSphinx(self.mock_ds, self.doc_dir, self.doctree_dir,
-                self.config) as app:
+        with prepareSphinx(self.mock_ds, self.doc_dir, self.config) as app:
             yield app
 
     def test_legacy_emptyconfig(self):

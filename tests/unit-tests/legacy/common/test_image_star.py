@@ -37,8 +37,8 @@ class TestImageStar(unittest.TestCase):
 
     def build_document_given_dataset(self, dataset):
         config = prepareConfiguration()
-        doc_dir, doctree_dir = prepareDirectories('image-star')
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        doc_dir = prepareDirectories('image-star')
+        buildSphinx(dataset, doc_dir, config)
         return doc_dir
 
     def write_index_file(self, indexfile):

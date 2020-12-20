@@ -117,15 +117,14 @@ def prepareDirectories(container=None):
     return the output directory base for all unit tests
 
     This utility method is used to provide other tests the location to store
-    output files. Two paths are provided by this call - the document
-    directory and a doctree directory. This method will ensure the
-    directories are removed before returning.
+    output files. This method will ensure the output directory is removed
+    before returning.
 
     Args:
         container (optional): the output container name to use
 
     Returns:
-        2-tuple (output for documents, output for doctrees)
+        the output directory
     """
     if not container:
         container = inspect.currentframe().f_back.f_code.co_name
@@ -134,15 +133,13 @@ def prepareDirectories(container=None):
     base_dir = os.path.join(test_dir, os.pardir)
     output_dir = os.path.join(base_dir, 'output')
     container_dir = os.path.join(output_dir, container)
-    doc_dir = os.path.join(container_dir, 'build')
-    doctree_dir = os.path.join(container_dir, 'doctree')
 
     shutil.rmtree(container_dir, ignore_errors=True)
 
-    return doc_dir, doctree_dir
+    return container_dir
 
 @contextmanager
-def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
+def prepareSphinx(src_dir, out_dir, config=None, extra_config=None,
         builder=None, relax=False):
     """
     prepare a sphinx application instance
@@ -150,6 +147,14 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
     Return a prepared Sphinx application instance [1] ready for execution.
 
     [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
+
+    Args:
+        src_dir: document sources
+        out_dir: output for generated documents
+        config (optional): configuration to use
+        extra_config (optional): additional configuration data to apply
+        builder (optional): the builder to use
+        relax (optional): do not generate warnings as errors
     """
     # Enable coloring of warning and other messages.  Note that this can
     # cause sys.stderr to be mocked which is why we pass the new value
@@ -178,12 +183,14 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
     if not builder:
         builder = 'confluence'
 
+    doctrees_dir = os.path.join(out_dir, '.doctrees')
+
     with docutils_namespace():
         app = Sphinx(
             src_dir,                # output for document sources
             conf_dir,               # configuration directory
             out_dir,                # output for generated documents
-            doctree_dir,            # output for doctree files
+            doctrees_dir,           # output for doctree files
             builder,                # builder to execute
             confoverrides=conf,     # load provided configuration (volatile)
             status=sts,             # status output
@@ -193,7 +200,7 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
 
         yield app
 
-def buildSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
+def buildSphinx(src_dir, out_dir, config=None, extra_config=None,
         builder=None, relax=False, filenames=None):
     """
     prepare a sphinx application instance
@@ -205,7 +212,6 @@ def buildSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
     Args:
         src_dir: document sources
         out_dir: output for generated documents
-        doctree_dir: output for doctree files
         config (optional): configuration to use
         extra_config (optional): additional configuration data to apply
         builder (optional): the builder to use
@@ -216,6 +222,6 @@ def buildSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
     force_all = False if filenames else True
 
     with prepareSphinx(
-            src_dir, out_dir, doctree_dir, config=config,
-            extra_config=extra_config, builder=builder, relax=relax) as app:
+            src_dir, out_dir, config=config, extra_config=extra_config,
+            builder=builder, relax=relax) as app:
         app.build(force_all=force_all, filenames=filenames)

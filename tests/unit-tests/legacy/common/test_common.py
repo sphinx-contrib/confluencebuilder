@@ -22,10 +22,10 @@ class TestConfluenceCommon(unittest.TestCase):
         dataset = os.path.join(test_dir, 'dataset-common')
         self.expected = os.path.join(test_dir, 'expected')
 
-        doc_dir, doctree_dir = prepareDirectories('common')
+        doc_dir = prepareDirectories('common')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, doc_dir, doctree_dir, self.config) as app:
+        with prepareSphinx(dataset, doc_dir, self.config) as app:
             app.build(force_all=True)
 
             # track registered extensions
