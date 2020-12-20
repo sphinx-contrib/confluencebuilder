@@ -1,8 +1,8 @@
 development
 ===========
 
-* (note) support for sphinx v1.[6-7] has been dropped
-* (note) support for xml-rpc has been dropped
+* **(note)** support for sphinx v1.[6-7] has been dropped
+* **(note)** support for xml-rpc has been dropped
 * conflicting titles will be automatically adjusted to prevent publishing issues
 * enable page-specific title overrides via confluence_title_overrides
 * ensure configured title postfix is not trimmed in long titles
@@ -15,18 +15,20 @@ development
 * fixed issue where ask options would prompt when not publishing
 * fixed issue where autosummary registration may fail
 * fixed issue where default alignment did not apply to a figure's legend
+* fixed issue where empty pages could not be published
 * fixed issue where literal-marked includes would fail to publish
 * fixed issue where registering this extension caused issues with other builders
 * fixed issue where todo entries would render when disabled in configuration
 * fixed issue with previous-next links not generated for nested pages
-* improve code macros rendering a title value when a caption is set
-* improve publishing when dealing with changing page title casing
 * improved built references by including title (alt) data if set
+* improved code macros rendering a title value when a caption is set
 * improved figure/section numbering
 * improved handling unknown code languages to none-styled (instead of python)
 * improved previous-next button visualization
+* improved publishing when dealing with changing page title casing
 * introduce the expand directive
-* promote confluence_storage over confluence for raw type
+* promote ``confluence_storage`` over ``confluence`` for raw type
+* support ``:stub-columns:`` option in a list-table directive
 * support disabling titlefix on an index page
 * support for assigning confluence labels for pages
 * support for both allow and deny lists for published documents
@@ -43,19 +45,20 @@ development
 1.2.0 (2020-01-03)
 ==================
 
-* (note) sphinx v1.[6-7] support for this extension is deprecated
-* (note) xml-rpc support for this extension is deprecated
+* **(note)** sphinx v1.[6-7] support for this extension is deprecated
+* **(note)** xml-rpc support for this extension is deprecated
 * fixed issue when using hierarchy on sphinx 2.1+ (new citations domain)
 * fixed issue with document names with path separators for windows users
 * fixed issue with multi-line description signatures (e.g. c++ autodocs)
 * fixed issue with processing hidden toctrees
-* fixed issue with unicode paths with confluence_publish_subset and python 2.7
+* fixed issue with unicode paths with ``confluence_publish_subset`` and python
+  2.7
 * improved formatting for option list arguments
 * improved handling and feedback when configured with incorrect publish instance
 * improved name management for published assets
 * improved reference linking for sphinx domains capability (meth, attr, etc.)
 * introduce a series of jira directives
-* support 'firstline' parameter in the code block macro
+* support ``firstline`` parameter in the code block macro
 * support base admonition directive
 * support confluence 7 series newline management
 * support default alignment in sphinx 2.1+
@@ -64,8 +67,8 @@ development
 * support passthrough authentication handlers for rest calls
 * support previous/next navigation
 * support prompting for publish username
-* support sphinx.ext.autosummary extension
-* support sphinx.ext.todo extension
+* support ``sphinx.ext.autosummary`` extension
+* support ``sphinx.ext.todo`` extension
 * support the math directive
 * support toctree's numbered option
 * support users injecting cookie data (for authentication) into rest calls
@@ -73,7 +76,7 @@ development
 1.1.0 (2019-03-16)
 ==================
 
-* repackaged release (see sphinx-contrib/confluencebuilder#192)
+* repackaged release (see `sphinx-contrib/confluencebuilder#192`_)
 
 1.0.0 (2019-03-14)
 ==================
@@ -108,7 +111,7 @@ development
 * improve support for various confluence url configurations
 * improve support in handling literal block languages
 * support automatic title generation for documents (if missing)
-* support linenothreshold option for hightlight directive
+* support ``:linenothreshold:`` option for hightlight directive
 * support maximum page depth (nesting documents)
 * support the raw directive
 * support two-way ssl connections
@@ -116,7 +119,7 @@ development
 0.8.0 (2017-12-05)
 ==================
 
-* fix case where first-publish with 'confluence_master_homepage' fails to
+* fix case where first-publish with ``confluence_master_homepage`` fails to
   configure the space's homepage
 * support page hierarchy
 * improve pypi cover notes
@@ -142,7 +145,7 @@ development
 * re-work generated document references/targets (reference to section names)
 * sanitize output to prevent confluence errors for certain characters
 * support indentations markup
-* support master_doc option to configure space's homepage
+* support ``master_doc`` option to configure space's homepage
 * support removing document titles from page outputs
 * support silent page updates
 
@@ -150,7 +153,7 @@ development
 ==================
 
 * cleanup module's structure, versions and other minor files
-* drop 'confluence' pypi package (embedded xml-rpc support added)
+* drop ``confluence`` pypi package (embedded xml-rpc support added)
 * improve hyperlink and cross-referencing arbitrary locations/documents support
 * improve proxy support
 * re-support python 3.x series
@@ -160,17 +163,17 @@ development
 0.5.0 (2017-03-31)
 ==================
 
+* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
+  `sphinx-contrib/confluencebuilder#10`_)
 * header/footer support
 * purging support
 * use macros for admonitions
-* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
-  sphinx-contrib/confluencebuilder#10)
 
 0.4.0 (2017-02-21)
 ==================
 
-* move from 'confluence' pypi package to 'confluence' pypi package (required for
-  publishing). see: https://github.com/pycontribs/confluence
+* move from ``Confluence`` pypi package to a ``confluence`` pypi package
+  (required for publishing to pypi; see `pycontribs/confluence`_)
 
 0.3.0 (2017-01-22)
 ==================
@@ -195,3 +198,7 @@ development
 
 * added lists, bullets, formatted text
 * added headings and titles
+
+.. _pycontribs/confluence: https://github.com/pycontribs/confluence
+.. _sphinx-contrib/confluencebuilder#10: https://github.com/sphinx-contrib/confluencebuilder/pull/10
+.. _sphinx-contrib/confluencebuilder#192: https://github.com/sphinx-contrib/confluencebuilder/issues/192
