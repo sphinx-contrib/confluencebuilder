@@ -105,7 +105,7 @@ def prepare_conf():
     config = {}
     config['extensions'] = [EXT_NAME]
     config['confluence_publish'] = False
-    config['confluence_space_name'] = 'unit-test'
+
     # support pre-Sphinx v2.0 installations which default to 'contents'
     if parse_version(sphinx_version) < parse_version('2.0'):
         config['master_doc'] = 'index'
