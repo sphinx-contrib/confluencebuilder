@@ -123,7 +123,7 @@ class TestConfluenceConfig(unittest.TestCase):
                     'empty (list) list: ' + option)
 
             # document list with valid entries
-            setattr(config, option, ['admonitions'])
+            setattr(config, option, ['index'])
             try:
                 builder.init(suppress_conf_check=True)
             except ConfluenceConfigurationError:
@@ -132,7 +132,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
             # explicitly force unicode strings to help verify python 2.x series
             # dealing with unicode strings inside the document subset
-            setattr(config, option, [u'admonitions'])
+            setattr(config, option, [u'index'])
             try:
                 builder.init(suppress_conf_check=True)
             except ConfluenceConfigurationError:
@@ -164,7 +164,7 @@ class TestConfluenceConfig(unittest.TestCase):
                 builder.init(suppress_conf_check=True)
 
             # use of file extension
-            setattr(config, option, ['admonitions.rst'])
+            setattr(config, option, ['index.rst'])
             with self.assertRaises(ConfluenceConfigurationError):
                 builder.init(suppress_conf_check=True)
 
