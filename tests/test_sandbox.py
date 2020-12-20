@@ -37,7 +37,7 @@ def process_raw_upload(target_sandbox):
         print('[sandbox] missing file', raw_file)
         return
 
-    doc_dir, doctree_dir = prepareDirectories('sandbox-test')
+    doc_dir, doctree_dir = prepareDirectories('sandbox-raw')
     with prepareSphinx(sandbox_dir, doc_dir, doctree_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)

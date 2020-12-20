@@ -24,13 +24,13 @@ class TestConfluenceManpage(unittest.TestCase):
         config = dict(self.config)
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
-        doc_dir, doctree_dir = prepareDirectories('manpage-conf')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, config)
         assertExpectedWithOutput(
             self, 'manpage-conf', self.expected, doc_dir, tpn='index')
 
     def test_legacy_manpage_without_config(self):
-        doc_dir, doctree_dir = prepareDirectories('manpage-noconf')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         assertExpectedWithOutput(
             self, 'manpage-noconf', self.expected, doc_dir, tpn='index')

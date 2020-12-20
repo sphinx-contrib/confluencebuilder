@@ -19,7 +19,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         self.dataset = os.path.join(test_dir, 'dataset-titlefix')
 
     def test_legacy_titlefix_none(self):
-        doc_dir, doctree_dir = prepareDirectories('titlefix-none')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
 
         with parse('index', doc_dir) as data:
@@ -40,7 +40,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir, doctree_dir = prepareDirectories('titlefix-postfix')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
         with parse('index', doc_dir) as data:
@@ -61,7 +61,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir, doctree_dir = prepareDirectories('titlefix-prefix')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
         with parse('index', doc_dir) as data:
@@ -83,7 +83,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir, doctree_dir = prepareDirectories('titlefix-both')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
         with parse('index', doc_dir) as data:
@@ -108,7 +108,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_postfix'] = '-mypostfix'
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir, doctree_dir = prepareDirectories('titlefix-ignore-root')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(self.dataset, doc_dir, doctree_dir, config)
 
         with parse('index', doc_dir) as data:

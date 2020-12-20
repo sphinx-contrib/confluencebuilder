@@ -39,7 +39,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
-        doc_dir, doctree_dir = prepareDirectories('prevnext-bottom')
+        doc_dir, doctree_dir = prepareDirectories()
 
         with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
@@ -51,7 +51,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
-        doc_dir, doctree_dir = prepareDirectories('prevnext-both')
+        doc_dir, doctree_dir = prepareDirectories()
 
         with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
@@ -63,7 +63,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
-        doc_dir, doctree_dir = prepareDirectories('prevnext-none')
+        doc_dir, doctree_dir = prepareDirectories()
 
         with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)
@@ -75,7 +75,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 
-        doc_dir, doctree_dir = prepareDirectories('prevnext-top')
+        doc_dir, doctree_dir = prepareDirectories()
 
         with prepareSphinx(self.dataset, doc_dir, doctree_dir, config) as app:
             app.build(force_all=True)

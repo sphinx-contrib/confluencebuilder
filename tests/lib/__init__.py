@@ -12,6 +12,7 @@ from sphinx.application import Sphinx
 from sphinx.util.console import nocolor, color_terminal
 from sphinx.util.docutils import docutils_namespace
 import difflib
+import inspect
 import io
 import os
 import shutil
@@ -111,7 +112,7 @@ def prepareConfiguration():
 
     return config
 
-def prepareDirectories(container):
+def prepareDirectories(container=None):
     """
     return the output directory base for all unit tests
 
@@ -119,8 +120,15 @@ def prepareDirectories(container):
     output files. Two paths are provided by this call - the document
     directory and a doctree directory. This method will ensure the
     directories are removed before returning.
+
+    Args:
+        container (optional): the output container name to use
+
+    Returns:
+        2-tuple (output for documents, output for doctrees)
     """
-    assert container
+    if not container:
+        container = inspect.currentframe().f_back.f_code.co_name
     lib_dir = os.path.dirname(os.path.realpath(__file__))
     test_dir = os.path.join(lib_dir, os.pardir)
     base_dir = os.path.join(test_dir, os.pardir)

@@ -20,7 +20,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
 
     def test_legacy_singlepage_contents_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents')
-        doc_dir, doctree_dir = prepareDirectories('singlepage-contents')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
             builder='singleconfluence')
 
@@ -33,7 +33,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
 
     def test_legacy_singlepage_contents_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents-numbered')
-        doc_dir, doctree_dir = prepareDirectories('singlepage-contents-numberd')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
             builder='singleconfluence')
 
@@ -47,7 +47,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
     def test_legacy_singlepage_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected')
-        doc_dir, doctree_dir = prepareDirectories('singlepage')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
             builder='singleconfluence')
 
@@ -56,7 +56,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
     def test_legacy_singlepage_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered')
-        doc_dir, doctree_dir = prepareDirectories('singlepage-numbered')
+        doc_dir, doctree_dir = prepareDirectories()
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
             builder='singleconfluence')
 
