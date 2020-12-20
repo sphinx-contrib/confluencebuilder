@@ -4,7 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import enable_sphinx_status
+from tests.lib import enable_sphinx_info
+import argparse
 import fnmatch
 import os
 import sys
@@ -25,9 +26,25 @@ def main():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
 
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--help', '-h', action='store_true')
+    parser.add_argument('--verbose', '-V', action='count', default=0)
+
+    args, _ = parser.parse_known_args()
+    if args.help:
+        print(usage())
+        sys.exit(0)
+
     # toggle verbose mode (if provided)
-    if '--verbose' in sys.argv or '-V' in sys.argv:
-        enable_sphinx_status()
+    verbosity = 0
+    if args.verbose:
+        try:
+            verbosity = int(args.verbose)
+            verbosity -= 1 # ignore first level for 'status' information
+        except ValueError:
+            pass
+
+        enable_sphinx_info(verbosity=verbosity)
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))
@@ -88,6 +105,26 @@ def find_tests(entity, pattern):
                 found_tests.extend(found)
 
     return found_tests
+
+def usage():
+    """
+    display the usage for invoking the unit test engine
+
+    Returns a command line usage string for all options available when invoking
+    extension-specific help options.
+
+    Returns:
+        the usage string
+    """
+    return ("""test-engine <options> [test-pattern]
+
+A user can provide a test pattern to use when searching for a subset of unit
+tests to run for this execution.
+
+(options)
+ -h, --help            show this help
+ -V, --verbose         enable verbose messages
+""")
 
 if __name__ == "__main__":
     sys.exit(main())

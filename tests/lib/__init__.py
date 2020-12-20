@@ -57,14 +57,19 @@ def assertExpectedWithOutput(test, name, expected, output, tpn=None):
             diff_data = ''.join(list(diff))
             test.assertTrue(diff_data == '', msg=(diff_hdr + diff_data))
 
-def enable_sphinx_status():
+def enable_sphinx_info(verbosity=None):
     """
     enable verbosity for features handled by this utility class
 
     When invoked, this utility class will attempt to prepare or invoke
     requests in a verbose manner.
+
+    Args:
+        verbosity (optional): configure verbosity on the sphinx application
     """
     os.environ['SPHINX_STATUS'] = '1'
+    if verbosity:
+        os.environ['SPHINX_VERBOSITY'] = str(verbosity)
 
 @contextmanager
 def parse(filename, dirname=None):

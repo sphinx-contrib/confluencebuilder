@@ -6,7 +6,7 @@
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from tests.lib import build_sphinx
-from tests.lib import enable_sphinx_status
+from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
 from tests.lib import prepare_dirs
 import os
@@ -26,7 +26,7 @@ TESTKEY_ENV_KEY = 'CONFLUENCE_TEST_KEY'
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        enable_sphinx_status()
+        enable_sphinx_info()
 
         # build configuration
         cls.config = prepare_conf()
