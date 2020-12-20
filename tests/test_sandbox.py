@@ -6,10 +6,10 @@
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
-from tests.lib import buildSphinx
-from tests.lib import enableSphinxStatus
-from tests.lib import prepareDirectories
-from tests.lib import prepareSphinx
+from tests.lib import build_sphinx
+from tests.lib import enable_sphinx_status
+from tests.lib import prepare_dirs
+from tests.lib import prepare_sphinx
 import argparse
 import os
 import sys
@@ -23,8 +23,8 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
     if builder:
         container += '-' + builder
 
-    doc_dir = prepareDirectories(container)
-    buildSphinx(sandbox_dir, out_dir=doc_dir, builder=builder,
+    doc_dir = prepare_dirs(container)
+    build_sphinx(sandbox_dir, out_dir=doc_dir, builder=builder,
         extra_config=defines, relax=True)
 
 def process_raw_upload(target_sandbox):
@@ -37,8 +37,8 @@ def process_raw_upload(target_sandbox):
         print('[sandbox] missing file', raw_file)
         return
 
-    doc_dir = prepareDirectories('sandbox-raw')
-    with prepareSphinx(sandbox_dir, out_dir=doc_dir, relax=True) as app:
+    doc_dir = prepare_dirs('sandbox-raw')
+    with prepare_sphinx(sandbox_dir, out_dir=doc_dir, relax=True) as app:
         publisher = ConfluencePublisher()
         publisher.init(app.config)
         publisher.connect()
@@ -62,7 +62,7 @@ def process_raw_upload(target_sandbox):
                 break
 
 def main():
-    enableSphinxStatus()
+    enable_sphinx_status()
 
     parser = argparse.ArgumentParser(prog=__name__,
         description='Atlassian Confluence Sphinx Extension Sandbox')

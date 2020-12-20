@@ -7,22 +7,22 @@
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
-from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
+from tests.lib import build_sphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_dirs
 import os
 import unittest
 
 class TestConfluenceLiteralMarkup(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset')
         self.expected = os.path.join(test_dir, 'expected')
 
-        doc_dir = prepareDirectories('literal-markup')
-        buildSphinx(dataset, config=self.config, out_dir=doc_dir)
+        doc_dir = prepare_dirs('literal-markup')
+        build_sphinx(dataset, config=self.config, out_dir=doc_dir)
 
         self.doc_dir = doc_dir
 

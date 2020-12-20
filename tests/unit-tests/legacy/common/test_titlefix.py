@@ -4,21 +4,21 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import buildSphinx
+from tests.lib import build_sphinx
 from tests.lib import parse
-from tests.lib import prepareConfiguration
+from tests.lib import prepare_conf
 import os
 import unittest
 
 class TestConfluenceTitlefix(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(test_dir, 'dataset-titlefix')
 
     def test_legacy_titlefix_none(self):
-        doc_dir = buildSphinx(self.dataset, config=self.config)
+        doc_dir = build_sphinx(self.dataset, config=self.config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -38,7 +38,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -58,7 +58,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -79,7 +79,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')
@@ -103,7 +103,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         config['confluence_publish_postfix'] = '-mypostfix'
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
 
         with parse('index', doc_dir) as data:
             page_ref = data.find('ri:page')

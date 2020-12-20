@@ -6,9 +6,9 @@
 
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
-from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
+from tests.lib import build_sphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_dirs
 import os
 import shutil
 import tempfile
@@ -36,9 +36,9 @@ class TestImageStar(unittest.TestCase):
         return os.path.basename(filepath).rsplit('.')[1]
 
     def build_document_given_dataset(self, dataset):
-        config = prepareConfiguration()
-        doc_dir = prepareDirectories('image-star')
-        buildSphinx(dataset, config=config, out_dir=doc_dir)
+        config = prepare_conf()
+        doc_dir = prepare_dirs('image-star')
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
         return doc_dir
 
     def write_index_file(self, indexfile):

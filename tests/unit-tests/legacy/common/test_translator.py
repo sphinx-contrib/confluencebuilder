@@ -6,8 +6,8 @@
 
 from collections import namedtuple
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from tests.lib import prepareConfiguration
-from tests.lib import prepareSphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_sphinx
 import os
 import unittest
 
@@ -21,7 +21,7 @@ class DummyDocument(dict):
 class TestConfluenceBaseTranslator(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
     def test_legacy_docname_and_docparent(self):
@@ -30,7 +30,7 @@ class TestConfluenceBaseTranslator(unittest.TestCase):
         doc = DummyDocument(mock_docpath)
 
         # prepare a dummy application; no need to actually build
-        with prepareSphinx(mock_ds, config=self.config) as app:
+        with prepare_sphinx(mock_ds, config=self.config) as app:
             translator = ConfluenceBaseTranslator(doc, app.builder)
 
         self.assertEqual(translator.docname, 'foo/bar/baz')

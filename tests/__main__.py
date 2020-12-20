@@ -4,7 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import enableSphinxStatus
+from tests.lib import enable_sphinx_status
 import fnmatch
 import os
 import sys
@@ -27,7 +27,7 @@ def main():
 
     # toggle verbose mode (if provided)
     if '--verbose' in sys.argv or '-V' in sys.argv:
-        enableSphinxStatus()
+        enable_sphinx_status()
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))

@@ -5,8 +5,8 @@
 """
 
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
-from tests.lib import prepareConfiguration
+from tests.lib import build_sphinx
+from tests.lib import prepare_conf
 import os
 import unittest
 
@@ -16,12 +16,12 @@ class TestConfluenceMetadata(unittest.TestCase):
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset_base = os.path.join(self.test_dir, 'dataset-metadata')
 
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
 
     def test_legacy_metadata(self):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'metadata', expected, doc_dir, tpn='index')

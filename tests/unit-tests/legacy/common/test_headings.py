@@ -5,8 +5,8 @@
 """
 
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
-from tests.lib import prepareConfiguration
+from tests.lib import build_sphinx
+from tests.lib import prepare_conf
 import os
 import unittest
 
@@ -15,12 +15,12 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
     def setUpClass(self):
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.dataset = os.path.join(test_dir, 'dataset-headings')
         self.expected = os.path.join(test_dir, 'expected')
 
     def test_legacy_headings_default(self):
-        doc_dir = buildSphinx(self.dataset, config=self.config)
+        doc_dir = build_sphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'headings-default', self.expected, doc_dir, tpn='headings')
 
@@ -28,6 +28,6 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'headings-with-title', self.expected, doc_dir, tpn='headings')

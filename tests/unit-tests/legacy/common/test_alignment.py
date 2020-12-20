@@ -7,8 +7,8 @@
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
-from tests.lib import prepareConfiguration
+from tests.lib import build_sphinx
+from tests.lib import prepare_conf
 import os
 import unittest
 
@@ -21,12 +21,12 @@ class TestConfluenceAlignment(unittest.TestCase):
 
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.dataset = os.path.join(test_dir, 'dataset-alignment')
         self.expected = os.path.join(test_dir, 'expected')
 
     def test_legacy_alignment_default(self):
-        doc_dir = buildSphinx(self.dataset, config=self.config)
+        doc_dir = build_sphinx(self.dataset, config=self.config)
         assertExpectedWithOutput(
             self, 'alignment-center', self.expected, doc_dir, tpn='index')
 
@@ -34,7 +34,7 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'left'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-left', self.expected, doc_dir, tpn='index')
 
@@ -42,7 +42,7 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'center'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-center', self.expected, doc_dir, tpn='index')
 
@@ -50,6 +50,6 @@ class TestConfluenceAlignment(unittest.TestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'right'
 
-        doc_dir = buildSphinx(self.dataset, config=config)
+        doc_dir = build_sphinx(self.dataset, config=config)
         assertExpectedWithOutput(
             self, 'alignment-right', self.expected, doc_dir, tpn='index')

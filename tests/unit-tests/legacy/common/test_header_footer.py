@@ -5,8 +5,8 @@
 """
 
 from tests.lib import assertExpectedWithOutput
-from tests.lib import prepareConfiguration
-from tests.lib import prepareSphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_sphinx
 import os
 import unittest
 
@@ -15,7 +15,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
     def setUpClass(self):
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.dataset = os.path.join(test_dir, 'dataset-header-footer')
         self.expected = os.path.join(test_dir, 'expected')
         self.template_dir = os.path.join(test_dir, 'templates')
@@ -27,7 +27,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_footer_file'] = footer_tpl
         config['confluence_header_file'] = header_tpl
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             assertExpectedWithOutput(self, 'header-footer', self.expected,
                 app.outdir, tpn='header-footer')
@@ -37,7 +37,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         config['confluence_footer_file'] = '../templates/sample-footer.tpl'
         config['confluence_header_file'] = '../templates/sample-header.tpl'
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             assertExpectedWithOutput(self, 'header-footer', self.expected,
                 app.outdir, tpn='header-footer')

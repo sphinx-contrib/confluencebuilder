@@ -8,8 +8,8 @@ from contextlib import contextmanager
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from tests.lib import EXT_NAME
-from tests.lib import prepareDirectories
-from tests.lib import prepareSphinx
+from tests.lib import prepare_dirs
+from tests.lib import prepare_sphinx
 import os
 import unittest
 
@@ -19,7 +19,7 @@ class TestConfluenceConfig(unittest.TestCase):
         self.config = {'extensions': EXT_NAME}
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         self.mock_ds = os.path.join(self.test_dir, 'dataset-common')
-        self.doc_dir = prepareDirectories('config-dummy')
+        self.doc_dir = prepare_dirs('config-dummy')
 
         # legacy
         with self._build_app() as app:
@@ -28,7 +28,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
     @contextmanager
     def _build_app(self):
-        with prepareSphinx(self.mock_ds, config=self.config, out_dir=self.doc_dir) as app:
+        with prepare_sphinx(self.mock_ds, config=self.config, out_dir=self.doc_dir) as app:
             yield app
 
     def test_legacy_emptyconfig(self):

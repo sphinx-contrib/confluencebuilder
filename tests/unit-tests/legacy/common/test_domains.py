@@ -7,25 +7,25 @@
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib import assertExpectedWithOutput
-from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
-from tests.lib import prepareSphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_dirs
+from tests.lib import prepare_sphinx
 import os
 import unittest
 
 class TestConfluenceDomains(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        config = prepareConfiguration()
+        config = prepare_conf()
         config['confluence_adv_restricted'] = ['anchor']
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-domains')
         self.expected = os.path.join(test_dir, 'expected-domains')
 
-        doc_dir = prepareDirectories('domains')
+        doc_dir = prepare_dirs('domains')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, config=config, out_dir=doc_dir) as app:
+        with prepare_sphinx(dataset, config=config, out_dir=doc_dir) as app:
             app.build(force_all=True)
 
     def _assertExpectedWithOutput(self, name, expected=None):

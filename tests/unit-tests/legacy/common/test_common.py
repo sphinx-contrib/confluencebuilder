@@ -8,24 +8,24 @@ from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from tests.lib import EXT_NAME
 from tests.lib import assertExpectedWithOutput
 from tests.lib import parse
-from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
-from tests.lib import prepareSphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_dirs
+from tests.lib import prepare_sphinx
 import os
 import unittest
 
 class TestConfluenceCommon(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
         dataset = os.path.join(test_dir, 'dataset-common')
         self.expected = os.path.join(test_dir, 'expected')
 
-        doc_dir = prepareDirectories('common')
+        doc_dir = prepare_dirs('common')
         self.doc_dir = doc_dir
 
-        with prepareSphinx(dataset, config=self.config, out_dir=doc_dir) as app:
+        with prepare_sphinx(dataset, config=self.config, out_dir=doc_dir) as app:
             app.build(force_all=True)
 
             # track registered extensions

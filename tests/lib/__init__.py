@@ -57,7 +57,7 @@ def assertExpectedWithOutput(test, name, expected, output, tpn=None):
             diff_data = ''.join(list(diff))
             test.assertTrue(diff_data == '', msg=(diff_hdr + diff_data))
 
-def enableSphinxStatus():
+def enable_sphinx_status():
     """
     enable verbosity for features handled by this utility class
 
@@ -94,7 +94,7 @@ def parse(filename, dirname=None):
         soup = BeautifulSoup(fp, 'html.parser')
         yield soup
 
-def prepareConfiguration():
+def prepare_conf():
     """
     prepare minimal sphinx configuration for sphinx application
 
@@ -112,7 +112,7 @@ def prepareConfiguration():
 
     return config
 
-def prepareDirectories(container=None, f_back_count=1):
+def prepare_dirs(container=None, f_back_count=1):
     """
     return the output directory base for all unit tests
 
@@ -144,7 +144,7 @@ def prepareDirectories(container=None, f_back_count=1):
     return container_dir
 
 @contextmanager
-def prepareSphinx(src_dir, config=None, out_dir=None, extra_config=None,
+def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False):
     """
     prepare a sphinx application instance
@@ -189,7 +189,7 @@ def prepareSphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder = 'confluence'
 
     if not out_dir:
-        out_dir = prepareDirectories(f_back_count=2)
+        out_dir = prepare_dirs(f_back_count=2)
 
     doctrees_dir = os.path.join(out_dir, '.doctrees')
 
@@ -208,7 +208,7 @@ def prepareSphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
         yield app
 
-def buildSphinx(src_dir, config=None, out_dir=None, extra_config=None,
+def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False, filenames=None):
     """
     prepare a sphinx application instance
@@ -231,11 +231,11 @@ def buildSphinx(src_dir, config=None, out_dir=None, extra_config=None,
     """
 
     if not out_dir:
-        out_dir = prepareDirectories(f_back_count=2)
+        out_dir = prepare_dirs(f_back_count=2)
 
     force_all = False if filenames else True
 
-    with prepareSphinx(
+    with prepare_sphinx(
             src_dir, config=config, out_dir=out_dir, extra_config=extra_config,
             builder=builder, relax=relax) as app:
         app.build(force_all=force_all, filenames=filenames)

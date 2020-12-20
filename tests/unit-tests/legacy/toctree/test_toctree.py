@@ -5,21 +5,21 @@
 """
 
 from tests.lib import assertExpectedWithOutput
-from tests.lib import buildSphinx
+from tests.lib import build_sphinx
 from tests.lib import parse
-from tests.lib import prepareConfiguration
+from tests.lib import prepare_conf
 import os
 import unittest
 
 class TestConfluenceToctreeMarkup(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
     def test_legacy_contents_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents')
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
 
         with parse('sub', doc_dir) as data:
             top_link = data.find('a')
@@ -32,7 +32,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         config['confluence_remove_title'] = False
 
         dataset = os.path.join(self.test_dir, 'dataset-contents')
-        doc_dir = buildSphinx(dataset, config=config)
+        doc_dir = build_sphinx(dataset, config=config)
 
         with parse('sub', doc_dir) as data:
             top_link = data.find('ac:link')
@@ -48,7 +48,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected-cm')
-        doc_dir = buildSphinx(dataset, config=config)
+        doc_dir = build_sphinx(dataset, config=config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doca', expected, doc_dir)
@@ -58,7 +58,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
     def test_legacy_toctree_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected-def')
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doca', expected, doc_dir)
@@ -68,14 +68,14 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
     def test_legacy_toctree_hidden(self):
         dataset = os.path.join(self.test_dir, 'dataset-hidden')
         expected = os.path.join(self.test_dir, 'expected-hidden')
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
     def test_legacy_toctree_numbered_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-default')
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
@@ -87,7 +87,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-disabled')
-        doc_dir = buildSphinx(dataset, config=config)
+        doc_dir = build_sphinx(dataset, config=config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
@@ -99,7 +99,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-suffix')
-        doc_dir = buildSphinx(dataset, config=config)
+        doc_dir = build_sphinx(dataset, config=config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
@@ -108,7 +108,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
     def test_legacy_toctree_numbered_secnumbers_depth(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered-depth')
         expected = os.path.join(self.test_dir, 'expected-numbered-depth')
-        doc_dir = buildSphinx(dataset, config=self.config)
+        doc_dir = build_sphinx(dataset, config=self.config)
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)

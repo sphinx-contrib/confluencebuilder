@@ -5,8 +5,8 @@
 """
 
 from __future__ import unicode_literals
-from tests.lib import prepareConfiguration
-from tests.lib import prepareSphinx
+from tests.lib import prepare_conf
+from tests.lib import prepare_sphinx
 import io
 import os
 import unittest
@@ -16,7 +16,7 @@ class TestConfluencePrevNext(unittest.TestCase):
     def setUpClass(self):
         test_dir = os.path.dirname(os.path.realpath(__file__))
 
-        self.config = prepareConfiguration()
+        self.config = prepare_conf()
         self.dataset = os.path.join(test_dir, 'dataset-prevnext')
         self.expected = os.path.join(test_dir, 'expected')
 
@@ -38,7 +38,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             self._character_check('index',  app.outdir, {'←': 0, '→': 1})
             self._character_check('middle', app.outdir, {'←': 1, '→': 1})
@@ -48,7 +48,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             self._character_check('index',  app.outdir, {'←': 0, '→': 2})
             self._character_check('middle', app.outdir, {'←': 2, '→': 2})
@@ -58,7 +58,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             self._character_check('index',  app.outdir, {'←': 0, '→': 0})
             self._character_check('middle', app.outdir, {'←': 0, '→': 0})
@@ -68,7 +68,7 @@ class TestConfluencePrevNext(unittest.TestCase):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 
-        with prepareSphinx(self.dataset, config=config) as app:
+        with prepare_sphinx(self.dataset, config=config) as app:
             app.build(force_all=True)
             self._character_check('index',  app.outdir, {'←': 0, '→': 1})
             self._character_check('middle', app.outdir, {'←': 1, '→': 1})
