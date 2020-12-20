@@ -5,6 +5,7 @@
 """
 
 from sphinx.util import logging
+from sphinx.util.console import bold # pylint: disable=no-name-in-module
 import io
 
 class ConfluenceLogger():
@@ -50,6 +51,18 @@ class ConfluenceLogger():
         """
         if ConfluenceLogger.logger:
             ConfluenceLogger.logger.info(msg, *args, **kwargs)
+
+    @staticmethod
+    def note(msg, *args, **kwargs):
+        """
+        log an notable message
+
+        Log a message at the information level with bolded text. `msg` is a
+        format string with the arguments provided by `args`. See also:
+         https://docs.python.org/3/library/logging.html#logging.Logger.info
+        """
+        if ConfluenceLogger.logger:
+            ConfluenceLogger.logger.info(bold(msg), *args, **kwargs)
 
     @staticmethod
     def verbose(msg, *args, **kwargs):
