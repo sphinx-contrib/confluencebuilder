@@ -20,13 +20,13 @@ class TestConfluenceCommonHeadings(unittest.TestCase):
         self.dataset = os.path.join(test_dir, 'dataset-headings')
         self.expected = os.path.join(test_dir, 'expected')
 
-    def test_headings_default(self):
+    def test_legacy_headings_default(self):
         doc_dir, doctree_dir = prepareDirectories('headings-default')
         buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
         assertExpectedWithOutput(
             self, 'headings-default', self.expected, doc_dir, tpn='headings')
 
-    def test_headings_with_title(self):
+    def test_legacy_headings_with_title(self):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 

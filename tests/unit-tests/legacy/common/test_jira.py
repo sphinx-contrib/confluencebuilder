@@ -30,7 +30,7 @@ class TestConfluenceJira(unittest.TestCase):
         self.doc_dir = doc_dir
         self.doctree_dir = doctree_dir
 
-    def test_jira(self):
+    def test_legacy_jira(self):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 
@@ -38,37 +38,37 @@ class TestConfluenceJira(unittest.TestCase):
         assertExpectedWithOutput(
             self, 'jira', expected, self.doc_dir, tpn='index')
 
-    def test_jira_bad_server_id(self):
+    def test_legacy_jira_bad_server_id(self):
         dataset = os.path.join(self.dataset_base, 'bad-sid')
 
         with self.assertRaises(SphinxWarning):
             buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
 
-    def test_jira_conflicting_server_id(self):
+    def test_legacy_jira_conflicting_server_id(self):
         dataset = os.path.join(self.dataset_base, 'conflicting-server-id')
 
         with self.assertRaises(SphinxWarning):
             buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
 
-    def test_jira_conflicting_server_name(self):
+    def test_legacy_jira_conflicting_server_name(self):
         dataset = os.path.join(self.dataset_base, 'conflicting-server-name')
 
         with self.assertRaises(SphinxWarning):
             buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
 
-    def test_jira_missing_server_id(self):
+    def test_legacy_jira_missing_server_id(self):
         dataset = os.path.join(self.dataset_base, 'missing-server-id')
 
         with self.assertRaises(SphinxWarning):
             buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
 
-    def test_jira_missing_server_name(self):
+    def test_legacy_jira_missing_server_name(self):
         dataset = os.path.join(self.dataset_base, 'missing-server-name')
 
         with self.assertRaises(SphinxWarning):
             buildSphinx(dataset, self.doc_dir, self.doctree_dir, self.config)
 
-    def test_jira_missing_server_entry(self):
+    def test_legacy_jira_missing_server_entry(self):
         dataset = os.path.join(self.dataset_base, 'missing-server-entry')
 
         with self.assertRaises(SphinxWarning):

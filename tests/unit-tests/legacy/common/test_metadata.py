@@ -23,7 +23,7 @@ class TestConfluenceMetadata(unittest.TestCase):
         self.doc_dir = doc_dir
         self.doctree_dir = doctree_dir
 
-    def test_metadata(self):
+    def test_legacy_metadata(self):
         dataset = os.path.join(self.dataset_base, 'common')
         expected = os.path.join(self.test_dir, 'expected')
 

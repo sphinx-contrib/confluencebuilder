@@ -21,7 +21,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
         self.expected = os.path.join(test_dir, 'expected')
         self.template_dir = os.path.join(test_dir, 'templates')
 
-    def test_headerfooter_absolute(self):
+    def test_legacy_headerfooter_absolute(self):
         config = dict(self.config)
         footer_tpl = os.path.join(self.template_dir, 'sample-footer.tpl')
         header_tpl = os.path.join(self.template_dir, 'sample-header.tpl')
@@ -35,7 +35,7 @@ class TestConfluenceHeaderFooter(unittest.TestCase):
             assertExpectedWithOutput(self, 'header-footer', self.expected,
                 doc_dir, tpn='header-footer')
 
-    def test_headerfooter_relative(self):
+    def test_legacy_headerfooter_relative(self):
         config = dict(self.config)
         config['confluence_footer_file'] = '../templates/sample-footer.tpl'
         config['confluence_header_file'] = '../templates/sample-header.tpl'

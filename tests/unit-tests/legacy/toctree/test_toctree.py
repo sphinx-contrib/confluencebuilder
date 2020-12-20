@@ -18,7 +18,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         self.config = prepareConfiguration()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
-    def test_contents_default(self):
+    def test_legacy_contents_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents')
         doc_dir, doctree_dir = prepareDirectories('contents-default')
         buildSphinx(dataset, doc_dir, doctree_dir, self.config)
@@ -29,7 +29,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
             self.assertEqual(top_link['href'], '#top',
                 'contents root document not a top reference')
 
-    def test_contents_with_title(self):
+    def test_legacy_contents_with_title(self):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
@@ -44,7 +44,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
             self.assertEqual(top_link['ac:anchor'], '1. sub',
                 'contents root document has an unexpected anchor value')
 
-    def test_toctree_child_macro(self):
+    def test_legacy_toctree_child_macro(self):
         config = dict(self.config)
         config['confluence_page_hierarchy'] = True
         config['confluence_adv_hierarchy_child_macro'] = True
@@ -59,7 +59,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'docb', expected, doc_dir)
         assertExpectedWithOutput(self, 'docc', expected, doc_dir)
 
-    def test_toctree_default(self):
+    def test_legacy_toctree_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected-def')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-def')
@@ -70,7 +70,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'docb', expected, doc_dir)
         assertExpectedWithOutput(self, 'docc', expected, doc_dir)
 
-    def test_toctree_hidden(self):
+    def test_legacy_toctree_hidden(self):
         dataset = os.path.join(self.test_dir, 'dataset-hidden')
         expected = os.path.join(self.test_dir, 'expected-hidden')
         doc_dir, doctree_dir = prepareDirectories('dataset-hidden')
@@ -78,7 +78,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
-    def test_toctree_numbered_default(self):
+    def test_legacy_toctree_numbered_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered-default')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-default')
@@ -88,7 +88,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
 
-    def test_toctree_numbered_disable(self):
+    def test_legacy_toctree_numbered_disable(self):
         config = dict(self.config)
         config['confluence_add_secnumbers'] = False
 
@@ -101,7 +101,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
 
-    def test_toctree_numbered_secnumbers_suffix(self):
+    def test_legacy_toctree_numbered_secnumbers_suffix(self):
         config = dict(self.config)
         config['confluence_secnumber_suffix'] = '!Z /+4'
 
@@ -114,7 +114,7 @@ class TestConfluenceToctreeMarkup(unittest.TestCase):
         assertExpectedWithOutput(self, 'doc1', expected, doc_dir)
         assertExpectedWithOutput(self, 'doc2', expected, doc_dir)
 
-    def test_toctree_numbered_secnumbers_depth(self):
+    def test_legacy_toctree_numbered_secnumbers_depth(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered-depth')
         expected = os.path.join(self.test_dir, 'expected-numbered-depth')
         doc_dir, doctree_dir = prepareDirectories('toctree-markup-numbered-depth')

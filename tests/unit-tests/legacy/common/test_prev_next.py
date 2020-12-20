@@ -35,7 +35,7 @@ class TestConfluencePrevNext(unittest.TestCase):
                     'in file: {}'.format(
                         hex(ord(char)), count, found, test_path))
 
-    def test_prevnext_bottom(self):
+    def test_legacy_prevnext_bottom(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'bottom'
 
@@ -47,7 +47,7 @@ class TestConfluencePrevNext(unittest.TestCase):
             self._character_check('middle', doc_dir, {'←': 1, '→': 1})
             self._character_check('final',  doc_dir, {'←': 1, '→': 0})
 
-    def test_prevnext_both(self):
+    def test_legacy_prevnext_both(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'both'
 
@@ -59,7 +59,7 @@ class TestConfluencePrevNext(unittest.TestCase):
             self._character_check('middle', doc_dir, {'←': 2, '→': 2})
             self._character_check('final',  doc_dir, {'←': 2, '→': 0})
 
-    def test_prevnext_none(self):
+    def test_legacy_prevnext_none(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = None
 
@@ -71,7 +71,7 @@ class TestConfluencePrevNext(unittest.TestCase):
             self._character_check('middle', doc_dir, {'←': 0, '→': 0})
             self._character_check('final',  doc_dir, {'←': 0, '→': 0})
 
-    def test_prevnext_top(self):
+    def test_legacy_prevnext_top(self):
         config = dict(self.config)
         config['confluence_prev_next_buttons_location'] = 'top'
 

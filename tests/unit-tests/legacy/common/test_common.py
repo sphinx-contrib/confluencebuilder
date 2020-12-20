@@ -38,7 +38,7 @@ class TestConfluenceCommon(unittest.TestCase):
         expected = expected if expected else self.expected
         assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
-    def test_admonitions(self):
+    def test_legacy_admonitions(self):
         def verify_admonition_tags(data, text, expected_type):
             leaf = data.find(text=text)
             self.assertIsNotNone(leaf,
@@ -84,87 +84,87 @@ class TestConfluenceCommon(unittest.TestCase):
             self.assertEqual(icon_param.text, 'false',
                 'admonition icon value is not disabled')
 
-    def test_attribution(self):
+    def test_legacy_attribution(self):
         self._assertExpectedWithOutput('attribution')
 
-    def test_bibliographic(self):
+    def test_legacy_bibliographic(self):
         self._assertExpectedWithOutput('bibliographic')
 
-    def test_block_quotes(self):
+    def test_legacy_block_quotes(self):
         self._assertExpectedWithOutput('block-quotes')
 
-    def test_citations(self):
+    def test_legacy_citations(self):
         self._assertExpectedWithOutput('citations')
 
-    def test_contents(self):
+    def test_legacy_contents(self):
         self._assertExpectedWithOutput('contents')
 
-    def test_definition_lists(self):
+    def test_legacy_definition_lists(self):
         self._assertExpectedWithOutput('definition-lists')
 
-    def test_deprecated(self):
+    def test_legacy_deprecated(self):
         self._assertExpectedWithOutput('deprecated')
 
-    def test_download(self):
+    def test_legacy_download(self):
         self._assertExpectedWithOutput('download')
 
-    def test_epigraph(self):
+    def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 
-    def test_figure(self):
+    def test_legacy_figure(self):
         if DEFAULT_ALIGNMENT == 'center':
             expected = self.expected + '-center'
             self._assertExpectedWithOutput('figure', expected)
         else:
             self._assertExpectedWithOutput('figure')
 
-    def test_footnotes(self):
+    def test_legacy_footnotes(self):
         self._assertExpectedWithOutput('footnotes')
 
-    def test_glossary(self):
+    def test_legacy_glossary(self):
         self._assertExpectedWithOutput('glossary')
         self._assertExpectedWithOutput('glossary-ref')
 
-    def test_image(self):
+    def test_legacy_image(self):
         self._assertExpectedWithOutput('image')
 
-    def test_index(self):
+    def test_legacy_index(self):
         self._assertExpectedWithOutput('index')
 
-    def test_lists(self):
+    def test_legacy_lists(self):
         self._assertExpectedWithOutput('lists')
 
-    def test_list_table(self):
+    def test_legacy_list_table(self):
         self._assertExpectedWithOutput('list-table')
 
-    def test_markup(self):
+    def test_legacy_markup(self):
         self._assertExpectedWithOutput('markup')
 
-    def test_option_lists(self):
+    def test_legacy_option_lists(self):
         self._assertExpectedWithOutput('option-lists')
 
-    def test_parsed_literal(self):
+    def test_legacy_parsed_literal(self):
         self._assertExpectedWithOutput('parsed-literal')
 
-    def test_production_list(self):
+    def test_legacy_production_list(self):
         self._assertExpectedWithOutput('production-list')
 
-    def test_raw(self):
+    def test_legacy_raw(self):
         self._assertExpectedWithOutput('raw')
 
-    def test_references(self):
+    def test_legacy_references(self):
         self._assertExpectedWithOutput('references')
         self._assertExpectedWithOutput('references-ref')
 
-    def test_registry(self):
+    def test_legacy_registry(self):
         # validate builder's registration into Sphinx
         self.assertTrue(EXT_NAME in self.extensions)
 
-    def test_sections(self):
+    def test_legacy_sections(self):
         self._assertExpectedWithOutput('sections')
 
-    def test_table(self):
+    def test_legacy_table(self):
         self._assertExpectedWithOutput('tables')
 
-    def test_transitions(self):
+    def test_legacy_transitions(self):
         self._assertExpectedWithOutput('transitions')

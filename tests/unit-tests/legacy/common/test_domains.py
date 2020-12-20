@@ -32,7 +32,7 @@ class TestConfluenceDomains(unittest.TestCase):
         expected = expected if expected else self.expected
         assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
-    def test_domains_c(self):
+    def test_legacy_domains_c(self):
         if parse_version(sphinx_version) >= parse_version('3.0'):
             self._assertExpectedWithOutput('c')
         else:
@@ -40,14 +40,14 @@ class TestConfluenceDomains(unittest.TestCase):
             expected = self.expected + '-legacy'
             self._assertExpectedWithOutput('c', expected)
 
-    def test_domains_cpp(self):
+    def test_legacy_domains_cpp(self):
         self._assertExpectedWithOutput('cpp')
 
-    def test_domains_js(self):
+    def test_legacy_domains_js(self):
         self._assertExpectedWithOutput('js')
 
-    def test_domains_py(self):
+    def test_legacy_domains_py(self):
         self._assertExpectedWithOutput('py')
 
-    def test_domains_rst(self):
+    def test_legacy_domains_rst(self):
         self._assertExpectedWithOutput('rst')

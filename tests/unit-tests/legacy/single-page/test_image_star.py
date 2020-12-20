@@ -14,7 +14,7 @@ import shutil
 import tempfile
 import unittest
 
-class TestImageStar(unittest.TestCase):
+class TestSinglePageImageStar(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,7 +38,8 @@ class TestImageStar(unittest.TestCase):
     def build_document_given_dataset(self, dataset):
         config = prepareConfiguration()
         doc_dir, doctree_dir = prepareDirectories('image-star')
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        buildSphinx(dataset, doc_dir, doctree_dir, config,
+            builder='singleconfluence')
         return doc_dir
 
     def write_index_file(self, indexfile):
@@ -56,7 +57,7 @@ class TestImageStar(unittest.TestCase):
         with open(outfile, 'w') as out:
             out.write(content)
 
-    def test_image_ending_with_star(self):
+    def test_legacy_singlepage_image_ending_with_star(self):
         ''' Test how Confluence Builder resolves the image path when
         it ends with star (*).
         A temporary datasetdir is created to store::
@@ -72,6 +73,7 @@ class TestImageStar(unittest.TestCase):
         image_extension = self.file_extension(self.image_file)
         self.assertIn('image/' + image_extension,
                       ConfluenceBuilder.supported_image_types)
+
         shutil.copyfile(
             self.image_file,
             os.path.join(self.datasetdir,

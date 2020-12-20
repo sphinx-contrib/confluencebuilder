@@ -18,7 +18,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
         self.config = prepareConfiguration()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
-    def test_singlepage_contents_default(self):
+    def test_legacy_singlepage_contents_default(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents')
         doc_dir, doctree_dir = prepareDirectories('singlepage-contents')
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
@@ -31,7 +31,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
             self.assertEqual(links[1]['ac:anchor'], 'section')
             self.assertEqual(links[2]['ac:anchor'], 'section.1')
 
-    def test_singlepage_contents_numbered(self):
+    def test_legacy_singlepage_contents_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-contents-numbered')
         doc_dir, doctree_dir = prepareDirectories('singlepage-contents-numberd')
         buildSphinx(dataset, doc_dir, doctree_dir, self.config,
@@ -44,7 +44,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
             self.assertEqual(links[1]['ac:anchor'], '1.1. section')
             self.assertEqual(links[2]['ac:anchor'], '1.2. section')
 
-    def test_singlepage_default(self):
+    def test_legacy_singlepage_default(self):
         dataset = os.path.join(self.test_dir, 'dataset')
         expected = os.path.join(self.test_dir, 'expected')
         doc_dir, doctree_dir = prepareDirectories('singlepage')
@@ -53,7 +53,7 @@ class TestConfluenceSinglePage(unittest.TestCase):
 
         assertExpectedWithOutput(self, 'index', expected, doc_dir)
 
-    def test_singlepage_numbered(self):
+    def test_legacy_singlepage_numbered(self):
         dataset = os.path.join(self.test_dir, 'dataset-numbered')
         expected = os.path.join(self.test_dir, 'expected-numbered')
         doc_dir, doctree_dir = prepareDirectories('singlepage-numbered')

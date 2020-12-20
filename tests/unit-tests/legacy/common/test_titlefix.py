@@ -18,7 +18,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
         test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(test_dir, 'dataset-titlefix')
 
-    def test_titlefix_none(self):
+    def test_legacy_titlefix_none(self):
         doc_dir, doctree_dir = prepareDirectories('titlefix-none')
         buildSphinx(self.dataset, doc_dir, doctree_dir, self.config)
 
@@ -36,7 +36,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
             self.assertEqual(page_ref['ri:content-title'], 'index',
                 'default index page title does not match')
 
-    def test_titlefix_postfix(self):
+    def test_legacy_titlefix_postfix(self):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
@@ -57,7 +57,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
             self.assertEqual(page_ref['ri:content-title'], 'index-mypostfix',
                 'index page title did not apply postfix')
 
-    def test_titlefix_prefix(self):
+    def test_legacy_titlefix_prefix(self):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
@@ -78,7 +78,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
             self.assertEqual(page_ref['ri:content-title'], 'myprefix-index',
                 'index page title did not apply prefix')
 
-    def test_titlefix_prefix_and_postfix(self):
+    def test_legacy_titlefix_prefix_and_postfix(self):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
@@ -102,7 +102,7 @@ class TestConfluenceTitlefix(unittest.TestCase):
                 'myprefix-index-mypostfix',
                 'index page title did not apply prefix and postfix')
 
-    def test_titlefix_ignore_root(self):
+    def test_legacy_titlefix_ignore_root(self):
         config = dict(self.config)
         config['confluence_ignore_titlefix_on_index'] = True
         config['confluence_publish_postfix'] = '-mypostfix'

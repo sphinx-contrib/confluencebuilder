@@ -29,7 +29,7 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
 
         buildSphinx(dataset, doc_dir, doctree_dir, config)
 
-    def test_max_depth(self):
+    def test_legacy_max_depth(self):
         assertExpectedWithOutput(
             self, 'toctree', self.expected, self.doc_dir)
         assertExpectedWithOutput(
@@ -50,7 +50,7 @@ class TestConfluenceToctreeHierarchyMarkup(unittest.TestCase):
             self.assertFalse(os.path.exists(test_path),
                 'unexpected file was generated: {}'.format(test_path))
 
-    def test_parent_registration(self):
+    def test_legacy_parent_registration(self):
         root_doc = ConfluenceState.parentDocname('toctree')
         self.assertIsNone(root_doc, 'root toctree has a parent')
 

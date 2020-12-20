@@ -32,14 +32,14 @@ class TestConfluenceConfig(unittest.TestCase):
                 self.config) as app:
             yield app
 
-    def test_emptyconfig(self):
+    def test_legacy_emptyconfig(self):
         builder = ConfluenceBuilder(self.app)
         try:
             builder.init(suppress_conf_check=True)
         except ConfluenceConfigurationError:
             self.fail("configuration exception raised with valid config")
 
-    def test_missing_templates(self):
+    def test_legacy_missing_templates(self):
         builder = ConfluenceBuilder(self.app)
         template_dir = os.path.join(self.test_dir, 'templates')
 
@@ -83,13 +83,13 @@ class TestConfluenceConfig(unittest.TestCase):
 
         builder.config.confluence_footer_file = None
 
-    def test_publish_config(self):
+    def test_legacy_publish_config(self):
         builder = ConfluenceBuilder(self.app)
         builder.config.confluence_publish = True
         with self.assertRaises(ConfluenceConfigurationError):
             builder.init(suppress_conf_check=True)
 
-    def test_publish_lists(self):
+    def test_legacy_publish_lists(self):
         builder = ConfluenceBuilder(self.app)
         config = builder.config
         config.source_suffix = {
@@ -184,7 +184,7 @@ class TestConfluenceConfig(unittest.TestCase):
             # clear back to the default state
             setattr(config, option, None)
 
-    def test_invalid_ca_cert(self):
+    def test_legacy_invalid_ca_cert(self):
         builder = ConfluenceBuilder(self.app)
         ca_cert = os.path.join(self.test_dir, 'certs', 'non_existant.crt')
         builder.config.confluence_publish = True
@@ -199,7 +199,7 @@ class TestConfluenceConfig(unittest.TestCase):
         builder.config.confluence_server_url = None
         builder.config.confluence_space_name = None
 
-    def test_too_many_client_certs(self):
+    def test_legacy_too_many_client_certs(self):
         builder = ConfluenceBuilder(self.app)
         this_file = os.path.realpath(__file__)
         cert = (this_file, this_file, this_file)
@@ -215,7 +215,7 @@ class TestConfluenceConfig(unittest.TestCase):
         builder.config.confluence_server_url = None
         builder.config.confluence_space_name = None
 
-    def test_format_client_cert(self):
+    def test_legacy_format_client_cert(self):
         builder = ConfluenceBuilder(self.app)
         this_file = os.path.realpath(__file__)
         builder.config.confluence_publish = True
@@ -238,7 +238,7 @@ class TestConfluenceConfig(unittest.TestCase):
         builder.config.confluence_server_url = None
         builder.config.confluence_space_name = None
 
-    def test_client_cert_does_not_exist(self):
+    def test_legacy_client_cert_does_not_exist(self):
         builder = ConfluenceBuilder(self.app)
         client_cert = os.path.join(self.test_dir, 'certs', 'non_existant.crt')
         builder.config.confluence_publish = True
