@@ -18,7 +18,6 @@ from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
-import argparse
 
 # load autosummary extension if available to add additional nodes
 try:
@@ -33,16 +32,6 @@ except ImportError:
     imgmath = None
 
 __version__ = '1.3.0-dev0'
-
-def main():
-    parser = argparse.ArgumentParser(prog=__name__,
-        description='Sphinx extension to output Atlassian Confluence content.')
-    parser.add_argument(
-        '--version', action='version', version='%(prog)s ' + __version__)
-
-    parser.parse_args()
-    parser.print_help()
-    return 0
 
 def setup(app):
     ConfluenceLogger.initialize()
