@@ -4,9 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from getpass import getpass
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 import os.path
+import sys
 
 try:
     basestring
@@ -31,6 +34,45 @@ def handle_config_inited(app, config):
 
     # copy over deprecated configuration names to new names
     handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
+
+def process_ask_configs(config):
+    """
+    process any ask-based configurations for a user
+
+    A series of asking configurations can be set in a configuration, such as
+    asking for a password on a command line. This call will help process through
+    the available questions and populate a final configuration state for the
+    builder/publisher to use.
+
+    Args:
+        config: the configuration to check/update
+    """
+
+    if config.confluence_ask_user:
+        print('(request to accept username from interactive session)')
+        print(' Instance: ' + config.confluence_server_url)
+
+        default_user = config.confluence_server_user
+        u_str = ''
+        if default_user:
+            u_str = ' [{}]'.format(default_user)
+
+        target_user = input(' User{}: '.format(u_str)) or default_user
+        if not target_user:
+            raise ConfluenceConfigurationError('no user provided')
+
+        config.confluence_server_user = target_user
+
+    if config.confluence_ask_password:
+        print('(request to accept password from interactive session)')
+        if not config.confluence_ask_user:
+            print(' Instance: ' + config.confluence_server_url)
+            print('     User: ' + config.confluence_server_user)
+        sys.stdout.write(' Password: ')
+        sys.stdout.flush()
+        config.confluence_server_pass = getpass('')
+        if not config.confluence_server_pass:
+            raise ConfluenceConfigurationError('no password provided')
 
 class ConfluenceConfig:
     """

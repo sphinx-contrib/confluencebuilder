@@ -75,4 +75,9 @@ setup(
     cmdclass={
         'clean': ExtendedClean,
     },
+    entry_points={
+        'console_scripts': [
+            'sphinx-build-confluence = sphinxcontrib.confluencebuilder.__main__:main',
+        ],
+    },
 )

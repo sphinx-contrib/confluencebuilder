@@ -9,7 +9,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from docutils import nodes
 from docutils.io import StringOutput
-from getpass import getpass
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
@@ -20,6 +19,7 @@ from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.config import ConfluenceConfig
+from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
@@ -32,7 +32,6 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
-import sys
 
 try:
     basestring
@@ -113,31 +112,7 @@ class ConfluenceBuilder(Builder):
         config = self.config
 
         if self.config.confluence_publish:
-            if self.config.confluence_ask_user:
-                print('(request to accept username from interactive session)')
-                print(' Instance: ' + self.config.confluence_server_url)
-
-                default_user = self.config.confluence_server_user
-                u_str = ''
-                if default_user:
-                    u_str = ' [{}]'.format(default_user)
-
-                target_user = input(' User{}: '.format(u_str)) or default_user
-                if not target_user:
-                    raise ConfluenceConfigurationError('no user provided')
-
-                self.config.confluence_server_user = target_user
-
-            if self.config.confluence_ask_password:
-                print('(request to accept password from interactive session)')
-                if not self.config.confluence_ask_user:
-                    print(' Instance: ' + self.config.confluence_server_url)
-                    print('     User: ' + self.config.confluence_server_user)
-                sys.stdout.write(' Password: ')
-                sys.stdout.flush()
-                self.config.confluence_server_pass = getpass('')
-                if not self.config.confluence_server_pass:
-                    raise ConfluenceConfigurationError('no password provided')
+            process_ask_configs(self.config)
 
         self.assets = ConfluenceAssetManager(self.config.master_doc, self.env,
             self.outdir)
