@@ -194,15 +194,28 @@ def prepareSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
         yield app
 
 def buildSphinx(src_dir, out_dir, doctree_dir, config=None, extra_config=None,
-        builder=None, relax=False):
+        builder=None, relax=False, filenames=None):
     """
     prepare a sphinx application instance
 
     Creates, invokes and cleans up a Sphinx application instance [1].
 
     [1]: https://github.com/sphinx-doc/sphinx/blob/master/sphinx/application.py
+
+    Args:
+        src_dir: document sources
+        out_dir: output for generated documents
+        doctree_dir: output for doctree files
+        config (optional): configuration to use
+        extra_config (optional): additional configuration data to apply
+        builder (optional): the builder to use
+        relax (optional): do not generate warnings as errors
+        filenames (optional): specific documents to process
     """
+
+    force_all = False if filenames else True
+
     with prepareSphinx(
             src_dir, out_dir, doctree_dir, config=config,
             extra_config=extra_config, builder=builder, relax=relax) as app:
-        app.build(force_all=True)
+        app.build(force_all=force_all, filenames=filenames)
