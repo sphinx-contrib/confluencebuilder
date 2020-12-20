@@ -1,0 +1,72 @@
+{#
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+#}
+<p class="logo">
+    {%trans%}Jump to{%endtrans%}
+    <a href="https://github.com/sphinx-contrib/confluencebuilder">
+        <img src="{{ pathto("_static/github.png", 1) }}" alt="GitHub" />
+    </a>
+    GitHub
+</p>
+
+<p class="download-pypi">
+    <a href="https://pypi.org/project/sphinxcontrib-confluencebuilder/" alt="PyPI">
+        <img src="https://img.shields.io/pypi/v/sphinxcontrib-confluencebuilder.svg">
+    </a>
+</p>
+<h3>{%trans%}Download{%endtrans%}</h3>
+<p>
+    {%trans%}<a href="install.html">Install</a>
+    the PyPI package:{%endtrans%}
+</p>
+<div class="quick-grab-container">
+    <input
+        class="quick-grab"
+        readonly="readonly"
+        spellcheck="false"
+        value="sphinxcontrib-confluencebuilder" />
+</div>
+
+<p>
+    {%trans%}Extension name:{%endtrans%}
+</p>
+<div class="quick-grab-container">
+    <input
+        class="quick-grab"
+        readonly="readonly"
+        spellcheck="false"
+        value="sphinxcontrib.confluencebuilder" />
+</div>
+
+<p>
+    {%trans%}Builders:{%endtrans%}
+</p>
+<div class="quick-grab-container">
+    <input
+        class="quick-grab"
+        readonly="readonly"
+        spellcheck="false"
+        value="confluence" />
+</div>
+<div class="quick-grab-container">
+    <input
+        class="quick-grab"
+        readonly="readonly"
+        spellcheck="false"
+        value="singleconfluence" />
+</div>
+
+<script>
+$('.quick-grab').on('click', function () {
+    var seltxt = ''
+    if (window.getSelection)
+        seltxt = window.getSelection();
+    else if (document.getSelection)
+        seltxt = document.getSelection();
+    else if (document.selection)
+        seltxt = document.selection.createRange().text;
+    if (seltxt == '')
+        $(this).select();
+});
+</script>

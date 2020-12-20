@@ -1,36 +1,24 @@
-@ECHO OFF
+@echo OFF
+REM Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
 
-pushd %~dp0
-
-REM Command file for Sphinx documentation
-
-if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=sphinx-build
-)
-set SOURCEDIR=.
-set BUILDDIR=_build
-set SPHINXPROJ=SphinxConfluenceBuilder
-
-if "%1" == "" goto help
-
-%SPHINXBUILD% >NUL 2>NUL
-if errorlevel 9009 (
-	echo.
-	echo.The Sphinx module was not found. Make sure you have Sphinx installed,
-	echo.then set the SPHINXBUILD environment variable to point to the full
-	echo.path of the 'sphinx-build' executable. Alternatively you may add the
-	echo.Sphinx directory to PATH.
-	echo.
-	echo.If you don't have Sphinx installed, grab it from
-	echo.http://sphinx-doc.org/
-	exit /b 1
+REM find python
+where /q python
+if errorlevel 1 (
+	echo.Python cannot be found. Ensure it is installed and placed in your PATH.
+    exit /b
 )
 
-%SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
-goto end
+REM find root directory to invoke in, to ensure the version of the project can
+REM be extracted from the source
+for %%i in ("%~dp0..") do set "root_dir=%%~fi"
 
-:help
-%SPHINXBUILD% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
+REM default html builder
+set builder=%1
+if "%builder%" == "" (
+	set builder=html
+)
 
-:end
+REM invoke build
+pushd %root_dir%
+python -m sphinx -M %builder% %~dp0 %~dp0_build -E -a
 popd
