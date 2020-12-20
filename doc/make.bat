@@ -1,4 +1,5 @@
 @echo OFF
+setlocal
 REM Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
 
 REM find python
