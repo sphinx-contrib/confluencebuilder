@@ -26,7 +26,7 @@ except NameError:
     from urlparse import urlparse
 
 #: rest point to fetch instance manifest state
-MANIFEST_PATH = 'rest2/applinks/1.0/manifest'
+MANIFEST_PATH = 'rest/applinks/1.0/manifest'
 
 #: prefixes for builder-specific configurations to always be sanitized
 IGNORE_BUILDER_CONFS = (
