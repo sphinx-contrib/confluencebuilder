@@ -1,7 +1,7 @@
+:orphan:
+
 confluence metadata
 -------------------
 
-foo
-
 .. confluence_metadata::
-    :labels: hi bye
+    :labels: tag-a tag-c
