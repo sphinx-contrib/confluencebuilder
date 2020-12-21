@@ -194,7 +194,8 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder = 'confluence'
 
     if not out_dir:
-        out_dir = prepare_dirs(f_back_count=2)
+        # 3 = prepare_dirs, this, contextmanager
+        out_dir = prepare_dirs(f_back_count=3)
 
     doctrees_dir = os.path.join(out_dir, '.doctrees')
 
@@ -279,6 +280,7 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     """
 
     if not out_dir:
+        # 2 = prepare_dirs, this
         out_dir = prepare_dirs(f_back_count=2)
 
     files = []
