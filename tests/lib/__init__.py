@@ -219,7 +219,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
 
     A Sphinx engine allows accepting a list of filenames it will process;
     however, these filenames need to be set to full paths. This is not always
-    convenient for testing, so this utility allows generating a filename list 
+    convenient for testing, so this utility allows generating a filename list
     with the source directory prefixed for each entry.
 
     In addition, when passing a documentation set to process, Sphinx requires
