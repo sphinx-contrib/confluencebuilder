@@ -3,5 +3,5 @@ prevnext
 
 .. toctree::
 
-   middle
-   final
+    middle
+    final
