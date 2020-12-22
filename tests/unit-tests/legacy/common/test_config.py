@@ -40,7 +40,7 @@ class TestConfluenceConfig(unittest.TestCase):
 
     def test_legacy_missing_templates(self):
         builder = ConfluenceBuilder(self.app)
-        template_dir = os.path.join(self.test_dir, 'templates')
+        template_dir = os.path.join(self.test_dir, os.pardir, os.pardir, 'templates')
 
         tpl = os.path.join(template_dir, 'sample-header-x.tpl')
         builder.config.confluence_header_file = tpl
@@ -54,7 +54,7 @@ class TestConfluenceConfig(unittest.TestCase):
         except ConfluenceConfigurationError:
             self.fail("configuration exception raised with valid header")
 
-        builder.config.confluence_header_file = '../templates/sample-header.tpl'
+        builder.config.confluence_header_file = '../../../templates/sample-header.tpl'
         try:
             builder.init(suppress_conf_check=True)
         except ConfluenceConfigurationError:
@@ -74,7 +74,7 @@ class TestConfluenceConfig(unittest.TestCase):
         except ConfluenceConfigurationError:
             self.fail("configuration exception raised with valid footer")
 
-        builder.config.confluence_footer_file = '../templates/sample-footer.tpl'
+        builder.config.confluence_footer_file = '../../../templates/sample-footer.tpl'
         try:
             builder.init(suppress_conf_check=True)
         except ConfluenceConfigurationError:

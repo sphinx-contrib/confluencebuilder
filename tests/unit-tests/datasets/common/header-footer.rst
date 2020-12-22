@@ -3,4 +3,4 @@
 header footer sample
 --------------------
 
-content
+body content
