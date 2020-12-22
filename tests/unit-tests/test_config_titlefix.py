@@ -22,7 +22,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
             'titlefix-child',
         ]
 
-    def test_config_titlefix_none(self):
+    def test_storage_config_titlefix_none(self):
         out_dir = build_sphinx(self.dataset, config=self.config,
             filenames=self.filenames)
 
@@ -37,7 +37,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
             self.assertIsNotNone(page_ref)
             self.assertEqual(page_ref['ri:content-title'], 'titlefix')
 
-    def test_config_titlefix_postfix(self):
+    def test_storage_config_titlefix_postfix(self):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
@@ -55,7 +55,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
             self.assertIsNotNone(page_ref)
             self.assertEqual(page_ref['ri:content-title'], 'titlefix-mypostfix')
 
-    def test_config_titlefix_prefix(self):
+    def test_storage_config_titlefix_prefix(self):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
@@ -73,7 +73,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
             self.assertIsNotNone(page_ref)
             self.assertEqual(page_ref['ri:content-title'], 'myprefix-titlefix')
 
-    def test_config_titlefix_prefix_and_postfix(self):
+    def test_storage_config_titlefix_prefix_and_postfix(self):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
@@ -93,7 +93,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
             self.assertEqual(page_ref['ri:content-title'],
                 'myprefix-titlefix-mypostfix')
 
-    def test_config_titlefix_ignore_root(self):
+    def test_storage_config_titlefix_ignore_root(self):
         config = dict(self.config)
         config['confluence_ignore_titlefix_on_index'] = True
         config['confluence_publish_postfix'] = '-mypostfix'

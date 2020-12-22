@@ -20,7 +20,7 @@ class TestConfluenceRstAdmonitions(unittest.TestCase):
             'admonitions',
         ]
 
-    def test_rst_admonitions_storage(self):
+    def test_storage_rst_admonitions(self):
         out_dir = build_sphinx(self.dataset, config=self.config,
             filenames=self.filenames)
 

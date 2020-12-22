@@ -20,7 +20,7 @@ class TestConfluenceRstHeadings(unittest.TestCase):
             'headings',
         ]
 
-    def test_rst_headings_default_storage(self):
+    def test_storage_rst_headings_default(self):
         out_dir = build_sphinx(self.dataset, config=self.config,
             filenames=self.filenames)
 
@@ -32,7 +32,7 @@ class TestConfluenceRstHeadings(unittest.TestCase):
             self.assertIsNotNone(header_lvl2)
             self.assertEqual(header_lvl2.text, 'header 2')
 
-    def test_rst_headings_with_title_storage(self):
+    def test_storage_rst_headings_with_title(self):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 

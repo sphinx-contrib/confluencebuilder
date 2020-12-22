@@ -20,7 +20,7 @@ class TestConfluenceSphinxManpage(unittest.TestCase):
             'manpage',
         ]
 
-    def test_sphinx_manpage_with_config(self):
+    def test_storage_sphinx_manpage_config(self):
         config = dict(self.config)
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
@@ -36,7 +36,7 @@ class TestConfluenceSphinxManpage(unittest.TestCase):
             self.assertEqual(link['href'], 'https://manpages.example.com/ls(1)')
             self.assertEqual(link.text, 'ls(1)')
 
-    def test_sphinx_manpage_without_config(self):
+    def test_storage_sphinx_manpage_noconfig(self):
         out_dir = build_sphinx(self.dataset, config=self.config,
             filenames=self.filenames)
 
