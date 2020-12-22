@@ -1,4 +1,0 @@
-docb1
------
-
-content
