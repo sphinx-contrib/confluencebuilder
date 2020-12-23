@@ -7,7 +7,7 @@
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import build_sphinx
-from tests.lib import enable_sphinx_status
+from tests.lib import enable_sphinx_info
 from tests.lib import prepare_dirs
 from tests.lib import prepare_sphinx
 import argparse
@@ -62,7 +62,7 @@ def process_raw_upload(target_sandbox):
                 break
 
 def main():
-    enable_sphinx_status()
+    enable_sphinx_info()
 
     parser = argparse.ArgumentParser(prog=__name__,
         description='Atlassian Confluence Sphinx Extension Sandbox')
