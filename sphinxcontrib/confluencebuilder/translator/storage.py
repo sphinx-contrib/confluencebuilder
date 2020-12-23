@@ -138,6 +138,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.add_secnumber(node)
             self.add_fignumber(node.parent)
             self.context.append(self._end_tag(node))
+
+            # if title points to a section and does not already contain a
+            # reference, create a link to it
+            if 'refid' in node and not node.next_node(nodes.reference):
+                anchor_value = ''.join(node['refid'].split())
+                self.body.append(self._start_ac_link(node, anchor_value))
+                self.context.append(self._end_ac_link(node))
+                self.body.append(self._start_ac_link_body(node))
+                self.context.append(self._end_ac_link_body(node))
+
         else:
             # Only render section/topic titles in headers. For all other nodes,
             # they must explicitly manage their own title entries.
@@ -145,6 +155,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
+            if 'refid' in node and not node.next_node(nodes.reference):
+                self.body.append(self.context.pop()) # ac_link_body
+                self.body.append(self.context.pop()) # end_ac_link
+
             self.body.append(self.context.pop()) # h<x>
 
     def visit_paragraph(self, node):
@@ -907,11 +921,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
 
-        if is_citation and anchor_value:
-            # build an anchor for back reference
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
-            self.body.append(self._end_ac_macro(node))
+        if (self.can_anchor and anchor_value and (is_citation or self._topic)
+                and 'ids' in node):
+            for id in node['ids']:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', id))
+                self.body.append(self._end_ac_macro(node))
 
         if is_citation:
             self.body.append(self._start_tag(node, 'sup'))
