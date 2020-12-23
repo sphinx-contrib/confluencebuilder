@@ -388,13 +388,21 @@ class ConfluenceBuilder(Builder):
                 # references pointing to it as a "top" (anchor) reference. This
                 # can be used later in a translator to hint at what type of link
                 # to build.
-                if 'refid' in title_element:
+                ids = []
+
+                if 'ids' in title_element:
+                    ids.extend(title_element['ids'])
+
+                parent = title_element.parent
+                if isinstance(parent, nodes.section) and 'ids' in parent:
+                    ids.extend(parent['ids'])
+
+                if ids:
                     for node in doctree.traverse(nodes.reference):
-                        if 'ids' in node and node['ids']:
-                            for id in node['ids']:
-                                if id == title_element['refid']:
-                                    node['top-reference'] = True
-                                    break
+                        if 'refid' in node and node['refid']:
+                            if node['refid'] in ids:
+                                node['top-reference'] = True
+                                break
 
                 title_element.parent.remove(title_element)
 
