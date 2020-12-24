@@ -12,8 +12,8 @@ literal include tests
 .. literalinclude:: assets/example.cpp
 
 .. literalinclude:: assets/example.html
-   :language: html
-   :linenos:
+    :language: html
+    :linenos:
 
 .. highlight:: java
 
