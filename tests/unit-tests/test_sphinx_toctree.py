@@ -10,7 +10,7 @@ from tests.lib import prepare_conf
 import os
 import unittest
 
-class TestConfluenceSphinxManpage(unittest.TestCase):
+class TestConfluenceSphinxToctree(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = prepare_conf()

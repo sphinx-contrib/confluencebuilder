@@ -1,4 +1,4 @@
 doc-b1
 ------
 
-content
+content b1
