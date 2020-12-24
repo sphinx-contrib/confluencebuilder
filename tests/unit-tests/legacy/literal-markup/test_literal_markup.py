@@ -26,14 +26,6 @@ class TestConfluenceLiteralMarkup(unittest.TestCase):
 
         self.doc_dir = doc_dir
 
-    def test_legacy_code_blocks(self):
-        # skip code-block tests in Sphinx v1.8.x due to regression
-        #  https://github.com/sphinx-contrib/confluencebuilder/issues/148
-        if parse_version(sphinx_version) < parse_version('2.0'):
-            raise unittest.SkipTest('not supported in sphinx-1.8.x')
-        assertExpectedWithOutput(
-            self, 'code_blocks', self.expected, self.doc_dir)
-
     def test_legacy_literal_blocks(self):
         assertExpectedWithOutput(
             self, 'literal_blocks', self.expected, self.doc_dir)
