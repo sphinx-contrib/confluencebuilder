@@ -33,6 +33,7 @@ class TestConfluenceSphinxManpage(unittest.TestCase):
 
             link = em.find('a', recursive=False)
             self.assertIsNotNone(link)
+            self.assertTrue(link.has_attr('href'))
             self.assertEqual(link['href'], 'https://manpages.example.com/ls(1)')
             self.assertEqual(link.text, 'ls(1)')
 
