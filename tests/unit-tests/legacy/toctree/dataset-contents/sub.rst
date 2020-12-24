@@ -1,7 +1,0 @@
-sub
-===
-
-.. contents::
-
-section
--------
