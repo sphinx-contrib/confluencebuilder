@@ -142,7 +142,7 @@ def prepare_dirs(container=None, f_back_count=1):
     test_dir = os.path.join(lib_dir, os.pardir)
     base_dir = os.path.join(test_dir, os.pardir)
     output_dir = os.path.join(base_dir, 'output')
-    container_dir = os.path.join(output_dir, container)
+    container_dir = os.path.abspath(os.path.join(output_dir, container))
 
     shutil.rmtree(container_dir, ignore_errors=True)
 
