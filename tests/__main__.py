@@ -64,10 +64,13 @@ def main():
 
     # register tests
     if target_unit_test_name_pattern:
-        target_unit_tests = find_tests(unit_tests, target_unit_test_name_pattern)
+        target_unit_tests, issued = find_tests(unit_tests,
+            target_unit_test_name_pattern)
         if not target_unit_tests:
-            print('ERROR: unable to find test with pattern: '
-                '{}'.format(target_unit_test_name_pattern))
+            print('\nERROR: unable to find test with pattern: '
+                '{}\n'.format(target_unit_test_name_pattern))
+            if issued:
+                issued[0].debug()
             sys.exit(1)
 
         print('')
@@ -94,17 +97,25 @@ def find_tests(entity, pattern):
     matches the provided wildcard pattern.
     """
     found_tests = []
+    issued_tests = []
 
     if isinstance(entity, unittest.case.TestCase):
         if fnmatch.fnmatch(entity.id(), '*{}*'.format(pattern)):
-            return [entity]
+            return [entity], None
+
+        failed_test_check = ['LoadTestsFailure', 'ModuleImportFailure']
+        if any(x in entity.id() for x in failed_test_check):
+            issued_tests.append(entity)
+
     elif isinstance(entity, unittest.TestSuite):
         for subentity in entity:
-            found = find_tests(subentity, pattern)
+            found, issued = find_tests(subentity, pattern)
             if found:
                 found_tests.extend(found)
+            if issued:
+                issued_tests.extend(issued)
 
-    return found_tests
+    return found_tests, issued_tests
 
 def usage():
     """
