@@ -117,7 +117,7 @@ def prepare_conf():
 
     return config
 
-def prepare_dirs(container=None, f_back_count=1):
+def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
     return the output directory base for all unit tests
 
@@ -143,6 +143,8 @@ def prepare_dirs(container=None, f_back_count=1):
     base_dir = os.path.join(test_dir, os.pardir)
     output_dir = os.path.join(base_dir, 'output')
     container_dir = os.path.abspath(os.path.join(output_dir, container))
+    if postfix:
+        container_dir += postfix
 
     shutil.rmtree(container_dir, ignore_errors=True)
 
