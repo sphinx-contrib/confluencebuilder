@@ -12,4 +12,4 @@ __ http://www.example.com/static/first-link.txt
 
 .. toctree::
 
-   toctree-doc2aa
+    toctree-doc2aa

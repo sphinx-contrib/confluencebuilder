@@ -2,8 +2,8 @@ treedoc2
 --------
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   toctree-doc2a
-   toctree-doc2b
-   toctree-doc2c
+    toctree-doc2a
+    toctree-doc2b
+    toctree-doc2c

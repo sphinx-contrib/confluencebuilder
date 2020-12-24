@@ -5,4 +5,4 @@ Page content that should be squashed into a parent page.
 
 .. toctree::
 
-   toctree-doc2aaa
+    toctree-doc2aaa
