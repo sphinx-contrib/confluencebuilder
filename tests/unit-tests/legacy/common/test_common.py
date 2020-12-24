@@ -49,9 +49,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_citations(self):
         self._assertExpectedWithOutput('citations')
 
-    def test_legacy_contents(self):
-        self._assertExpectedWithOutput('contents')
-
     def test_legacy_definition_lists(self):
         self._assertExpectedWithOutput('definition-lists')
 
@@ -80,9 +77,6 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_legacy_image(self):
         self._assertExpectedWithOutput('image')
-
-    def test_legacy_index(self):
-        self._assertExpectedWithOutput('index')
 
     def test_legacy_lists(self):
         self._assertExpectedWithOutput('lists')

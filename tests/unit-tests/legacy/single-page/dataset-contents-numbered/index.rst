@@ -1,7 +1,0 @@
-toctree
-=======
-
-.. toctree::
-   :numbered:
-
-   sub
