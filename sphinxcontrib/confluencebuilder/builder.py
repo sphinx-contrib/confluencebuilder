@@ -818,6 +818,11 @@ class ConfluenceBuilder(Builder):
                 if 'ids' in section_node:
                     target = ''.join(node.astext().split())
 
+                    # when confluence has a header that contains a link, the
+                    # automatically assigned identifier removes any underscores
+                    if node.next_node(addnodes.pending_xref):
+                        target = target.replace('_', '')
+
                     if self.add_secnumbers:
                         anchorname = '#' + target
                         if anchorname not in secnumbers:
