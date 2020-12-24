@@ -129,6 +129,8 @@ def setup(app):
     app.add_config_value('confluence_watch', None, False)
 
     """(configuration - advanced publishing)"""
+    """Register additional mime types to be selected for image candidates."""
+    app.add_config_value('confluence_additional_mime_types', None, False)
     """Whether or not labels will be appended instead of overwriting them."""
     app.add_config_value('confluence_append_labels', None, False)
     """Tri-state asset handling (auto, force push or disable)."""

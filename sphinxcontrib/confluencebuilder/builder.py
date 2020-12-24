@@ -12,12 +12,12 @@ from docutils.io import StringOutput
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
-from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.locale import __
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
+from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.config import ConfluenceConfig
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
@@ -70,7 +70,7 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
     format = 'confluence_storage'
-    supported_image_types = StandaloneHTMLBuilder.supported_image_types
+    supported_image_types = ConfluenceSupportedImages()
     supported_remote_images = True
 
     def __init__(self, app):
@@ -110,6 +110,10 @@ class ConfluenceBuilder(Builder):
         if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
         config = self.config
+
+        if self.config.confluence_additional_mime_types:
+            for type_ in self.config.confluence_additional_mime_types:
+                self.supported_image_types.register(type_)
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)

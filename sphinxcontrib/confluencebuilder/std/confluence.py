@@ -144,3 +144,20 @@ When provided a language type that is not supported by Confluence is detected on
 a code block, this fallback style will be applied instead.
 """
 FALLBACK_HIGHLIGHT_STYLE = 'none'
+
+"""
+supported image types
+
+A list of image types (mostly) supported on a Confluence instance. This includes
+image types observed in the following Confluence implementation and image types
+which also observed to be rendering with Confluence Cloud:
+
+    confluence/webapp/WEB-INF/classes/mime.types
+"""
+SUPPORTED_IMAGE_TYPES = [
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/x-ms-bmp', # image/bmp
+]
