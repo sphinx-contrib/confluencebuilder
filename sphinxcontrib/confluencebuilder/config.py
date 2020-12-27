@@ -5,6 +5,7 @@
 """
 
 from getpass import getpass
+from sphinxcontrib.confluencebuilder.compat import input
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file

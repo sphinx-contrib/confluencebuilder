@@ -60,12 +60,6 @@ if graphviz:
     except ImportError:
         inheritance_diagram = None
 
-# handle proper input request in python 2.7
-try:
-    input = raw_input
-except NameError:
-    pass
-
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
