@@ -28,6 +28,7 @@ def main():
 
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('--help', '-h', action='store_true')
+    parser.add_argument('--unbuffered', '-U', action='store_true')
     parser.add_argument('--verbose', '-V', action='count', default=0)
 
     args, _ = parser.parse_known_args()
@@ -36,8 +37,11 @@ def main():
         sys.exit(0)
 
     # toggle verbose mode (if provided)
+    buffered = not args.unbuffered
     verbosity = 0
     if args.verbose:
+        buffered = False
+
         try:
             verbosity = int(args.verbose)
             verbosity -= 1 # ignore first level for 'status' information
@@ -86,7 +90,8 @@ def main():
         suite.addTests(unit_tests)
 
     # invoke test suite
-    runner = unittest.TextTestRunner(verbosity=DEFAULT_VERBOSITY)
+    runner = unittest.TextTestRunner(buffer=buffered,
+        verbosity=DEFAULT_VERBOSITY)
     return 0 if runner.run(suite).wasSuccessful() else 1
 
 def find_tests(entity, pattern):
