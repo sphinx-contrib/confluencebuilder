@@ -5,7 +5,6 @@
 """
 
 from sphinx.util import docutils
-from sphinx.writers.text import STDINDENT
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
@@ -189,8 +188,6 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
-    """Indent to use for generated documents."""
-    app.add_config_value('confluence_indent', STDINDENT, False)
 
     """(configuration - deprecated)"""
     # replaced by confluence_publish_allowlist
