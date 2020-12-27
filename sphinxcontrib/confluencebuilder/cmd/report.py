@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from tempfile import TemporaryDirectory
 from xml.etree import ElementTree
@@ -79,11 +80,11 @@ def report_main(args_parser):
             with docutils_namespace():
                 print('fetching configuration information...')
                 app = Sphinx(
-                    work_dir,     # document sources
-                    work_dir,     # directory with configuration
-                    tmp_dir,      # output for generated documents
-                    tmp_dir,      # output for doctree files
-                    'confluence') # builder to execute
+                    work_dir,                     # document sources
+                    work_dir,                     # directory with configuration
+                    tmp_dir,                      # output for built documents
+                    tmp_dir,                      # output for doctree files
+                    ConfluenceReportBuilder.name) # builder to execute
 
                 if app.config.confluence_publish:
                     process_ask_configs(app.config)
@@ -236,11 +237,13 @@ def report_main(args_parser):
     print(' requests:', single_line_version(requests_version))
     print('  builder:', single_line_version(scb_version))
 
+    print('')
+    print('(configuration)')
     if config:
-        print('')
-        print('(configuration)')
         for k, v in OrderedDict(sorted(config.items())).items():
             print('{}: {}'.format(k, v))
+    else:
+        print('~default configuration~')
 
     if configuration_load_issue:
         print('')

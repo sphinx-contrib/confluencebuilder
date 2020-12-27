@@ -70,7 +70,6 @@ class ConfluenceBuilder(Builder):
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
 
-        self.add_secnumbers = self.config.confluence_add_secnumbers
         self.cache_doctrees = {}
         self.cloud = False
         self.file_suffix = '.conf'
@@ -85,16 +84,10 @@ class ConfluenceBuilder(Builder):
         self.publish_denylist = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
-        self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.secnumbers = {}
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
-
-        if 'graphviz_output_format' in self.config:
-            self.graphviz_output_format = self.config['graphviz_output_format']
-        else:
-            self.graphviz_output_format = 'png'
 
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
@@ -103,11 +96,20 @@ class ConfluenceBuilder(Builder):
     def init(self, suppress_conf_check=False):
         if not ConfluenceConfig.validate(self, not suppress_conf_check):
             raise ConfluenceConfigurationError('configuration error')
+        apply_defaults(self.config)
         config = self.config
+
+        self.add_secnumbers = self.config.confluence_add_secnumbers
+        self.secnumber_suffix = self.config.confluence_secnumber_suffix
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
                 self.supported_image_types.register(type_)
+
+        if 'graphviz_output_format' in self.config:
+            self.graphviz_output_format = self.config['graphviz_output_format']
+        else:
+            self.graphviz_output_format = 'png'
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)
@@ -1002,3 +1004,42 @@ class ConfluenceBuilder(Builder):
                     "has no title: {}".format(docname))
 
         return doctitle
+
+def apply_defaults(conf):
+    """
+    applies default values for select configurations
+
+    This call will populate default values for various configuration options.
+    This method is used in alternative to the default values provided in the
+    `add_config_value` call, which allows this extension to apply defaults at
+    a more controlled time.
+
+    Args:
+        conf: the configuration to modify
+    """
+
+    if conf.confluence_add_secnumbers is None:
+        conf.confluence_add_secnumbers = True
+
+    if conf.confluence_adv_ignore_nodes is None:
+        conf.confluence_adv_ignore_nodes = []
+
+    if conf.confluence_adv_restricted is None:
+        conf.confluence_adv_restricted = []
+
+    if conf.confluence_client_cert is not None:
+        if not isinstance(conf.confluence_client_cert, tuple):
+            conf.confluence_client_cert = (conf.confluence_client_cert, None)
+
+    if (not conf.confluence_file_suffix or
+            conf.confluence_file_suffix.endswith('.')):
+        conf.confluence_file_suffix = '.conf'
+
+    if conf.confluence_jira_servers is None:
+        conf.confluence_jira_servers = {}
+
+    if conf.confluence_remove_title is None:
+        conf.confluence_remove_title = True
+
+    if conf.confluence_secnumber_suffix is None:
+        conf.confluence_secnumber_suffix = '. '
