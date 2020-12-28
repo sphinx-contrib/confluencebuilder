@@ -11,7 +11,9 @@ from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.application import Sphinx
 from sphinx.util.console import nocolor, color_terminal
 from sphinx.util.docutils import docutils_namespace
+from sphinxcontrib.confluencebuilder import compat
 import difflib
+import getpass
 import inspect
 import io
 import os
@@ -70,6 +72,35 @@ def enable_sphinx_info(verbosity=None):
     os.environ['SPHINX_STATUS'] = '1'
     if verbosity:
         os.environ['SPHINX_VERBOSITY'] = str(verbosity)
+
+@contextmanager
+def mock_getpass(mock):
+    def _(prompt='Password: ', stream=sys.stdout):
+        stream.write(prompt)
+        stream.write('(mocked input> ')
+        stream.write(mock)
+        stream.write('\n')
+        return mock
+
+    try:
+        original = getpass.getpass
+        getpass.getpass = _
+        yield
+    finally:
+        getpass.getpass = original
+
+@contextmanager
+def mock_input(mock):
+    def _(prompt=''):
+        print(prompt + '(mocked input> ' + mock)
+        return mock
+
+    try:
+        original = compat.input
+        compat.input = _
+        yield
+    finally:
+        compat.input = original
 
 @contextmanager
 def parse(filename, dirname=None):

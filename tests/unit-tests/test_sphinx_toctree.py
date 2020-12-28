@@ -35,7 +35,9 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
         config['confluence_adv_hierarchy_child_macro'] = True
         config['confluence_page_hierarchy'] = True
 
-        out_dir = build_sphinx(dataset, config=config)
+        # relax due to this test (confluence_adv_hierarchy_child_macro) being
+        # deprecated
+        out_dir = build_sphinx(dataset, config=config, relax=True)
 
         with parse('index', out_dir) as data:
             macro = data.find('ac:structured-macro', recursive=False)

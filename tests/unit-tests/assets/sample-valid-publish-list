@@ -1,4 +1,4 @@
 # example allow/deny list with valid document names
-zitations
-index
-tables
+doc-a
+sub/doc-b
+doc-c

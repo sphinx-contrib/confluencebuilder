@@ -1,4 +1,4 @@
 # example allow/deny list with an incorrect document name
-citations
-index
-tables
+doc-a
+sub/doc-b
+doc-c2
