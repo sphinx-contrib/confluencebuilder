@@ -2,4 +2,4 @@
 
 .. rst:directive:: directive
 
-   desc
+    desc
