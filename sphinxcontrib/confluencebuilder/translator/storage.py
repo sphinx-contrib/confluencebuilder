@@ -1521,6 +1521,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # dt tag (since multiple may be generated)
         self._desc_sig_ids = node.attributes.get('ids', [])
 
+        self.body.append(self._start_tag(node, 'dt'))
+        self.context.append(self._end_tag(node))
+
         if not node.get('is_multiline'):
             self.visit_desc_signature_line(node)
 
@@ -1528,20 +1531,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not node.get('is_multiline'):
             self.depart_desc_signature_line(node)
 
-    def visit_desc_signature_line(self, node):
-        self.body.append(self._start_tag(node, 'dt'))
+        self.body.append(self.context.pop()) # dt
 
+    def visit_desc_signature_line(self, node):
         if self._desc_sig_ids and self.can_anchor:
             for id in self._desc_sig_ids:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_parameter(node, '', id))
                 self.body.append(self._end_ac_macro(node))
+
+        if self._desc_sig_ids is None:
+            self.body.append(self._start_tag(
+                node, 'br', suffix=self.nl, empty=True))
+
         self._desc_sig_ids = None
 
-        self.context.append(self._end_tag(node))
-
     def depart_desc_signature_line(self, node):
-        self.body.append(self.context.pop()) # dt
+        pass
 
     def visit_desc_annotation(self, node):
         self.body.append(self._start_tag(node, 'em'))
