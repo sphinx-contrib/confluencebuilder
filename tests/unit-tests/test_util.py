@@ -8,7 +8,7 @@ from sphinxcontrib.confluencebuilder.util import ConfluenceUtil as UTIL
 import unittest
 
 class TestConfluenceUtil(unittest.TestCase):
-    def test_legacy_normalize_baseurl(self):
+    def test_util_normalize_baseurl(self):
         data = {
 'https://example.atlassian.net/wiki':             'https://example.atlassian.net/wiki/',
 'https://example.atlassian.net/wiki/':            'https://example.atlassian.net/wiki/',
