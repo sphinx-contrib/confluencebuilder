@@ -1604,11 +1604,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             self.body.append(', ')
 
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        if not node.get('noemph'):
+            self.body.append(self._start_tag(node, 'em'))
+            self.context.append(self._end_tag(node, suffix=''))
 
     def depart_desc_parameter(self, node):
-        self.body.append(self.context.pop()) # em
+        if not node.get('noemph'):
+            self.body.append(self.context.pop()) # em
 
     def visit_desc_content(self, node):
         self.body.append(self._start_tag(node, 'dd'))
