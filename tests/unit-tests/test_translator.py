@@ -24,8 +24,8 @@ class TestConfluenceBaseTranslator(unittest.TestCase):
         self.config = prepare_conf()
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
-    def test_legacy_docname_and_docparent(self):
-        mock_ds = os.path.join(self.test_dir, 'dataset-common')
+    def test_translator_docname_and_docparent(self):
+        mock_ds = os.path.join(self.test_dir, 'datasets', 'common')
         mock_docpath = os.path.join(mock_ds, 'foo', 'bar', 'baz.rst')
         doc = DummyDocument(mock_docpath)
 
