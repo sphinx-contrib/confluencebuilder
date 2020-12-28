@@ -18,9 +18,9 @@ from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
-from sphinxcontrib.confluencebuilder.config import ConfluenceConfig
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
+from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
@@ -93,9 +93,8 @@ class ConfluenceBuilder(Builder):
         # can be checked/validated on after the builder has executed (testing)
         ConfluenceState.reset()
 
-    def init(self, suppress_conf_check=False):
-        if not ConfluenceConfig.validate(self, not suppress_conf_check):
-            raise ConfluenceConfigurationError('configuration error')
+    def init(self):
+        validate_configuration(self)
         apply_defaults(self.config)
         config = self.config
 
@@ -175,11 +174,11 @@ class ConfluenceBuilder(Builder):
 
         def prepare_subset(option):
             value = getattr(config, option)
-            if value is None:
+            if not value:
                 return None
 
             # if provided via command line, treat as a list
-            if option in config['overrides']:
+            if option in config['overrides'] and isinstance(value, basestring):
                 value = value.split(',')
 
             if isinstance(value, basestring):
@@ -1004,42 +1003,3 @@ class ConfluenceBuilder(Builder):
                     "has no title: {}".format(docname))
 
         return doctitle
-
-def apply_defaults(conf):
-    """
-    applies default values for select configurations
-
-    This call will populate default values for various configuration options.
-    This method is used in alternative to the default values provided in the
-    `add_config_value` call, which allows this extension to apply defaults at
-    a more controlled time.
-
-    Args:
-        conf: the configuration to modify
-    """
-
-    if conf.confluence_add_secnumbers is None:
-        conf.confluence_add_secnumbers = True
-
-    if conf.confluence_adv_ignore_nodes is None:
-        conf.confluence_adv_ignore_nodes = []
-
-    if conf.confluence_adv_restricted is None:
-        conf.confluence_adv_restricted = []
-
-    if conf.confluence_client_cert is not None:
-        if not isinstance(conf.confluence_client_cert, tuple):
-            conf.confluence_client_cert = (conf.confluence_client_cert, None)
-
-    if (not conf.confluence_file_suffix or
-            conf.confluence_file_suffix.endswith('.')):
-        conf.confluence_file_suffix = '.conf'
-
-    if conf.confluence_jira_servers is None:
-        conf.confluence_jira_servers = {}
-
-    if conf.confluence_remove_title is None:
-        conf.confluence_remove_title = True
-
-    if conf.confluence_secnumber_suffix is None:
-        conf.confluence_secnumber_suffix = '. '
