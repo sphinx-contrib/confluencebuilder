@@ -112,6 +112,3 @@ class TestConfluenceCommon(unittest.TestCase):
 
     def test_legacy_table(self):
         self._assertExpectedWithOutput('tables')
-
-    def test_legacy_transitions(self):
-        self._assertExpectedWithOutput('transitions')
