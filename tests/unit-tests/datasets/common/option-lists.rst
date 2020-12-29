@@ -1,6 +1,6 @@
 :orphan:
 
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#option-lists
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#option-lists
 
 option lists
 ------------
