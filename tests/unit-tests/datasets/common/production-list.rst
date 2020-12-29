@@ -1,6 +1,6 @@
 :orphan:
 
-.. http://www.sphinx-doc.org/en/stable/markup/para.html#directive-productionlist
+.. https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html?highlight=production%20list#directive-productionlist
 
 production list
 ---------------
