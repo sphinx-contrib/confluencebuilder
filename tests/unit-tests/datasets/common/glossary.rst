@@ -1,17 +1,17 @@
 :orphan:
 
-.. http://www.sphinx-doc.org/en/stable/markup/para.html#glossary
+.. https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html?highlight=glossary#directive-glossary
 
 glossary
 --------
 
 .. glossary::
 
-   glossary 1
+    glossary 1
         content
 
-   glossary 2
-   glossary 3
+    glossary 2
+    glossary 3
         content
 
         - content one

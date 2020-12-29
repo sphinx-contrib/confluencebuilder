@@ -71,10 +71,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_footnotes(self):
         self._assertExpectedWithOutput('footnotes')
 
-    def test_legacy_glossary(self):
-        self._assertExpectedWithOutput('glossary')
-        self._assertExpectedWithOutput('glossary-ref')
-
     def test_legacy_image(self):
         self._assertExpectedWithOutput('image')
 
