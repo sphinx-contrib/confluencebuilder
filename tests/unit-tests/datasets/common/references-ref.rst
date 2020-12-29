@@ -7,7 +7,7 @@ references-ref
 
 document link :doc:`references`
 
-document with :doc:`custom name <references>`
+:doc:`custom name <references>`
 
 :ref:`references anchor <my-reference-label1>`
 

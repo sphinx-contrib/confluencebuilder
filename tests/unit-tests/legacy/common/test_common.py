@@ -66,10 +66,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_option_lists(self):
         self._assertExpectedWithOutput('option-lists')
 
-    def test_legacy_references(self):
-        self._assertExpectedWithOutput('references')
-        self._assertExpectedWithOutput('references-ref')
-
     def test_legacy_registry(self):
         # validate builder's registration into Sphinx
         self.assertTrue(EXT_NAME in self.extensions)
