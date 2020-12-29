@@ -96,9 +96,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_production_list(self):
         self._assertExpectedWithOutput('production-list')
 
-    def test_legacy_raw(self):
-        self._assertExpectedWithOutput('raw')
-
     def test_legacy_references(self):
         self._assertExpectedWithOutput('references')
         self._assertExpectedWithOutput('references-ref')
