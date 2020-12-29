@@ -1,14 +1,14 @@
 :orphan:
 
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#bibliographic-fields
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bibliographic-fields
 
 bibliographic fields
 --------------------
 
-:Author: author
-:Address: 123 address
-:Contact: example@example.com
-:Authors: author
+:author: author
+:address: 123 address
+:contact: example@example.com
+:authors: author
 :organization: organization
 :date: 2016-07-06 13:21:00
 :status: alpha

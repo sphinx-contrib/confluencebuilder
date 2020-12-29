@@ -40,9 +40,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_attribution(self):
         self._assertExpectedWithOutput('attribution')
 
-    def test_legacy_bibliographic(self):
-        self._assertExpectedWithOutput('bibliographic')
-
     def test_legacy_block_quotes(self):
         self._assertExpectedWithOutput('block-quotes')
 
