@@ -4,7 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from tests.lib import EXT_NAME
 from tests.lib import assertExpectedWithOutput
 from tests.lib import prepare_conf
@@ -52,18 +51,8 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 
-    def test_legacy_figure(self):
-        if DEFAULT_ALIGNMENT == 'center':
-            expected = self.expected + '-center'
-            self._assertExpectedWithOutput('figure', expected)
-        else:
-            self._assertExpectedWithOutput('figure')
-
     def test_legacy_footnotes(self):
         self._assertExpectedWithOutput('footnotes')
-
-    def test_legacy_image(self):
-        self._assertExpectedWithOutput('image')
 
     def test_legacy_lists(self):
         self._assertExpectedWithOutput('lists')
