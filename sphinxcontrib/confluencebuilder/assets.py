@@ -6,6 +6,7 @@
 
 from docutils import nodes
 from sphinx import addnodes
+from sphinx.util.osutil import canon_path
 from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
@@ -51,18 +52,19 @@ class ConfluenceAssetManager:
     be published to the respective publish points.
 
     Args:
-        master: the master document
+        config: the active configuration
         env: the build environment
         outdir: configured output directory (where assets may be stored)
     """
-    def __init__(self, master, env, outdir):
+    def __init__(self, config, env, outdir):
         self.assets = []
         self.env = env
+        self.force_standalone = config.confluence_asset_force_standalone
         self.hash2asset = {}
         self.keys = set()
-        self.master = master
         self.outdir = outdir
         self.path2asset = {}
+        self.root_doc = config.master_doc
 
     def build(self):
         """
@@ -82,13 +84,19 @@ class ConfluenceAssetManager:
         """
         data = []
         for asset in self.assets:
-            if len(asset.docnames) > 1:
-                entry = (asset.key, asset.path, asset.type, asset.hash,
-                    self.master)
+            if self.force_standalone:
+                for docname in asset.docnames:
+                    entry = (asset.key, asset.path, asset.type, asset.hash,
+                        docname)
+                    data.append(entry)
             else:
-                entry = (asset.key, asset.path, asset.type, asset.hash,
-                    next(iter(asset.docnames)))
-            data.append(entry)
+                if len(asset.docnames) > 1:
+                    entry = (asset.key, asset.path, asset.type, asset.hash,
+                        self.root_doc)
+                else:
+                    entry = (asset.key, asset.path, asset.type, asset.hash,
+                        next(iter(asset.docnames)))
+                data.append(entry)
         return data
 
     def fetch(self, node):
@@ -98,7 +106,7 @@ class ConfluenceAssetManager:
         When given a asset, cached information will return the name of the
         target document this asset will be published to. In the event an asset
         exists on a single page, the name of that respective page will be
-        returned; however, if the asset is found on multiple pages, the master
+        returned; however, if the asset is found on multiple pages, the root
         document name will be returned instead.
 
         Args:
@@ -116,10 +124,15 @@ class ConfluenceAssetManager:
             if asset:
                 key = asset.key
 
-                if len(asset.docnames) > 1:
-                    docname = self.master
+                if self.force_standalone:
+                    docname = canon_path(
+                        self.env.path2doc(node.document['source']))
+                    assert docname in asset.docnames
                 else:
-                    docname = next(iter(asset.docnames))
+                    if len(asset.docnames) > 1:
+                        docname = self.root_doc
+                    else:
+                        docname = next(iter(asset.docnames))
 
         return key, docname
 

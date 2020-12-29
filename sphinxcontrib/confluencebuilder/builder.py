@@ -113,8 +113,7 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_publish:
             process_ask_configs(self.config)
 
-        self.assets = ConfluenceAssetManager(self.config.master_doc, self.env,
-            self.outdir)
+        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)

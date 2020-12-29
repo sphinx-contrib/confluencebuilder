@@ -134,6 +134,8 @@ def setup(app):
     app.add_config_value('confluence_additional_mime_types', None, False)
     """Whether or not labels will be appended instead of overwriting them."""
     app.add_config_value('confluence_append_labels', None, False)
+    """Forcing all assets to be standalone."""
+    app.add_config_value('confluence_asset_force_standalone', None, False)
     """Tri-state asset handling (auto, force push or disable)."""
     app.add_config_value('confluence_asset_override', None, False)
     """File/path to Certificate Authority"""
