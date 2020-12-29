@@ -87,6 +87,3 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_registry(self):
         # validate builder's registration into Sphinx
         self.assertTrue(EXT_NAME in self.extensions)
-
-    def test_legacy_table(self):
-        self._assertExpectedWithOutput('tables')
