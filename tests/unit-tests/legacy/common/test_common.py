@@ -66,9 +66,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_option_lists(self):
         self._assertExpectedWithOutput('option-lists')
 
-    def test_legacy_parsed_literal(self):
-        self._assertExpectedWithOutput('parsed-literal')
-
     def test_legacy_references(self):
         self._assertExpectedWithOutput('references')
         self._assertExpectedWithOutput('references-ref')
