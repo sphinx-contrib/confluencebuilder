@@ -55,9 +55,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_deprecated(self):
         self._assertExpectedWithOutput('deprecated')
 
-    def test_legacy_download(self):
-        self._assertExpectedWithOutput('download')
-
     def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 
