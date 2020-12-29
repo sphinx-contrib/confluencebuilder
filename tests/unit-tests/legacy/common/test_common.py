@@ -45,9 +45,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_citations(self):
         self._assertExpectedWithOutput('citations')
 
-    def test_legacy_definition_lists(self):
-        self._assertExpectedWithOutput('definition-lists')
-
     def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 

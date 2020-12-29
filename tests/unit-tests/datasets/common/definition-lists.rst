@@ -1,6 +1,6 @@
 :orphan:
 
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#definition-lists
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#definition-lists
 
 definition lists
 ----------------
