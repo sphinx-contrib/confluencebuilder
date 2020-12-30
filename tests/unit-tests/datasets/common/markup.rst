@@ -1,6 +1,6 @@
 :orphan:
 
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#inline-markup
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup
 
 markup
 ------

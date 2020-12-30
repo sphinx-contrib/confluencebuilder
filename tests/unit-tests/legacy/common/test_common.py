@@ -48,9 +48,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 
-    def test_legacy_markup(self):
-        self._assertExpectedWithOutput('markup')
-
     def test_legacy_registry(self):
         # validate builder's registration into Sphinx
         self.assertTrue(EXT_NAME in self.extensions)
