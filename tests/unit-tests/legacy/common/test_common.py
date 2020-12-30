@@ -36,9 +36,6 @@ class TestConfluenceCommon(unittest.TestCase):
         expected = expected if expected else self.expected
         assertExpectedWithOutput(self, name, expected, self.doc_dir)
 
-    def test_legacy_attribution(self):
-        self._assertExpectedWithOutput('attribution')
-
     def test_legacy_block_quotes(self):
         self._assertExpectedWithOutput('block-quotes')
 
