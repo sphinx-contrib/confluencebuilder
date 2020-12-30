@@ -54,9 +54,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_lists(self):
         self._assertExpectedWithOutput('lists')
 
-    def test_legacy_list_table(self):
-        self._assertExpectedWithOutput('list-table')
-
     def test_legacy_markup(self):
         self._assertExpectedWithOutput('markup')
 
