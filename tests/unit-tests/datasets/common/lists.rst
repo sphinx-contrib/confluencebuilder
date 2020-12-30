@@ -1,7 +1,7 @@
 :orphan:
 
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#bullet-lists
-.. http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#enumerated-lists
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists
+.. https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#enumerated-lists
 
 lists
 -----

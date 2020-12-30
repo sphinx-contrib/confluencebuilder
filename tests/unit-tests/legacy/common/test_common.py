@@ -48,9 +48,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_epigraph(self):
         self._assertExpectedWithOutput('epigraph')
 
-    def test_legacy_lists(self):
-        self._assertExpectedWithOutput('lists')
-
     def test_legacy_markup(self):
         self._assertExpectedWithOutput('markup')
 
