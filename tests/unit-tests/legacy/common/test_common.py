@@ -42,9 +42,6 @@ class TestConfluenceCommon(unittest.TestCase):
     def test_legacy_block_quotes(self):
         self._assertExpectedWithOutput('block-quotes')
 
-    def test_legacy_citations(self):
-        self._assertExpectedWithOutput('citations')
-
     def test_legacy_registry(self):
         # validate builder's registration into Sphinx
         self.assertTrue(EXT_NAME in self.extensions)
