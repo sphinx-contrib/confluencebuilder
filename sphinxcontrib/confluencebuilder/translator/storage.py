@@ -50,7 +50,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._building_footnotes = False
         self._figure_context = []
         self._manpage_url = getattr(config, 'manpages_url', None)
-        self._quote_level = 0
         self._reference_context = []
         self._thead_context = []
         self.colspecs = []
@@ -138,6 +137,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.add_secnumber(node)
             self.add_fignumber(node.parent)
             self.context.append(self._end_tag(node))
+
+            # if title points to a section and does not already contain a
+            # reference, create a link to it
+            if 'refid' in node and not node.next_node(nodes.reference):
+                anchor_value = ''.join(node['refid'].split())
+                self.body.append(self._start_ac_link(node, anchor_value))
+                self.context.append(self._end_ac_link(node))
+                self.body.append(self._start_ac_link_body(node))
+                self.context.append(self._end_ac_link_body(node))
+
         else:
             # Only render section/topic titles in headers. For all other nodes,
             # they must explicitly manage their own title entries.
@@ -145,6 +154,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
+            if 'refid' in node and not node.next_node(nodes.reference):
+                self.body.append(self.context.pop()) # ac_link_body
+                self.body.append(self.context.pop()) # end_ac_link
+
             self.body.append(self.context.pop()) # h<x>
 
     def visit_paragraph(self, node):
@@ -592,15 +605,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'blockquote'))
             self.context.append(self._end_tag(node))
         else:
-            self._quote_level += 1
             style = ''
 
             # Confluece's WYSIWYG, when indenting paragraphs, will produce
             # paragraphs will margin values offset by 30 pixels units. The same
-            # indentation is applied here via a style value (multiplied by the
-            # current quote level).
-            indent_val = INDENT * self._quote_level
-            style += 'margin-left: {}px;'.format(indent_val)
+            # indentation is applied here via a style value.
+            style += 'margin-left: {}px;'.format(INDENT)
 
             # Confluence's provided styles remove first-child elements leading
             # margins. This causes some unexpected styling issues when various
@@ -644,11 +654,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self._end_tag(node))
 
     def depart_block_quote(self, node):
-        if node.traverse(nodes.attribution):
-            self.body.append(self.context.pop()) # blockquote
-        else:
-            self._quote_level -= 1
-            self.body.append(self.context.pop()) # div
+        self.body.append(self.context.pop()) # blockquote/div
 
     def visit_attribution(self, node):
         self.body.append('-- ')
@@ -907,11 +913,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
 
-        if is_citation and anchor_value:
-            # build an anchor for back reference
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_parameter(node, '', node['ids'][0]))
-            self.body.append(self._end_ac_macro(node))
+        if (self.can_anchor and anchor_value and (is_citation or self._topic)
+                and 'ids' in node):
+            for id in node['ids']:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', id))
+                self.body.append(self._end_ac_macro(node))
 
         if is_citation:
             self.body.append(self._start_tag(node, 'sup'))
@@ -1506,6 +1513,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # dt tag (since multiple may be generated)
         self._desc_sig_ids = node.attributes.get('ids', [])
 
+        self.body.append(self._start_tag(node, 'dt'))
+        self.context.append(self._end_tag(node))
+
         if not node.get('is_multiline'):
             self.visit_desc_signature_line(node)
 
@@ -1513,20 +1523,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not node.get('is_multiline'):
             self.depart_desc_signature_line(node)
 
-    def visit_desc_signature_line(self, node):
-        self.body.append(self._start_tag(node, 'dt'))
+        self.body.append(self.context.pop()) # dt
 
+    def visit_desc_signature_line(self, node):
         if self._desc_sig_ids and self.can_anchor:
             for id in self._desc_sig_ids:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_parameter(node, '', id))
                 self.body.append(self._end_ac_macro(node))
+
+        if self._desc_sig_ids is None:
+            self.body.append(self._start_tag(
+                node, 'br', suffix=self.nl, empty=True))
+
         self._desc_sig_ids = None
 
-        self.context.append(self._end_tag(node))
-
     def depart_desc_signature_line(self, node):
-        self.body.append(self.context.pop()) # dt
+        pass
 
     def visit_desc_annotation(self, node):
         self.body.append(self._start_tag(node, 'em'))
@@ -1583,11 +1596,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             self.body.append(', ')
 
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        if not node.get('noemph'):
+            self.body.append(self._start_tag(node, 'em'))
+            self.context.append(self._end_tag(node, suffix=''))
 
     def depart_desc_parameter(self, node):
-        self.body.append(self.context.pop()) # em
+        if not node.get('noemph'):
+            self.body.append(self.context.pop()) # em
 
     def visit_desc_content(self, node):
         self.body.append(self._start_tag(node, 'dd'))

@@ -1,0 +1,4 @@
+# example allow/deny list with valid document names
+doc-a
+sub/doc-b
+doc-c

@@ -5,7 +5,6 @@
 """
 
 from sphinx.util import docutils
-from sphinx.writers.text import STDINDENT
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
@@ -16,6 +15,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
+from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 
@@ -38,6 +38,7 @@ def setup(app):
 
     app.require_sphinx('1.8')
     app.add_builder(ConfluenceBuilder)
+    app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
     app.registry.add_translator(
         ConfluenceBuilder.name, ConfluenceStorageFormatTranslator)
@@ -78,7 +79,7 @@ def setup(app):
 
     """(configuration - generic)"""
     """Add page and section numbers if doctree has :numbered: option"""
-    app.add_config_value('confluence_add_secnumbers', True, False)
+    app.add_config_value('confluence_add_secnumbers', None, False)
     """Default alignment for tables, figures, etc."""
     app.add_config_value('confluence_default_alignment', None, 'env')
     """File to get page header information from."""
@@ -92,13 +93,13 @@ def setup(app):
     """Show previous/next buttons (bottom, top, both, None)."""
     app.add_config_value('confluence_prev_next_buttons_location', None, False)
     """Suffix to put after section numbers, before section name"""
-    app.add_config_value('confluence_secnumber_suffix', '. ', False)
+    app.add_config_value('confluence_secnumber_suffix', None, False)
 
     """(configuration - publishing)"""
     """Request for publish password to come from interactive session."""
-    app.add_config_value('confluence_ask_password', False, False)
+    app.add_config_value('confluence_ask_password', None, False)
     """Request for publish username to come from interactive session."""
-    app.add_config_value('confluence_ask_user', False, False)
+    app.add_config_value('confluence_ask_user', None, False)
     """Explicitly prevent auto-generation of titles for titleless documents."""
     app.add_config_value('confluence_disable_autogen_title', None, False)
     """Explicitly prevent page notifications on update."""
@@ -129,8 +130,12 @@ def setup(app):
     app.add_config_value('confluence_watch', None, False)
 
     """(configuration - advanced publishing)"""
+    """Register additional mime types to be selected for image candidates."""
+    app.add_config_value('confluence_additional_mime_types', None, False)
     """Whether or not labels will be appended instead of overwriting them."""
     app.add_config_value('confluence_append_labels', None, False)
+    """Forcing all assets to be standalone."""
+    app.add_config_value('confluence_asset_force_standalone', None, False)
     """Tri-state asset handling (auto, force push or disable)."""
     app.add_config_value('confluence_asset_override', None, False)
     """File/path to Certificate Authority"""
@@ -158,11 +163,11 @@ def setup(app):
 
     """(configuration - advanced processing)"""
     """Filename suffix for generated files."""
-    app.add_config_value('confluence_file_suffix', ".conf", False)
+    app.add_config_value('confluence_file_suffix', None, False)
     """Translation of docname to a filename."""
     app.add_config_value('confluence_file_transform', None, False)
     """Configuration for named JIRA Servers"""
-    app.add_config_value('confluence_jira_servers', {}, True)
+    app.add_config_value('confluence_jira_servers', None, True)
     """Translation of a raw language to code block macro language."""
     app.add_config_value('confluence_lang_transform', None, False)
     """Link suffix for generated files."""
@@ -170,7 +175,7 @@ def setup(app):
     """Translation of docname to a (partial) URI."""
     app.add_config_value('confluence_link_transform', None, False)
     """Remove a detected title from generated documents."""
-    app.add_config_value('confluence_remove_title', True, False)
+    app.add_config_value('confluence_remove_title', None, False)
 
     """(configuration - undocumented)"""
     """Enablement for aggressive descendents search (for purge)."""
@@ -178,17 +183,15 @@ def setup(app):
     """Enablement of the children macro for hierarchy mode."""
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
     """List of node types to ignore if no translator support exists."""
-    app.add_config_value('confluence_adv_ignore_nodes', [], False)
+    app.add_config_value('confluence_adv_ignore_nodes', None, False)
     """Unknown node handler dictionary for advanced integrations."""
     app.add_config_value('confluence_adv_node_handler', None, '')
     """List of optional features/macros/etc. restricted for use."""
-    app.add_config_value('confluence_adv_restricted', [], False)
+    app.add_config_value('confluence_adv_restricted', None, False)
     """Enablement of tracing processed data."""
-    app.add_config_value('confluence_adv_trace_data', False, False)
+    app.add_config_value('confluence_adv_trace_data', None, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
-    """Indent to use for generated documents."""
-    app.add_config_value('confluence_indent', STDINDENT, False)
 
     """(configuration - deprecated)"""
     # replaced by confluence_publish_allowlist

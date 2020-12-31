@@ -12,15 +12,15 @@ from docutils.io import StringOutput
 from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
-from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.errors import ExtensionError
 from sphinx.locale import __
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
-from sphinxcontrib.confluencebuilder.config import ConfluenceConfig
+from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
+from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
@@ -60,23 +60,16 @@ if graphviz:
     except ImportError:
         inheritance_diagram = None
 
-# handle proper input request in python 2.7
-try:
-    input = raw_input
-except NameError:
-    pass
-
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     name = 'confluence'
     format = 'confluence_storage'
-    supported_image_types = StandaloneHTMLBuilder.supported_image_types
+    supported_image_types = ConfluenceSupportedImages()
     supported_remote_images = True
 
     def __init__(self, app):
         super(ConfluenceBuilder, self).__init__(app)
 
-        self.add_secnumbers = self.config.confluence_add_secnumbers
         self.cache_doctrees = {}
         self.cloud = False
         self.file_suffix = '.conf'
@@ -91,31 +84,36 @@ class ConfluenceBuilder(Builder):
         self.publish_denylist = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
-        self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.secnumbers = {}
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
+
+        # state tracking is set at initialization (not cleanup) so its content's
+        # can be checked/validated on after the builder has executed (testing)
+        ConfluenceState.reset()
+
+    def init(self):
+        validate_configuration(self)
+        apply_defaults(self.config)
+        config = self.config
+
+        self.add_secnumbers = self.config.confluence_add_secnumbers
+        self.secnumber_suffix = self.config.confluence_secnumber_suffix
+
+        if self.config.confluence_additional_mime_types:
+            for type_ in self.config.confluence_additional_mime_types:
+                self.supported_image_types.register(type_)
 
         if 'graphviz_output_format' in self.config:
             self.graphviz_output_format = self.config['graphviz_output_format']
         else:
             self.graphviz_output_format = 'png'
 
-        # state tracking is set at initialization (not cleanup) so its content's
-        # can be checked/validated on after the builder has executed (testing)
-        ConfluenceState.reset()
-
-    def init(self, suppress_conf_check=False):
-        if not ConfluenceConfig.validate(self, not suppress_conf_check):
-            raise ConfluenceConfigurationError('configuration error')
-        config = self.config
-
         if self.config.confluence_publish:
             process_ask_configs(self.config)
 
-        self.assets = ConfluenceAssetManager(self.config.master_doc, self.env,
-            self.outdir)
+        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self.app.verbosity
         self.publisher.init(self.config)
@@ -175,11 +173,11 @@ class ConfluenceBuilder(Builder):
 
         def prepare_subset(option):
             value = getattr(config, option)
-            if value is None:
+            if not value:
                 return None
 
             # if provided via command line, treat as a list
-            if option in config['overrides']:
+            if option in config['overrides'] and isinstance(value, basestring):
                 value = value.split(',')
 
             if isinstance(value, basestring):
@@ -388,13 +386,21 @@ class ConfluenceBuilder(Builder):
                 # references pointing to it as a "top" (anchor) reference. This
                 # can be used later in a translator to hint at what type of link
                 # to build.
-                if 'refid' in title_element:
+                ids = []
+
+                if 'ids' in title_element:
+                    ids.extend(title_element['ids'])
+
+                parent = title_element.parent
+                if isinstance(parent, nodes.section) and 'ids' in parent:
+                    ids.extend(parent['ids'])
+
+                if ids:
                     for node in doctree.traverse(nodes.reference):
-                        if 'ids' in node and node['ids']:
-                            for id in node['ids']:
-                                if id == title_element['refid']:
-                                    node['top-reference'] = True
-                                    break
+                        if 'refid' in node and node['refid']:
+                            if node['refid'] in ids:
+                                node['top-reference'] = True
+                                break
 
                 title_element.parent.remove(title_element)
 
@@ -809,6 +815,11 @@ class ConfluenceBuilder(Builder):
                 section_node = node.parent
                 if 'ids' in section_node:
                     target = ''.join(node.astext().split())
+
+                    # when confluence has a header that contains a link, the
+                    # automatically assigned identifier removes any underscores
+                    if node.next_node(addnodes.pending_xref):
+                        target = target.replace('_', '')
 
                     if self.add_secnumbers:
                         anchorname = '#' + target

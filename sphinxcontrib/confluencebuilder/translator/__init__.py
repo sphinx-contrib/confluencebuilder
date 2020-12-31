@@ -55,6 +55,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         self._docnames = [self.docname]
         self._literal = False
         self._section_level = 1
+        self._topic = False
 
         if config.confluence_default_alignment:
             self._default_alignment = config.confluence_default_alignment
@@ -148,8 +149,13 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def depart_section(self, node):
         self._section_level -= 1
 
-    visit_topic = visit_section
-    depart_topic = depart_section
+    def visit_topic(self, node):
+        self._topic = True
+        self.visit_section(node)
+
+    def depart_topic(self, node):
+        self.depart_section(node)
+        self._topic = False
 
     # ------------------
     # sphinx -- glossary

@@ -5,10 +5,10 @@
 """
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
-from tests.lib import buildSphinx
-from tests.lib import enableSphinxStatus
-from tests.lib import prepareConfiguration
-from tests.lib import prepareDirectories
+from tests.lib import build_sphinx
+from tests.lib import enable_sphinx_info
+from tests.lib import prepare_conf
+from tests.lib import prepare_dirs
 import os
 import sys
 import unittest
@@ -26,10 +26,10 @@ TESTKEY_ENV_KEY = 'CONFLUENCE_TEST_KEY'
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        enableSphinxStatus()
+        enable_sphinx_info()
 
         # build configuration
-        cls.config = prepareConfiguration()
+        cls.config = prepare_conf()
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_parent_page'] = None
@@ -76,10 +76,10 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # setup base structure
         dataset = os.path.join(cls.datasets, 'base')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-base')
+        doc_dir = prepare_dirs('validation-set-base')
 
         # build/publish test base page
-        buildSphinx(dataset, doc_dir, doctree_dir, cls.config)
+        build_sphinx(dataset, config=cls.config, out_dir=doc_dir)
 
         # finalize configuration for tests
         cls.config['confluence_master_homepage'] = False
@@ -101,10 +101,10 @@ class TestConfluenceValidation(unittest.TestCase):
         config['todo_link_only'] = True
 
         dataset = os.path.join(self.datasets, 'extensions')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-extensions')
+        doc_dir = prepare_dirs('validation-set-extensions')
         sys.path.insert(0, os.path.join(dataset, 'src'))
 
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
         sys.path.pop(0)
 
@@ -112,12 +112,12 @@ class TestConfluenceValidation(unittest.TestCase):
         config = dict(self.config)
 
         dataset = os.path.join(self.datasets, 'header-footer')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-hf')
+        doc_dir = prepare_dirs('validation-set-hf')
 
         config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
         config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
 
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_hierarchy(self):
         config = dict(self.config)
@@ -125,30 +125,30 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_page_hierarchy'] = True
 
         dataset = os.path.join(self.datasets, 'hierarchy')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-hierarchy')
+        doc_dir = prepare_dirs('validation-set-hierarchy')
 
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_nonjsonresponse(self):
         config = dict(self.config)
         config['confluence_server_url'] = 'https://example.com/'
         dataset = os.path.join(self.datasets, 'base')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-nonjsonresponse')
+        doc_dir = prepare_dirs('validation-set-nonjsonresponse')
 
         with self.assertRaises(ConfluenceBadApiError):
-            buildSphinx(dataset, doc_dir, doctree_dir, config)
+            build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_standard_default(self):
         dataset = os.path.join(self.datasets, 'standard')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-standard')
+        doc_dir = prepare_dirs('validation-set-standard')
 
-        buildSphinx(dataset, doc_dir, doctree_dir, self.config)
+        build_sphinx(dataset, config=self.config, out_dir=doc_dir)
 
     def test_standard_macro_restricted(self):
         config = dict(self.config)
 
         dataset = os.path.join(self.datasets, 'standard')
-        doc_dir, doctree_dir = prepareDirectories('validation-set-standard-nm')
+        doc_dir = prepare_dirs('validation-set-standard-nm')
 
         config['confluence_adv_restricted'] = [
             'anchor',
@@ -161,7 +161,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
         config['confluence_publish_postfix'] = ' (nomacro)'
 
-        buildSphinx(dataset, doc_dir, doctree_dir, config)
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
 if __name__ == '__main__':
     sys.exit(unittest.main(verbosity=0))

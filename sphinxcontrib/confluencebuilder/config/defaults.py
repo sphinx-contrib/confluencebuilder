@@ -1,0 +1,44 @@
+# -*- coding: utf-8 -*-
+"""
+:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+"""
+
+def apply_defaults(conf):
+    """
+    applies default values for select configurations
+
+    This call will populate default values for various configuration options.
+    This method is used in alternative to the default values provided in the
+    `add_config_value` call, which allows this extension to apply defaults at
+    a more controlled time.
+
+    Args:
+        conf: the configuration to modify
+    """
+
+    if conf.confluence_add_secnumbers is None:
+        conf.confluence_add_secnumbers = True
+
+    if conf.confluence_adv_ignore_nodes is None:
+        conf.confluence_adv_ignore_nodes = []
+
+    if conf.confluence_adv_restricted is None:
+        conf.confluence_adv_restricted = []
+
+    if conf.confluence_client_cert is not None:
+        if not isinstance(conf.confluence_client_cert, tuple):
+            conf.confluence_client_cert = (conf.confluence_client_cert, None)
+
+    if (not conf.confluence_file_suffix or
+            conf.confluence_file_suffix.endswith('.')):
+        conf.confluence_file_suffix = '.conf'
+
+    if conf.confluence_jira_servers is None:
+        conf.confluence_jira_servers = {}
+
+    if conf.confluence_remove_title is None:
+        conf.confluence_remove_title = True
+
+    if conf.confluence_secnumber_suffix is None:
+        conf.confluence_secnumber_suffix = '. '

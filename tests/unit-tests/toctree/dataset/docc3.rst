@@ -1,4 +1,0 @@
-docc3
------
-
-content

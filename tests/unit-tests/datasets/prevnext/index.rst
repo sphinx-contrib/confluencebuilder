@@ -1,0 +1,7 @@
+prevnext
+========
+
+.. toctree::
+
+    middle
+    final

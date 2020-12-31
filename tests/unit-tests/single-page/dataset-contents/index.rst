@@ -1,6 +1,0 @@
-toctree
-=======
-
-.. toctree::
-
-   sub
