@@ -32,14 +32,8 @@ class ConfluencePublisher():
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.server_url = config.confluence_server_url
-        self.server_user = config.confluence_server_user
-        self.server_pass = config.confluence_server_pass
         self.space_name = config.confluence_space_name
-        self.timeout = config.confluence_timeout
         self.watch = config.confluence_watch
-        self.ca_cert = config.confluence_ca_cert
-        self.client_cert = config.confluence_client_cert
-        self.client_cert_pass = config.confluence_client_cert_pass
 
         # append labels by default
         if self.append_labels is None:
