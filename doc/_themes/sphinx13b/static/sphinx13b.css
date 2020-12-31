@@ -15,18 +15,21 @@ body {
     padding: 0;
 
     margin: 0 auto;
-    min-width: 780px;
     max-width: 1080px;
 }
 
 .pageheader {
-    height: 60px;
     padding: 10px 15px;
-    text-align: left;
+    text-align: right;
+}
+
+.pageheader img {
+    float: left;
+    height: auto;
+    max-width: 100%;
 }
 
 .pageheader ul {
-    float: right;
     color: white;
     list-style-type: none;
     padding-left: 0;
@@ -35,7 +38,7 @@ body {
 }
 
 .pageheader li {
-    float: left;
+    float: right;
     margin: 0 0 0 10px;
 }
 
@@ -53,6 +56,7 @@ body {
 
 div.document {
     background-color: white;
+    clear: both;
     text-align: left;
 }
 
@@ -64,10 +68,13 @@ div.body {
     margin: 0;
     padding: 0.5em 20px 20px 20px;
     min-height: 400px;
+    min-width: unset !important;
+    max-width: unset !important;
 }
 
 div.related {
     border-top: 1px solid #ccc;
+    clear: both;
     font-size: 1em;
 }
 
@@ -448,4 +455,24 @@ p.rubric {
 
 .danger {
     background-color: #efe9e8 !important;
+}
+
+@media (max-width: 750px) {
+    .quick-links {
+        display: none;
+    }
+
+    .sphinxsidebar {
+        display: none;
+    }
+
+    div.bodywrapper {
+        margin: 0;
+    }
+}
+
+@media (max-width: 440px) {
+    .index-trademark {
+        font-size: 0.5em;
+    }
 }

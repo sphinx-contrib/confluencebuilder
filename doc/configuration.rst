@@ -612,6 +612,25 @@ Advanced publishing configuration
     - |confluence_global_labels|_
     - ``confluence_metadata`` :ref:`directive <confluence_metadata>`
 
+.. confval:: confluence_asset_force_standalone
+
+    .. versionadded:: 1.3
+
+    Provides an override to always publish individual assets (images, downloads,
+    etc.) on each individual document which uses them. This extension will
+    attempt to minimize the amount of publishing of shared assets on multiple
+    documents by only hosting an asset in a single document. For example, if two
+    documents use the same image, the image will be hosted on the root document
+    of a set and each document will reference the attachment on the root page. A
+    user may wish to override this feature. By configuring this option to
+    ``True``, this extension will publish asset files as an attachment for each
+    document which may use the asset. By default, this extension will attempt to
+    host shared assets on a single document with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_asset_force_standalone = True
+
 .. confval:: confluence_asset_override
 
     Provides an override for asset publishing to allow a user publishing to
@@ -953,6 +972,23 @@ Advanced publishing configuration
 
 Advanced processing configuration
 ---------------------------------
+
+.. confval:: confluence_additional_mime_types
+
+    .. versionadded:: 1.3
+
+    Candidate selection for images will only support the internally managed list
+    of MIME types supported by a default Confluence instance. A custom
+    installation or future installations of a Confluence instance may support
+    newer MIME types not explicitly managed by this extension. This
+    configuration provides a user the option to register additional MIME types
+    to consider for image candidates.
+
+    .. code-block:: python
+
+        confluence_additional_mime_types = [
+            'image/tiff',
+        ]
 
 .. |confluence_file_suffix| replace:: ``confluence_file_suffix``
 .. _confluence_file_suffix:

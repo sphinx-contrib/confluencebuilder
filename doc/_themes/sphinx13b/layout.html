@@ -59,14 +59,17 @@ $(window).scroll(function() {
 
 {% block header %}
 <div class="pageheader">
-    <ul>
-        <li><a href="{{ pathto('install') }}">Install</a></li>
-        <li><a href="{{ pathto('contents') }}">Documentation</a></li>
-    </ul>
     <div>
         <a href="{{ pathto('index') }}">
-            <img style="width: 500px" src="{{ pathto('_static/logo.png', 1) }}" alt="Atlassian Confluence Builder for Sphinx" />
+            <img width="500" src="{{ pathto('_static/logo.png', 1) }}"
+                alt="Atlassian Confluence Builder for Sphinx" />
         </a>
+    </div>
+    <div class="quick-links">
+        <ul>
+            <li><a href="{{ pathto('contents') }}">Documentation</a></li>
+            <li><a href="{{ pathto('install') }}">Install</a></li>
+        </ul>
     </div>
 </div>
 

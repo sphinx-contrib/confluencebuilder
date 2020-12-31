@@ -29,13 +29,13 @@ If opting for the quick-start utility, open a terminal to the location where
 documentation should be generated (typically, an empty directory) and invoke the
 following:
 
-    .. code-block:: shell
+.. code-block:: shell
 
-        sphinx-quickstart
-         (or)
-        python -m sphinx.cmd.quickstart
-         (or)
-        python -m sphinx.quickstart
+    sphinx-quickstart
+     (or)
+    python -m sphinx.cmd.quickstart
+     (or)
+    python -m sphinx.quickstart
 
 After completing the quick-start, ``conf.py`` can be tweaked as desired.
 Continue preparing the documentation by
@@ -150,13 +150,13 @@ To process and publish the documentation set, invoke Sphinx with the
 ``confluence`` builder (or a desired :doc:`builder <builders>`) to perform
 building/publishing:
 
-    .. code-block:: shell
+.. code-block:: shell
 
-        make confluence
-         (or)
-        sphinx-build -b confluence . _build/confluence -E -a
-         (or)
-        python -m sphinx -b confluence . _build/confluence -E -a
+    make confluence
+     (or)
+    sphinx-build -b confluence . _build/confluence -E -a
+     (or)
+    python -m sphinx -b confluence . _build/confluence -E -a
 
 Documentation of the project should now be published to the Confluence site.
 

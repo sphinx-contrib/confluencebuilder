@@ -105,3 +105,25 @@ issue:
 
     | Atlassian Confluence Builder for Confluence - Issues
     | https://github.com/sphinx-contrib/confluencebuilder/issues
+
+For issues when using this extension, generating a report and including this
+content in an issue may be helpful towards finding a solution. To generate a
+report, run the following command from the documentation directory:
+
+.. code-block:: shell-session
+
+    $ python -m sphinxcontrib.confluencebuilder report
+    ...
+    Confluence builder report has been generated.
+    Please copy the following text for the GitHub issue:
+
+    ------------[ cut here ]------------
+    (system)
+    ...
+
+    (configuration)
+    ...
+
+    (confluence instance)
+     ...
+    ------------[ cut here ]------------

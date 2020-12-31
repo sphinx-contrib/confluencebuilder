@@ -24,7 +24,7 @@ To verify the package has been installed, the following command can be used:
 
 .. raw:: html
 
-    ----
+    <hr />
 
 For new users, following provides a series of steps to assist in preparing a new
 environment to use this package. For users wishing to use virtualenv, please
