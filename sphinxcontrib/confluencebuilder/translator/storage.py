@@ -140,7 +140,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # if title points to a section and does not already contain a
             # reference, create a link to it
-            if 'refid' in node and not node.next_node(nodes.reference):
+            if ('refid' in node and not node.next_node(nodes.reference) and
+                    self.can_anchor):
                 anchor_value = ''.join(node['refid'].split())
                 self.body.append(self._start_ac_link(node, anchor_value))
                 self.context.append(self._end_ac_link(node))
@@ -154,7 +155,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
-            if 'refid' in node and not node.next_node(nodes.reference):
+            if ('refid' in node and not node.next_node(nodes.reference) and
+                    self.can_anchor):
                 self.body.append(self.context.pop()) # ac_link_body
                 self.body.append(self.context.pop()) # end_ac_link
 
