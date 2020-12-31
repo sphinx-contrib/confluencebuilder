@@ -166,11 +166,6 @@ class ConfluenceBuilder(Builder):
         else:
             self.publish = False
 
-        if self.config.confluence_space_name is not None:
-            self.space_name = self.config.confluence_space_name
-        else:
-            self.space_name = None
-
         def prepare_subset(option):
             value = getattr(config, option)
             if not value:
