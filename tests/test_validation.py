@@ -40,6 +40,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
         cls.config['confluence_timeout'] = 1
+        cls.config['manpages_url'] = 'https://example.org/{path}'
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
         cls.test_key = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_KEY)
 
