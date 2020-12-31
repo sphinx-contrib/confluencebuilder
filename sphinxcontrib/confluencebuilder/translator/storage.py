@@ -50,7 +50,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._building_footnotes = False
         self._figure_context = []
         self._manpage_url = getattr(config, 'manpages_url', None)
-        self._quote_level = 0
         self._reference_context = []
         self._thead_context = []
         self.colspecs = []
@@ -606,15 +605,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'blockquote'))
             self.context.append(self._end_tag(node))
         else:
-            self._quote_level += 1
             style = ''
 
             # Confluece's WYSIWYG, when indenting paragraphs, will produce
             # paragraphs will margin values offset by 30 pixels units. The same
-            # indentation is applied here via a style value (multiplied by the
-            # current quote level).
-            indent_val = INDENT * self._quote_level
-            style += 'margin-left: {}px;'.format(indent_val)
+            # indentation is applied here via a style value.
+            style += 'margin-left: {}px;'.format(INDENT)
 
             # Confluence's provided styles remove first-child elements leading
             # margins. This causes some unexpected styling issues when various
@@ -658,11 +654,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self._end_tag(node))
 
     def depart_block_quote(self, node):
-        if node.traverse(nodes.attribution):
-            self.body.append(self.context.pop()) # blockquote
-        else:
-            self._quote_level -= 1
-            self.body.append(self.context.pop()) # div
+        self.body.append(self.context.pop()) # blockquote/div
 
     def visit_attribution(self, node):
         self.body.append('-- ')
