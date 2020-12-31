@@ -61,7 +61,10 @@ class TestConfluenceValidation(unittest.TestCase):
             pass
 
         # finalize
-        cls.config['confluence_master_homepage'] = True
+        if cls.config['confluence_space_name'].startswith('~'):
+            cls.config['confluence_master_homepage'] = False
+        else:
+            cls.config['confluence_master_homepage'] = True
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_purge'] = False
