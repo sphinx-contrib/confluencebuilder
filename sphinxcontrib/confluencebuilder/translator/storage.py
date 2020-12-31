@@ -1421,11 +1421,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_hlist(self, node):
         self.body.append(self._start_tag(node, 'table', suffix=self.nl))
         self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl,
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
 
     def depart_hlist(self, node):
         self.body.append(self.context.pop()) # tr
+        self.body.append(self.context.pop()) # tbody
         self.body.append(self.context.pop()) # table
 
     def visit_hlistcol(self, node):
