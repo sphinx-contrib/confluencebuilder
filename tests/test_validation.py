@@ -40,6 +40,8 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
         cls.config['confluence_timeout'] = 1
+        cls.config['imgmath_image_format'] = 'svg'
+        cls.config['manpages_url'] = 'https://example.org/{path}'
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
         cls.test_key = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_KEY)
 
@@ -61,7 +63,10 @@ class TestConfluenceValidation(unittest.TestCase):
             pass
 
         # finalize
-        cls.config['confluence_master_homepage'] = True
+        if cls.config['confluence_space_name'].startswith('~'):
+            cls.config['confluence_master_homepage'] = False
+        else:
+            cls.config['confluence_master_homepage'] = True
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_purge'] = False

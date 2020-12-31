@@ -140,7 +140,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # if title points to a section and does not already contain a
             # reference, create a link to it
-            if 'refid' in node and not node.next_node(nodes.reference):
+            if ('refid' in node and not node.next_node(nodes.reference) and
+                    self.can_anchor):
                 anchor_value = ''.join(node['refid'].split())
                 self.body.append(self._start_ac_link(node, anchor_value))
                 self.context.append(self._end_ac_link(node))
@@ -154,7 +155,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
-            if 'refid' in node and not node.next_node(nodes.reference):
+            if ('refid' in node and not node.next_node(nodes.reference) and
+                    self.can_anchor):
                 self.body.append(self.context.pop()) # ac_link_body
                 self.body.append(self.context.pop()) # end_ac_link
 
@@ -1419,11 +1421,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_hlist(self, node):
         self.body.append(self._start_tag(node, 'table', suffix=self.nl))
         self.context.append(self._end_tag(node))
+        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl,
+            **{'style': 'border: none'}))
+        self.context.append(self._end_tag(node))
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
 
     def depart_hlist(self, node):
         self.body.append(self.context.pop()) # tr
+        self.body.append(self.context.pop()) # tbody
         self.body.append(self.context.pop()) # table
 
     def visit_hlistcol(self, node):
