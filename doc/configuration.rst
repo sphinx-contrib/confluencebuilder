@@ -614,6 +614,8 @@ Advanced publishing configuration
 
 .. confval:: confluence_asset_force_standalone
 
+    .. versionadded:: 1.3
+
     Provides an override to always publish individual assets (images, downloads,
     etc.) on each individual document which uses them. This extension will
     attempt to minimize the amount of publishing of shared assets on multiple
@@ -972,6 +974,8 @@ Advanced processing configuration
 ---------------------------------
 
 .. confval:: confluence_additional_mime_types
+
+    .. versionadded:: 1.3
 
     Candidate selection for images will only support the internally managed list
     of MIME types supported by a default Confluence instance. A custom
