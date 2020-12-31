@@ -1,4 +1,0 @@
-Index
-=====
-
-.. image:: image01.*

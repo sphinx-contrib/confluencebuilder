@@ -9,13 +9,12 @@ from contextlib import contextmanager
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.application import Sphinx
-from sphinx.util.console import nocolor, color_terminal
+from sphinx.util.console import color_terminal
+from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import compat
-import difflib
 import getpass
 import inspect
-import io
 import os
 import shutil
 import sys
@@ -24,40 +23,6 @@ import sys
 full extension name
 """
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
-
-def assertExpectedWithOutput(test, name, expected, output, tpn=None):
-    """
-    compare two files for a unit test that should match
-
-    This utility method is used to provide an expected file and an output
-    (generated) file. If both provided files exist, the utility will attempt
-    to read each file's contents and compare to ensure they match. On
-    failure, the file differences will be output.
-    """
-    if not tpn:
-        tpn = name
-    expected_path = os.path.join(expected, name + '.conf')
-    test_path = os.path.join(output, tpn + '.conf')
-    test.assertTrue(os.path.exists(expected_path),
-        'missing expected file: {}'.format(expected_path))
-    test.assertTrue(os.path.exists(test_path),
-        'missing output file: {}'.format(test_path))
-
-    def relaxed_data(f):
-        return [o.strip() + '\n' for o in f.readlines()]
-
-    with io.open(expected_path, encoding='utf8') as expected_file:
-        with io.open(test_path, encoding='utf8') as test_file:
-            expected_data = relaxed_data(expected_file)
-            test_data = relaxed_data(test_file)
-            diff = difflib.unified_diff(
-                expected_data, test_data, lineterm='')
-            diff_hdr = 'expected and generated documents mismatch\n' \
-                '  expected: ' + expected_path + '\n' \
-                ' generated: ' + test_path + '\n' \
-                '\n'
-            diff_data = ''.join(list(diff))
-            test.assertTrue(diff_data == '', msg=(diff_hdr + diff_data))
 
 def enable_sphinx_info(verbosity=None):
     """
