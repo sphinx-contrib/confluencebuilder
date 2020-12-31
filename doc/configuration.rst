@@ -971,6 +971,21 @@ Advanced publishing configuration
 Advanced processing configuration
 ---------------------------------
 
+.. confval:: confluence_additional_mime_types
+
+    Candidate selection for images will only support the internally managed list
+    of MIME types supported by a default Confluence instance. A custom
+    installation or future installations of a Confluence instance may support
+    newer MIME types not explicitly managed by this extension. This
+    configuration provides a user the option to register additional MIME types
+    to consider for image candidates.
+
+    .. code-block:: python
+
+        confluence_additional_mime_types = [
+            'image/tiff',
+        ]
+
 .. |confluence_file_suffix| replace:: ``confluence_file_suffix``
 .. _confluence_file_suffix:
 
