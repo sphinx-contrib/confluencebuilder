@@ -16,6 +16,15 @@ When reporting a bug, it is recommended to include at least the following:
 - Python version
 - Sphinx version
 
+A more detailed report can be generated and included in the bug using the
+following command:
+
+.. code-block:: shell
+
+    sphinx-build-confluence report
+     (or)
+    python -m sphinxcontrib.confluencebuilder report
+
 Additional logs from a ``sphinx-build`` attempt can be helpful as well (if
 applicable).
 
