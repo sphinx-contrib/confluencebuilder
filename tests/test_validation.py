@@ -43,7 +43,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['imgmath_image_format'] = 'svg'
         cls.config['manpages_url'] = 'https://example.org/{path}'
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
-        cls.test_key = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_KEY)
+        cls.test_key = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_KEY)
 
         # overrides from user
         try:
