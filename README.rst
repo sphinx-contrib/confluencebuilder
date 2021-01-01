@@ -117,13 +117,14 @@ here:
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
  | https://sphinxcontrib-confluencebuilder.atlassian.net/
 
-Supported Markup
-================
+Compatibilities
+===============
 
-For a complete list of supported markup, consult the following:
+For a complete list of supported markup, extensions, etc.; consult the
+following:
 
- | Atlassian Confluence Builder for Sphinx - Markup
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/markup.html
+ | Atlassian Confluence Builder for Sphinx - Compatibilities
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/compatibilities.html
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
