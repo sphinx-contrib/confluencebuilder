@@ -1,5 +1,5 @@
-development
-===========
+1.3.0 (2020-12-31)
+==================
 
 * **(note)** support for sphinx v1.[6-7] has been dropped
 * **(note)** support for xml-rpc has been dropped
