@@ -189,7 +189,7 @@ def setup(app):
     """List of optional features/macros/etc. restricted for use."""
     app.add_config_value('confluence_adv_restricted', None, False)
     """Enablement of tracing processed data."""
-    app.add_config_value('confluence_adv_trace_data', None, False)
+    app.add_config_value('confluence_adv_trace_data', False, False)
     """Do not cap sections to a maximum of six (6) levels."""
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
 
