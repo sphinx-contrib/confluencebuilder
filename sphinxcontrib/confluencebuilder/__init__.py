@@ -99,7 +99,7 @@ def setup(app):
     """Request for publish password to come from interactive session."""
     app.add_config_value('confluence_ask_password', False, False)
     """Request for publish username to come from interactive session."""
-    app.add_config_value('confluence_ask_user', None, False)
+    app.add_config_value('confluence_ask_user', False, False)
     """Explicitly prevent auto-generation of titles for titleless documents."""
     app.add_config_value('confluence_disable_autogen_title', None, False)
     """Explicitly prevent page notifications on update."""
