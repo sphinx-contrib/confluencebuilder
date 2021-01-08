@@ -339,8 +339,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_max_doc_depth'] = '2'
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
+        self._try_config()
 
         self.config['confluence_max_doc_depth'] = -1
         with self.assertRaises(ConfluenceConfigurationError):
@@ -355,18 +354,6 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
     def test_config_check_parent_page_id_check(self):
-        self.config['confluence_parent_page_id_check'] = '123456'
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
-
-        self.config['confluence_parent_page_id_check'] = 0
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
-
-        self.config['confluence_parent_page_id_check'] = -123456
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
-
         # enable publishing enabled checks
         self._prepare_valid_publish()
 
@@ -377,6 +364,17 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_parent_page'] = 'dummy'
         self._try_config()
+
+        self.config['confluence_parent_page_id_check'] = '123456'
+        self._try_config()
+
+        self.config['confluence_parent_page_id_check'] = 0
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_parent_page_id_check'] = -123456
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
 
     def test_config_check_prev_next_buttons_location(self):
         self.config['confluence_prev_next_buttons_location'] = 'bottom'
@@ -618,8 +616,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_timeout'] = '2'
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
+        self._try_config()
 
         self.config['confluence_timeout'] = -1
         with self.assertRaises(ConfluenceConfigurationError):
