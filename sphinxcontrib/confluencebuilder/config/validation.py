@@ -40,6 +40,30 @@ class ConfigurationValidation():
         self.key = None
         self._translate = None
 
+    def bool(self):
+        """
+        checks if a configuration is a boolean
+
+        After an instance has been set a configuration key (via `conf`), this
+        method can be used to check if the value (if any) configured with this
+        key is a boolean. If not, an `ConfluenceConfigurationError` exception
+        will be thrown.
+
+        In the event that the configuration is not set (e.g. a value of `None`),
+        this method will have no effect.
+
+        Returns:
+            the validator instance
+        """
+        value = self._value()
+
+        if value is not None:
+            if not isinstance(value, bool) and not isinstance(value, int):
+                raise ConfluenceConfigurationError(
+                    '%s is not a boolean type' % self.key)
+
+        return self
+
     def callable_(self):
         """
         checks if a configuration is a callable
