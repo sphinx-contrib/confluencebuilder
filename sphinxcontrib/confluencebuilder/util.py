@@ -102,3 +102,30 @@ def first(it):
         the first element
     """
     return next(iter(it), None)
+
+def str2bool(value):
+    """
+    returns the boolean value for a string
+
+    Returns the boolean value for a provided string. Acceptable values for a
+    ``True`` case includes ``y``, ``yes``, ``t``, ``true``, ``on`` and ``1``;
+    for a ``False`` case includes ``n``, ``no``, ``f``, ``false``, ``off`` and
+    ``0``. Raises ``ValueError`` on error.
+
+    Args:
+        value: the raw value
+
+    Returns:
+        the boolean interpretation
+
+    Raises:
+        ``ValueError`` is raised if the string value is not an accepted string
+    """
+
+    value = value.lower()
+    if value in ['y', 'yes', 't', 'true', 'on', '1']:
+        return True
+    elif value in ['n', 'no', 'f', 'false', 'off', '0']:
+        return False
+    else:
+        raise ValueError

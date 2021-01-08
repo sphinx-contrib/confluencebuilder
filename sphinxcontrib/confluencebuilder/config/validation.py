@@ -6,6 +6,7 @@
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
+from sphinxcontrib.confluencebuilder.util import str2bool
 import os
 
 try:
@@ -58,7 +59,13 @@ class ConfigurationValidation():
         value = self._value()
 
         if value is not None:
-            if not isinstance(value, bool) and not isinstance(value, int):
+            if isinstance(value, basestring):
+                try:
+                    str2bool(value)
+                except ValueError:
+                    raise ConfluenceConfigurationError(
+                        '%s is not a boolean string' % self.key)
+            elif not isinstance(value, bool) and not isinstance(value, int):
                 raise ConfluenceConfigurationError(
                     '%s is not a boolean type' % self.key)
 
@@ -249,6 +256,13 @@ class ConfigurationValidation():
         value = self._value()
 
         if value is not None:
+            if isinstance(value, basestring):
+                try:
+                    value = int(value)
+                except ValueError:
+                    raise ConfluenceConfigurationError(
+                        '%s is not an integer string' % self.key)
+
             if positive:
                 if not isinstance(value, int) or value <= 0:
                     raise ConfluenceConfigurationError(

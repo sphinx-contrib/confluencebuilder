@@ -4,6 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from sphinxcontrib.confluencebuilder.util import str2bool
+
 def apply_defaults(conf):
     """
     applies default values for select configurations
@@ -42,3 +44,40 @@ def apply_defaults(conf):
 
     if conf.confluence_secnumber_suffix is None:
         conf.confluence_secnumber_suffix = '. '
+
+    config2bool = [
+        'confluence_add_secnumbers',
+        'confluence_adv_aggressive_search',
+        'confluence_adv_hierarchy_child_macro',
+        'confluence_adv_trace_data',
+        'confluence_adv_writer_no_section_cap',
+        'confluence_ask_password',
+        'confluence_ask_user',
+        'confluence_asset_force_standalone',
+        'confluence_disable_autogen_title',
+        'confluence_disable_notifications',
+        'confluence_disable_ssl_validation',
+        'confluence_ignore_titlefix_on_index',
+        'confluence_master_homepage',
+        'confluence_page_hierarchy',
+        'confluence_publish_dryrun',
+        'confluence_publish_onlynew',
+        'confluence_purge',
+        'confluence_purge_from_master',
+        'confluence_remove_title',
+        'confluence_watch',
+    ]
+    for key in config2bool:
+        if getattr(conf, key) is not None:
+            if not isinstance(getattr(conf, key), bool):
+                conf[key] = str2bool(conf[key])
+
+    config2int = [
+        'confluence_max_doc_depth',
+        'confluence_parent_page_id_check',
+        'confluence_timeout',
+    ]
+    for key in config2int:
+        if getattr(conf, key) is not None:
+            if not isinstance(getattr(conf, key), int):
+                conf[key] = int(conf[key])
