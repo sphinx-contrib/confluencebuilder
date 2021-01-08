@@ -251,6 +251,12 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def depart_line(self, node):
         pass
 
+    def visit_number_reference(self, node):
+        self.visit_reference(node)
+
+    def depart_number_reference(self, node):
+        self.depart_reference(node)
+
     def visit_raw(self, node):
         if 'confluence' in node.get('format', '').split():
             if not self._tracked_deprecated_raw_type:
@@ -260,6 +266,12 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
             self.body.append(self.nl.join(node.astext().splitlines()))
         raise nodes.SkipNode
+
+    def visit_reference(self, node):
+        pass
+
+    def depart_reference(self, node):
+        pass
 
     def visit_sidebar(self, node):
         # unsupported
