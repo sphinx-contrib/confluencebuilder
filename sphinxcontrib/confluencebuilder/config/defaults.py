@@ -69,7 +69,7 @@ def apply_defaults(conf):
     ]
     for key in config2bool:
         if getattr(conf, key) is not None:
-            if not isinstance(getattr(conf, key), bool):
+            if not isinstance(getattr(conf, key), bool) and conf[key]:
                 conf[key] = str2bool(conf[key])
 
     config2int = [
@@ -79,5 +79,5 @@ def apply_defaults(conf):
     ]
     for key in config2int:
         if getattr(conf, key) is not None:
-            if not isinstance(getattr(conf, key), int):
+            if not isinstance(getattr(conf, key), int) and conf[key]:
                 conf[key] = int(conf[key])

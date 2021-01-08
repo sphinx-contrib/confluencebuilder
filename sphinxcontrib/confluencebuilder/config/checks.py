@@ -426,7 +426,7 @@ names are relative to the documentation's source directory.
 
     # confluence_secnumber_suffix
     validator.conf('confluence_secnumber_suffix') \
-             .string()
+             .string(permit_empty=True)
 
     # ##################################################################
 
