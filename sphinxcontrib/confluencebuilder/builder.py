@@ -15,6 +15,7 @@ from sphinx.builders import Builder
 from sphinx.errors import ExtensionError
 from sphinx.locale import __
 from sphinx.util import status_iterator
+from sphinx.util.math import wrap_displaymath
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
@@ -958,8 +959,15 @@ class ConfluenceBuilder(Builder):
         for node in itertools.chain(doctree.traverse(nodes.math),
                 doctree.traverse(nodes.math_block)):
             try:
-                mf, _ = imgmath.render_math(mock_translator,
-                    '$' + node.astext() + '$')
+                if not isinstance(node, nodes.math):
+                    if node['nowrap']:
+                        latex = node.astext()
+                    else:
+                        latex = wrap_displaymath(node.astext(), None, False)
+                else:
+                    latex = '$' + node.astext() + '$'
+
+                mf, _ = imgmath.render_math(mock_translator, latex)
                 if not mf:
                     continue
 
