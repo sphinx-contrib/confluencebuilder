@@ -244,6 +244,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def visit_comment(self, node):
         raise nodes.SkipNode
 
+    def visit_meta(self, node):
+        raise nodes.SkipNode
+
     def visit_line(self, node):
         # ignoring; no need to handle specific line entries
         pass
