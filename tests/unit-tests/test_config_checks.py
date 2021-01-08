@@ -39,11 +39,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'https://intranet-wiki.example.com/'
         self.config['confluence_space_name'] = 'DUMMY'
 
-    def _try_config(self, config=None, dataset=None):
+    def _try_config(self, config=None, edefs=None, dataset=None):
         config = config if config else self.minimal_config
         dataset = dataset if dataset else self.dataset
 
-        with prepare_sphinx(dataset, config=config) as app:
+        with prepare_sphinx(dataset, config=config, extra_config=edefs) as app:
             builder = ConfluenceBuilder(app)
 
             class MockedPublisher():
@@ -90,6 +90,35 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config()
 
+        del self.config['confluence_ask_password']
+        del self.config['confluence_ask_user']
+        self.config['confluence_server_user'] = 'username'
+
+        defines = {
+            'confluence_ask_password': '1',
+        }
+        with mock_getpass(''):
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_password': '1',
+        }
+        with mock_getpass('password'):
+            self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_password': '0',
+        }
+        with mock_getpass(''):
+            self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_password': '', # empty to "unset"
+        }
+        with mock_getpass(''):
+            self._try_config(edefs=defines)
+
     def test_config_check_ask_user(self):
         print('') # space out ask output if an unbuffered run
 
@@ -110,6 +139,34 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_server_user'] = 'username'
         with mock_input(''):
             self._try_config()
+
+        del self.config['confluence_ask_user']
+        del self.config['confluence_server_user']
+
+        defines = {
+            'confluence_ask_user': '1',
+        }
+        with mock_input(''):
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_user': '1',
+        }
+        with mock_input('username'):
+            self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_user': '0',
+        }
+        with mock_input(''):
+            self._try_config(edefs=defines)
+
+        defines = {
+            'confluence_ask_user': '', # empty to "unset"
+        }
+        with mock_input(''):
+            self._try_config(edefs=defines)
 
     def test_config_check_additional_mime_types(self):
         self.config['confluence_additional_mime_types'] = [
@@ -348,6 +405,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_max_doc_depth'] = 0
         with self.assertRaises(SphinxWarning):
             self._try_config()
+
+        del self.config['confluence_max_doc_depth']
+
+        defines = {
+            'confluence_max_doc_depth': '1',
+        }
+        self._try_config(edefs=defines)
 
     def test_config_check_parent_page(self):
         self.config['confluence_parent_page'] = 'dummy'
