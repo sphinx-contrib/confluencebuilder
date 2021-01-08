@@ -976,6 +976,8 @@ class ConfluenceBuilder(Builder):
                     uri=path.join(self.outdir, mf))
                 if not isinstance(node, nodes.math):
                     new_node['align'] = 'center'
+                if node.get('number'):
+                    new_node['math_number'] = node['number']
                 node.replace_self(new_node)
             except imgmath.MathExtError as exc:
                 ConfluenceLogger.warn('inline latex {}: {}'.format(

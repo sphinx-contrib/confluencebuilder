@@ -1264,6 +1264,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = node['uri']
         uri = self._escape_sf(uri)
 
+        if node.get('math_number'):
+            math_number = node['math_number']
+
+            self.body.append(self._start_tag(node, 'div',
+                **{'style': 'float: right'}))
+            self.body.append('({})'.format(math_number))
+            self.body.append(self._end_tag(node))
+
         attribs = {}
 
         alignment = None
