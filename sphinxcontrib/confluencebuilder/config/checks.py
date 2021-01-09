@@ -37,9 +37,57 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_add_secnumbers
+    validator.conf('confluence_add_secnumbers') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_additional_mime_types
     validator.conf('confluence_additional_mime_types') \
              .strings(no_space=True)
+
+    # ##################################################################
+
+    # confluence_adv_aggressive_search
+    validator.conf('confluence_adv_aggressive_search') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_adv_hierarchy_child_macro
+    validator.conf('confluence_adv_hierarchy_child_macro') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_adv_trace_data
+    validator.conf('confluence_adv_trace_data') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_adv_writer_no_section_cap
+    validator.conf('confluence_adv_writer_no_section_cap') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_ask_password
+    validator.conf('confluence_ask_password') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_ask_user
+    validator.conf('confluence_ask_user') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_asset_force_standalone
+    validator.conf('confluence_asset_force_standalone') \
+             .bool()
 
     # ##################################################################
 
@@ -97,6 +145,24 @@ The option 'confluence_default_alignment' has been provided to override the
 default alignment for tables, figures, etc. Accepted values include 'left',
 'center' and 'right'.
 """ % str(e))
+
+    # ##################################################################
+
+    # confluence_disable_autogen_title
+    validator.conf('confluence_disable_autogen_title') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_disable_notifications
+    validator.conf('confluence_disable_notifications') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_disable_ssl_validation
+    validator.conf('confluence_disable_ssl_validation') \
+             .bool()
 
     # ##################################################################
 
@@ -159,6 +225,12 @@ to a proper file path.
 
     # ##################################################################
 
+    # confluence_ignore_titlefix_on_index
+    validator.conf('confluence_ignore_titlefix_on_index') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_jira_servers
     if config.confluence_jira_servers is not None:
         issue = False
@@ -212,6 +284,12 @@ dictionaries with keys 'id' and 'name' which identify the JIRA instances.
 
     # ##################################################################
 
+    # confluence_master_homepage
+    validator.conf('confluence_master_homepage') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_max_doc_depth
     try:
         validator.conf('confluence_max_doc_depth') \
@@ -236,6 +314,12 @@ If planning to use a depth of zero, it is recommended to use the
 
     validator.conf('confluence_parent_page_id_check') \
              .int_(positive=True)
+
+    # ##################################################################
+
+    # confluence_page_hierarchy
+    validator.conf('confluence_page_hierarchy') \
+             .bool()
 
     # ##################################################################
 
@@ -298,6 +382,18 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_publish_dryrun
+    validator.conf('confluence_publish_dryrun') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_publish_onlynew
+    validator.conf('confluence_publish_onlynew') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_publish_postfix
     validator.conf('confluence_publish_postfix') \
              .string()
@@ -310,9 +406,27 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_purge
+    validator.conf('confluence_purge') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_purge_from_master
+    validator.conf('confluence_purge_from_master') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_remove_title
+    validator.conf('confluence_remove_title') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_secnumber_suffix
     validator.conf('confluence_secnumber_suffix') \
-             .string()
+             .string(permit_empty=True)
 
     # ##################################################################
 
@@ -380,6 +494,12 @@ A configured timeout should be set to a value, in seconds, before any network
 request to timeout after inactivity. This should be set to a positive integer
 value (e.g. 2).
 """ % str(e))
+
+    # ##################################################################
+
+    # confluence_watch
+    validator.conf('confluence_watch') \
+             .bool()
 
     # ##################################################################
 

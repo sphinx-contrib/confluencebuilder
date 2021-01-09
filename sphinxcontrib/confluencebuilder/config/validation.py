@@ -6,6 +6,7 @@
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
+from sphinxcontrib.confluencebuilder.util import str2bool
 import os
 
 try:
@@ -39,6 +40,36 @@ class ConfigurationValidation():
         self.env = builder.app.env
         self.key = None
         self._translate = None
+
+    def bool(self):
+        """
+        checks if a configuration is a boolean
+
+        After an instance has been set a configuration key (via `conf`), this
+        method can be used to check if the value (if any) configured with this
+        key is a boolean. If not, an `ConfluenceConfigurationError` exception
+        will be thrown.
+
+        In the event that the configuration is not set (e.g. a value of `None`),
+        this method will have no effect.
+
+        Returns:
+            the validator instance
+        """
+        value = self._value()
+
+        if value is not None:
+            if isinstance(value, basestring):
+                try:
+                    str2bool(value)
+                except ValueError:
+                    raise ConfluenceConfigurationError(
+                        '%s is not a boolean string' % self.key)
+            elif not isinstance(value, bool) and not isinstance(value, int):
+                raise ConfluenceConfigurationError(
+                    '%s is not a boolean type' % self.key)
+
+        return self
 
     def callable_(self):
         """
@@ -225,6 +256,13 @@ class ConfigurationValidation():
         value = self._value()
 
         if value is not None:
+            if isinstance(value, basestring):
+                try:
+                    value = int(value)
+                except ValueError:
+                    raise ConfluenceConfigurationError(
+                        '%s is not an integer string' % self.key)
+
             if positive:
                 if not isinstance(value, int) or value <= 0:
                     raise ConfluenceConfigurationError(
@@ -261,7 +299,7 @@ class ConfigurationValidation():
 
         return self
 
-    def string(self):
+    def string(self, permit_empty=False):
         """
         checks if a configuration is a string
 
@@ -273,10 +311,14 @@ class ConfigurationValidation():
         In the event that the configuration is not set (e.g. a value of `None`),
         this method will have no effect.
 
+        Args:
+            permit_empty (optional): whether or not all an empty string of this
+                                      value is considered to be a set value
+
         Returns:
             the validator instance
         """
-        value = self._value()
+        value = self._value(permit_empty=True)
 
         if value is not None and not isinstance(value, basestring):
             raise ConfluenceConfigurationError(
@@ -347,13 +389,17 @@ class ConfigurationValidation():
 
         return self
 
-    def _value(self):
+    def _value(self, permit_empty=False):
         """
         return a value for a configuration
 
         Return the value (if any) of the provided key found in the registered
         builder's configuration. If any configuration translator is set for a
         key, the translation will be performed and returned with this call.
+
+        Args:
+            permit_empty (optional): whether or not all an empty string of this
+                                      value is considered to be a set value
 
         Returns:
             the value for a key
@@ -362,5 +408,13 @@ class ConfigurationValidation():
 
         if value is not None and self._translate:
             value = self._translate(value)
+
+        # If an empty string, treat (in most cases) that this value is actually
+        # a `None` value. This permits callers from passing "empty"/unset
+        # configuration entries via the command line to "clear" a configuration
+        # value. Note that this does not apply to all configuration entries (for
+        # example, see `confluence_secnumber_suffix`).
+        if not permit_empty and isinstance(value, basestring) and not value:
+            value = None
 
         return value
