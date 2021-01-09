@@ -967,7 +967,7 @@ class ConfluenceBuilder(Builder):
                 else:
                     latex = '$' + node.astext() + '$'
 
-                mf, _ = imgmath.render_math(mock_translator, latex)
+                mf, depth = imgmath.render_math(mock_translator, latex)
                 if not mf:
                     continue
 
@@ -976,6 +976,8 @@ class ConfluenceBuilder(Builder):
                     uri=path.join(self.outdir, mf))
                 if not isinstance(node, nodes.math):
                     new_node['align'] = 'center'
+                if depth is not None:
+                    new_node['math_depth'] = depth
                 if node.get('number'):
                     new_node['math_number'] = node['number']
                 node.replace_self(new_node)

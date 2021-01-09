@@ -1264,6 +1264,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = node['uri']
         uri = self._escape_sf(uri)
 
+        if node.get('math_depth'):
+            math_depth = node['math_depth']
+            self.body.append(self._start_tag(node, 'span',
+                **{'style': 'vertical-align: {}px'.format(-1 * math_depth)}))
+            self.context.append(self._end_tag(node))
+
         if node.get('math_number'):
             math_number = node['math_number']
 
@@ -1346,7 +1352,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ri_attachment(node))
             self.body.append(self._end_ac_image(node))
 
-        raise nodes.SkipNode
+    def depart_image(self, node):
+        if node.get('math_depth'):
+            self.body.append(self.context.pop()) # span
 
     def visit_legend(self, node):
         attribs = {}
