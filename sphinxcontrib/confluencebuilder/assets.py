@@ -121,18 +121,39 @@ class ConfluenceAssetManager:
         path = self._interpretAssetPath(node)
         if path:
             asset = self.path2asset.get(path, None)
+
+            # process node if asset is missing (third-party extensions)
+            #
+            # If a node's asset cannot be found, this image node may have been
+            # created after pre-processing occurred. Attempt to re-process the
+            # node as a standalone image.
+            if not asset and node.document:
+                docname = canon_path(
+                    self.env.path2doc(node.document['source']))
+
+                if isinstance(node, nodes.image):
+                    self.processImageNode(node, docname, standalone=True)
+                elif isinstance(node, addnodes.download_reference):
+                    self.processFileNode(node, docname, standalone=True)
+
+                asset = self.path2asset.get(path, None)
+
             if asset:
                 key = asset.key
 
-                if self.force_standalone:
-                    docname = canon_path(
-                        self.env.path2doc(node.document['source']))
-                    assert docname in asset.docnames
-                else:
-                    if len(asset.docnames) > 1:
-                        docname = self.root_doc
+                if not docname:
+                    if self.force_standalone:
+                        docname = canon_path(
+                            self.env.path2doc(node.document['source']))
+                        assert docname in asset.docnames
                     else:
-                        docname = next(iter(asset.docnames))
+                        if len(asset.docnames) > 1:
+                            docname = self.root_doc
+                        else:
+                            docname = next(iter(asset.docnames))
+
+        if not key:
+            docname = None
 
         return key, docname
 
@@ -168,37 +189,53 @@ class ConfluenceAssetManager:
         """
         image_nodes = doctree.traverse(nodes.image)
         for node in image_nodes:
-            uri = node['uri']
-            if not uri.startswith('data:') and uri.find('://') == -1:
-                path = self._interpretAssetPath(node)
-                if not path:
-                    continue
-
-                if path not in self.path2asset:
-                    hash = ConfluenceUtil.hashAsset(path)
-                    type = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
-                else:
-                    hash = self.path2asset[path].hash
-                    type = self.path2asset[path].type
-                self._handleEntry(path, type, hash, docname, standalone)
+            self.processImageNode(node, docname, standalone)
 
         file_nodes = doctree.traverse(addnodes.download_reference)
         for node in file_nodes:
-            target = node['reftarget']
-            if target.find('://') == -1:
-                path = self._interpretAssetPath(node)
-                if not path:
-                    continue
+            self.processFileNode(node, docname, standalone)
 
-                if path not in self.path2asset:
-                    hash = ConfluenceUtil.hashAsset(path)
-                    type = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
-                else:
-                    hash = self.path2asset[path].hash
-                    type = self.path2asset[path].type
-                self._handleEntry(path, type, hash, docname, standalone)
+    def processFileNode(self, node, docname, standalone=False):
+        """
+        process an file node
 
-    def _handleEntry(self, path, type, hash, docname, standalone=False):
+        This method will process an file node for asset tracking. Asset
+        information is tracked in this manager and other helper methods can be
+        used to pull asset information when needed.
+
+        Args:
+            node: the file node
+            docname: the document's name
+            standalone (optional): ignore hash mappings (defaults to False)
+        """
+
+        target = node['reftarget']
+        if target.find('://') == -1:
+            path = self._interpretAssetPath(node)
+            if path:
+                self._handleEntry(path, docname, standalone)
+
+    def processImageNode(self, node, docname, standalone=False):
+        """
+        process an image node
+
+        This method will process an image node for asset tracking. Asset
+        information is tracked in this manager and other helper methods can be
+        used to pull asset information when needed.
+
+        Args:
+            node: the image node
+            docname: the document's name
+            standalone (optional): ignore hash mappings (defaults to False)
+        """
+
+        uri = node['uri']
+        if not uri.startswith('data:') and uri.find('://') == -1:
+            path = self._interpretAssetPath(node)
+            if path:
+                self._handleEntry(path, docname, standalone)
+
+    def _handleEntry(self, path, docname, standalone=False):
         """
         handle an asset entry
 
@@ -214,11 +251,17 @@ class ConfluenceAssetManager:
 
         Args:
             path: the absolute path to the asset
-            type: the content type of the asset
-            hash: the hash of the asset
             docname: the document name this asset was found in
             standalone (optional): ignore hash mappings (defaults to False)
         """
+
+        if path not in self.path2asset:
+            hash = ConfluenceUtil.hashAsset(path)
+            type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
+        else:
+            hash = self.path2asset[path].hash
+            type_ = self.path2asset[path].type
+
         asset = self.path2asset.get(path, None)
         if not asset:
             hash_exists = hash in self.hash2asset
@@ -238,7 +281,7 @@ class ConfluenceAssetManager:
                     key = '{}_{}{}'.format(filename, idx, file_ext)
                 self.keys.add(key)
 
-                asset = ConfluenceAsset(key, path, type, hash)
+                asset = ConfluenceAsset(key, path, type_, hash)
                 self.assets.append(asset)
                 self.path2asset[path] = asset
                 if not hash_exists:
