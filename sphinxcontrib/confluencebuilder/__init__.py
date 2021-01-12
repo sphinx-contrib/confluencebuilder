@@ -17,7 +17,6 @@ from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
-from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 
 # load autosummary extension if available to add additional nodes
 try:
@@ -40,10 +39,6 @@ def setup(app):
     app.add_builder(ConfluenceBuilder)
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
-    app.registry.add_translator(
-        ConfluenceBuilder.name, ConfluenceStorageFormatTranslator)
-    app.registry.add_translator(
-        SingleConfluenceBuilder.name, ConfluenceStorageFormatTranslator)
 
     # Images defined by data uri schemas can be resolved into generated images
     # after a document's post-transformation stage. After a document's doctree
