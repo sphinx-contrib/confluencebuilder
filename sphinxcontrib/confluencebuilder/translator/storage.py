@@ -1264,18 +1264,29 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = node['uri']
         uri = self._escape_sf(uri)
 
-        if node.get('math_depth'):
+        if node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
             self.body.append(self._start_tag(node, 'span',
                 **{'style': 'vertical-align: {}px'.format(-1 * math_depth)}))
             self.context.append(self._end_tag(node))
 
-        if node.get('math_number'):
-            math_number = node['math_number']
+        if node.get('from_math') and node.get('number'):
+            if self.builder.config.math_numfig and self.builder.config.numfig:
+                figtype = 'displaymath'
+                if self.builder.name == 'singleconfluence':
+                    key = '%s/%s' % (self._docnames[-1], figtype)
+                else:
+                    key = figtype
+
+                id = node['ids'][0]
+                number = self.builder.fignumbers.get(key, {}).get(id, ())
+                number = '.'.join(map(str, number))
+            else:
+                number = node['number']
 
             self.body.append(self._start_tag(node, 'div',
                 **{'style': 'float: right'}))
-            self.body.append('({})'.format(math_number))
+            self.body.append('({})'.format(number))
             self.body.append(self._end_tag(node))
 
         attribs = {}
@@ -1353,7 +1364,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_image(node))
 
     def depart_image(self, node):
-        if node.get('math_depth'):
+        if node.get('from_math') and node.get('math_depth'):
             self.body.append(self.context.pop()) # span
 
     def visit_legend(self, node):

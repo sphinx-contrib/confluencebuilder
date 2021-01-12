@@ -20,6 +20,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def __init__(self, app):
         super(SingleConfluenceBuilder, self).__init__(app)
 
+        self.root_doc = self.config.master_doc
+
     def assemble_doctree(self):
         master = self.config.master_doc
         tree = self.env.get_doctree(master)
@@ -81,8 +83,23 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             return
 
         with progress_message(__('assembling single confluence document')):
-            self.env.toc_secnumbers = self.assemble_toc_secnumbers()
-            self.env.toc_fignumbers = self.assemble_toc_fignumbers()
+            # assemble toc section/figure numbers
+            #
+            # Both the environment's `toc_secnumbers` and `toc_fignumbers`
+            # are populated; however, they do not contain a complete list of
+            # each document's section/figure numbers. The assembling process
+            # will create a dictionary keys of '<docname>/<id>' which the writer
+            # implementations can used to build desired references when invoked
+            # with a `singleconfluence` builder. Unlike Sphinx's `singlehtml`
+            # builder, this builder will update the existing number dictionaries
+            # to hold the original mappings (for other post-transforms,
+            # extensions, etc.) and the newer mappings for reference building.
+            assembled_toc_secnumbers = self.assemble_toc_secnumbers()
+            assembled_toc_fignumbers = self.assemble_toc_fignumbers()
+            self.env.toc_secnumbers.setdefault(self.root_doc, {}).update(
+                assembled_toc_secnumbers[self.root_doc])
+            self.env.toc_fignumbers.setdefault(self.root_doc, {}).update(
+                assembled_toc_fignumbers[self.root_doc])
 
             # register title targets for references before assembling doc
             # re-works them into a single document
