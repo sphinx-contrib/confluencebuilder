@@ -72,7 +72,7 @@ def build_intersphinx(builder):
                         # anchor values; replace and encode the anchor value
                         anchor = anchor.replace('"', '”')
                         anchor = anchor.replace("'", '’')
-                        anchor = requests.utils.quote(anchor)
+                        anchor = requests.utils.quote(anchor.encode('utf-8'))
                     else:
                         anchor = ''
 
