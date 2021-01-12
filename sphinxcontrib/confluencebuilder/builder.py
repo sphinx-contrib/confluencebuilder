@@ -28,6 +28,7 @@ from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
@@ -63,6 +64,7 @@ if graphviz:
 
 class ConfluenceBuilder(Builder):
     allow_parallel = True
+    default_translator_class = ConfluenceStorageFormatTranslator
     name = 'confluence'
     format = 'confluence_storage'
     supported_image_types = ConfluenceSupportedImages()
