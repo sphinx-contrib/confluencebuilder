@@ -967,17 +967,19 @@ class ConfluenceBuilder(Builder):
                 else:
                     latex = '$' + node.astext() + '$'
 
-                mf, _ = imgmath.render_math(mock_translator, latex)
+                mf, depth = imgmath.render_math(mock_translator, latex)
                 if not mf:
                     continue
 
                 new_node = nodes.image(
                     candidates={'?'},
-                    uri=path.join(self.outdir, mf))
+                    uri=path.join(self.outdir, mf),
+                    **node.attributes)
+                new_node['from_math'] = True
                 if not isinstance(node, nodes.math):
                     new_node['align'] = 'center'
-                if node.get('number'):
-                    new_node['math_number'] = node['number']
+                if depth is not None:
+                    new_node['math_depth'] = depth
                 node.replace_self(new_node)
             except imgmath.MathExtError as exc:
                 ConfluenceLogger.warn('inline latex {}: {}'.format(

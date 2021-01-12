@@ -70,6 +70,17 @@ content can use the ``confluence_publish_prefix``
 See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
 :ref:`title overrides capability <confluence_title_overrides>`.
 
+Recommended options for math
+----------------------------
+
+The following are recommended options to use when using `sphinx.ext.imgmath`_:
+
+.. code-block:: python
+
+    imgmath_font_size = 14
+    imgmath_use_preview = True
+    imgmath_image_format = 'svg'
+
 Setting a publishing timeout
 ----------------------------
 
@@ -127,3 +138,7 @@ report, run the following command from the documentation directory:
     (confluence instance)
      ...
     ------------[ cut here ]------------
+
+.. references ------------------------------------------------------------------
+
+.. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath
