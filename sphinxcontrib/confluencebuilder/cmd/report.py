@@ -179,7 +179,10 @@ def report_main(args_parser):
 
     def sensitive_config(key):
         if key in config:
-            config[key] = '(set)'
+            if config[key]:
+                config[key] = '(set)'
+            else:
+                config[key] = '(set; empty)'
 
     # always sanitize out sensitive information
     sensitive_config('confluence_client_cert_pass')
