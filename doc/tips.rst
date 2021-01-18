@@ -93,6 +93,12 @@ is recommended to provide a timeout value based on the environment being used
 Publishing with a CI secret key
 -------------------------------
 
+.. note::
+
+    If running in a ``tox``/``virtualenv`` setup, ensure any environment
+    variables used are configured to be passed through to the virtual
+    environment.
+
 For users performing automatic publishing through a CI system, they may wish to
 authenticate their publish event with a secret key. A common approach to
 applying a secret key is through an environment variable. For example:
