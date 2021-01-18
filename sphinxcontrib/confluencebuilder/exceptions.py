@@ -34,17 +34,22 @@ class ConfluenceBadApiError(ConfluenceError):
         )
 
 class ConfluenceBadSpaceError(ConfluenceError):
-    def __init__(self, space_name):
+    def __init__(self, space_name, uname, pw_set):
+        uname_value = uname if uname else '(empty)'
+        pw_value = '<set>' if pw_set else '(empty)'
         SphinxError.__init__(self,
             """---\n"""
             """The configured Confluence space does not appear to be """
-            """valid: %s\n""" % space_name +
+            """valid:\n\n"""
+            """    Space: {}\n"""
+            """ Username: {}\n"""
+            """ Password: {}\n"""
             """\n"""
             """Ensure the server is running or your Confluence URL is valid. """
             """Also ensure your authentication options are properly set.\n"""
             """\n"""
             """Note: Confluence space names are case-sensitive.\n"""
-            """---\n"""
+            """---\n""".format(space_name, uname_value, pw_value)
         )
 
 class ConfluenceBadServerUrlError(ConfluenceError):

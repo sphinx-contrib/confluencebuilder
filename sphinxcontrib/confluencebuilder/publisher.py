@@ -47,7 +47,9 @@ class ConfluencePublisher():
             'limit': 1
         })
         if rsp['size'] == 0:
-            raise ConfluenceBadSpaceError(self.space_name)
+            pw_set = bool(self.config.confluence_server_pass)
+            raise ConfluenceBadSpaceError(self.space_name,
+                self.config.confluence_server_user, pw_set)
         self.space_display_name = rsp['results'][0]['name']
 
     def disconnect(self):
