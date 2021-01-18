@@ -1,3 +1,14 @@
+1.4.0 (2021-01-17)
+==================
+
+* fixed issue where a meta node directive would fail the writer stage
+* fixed issue where intersphinx would fail in python 2.7
+* fixed issue where not all math directive content would be accepted
+* fixed/improved handling of configuration options from command line
+* support for math visual depth adjustments (line alignment)
+* support for numerical figures and references to these figures
+* support late image/download processing (for third-party extensions)
+
 1.3.0 (2020-12-31)
 ==================
 
