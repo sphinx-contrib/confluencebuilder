@@ -99,7 +99,7 @@ class ConfluenceAssetManager:
                 data.append(entry)
         return data
 
-    def fetch(self, node):
+    def fetch(self, node, docname=None):
         """
         return key and target document name for provided asset
 
@@ -111,11 +111,11 @@ class ConfluenceAssetManager:
 
         Args:
             node: the node to interpret
+            docname (optional): force the document name for this asset
 
         Returns:
             the key and document name
         """
-        docname = None
         key = None
 
         path = self._interpretAssetPath(node)
@@ -127,10 +127,11 @@ class ConfluenceAssetManager:
             # If a node's asset cannot be found, this image node may have been
             # created after pre-processing occurred. Attempt to re-process the
             # node as a standalone image.
-            if not asset and node.document:
+            if not asset and not docname and node.document:
                 docname = canon_path(
                     self.env.path2doc(node.document['source']))
 
+            if not asset and docname:
                 if isinstance(node, nodes.image):
                     self.processImageNode(node, docname, standalone=True)
                 elif isinstance(node, addnodes.download_reference):
