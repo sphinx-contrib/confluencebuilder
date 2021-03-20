@@ -138,7 +138,7 @@ Generic configuration
 
     .. versionadded:: 1.2
 
-    Add section numbers to page and section titles if ``doctree`` uses the
+    Add section numbers to page and section titles if ``toctree`` uses the
     ``:numbered:`` option. By default, this is enabled:
 
     .. code-block:: python
