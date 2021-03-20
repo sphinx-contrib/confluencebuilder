@@ -1346,7 +1346,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
-            image_key, hosting_docname = self.assets.fetch(node)
+            asset_docname = None
+            if self.builder.name == 'singleconfluence':
+                asset_docname = self._docnames[-1]
+
+            image_key, hosting_docname = self.assets.fetch(node,
+                docname=asset_docname)
             if not image_key:
                 self.warn('unable to find image: ' '{}'.format(node['uri']))
                 raise nodes.SkipNode
@@ -1396,7 +1401,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'a', **{'href': uri}))
             self.context.append(self._end_tag(node, suffix=''))
         else:
-            file_key, hosting_docname = self.assets.fetch(node)
+            asset_docname = None
+            if self.builder.name == 'singleconfluence':
+                asset_docname = self._docnames[-1]
+
+            file_key, hosting_docname = self.assets.fetch(node,
+                docname=asset_docname)
             if not file_key:
                 self.warn('unable to find download: ' '{}'.format(
                     node['reftarget']))
