@@ -91,6 +91,7 @@ class ConfluenceBuilder(Builder):
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
+        self._verbose = self.app.verbosity
 
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
@@ -118,7 +119,7 @@ class ConfluenceBuilder(Builder):
 
         self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
         self.writer = ConfluenceWriter(self)
-        self.config.sphinx_verbosity = self.app.verbosity
+        self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config)
 
         old_url = self.config.confluence_server_url
@@ -515,7 +516,8 @@ class ConfluenceBuilder(Builder):
     def publish_finalize(self):
         if self.master_doc_page_id:
             if self.config.confluence_master_homepage is True:
-                self.info('updating space\'s homepage... ', nonl=True)
+                self.info('updating space\'s homepage... ',
+                    nonl=(not self._verbose))
                 self.publisher.updateSpaceHome(self.master_doc_page_id)
                 self.info('done\n')
 
@@ -539,7 +541,7 @@ class ConfluenceBuilder(Builder):
             if self.legacy_pages:
                 n = len(self.legacy_pages)
                 self.info('removing legacy pages... (total: {}) '.format(n),
-                    nonl=True)
+                    nonl=(not self._verbose))
                 for legacy_page_id in self.legacy_pages:
                     self.publisher.removePage(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
@@ -552,7 +554,7 @@ class ConfluenceBuilder(Builder):
                 n += len(legacy_asset_info.keys())
             if n > 0:
                 self.info('removing legacy assets... (total: {}) '.format(n),
-                    nonl=True)
+                    nonl=(not self._verbose))
                 for legacy_asset_info in self.legacy_assets.values():
                     for id in legacy_asset_info.keys():
                         self.publisher.removeAttachment(id)
@@ -571,7 +573,7 @@ class ConfluenceBuilder(Builder):
             for docname in status_iterator(
                     self.publish_docnames, 'publishing documents... ',
                     length=len(self.publish_docnames),
-                    verbosity=self.app.verbosity):
+                    verbosity=self._verbose):
                 if self._check_publish_skip(docname):
                     self.verbose(docname + ' skipped due to configuration')
                     continue
@@ -591,7 +593,7 @@ class ConfluenceBuilder(Builder):
 
             assets = self.assets.build()
             for asset in status_iterator(assets, 'publishing assets... ',
-                    length=len(assets), verbosity=self.app.verbosity,
+                    length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
                 key, absfile, type, hash, docname = asset
                 if self._check_publish_skip(docname):
@@ -609,7 +611,7 @@ class ConfluenceBuilder(Builder):
             self.publish_purge()
             self.publish_finalize()
 
-            self.info('building intersphinx... ', nonl=True)
+            self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)
             self.info('done\n')
 
