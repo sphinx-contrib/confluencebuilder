@@ -174,6 +174,22 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         return doctitle
 
+    def _top_ref_check(self, node):
+        """
+        report if the provided node is consider a #top reference
+
+        Check if the provided reference node is a reference to the root
+        document. If so, flag that it should be a "#top" reference instead of an
+        internal anchor target.
+
+        Args:
+            node: the node to check
+
+        Returns:
+            whether or not the node should be a #top reference
+        """
+        return node['refid'] == self.root_doc
+
     def _register_doctree_title_targets(self, docname, doctree):
         """
         register title targets for a doctree
@@ -189,6 +205,13 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         doc_used_names = {}
         secnumbers = self.env.toc_secnumbers.get(self.config.master_doc, {})
+
+        docref_set = False
+        doc_anchorname = '%s/' % docname
+        root_section = None
+        title_node = self._find_title_element(doctree)
+        if title_node:
+            root_section = title_node.parent
 
         for node in doctree.traverse(nodes.title):
             if isinstance(node.parent, nodes.section):
@@ -215,3 +238,31 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                             target = '{}.{}'.format(target, section_id)
 
                         ConfluenceState.registerTarget(anchorname, target)
+
+                        # register a "document target" if the document's base
+                        # identifier is set to a value which does not match the
+                        # document's docname
+                        #
+                        # When building a single Confluence page, if a reference
+                        # explicitly references to another document (:doc:<>),
+                        # there can be no registered target to properly point
+                        # to. This call focuses on building targets based off
+                        # the identifiers defined in the section names; however,
+                        # there is no guarantee that the assigned identifiers
+                        # will match to an internal refid value to a specific
+                        # document name (e.g. if "pagea" links to "pageb", page
+                        # A can have a reference to a refid "pageb", but page
+                        # B's root section name *may* not have a matching
+                        # identifier). Since we want references like this to
+                        # point to the starting location of these document's
+                        # content, there is a desire to register a reference to
+                        # the first section name value (i.e. first title) if one
+                        # exists. Therefore, if the root section name does not
+                        # register a target which matches a prospect refid value
+                        # for a :doc:<> reference, register an additional target
+                        # to the leading section which has this mapping.
+                        if section_node == root_section and not docref_set:
+                            if doc_anchorname != anchorname:
+                                ConfluenceState.registerTarget(
+                                    doc_anchorname, target)
+                            docref_set = True
