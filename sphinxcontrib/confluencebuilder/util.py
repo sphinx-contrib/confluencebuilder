@@ -4,9 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from hashlib import sha256
+import getpass
 import os
+import subprocess
 
 class ConfluenceUtil:
     """
@@ -102,6 +105,47 @@ def first(it):
         the first element
     """
     return next(iter(it), None)
+
+def getpass2(prompt='Password: '):
+    """
+    prompt the user for a password without echoing
+
+    Provides a call which can help acquire a password from the user's session
+    without attempting to echo the password on the standard output stream. This
+    is a support call to help override select environments which may not be able
+    to handle the `getpass` call as expected; specifically, this call checks for
+    an msystem-based environment on Windows that is not wrapped in a winpty
+    call. If `getpass` is called in this environment, the input cannot be
+    captured -- which is replaced in this method to configure the terminal not
+    to echo, perform a standard input capture and restore the terminal state
+    back.
+
+    Args:
+        prompt: the value to prompt to the user
+
+    Returns:
+        the password value
+    """
+
+    # check for a msystem environment which may not be able to use getpass
+    #  nt: windows specific; can help exclude some cygwin/msys environments
+    #  MSYSTEM: help exclude non-msys/mingw environments
+    #  TERM: exclude winpty invokes
+    #
+    # For environments where this override may be causing issues, a user can
+    # configure the `CONFLUENCEBUILDER_NO_GETPASS_HOOK` environment variable to
+    # disable this feature.
+    if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
+            'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
+        subprocess.check_call(['stty', '-echo'])
+        try:
+            value = compat.input(prompt)
+        finally:
+            subprocess.check_call(['stty', 'echo'])
+        print('')
+        return value
+    else:
+        return getpass.getpass(prompt=prompt)
 
 def str2bool(value):
     """

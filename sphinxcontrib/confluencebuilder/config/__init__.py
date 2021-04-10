@@ -5,8 +5,8 @@
 """
 
 from sphinxcontrib.confluencebuilder import compat
+from sphinxcontrib.confluencebuilder import util
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-import getpass
 import sys
 
 def handle_config_inited(app, config):
@@ -63,6 +63,6 @@ def process_ask_configs(config):
             print('     User: ' + config.confluence_server_user)
         sys.stdout.write(' Password: ')
         sys.stdout.flush()
-        config.confluence_server_pass = getpass.getpass('')
+        config.confluence_server_pass = util.getpass2('')
         if not config.confluence_server_pass:
             raise ConfluenceConfigurationError('no password provided')
