@@ -130,6 +130,29 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if len(node['ids']) > 0:
                 append_fignumber(figtype, node['ids'][0])
 
+    def visit_start_of_file(self, node):
+        ConfluenceBaseTranslator.visit_start_of_file(self, node)
+
+        # ensure document target exists for singleconfluence
+        #
+        # When references to individual documents are built, they will use the
+        # target mapping which should (in theory) be the section title generated
+        # for the specific document. In the event that a page does not have a
+        # title, there will be no target to map to. The fallback for these
+        # references is to just link to the anchor point on a page matching the
+        # target document's docname value. If it is detected that there is no
+        # target registered for a given document (since it's titleless), build
+        # an anchor point with the name matching the title (which allows the
+        # fallback link to jump to the desired point in a document).
+        if self.builder.name == 'singleconfluence' and self.can_anchor:
+            doc_anchorname = '%s/' % node['docname']
+            doc_target = ConfluenceState.target(doc_anchorname)
+            if not doc_target:
+                doc_id = node['docname']
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_parameter(node, '', doc_id))
+                self.body.append(self._end_ac_macro(node))
+
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(

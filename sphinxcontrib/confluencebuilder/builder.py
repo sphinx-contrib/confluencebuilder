@@ -397,7 +397,14 @@ class ConfluenceBuilder(Builder):
                 if ids:
                     for node in doctree.traverse(nodes.reference):
                         if 'refid' in node and node['refid']:
-                            if node['refid'] in ids:
+                            top_ref = (node['refid'] in ids)
+
+                            # allow a derived class to hint if this is a #top
+                            # reference node
+                            if not top_ref:
+                                top_ref = self._top_ref_check(node)
+
+                            if top_ref:
                                 node['top-reference'] = True
                                 break
 
@@ -988,6 +995,21 @@ class ConfluenceBuilder(Builder):
             except imgmath.MathExtError as exc:
                 ConfluenceLogger.warn('inline latex {}: {}'.format(
                     node.astext(), exc))
+
+    def _top_ref_check(self, node):
+        """
+        report if the provided node is consider a #top reference
+
+        Allows an implementer extending this call to provide a hint if the
+        provided reference node is to be considered a "#top" reference.
+
+        Args:
+            node: the node to check
+
+        Returns:
+            whether or not the node should be a #top reference
+        """
+        return False
 
     def _parse_doctree_title(self, docname, doctree):
         """
