@@ -592,6 +592,16 @@ class ConfluencePublisher():
 
         try:
             self.rest_client.delete('content', page_id)
+        except ConfluenceBadApiError as ex:
+            # Check if Confluence reports that this content does not exist. If
+            # so, we want to suppress the API error. This is most likely a
+            # result of a Confluence instance reporting a page descendant
+            # identifier which no longer exists (possibly a caching issue).
+            if str(ex).find('No content found with id') == -1:
+                raise
+
+            ConfluenceLogger.verbose('ignore missing delete for page '
+                'identifier: {}'.format(page_id))
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to delete """
