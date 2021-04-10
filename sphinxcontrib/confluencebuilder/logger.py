@@ -94,6 +94,7 @@ class ConfluenceLogger():
          https://docs.python.org/3/library/logging.html#logging.Logger.debug
         """
         if ConfluenceLogger.logger:
+            msg = '[confluence] ' + msg
             ConfluenceLogger.logger.verbose(msg, *args, **kwargs)
 
     @staticmethod
