@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -13,7 +13,7 @@ from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import compat
-import getpass
+from sphinxcontrib.confluencebuilder import util
 import inspect
 import os
 import shutil
@@ -48,11 +48,11 @@ def mock_getpass(mock):
         return mock
 
     try:
-        original = getpass.getpass
-        getpass.getpass = _
+        original = util.getpass2
+        util.getpass2 = _
         yield
     finally:
-        getpass.getpass = original
+        util.getpass2 = original
 
 @contextmanager
 def mock_input(mock):
