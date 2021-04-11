@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 from docutils import nodes
 from os import path
+from sphinx import addnodes
 from sphinx.locale import _
 from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
@@ -170,7 +171,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.context.append(self._end_ac_link(node))
                 self.body.append(self._start_ac_link_body(node))
                 self.context.append(self._end_ac_link_body(node))
-
+        elif (isinstance(node.parent, addnodes.compact_paragraph) and
+                node.parent.get('toctree')):
+            self.visit_caption(node)
         else:
             # Only render section/topic titles in headers. For all other nodes,
             # they must explicitly manage their own title entries.
@@ -184,6 +187,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self.context.pop()) # end_ac_link
 
             self.body.append(self.context.pop()) # h<x>
+        elif (isinstance(node.parent, addnodes.compact_paragraph) and
+                node.parent.get('toctree')):
+            self.depart_caption(node)
 
     def visit_paragraph(self, node):
         self.body.append(self._start_tag(node, 'p'))
