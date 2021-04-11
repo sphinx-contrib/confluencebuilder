@@ -22,5 +22,5 @@ class ConfluenceWriter(writers.Writer):
     def translate(self):
         visitor = self.builder.create_translator(self.document, self.builder)
         self.document.walkabout(visitor)
-        if hasattr(visitor, 'document'):
-            self.output = visitor.document
+        if hasattr(visitor, 'body_final'):
+            self.output = visitor.body_final

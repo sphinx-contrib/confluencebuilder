@@ -78,7 +78,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         pass
 
     def depart_document(self, node):
-        self.document = ''
+        self.body_final = ''
 
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
@@ -86,11 +86,11 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 self.builder.config.confluence_header_file)
             try:
                 with io.open(headerFile, encoding='utf-8') as file:
-                    self.document += file.read() + self.nl
+                    self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(headerFile, err))
 
-        self.document += ''.join(self.body)
+        self.body_final += ''.join(self.body)
 
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
@@ -98,7 +98,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 self.builder.config.confluence_footer_file)
             try:
                 with io.open(footerFile, encoding='utf-8') as file:
-                    self.document += file.read() + self.nl
+                    self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(footerFile, err))
 
