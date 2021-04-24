@@ -808,7 +808,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     has_colspec = True
 
                 self.body.append(self._start_tag(node, 'col', empty=True,
-                    **{'style': 'width: {}px'.format(colspec['colwidth'])}))
+                    **{'style': 'width: {}%'.format(colspec['colwidth'])}))
 
             if has_colspec:
                 self.body.append(self._end_tag(node))

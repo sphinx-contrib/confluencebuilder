@@ -140,7 +140,7 @@ An example of a `csv-table`_ with explicit width values:
 
 .. csv-table:: Frozen Delights!
     :header: "Treat", "Quantity", "Description"
-    :widths: 150, 30, 500
+    :widths: 15, 10, 30
 
     "Albatross", 2.99, "On a stick!"
     "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be
