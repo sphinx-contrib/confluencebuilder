@@ -100,6 +100,18 @@ Essential configuration
 
 .. confval:: confluence_server_pass
 
+    .. caution::
+
+        It is never recommended to store an API token or raw password into a
+        committed/shared repository holding documentation.
+
+        A documentation's configuration can modified various ways with Python
+        to pull an authentication token for a publishing event such as
+        :ref:`reading from an environment variable <tip_manage_publish_subset>`,
+        reading from a local file or acquiring a password from ``getpass``. If
+        desired, this extension provides a method for prompting for a
+        password (see |confluence_ask_password|_).
+
     The password value used to authenticate with the Confluence instance. If
     using Confluence Cloud, it is recommended to use an API token for the
     configured username value (see `API tokens`_):
@@ -114,19 +126,6 @@ Essential configuration
     .. code-block:: python
 
         confluence_server_pass = 'myawesomepassword'
-
-    .. caution::
-
-        It is never recommended to store an API token or raw password into a
-        committed/shared repository holding documentation.
-
-
-        A documentation's  configuration can modified various ways with Python
-        to pull an authentication token for a publishing event such as
-        :ref:`reading from an environment variable <tip_manage_publish_subset>`,
-        reading from a local file or acquiring a password from ``getpass``. If
-        desired, this extension provides a method for prompting for a
-        password (see |confluence_ask_password|_).
 
 Generic configuration
 ---------------------
