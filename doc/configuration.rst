@@ -12,7 +12,7 @@ Confluence generation and publishing:
     confluence_parent_page = 'Documentation'
     confluence_server_url = 'https://intranet-wiki.example.com/'
     confluence_server_user = 'myawesomeuser'
-    confluence_server_pass = 'myapikey'
+    confluence_ask_password = True
     confluence_page_hierarchy = True
 
 All configurations introduced by this extension are prefixed with
