@@ -112,7 +112,8 @@ applying a secret key is through an environment variable. For example:
     confluence_server_pass = os.getenv('SECRET_KEY')
 
 The above will read an environment variable ``SECRET_KEY`` prepared by a CI
-script which will be set on the ``confluence_server_pass`` configuration.
+script which will be set on the ``confluence_server_pass``
+(:ref:`ref<confluence_server_pass>`) configuration.
 
 Asking for help
 ---------------
