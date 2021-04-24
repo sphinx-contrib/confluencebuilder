@@ -701,6 +701,11 @@ Advanced publishing configuration
 
 .. confval:: confluence_client_cert_pass
 
+    .. caution::
+
+        It is never recommended to store a certificate's passphrase into a
+        committed/shared repository holding documentation.
+
     Provide a passphrase for |confluence_client_cert|_. This prevents a user
     from being prompted to enter a passphrase for a private key when publishing.
     If a configured private key is not protected by a passphrase, this value
