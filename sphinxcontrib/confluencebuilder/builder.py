@@ -462,7 +462,7 @@ class ConfluenceBuilder(Builder):
             else:
                 baseid = self.parent_id
 
-            # if no base identifier and dry running, ignore legeacy page
+            # if no base identifier and dry running, ignore legacy page
             # searching as there is no initial master document to reference
             # against
             if (conf.confluence_purge_from_master and
