@@ -60,6 +60,10 @@ class Rest:
             'https': config.confluence_proxy,
         }
 
+        # add custom header options based off the user's configuration
+        if config.confluence_publish_headers:
+            session.headers.update(config.confluence_publish_headers)
+
         if config.confluence_disable_ssl_validation:
             session.verify = False
         elif config.confluence_ca_cert:

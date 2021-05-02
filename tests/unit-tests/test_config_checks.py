@@ -460,6 +460,28 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_publish_headers(self):
+        self.config['confluence_publish_headers'] = {}
+        self._try_config()
+
+        self.config['confluence_publish_headers'] = {
+            'CUSTOM_HEADER': 'some-value',
+            'another-header': 'another-value',
+        }
+        self._try_config()
+
+        self.config['confluence_publish_headers'] = {
+            'good-key-bad-value': None,
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_publish_headers'] = {
+            123: 'bad-key-good-value',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_publish_list(self):
         dataset = os.path.join(self.test_dir, 'datasets', 'publish-set')
         assets_dir = os.path.join(self.test_dir, 'assets')

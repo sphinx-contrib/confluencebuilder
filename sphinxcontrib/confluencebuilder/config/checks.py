@@ -388,6 +388,12 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_publish_headers
+    validator.conf('confluence_publish_headers') \
+             .dict_str_str()
+
+    # ##################################################################
+
     # confluence_publish_onlynew
     validator.conf('confluence_publish_onlynew') \
              .bool()

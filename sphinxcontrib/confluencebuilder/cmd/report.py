@@ -186,6 +186,7 @@ def report_main(args_parser):
 
     # always sanitize out sensitive information
     sensitive_config('confluence_client_cert_pass')
+    sensitive_config('confluence_publish_headers')
     sensitive_config('confluence_server_pass')
 
     # optional sanitization
