@@ -169,7 +169,7 @@ class Rest:
         return json_data
 
     def put(self, key, value, data):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + value
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
             rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
@@ -203,7 +203,7 @@ class Rest:
         return json_data
 
     def delete(self, key, value):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + value
+        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
             rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:

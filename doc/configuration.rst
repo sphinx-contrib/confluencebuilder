@@ -392,6 +392,10 @@ Publishing configuration
 
 .. confval:: confluence_parent_page
 
+    .. note::
+
+        This option cannot be used with |confluence_publish_root|_.
+
     The root page found inside the configured space (|confluence_space_name|_)
     where published pages will be a descendant of. The parent page value is used
     to match with the title of an existing page. If this option is not provided,
@@ -407,6 +411,8 @@ Publishing configuration
     If a parent page is not set, consider using the
     |confluence_master_homepage|_ option as well. Note that the page's name can
     be case-sensitive in most (if not all) versions of Confluence.
+
+    See also |confluence_publish_root|_.
 
 .. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
 .. _confluence_publish_postfix:
@@ -460,6 +466,28 @@ Publishing configuration
     - |confluence_ignore_titlefix_on_index|_
     - |confluence_publish_postfix|_
 
+.. |confluence_publish_root| replace:: ``confluence_publish_root``
+.. _confluence_publish_root:
+
+.. confval:: confluence_publish_root
+
+    .. note::
+
+        This option cannot be used with |confluence_parent_page|_.
+
+    The page identifier to publish the root document to. The root identifier
+    value is used to find an existing page on the configured Confluence
+    instance. When found, the root document of the documentation set being
+    published will replace the content of the page found on the Confluence
+    instance. If the root page cannot be found, the publish attempt will stop
+    with an error message.
+
+    .. code-block:: python
+
+       confluence_publish_root = 123456
+
+    See also |confluence_parent_page|_.
+
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
 
@@ -507,7 +535,8 @@ Publishing configuration
     can be set to ``True``. When generating legacy pages to be removed, this
     extension will only attempt to populate legacy pages based off the children of
     the master_doc_ page. This option requires |confluence_purge|_ to be set to
-    ``True`` before taking effect.
+    ``True`` before taking effect. If |confluence_publish_root|_ is set, this
+    option is implicitly enabled.
 
     .. code-block:: python
 

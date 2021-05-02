@@ -429,6 +429,7 @@ class ConfluenceBuilder(Builder):
     def publish_doc(self, docname, output):
         conf = self.config
         title = ConfluenceState.title(docname)
+        is_root_doc = self.config.master_doc == docname
 
         parent_id = None
         if self.config.master_doc and self.config.confluence_page_hierarchy:
@@ -450,19 +451,27 @@ class ConfluenceBuilder(Builder):
         if 'labels' in metadata:
             data['labels'].extend([v for v in metadata['labels']])
 
-        uploaded_id = self.publisher.storePage(title, data, parent_id)
+        if conf.confluence_publish_root and is_root_doc:
+            uploaded_id = self.publisher.storePageById(title,
+                conf.confluence_publish_root, data)
+        else:
+            uploaded_id = self.publisher.storePage(title, data, parent_id)
         ConfluenceState.registerUploadId(docname, uploaded_id)
 
         if self.config.master_doc == docname:
             self.master_doc_page_id = uploaded_id
 
+        # if purging is enabled and we have yet to populate a list of legacy
+        # pages to cache, populate pages in our target scope now
         if conf.confluence_purge and self.legacy_pages is None:
-            if conf.confluence_purge_from_master and self.master_doc_page_id:
+            if conf.confluence_publish_root:
+                baseid = conf.confluence_publish_root
+            elif conf.confluence_purge_from_master and self.master_doc_page_id:
                 baseid = self.master_doc_page_id
             else:
                 baseid = self.parent_id
 
-            # if no base identifier and dry running, ignore legeacy page
+            # if no base identifier and dry running, ignore legacy page
             # searching as there is no initial master document to reference
             # against
             if (conf.confluence_purge_from_master and

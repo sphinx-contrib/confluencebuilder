@@ -11,6 +11,7 @@ See also:
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
@@ -26,6 +27,7 @@ class ConfluencePublisher():
     def init(self, config):
         self.config = config
         self.append_labels = config.confluence_append_labels
+        self.can_labels = 'labels' not in config.confluence_adv_restricted
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
@@ -263,6 +265,35 @@ class ConfluencePublisher():
 
         return page_id, page
 
+    def getPageById(self, page_id, expand='version'):
+        """
+        get page information with the provided page name
+
+        Performs an API call to acquire known information about a specific page.
+        This call can returns both the page identifier (for convenience) and the
+        page object. If the page cannot be found, the returned tuple will
+        return ``None`` entries.
+
+        Args:
+            page_name: the page name
+            expand (optional): data to expand on
+
+        Returns:
+            the page id and page object
+        """
+        page = None
+
+        page = self.rest_client.get('content/{}'.format(page_id), {
+            'status': 'current',
+            'expand': expand,
+        })
+
+        if page:
+            assert page_id == int(page['id'])
+            self._name_cache[page_id] = ['title']
+
+        return page_id, page
+
     def getPageCaseInsensitive(self, page_name):
         """
         get page information with the provided page name (case-insensitive)
@@ -393,6 +424,20 @@ class ConfluencePublisher():
         return uploaded_attachment_id
 
     def storePage(self, page_name, data, parent_id=None):
+        """
+        request to store page information to a confluence instance
+
+        Performs a request which will attempt to store the provided page
+        information and publish it to either a new page with the provided page
+        name or update an existing page with a matching page name. Pages will be
+        published at the root of a Confluence space unless a provided parent
+        page identifier is provided.
+
+        Args:
+            page_name: the page title to use on the updated page
+            data: the page data to apply
+            parent_id (optional): the id of the ancestor to use
+        """
         uploaded_page_id = None
 
         if self.config.confluence_adv_trace_data:
@@ -417,9 +462,8 @@ class ConfluencePublisher():
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
-        can_labels = 'labels' not in self.config.confluence_adv_restricted
         expand = 'version'
-        if can_labels and self.append_labels:
+        if self.can_labels and self.append_labels:
             expand += ',metadata.labels'
 
         _, page = self.getPage(page_name, expand=expand)
@@ -431,21 +475,9 @@ class ConfluencePublisher():
         try:
             # new page
             if not page:
-                newPage = {
-                    'type': 'page',
-                    'title': page_name,
-                    'body': {
-                        'storage': {
-                            'representation': 'storage',
-                            'value': data['content'],
-                        }
-                    },
-                    'space': {
-                        'key': self.space_name
-                    },
-                }
+                newPage = self._buildPage(page_name, data)
 
-                if can_labels:
+                if self.can_labels:
                     self._populate_labels(newPage, data['labels'])
 
                 if parent_id:
@@ -489,63 +521,9 @@ class ConfluencePublisher():
 
             # update existing page
             if page:
-                last_version = int(page['version']['number'])
-                updatePage = {
-                    'id': page['id'],
-                    'type': 'page',
-                    'title': page_name,
-                    'body': {
-                        'storage': {
-                            'representation': 'storage',
-                            'value': data['content'],
-                        }
-                    },
-                    'space': {
-                        'key': self.space_name
-                    },
-                    'version': {
-                        'number': last_version + 1
-                    },
-                }
-
-                if can_labels:
-                    labels = list(data['labels'])
-                    if self.append_labels:
-                        labels.extend([lbl.get('name')
-                            for lbl in page.get('metadata', {}).get(
-                                'labels', {}).get('results', {})
-                        ])
-
-                    self._populate_labels(updatePage, labels)
-
-                if not self.notify:
-                    updatePage['version']['minorEdit'] = True
-
-                if parent_id:
-                    updatePage['ancestors'] = [{'id': parent_id}]
-
-                try:
-                    self.rest_client.put('content', page['id'], updatePage)
-                except ConfluenceBadApiError as ex:
-                    if str(ex).find('unreconciled') != -1:
-                        raise ConfluenceUnreconciledPageError(
-                            page_name, page['id'], self.server_url, ex)
-
-                    # Confluence Cloud may (rarely) fail to complete a
-                    # content request with an OptimisticLockException/
-                    # StaleObjectStateException exception. It is suspected
-                    # that this is just an instance timing/processing issue.
-                    # If this is observed, wait a moment and retry the
-                    # content request. If it happens again, the put request
-                    # will fail as it normally would.
-                    if str(ex).find('OptimisticLockException') == -1:
-                        raise
-                    ConfluenceLogger.warn(
-                        'remote page updated failed; retrying...')
-                    time.sleep(1)
-                    self.rest_client.put('content', page['id'], updatePage)
-
+                self._updatePage(page, page_name, data, parent_id=parent_id)
                 uploaded_page_id = page['id']
+
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to add page """
@@ -556,6 +534,58 @@ class ConfluencePublisher():
             self.rest_client.delete('user/watch/content', uploaded_page_id)
 
         return uploaded_page_id
+
+    def storePageById(self, page_name, page_id, data):
+        """
+        request to store page information on the page with a matching id
+
+        Performs a request which will attempt to store the provided page
+        information and publish it to a page with the provided ``page_id``.
+
+        Args:
+            page_name: the page title to use on the updated page
+            page_id: the id of the page to update
+            data: the page data to apply
+        """
+        assert page_id
+
+        if self.onlynew:
+            self._onlynew('skipping explicit page update for', page_id)
+            return page_id
+
+        if self.dryrun:
+            _, page = self.getPageById(page_id)
+
+            if not page:
+                self._dryrun('unable to find page with id', page_id)
+                return None
+            else:
+                self._dryrun('updating existing page', page_id)
+                return page_id
+
+        expand = 'version'
+        if self.can_labels and self.append_labels:
+            expand += ',metadata.labels'
+
+        try:
+            _, page = self.getPageById(page_id, expand=expand)
+        except ConfluenceBadApiError as ex:
+            if str(ex).find('No content found with id') == -1:
+                raise
+            raise ConfluenceMissingPageIdError(self.space_name, page_id)
+
+        try:
+            self._updatePage(page, page_name, data)
+        except ConfluencePermissionError:
+            raise ConfluencePermissionError(
+                """Publish user does not have permission to add page """
+                """content to the configured space."""
+            )
+
+        if not self.watch:
+            self.rest_client.delete('user/watch/content', page_id)
+
+        return page_id
 
     def removeAttachment(self, id):
         """
@@ -631,6 +661,92 @@ class ConfluencePublisher():
                 """Publish user does not have permission to update """
                 """space's homepage."""
             )
+
+    def _buildPage(self, page_name, data):
+        """
+        build a page entity used for a new or updated page event
+
+        Will return a dictionary containing the minimum required information
+        needed for a `put` event when publishing a new or update page.
+
+        Args:
+            page_name: the page title to use on the page
+            data: the page data to apply
+        """
+        page = {
+            'type': 'page',
+            'title': page_name,
+            'body': {
+                'storage': {
+                    'representation': 'storage',
+                    'value': data['content'],
+                }
+            },
+            'space': {
+                'key': self.space_name,
+            },
+        }
+
+        return page
+
+    def _updatePage(self, page, page_name, data, parent_id=None):
+        """
+        build a page update and publish it to the confluence instance
+
+        This call is invoked when the updated page data is ready to be published
+        to a Confluence instance (i.e. pre-checks like "dry-run" mode have been
+        completed).
+
+        Args:
+            page: the page data from confluence to update
+            page_name: the page title to use on the update page
+            data: the new page data to apply
+            parent_id (optional): the id of the ancestor to use
+        """
+        last_version = int(page['version']['number'])
+
+        updatePage = self._buildPage(page_name, data)
+        updatePage['id'] = page['id']
+        updatePage['version'] = {
+            'number': last_version + 1,
+        }
+
+        if self.can_labels:
+            labels = list(data['labels'])
+            if self.append_labels:
+                labels.extend([lbl.get('name')
+                    for lbl in page.get('metadata', {}).get(
+                        'labels', {}).get('results', {})
+                ])
+
+            self._populate_labels(updatePage, labels)
+
+        if not self.notify:
+            updatePage['version']['minorEdit'] = True
+
+        if parent_id:
+            updatePage['ancestors'] = [{'id': parent_id}]
+
+        try:
+            self.rest_client.put('content', page['id'], updatePage)
+        except ConfluenceBadApiError as ex:
+            if str(ex).find('unreconciled') != -1:
+                raise ConfluenceUnreconciledPageError(
+                    page_name, page['id'], self.server_url, ex)
+
+            # Confluence Cloud may (rarely) fail to complete a
+            # content request with an OptimisticLockException/
+            # StaleObjectStateException exception. It is suspected
+            # that this is just an instance timing/processing issue.
+            # If this is observed, wait a moment and retry the
+            # content request. If it happens again, the put request
+            # will fail as it normally would.
+            if str(ex).find('OptimisticLockException') == -1:
+                raise
+            ConfluenceLogger.warn(
+                'remote page updated failed; retrying...')
+            time.sleep(1)
+            self.rest_client.put('content', page['id'], updatePage)
 
     def _dryrun(self, msg, id=None, misc=''):
         """

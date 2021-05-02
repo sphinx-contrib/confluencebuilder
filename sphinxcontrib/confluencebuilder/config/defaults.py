@@ -75,6 +75,7 @@ def apply_defaults(conf):
     config2int = [
         'confluence_max_doc_depth',
         'confluence_parent_page_id_check',
+        'confluence_publish_root',
         'confluence_timeout',
     ]
     for key in config2int:

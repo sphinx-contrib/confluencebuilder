@@ -406,6 +406,11 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    validator.conf('confluence_publish_root') \
+             .int_(positive=True)
+
+    # ##################################################################
+
     # confluence_purge
     validator.conf('confluence_purge') \
              .bool()
@@ -552,6 +557,16 @@ When a parent page identifier check has been configured with the option
 'confluence_parent_page_id_check', no parent page name has been provided with
 the 'confluence_parent_page' option. Ensure the name of the parent page name
 is provided as well.
+""")
+
+        if config.confluence_publish_root:
+            if config.confluence_parent_page:
+                raise ConfluenceConfigurationError(
+"""conflicting publish point configurations
+
+When configuring for a publishing container, a user can configure for either
+'confluence_parent_page' or 'confluence_publish_root'; however, both cannot be
+configured at the same time.
 """)
 
     # ##################################################################
