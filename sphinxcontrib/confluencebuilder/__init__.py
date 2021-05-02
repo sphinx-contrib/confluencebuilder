@@ -103,7 +103,7 @@ def setup(app):
     app.add_config_value('confluence_global_labels', None, False)
     """Enablement of configuring master as space's homepage."""
     app.add_config_value('confluence_master_homepage', None, False)
-    """Root/parent page's name to publish documents into."""
+    """Parent page's name to publish documents under."""
     app.add_config_value('confluence_parent_page', None, False)
     """Perform a dry run of publishing to inspect what publishing will do."""
     app.add_config_value('confluence_publish_dryrun', None, '')
@@ -143,7 +143,7 @@ def setup(app):
     app.add_config_value('confluence_disable_ssl_validation', None, False)
     """Ignore adding a titlefix on the index document."""
     app.add_config_value('confluence_ignore_titlefix_on_index', None, False)
-    """Root/parent page's identifier to publish documents into."""
+    """Parent page's identifier to publish documents under."""
     app.add_config_value('confluence_parent_page_id_check', None, False)
     """Proxy server needed to communicate with Confluence server."""
     app.add_config_value('confluence_proxy', None, False)
