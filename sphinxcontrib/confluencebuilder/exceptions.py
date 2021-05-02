@@ -80,6 +80,18 @@ class ConfluenceCertificateError(ConfluenceError):
 class ConfluenceConfigurationError(ConfluenceError, ConfigError):
     pass
 
+class ConfluenceMissingPageIdError(ConfluenceError):
+    def __init__(self, space_name, page_id):
+        SphinxError.__init__(self,
+            """---\n"""
+            """A request to publish to a specific Confluence page identifier """
+            """has failed as the identifier could not be found.\n\n"""
+            """    Space: {}\n"""
+            """  Page Id: {}\n"""
+            """\n"""
+            """---\n""".format(space_name, page_id)
+        )
+
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
         SphinxError.__init__(self,

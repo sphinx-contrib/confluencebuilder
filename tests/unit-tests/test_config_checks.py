@@ -550,6 +550,34 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_publish_prefix'] = 'dummy'
         self._try_config()
 
+    def test_config_check_publish_root(self):
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        self.config['confluence_publish_root'] = 123456
+        self._try_config()
+
+        self.config['confluence_publish_root'] = '123456'
+        self._try_config()
+
+        self.config['confluence_publish_root'] = 0
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_publish_root'] = -123456
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+    def test_config_check_publish_target_conflicts(self):
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        # confluence_parent_page and confluence_publish_root conflict
+        self.config['confluence_parent_page'] = 'dummy'
+        self.config['confluence_publish_root'] = 123456
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_secnumber_suffix(self):
         self.config['confluence_secnumber_suffix'] = ''
         self._try_config()
