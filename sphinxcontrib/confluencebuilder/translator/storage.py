@@ -1209,12 +1209,22 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # sup
 
     def visit_inline(self, node):
+        has_added = False
+
         classes = node.get('classes', [])
         if classes in [['guilabel']]:
             self.body.append(self._start_tag(node, 'em'))
-            self.context.append(self._end_tag(node, suffix=''))
+            has_added = True
         elif classes in [['accelerator']]:
             self.body.append(self._start_tag(node, 'u'))
+            has_added = True
+        elif isinstance(node.parent, addnodes.desc_parameter):
+            # check if an identifier in signature
+            if classes in [['n']]:
+                self.body.append(self._start_tag(node, 'em'))
+                has_added = True
+
+        if has_added:
             self.context.append(self._end_tag(node, suffix=''))
         else:
             # ignoring; no special handling of other inline entries
