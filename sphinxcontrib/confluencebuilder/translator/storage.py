@@ -1260,14 +1260,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs['style'] = 'clear: both;'
         self._figure_context.append('')
 
-        if 'align' in node.parent:
-            alignment = node.parent['align']
-
-            if alignment == 'default':
-                alignment = self._default_alignment
-            if alignment != 'left':
-                attribs['style'] = '{}text-align: {};'.format(
-                    attribs['style'], alignment)
+        alignment = node.parent.get('align', 'default')
+        if alignment == 'default':
+            alignment = self._default_alignment
+        if alignment != 'left':
+            attribs['style'] = '{}text-align: {};'.format(
+                attribs['style'], alignment)
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.add_fignumber(node.parent)
@@ -1336,7 +1334,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         elif isinstance(node.parent, nodes.figure) and 'align' in node.parent:
             alignment = node.parent['align']
 
-        if alignment == 'default':
+        if not alignment or alignment == 'default':
             alignment = self._default_alignment
 
         if alignment:
@@ -1413,12 +1411,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_legend(self, node):
         attribs = {}
-        if 'align' in node.parent:
-            alignment = node.parent['align']
-            if alignment == 'default':
-                alignment = self._default_alignment
-            if alignment != 'left':
-                attribs['style'] = 'text-align: {};'.format(alignment)
+        alignment = node.parent.get('align', 'default')
+        if alignment == 'default':
+            alignment = self._default_alignment
+        if alignment != 'left':
+            attribs['style'] = 'text-align: {};'.format(alignment)
 
         self.body.append(self._start_tag(node, 'div', **attribs))
         self.context.append(self._end_tag(node))
