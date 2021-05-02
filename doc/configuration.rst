@@ -943,6 +943,20 @@ Advanced publishing configuration
     See also
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
+.. confval:: confluence_publish_headers
+
+    A dictionary value which allows a user to pass key-value header information.
+    This is useful for users who need to interact with a Confluence instance
+    which expects (in a reverse proxy or the instance itself) specific header
+    information to be set. By default, no custom header entries are added with a
+    value of ``None``.
+
+    .. code-block:: python
+
+        confluence_publish_headers = {
+            'CUSTOM_HEADER': '<some-value>',
+        }
+
 .. confval:: confluence_publish_onlynew
 
     .. versionadded:: 1.3

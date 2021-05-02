@@ -153,6 +153,8 @@ def setup(app):
     app.add_config_value('confluence_publish_allowlist', None, False)
     """Subset of documents which are denied to be published."""
     app.add_config_value('confluence_publish_denylist', None, False)
+    """Header(s) to use for Confluence REST interaction."""
+    app.add_config_value('confluence_publish_headers', None, False)
     """Authentication passthrough for Confluence REST interaction."""
     app.add_config_value('confluence_server_auth', None, False)
     """Cookie(s) to use for Confluence REST interaction."""
