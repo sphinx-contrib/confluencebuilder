@@ -431,7 +431,7 @@ div.viewcode-block:target {
     margin: 0px;
 }
 
-span.pre {
+code.literal span.pre {
     border: #ccc 1px solid;
     padding: 0px 4px;
     color: #CE0000;
