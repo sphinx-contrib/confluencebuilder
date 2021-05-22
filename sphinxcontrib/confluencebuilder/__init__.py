@@ -185,6 +185,8 @@ def setup(app):
     app.add_config_value('confluence_adv_ignore_nodes', None, False)
     """Unknown node handler dictionary for advanced integrations."""
     app.add_config_value('confluence_adv_node_handler', None, '')
+    """Enablement of permitting raw html blocks to be used in storage format."""
+    app.add_config_value('confluence_adv_permit_raw_html', None, False)
     """List of optional features/macros/etc. restricted for use."""
     app.add_config_value('confluence_adv_restricted', None, False)
     """Enablement of tracing processed data."""

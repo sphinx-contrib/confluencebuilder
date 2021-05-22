@@ -1815,6 +1815,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # p
 
     def visit_raw(self, node):
+        # providing an advanced option to allow raw html injection in the output
+        #
+        # This is not always guaranteed to work; the raw html content may not
+        # be compatible with Atlassian's storage format. Results may fail to
+        # publish or contents may be suppressed on the Confluence instance. This
+        # is provided to help users wanted to somewhat support raw HTML content
+        # generated from Markdown sources.
+        if self.builder.config.confluence_adv_permit_raw_html:
+            if 'html' in node.get('format', '').split():
+                self.body.append(self.nl.join(node.astext().splitlines()))
+                raise nodes.SkipNode
+
         if 'confluence_storage' in node.get('format', '').split():
             self.body.append(self.nl.join(node.astext().splitlines()))
         else:

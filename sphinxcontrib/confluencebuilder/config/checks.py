@@ -61,6 +61,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_adv_permit_raw_html
+    validator.conf('confluence_adv_permit_raw_html') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_adv_trace_data
     validator.conf('confluence_adv_trace_data') \
              .bool()
