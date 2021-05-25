@@ -18,4 +18,5 @@ image
 .. internal image with scaling
 
 .. image:: ../../assets/image01.png
+    :align: right
     :scale: 20%
