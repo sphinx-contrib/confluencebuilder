@@ -1260,10 +1260,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs['style'] = 'clear: both;'
         self._figure_context.append('')
 
-        alignment = node.parent.get('align', 'default')
-        if alignment == 'default':
-            alignment = self._default_alignment
-        if alignment != 'left':
+        alignment = self._fetch_alignment(node)
+        if alignment and alignment != 'left':
             attribs['style'] = '{}text-align: {};'.format(
                 attribs['style'], alignment)
 
@@ -1328,17 +1326,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         attribs = {}
 
-        alignment = None
-        if 'align' in node:
-            alignment = node['align']
-        elif isinstance(node.parent, nodes.figure) and 'align' in node.parent:
-            alignment = node.parent['align']
-
-        if not alignment or alignment == 'default':
-            alignment = self._default_alignment
-
+        alignment = self._fetch_alignment(node)
         if alignment:
-            alignment = self._escape_sf(alignment)
             attribs['ac:align'] = alignment
             if alignment == 'right':
                 attribs['ac:style'] = 'float: right;'
@@ -1411,10 +1400,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_legend(self, node):
         attribs = {}
-        alignment = node.parent.get('align', 'default')
-        if alignment == 'default':
-            alignment = self._default_alignment
-        if alignment != 'left':
+        alignment = self._fetch_alignment(node)
+        if alignment and alignment != 'left':
             attribs['style'] = 'text-align: {};'.format(alignment)
 
         self.body.append(self._start_tag(node, 'div', **attribs))
@@ -2246,3 +2233,33 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         for find, encoded in STORAGE_FORMAT_REPLACEMENTS:
             data = data.replace(find, encoded)
         return data
+
+    def _fetch_alignment(self, node):
+        """
+        fetch the alignment to be used on a node
+
+        A helper used to return content that has been properly escaped and can
+        be directly placed inside a Confluence storage-format-prepared document.
+
+        Args:
+            node: the node
+
+        Returns:
+            the alignment to configure; may be `None`
+        """
+        alignment = None
+        if 'align' in node:
+            alignment = node['align']
+        # if the parent is a figure, either take the assigned alignment from the
+        # figure node; otherwise, apply the default alignment for the node
+        elif isinstance(node.parent, nodes.figure):
+            if 'align' in node.parent:
+                alignment = node.parent['align']
+
+            if not alignment or alignment == 'default':
+                alignment = self._default_alignment
+
+        if alignment:
+            alignment = self._escape_sf(alignment)
+
+        return alignment
