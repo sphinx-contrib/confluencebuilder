@@ -86,8 +86,8 @@ and publishing:
    confluence_space_name = 'TEST'
    confluence_parent_page = 'Documentation'
    confluence_server_url = 'https://intranet-wiki.example.com/'
-   confluence_server_user = 'username'
-   confluence_server_pass = 'api-key-or-password'
+   confluence_ask_user = True
+   confluence_ask_password = True
 
 For a complete list of configuration options, see also:
 
