@@ -1,3 +1,16 @@
+1.5.0 (2021-05-25)
+==================
+
+* fixed issue where this extension conflicts with docutils's translator attribs
+* fixed issue with :doc:<> references when using singlebuilder
+* fixed issue with alignment changes in newer sphinx
+* fixed issue with caption/title changes in newer docutils/sphinx
+* fixed issue with singlebuilder processing assets
+* fixed issue with table width hints using pixels instead of percentages
+* improvements for getpass handling in msystem-environments
+* support an explicit root page publishing option
+* support custom headers for rest calls
+
 1.4.0 (2021-01-17)
 ==================
 
