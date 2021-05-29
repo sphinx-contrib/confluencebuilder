@@ -106,7 +106,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         text = node.astext()
         if not self._literal:
             text = text.replace(self.nl, ' ')
-        text = self._escape_text(text)
+        text = self.encode(text)
         self.body.append(text)
         raise nodes.SkipNode
 
@@ -296,5 +296,5 @@ class ConfluenceBaseTranslator(BaseTranslator):
     # #                                                                        #
     # ##########################################################################
 
-    def _escape_text(self, node):
-        raise NotImplementedError('translator does not implement text escaping')
+    def encode(self, text):
+        raise NotImplementedError('translator does not implement text encoding')
