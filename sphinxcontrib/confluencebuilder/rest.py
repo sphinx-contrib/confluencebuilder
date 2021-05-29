@@ -54,6 +54,7 @@ class Rest:
         session = requests.Session()
         session.headers.update({
             'User-Agent': 'Sphinx Confluence Builder',
+            'X-Atlassian-Token': NOCHECK,
         })
         session.timeout = config.confluence_timeout
         session.proxies = {
@@ -130,19 +131,7 @@ class Rest:
     def post(self, key, data, files=None):
         restUrl = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            headers = dict(self.session.headers)
-
-            # Atlassian's documenation indicates to the security token check
-            # when publishing attachments [1][2]. If adding files, set a
-            # 'no-check' value to the token (originally 'nocheck').
-            #
-            # [1]: https://developer.atlassian.com/cloud/confluence/rest/#api-content-id-child-attachment-post
-            # [2]: https://developer.atlassian.com/server/jira/platform/form-token-handling/
-            if files:
-                headers['X-Atlassian-Token'] = NOCHECK
-
-            rsp = self.session.post(
-                restUrl, json=data, files=files, headers=headers)
+            rsp = self.session.post(restUrl, json=data, files=files)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
