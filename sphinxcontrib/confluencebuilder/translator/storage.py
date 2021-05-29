@@ -26,6 +26,11 @@ import math
 import posixpath
 import sys
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     _tracked_unknown_code_lang = []
 
@@ -2228,7 +2233,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         }
 
         # first pass needs to handle ampersand
-        data = data.replace('&', '&amp;')
+        data = unicode(data).replace('&', '&amp;')
 
         for find, encoded in STORAGE_FORMAT_REPLACEMENTS:
             data = data.replace(find, encoded)
