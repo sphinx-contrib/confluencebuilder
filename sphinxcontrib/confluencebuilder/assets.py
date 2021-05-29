@@ -230,7 +230,7 @@ class ConfluenceAssetManager:
             standalone (optional): ignore hash mappings (defaults to False)
         """
 
-        uri = node['uri']
+        uri = str(node['uri'])
         if not uri.startswith('data:') and uri.find('://') == -1:
             path = self._interpretAssetPath(node)
             if path:
@@ -314,7 +314,7 @@ class ConfluenceAssetManager:
         path = None
         if isinstance(node, nodes.image):
             # uri's will be relative to documentation root.
-            path = node['uri']
+            path = str(node['uri'])
         elif isinstance(node, addnodes.download_reference):
             # reftarget will be a reference to the asset with respect to the
             # document (refdoc) holding this reference. Use reftarget and refdoc
