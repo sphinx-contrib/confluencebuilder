@@ -171,4 +171,4 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
 if __name__ == '__main__':
-    sys.exit(unittest.main(verbosity=0))
+    sys.exit(unittest.main(failfast=True, verbosity=0))
