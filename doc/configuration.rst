@@ -471,6 +471,8 @@ Publishing configuration
 
 .. confval:: confluence_publish_root
 
+    .. versionadded:: 1.5
+
     .. note::
 
         This option cannot be used with |confluence_parent_page|_.
@@ -944,6 +946,8 @@ Advanced publishing configuration
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
 .. confval:: confluence_publish_headers
+
+    .. versionadded:: 1.5
 
     A dictionary value which allows a user to pass key-value header information.
     This is useful for users who need to interact with a Confluence instance
