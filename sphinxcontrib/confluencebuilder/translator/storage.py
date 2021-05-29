@@ -197,7 +197,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.depart_caption(node)
 
     def visit_paragraph(self, node):
-        self.body.append(self._start_tag(node, 'p'))
+        attribs = {}
+
+        # MyST-Parser will inject text-align hints in the node's classes
+        # attribute; if set, attempt to apply the style
+        if isinstance(node.parent, nodes.entry):
+            for class_ in node.parent.get('classes', []):
+                if class_.startswith('text-align:'):
+                    attribs['style'] = self._encode_sf(class_)
+                    break
+
+        self.body.append(self._start_tag(node, 'p', **attribs))
         self.context.append(self._end_tag(node))
 
     def depart_paragraph(self, node):
