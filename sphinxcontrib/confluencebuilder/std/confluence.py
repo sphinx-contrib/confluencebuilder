@@ -5,6 +5,7 @@
 """
 
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+import os
 
 """
 confluence trailing bind path for rest api
@@ -144,6 +145,21 @@ When provided a language type that is not supported by Confluence is detected on
 a code block, this fallback style will be applied instead.
 """
 FALLBACK_HIGHLIGHT_STYLE = 'none'
+
+"""
+no-check value to inject into a X-Atlassian-Token header
+
+Defines the no-check value to assign to the X-Atlassian-Token to handle
+attachment publishing with XSRF protections. Originally, the no-check value was
+a value of `nocheck`; however, the current promoted value is `no-check`. In all
+supported Confluence instances, the `no-check` value should work. The
+environment variable `CONFLUENCEBUILDER_LEGACY_NOCHECK` can be set for users who
+experience may experience issues with the newer value.
+"""
+if 'CONFLUENCEBUILDER_LEGACY_NOCHECK' in os.environ:
+    NOCHECK = 'nocheck'
+else:
+    NOCHECK = 'no-check'
 
 """
 supported image types
