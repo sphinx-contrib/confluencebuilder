@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classtinyxml2_1_1_x_m_l_unknown" kind="class" language="C++" prot="public">
+    <compoundname>tinyxml2::XMLUnknown</compoundname>
+    <basecompoundref refid="classtinyxml2_1_1_x_m_l_node" prot="public" virt="non-virtual">tinyxml2::XMLNode</basecompoundref>
+    <includes refid="tinyxml2_8h" local="no">tinyxml2.h</includes>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classtinyxml2_1_1_x_m_l_unknown_1a4eee3bda60c60a30e4e8cd4ea91c4c6e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class XMLDocument</definition>
+        <argsstring></argsstring>
+        <name>XMLDocument</name>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_document" kindref="compound">XMLDocument</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1107" column="5" bodyfile="tinyxml2.h" bodystart="1107" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1af4374856421921cad578c8affae872b6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> *</type>
+        <definition>virtual XMLUnknown* tinyxml2::XMLUnknown::ToUnknown</definition>
+        <argsstring>()</argsstring>
+        <name>ToUnknown</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1a8675a74aa0ada6eccab0c77ef3e5b9bd">ToUnknown</reimplements>
+        <briefdescription>
+<para>Safely cast to an Unknown, or null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1109" column="23" bodyfile="tinyxml2.h" bodystart="1109" bodyend="1111"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a61b342b4f295cded1dc2f4402e97f07e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const <ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> *</type>
+        <definition>virtual const XMLUnknown* tinyxml2::XMLUnknown::ToUnknown</definition>
+        <argsstring>() const</argsstring>
+        <name>ToUnknown</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1af29ffd6cbe609b6fa04a705256150408">ToUnknown</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1112" column="30" bodyfile="tinyxml2.h" bodystart="1112" bodyend="1114"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a70983aa1b1cff3d3aa6d4d0a80e5ee48" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool tinyxml2::XMLUnknown::Accept</definition>
+        <argsstring>(XMLVisitor *visitor) const</argsstring>
+        <name>Accept</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1a81e66df0a44c67a7af17f3b77a152785">Accept</reimplements>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_visitor" kindref="compound">XMLVisitor</ref> *</type>
+          <declname>visitor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Accept a hierarchical visit of the nodes in the TinyXML-2 DOM. Every node in the XML tree will be conditionally visited and the host will be called back via the <ref refid="classtinyxml2_1_1_x_m_l_visitor" kindref="compound">XMLVisitor</ref> interface.</para>
+<para>This is essentially a SAX interface for TinyXML-2. (Note however it doesn&apos;t re-parse the XML for the callbacks, so the performance of TinyXML-2 is unchanged by using this interface versus any other.)</para>
+<para>The interface has been based on ideas from:</para>
+<para><itemizedlist>
+<listitem><para><ulink url="http://www.saxproject.org/">http://www.saxproject.org/</ulink></para>
+</listitem><listitem><para><ulink url="http://c2.com/cgi/wiki?HierarchicalVisitorPattern">http://c2.com/cgi/wiki?HierarchicalVisitorPattern</ulink></para>
+</listitem></itemizedlist>
+</para>
+<para>Which are both good references for &quot;visiting&quot;.</para>
+<para>An example of using <ref refid="classtinyxml2_1_1_x_m_l_unknown_1a70983aa1b1cff3d3aa6d4d0a80e5ee48" kindref="member">Accept()</ref>: <verbatim>XMLPrinter printer;
+tinyxmlDoc.Accept( &amp;printer );
+const char* xmlcstr = printer.CStr();
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1116" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a0125f41c89763dea06619b5fd5246b4c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> *</type>
+        <definition>virtual XMLNode* tinyxml2::XMLUnknown::ShallowClone</definition>
+        <argsstring>(XMLDocument *document) const</argsstring>
+        <name>ShallowClone</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1a8402cbd3129d20e9e6024bbcc0531283">ShallowClone</reimplements>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_document" kindref="compound">XMLDocument</ref> *</type>
+          <declname>document</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Make a copy of this node, but not its children. You may pass in a Document pointer that will be the owner of the new Node. If the &apos;document&apos; is null, then the node returned will be allocated from the current Document. (this-&gt;<ref refid="classtinyxml2_1_1_x_m_l_node_1af343d1ef0b45c0020e62d784d7e67a68" kindref="member">GetDocument()</ref>)</para>
+<para>Note: if called on a <ref refid="classtinyxml2_1_1_x_m_l_document" kindref="compound">XMLDocument</ref>, this will return null. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1118" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a0715ab2c05d7f74845c188122213b116" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool tinyxml2::XMLUnknown::ShallowEqual</definition>
+        <argsstring>(const XMLNode *compare) const</argsstring>
+        <name>ShallowEqual</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1a7ce18b751c3ea09eac292dca264f9226">ShallowEqual</reimplements>
+        <param>
+          <type>const <ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> *</type>
+          <declname>compare</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Test if 2 nodes are the same, but don&apos;t test children. The 2 nodes do not need to be in the same Document.</para>
+<para>Note: if called on a <ref refid="classtinyxml2_1_1_x_m_l_document" kindref="compound">XMLDocument</ref>, this will return false. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1119" column="18"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a9391eb679598d50baba424e6f1aa367b" prot="protected" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::XMLUnknown::XMLUnknown</definition>
+        <argsstring>(XMLDocument *doc)</argsstring>
+        <name>XMLUnknown</name>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_document" kindref="compound">XMLDocument</ref> *</type>
+          <declname>doc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1122" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a9cea82903eff05e7773040d7b255f053" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual tinyxml2::XMLUnknown::~XMLUnknown</definition>
+        <argsstring>()</argsstring>
+        <name>~XMLUnknown</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1123" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a105fc419c67018bf57927b2eaf842ec5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>char *</type>
+        <definition>char* tinyxml2::XMLUnknown::ParseDeep</definition>
+        <argsstring>(char *p, StrPair *parentEndTag, int *curLineNumPtr)</argsstring>
+        <name>ParseDeep</name>
+        <reimplements refid="classtinyxml2_1_1_x_m_l_node_1a5cef2b1dacd8c6bc61373c9221fe01a3">ParseDeep</reimplements>
+        <param>
+          <type>char *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>StrPair *</type>
+          <declname>parentEndTag</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>curLineNumPtr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1125" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1aab31a93c95a7cedc9597cea7caffa73f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::XMLUnknown::XMLUnknown</definition>
+        <argsstring>(const XMLUnknown &amp;)</argsstring>
+        <name>XMLUnknown</name>
+        <param>
+          <type>const <ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1128" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_unknown_1a6137d5611db42c35de3d869f66555e5b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> &amp;</type>
+        <definition>XMLUnknown&amp; tinyxml2::XMLUnknown::operator=</definition>
+        <argsstring>(const XMLUnknown &amp;)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="1129" column="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Any tag that TinyXML-2 doesn&apos;t recognize is saved as an unknown. It is a tag of text, but should not be modified. It will be written back to the XML, unchanged, when the file is saved.</para>
+<para>DTD tags get thrown into XMLUnknowns. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>tinyxml2::XMLNode</label>
+        <link refid="classtinyxml2_1_1_x_m_l_node"/>
+      </node>
+      <node id="1">
+        <label>tinyxml2::XMLUnknown</label>
+        <link refid="classtinyxml2_1_1_x_m_l_unknown"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>tinyxml2::XMLNode</label>
+        <link refid="classtinyxml2_1_1_x_m_l_node"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>_document</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>_firstChild</edgelabel>
+          <edgelabel>_lastChild</edgelabel>
+          <edgelabel>_next</edgelabel>
+          <edgelabel>_parent</edgelabel>
+          <edgelabel>_prev</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tinyxml2::XMLDocument</label>
+        <link refid="classtinyxml2_1_1_x_m_l_document"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>tinyxml2::XMLUnknown</label>
+        <link refid="classtinyxml2_1_1_x_m_l_unknown"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="tinyxml2.h" line="1105" column="1" bodyfile="tinyxml2.h" bodystart="1106" bodyend="1130"/>
+    <listofallmembers>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a8d2d2be0bb6797625551eb0e91f0ff62" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_document</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aa20c91e4213dc930c5bdf420322ca342" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_firstChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a099b6560ae44ab9edb8453aaf1a3747b" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_lastChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a27e985496b37dd00eb5b9cf59b9e3fb1" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_next</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a176dd1c4965c21c366de192164aa2c13" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_parent</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ab336ed023e15be202ff3b410be01b804" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_parseLineNum</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a9739eb0fb9a1188266052055e7a6bf6b" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_prev</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ac2d5cc463a6c95ec5907d57a119c56da" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_userData</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a3ea9884098b8379de2bb5ab3fc85c0fc" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>_value</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a70983aa1b1cff3d3aa6d4d0a80e5ee48" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>Accept</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a62c71b6bf8734b5424063b8d9a61c266" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>DeepClone</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a363b6edbd6ebd55f8387d2b89f2b0921" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>DeleteChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a0360085cc54df5bff85d5c5da13afdce" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>DeleteChildren</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ae7dc225e1018cdd685f7563593a1fe08" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>FirstChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a2d6c70c475146b48bc93a7fafdeff5e0" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>FirstChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a1795a35852dc8aae877cc8ded986e59b" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>FirstChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1af1e0e475cc27d5e7eeaf4d732691b741" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>FirstChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a2de84cfa4ec3fe249bad745069d145f1" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>GetDocument</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1af343d1ef0b45c0020e62d784d7e67a68" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>GetDocument</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a9b5fc636646fda761d342c72e91cb286" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>GetLineNum</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a7f0687574afa03bc479dc44f29db0afe" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>GetUserData</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a85adb8f0b7477eec30f9a41d420b09c2" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>InsertAfterChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aeb249ed60f4e8bfad3709151c3ee4286" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>InsertEndChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a8ff7dc071f3a1a6ae2ac25a37492865d" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>InsertFirstChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a9b8583a277e8e26f4cbbb5492786778e" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>LastChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ad7552c8cb1dc0cb6f3bdc14a9d115dbf" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>LastChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a173e9d1341bc56992e2d320a35936551" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>LastChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a1b77a8194d059665a4412ebfea276878" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>LastChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a663e3a5a378169fd477378f4d17a7649" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>LinkEndChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a79db9ef0fe014d27790f2218b87bcbb5" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>NextSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aeb7d4dfd8fb924ef86e7cb72183acbac" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>NextSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a1264c86233328f0cd36297552d982f80" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>NextSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1af1225412584d4a2126f55e96a12e0ec0" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>NextSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ac3ab489e6e202a3cd1762d3b332e89d4" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>NoChildren</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a6137d5611db42c35de3d869f66555e5b" prot="private" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>operator=</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ae0f62bc186c56c2e0483ebd52dbfbe34" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>Parent</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a76029693a5a54fbb721a41d7a0ca8a97" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>Parent</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a105fc419c67018bf57927b2eaf842ec5" prot="protected" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ParseDeep</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aac667c513d445f8b783e1e15ef9d3551" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>PreviousSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ae760e5e7e766df1d2cf3bb4a847876d6" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>PreviousSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a872936cae46fb473eb47fec99129fc70" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>PreviousSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ae4f37eb6cd405bdf1d57caa066e36d87" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>PreviousSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a002978fc889cc011d143185f2377eca2" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>SetUserData</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a09dd68cf9eae137579f6e50f36487513" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>SetValue</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a0125f41c89763dea06619b5fd5246b4c" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ShallowClone</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a0715ab2c05d7f74845c188122213b116" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ShallowEqual</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aff47671055aa99840a1c1ebd661e63e3" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToComment</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a6a53bb83faf5c0ccc95b6cf74dba0025" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToComment</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a174fd4c22c010b58138c1b84a0dfbd51" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToDeclaration</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ac48bb4bf9eb7bb3654ad4b94945db9a1" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToDeclaration</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a836e2966ed736fc3c94f70e12a2a3357" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToDocument</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1ae8a5250331a5f12e10843fcb5ef3ef0b" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToDocument</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1aab516e699567f75cc9ab2ef2eee501e8" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a2c5c843b8f37306f15994ebe882b9346" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a41c55dab9162d1eb62db2008430e376b" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToText</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1acb9ccc1beda27c0efcb0545683c3e7f4" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToText</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1af4374856421921cad578c8affae872b6" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToUnknown</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a61b342b4f295cded1dc2f4402e97f07e" prot="public" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>ToUnknown</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a66344989a4b436155bcda72bd6b07b82" prot="public" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>Value</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a4eee3bda60c60a30e4e8cd4ea91c4c6e" prot="private" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>XMLDocument</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a29868df6ca383d574f584dfdd15105b6" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>XMLNode</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a9391eb679598d50baba424e6f1aa367b" prot="protected" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>XMLUnknown</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1aab31a93c95a7cedc9597cea7caffa73f" prot="private" virt="non-virtual"><scope>tinyxml2::XMLUnknown</scope><name>XMLUnknown</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_node_1a8ae1bcd23a08ce5c5f97b2ab347b0893" prot="protected" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>~XMLNode</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_unknown_1a9cea82903eff05e7773040d7b255f053" prot="protected" virt="virtual"><scope>tinyxml2::XMLUnknown</scope><name>~XMLUnknown</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

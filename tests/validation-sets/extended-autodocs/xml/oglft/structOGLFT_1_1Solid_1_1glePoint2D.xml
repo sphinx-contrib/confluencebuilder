@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structOGLFT_1_1Solid_1_1glePoint2D" kind="struct" language="C++" prot="private">
+    <compoundname>OGLFT::Solid::glePoint2D</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOGLFT_1_1Solid_1_1glePoint2D_1ae79947d2fdd6417ad8521e4ac4f13d66" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Solid::glePoint2D::p_[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>p_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1459" column="14" bodyfile="liboglft/OGLFT.h" bodystart="1459" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structOGLFT_1_1Solid_1_1glePoint2D_1ae437e903ee1b4b77ed9ae6ea967cb4bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::glePoint2D::glePoint2D</definition>
+        <argsstring>(double p[2])</argsstring>
+        <name>glePoint2D</name>
+        <param>
+          <type>double</type>
+          <declname>p</declname>
+          <array>[2]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1460" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1460" bodyend="1460"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Solid_1_1glePoint2D_1a9f95c4c71e59c4c35a377a81f2be9eb3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::glePoint2D::glePoint2D</definition>
+        <argsstring>(double x, double y)</argsstring>
+        <name>glePoint2D</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1461" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1461" bodyend="1461"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Solid_1_1glePoint2D_1aa24779e72ba0588b289ea64d1eac272d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::glePoint2D::glePoint2D</definition>
+        <argsstring>(const VertexInfo &amp;v)</argsstring>
+        <name>glePoint2D</name>
+        <param>
+          <type>const <ref refid="structOGLFT_1_1Polygonal_1_1VertexInfo" kindref="compound">VertexInfo</ref> &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1462" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1462" bodyend="1462"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Data for the gleExtrusion routine. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="liboglft/OGLFT.h" line="1458" column="5" bodyfile="liboglft/OGLFT.h" bodystart="1458" bodyend="1463"/>
+    <listofallmembers>
+      <member refid="structOGLFT_1_1Solid_1_1glePoint2D_1ae437e903ee1b4b77ed9ae6ea967cb4bf" prot="public" virt="non-virtual"><scope>OGLFT::Solid::glePoint2D</scope><name>glePoint2D</name></member>
+      <member refid="structOGLFT_1_1Solid_1_1glePoint2D_1a9f95c4c71e59c4c35a377a81f2be9eb3" prot="public" virt="non-virtual"><scope>OGLFT::Solid::glePoint2D</scope><name>glePoint2D</name></member>
+      <member refid="structOGLFT_1_1Solid_1_1glePoint2D_1aa24779e72ba0588b289ea64d1eac272d" prot="public" virt="non-virtual"><scope>OGLFT::Solid::glePoint2D</scope><name>glePoint2D</name></member>
+      <member refid="structOGLFT_1_1Solid_1_1glePoint2D_1ae79947d2fdd6417ad8521e4ac4f13d66" prot="public" virt="non-virtual"><scope>OGLFT::Solid::glePoint2D</scope><name>p_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

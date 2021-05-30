@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structOGLFT_1_1BBox" kind="struct" language="C++" prot="public">
+    <compoundname>OGLFT::BBox</compoundname>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOGLFT_1_1BBox_1a2fc8805ff7a066ee6b369a43a0f46404" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OGLFT::BBox::x_min_</definition>
+        <argsstring></argsstring>
+        <name>x_min_</name>
+        <briefdescription>
+<para>The left-most position at which &quot;ink&quot; appears. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="138" column="11" bodyfile="liboglft/OGLFT.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1BBox_1a75391db496d0d9600dfb6170cd710538" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OGLFT::BBox::y_min_</definition>
+        <argsstring></argsstring>
+        <name>y_min_</name>
+        <briefdescription>
+<para>the bottom-most position at which &quot;ink&quot; appears. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="139" column="11" bodyfile="liboglft/OGLFT.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1BBox_1adcb9e5383ba07d3abd4ef130960ee51c" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OGLFT::BBox::x_max_</definition>
+        <argsstring></argsstring>
+        <name>x_max_</name>
+        <briefdescription>
+<para>The right-most position at which &quot;ink&quot; appears. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="140" column="11" bodyfile="liboglft/OGLFT.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1BBox_1a8436d4c40bbd2341e0ab5ab16fd87f27" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OGLFT::BBox::y_max_</definition>
+        <argsstring></argsstring>
+        <name>y_max_</name>
+        <briefdescription>
+<para>The top-most position at which &quot;ink&quot; appears. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="141" column="11" bodyfile="liboglft/OGLFT.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1BBox_1afc13c8d4d03bccdeb5a7864247f1e7a7" prot="public" static="no" mutable="no">
+        <type><ref refid="structOGLFT_1_1Advance" kindref="compound">Advance</ref></type>
+        <definition>Advance OGLFT::BBox::advance_</definition>
+        <argsstring></argsstring>
+        <name>advance_</name>
+        <briefdescription>
+<para>The (total) advancement. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="142" column="13" bodyfile="liboglft/OGLFT.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structOGLFT_1_1BBox_1a5c719b5f01ea2fbc1797b51d44f44d80" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::BBox::BBox</definition>
+        <argsstring>()</argsstring>
+        <name>BBox</name>
+        <briefdescription>
+<para>Default constructor is all zeros. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="145" column="5" bodyfile="liboglft/OGLFT.h" bodystart="145" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1BBox_1a0cd5f5117beb14a988dacaf7f3b7fbb4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::BBox::BBox</definition>
+        <argsstring>(FT_BBox ft_bbox)</argsstring>
+        <name>BBox</name>
+        <param>
+          <type>FT_BBox</type>
+          <declname>ft_bbox</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>(Partially) initialize a <ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> from a FreeType bounding box member. (The advancement is initialized to zero by its default constructor). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ft_bbox</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a FreeType bounding box as retrieved from <computeroutput>FT_Glyph_Get_CBox</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="154" column="5" bodyfile="liboglft/OGLFT.h" bodystart="154" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1BBox_1a441052d4bf46240fe82ded57b9727cde" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> &amp;</type>
+        <definition>BBox&amp; OGLFT::BBox::operator*=</definition>
+        <argsstring>(double k)</argsstring>
+        <name>operator*=</name>
+        <param>
+          <type>double</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Scale the bounding box by a constant. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a constant to scale the bounding box by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a reference to oneself. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="165" column="10" bodyfile="liboglft/OGLFT.h" bodystart="165" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1BBox_1a4dc13f272bfbb3d1efa16afec07d100b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> &amp;</type>
+        <definition>BBox&amp; OGLFT::BBox::operator+=</definition>
+        <argsstring>(const BBox &amp;b)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Merge a bounding box into the current one (not really addition). Each time a <ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> is &quot;added&quot;, the current <ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref> is expanded to include the metrics of the new <ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref>. May only work for horizontal fonts, though. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bounding box to merge. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a reference to oneself. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="184" column="10" bodyfile="liboglft/OGLFT.h" bodystart="184" bodyend="204"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Describe the metrics of a glyph or string relative to the origin of the first character </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>OGLFT::BBox</label>
+        <link refid="structOGLFT_1_1BBox"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>advance_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Advance</label>
+        <link refid="structOGLFT_1_1Advance"/>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="137" column="3" bodyfile="liboglft/OGLFT.h" bodystart="137" bodyend="205"/>
+    <listofallmembers>
+      <member refid="structOGLFT_1_1BBox_1afc13c8d4d03bccdeb5a7864247f1e7a7" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>advance_</name></member>
+      <member refid="structOGLFT_1_1BBox_1a5c719b5f01ea2fbc1797b51d44f44d80" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>BBox</name></member>
+      <member refid="structOGLFT_1_1BBox_1a0cd5f5117beb14a988dacaf7f3b7fbb4" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>BBox</name></member>
+      <member refid="structOGLFT_1_1BBox_1a441052d4bf46240fe82ded57b9727cde" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>operator*=</name></member>
+      <member refid="structOGLFT_1_1BBox_1a4dc13f272bfbb3d1efa16afec07d100b" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>operator+=</name></member>
+      <member refid="structOGLFT_1_1BBox_1adcb9e5383ba07d3abd4ef130960ee51c" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>x_max_</name></member>
+      <member refid="structOGLFT_1_1BBox_1a2fc8805ff7a066ee6b369a43a0f46404" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>x_min_</name></member>
+      <member refid="structOGLFT_1_1BBox_1a8436d4c40bbd2341e0ab5ab16fd87f27" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>y_max_</name></member>
+      <member refid="structOGLFT_1_1BBox_1a75391db496d0d9600dfb6170cd710538" prot="public" virt="non-virtual"><scope>OGLFT::BBox</scope><name>y_min_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -4,6 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
@@ -94,6 +96,26 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_master'] = True
+
+    def test_extended_autodocs(self):
+        if parse_version(sphinx_version) < parse_version('2.3.1'):
+            raise unittest.SkipTest('breathe requires sphinx>=2.3.1')
+
+        config = dict(self.config)
+        config['extensions'].append('breathe')
+        config['extensions'].append('sphinx.ext.autodoc')
+
+        dataset = os.path.join(self.datasets, 'extended-autodocs')
+        doc_dir = prepare_dirs('validation-set-extended-autodocs')
+        xml_dir = os.path.join(dataset, 'xml')
+
+        config['breathe_projects'] = {}
+        for name in os.listdir(xml_dir):
+            sample_dir = os.path.join(xml_dir, name)
+            if os.path.isdir(sample_dir):
+                config['breathe_projects'][name] = sample_dir
+
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_extensions(self):
         config = dict(self.config)

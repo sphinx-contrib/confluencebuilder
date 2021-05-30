@@ -1,0 +1,1182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classOGLFT_1_1Polygonal" kind="class" language="C++" prot="public">
+    <compoundname>OGLFT::Polygonal</compoundname>
+    <basecompoundref refid="classOGLFT_1_1Face" prot="public" virt="non-virtual">OGLFT::Face</basecompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1Filled" prot="public" virt="non-virtual">OGLFT::Filled</derivedcompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1Outline" prot="public" virt="non-virtual">OGLFT::Outline</derivedcompoundref>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+    <innerclass refid="structOGLFT_1_1Polygonal_1_1VertexInfo" prot="protected">OGLFT::Polygonal::VertexInfo</innerclass>
+      <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="classOGLFT_1_1Polygonal_1a528b0830067ff854c27262dd1b5bacb6" prot="protected" static="no">
+        <type>std::list&lt; <ref refid="structOGLFT_1_1Polygonal_1_1VertexInfo" kindref="compound">VertexInfo</ref> * &gt;</type>
+        <definition>typedef std::list&lt; VertexInfo* &gt; OGLFT::Polygonal::VertexInfoList</definition>
+        <argsstring></argsstring>
+        <name>VertexInfoList</name>
+        <briefdescription>
+<para>Normally, we will consider a list of vertices. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1102" column="23" bodyfile="liboglft/OGLFT.h" bodystart="1102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Polygonal_1aa0acbd7d471c73f92b5bb0fdc332bb42" prot="protected" static="no">
+        <type>VertexInfoList::const_iterator</type>
+        <definition>typedef VertexInfoList::const_iterator OGLFT::Polygonal::VILCI</definition>
+        <argsstring></argsstring>
+        <name>VILCI</name>
+        <briefdescription>
+<para>A convenience definition of the iterator over the list of vertices. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1105" column="44" bodyfile="liboglft/OGLFT.h" bodystart="1105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Polygonal_1accbca874ad501207079a18ef4befa7e6" prot="protected" static="no">
+        <type>VertexInfoList::iterator</type>
+        <definition>typedef VertexInfoList::iterator OGLFT::Polygonal::VILI</definition>
+        <argsstring></argsstring>
+        <name>VILI</name>
+        <briefdescription>
+<para>A convenience definition of the iterator over the list of vertices. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1108" column="38" bodyfile="liboglft/OGLFT.h" bodystart="1108" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a4e5ceb245df0b7ac52e5902eabab2abb" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Polygonal::active_</definition>
+        <argsstring></argsstring>
+        <name>active_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="974" column="12" bodyfile="liboglft/OGLFT.h" bodystart="974" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1aa6c31a6cb1d94be6e5cb46c06ccba487" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::x_</definition>
+        <argsstring></argsstring>
+        <name>x_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="975" column="15" bodyfile="liboglft/OGLFT.h" bodystart="975" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1ab96dd76b0781c197956974a938521d15" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::y_</definition>
+        <argsstring></argsstring>
+        <name>y_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="975" column="18" bodyfile="liboglft/OGLFT.h" bodystart="975" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a12719be8e5f4e20f894a46f539e5c538" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::z_</definition>
+        <argsstring></argsstring>
+        <name>z_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="975" column="21" bodyfile="liboglft/OGLFT.h" bodystart="975" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a5fdd47f935e04c1a40e3331f0fe5e9d9" prot="protected" static="no" mutable="no">
+        <type>struct OGLFT::Polygonal::@0</type>
+        <definition>struct OGLFT::Polygonal::@0 OGLFT::Polygonal::character_rotation_</definition>
+        <argsstring></argsstring>
+        <name>character_rotation_</name>
+        <briefdescription>
+<para>Angle of rotation of characters relative to text orientation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="976" column="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a050fa15db0169ea637e769b2df8709e9" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int OGLFT::Polygonal::tessellation_steps_</definition>
+        <argsstring></argsstring>
+        <name>tessellation_steps_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The tessellation of curves is pretty crude; regardless of length, use the same number of increments (and as near as I can tell, this is more than sufficient unless the glyph takes up the whole screen). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="981" column="18" bodyfile="liboglft/OGLFT.h" bodystart="981" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1ac036860410b9d5cf5e2096567855744f" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::delta_</definition>
+        <argsstring></argsstring>
+        <name>delta_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When curves are tessellated, we use the forward difference algorithm from Foley and van Dam for parametric curves (pg. 511 of 2nd Ed. in C). So, the step size, delta, is in the parametric variable which is always on the interval [0,1]. Therefore, delta = 1/tessellation_steps </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="987" column="12" bodyfile="liboglft/OGLFT.h" bodystart="987" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1abf6dba6ffc9b99e558b837b522de2f2a" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::delta2_</definition>
+        <argsstring></argsstring>
+        <name>delta2_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="987" column="19" bodyfile="liboglft/OGLFT.h" bodystart="987" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a6182aa7c87cd2f7b743bf4645fbaa7aa" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::delta3_</definition>
+        <argsstring></argsstring>
+        <name>delta3_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="987" column="27" bodyfile="liboglft/OGLFT.h" bodystart="987" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1af3c5dec23f77a3c2b328e9d0db6ea47f" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::vector_scale_</definition>
+        <argsstring></argsstring>
+        <name>vector_scale_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>For vector rendition modes, FreeType is allowed to generate the lines and arcs at the original face definition resolution. To get to the proper glyph size, the vertices are scaled before they&apos;re passed to the GLU tessellation routines. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="993" column="12" bodyfile="liboglft/OGLFT.h" bodystart="993" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a7f697e7bbc48431e7dc38a353e4923ed" prot="protected" static="no" mutable="no">
+        <type>FT_Outline_Funcs</type>
+        <definition>FT_Outline_Funcs OGLFT::Polygonal::interface_</definition>
+        <argsstring></argsstring>
+        <name>interface_</name>
+        <briefdescription>
+<para>Callbacks for FreeType glyph decomposition into outlines. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="996" column="22" bodyfile="liboglft/OGLFT.h" bodystart="996" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a03e25224b164b6a833fcd57627750407" prot="protected" static="no" mutable="no">
+        <type><ref refid="structOGLFT_1_1Polygonal_1_1VertexInfo" kindref="compound">VertexInfo</ref></type>
+        <definition>VertexInfo OGLFT::Polygonal::last_vertex_</definition>
+        <argsstring></argsstring>
+        <name>last_vertex_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buffers the last control point as the outline of a glyph is decomposed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1099" column="16" bodyfile="liboglft/OGLFT.h" bodystart="1099" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1ab2e79d9e2337805f5de18de62c29c1f8" prot="protected" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1Polygonal_1a528b0830067ff854c27262dd1b5bacb6" kindref="member">VertexInfoList</ref></type>
+        <definition>VertexInfoList OGLFT::Polygonal::vertices_</definition>
+        <argsstring></argsstring>
+        <name>vertices_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>As curves are decomposed out of the glyph, their vertices are passed along to the GLU tessellation functions. These vertices have to hang around until gluTessContourEnd is called. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1115" column="20" bodyfile="liboglft/OGLFT.h" bodystart="1115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a4f9a461f87bcfa174ea13b755ee8b50e" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Polygonal::contour_open_</definition>
+        <argsstring></argsstring>
+        <name>contour_open_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>As GLU tessellation proceeds, new contours open with every call to moveTo. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1119" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1a0f903ab9f72b1ba0ee6c7f9ab3a9cd3e" prot="protected" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+        <definition>ColorTess* OGLFT::Polygonal::color_tess_</definition>
+        <argsstring></argsstring>
+        <name>color_tess_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The user can provide a <ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> object which computes a color for each tesselated vertex. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1123" column="15" bodyfile="liboglft/OGLFT.h" bodystart="1123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1ad0cb16ef50f3a15c236e78d63e604b23" prot="protected" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+        <definition>TextureTess* OGLFT::Polygonal::texture_tess_</definition>
+        <argsstring></argsstring>
+        <name>texture_tess_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The user can provide a <ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> object which computes texture coordinates for each tesselated vertex. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1127" column="17" bodyfile="liboglft/OGLFT.h" bodystart="1127" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Polygonal_1ad73df9263233dfad9cccdfa0d3c2bfc7" prot="protected" static="yes" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int OGLFT::Polygonal::DEFAULT_TESSELLATION_STEPS</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_TESSELLATION_STEPS</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default number of steps to break TrueType and Type1 arcs into. (Note: this looks good to me, anyway) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1000" column="31" bodyfile="liboglft/OGLFT.h" bodystart="1000" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a23f15d1b5090db0a8e016d9d7de6bd5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::Polygonal</definition>
+        <argsstring>(const char *filename, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Polygonal</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename which contains the font face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1137" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="1967" bodyend="1973"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a2374f5511828551eebd3d9f25a7b2f7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::Polygonal</definition>
+        <argsstring>(FT_Face face, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Polygonal</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open Freetype FT_Face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1147" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="1975" bodyend="1979"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a400533062135a0778a9d4d536ee92fb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::~Polygonal</definition>
+        <argsstring>(void)</argsstring>
+        <name>~Polygonal</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The <ref refid="classOGLFT_1_1Polygonal" kindref="compound">Polygonal</ref> destructor doesn&apos;t do anything in particular. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1152" column="13" bodyfile="liboglft/OGLFT.cpp" bodystart="2016" bodyend="2019"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a93acec0509507830ae87dc854d708804" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setTessellationSteps</definition>
+        <argsstring>(unsigned int tessellation_steps)</argsstring>
+        <name>setTessellationSteps</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>tessellation_steps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>TrueType and Type1 files describe the boundaries of glyphs with quadratic and cubic curves, respectively. Since OpenGL can only really draw straight lines, these curves have to be tessellated. The number of steps used is fixed for all glyphs in the face, but can be changed through this method. Other notes: This value is only applicable for <ref refid="classOGLFT_1_1Outline" kindref="compound">Outline</ref>, <ref refid="classOGLFT_1_1Filled" kindref="compound">Filled</ref> and <ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref> styles. Changing this value invalidates any cached display lists for glyphs in this face.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tessellation_steps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of steps to tessellate each curved segment of a glyph outline. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1166" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2043" bodyend="2055"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a11700581346d555f515c2c70d0020b11" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int OGLFT::Polygonal::tessellationSteps</definition>
+        <argsstring>(void) const</argsstring>
+        <name>tessellationSteps</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of steps used to tessellate curves in the polygonal font types. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1172" column="18" bodyfile="liboglft/OGLFT.h" bodystart="1172" bodyend="1172"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a771ba93e70e54a6b1c7c77c938a8d7e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setCharacterRotationX</definition>
+        <argsstring>(GLfloat character_rotation_x)</argsstring>
+        <name>setCharacterRotationX</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the X direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of the X rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1178" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2059" bodyend="2072"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a86b8d861320013d2beed611dd0af6cd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setCharacterRotationY</definition>
+        <argsstring>(GLfloat character_rotation_y)</argsstring>
+        <name>setCharacterRotationY</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the Y direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of the Y rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1184" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2074" bodyend="2087"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a69aea627036450195367f83783656530" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setCharacterRotationZ</definition>
+        <argsstring>(GLfloat character_rotation_z)</argsstring>
+        <name>setCharacterRotationZ</name>
+        <reimplements refid="classOGLFT_1_1Face_1ac6610d5d5a48ed756c27031d8d5f371a">setCharacterRotationZ</reimplements>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the Z direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of the Z rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1190" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2089" bodyend="2102"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a91e6a5600227b8731f96e54c567f4537" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::characterRotationX</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationX</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the X direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1195" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1195" bodyend="1195"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aa4eb81b268f375a95c1aae69cd355909" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::characterRotationY</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationY</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the Y direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1200" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1200" bodyend="1200"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1abdaa6a2054af958304472c4bcda77136" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Polygonal::characterRotationZ</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationZ</name>
+        <reimplements refid="classOGLFT_1_1Face_1adf5b61447db39a1bcc7fa6a383646085">characterRotationZ</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the Z direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1205" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1205" bodyend="1205"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aa03a07b463d317f7c139923d80d4e57f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setColorTess</definition>
+        <argsstring>(ColorTess *color_tess)</argsstring>
+        <name>setColorTess</name>
+        <param>
+          <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+          <declname>color_tess</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set an optional color tesselation object. Each tesselated vertex is passed to this object, which returns a color for that position in space. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>color_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the color tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1213" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2024" bodyend="2029"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aa799a36caa48dbe79fd6d12552df3b94" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+        <definition>ColorTess* OGLFT::Polygonal::colorTess</definition>
+        <argsstring>(void) const</argsstring>
+        <name>colorTess</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the color tesselation object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1217" column="15" bodyfile="liboglft/OGLFT.h" bodystart="1217" bodyend="1217"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a5611c8c0bb8d7fd07172596b4c6883aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setTextureTess</definition>
+        <argsstring>(TextureTess *texture_tess)</argsstring>
+        <name>setTextureTess</name>
+        <param>
+          <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+          <declname>texture_tess</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set an optional texture coordinate tesselation object. Each tessellated vertex is passed to this object, which returns texture coordinates for that position in space. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>texture_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the texture coordinate tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1224" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2034" bodyend="2039"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1ac4af8443829185ac1c1932de07b1ff71" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+        <definition>TextureTess* OGLFT::Polygonal::textureTess</definition>
+        <argsstring>(void) const</argsstring>
+        <name>textureTess</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the texture coordinate tesselation object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1228" column="17" bodyfile="liboglft/OGLFT.h" bodystart="1228" bodyend="1228"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a0ca22a7954bc78a0392bc760eab356f5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::height</definition>
+        <argsstring>(void) const</argsstring>
+        <name>height</name>
+        <reimplements refid="classOGLFT_1_1Face_1ab75c0ac5bfc964c2a3f70af06584d678">height</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the height (i.e., line spacing) at the current character size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1233" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="2136" bodyend="2144"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a8c0fce468679e8cd18b960e4f2af9698" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Polygonal::measure</definition>
+        <argsstring>(unsigned char c)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1ac67aed67bb8afa5b4613942232e49bc4">measure</reimplements>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a character in a polygonal face. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1240" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2146" bodyend="2182"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a610bc9bd03581ff6784028ca0fe23399" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Polygonal::measure</definition>
+        <argsstring>(const QChar c)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1a111cb1a7d026503717d1a44ccab3c967">measure</reimplements>
+        <param>
+          <type>const QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a character in a polygonal face. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1247" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2184" bodyend="2220"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a4cdf57befc33dd828bce4c3ffb320f60" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Polygonal::measure</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1adcb1e6fe4f8e23e9fb06e5136a074f1b">measure</reimplements>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Measure a string of characters. Note: currently, this merely calls <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>&apos;s measure routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string of (latin1) characters to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1255" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1255" bodyend="1255"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a6bf72d1f468b011c99264bb891d3beff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Polygonal::measure</definition>
+        <argsstring>(const QString &amp;format, double number)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1aadfa3cf55099e261b7d31bcd3283d379">measure</reimplements>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a formatted number <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to value to format </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of the formatted number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1263" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1263" bodyend="1264"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1a97aa04b70eb66bf7ebbf14313d2b8875" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::init</definition>
+        <argsstring>(void)</argsstring>
+        <name>init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1268" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1981" bodyend="2014"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1afbdb8108eb4d4c63fe3939adf5ae6be3" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setCharSize</definition>
+        <argsstring>(void)</argsstring>
+        <name>setCharSize</name>
+        <reimplements refid="classOGLFT_1_1Face_1aae7b18f84114e436bde9d5e1f0be7624">setCharSize</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>There is a slight different between the way in which the polygonal and raster styles select the character size for FreeType to generate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1269" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2104" bodyend="2117"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aa43ed9ab42bcc8215d32861d608a3245" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::setRotationOffset</definition>
+        <argsstring>(void)</argsstring>
+        <name>setRotationOffset</name>
+        <reimplements refid="classOGLFT_1_1Face_1a8a7d7ceca630eb978728d23f52cdb9dd">setRotationOffset</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The polygonal and raster styles compute different values for the Z rotation offset. (It&apos;s in integer pixels for the raster styles and in floating point pixels for the polygonal styles.) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1270" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2119" bodyend="2134"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aec7ff2066d90e6634715d9cc4c328204" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Polygonal::compileGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)</argsstring>
+        <name>compileGlyph</name>
+        <reimplements refid="classOGLFT_1_1Face_1ab92453fd3a4a33d3d4c2e88b7e0f4b6a">compileGlyph</reimplements>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Some styles, in particular the <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref>, need specialized steps to compile a glyph into an OpenGL display list. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list of the compiled glyph. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1271" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="2223" bodyend="2234"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOGLFT_1_1Polygonal_1aeb8bf8c9dd7a3137859739877df90782" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::clearCaches</definition>
+        <argsstring>(void)</argsstring>
+        <name>clearCaches</name>
+        <reimplements refid="classOGLFT_1_1Face_1aa3247d90589f553cf340a31e04907547">clearCaches</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The different styles have different caching needs (well, really only the texture style currently has more than the display list cache). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1273" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2236" bodyend="2245"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>This is the base class of the polygonal styles: outline, filled and solid. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>In the polygonal styles, the detailed geometric outlines of the glyphs are extracted from the font file and rendered as polygons. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OGLFT::Polygonal</label>
+        <link refid="classOGLFT_1_1Polygonal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OGLFT::Filled</label>
+        <link refid="classOGLFT_1_1Filled"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OGLFT::Solid</label>
+        <link refid="classOGLFT_1_1Solid"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>OGLFT::Outline</label>
+        <link refid="classOGLFT_1_1Outline"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5">
+        <label>OGLFT::TextureTess</label>
+        <link refid="classOGLFT_1_1TextureTess"/>
+      </node>
+      <node id="4">
+        <label>OGLFT::ColorTess</label>
+        <link refid="classOGLFT_1_1ColorTess"/>
+      </node>
+      <node id="1">
+        <label>OGLFT::Polygonal</label>
+        <link refid="classOGLFT_1_1Polygonal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>last_vertex_</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>color_tess_</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>texture_tess_</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OGLFT::Polygonal::VertexInfo</label>
+        <link refid="structOGLFT_1_1Polygonal_1_1VertexInfo"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>color_tess_</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>texture_tess_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="970" column="3" bodyfile="liboglft/OGLFT.h" bodystart="970" bodyend="1274"/>
+    <listofallmembers>
+      <member refid="classOGLFT_1_1Polygonal_1a4e5ceb245df0b7ac52e5902eabab2abb" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>active_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>advance</name></member>
+      <member refid="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>advance_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>ascender</name></member>
+      <member refid="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>background_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>backgroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>backgroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>backgroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>backgroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>BASELINE</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>BOTTOM</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>CENTER</name></member>
+      <member refid="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>character_display_lists_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a5fdd47f935e04c1a40e3331f0fe5e9d9" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>character_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>characterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a91e6a5600227b8731f96e54c567f4537" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>characterRotationX</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa4eb81b268f375a95c1aae69cd355909" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>characterRotationY</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1abdaa6a2054af958304472c4bcda77136" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>characterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aeb8bf8c9dd7a3137859739877df90782" prot="protected" virt="virtual"><scope>OGLFT::Polygonal</scope><name>clearCaches</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a0f903ab9f72b1ba0ee6c7f9ab3a9cd3e" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>color_tess_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa799a36caa48dbe79fd6d12552df3b94" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>colorTess</name></member>
+      <member refid="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>COMPILE</name></member>
+      <member refid="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compile_mode_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aec7ff2066d90e6634715d9cc4c328204" prot="private" virt="virtual"><scope>OGLFT::Polygonal</scope><name>compileGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>compileMode</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a4f9a461f87bcfa174ea13b755ee8b50e" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>contour_open_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ad73df9263233dfad9cccdfa0d3c2bfc7" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>DEFAULT_TESSELLATION_STEPS</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1abf6dba6ffc9b99e558b837b522de2f2a" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>delta2_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a6182aa7c87cd2f7b743bf4645fbaa7aa" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>delta3_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ac036860410b9d5cf5e2096567855744f" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>delta_</name></member>
+      <member refid="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>descender</name></member>
+      <member refid="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>faces_</name></member>
+      <member refid="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>foreground_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>foregroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>foregroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>foregroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>foregroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>GDLCI</name></member>
+      <member refid="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>GDLI</name></member>
+      <member refid="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>glyph_dlists_</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>GlyphCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>GlyphDLists</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a0ca22a7954bc78a0392bc760eab356f5" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>height</name></member>
+      <member refid="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>horizontal_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>HorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>horizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>IMMEDIATE</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a97aa04b70eb66bf7ebbf14313d2b8875" prot="private" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>init</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a7f697e7bbc48431e7dc38a353e4923ed" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>interface_</name></member>
+      <member refid="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>isValid</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a03e25224b164b6a833fcd57627750407" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>last_vertex_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>LEFT</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a8c0fce468679e8cd18b960e4f2af9698" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a610bc9bd03581ff6784028ca0fe23399" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a4cdf57befc33dd828bce4c3ffb320f60" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a6bf72d1f468b011c99264bb891d3beff" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" virt="virtual" ambiguityscope="OGLFT::Face::"><scope>OGLFT::Polygonal</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>MIDDLE</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>ORIGIN</name></member>
+      <member refid="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>point_size_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>pointSize</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a23f15d1b5090db0a8e016d9d7de6bd5a" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>Polygonal</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a2374f5511828551eebd3d9f25a7b2f7a" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>Polygonal</name></member>
+      <member refid="classOGLFT_1_1Face_1a32ee2eb902462680aef9da95c845185c" prot="protected" virt="pure-virtual"><scope>OGLFT::Polygonal</scope><name>renderGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>resolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>resolution_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>RIGHT</name></member>
+      <member refid="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>rotation_offset_y_</name></member>
+      <member refid="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>rotation_reference_face_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>rotation_reference_glyph_</name></member>
+      <member refid="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setAdvance</name></member>
+      <member refid="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setCharacterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setCharacterRotationReference</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a771ba93e70e54a6b1c7c77c938a8d7e6" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setCharacterRotationX</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a86b8d861320013d2beed611dd0af6cd2" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setCharacterRotationY</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a69aea627036450195367f83783656530" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>setCharacterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1afbdb8108eb4d4c63fe3939adf5ae6be3" prot="private" virt="virtual"><scope>OGLFT::Polygonal</scope><name>setCharSize</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa03a07b463d317f7c139923d80d4e57f" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setColorTess</name></member>
+      <member refid="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setHorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setPointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setResolution</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa43ed9ab42bcc8215d32861d608a3245" prot="private" virt="virtual"><scope>OGLFT::Polygonal</scope><name>setRotationOffset</name></member>
+      <member refid="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setStringRotation</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a93acec0509507830ae87dc854d708804" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setTessellationSteps</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a5611c8c0bb8d7fd07172596b4c6883aa" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setTextureTess</name></member>
+      <member refid="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>setVerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>string_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>stringRotation</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a050fa15db0169ea637e769b2df8709e9" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>tessellation_steps_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a11700581346d555f515c2c70d0020b11" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>tessellationSteps</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ad0cb16ef50f3a15c236e78d63e604b23" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>texture_tess_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ac4af8443829185ac1c1932de07b1ff71" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>textureTess</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>TOP</name></member>
+      <member refid="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>valid_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1af3c5dec23f77a3c2b328e9d0db6ea47f" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>vector_scale_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a528b0830067ff854c27262dd1b5bacb6" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>VertexInfoList</name></member>
+      <member refid="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>vertical_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>verticaljustification</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>VerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ab2e79d9e2337805f5de18de62c29c1f8" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>vertices_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa0acbd7d471c73f92b5bb0fdc332bb42" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>VILCI</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1accbca874ad501207079a18ef4befa7e6" prot="protected" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>VILI</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa6c31a6cb1d94be6e5cb46c06ccba487" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>x_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ab96dd76b0781c197956974a938521d15" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>y_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a12719be8e5f4e20f894a46f539e5c538" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal</scope><name>z_</name></member>
+      <member refid="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>~Face</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a400533062135a0778a9d4d536ee92fb5" prot="public" virt="virtual"><scope>OGLFT::Polygonal</scope><name>~Polygonal</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

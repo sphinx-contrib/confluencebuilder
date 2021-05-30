@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classtinyxml2_1_1_x_m_l_handle" kind="class" language="C++" prot="public">
+    <compoundname>tinyxml2::XMLHandle</compoundname>
+    <includes refid="tinyxml2_8h" local="no">tinyxml2.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classtinyxml2_1_1_x_m_l_handle_1a65449d71b75d8aeb40a54224c954c138" prot="private" static="no" mutable="no">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> *</type>
+        <definition>XMLNode* tinyxml2::XMLHandle::_node</definition>
+        <argsstring></argsstring>
+        <name>_node</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2125" column="13" bodyfile="tinyxml2.h" bodystart="2125" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a9c240a35c18f053509b4b97ddccd9793" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::XMLHandle::XMLHandle</definition>
+        <argsstring>(XMLNode *node)</argsstring>
+        <name>XMLHandle</name>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+<para>Create a handle from any node (at any depth of the tree.) This can be a null pointer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2056" column="14" bodyfile="tinyxml2.h" bodystart="2056" bodyend="2057"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1aa2edbc1c0d3e3e8259bd98de7f1cf500" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::XMLHandle::XMLHandle</definition>
+        <argsstring>(XMLNode &amp;node)</argsstring>
+        <name>XMLHandle</name>
+        <param>
+          <type><ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> &amp;</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+<para>Create a handle from a node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2059" column="14" bodyfile="tinyxml2.h" bodystart="2059" bodyend="2060"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1afd8e01e6018c07347b8e6d80272466aa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::XMLHandle::XMLHandle</definition>
+        <argsstring>(const XMLHandle &amp;ref)</argsstring>
+        <name>XMLHandle</name>
+        <param>
+          <type>const <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+<para>Copy constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2062" column="5" bodyfile="tinyxml2.h" bodystart="2062" bodyend="2063"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a75b908322bb4b83be3281b6845252b20" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> &amp;</type>
+        <definition>XMLHandle&amp; tinyxml2::XMLHandle::operator=</definition>
+        <argsstring>(const XMLHandle &amp;ref)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+<para>Assignment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2065" column="15" bodyfile="tinyxml2.h" bodystart="2065" bodyend="2068"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a536447dc7f54c0cd11e031dad94795ae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::FirstChild</definition>
+        <argsstring>()</argsstring>
+        <name>FirstChild</name>
+        <briefdescription>
+<para>Get the first child of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2071" column="15" bodyfile="tinyxml2.h" bodystart="2071" bodyend="2073"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a74b04dd0f15e0bf01860e282b840b6a3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::FirstChildElement</definition>
+        <argsstring>(const char *name=0)</argsstring>
+        <name>FirstChildElement</name>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Get the first child element of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2075" column="15" bodyfile="tinyxml2.h" bodystart="2075" bodyend="2077"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a9d09f04435f0f2f7d0816b0198d0517b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::LastChild</definition>
+        <argsstring>()</argsstring>
+        <name>LastChild</name>
+        <briefdescription>
+<para>Get the last child of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2079" column="15" bodyfile="tinyxml2.h" bodystart="2079" bodyend="2081"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a42cccd0ce8b1ce704f431025e9f19e0c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::LastChildElement</definition>
+        <argsstring>(const char *name=0)</argsstring>
+        <name>LastChildElement</name>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Get the last child element of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2083" column="15" bodyfile="tinyxml2.h" bodystart="2083" bodyend="2085"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a428374e756f4db4cbc287fec64eae02c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::PreviousSibling</definition>
+        <argsstring>()</argsstring>
+        <name>PreviousSibling</name>
+        <briefdescription>
+<para>Get the previous sibling of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2087" column="15" bodyfile="tinyxml2.h" bodystart="2087" bodyend="2089"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a786957e498039554ed334cdc36612a7e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::PreviousSiblingElement</definition>
+        <argsstring>(const char *name=0)</argsstring>
+        <name>PreviousSiblingElement</name>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Get the previous sibling element of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2091" column="15" bodyfile="tinyxml2.h" bodystart="2091" bodyend="2093"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1aad2eccc7c7c7b18145877c978c3850b5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::NextSibling</definition>
+        <argsstring>()</argsstring>
+        <name>NextSibling</name>
+        <briefdescription>
+<para>Get the next sibling of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2095" column="15" bodyfile="tinyxml2.h" bodystart="2095" bodyend="2097"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1ae41d88ee061f3c49a081630ff753b2c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref></type>
+        <definition>XMLHandle tinyxml2::XMLHandle::NextSiblingElement</definition>
+        <argsstring>(const char *name=0)</argsstring>
+        <name>NextSiblingElement</name>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Get the next sibling element of this handle. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2099" column="15" bodyfile="tinyxml2.h" bodystart="2099" bodyend="2101"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a03ea6ec970a021b71bf1219a0f6717df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref> *</type>
+        <definition>XMLNode* tinyxml2::XMLHandle::ToNode</definition>
+        <argsstring>()</argsstring>
+        <name>ToNode</name>
+        <briefdescription>
+<para>Safe cast to <ref refid="classtinyxml2_1_1_x_m_l_node" kindref="compound">XMLNode</ref>. This can return null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2104" column="13" bodyfile="tinyxml2.h" bodystart="2104" bodyend="2106"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a5e73ed8f3f6f9619d5a8bb1862c47d99" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_element" kindref="compound">XMLElement</ref> *</type>
+        <definition>XMLElement* tinyxml2::XMLHandle::ToElement</definition>
+        <argsstring>()</argsstring>
+        <name>ToElement</name>
+        <briefdescription>
+<para>Safe cast to <ref refid="classtinyxml2_1_1_x_m_l_element" kindref="compound">XMLElement</ref>. This can return null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2108" column="16" bodyfile="tinyxml2.h" bodystart="2108" bodyend="2110"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a6ab9e8cbfb41417246e5657e3842c62a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_text" kindref="compound">XMLText</ref> *</type>
+        <definition>XMLText* tinyxml2::XMLHandle::ToText</definition>
+        <argsstring>()</argsstring>
+        <name>ToText</name>
+        <briefdescription>
+<para>Safe cast to <ref refid="classtinyxml2_1_1_x_m_l_text" kindref="compound">XMLText</ref>. This can return null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2112" column="13" bodyfile="tinyxml2.h" bodystart="2112" bodyend="2114"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1aa387368a1ad8d843a9f12df863d298de" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref> *</type>
+        <definition>XMLUnknown* tinyxml2::XMLHandle::ToUnknown</definition>
+        <argsstring>()</argsstring>
+        <name>ToUnknown</name>
+        <briefdescription>
+<para>Safe cast to <ref refid="classtinyxml2_1_1_x_m_l_unknown" kindref="compound">XMLUnknown</ref>. This can return null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2116" column="16" bodyfile="tinyxml2.h" bodystart="2116" bodyend="2118"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_x_m_l_handle_1a108858be7ee3eb53f73b5194c1aa8ff0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classtinyxml2_1_1_x_m_l_declaration" kindref="compound">XMLDeclaration</ref> *</type>
+        <definition>XMLDeclaration* tinyxml2::XMLHandle::ToDeclaration</definition>
+        <argsstring>()</argsstring>
+        <name>ToDeclaration</name>
+        <briefdescription>
+<para>Safe cast to <ref refid="classtinyxml2_1_1_x_m_l_declaration" kindref="compound">XMLDeclaration</ref>. This can return null. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="2120" column="20" bodyfile="tinyxml2.h" bodystart="2120" bodyend="2122"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> is a class that wraps a node pointer with null checks; this is an incredibly useful thing. Note that <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> is not part of the TinyXML-2 DOM structure. It is a separate utility class.</para>
+<para>Take an example: <verbatim>&lt;Document&gt;
+    &lt;Element attributeA = &quot;valueA&quot;&gt;
+        &lt;Child attributeB = &quot;value1&quot; /&gt;
+        &lt;Child attributeB = &quot;value2&quot; /&gt;
+    &lt;/Element&gt;
+&lt;/Document&gt;
+</verbatim></para>
+<para>Assuming you want the value of &quot;attributeB&quot; in the 2nd &quot;Child&quot; element, it&apos;s very easy to write a <emphasis>lot</emphasis> of code that looks like:</para>
+<para><verbatim>XMLElement* root = document.FirstChildElement( &quot;Document&quot; );
+if ( root )
+{
+    XMLElement* element = root-&gt;FirstChildElement( &quot;Element&quot; );
+    if ( element )
+    {
+        XMLElement* child = element-&gt;FirstChildElement( &quot;Child&quot; );
+        if ( child )
+        {
+            XMLElement* child2 = child-&gt;NextSiblingElement( &quot;Child&quot; );
+            if ( child2 )
+            {
+                // Finally do something useful.
+</verbatim></para>
+<para>And that doesn&apos;t even cover &quot;else&quot; cases. <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> addresses the verbosity of such code. A <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref> checks for null pointers so it is perfectly safe and correct to use:</para>
+<para><verbatim>XMLHandle docHandle( &amp;document );
+XMLElement* child2 = docHandle.FirstChildElement( &quot;Document&quot; ).FirstChildElement( &quot;Element&quot; ).FirstChildElement().NextSiblingElement();
+if ( child2 )
+{
+    // do something useful
+</verbatim></para>
+<para>Which is MUCH more concise and useful.</para>
+<para>It is also safe to copy handles - internally they are nothing more than node pointers. <verbatim>XMLHandle handleCopy = handle;
+</verbatim></para>
+<para>See also <ref refid="classtinyxml2_1_1_x_m_l_const_handle" kindref="compound">XMLConstHandle</ref>, which is the same as <ref refid="classtinyxml2_1_1_x_m_l_handle" kindref="compound">XMLHandle</ref>, but operates on const objects. </para>
+    </detaileddescription>
+    <location file="tinyxml2.h" line="2052" column="1" bodyfile="tinyxml2.h" bodystart="2053" bodyend="2126"/>
+    <listofallmembers>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a65449d71b75d8aeb40a54224c954c138" prot="private" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>_node</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a536447dc7f54c0cd11e031dad94795ae" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>FirstChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a74b04dd0f15e0bf01860e282b840b6a3" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>FirstChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a9d09f04435f0f2f7d0816b0198d0517b" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>LastChild</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a42cccd0ce8b1ce704f431025e9f19e0c" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>LastChildElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1aad2eccc7c7c7b18145877c978c3850b5" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>NextSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1ae41d88ee061f3c49a081630ff753b2c5" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>NextSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a75b908322bb4b83be3281b6845252b20" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>operator=</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a428374e756f4db4cbc287fec64eae02c" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>PreviousSibling</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a786957e498039554ed334cdc36612a7e" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>PreviousSiblingElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a108858be7ee3eb53f73b5194c1aa8ff0" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>ToDeclaration</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a5e73ed8f3f6f9619d5a8bb1862c47d99" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>ToElement</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a03ea6ec970a021b71bf1219a0f6717df" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>ToNode</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a6ab9e8cbfb41417246e5657e3842c62a" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>ToText</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1aa387368a1ad8d843a9f12df863d298de" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>ToUnknown</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1a9c240a35c18f053509b4b97ddccd9793" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>XMLHandle</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1aa2edbc1c0d3e3e8259bd98de7f1cf500" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>XMLHandle</name></member>
+      <member refid="classtinyxml2_1_1_x_m_l_handle_1afd8e01e6018c07347b8e6d80272466aa" prot="public" virt="non-virtual"><scope>tinyxml2::XMLHandle</scope><name>XMLHandle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

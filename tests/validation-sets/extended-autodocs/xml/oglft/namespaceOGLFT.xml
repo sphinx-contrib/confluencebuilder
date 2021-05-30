@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespaceOGLFT" kind="namespace" language="C++">
+    <compoundname>OGLFT</compoundname>
+    <innerclass refid="classOGLFT_1_1Library" prot="public">OGLFT::Library</innerclass>
+    <innerclass refid="structOGLFT_1_1Advance" prot="public">OGLFT::Advance</innerclass>
+    <innerclass refid="structOGLFT_1_1BBox" prot="public">OGLFT::BBox</innerclass>
+    <innerclass refid="classOGLFT_1_1ColorTess" prot="public">OGLFT::ColorTess</innerclass>
+    <innerclass refid="classOGLFT_1_1TextureTess" prot="public">OGLFT::TextureTess</innerclass>
+    <innerclass refid="classOGLFT_1_1Face" prot="public">OGLFT::Face</innerclass>
+    <innerclass refid="classOGLFT_1_1Polygonal" prot="public">OGLFT::Polygonal</innerclass>
+    <innerclass refid="classOGLFT_1_1Outline" prot="public">OGLFT::Outline</innerclass>
+    <innerclass refid="classOGLFT_1_1Filled" prot="public">OGLFT::Filled</innerclass>
+    <innerclass refid="classOGLFT_1_1Solid" prot="public">OGLFT::Solid</innerclass>
+    <innerclass refid="classOGLFT_1_1Raster" prot="public">OGLFT::Raster</innerclass>
+    <innerclass refid="classOGLFT_1_1Monochrome" prot="public">OGLFT::Monochrome</innerclass>
+    <innerclass refid="classOGLFT_1_1Grayscale" prot="public">OGLFT::Grayscale</innerclass>
+    <innerclass refid="classOGLFT_1_1Translucent" prot="public">OGLFT::Translucent</innerclass>
+    <innerclass refid="classOGLFT_1_1Texture" prot="public">OGLFT::Texture</innerclass>
+    <innerclass refid="classOGLFT_1_1MonochromeTexture" prot="public">OGLFT::MonochromeTexture</innerclass>
+    <innerclass refid="classOGLFT_1_1GrayscaleTexture" prot="public">OGLFT::GrayscaleTexture</innerclass>
+    <innerclass refid="classOGLFT_1_1TranslucentTexture" prot="public">OGLFT::TranslucentTexture</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceOGLFT_1a0c257f2c441831752ecca24ed4aaaba9" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Coordinates</name>
+        <enumvalue id="namespaceOGLFT_1a0c257f2c441831752ecca24ed4aaaba9a4f5c9260179bbab4debec1fd9c324049" prot="public">
+          <name>X</name>
+          <briefdescription>
+<para>The X component of space. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a0c257f2c441831752ecca24ed4aaaba9a687f7c303363c08c283650ade08dd464" prot="public">
+          <name>Y</name>
+          <briefdescription>
+<para>The Y component of space. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a0c257f2c441831752ecca24ed4aaaba9a98d02e678a1d7dc3fa597ce7a0f63bce" prot="public">
+          <name>Z</name>
+          <briefdescription>
+<para>The Z component of space. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a0c257f2c441831752ecca24ed4aaaba9a5f954585f2c8b4c40f13714b87943f17" prot="public">
+          <name>W</name>
+          <briefdescription>
+<para>The projection component of space. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Thanks to DesCartes, I&apos;d consider these manifest constants. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="55" column="3" bodyfile="liboglft/OGLFT.h" bodystart="55" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOGLFT_1a6818ada148c1a201534d44e783ac0544" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ColorSpace</name>
+        <enumvalue id="namespaceOGLFT_1a6818ada148c1a201534d44e783ac0544ab8119cd8efb2d9bf6c361bacb7a7b538" prot="public">
+          <name>R</name>
+          <briefdescription>
+<para>The Red component of a color. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a6818ada148c1a201534d44e783ac0544a78b96cf921e13981a5ad1d95b9a15264" prot="public">
+          <name>G</name>
+          <briefdescription>
+<para>The Green component of a color. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a6818ada148c1a201534d44e783ac0544a883cc6f1197e4ce60683850e1540cebd" prot="public">
+          <name>B</name>
+          <briefdescription>
+<para>The Blue component of a color. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOGLFT_1a6818ada148c1a201534d44e783ac0544a7193bcdcdc531697719e5f071aa593a5" prot="public">
+          <name>A</name>
+          <briefdescription>
+<para>The Alpha (or transparency) of a color. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Who to credit? Newton? I&apos;d consider these manifest constants. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="63" column="3" bodyfile="liboglft/OGLFT.h" bodystart="63" bodyend="68"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceOGLFT_1a70e2b61b0114dcf5887c07b8a44ce81d" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* OGLFT::GLUTessCallback) ()</definition>
+        <argsstring>)()</argsstring>
+        <name>GLUTessCallback</name>
+        <briefdescription>
+<para>Callback from GLU tessellation routines. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="71" column="11" bodyfile="liboglft/OGLFT.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceOGLFT_1a331dcaf8f179a981082b98fd073918d8" prot="public" static="no">
+        <type>std::vector&lt; GLuint &gt;</type>
+        <definition>typedef std::vector&lt;GLuint&gt; OGLFT::DisplayLists</definition>
+        <argsstring></argsstring>
+        <name>DisplayLists</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The argument to setCharacterDisplayLists is an STL vector of OpenGL display list names (GLuints). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="235" column="23" bodyfile="liboglft/OGLFT.h" bodystart="235" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceOGLFT_1ac9fcefd970b7147e1279883115c2b503" prot="public" static="no">
+        <type>DisplayLists::const_iterator</type>
+        <definition>typedef DisplayLists::const_iterator OGLFT::DLCI</definition>
+        <argsstring></argsstring>
+        <name>DLCI</name>
+        <briefdescription>
+<para>A convenience definition of an iterator for display list vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="238" column="40" bodyfile="liboglft/OGLFT.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceOGLFT_1a23eff8880591c7b812c8d976c9950ef7" prot="public" static="no">
+        <type>DisplayLists::iterator</type>
+        <definition>typedef DisplayLists::iterator OGLFT::DLI</definition>
+        <argsstring></argsstring>
+        <name>DLI</name>
+        <briefdescription>
+<para>A convenience definition of an iterator for display list vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="241" column="34" bodyfile="liboglft/OGLFT.h" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>All of <ref refid="namespaceOGLFT" kindref="compound">OGLFT</ref> C++ objects are in this namespace. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="liboglft/OGLFT.cpp" line="32" column="1"/>
+  </compounddef>
+</doxygen>

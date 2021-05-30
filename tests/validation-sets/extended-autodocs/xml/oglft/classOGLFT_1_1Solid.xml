@@ -1,0 +1,779 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classOGLFT_1_1Solid" kind="class" language="C++" prot="public">
+    <compoundname>OGLFT::Solid</compoundname>
+    <basecompoundref refid="classOGLFT_1_1Filled" prot="public" virt="non-virtual">OGLFT::Filled</basecompoundref>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+    <innerclass refid="structOGLFT_1_1Solid_1_1glePoint2D" prot="private">OGLFT::Solid::glePoint2D</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1add51e2363b49ff31f9b93efcb06fafa0" prot="private" static="no" mutable="no">
+        <type>FT_Outline_Funcs</type>
+        <definition>FT_Outline_Funcs OGLFT::Solid::interface_</definition>
+        <argsstring></argsstring>
+        <name>interface_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Callbacks for FreeType glyph decomposition into outlines (note: this has the same name as the variable in <ref refid="classOGLFT_1_1Polygonal" kindref="compound">Polygonal</ref>, but it is distinct since the routines for the GLE contouring are different from the <ref refid="classOGLFT_1_1Filled" kindref="compound">Filled</ref> GLU tessellation routines. This may be too confusing?) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1452" column="22" bodyfile="liboglft/OGLFT.h" bodystart="1452" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1a26d87b16d174775f2fc3cc1462d75015" prot="private" static="no" mutable="no">
+        <type>struct OGLFT::Solid::@1</type>
+        <definition>struct OGLFT::Solid::@1 OGLFT::Solid::extrusion_</definition>
+        <argsstring></argsstring>
+        <name>extrusion_</name>
+        <briefdescription>
+<para>Collect all the output from GLE in one of these structures. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1476" column="16"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1a196e1eaf384513f239b1d0f81a160fab" prot="private" static="yes" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int OGLFT::Solid::N_POLYLINE_PTS</definition>
+        <argsstring></argsstring>
+        <name>N_POLYLINE_PTS</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+<para>For now, you can only get block extruded solids. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1455" column="31" bodyfile="liboglft/OGLFT.h" bodystart="1455" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1a4f74bce75a8eddaca13e53d74e702a9e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Solid::depth_</definition>
+        <argsstring></argsstring>
+        <name>depth_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1467" column="14" bodyfile="liboglft/OGLFT.h" bodystart="1467" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1a60f54f81ad1836722bf363ed1bec3e89" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int OGLFT::Solid::x_</definition>
+        <argsstring></argsstring>
+        <name>x_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1469" column="5" bodyfile="liboglft/OGLFT.h" bodystart="1469" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1ad407efd4748526b3dff6a30039ff3d9e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int OGLFT::Solid::y_</definition>
+        <argsstring></argsstring>
+        <name>y_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1469" column="8" bodyfile="liboglft/OGLFT.h" bodystart="1469" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1affb86e6a6d6ecfb900abc986dd221b21" prot="public" static="no" mutable="no">
+        <type>struct OGLFT::Solid::@1::@2</type>
+        <definition>struct OGLFT::Solid::@1::@2 OGLFT::Solid::normal_sign_</definition>
+        <argsstring></argsstring>
+        <name>normal_sign_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1470" column="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1aebe7946141066e0cef882f11291d0ece" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; glePoint2D &gt;</type>
+        <definition>std::vector&lt; glePoint2D &gt; OGLFT::Solid::contour_</definition>
+        <argsstring></argsstring>
+        <name>contour_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1471" column="19" bodyfile="liboglft/OGLFT.h" bodystart="1471" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1a8313941094769d4b14674200cb1207d1" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; glePoint2D &gt;</type>
+        <definition>std::vector&lt; glePoint2D &gt; OGLFT::Solid::contour_normals_</definition>
+        <argsstring></argsstring>
+        <name>contour_normals_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1472" column="19" bodyfile="liboglft/OGLFT.h" bodystart="1472" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1ac5b46ac2af249efe78041b65c7b5b9a6" prot="public" static="no" mutable="no">
+        <type>gleDouble</type>
+        <definition>gleDouble OGLFT::Solid::up_[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>up_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1473" column="17" bodyfile="liboglft/OGLFT.h" bodystart="1473" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1abd794d99d471a8cf1e58683f49a08983" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int OGLFT::Solid::n_polyline_pts_</definition>
+        <argsstring></argsstring>
+        <name>n_polyline_pts_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1474" column="11" bodyfile="liboglft/OGLFT.h" bodystart="1474" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Solid_1ae03d412c150ed7ae16b008921185da13" prot="public" static="no" mutable="no">
+        <type>gleDouble</type>
+        <definition>gleDouble OGLFT::Solid::point_array_[N_POLYLINE_PTS][3]</definition>
+        <argsstring>[N_POLYLINE_PTS][3]</argsstring>
+        <name>point_array_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1475" column="17" bodyfile="liboglft/OGLFT.h" bodystart="1475" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1ad57a8488107808c8bb93137eae6adc35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::Solid</definition>
+        <argsstring>(const char *filename, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Solid</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename which contains the font face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1486" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="2846" bodyend="2852"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a938b9974bc25eab630f7f78e6d7ec187" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::Solid</definition>
+        <argsstring>(FT_Face face, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Solid</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open FreeType FT_Face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1495" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="2854" bodyend="2858"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1aad6814c1eb20b399b84bc1ae07316900" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Solid::~Solid</definition>
+        <argsstring>(void)</argsstring>
+        <name>~Solid</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The destructor doesn&apos;t do anything in particular. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1500" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="2886" bodyend="2887"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a6ac890d19918934cf7fea8454c971490" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Solid::setDepth</definition>
+        <argsstring>(double depth)</argsstring>
+        <name>setDepth</name>
+        <param>
+          <type>double</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the thickness of the solid <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>thickness of the solid in model units. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1505" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2891" bodyend="2901"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1ace447e05b8089a7773aa97e5e869b3a1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double OGLFT::Solid::depth</definition>
+        <argsstring>(void) const</argsstring>
+        <name>depth</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the solid extrusion depth. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1510" column="12" bodyfile="liboglft/OGLFT.h" bodystart="1510" bodyend="1510"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a44e877ebf08a8aabeaa9a1e1451c08c1" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Solid::assign</definition>
+        <argsstring>(gleDouble a[3], double x, double y, double z)</argsstring>
+        <name>assign</name>
+        <param>
+          <type>gleDouble</type>
+          <declname>a</declname>
+          <array>[3]</array>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1514" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1514" bodyend="1519"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1ab861482f31d4f60cb15057e10234f4e5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Solid::init</definition>
+        <argsstring>(void)</argsstring>
+        <name>init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1521" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2860" bodyend="2884"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a0555d81bd789280a799c2437ab494924" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Solid::renderGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)</argsstring>
+        <name>renderGlyph</name>
+        <reimplements refid="classOGLFT_1_1Filled_1aa72dad6404e8b4bb3fdc9495e594bd8a">renderGlyph</reimplements>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Each style implements its own glyph rendering routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1522" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="2903" bodyend="3011"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a4e33e5a8d40f977b1c0e6aecd6fe4b6f" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Solid::moveToCallback</definition>
+        <argsstring>(FT_Vector *to, Solid *solid)</argsstring>
+        <name>moveToCallback</name>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref> *</type>
+          <declname>solid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1523" column="16" bodyfile="liboglft/OGLFT.cpp" bodystart="3013" bodyend="3047"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a3bfd09ed6aea5d59835a714d03b04ac1" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Solid::lineToCallback</definition>
+        <argsstring>(FT_Vector *to, Solid *solid)</argsstring>
+        <name>lineToCallback</name>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref> *</type>
+          <declname>solid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1524" column="16" bodyfile="liboglft/OGLFT.cpp" bodystart="3049" bodyend="3069"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a2b393ab3223111aee78a5694d0741fef" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Solid::conicToCallback</definition>
+        <argsstring>(FT_Vector *control, FT_Vector *to, Solid *solid)</argsstring>
+        <name>conicToCallback</name>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>control</declname>
+        </param>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref> *</type>
+          <declname>solid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1525" column="16" bodyfile="liboglft/OGLFT.cpp" bodystart="3071" bodyend="3136"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Solid_1a769e8817245e426bd027589c22413fcf" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Solid::cubicToCallback</definition>
+        <argsstring>(FT_Vector *control1, FT_Vector *control2, FT_Vector *to, Solid *solid)</argsstring>
+        <name>cubicToCallback</name>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>control1</declname>
+        </param>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>control2</declname>
+        </param>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>to</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref> *</type>
+          <declname>solid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1526" column="16" bodyfile="liboglft/OGLFT.cpp" bodystart="3138" bodyend="3216"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Render text as solid letters. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><image type="html" name="solid_class.png"></image>
+ Each glyph is drawn as a closed solid. The contours are extracted from the font file through FreeType. FreeType is used to scale the contours to the given size. The contours are passed to the GLE tubing and extrusion library to create the sides of the solid. Then the GLU tessellation routines are used to tessellate the contours into polygons which are used to cap the sides.</para>
+<para>Currently, the solids are drawn only in the foreground color. However, proper surface normals are computed so that the solids may be lighted. Eventually, you&apos;ll be able to supply a color/texture coordinate function to make glyphs more interesting. Note that you can use the per-glyph display list functionality to alter each glyph individually.</para>
+<para>Another TODO item is to improve the interaction with GLE. Currently, you can only create block solids. Eventually, we&apos;ll have the capability add bevels and rounds to the edges of the solids and maybe even more general extrusions (like, for example, the swooshing letters in the title sequence of the Salkind&apos;s 1978 &quot;Superman&quot; movie).</para>
+<para>The only complexity to this style is selecting the point size. Since the glyphs are drawn as a collection of polygons, they are subject to the viewing and modeling transformations. The point size is nominally chosen to be the same as a raster image generated at the given resolution. Some experimentation with point size and resolution may be necessary to achieve the desired results. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>OGLFT::Polygonal</label>
+        <link refid="classOGLFT_1_1Polygonal"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Filled</label>
+        <link refid="classOGLFT_1_1Filled"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OGLFT::Solid</label>
+        <link refid="classOGLFT_1_1Solid"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="7">
+        <label>OGLFT::TextureTess</label>
+        <link refid="classOGLFT_1_1TextureTess"/>
+      </node>
+      <node id="6">
+        <label>OGLFT::ColorTess</label>
+        <link refid="classOGLFT_1_1ColorTess"/>
+      </node>
+      <node id="3">
+        <label>OGLFT::Polygonal</label>
+        <link refid="classOGLFT_1_1Polygonal"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>last_vertex_</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>color_tess_</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>texture_tess_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Filled</label>
+        <link refid="classOGLFT_1_1Filled"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>OGLFT::Polygonal::VertexInfo</label>
+        <link refid="structOGLFT_1_1Polygonal_1_1VertexInfo"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>color_tess_</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>texture_tess_</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OGLFT::Solid</label>
+        <link refid="classOGLFT_1_1Solid"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="1445" column="3" bodyfile="liboglft/OGLFT.h" bodystart="1445" bodyend="1528"/>
+    <listofallmembers>
+      <member refid="classOGLFT_1_1Polygonal_1a4e5ceb245df0b7ac52e5902eabab2abb" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>active_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>advance</name></member>
+      <member refid="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>advance_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>ascender</name></member>
+      <member refid="classOGLFT_1_1Solid_1a44e877ebf08a8aabeaa9a1e1451c08c1" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>assign</name></member>
+      <member refid="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>background_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>backgroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>backgroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>backgroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>backgroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>BASELINE</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>BOTTOM</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>CENTER</name></member>
+      <member refid="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>character_display_lists_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a5fdd47f935e04c1a40e3331f0fe5e9d9" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>character_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>characterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a91e6a5600227b8731f96e54c567f4537" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>characterRotationX</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa4eb81b268f375a95c1aae69cd355909" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>characterRotationY</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1abdaa6a2054af958304472c4bcda77136" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>characterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aeb8bf8c9dd7a3137859739877df90782" prot="protected" virt="virtual"><scope>OGLFT::Solid</scope><name>clearCaches</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a0f903ab9f72b1ba0ee6c7f9ab3a9cd3e" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>color_tess_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa799a36caa48dbe79fd6d12552df3b94" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>colorTess</name></member>
+      <member refid="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>COMPILE</name></member>
+      <member refid="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compile_mode_</name></member>
+      <member refid="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>compileMode</name></member>
+      <member refid="classOGLFT_1_1Solid_1a2b393ab3223111aee78a5694d0741fef" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>conicToCallback</name></member>
+      <member refid="classOGLFT_1_1Solid_1aebe7946141066e0cef882f11291d0ece" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>contour_</name></member>
+      <member refid="classOGLFT_1_1Solid_1a8313941094769d4b14674200cb1207d1" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>contour_normals_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a4f9a461f87bcfa174ea13b755ee8b50e" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>contour_open_</name></member>
+      <member refid="classOGLFT_1_1Solid_1a769e8817245e426bd027589c22413fcf" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>cubicToCallback</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ad73df9263233dfad9cccdfa0d3c2bfc7" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>DEFAULT_TESSELLATION_STEPS</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1abf6dba6ffc9b99e558b837b522de2f2a" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>delta2_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a6182aa7c87cd2f7b743bf4645fbaa7aa" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>delta3_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ac036860410b9d5cf5e2096567855744f" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>delta_</name></member>
+      <member refid="classOGLFT_1_1Solid_1ace447e05b8089a7773aa97e5e869b3a1" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>depth</name></member>
+      <member refid="classOGLFT_1_1Solid_1a4f74bce75a8eddaca13e53d74e702a9e" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>depth_</name></member>
+      <member refid="classOGLFT_1_1Filled_1a67498144ce9221fa7d385c0648e8b7a4" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>depth_offset_</name></member>
+      <member refid="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>descender</name></member>
+      <member refid="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Filled_1adb40e3555d03bd1c7d9bb5e0139685aa" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>extraVertices</name></member>
+      <member refid="classOGLFT_1_1Solid_1a26d87b16d174775f2fc3cc1462d75015" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>extrusion_</name></member>
+      <member refid="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>faces_</name></member>
+      <member refid="classOGLFT_1_1Filled_1a392d79759dba2cb04d21bf764d60eb40" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Filled</name></member>
+      <member refid="classOGLFT_1_1Filled_1ae426f251eac595b14147baf33253ab49" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Filled</name></member>
+      <member refid="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>foreground_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>foregroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>foregroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>foregroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>foregroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>GDLCI</name></member>
+      <member refid="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>GDLI</name></member>
+      <member refid="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>glyph_dlists_</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>GlyphCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>GlyphDLists</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a0ca22a7954bc78a0392bc760eab356f5" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>height</name></member>
+      <member refid="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>horizontal_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>horizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>HorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>IMMEDIATE</name></member>
+      <member refid="classOGLFT_1_1Solid_1ab861482f31d4f60cb15057e10234f4e5" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>init</name></member>
+      <member refid="classOGLFT_1_1Solid_1add51e2363b49ff31f9b93efcb06fafa0" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>interface_</name></member>
+      <member refid="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>isValid</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a03e25224b164b6a833fcd57627750407" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>last_vertex_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>LEFT</name></member>
+      <member refid="classOGLFT_1_1Solid_1a3bfd09ed6aea5d59835a714d03b04ac1" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>lineToCallback</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a8c0fce468679e8cd18b960e4f2af9698" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a610bc9bd03581ff6784028ca0fe23399" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a4cdf57befc33dd828bce4c3ffb320f60" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a6bf72d1f468b011c99264bb891d3beff" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" virt="virtual" ambiguityscope="OGLFT::Face::"><scope>OGLFT::Solid</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>MIDDLE</name></member>
+      <member refid="classOGLFT_1_1Solid_1a4e33e5a8d40f977b1c0e6aecd6fe4b6f" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>moveToCallback</name></member>
+      <member refid="classOGLFT_1_1Solid_1a196e1eaf384513f239b1d0f81a160fab" prot="private" virt="non-virtual"><scope>OGLFT::Solid</scope><name>N_POLYLINE_PTS</name></member>
+      <member refid="classOGLFT_1_1Solid_1abd794d99d471a8cf1e58683f49a08983" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>n_polyline_pts_</name></member>
+      <member refid="classOGLFT_1_1Solid_1affb86e6a6d6ecfb900abc986dd221b21" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>normal_sign_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>ORIGIN</name></member>
+      <member refid="classOGLFT_1_1Solid_1ae03d412c150ed7ae16b008921185da13" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>point_array_</name></member>
+      <member refid="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>point_size_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>pointSize</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a23f15d1b5090db0a8e016d9d7de6bd5a" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Polygonal</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a2374f5511828551eebd3d9f25a7b2f7a" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Polygonal</name></member>
+      <member refid="classOGLFT_1_1Solid_1a0555d81bd789280a799c2437ab494924" prot="private" virt="virtual"><scope>OGLFT::Solid</scope><name>renderGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>resolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>resolution_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>RIGHT</name></member>
+      <member refid="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>rotation_offset_y_</name></member>
+      <member refid="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>rotation_reference_face_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>rotation_reference_glyph_</name></member>
+      <member refid="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setAdvance</name></member>
+      <member refid="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setCharacterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setCharacterRotationReference</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a771ba93e70e54a6b1c7c77c938a8d7e6" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setCharacterRotationX</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a86b8d861320013d2beed611dd0af6cd2" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setCharacterRotationY</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a69aea627036450195367f83783656530" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>setCharacterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa03a07b463d317f7c139923d80d4e57f" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setColorTess</name></member>
+      <member refid="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setCompileMode</name></member>
+      <member refid="classOGLFT_1_1Solid_1a6ac890d19918934cf7fea8454c971490" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setDepth</name></member>
+      <member refid="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setHorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setPointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setResolution</name></member>
+      <member refid="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setStringRotation</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a93acec0509507830ae87dc854d708804" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setTessellationSteps</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a5611c8c0bb8d7fd07172596b4c6883aa" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setTextureTess</name></member>
+      <member refid="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>setVerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Solid_1ad57a8488107808c8bb93137eae6adc35" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Solid</name></member>
+      <member refid="classOGLFT_1_1Solid_1a938b9974bc25eab630f7f78e6d7ec187" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>Solid</name></member>
+      <member refid="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>string_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>stringRotation</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a050fa15db0169ea637e769b2df8709e9" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>tessellation_steps_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a11700581346d555f515c2c70d0020b11" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>tessellationSteps</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ad0cb16ef50f3a15c236e78d63e604b23" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>texture_tess_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ac4af8443829185ac1c1932de07b1ff71" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>textureTess</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>TOP</name></member>
+      <member refid="classOGLFT_1_1Solid_1ac5b46ac2af249efe78041b65c7b5b9a6" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>up_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>valid_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1af3c5dec23f77a3c2b328e9d0db6ea47f" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>vector_scale_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a528b0830067ff854c27262dd1b5bacb6" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>VertexInfoList</name></member>
+      <member refid="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>vertical_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>verticaljustification</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>VerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1ab2e79d9e2337805f5de18de62c29c1f8" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>vertices_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1aa0acbd7d471c73f92b5bb0fdc332bb42" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>VILCI</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1accbca874ad501207079a18ef4befa7e6" prot="protected" virt="non-virtual"><scope>OGLFT::Solid</scope><name>VILI</name></member>
+      <member refid="classOGLFT_1_1Solid_1a60f54f81ad1836722bf363ed1bec3e89" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>x_</name></member>
+      <member refid="classOGLFT_1_1Solid_1ad407efd4748526b3dff6a30039ff3d9e" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>y_</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a12719be8e5f4e20f894a46f539e5c538" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>z_</name></member>
+      <member refid="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>~Face</name></member>
+      <member refid="classOGLFT_1_1Filled_1aeda1d054286ecd312ea8a10865df6e7f" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>~Filled</name></member>
+      <member refid="classOGLFT_1_1Polygonal_1a400533062135a0778a9d4d536ee92fb5" prot="public" virt="virtual"><scope>OGLFT::Solid</scope><name>~Polygonal</name></member>
+      <member refid="classOGLFT_1_1Solid_1aad6814c1eb20b399b84bc1ae07316900" prot="public" virt="non-virtual"><scope>OGLFT::Solid</scope><name>~Solid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
