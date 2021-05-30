@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classtinyxml2_1_1_dyn_array" kind="class" language="C++" prot="public">
+    <compoundname>tinyxml2::DynArray</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>INITIAL_SIZE</declname>
+        <defname>INITIAL_SIZE</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classtinyxml2_1_1_dyn_array_1ac8511e876d55f3ec64277516273434fd" prot="private" static="no" mutable="no">
+        <type>T *</type>
+        <definition>T* tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::_mem</definition>
+        <argsstring></argsstring>
+        <name>_mem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="319" column="8" bodyfile="tinyxml2.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classtinyxml2_1_1_dyn_array_1a26ed1f7dab98229d2ed867a07ee427df" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::_pool[INITIAL_SIZE]</definition>
+        <argsstring>[INITIAL_SIZE]</argsstring>
+        <name>_pool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="320" column="9" bodyfile="tinyxml2.h" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classtinyxml2_1_1_dyn_array_1aee2522b771ca30bc09bff4d5b3176bfc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::_allocated</definition>
+        <argsstring></argsstring>
+        <name>_allocated</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="321" column="9" bodyfile="tinyxml2.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classtinyxml2_1_1_dyn_array_1a40f0578cc1912eed17fb29f64daf6ae9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::_size</definition>
+        <argsstring></argsstring>
+        <name>_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="322" column="9" bodyfile="tinyxml2.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1aaad72f384e761c70a4519183eb8fea17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::DynArray</definition>
+        <argsstring>()</argsstring>
+        <name>DynArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="209" column="5" bodyfile="tinyxml2.h" bodystart="209" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a4a6aefdca7fe0d3f4068e31870a5adee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::~DynArray</definition>
+        <argsstring>()</argsstring>
+        <name>~DynArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="216" column="5" bodyfile="tinyxml2.h" bodystart="216" bodyend="220"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1af87a804cd831226d069274b44b74b8bc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="222" column="10" bodyfile="tinyxml2.h" bodystart="222" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1aea7ffe983b5d3284bd43171afd7c99d0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Push</definition>
+        <argsstring>(T t)</argsstring>
+        <name>Push</name>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="226" column="10" bodyfile="tinyxml2.h" bodystart="226" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1ad289abee8cd02b26e215f1b63d2043f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T *</type>
+        <definition>T* tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::PushArr</definition>
+        <argsstring>(int count)</argsstring>
+        <name>PushArr</name>
+        <param>
+          <type>int</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="233" column="7" bodyfile="tinyxml2.h" bodystart="233" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a27a3f2f6f869815b6eabb3ea40cf0712" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Pop</definition>
+        <argsstring>()</argsstring>
+        <name>Pop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="242" column="7" bodyfile="tinyxml2.h" bodystart="242" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1ab8b8c94a2312ab27e2846f0d61ef677a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::PopArr</definition>
+        <argsstring>(int count)</argsstring>
+        <name>PopArr</name>
+        <param>
+          <type>int</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="248" column="10" bodyfile="tinyxml2.h" bodystart="248" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a044fc26f44ed3e96ffaeac542188149e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Empty</definition>
+        <argsstring>() const</argsstring>
+        <name>Empty</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="253" column="10" bodyfile="tinyxml2.h" bodystart="253" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a756cf4e7464c711aa720e2b17a251daa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T&amp; tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::operator[]</definition>
+        <argsstring>(int i)</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="257" column="7" bodyfile="tinyxml2.h" bodystart="257" bodyend="260"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a474a5cd9bc97ea32b3dcef4c773125e1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T&amp; tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::operator[]</definition>
+        <argsstring>(int i) const</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="262" column="13" bodyfile="tinyxml2.h" bodystart="262" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a5e4e1e408e646688503dec77c77c9d59" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T&amp; tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::PeekTop</definition>
+        <argsstring>() const</argsstring>
+        <name>PeekTop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="267" column="13" bodyfile="tinyxml2.h" bodystart="267" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a67614d80847eb92cab330f1a5849a9a2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Size</definition>
+        <argsstring>() const</argsstring>
+        <name>Size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="272" column="9" bodyfile="tinyxml2.h" bodystart="272" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a8e101fdf5b4248ac119d7dca6d0f5421" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Capacity</definition>
+        <argsstring>() const</argsstring>
+        <name>Capacity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="277" column="9" bodyfile="tinyxml2.h" bodystart="277" bodyend="280"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1aa72c644f8b5e9ec5dab5b66c88f5665f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::SwapRemove</definition>
+        <argsstring>(int i)</argsstring>
+        <name>SwapRemove</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="282" column="6" bodyfile="tinyxml2.h" bodystart="282" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a60b33e61cf10b3fd900ee46692dc0fe9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T *</type>
+        <definition>const T* tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Mem</definition>
+        <argsstring>() const</argsstring>
+        <name>Mem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="289" column="13" bodyfile="tinyxml2.h" bodystart="289" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a2f0842cd666e2ad951f1a8bd6561fa40" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T *</type>
+        <definition>T* tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::Mem</definition>
+        <argsstring>()</argsstring>
+        <name>Mem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="294" column="7" bodyfile="tinyxml2.h" bodystart="294" bodyend="297"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a8e2251588f079f2e7a4080b2c53dabea" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::DynArray</definition>
+        <argsstring>(const DynArray &amp;)</argsstring>
+        <name>DynArray</name>
+        <param>
+          <type>const DynArray &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="300" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a46fa3bff1a6abe7cafad46707d0bb890" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::operator=</definition>
+        <argsstring>(const DynArray &amp;)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const DynArray &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="301" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classtinyxml2_1_1_dyn_array_1a30f2dec82744b45667452e6ce3d51e32" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tinyxml2::DynArray&lt; T, INITIAL_SIZE &gt;::EnsureCapacity</definition>
+        <argsstring>(int cap)</argsstring>
+        <name>EnsureCapacity</name>
+        <param>
+          <type>int</type>
+          <declname>cap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tinyxml2.h" line="303" column="10" bodyfile="tinyxml2.h" bodystart="303" bodyend="317"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="tinyxml2.h" line="206" column="1" bodyfile="tinyxml2.h" bodystart="207" bodyend="323"/>
+    <listofallmembers>
+      <member refid="classtinyxml2_1_1_dyn_array_1aee2522b771ca30bc09bff4d5b3176bfc" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>_allocated</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1ac8511e876d55f3ec64277516273434fd" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>_mem</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a26ed1f7dab98229d2ed867a07ee427df" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>_pool</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a40f0578cc1912eed17fb29f64daf6ae9" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>_size</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a8e101fdf5b4248ac119d7dca6d0f5421" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Capacity</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1af87a804cd831226d069274b44b74b8bc" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Clear</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1aaad72f384e761c70a4519183eb8fea17" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>DynArray</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a8e2251588f079f2e7a4080b2c53dabea" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>DynArray</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a044fc26f44ed3e96ffaeac542188149e" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Empty</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a30f2dec82744b45667452e6ce3d51e32" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>EnsureCapacity</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a60b33e61cf10b3fd900ee46692dc0fe9" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Mem</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a2f0842cd666e2ad951f1a8bd6561fa40" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Mem</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a46fa3bff1a6abe7cafad46707d0bb890" prot="private" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>operator=</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a756cf4e7464c711aa720e2b17a251daa" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>operator[]</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a474a5cd9bc97ea32b3dcef4c773125e1" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>operator[]</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a5e4e1e408e646688503dec77c77c9d59" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>PeekTop</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a27a3f2f6f869815b6eabb3ea40cf0712" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Pop</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1ab8b8c94a2312ab27e2846f0d61ef677a" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>PopArr</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1aea7ffe983b5d3284bd43171afd7c99d0" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Push</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1ad289abee8cd02b26e215f1b63d2043f1" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>PushArr</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a67614d80847eb92cab330f1a5849a9a2" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>Size</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1aa72c644f8b5e9ec5dab5b66c88f5665f" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>SwapRemove</name></member>
+      <member refid="classtinyxml2_1_1_dyn_array_1a4a6aefdca7fe0d3f4068e31870a5adee" prot="public" virt="non-virtual"><scope>tinyxml2::DynArray</scope><name>~DynArray</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

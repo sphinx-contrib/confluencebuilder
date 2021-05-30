@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structOGLFT_1_1Face_1_1FaceData" kind="struct" language="C++" prot="private">
+    <compoundname>OGLFT::Face::FaceData</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOGLFT_1_1Face_1_1FaceData_1acba75520187b5eae05a480f1cdd87897" prot="public" static="no" mutable="no">
+        <type>FT_Face</type>
+        <definition>FT_Face OGLFT::Face::FaceData::face_</definition>
+        <argsstring></argsstring>
+        <name>face_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="288" column="15" bodyfile="liboglft/OGLFT.h" bodystart="288" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1Face_1_1FaceData_1aae25585f1e6325d242d544a6e0c1a577" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::FaceData::free_on_exit_</definition>
+        <argsstring></argsstring>
+        <name>free_on_exit_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="289" column="12" bodyfile="liboglft/OGLFT.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structOGLFT_1_1Face_1_1FaceData_1aa66e4e9fcdc5fbca61f3451ba405ca50" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Face::FaceData::FaceData</definition>
+        <argsstring>(FT_Face face, bool free_on_exit=true)</argsstring>
+        <name>FaceData</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>free_on_exit</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="290" column="7" bodyfile="liboglft/OGLFT.h" bodystart="290" bodyend="292"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>We allow a <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> to be constructed either from a file name or passed in as an already opened FreeType FT_Face. In the case of the later (already opened), we don&apos;t close the FT_Face on destruction. This way you can share FT_Faces between related <ref refid="namespaceOGLFT" kindref="compound">OGLFT</ref> faces. Also, we&apos;re experimenting with being able to use multiple FT_Faces in a single <ref refid="namespaceOGLFT" kindref="compound">OGLFT</ref> <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>, so this is represented as a data structure. </para>
+    </detaileddescription>
+    <location file="liboglft/OGLFT.h" line="287" column="5" bodyfile="liboglft/OGLFT.h" bodystart="287" bodyend="293"/>
+    <listofallmembers>
+      <member refid="structOGLFT_1_1Face_1_1FaceData_1acba75520187b5eae05a480f1cdd87897" prot="public" virt="non-virtual"><scope>OGLFT::Face::FaceData</scope><name>face_</name></member>
+      <member refid="structOGLFT_1_1Face_1_1FaceData_1aa66e4e9fcdc5fbca61f3451ba405ca50" prot="public" virt="non-virtual"><scope>OGLFT::Face::FaceData</scope><name>FaceData</name></member>
+      <member refid="structOGLFT_1_1Face_1_1FaceData_1aae25585f1e6325d242d544a6e0c1a577" prot="public" virt="non-virtual"><scope>OGLFT::Face::FaceData</scope><name>free_on_exit_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

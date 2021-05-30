@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structOGLFT_1_1Polygonal_1_1VertexInfo" kind="struct" language="C++" prot="protected">
+    <compoundname>OGLFT::Polygonal::VertexInfo</compoundname>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1a2f3994e4ca4d91ddb000cff9ec1ca376" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double OGLFT::Polygonal::VertexInfo::v_[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>v_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Why is this double precision? Because the second argument to the routine gluTessVertex is a pointer to an array of doubles. Otherwise, we could use single precision everywhere. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1015" column="14" bodyfile="liboglft/OGLFT.h" bodystart="1015" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1a4b7961e676cde7267732ae960a64740e" prot="public" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+        <definition>ColorTess* OGLFT::Polygonal::VertexInfo::color_tess_</definition>
+        <argsstring></argsstring>
+        <name>color_tess_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The user can provide a <ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> object which computes a color for each tesselated vertex. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1022" column="17" bodyfile="liboglft/OGLFT.h" bodystart="1022" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1aba8e0ce21ea52e579ea4a3a5e679dd0b" prot="public" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+        <definition>TextureTess* OGLFT::Polygonal::VertexInfo::texture_tess_</definition>
+        <argsstring></argsstring>
+        <name>texture_tess_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The user can provide a <ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> object which computes texture coordinates for each tesselated vertex. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1026" column="19" bodyfile="liboglft/OGLFT.h" bodystart="1026" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1aba0cf13b4ff2e7bfa719e15e4563e51c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::VertexInfo::VertexInfo</definition>
+        <argsstring>(ColorTess *color_tess=0, TextureTess *texture_tess=0)</argsstring>
+        <name>VertexInfo</name>
+        <param>
+          <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+          <declname>color_tess</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+          <declname>texture_tess</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default constructor just initializes Vertex to zero. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>color_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional color tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>texture_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional texture tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1031" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1031" bodyend="1035"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1a7d7cfde22229156485bc5438214a578f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::VertexInfo::VertexInfo</definition>
+        <argsstring>(FT_Vector *ft_v, ColorTess *color_tess=0, TextureTess *texture_tess=0)</argsstring>
+        <name>VertexInfo</name>
+        <param>
+          <type>FT_Vector *</type>
+          <declname>ft_v</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+          <declname>color_tess</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+          <declname>texture_tess</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a Vertex from a point in a FreeType contour. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ft_v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a FreeType FT_Vector, normally passed into the the decomposition callbacks. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional color tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>texture_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional texture tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1044" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1044" bodyend="1051"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1a411c3e8c10627ef74fbdb403300ff182" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::VertexInfo::VertexInfo</definition>
+        <argsstring>(double p[2], ColorTess *color_tess=0, TextureTess *texture_tess=0)</argsstring>
+        <name>VertexInfo</name>
+        <param>
+          <type>double</type>
+          <declname>p</declname>
+          <array>[2]</array>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+          <declname>color_tess</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+          <declname>texture_tess</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a Vertex from a 2D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2D array of doubles. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional color tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>texture_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional texture tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1059" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1059" bodyend="1066"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1a7e4035eeb0fd9391f80ec9d190fd8fb3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Polygonal::VertexInfo::VertexInfo</definition>
+        <argsstring>(double x, double y, ColorTess *color_tess=0, TextureTess *texture_tess=0)</argsstring>
+        <name>VertexInfo</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> *</type>
+          <declname>color_tess</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type><ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> *</type>
+          <declname>texture_tess</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a Vertex from a 2D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X coordinate. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y coordinate. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional color tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>texture_tess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>optional texture tesselation object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1075" column="7" bodyfile="liboglft/OGLFT.h" bodystart="1075" bodyend="1082"/>
+      </memberdef>
+      <memberdef kind="function" id="structOGLFT_1_1Polygonal_1_1VertexInfo_1af60b3067e9b181231fdce823df2dcc50" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Polygonal::VertexInfo::normalize</definition>
+        <argsstring>(void)</argsstring>
+        <name>normalize</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Treat the Vertex like a vector: Normalize its length in the usual way. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1086" column="12" bodyfile="liboglft/OGLFT.h" bodystart="1086" bodyend="1092"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="structOGLFT_1_1Polygonal_1_1VertexInfo" kindref="compound">VertexInfo</ref> is a private class which is used by the decomposition and tessellation routines to store the vertices and other data of the glyph&apos;s outline. Because of the &quot;impedance mismatch&quot; between the crazy 26.6 fixed point format of the FreeType library (well, don&apos;t blame them; look at what they have to work with) and OpenGL&apos;s preference for double precision, this simple vector has two constructors: one for 26.6 format and one for direct floating point.</para>
+<para><ref refid="structOGLFT_1_1Polygonal_1_1VertexInfo" kindref="compound">VertexInfo</ref> also contains (optional) pointers to objects which implement the <ref refid="classOGLFT_1_1ColorTess" kindref="compound">ColorTess</ref> and <ref refid="classOGLFT_1_1TextureTess" kindref="compound">TextureTess</ref> interfaces. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>OGLFT::TextureTess</label>
+        <link refid="classOGLFT_1_1TextureTess"/>
+      </node>
+      <node id="2">
+        <label>OGLFT::ColorTess</label>
+        <link refid="classOGLFT_1_1ColorTess"/>
+      </node>
+      <node id="1">
+        <label>OGLFT::Polygonal::VertexInfo</label>
+        <link refid="structOGLFT_1_1Polygonal_1_1VertexInfo"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>color_tess_</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>texture_tess_</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="1014" column="5" bodyfile="liboglft/OGLFT.h" bodystart="1014" bodyend="1093"/>
+    <listofallmembers>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1a4b7961e676cde7267732ae960a64740e" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>color_tess_</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1af60b3067e9b181231fdce823df2dcc50" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>normalize</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1aba8e0ce21ea52e579ea4a3a5e679dd0b" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>texture_tess_</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1a2f3994e4ca4d91ddb000cff9ec1ca376" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>v_</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1aba0cf13b4ff2e7bfa719e15e4563e51c" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>VertexInfo</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1a7d7cfde22229156485bc5438214a578f" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>VertexInfo</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1a411c3e8c10627ef74fbdb403300ff182" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>VertexInfo</name></member>
+      <member refid="structOGLFT_1_1Polygonal_1_1VertexInfo_1a7e4035eeb0fd9391f80ec9d190fd8fb3" prot="public" virt="non-virtual"><scope>OGLFT::Polygonal::VertexInfo</scope><name>VertexInfo</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

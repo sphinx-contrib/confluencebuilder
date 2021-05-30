@@ -1,0 +1,962 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classOGLFT_1_1Texture" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OGLFT::Texture</compoundname>
+    <basecompoundref refid="classOGLFT_1_1Face" prot="public" virt="non-virtual">OGLFT::Face</basecompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1GrayscaleTexture" prot="public" virt="non-virtual">OGLFT::GrayscaleTexture</derivedcompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1MonochromeTexture" prot="public" virt="non-virtual">OGLFT::MonochromeTexture</derivedcompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1TranslucentTexture" prot="public" virt="non-virtual">OGLFT::TranslucentTexture</derivedcompoundref>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+    <innerclass refid="structOGLFT_1_1Texture_1_1TextureInfo" prot="protected">OGLFT::Texture::TextureInfo</innerclass>
+      <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="classOGLFT_1_1Texture_1a92aa311af254ddcbc81df8f554a038fc" prot="protected" static="no">
+        <type>std::map&lt; FT_UInt, <ref refid="structOGLFT_1_1Texture_1_1TextureInfo" kindref="compound">TextureInfo</ref> &gt;</type>
+        <definition>typedef std::map&lt; FT_UInt, TextureInfo &gt; OGLFT::Texture::GlyphTexObjs</definition>
+        <argsstring></argsstring>
+        <name>GlyphTexObjs</name>
+        <briefdescription>
+<para>Type of the cache of defined glyph to texture objects mapping. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1803" column="22" bodyfile="liboglft/OGLFT.h" bodystart="1803" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Texture_1a8e2cebd5de9b3576c2a7f548abd6a107" prot="protected" static="no">
+        <type>GlyphTexObjs::const_iterator</type>
+        <definition>typedef GlyphTexObjs::const_iterator OGLFT::Texture::GTOCI</definition>
+        <argsstring></argsstring>
+        <name>GTOCI</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A convenience definition of the iterator over the glyph to texture object map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1807" column="42" bodyfile="liboglft/OGLFT.h" bodystart="1807" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Texture_1a05338dc48d30207c3ad0b2fe2595101a" prot="protected" static="no">
+        <type>GlyphTexObjs::iterator</type>
+        <definition>typedef GlyphTexObjs::iterator OGLFT::Texture::GTOI</definition>
+        <argsstring></argsstring>
+        <name>GTOI</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A convenience definition of the iterator over the glyph to texture object map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1811" column="36" bodyfile="liboglft/OGLFT.h" bodystart="1811" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1a2cb745b6ffb6e597f01bc872092ea3ac" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Texture::active_</definition>
+        <argsstring></argsstring>
+        <name>active_</name>
+        <briefdescription>
+<para>the other values.) </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Is character rotation non-zero? (faster than checking all </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1776" column="12" bodyfile="liboglft/OGLFT.h" bodystart="1776" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1ac95ef5bfaf04495dbe656ee674b2c0dc" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::x_</definition>
+        <argsstring></argsstring>
+        <name>x_</name>
+        <briefdescription>
+<para>Angle of rotation in the X direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1778" column="15" bodyfile="liboglft/OGLFT.h" bodystart="1778" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1a55cc43220991b9f1c71bd200546b4bee" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::y_</definition>
+        <argsstring></argsstring>
+        <name>y_</name>
+        <briefdescription>
+<para>Angle of rotation in the Y direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1779" column="1" bodyfile="liboglft/OGLFT.h" bodystart="1779" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1a8d5b63cfa6287a822da78c2297c90797" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::z_</definition>
+        <argsstring></argsstring>
+        <name>z_</name>
+        <briefdescription>
+<para>Angle of rotation in the Z direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1780" column="1" bodyfile="liboglft/OGLFT.h" bodystart="1780" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1a7dd73f071b8bdf6c4f269d447f30e01c" prot="protected" static="no" mutable="no">
+        <type>struct OGLFT::Texture::@3</type>
+        <definition>struct OGLFT::Texture::@3 OGLFT::Texture::character_rotation_</definition>
+        <argsstring></argsstring>
+        <name>character_rotation_</name>
+        <briefdescription>
+<para>Angle of rotation of characters relative to text orientation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1781" column="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Texture_1add5ddda31d39d7f97e6498e6e6349906" prot="protected" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1Texture_1a92aa311af254ddcbc81df8f554a038fc" kindref="member">GlyphTexObjs</ref></type>
+        <definition>GlyphTexObjs OGLFT::Texture::glyph_texobjs_</definition>
+        <argsstring></argsstring>
+        <name>glyph_texobjs_</name>
+        <briefdescription>
+<para>Cache of defined glyph texture objects. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1814" column="18" bodyfile="liboglft/OGLFT.h" bodystart="1814" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a34a5dd08b805d542fb0c3f8f0d51b4ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Texture::Texture</definition>
+        <argsstring>(const char *filename, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Texture</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename which contains the font face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1824" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="3219" bodyend="3225"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a7c89997d6f1c4d426639fadf112b61a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Texture::Texture</definition>
+        <argsstring>(FT_Face face, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Texture</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open FreeType FT_Face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1834" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="3227" bodyend="3231"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1ac4d5ffe425edc973340332d9bbd9fdfc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>OGLFT::Texture::~Texture</definition>
+        <argsstring>(void)</argsstring>
+        <name>~Texture</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The texture destructor doesn&apos;t really do anything. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1839" column="13" bodyfile="liboglft/OGLFT.cpp" bodystart="3245" bodyend="3248"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a05ba5b3f833c3e249394add70e1c7d6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::setCharacterRotationX</definition>
+        <argsstring>(GLfloat character_rotation_x)</argsstring>
+        <name>setCharacterRotationX</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the X direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of X rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1844" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3252" bodyend="3265"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1ac8a98eeaee1e8dc155a976d8fdfdc478" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::setCharacterRotationY</definition>
+        <argsstring>(GLfloat character_rotation_y)</argsstring>
+        <name>setCharacterRotationY</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the Y direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of Y rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1850" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3267" bodyend="3280"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a3d3d9ef0474bb6d7459619a30c26c571" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::setCharacterRotationZ</definition>
+        <argsstring>(GLfloat character_rotation_z)</argsstring>
+        <name>setCharacterRotationZ</name>
+        <reimplements refid="classOGLFT_1_1Face_1ac6610d5d5a48ed756c27031d8d5f371a">setCharacterRotationZ</reimplements>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the Z direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of Z rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1856" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3282" bodyend="3295"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1acb5202ebb8156180b1247758a66561a4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::characterRotationX</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationX</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the X direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1861" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1861" bodyend="1861"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a73f3286ceabbb0d21a4e275a9304579b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::characterRotationY</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationY</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the Y direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1866" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1866" bodyend="1866"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1aa0ce54780e176a48c1bd1d63499986a3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Texture::characterRotationZ</definition>
+        <argsstring>(void) const</argsstring>
+        <name>characterRotationZ</name>
+        <reimplements refid="classOGLFT_1_1Face_1adf5b61447db39a1bcc7fa6a383646085">characterRotationZ</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the Z direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1871" column="13" bodyfile="liboglft/OGLFT.h" bodystart="1871" bodyend="1871"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a6ec5a311395d676f39dd4cd1afc6b26a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double OGLFT::Texture::height</definition>
+        <argsstring>(void) const</argsstring>
+        <name>height</name>
+        <reimplements refid="classOGLFT_1_1Face_1ab75c0ac5bfc964c2a3f70af06584d678">height</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the height (i.e., line spacing) at the current character size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1876" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="3361" bodyend="3367"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a4cdf0fbad9e254d69e817a1ba945ac99" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Texture::measure</definition>
+        <argsstring>(unsigned char c)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1ac67aed67bb8afa5b4613942232e49bc4">measure</reimplements>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a character in a texture face. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1883" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3325" bodyend="3359"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a8fe78dc45d5aea4141533665c9d30e52" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Texture::measure</definition>
+        <argsstring>(const QChar c)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1a111cb1a7d026503717d1a44ccab3c967">measure</reimplements>
+        <param>
+          <type>const QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a character in a texture face. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1890" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3371" bodyend="3405"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a6bdabdd23f0f5f1ed21ce4f9a4599509" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Texture::measure</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1adcb1e6fe4f8e23e9fb06e5136a074f1b">measure</reimplements>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Measure a string of characters. Note: currently, this merely calls <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>&apos;s measure routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string of (latin1) characters to measure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1898" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1898" bodyend="1898"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a4c837c1052a0663648802585ca6835e8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Texture::measure</definition>
+        <argsstring>(const QString &amp;format, double number)</argsstring>
+        <name>measure</name>
+        <reimplements refid="classOGLFT_1_1Face_1aadfa3cf55099e261b7d31bcd3283d379">measure</reimplements>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implement measuring a formatted number <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to value to format </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of the formatted number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1906" column="10" bodyfile="liboglft/OGLFT.h" bodystart="1906" bodyend="1907"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a6ea85de63cb4e69f6c06b9234098bb2c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int OGLFT::Texture::nearestPowerCeil</definition>
+        <argsstring>(unsigned int a)</argsstring>
+        <name>nearestPowerCeil</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>OpenGL texture maps have to be a power of 2 in width and height (including apparently 1 = 2**0 ). This function returns the next higher power of 2 of the argument. If the argument is already a power of 2, you just get that back. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>width or height of an image. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>value of a rounded to nearest, higher power of 2. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1919" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="3514" bodyend="3538"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a50bc9a93e868261e6aa6ded5fa6f2218" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Texture::bindTexture</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)=0</argsstring>
+        <name>bindTexture</name>
+        <reimplementedby refid="classOGLFT_1_1MonochromeTexture_1a73e11d0955b8a45ee015b4cd511a7943">bindTexture</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1GrayscaleTexture_1a9dfee3f9b65c4f3741ccae7cb3fb7c78">bindTexture</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1TranslucentTexture_1a54ba8d48698c70608e5368b641188c47">bindTexture</reimplementedby>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is all that distinguishes the various texture styles. Each subclass defines this method as appropriate. Once the texture is bound, it is rendered the same in all cases. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>FT_Face containing the glyph to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1927" column="18"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1aa708b1c0db564181152eb94902d6165f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::init</definition>
+        <argsstring>(void)</argsstring>
+        <name>init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1930" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3233" bodyend="3243"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a91bb7ee23e6669696be4ec63984c5dc7" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::setCharSize</definition>
+        <argsstring>(void)</argsstring>
+        <name>setCharSize</name>
+        <reimplements refid="classOGLFT_1_1Face_1aae7b18f84114e436bde9d5e1f0be7624">setCharSize</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>There is a slight different between the way in which the polygonal and raster styles select the character size for FreeType to generate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1931" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3297" bodyend="3311"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1ad48bd989a2bb922154d924210d7d6916" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::setRotationOffset</definition>
+        <argsstring>(void)</argsstring>
+        <name>setRotationOffset</name>
+        <reimplements refid="classOGLFT_1_1Face_1a8a7d7ceca630eb978728d23f52cdb9dd">setRotationOffset</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The polygonal and raster styles compute different values for the Z rotation offset. (It&apos;s in integer pixels for the raster styles and in floating point pixels for the polygonal styles.) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1932" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3313" bodyend="3323"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a0172ad6859856a000f7cdf73bd7db025" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Texture::compileGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)</argsstring>
+        <name>compileGlyph</name>
+        <reimplements refid="classOGLFT_1_1Face_1ab92453fd3a4a33d3d4c2e88b7e0f4b6a">compileGlyph</reimplements>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Some styles, in particular the <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref>, need specialized steps to compile a glyph into an OpenGL display list. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list of the compiled glyph. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1933" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="3407" bodyend="3419"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a086c67338821119cd14b77172f9d60fa" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::renderGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)</argsstring>
+        <name>renderGlyph</name>
+        <reimplements refid="classOGLFT_1_1Face_1a32ee2eb902462680aef9da95c845185c">renderGlyph</reimplements>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Each style implements its own glyph rendering routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1934" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3421" bodyend="3493"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Texture_1a88293c451ded41ff941b823865ef0c4c" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Texture::clearCaches</definition>
+        <argsstring>(void)</argsstring>
+        <name>clearCaches</name>
+        <reimplements refid="classOGLFT_1_1Face_1aa3247d90589f553cf340a31e04907547">clearCaches</reimplements>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The different styles have different caching needs (well, really only the texture style currently has more than the display list cache). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1935" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="3495" bodyend="3512"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>This is the base class of the texture style. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>OGLFT::GrayscaleTexture</label>
+        <link refid="classOGLFT_1_1GrayscaleTexture"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OGLFT::Texture</label>
+        <link refid="classOGLFT_1_1Texture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>OGLFT::TranslucentTexture</label>
+        <link refid="classOGLFT_1_1TranslucentTexture"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OGLFT::MonochromeTexture</label>
+        <link refid="classOGLFT_1_1MonochromeTexture"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OGLFT::Texture</label>
+        <link refid="classOGLFT_1_1Texture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="1772" column="3" bodyfile="liboglft/OGLFT.h" bodystart="1772" bodyend="1936"/>
+    <listofallmembers>
+      <member refid="classOGLFT_1_1Texture_1a2cb745b6ffb6e597f01bc872092ea3ac" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>active_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>advance</name></member>
+      <member refid="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>advance_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>ascender</name></member>
+      <member refid="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>background_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>backgroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>backgroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>backgroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>backgroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>BASELINE</name></member>
+      <member refid="classOGLFT_1_1Texture_1a50bc9a93e868261e6aa6ded5fa6f2218" prot="protected" virt="pure-virtual"><scope>OGLFT::Texture</scope><name>bindTexture</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>BOTTOM</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>CENTER</name></member>
+      <member refid="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>character_display_lists_</name></member>
+      <member refid="classOGLFT_1_1Texture_1a7dd73f071b8bdf6c4f269d447f30e01c" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>character_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>characterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Texture_1acb5202ebb8156180b1247758a66561a4" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>characterRotationX</name></member>
+      <member refid="classOGLFT_1_1Texture_1a73f3286ceabbb0d21a4e275a9304579b" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>characterRotationY</name></member>
+      <member refid="classOGLFT_1_1Texture_1aa0ce54780e176a48c1bd1d63499986a3" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>characterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Texture_1a88293c451ded41ff941b823865ef0c4c" prot="private" virt="virtual"><scope>OGLFT::Texture</scope><name>clearCaches</name></member>
+      <member refid="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>COMPILE</name></member>
+      <member refid="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compile_mode_</name></member>
+      <member refid="classOGLFT_1_1Texture_1a0172ad6859856a000f7cdf73bd7db025" prot="private" virt="virtual"><scope>OGLFT::Texture</scope><name>compileGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>compileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>descender</name></member>
+      <member refid="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>faces_</name></member>
+      <member refid="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>foreground_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>foregroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>foregroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>foregroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>foregroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GDLCI</name></member>
+      <member refid="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GDLI</name></member>
+      <member refid="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>glyph_dlists_</name></member>
+      <member refid="classOGLFT_1_1Texture_1add5ddda31d39d7f97e6498e6e6349906" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>glyph_texobjs_</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GlyphCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GlyphDLists</name></member>
+      <member refid="classOGLFT_1_1Texture_1a92aa311af254ddcbc81df8f554a038fc" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GlyphTexObjs</name></member>
+      <member refid="classOGLFT_1_1Texture_1a8e2cebd5de9b3576c2a7f548abd6a107" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GTOCI</name></member>
+      <member refid="classOGLFT_1_1Texture_1a05338dc48d30207c3ad0b2fe2595101a" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>GTOI</name></member>
+      <member refid="classOGLFT_1_1Texture_1a6ec5a311395d676f39dd4cd1afc6b26a" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>height</name></member>
+      <member refid="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>horizontal_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>horizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>HorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>IMMEDIATE</name></member>
+      <member refid="classOGLFT_1_1Texture_1aa708b1c0db564181152eb94902d6165f" prot="private" virt="non-virtual"><scope>OGLFT::Texture</scope><name>init</name></member>
+      <member refid="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>isValid</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>LEFT</name></member>
+      <member refid="classOGLFT_1_1Texture_1a4cdf0fbad9e254d69e817a1ba945ac99" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Texture_1a8fe78dc45d5aea4141533665c9d30e52" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Texture_1a6bdabdd23f0f5f1ed21ce4f9a4599509" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Texture_1a4c837c1052a0663648802585ca6835e8" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" virt="virtual" ambiguityscope="OGLFT::Face::"><scope>OGLFT::Texture</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>MIDDLE</name></member>
+      <member refid="classOGLFT_1_1Texture_1a6ea85de63cb4e69f6c06b9234098bb2c" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>nearestPowerCeil</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>ORIGIN</name></member>
+      <member refid="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>point_size_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>pointSize</name></member>
+      <member refid="classOGLFT_1_1Texture_1a086c67338821119cd14b77172f9d60fa" prot="private" virt="virtual"><scope>OGLFT::Texture</scope><name>renderGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>resolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>resolution_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>RIGHT</name></member>
+      <member refid="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>rotation_offset_y_</name></member>
+      <member refid="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>rotation_reference_face_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>rotation_reference_glyph_</name></member>
+      <member refid="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setAdvance</name></member>
+      <member refid="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setCharacterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setCharacterRotationReference</name></member>
+      <member refid="classOGLFT_1_1Texture_1a05ba5b3f833c3e249394add70e1c7d6e" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setCharacterRotationX</name></member>
+      <member refid="classOGLFT_1_1Texture_1ac8a98eeaee1e8dc155a976d8fdfdc478" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setCharacterRotationY</name></member>
+      <member refid="classOGLFT_1_1Texture_1a3d3d9ef0474bb6d7459619a30c26c571" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>setCharacterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Texture_1a91bb7ee23e6669696be4ec63984c5dc7" prot="private" virt="virtual"><scope>OGLFT::Texture</scope><name>setCharSize</name></member>
+      <member refid="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setHorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setPointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setResolution</name></member>
+      <member refid="classOGLFT_1_1Texture_1ad48bd989a2bb922154d924210d7d6916" prot="private" virt="virtual"><scope>OGLFT::Texture</scope><name>setRotationOffset</name></member>
+      <member refid="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setStringRotation</name></member>
+      <member refid="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>setVerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>string_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>stringRotation</name></member>
+      <member refid="classOGLFT_1_1Texture_1a34a5dd08b805d542fb0c3f8f0d51b4ad" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>Texture</name></member>
+      <member refid="classOGLFT_1_1Texture_1a7c89997d6f1c4d426639fadf112b61a2" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>Texture</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>TOP</name></member>
+      <member refid="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>valid_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" virt="non-virtual"><scope>OGLFT::Texture</scope><name>vertical_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>VerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>verticaljustification</name></member>
+      <member refid="classOGLFT_1_1Texture_1ac95ef5bfaf04495dbe656ee674b2c0dc" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>x_</name></member>
+      <member refid="classOGLFT_1_1Texture_1a55cc43220991b9f1c71bd200546b4bee" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>y_</name></member>
+      <member refid="classOGLFT_1_1Texture_1a8d5b63cfa6287a822da78c2297c90797" prot="public" virt="non-virtual"><scope>OGLFT::Texture</scope><name>z_</name></member>
+      <member refid="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>~Face</name></member>
+      <member refid="classOGLFT_1_1Texture_1ac4d5ffe425edc973340332d9bbd9fdfc" prot="public" virt="virtual"><scope>OGLFT::Texture</scope><name>~Texture</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

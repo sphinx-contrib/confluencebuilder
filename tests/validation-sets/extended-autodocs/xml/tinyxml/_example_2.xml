@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="_example_2" kind="page">
+    <compoundname>Example_2</compoundname>
+    <title>Parse an XML from char buffer</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para> Basic XML string parsing. The basic syntax to parse an XML for a char* and check for an error. (ErrorID() will return 0 for no error.) <programlisting filename="./xmltest.cpp"><codeline><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>example_2()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>xml<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;element/&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>XMLDocument<sp/>doc;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>doc.Parse(<sp/>xml<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>doc.ErrorID();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+    </detaileddescription>
+    <location file="xmltest.cpp"/>
+  </compounddef>
+</doxygen>

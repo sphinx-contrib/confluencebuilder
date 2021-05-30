@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classOGLFT_1_1Grayscale" kind="class" language="C++" prot="public">
+    <compoundname>OGLFT::Grayscale</compoundname>
+    <basecompoundref refid="classOGLFT_1_1Raster" prot="public" virt="non-virtual">OGLFT::Raster</basecompoundref>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOGLFT_1_1Grayscale_1a26a2115c9ed1f64e50b2502bdc4fb730" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Grayscale::Grayscale</definition>
+        <argsstring>(const char *filename, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Grayscale</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename which contains the font face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1695" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="1693" bodyend="1696"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Grayscale_1ac00d35ed8cd5939c8f54f6fe7a05ce55" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Grayscale::Grayscale</definition>
+        <argsstring>(FT_Face face, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Grayscale</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open FreeType FT_Face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1704" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="1698" bodyend="1700"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Grayscale_1ab4fae6f2ea7c44c824f1e559c2c6b17e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Grayscale::~Grayscale</definition>
+        <argsstring>(void)</argsstring>
+        <name>~Grayscale</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The destructor doesn&apos;t do anything in particular. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1708" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="1702" bodyend="1703"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOGLFT_1_1Grayscale_1aa44de3d55d817f1ac78494ba4dd0f5bf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>GLubyte *</type>
+        <definition>GLubyte * OGLFT::Grayscale::invertPixmap</definition>
+        <argsstring>(const FT_Bitmap &amp;bitmap)</argsstring>
+        <name>invertPixmap</name>
+        <param>
+          <type>const FT_Bitmap &amp;</type>
+          <declname>bitmap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1710" column="13" bodyfile="liboglft/OGLFT.cpp" bodystart="1705" bodyend="1720"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Grayscale_1aae5ac835389c8d9ccd993942f8240d0e" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OGLFT::Grayscale::renderGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)</argsstring>
+        <name>renderGlyph</name>
+        <reimplements refid="classOGLFT_1_1Face_1a32ee2eb902462680aef9da95c845185c">renderGlyph</reimplements>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Each style implements its own glyph rendering routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="1711" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1722" bodyend="1824"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Render text as a grayscale raster image. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><image type="html" name="grayscale_class.png"></image>
+ The <ref refid="classOGLFT_1_1Grayscale" kindref="compound">Grayscale</ref> style is similar to the <ref refid="classOGLFT_1_1Monochrome" kindref="compound">Monochrome</ref> style. FreeType is used to rasterize a glyph and this is then drawn on the screen using <computeroutput>glDrawPixels</computeroutput>. The FreeType rasterization is done in anti-aliased mode. When <ref refid="classOGLFT_1_1Grayscale" kindref="compound">Grayscale</ref> draws the glyph image, the resulting text is blended smoothly from the foreground color to the background color. The background of the glyph is opaque, so this style works best over a solid background.</para>
+<para>Note: you <emphasis>must</emphasis> call <programlisting><codeline><highlight class="normal">glPixelStorei(<sp/>GL_UNPACK_ALIGNMENT,<sp/>1<sp/>);</highlight></codeline>
+</programlisting> before drawing in order for grayscale glyphs to be rendered properly.</para>
+<para>Another note: It is helpful to have the option <computeroutput>GL_RASTER_POSITION_UNCLIPPED_IBM</computeroutput> available if you intend to draw text at MODELVIEW based positions, otherwise if the initial text position is off the screen, the entire image is clipped. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OGLFT::Grayscale</label>
+        <link refid="classOGLFT_1_1Grayscale"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Raster</label>
+        <link refid="classOGLFT_1_1Raster"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OGLFT::Grayscale</label>
+        <link refid="classOGLFT_1_1Grayscale"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Raster</label>
+        <link refid="classOGLFT_1_1Raster"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </collaborationgraph>
+    <location file="liboglft/OGLFT.h" line="1686" column="3" bodyfile="liboglft/OGLFT.h" bodystart="1686" bodyend="1712"/>
+    <listofallmembers>
+      <member refid="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>advance</name></member>
+      <member refid="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>advance_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>ascender</name></member>
+      <member refid="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>background_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>backgroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>backgroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>backgroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>backgroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>BASELINE</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>BOTTOM</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>CENTER</name></member>
+      <member refid="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>character_display_lists_</name></member>
+      <member refid="classOGLFT_1_1Raster_1a3e93fcccc3a7fd4ab3182321be13d981" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>character_rotation_z_</name></member>
+      <member refid="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>characterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Raster_1ad340aeabc19265aac5e3d5babf091d2c" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>characterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>COMPILE</name></member>
+      <member refid="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compile_mode_</name></member>
+      <member refid="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>compileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>descender</name></member>
+      <member refid="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>faces_</name></member>
+      <member refid="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>foreground_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>foregroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>foregroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>foregroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>foregroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>GDLCI</name></member>
+      <member refid="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>GDLI</name></member>
+      <member refid="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>glyph_dlists_</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>GlyphCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>GlyphDLists</name></member>
+      <member refid="classOGLFT_1_1Grayscale_1a26a2115c9ed1f64e50b2502bdc4fb730" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Grayscale</name></member>
+      <member refid="classOGLFT_1_1Grayscale_1ac00d35ed8cd5939c8f54f6fe7a05ce55" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Grayscale</name></member>
+      <member refid="classOGLFT_1_1Raster_1a1c9a6e2dd8cbb199d4454144ee4279d2" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>height</name></member>
+      <member refid="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>horizontal_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>horizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>HorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>IMMEDIATE</name></member>
+      <member refid="classOGLFT_1_1Grayscale_1aa44de3d55d817f1ac78494ba4dd0f5bf" prot="private" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>invertPixmap</name></member>
+      <member refid="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>isValid</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>LEFT</name></member>
+      <member refid="classOGLFT_1_1Raster_1ae57fb48a06098073f54030082357225d" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Raster_1a831405885339b4b18e269e3f7ceee000" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Raster_1aaf247577a65468fa6ec8f9cdbe11aa02" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Raster_1a89c562c509407dac5820364538caa9f5" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" virt="virtual" ambiguityscope="OGLFT::Face::"><scope>OGLFT::Grayscale</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>MIDDLE</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>ORIGIN</name></member>
+      <member refid="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>point_size_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>pointSize</name></member>
+      <member refid="classOGLFT_1_1Raster_1a3b769e5fd38f1af2abff8ece0b55b59a" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Raster</name></member>
+      <member refid="classOGLFT_1_1Raster_1a530016a0920c95a44b2e2da9dcef5137" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>Raster</name></member>
+      <member refid="classOGLFT_1_1Grayscale_1aae5ac835389c8d9ccd993942f8240d0e" prot="private" virt="virtual"><scope>OGLFT::Grayscale</scope><name>renderGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>resolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>resolution_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>RIGHT</name></member>
+      <member refid="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>rotation_offset_y_</name></member>
+      <member refid="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>rotation_reference_face_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>rotation_reference_glyph_</name></member>
+      <member refid="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setAdvance</name></member>
+      <member refid="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setCharacterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setCharacterRotationReference</name></member>
+      <member refid="classOGLFT_1_1Raster_1a358bdf4d5615763bc00f3ebb23389f0f" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>setCharacterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setHorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setPointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setResolution</name></member>
+      <member refid="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setStringRotation</name></member>
+      <member refid="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>setVerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>string_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>stringRotation</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>TOP</name></member>
+      <member refid="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>valid_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>vertical_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>VerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>verticaljustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>~Face</name></member>
+      <member refid="classOGLFT_1_1Grayscale_1ab4fae6f2ea7c44c824f1e559c2c6b17e" prot="public" virt="non-virtual"><scope>OGLFT::Grayscale</scope><name>~Grayscale</name></member>
+      <member refid="classOGLFT_1_1Raster_1aa49788621fbf3cbf68ba01f830a2a4b7" prot="public" virt="virtual"><scope>OGLFT::Grayscale</scope><name>~Raster</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

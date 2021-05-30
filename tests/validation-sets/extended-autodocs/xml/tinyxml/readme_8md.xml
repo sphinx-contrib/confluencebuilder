@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="readme_8md" kind="file" language="Markdown">
+    <compoundname>readme.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">TinyXML-2</highlight></codeline>
+<codeline><highlight class="normal">=========</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">![Build](https://github.com/leethomason/tinyxml2/actions/workflows/test.yml/badge.svg)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">![TinyXML-2<sp/>Logo](http://www.grinninglizard.com/tinyxml2/TinyXML2_small.png)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>is<sp/>a<sp/>simple,<sp/>small,<sp/>efficient,<sp/>C++<sp/>XML<sp/>parser<sp/>that<sp/>can<sp/>be</highlight></codeline>
+<codeline><highlight class="normal">easily<sp/>integrated<sp/>into<sp/>other<sp/>programs.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>master<sp/>is<sp/>hosted<sp/>on<sp/>github:</highlight></codeline>
+<codeline><highlight class="normal">https://github.com/leethomason/tinyxml2</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>online<sp/>HTML<sp/>version<sp/>of<sp/>these<sp/>docs:</highlight></codeline>
+<codeline><highlight class="normal">http://leethomason.github.io/tinyxml2/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Examples<sp/>are<sp/>in<sp/>the<sp/>&quot;related<sp/>pages&quot;<sp/>tab<sp/>of<sp/>the<sp/>HTML<sp/>docs.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">What<sp/>it<sp/>does.</highlight></codeline>
+<codeline><highlight class="normal">-------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>brief,<sp/>TinyXML-2<sp/>parses<sp/>an<sp/>XML<sp/>document,<sp/>and<sp/>builds<sp/>from<sp/>that<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">Document<sp/>Object<sp/>Model<sp/>(DOM)<sp/>that<sp/>can<sp/>be<sp/>read,<sp/>modified,<sp/>and<sp/>saved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">XML<sp/>stands<sp/>for<sp/>&quot;eXtensible<sp/>Markup<sp/>Language.&quot;<sp/>It<sp/>is<sp/>a<sp/>general<sp/>purpose</highlight></codeline>
+<codeline><highlight class="normal">human<sp/>and<sp/>machine<sp/>readable<sp/>markup<sp/>language<sp/>to<sp/>describe<sp/>arbitrary<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal">All<sp/>those<sp/>random<sp/>file<sp/>formats<sp/>created<sp/>to<sp/>store<sp/>application<sp/>data<sp/>can</highlight></codeline>
+<codeline><highlight class="normal">all<sp/>be<sp/>replaced<sp/>with<sp/>XML.<sp/>One<sp/>parser<sp/>for<sp/>everything.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">http://en.wikipedia.org/wiki/XML</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">There<sp/>are<sp/>different<sp/>ways<sp/>to<sp/>access<sp/>and<sp/>interact<sp/>with<sp/>XML<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>uses<sp/>a<sp/>Document<sp/>Object<sp/>Model<sp/>(DOM),<sp/>meaning<sp/>the<sp/>XML<sp/>data<sp/>is<sp/>parsed</highlight></codeline>
+<codeline><highlight class="normal">into<sp/>a<sp/>C++<sp/>objects<sp/>that<sp/>can<sp/>be<sp/>browsed<sp/>and<sp/>manipulated,<sp/>and<sp/>then</highlight></codeline>
+<codeline><highlight class="normal">written<sp/>to<sp/>disk<sp/>or<sp/>another<sp/>output<sp/>stream.<sp/>You<sp/>can<sp/>also<sp/>construct<sp/>an<sp/>XML<sp/>document</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>scratch<sp/>with<sp/>C++<sp/>objects<sp/>and<sp/>write<sp/>this<sp/>to<sp/>disk<sp/>or<sp/>another<sp/>output</highlight></codeline>
+<codeline><highlight class="normal">stream.<sp/>You<sp/>can<sp/>even<sp/>use<sp/>TinyXML-2<sp/>to<sp/>stream<sp/>XML<sp/>programmatically<sp/>from</highlight></codeline>
+<codeline><highlight class="normal">code<sp/>without<sp/>creating<sp/>a<sp/>document<sp/>first.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>easy<sp/>and<sp/>fast<sp/>to<sp/>learn.<sp/>It<sp/>is<sp/>one<sp/>header<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">one<sp/>cpp<sp/>file.<sp/>Simply<sp/>add<sp/>these<sp/>to<sp/>your<sp/>project<sp/>and<sp/>off<sp/>you<sp/>go.</highlight></codeline>
+<codeline><highlight class="normal">There<sp/>is<sp/>an<sp/>example<sp/>file<sp/>-<sp/>xmltest.cpp<sp/>-<sp/>to<sp/>get<sp/>you<sp/>started.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>is<sp/>released<sp/>under<sp/>the<sp/>ZLib<sp/>license,</highlight></codeline>
+<codeline><highlight class="normal">so<sp/>you<sp/>can<sp/>use<sp/>it<sp/>in<sp/>open<sp/>source<sp/>or<sp/>commercial<sp/>code.<sp/>The<sp/>details</highlight></codeline>
+<codeline><highlight class="normal">of<sp/>the<sp/>license<sp/>are<sp/>at<sp/>the<sp/>top<sp/>of<sp/>every<sp/>source<sp/>file.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>attempts<sp/>to<sp/>be<sp/>a<sp/>flexible<sp/>parser,<sp/>but<sp/>with<sp/>truly<sp/>correct<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">compliant<sp/>XML<sp/>output.<sp/>TinyXML-2<sp/>should<sp/>compile<sp/>on<sp/>any<sp/>reasonably<sp/>C++</highlight></codeline>
+<codeline><highlight class="normal">compliant<sp/>system.<sp/>It<sp/>does<sp/>not<sp/>rely<sp/>on<sp/>exceptions,<sp/>RTTI,<sp/>or<sp/>the<sp/>STL.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">What<sp/>it<sp/>doesn&apos;t<sp/>do.</highlight></codeline>
+<codeline><highlight class="normal">-------------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>doesn&apos;t<sp/>parse<sp/>or<sp/>use<sp/>DTDs<sp/>(Document<sp/>Type<sp/>Definitions)<sp/>or<sp/>XSLs</highlight></codeline>
+<codeline><highlight class="normal">(eXtensible<sp/>Stylesheet<sp/>Language.)<sp/>There<sp/>are<sp/>other<sp/>parsers<sp/>out<sp/>there</highlight></codeline>
+<codeline><highlight class="normal">that<sp/>are<sp/>much<sp/>more<sp/>fully<sp/>featured.<sp/>But<sp/>they<sp/>are<sp/>generally<sp/>bigger<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">more<sp/>difficult<sp/>to<sp/>use.<sp/>If<sp/>you<sp/>are<sp/>working<sp/>with</highlight></codeline>
+<codeline><highlight class="normal">browsers<sp/>or<sp/>have<sp/>more<sp/>complete<sp/>XML<sp/>needs,<sp/>TinyXML-2<sp/>is<sp/>not<sp/>the<sp/>parser<sp/>for<sp/>you.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-1<sp/>vs.<sp/>TinyXML-2</highlight></codeline>
+<codeline><highlight class="normal">-----------------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>long<sp/>been<sp/>the<sp/>focus<sp/>of<sp/>all<sp/>development.<sp/>It<sp/>is<sp/>well<sp/>tested<sp/></highlight></codeline>
+<codeline><highlight class="normal">and<sp/>should<sp/>be<sp/>used<sp/>instead<sp/>of<sp/>TinyXML-1.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>uses<sp/>a<sp/>similar<sp/>API<sp/>to<sp/>TinyXML-1<sp/>and<sp/>the<sp/>same</highlight></codeline>
+<codeline><highlight class="normal">rich<sp/>test<sp/>cases.<sp/>But<sp/>the<sp/>implementation<sp/>of<sp/>the<sp/>parser<sp/>is<sp/>completely<sp/>re-written</highlight></codeline>
+<codeline><highlight class="normal">to<sp/>make<sp/>it<sp/>more<sp/>appropriate<sp/>for<sp/>use<sp/>in<sp/>a<sp/>game.<sp/>It<sp/>uses<sp/>less<sp/>memory,<sp/>is<sp/>faster,</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>uses<sp/>far<sp/>fewer<sp/>memory<sp/>allocations.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>has<sp/>no<sp/>requirement<sp/>or<sp/>support<sp/>for<sp/>STL.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Features</highlight></codeline>
+<codeline><highlight class="normal">--------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Code<sp/>Page</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>uses<sp/>UTF-8<sp/>exclusively<sp/>when<sp/>interpreting<sp/>XML.<sp/>All<sp/>XML<sp/>is<sp/>assumed<sp/>to</highlight></codeline>
+<codeline><highlight class="normal">be<sp/>UTF-8.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Filenames<sp/>for<sp/>loading<sp/>/<sp/>saving<sp/>are<sp/>passed<sp/>unchanged<sp/>to<sp/>the<sp/>underlying<sp/>OS.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Memory<sp/>Model</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">An<sp/>XMLDocument<sp/>is<sp/>a<sp/>C++<sp/>object<sp/>like<sp/>any<sp/>other,<sp/>that<sp/>can<sp/>be<sp/>on<sp/>the<sp/>stack,<sp/>or</highlight></codeline>
+<codeline><highlight class="normal">new&apos;d<sp/>and<sp/>deleted<sp/>on<sp/>the<sp/>heap.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">However,<sp/>any<sp/>sub-node<sp/>of<sp/>the<sp/>Document,<sp/>XMLElement,<sp/>XMLText,<sp/>etc,<sp/>can<sp/>only</highlight></codeline>
+<codeline><highlight class="normal">be<sp/>created<sp/>by<sp/>calling<sp/>the<sp/>appropriate<sp/>XMLDocument::NewElement,<sp/>NewText,<sp/>etc.</highlight></codeline>
+<codeline><highlight class="normal">method.<sp/>Although<sp/>you<sp/>have<sp/>pointers<sp/>to<sp/>these<sp/>objects,<sp/>they<sp/>are<sp/>still<sp/>owned</highlight></codeline>
+<codeline><highlight class="normal">by<sp/>the<sp/>Document.<sp/>When<sp/>the<sp/>Document<sp/>is<sp/>deleted,<sp/>so<sp/>are<sp/>all<sp/>the<sp/>nodes<sp/>it<sp/>contains.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>White<sp/>Space</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Whitespace<sp/>Preservation<sp/>(default)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Microsoft<sp/>has<sp/>an<sp/>excellent<sp/>article<sp/>on<sp/>white<sp/>space:<sp/>http://msdn.microsoft.com/en-us/library/ms256097.aspx</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">By<sp/>default,<sp/>TinyXML-2<sp/>preserves<sp/>white<sp/>space<sp/>in<sp/>a<sp/>(hopefully)<sp/>sane<sp/>way<sp/>that<sp/>is<sp/>almost<sp/>compliant<sp/>with<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">spec.<sp/>(TinyXML-1<sp/>used<sp/>a<sp/>completely<sp/>different<sp/>model,<sp/>much<sp/>more<sp/>similar<sp/>to<sp/>&apos;collapse&apos;,<sp/>below.)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">As<sp/>a<sp/>first<sp/>step,<sp/>all<sp/>newlines<sp/>/<sp/>carriage-returns<sp/>/<sp/>line-feeds<sp/>are<sp/>normalized<sp/>to<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">line-feed<sp/>character,<sp/>as<sp/>required<sp/>by<sp/>the<sp/>XML<sp/>spec.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">White<sp/>space<sp/>in<sp/>text<sp/>is<sp/>preserved.<sp/>For<sp/>example:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&lt;element&gt;<sp/>Hello,<sp/><sp/>World&lt;/element&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>leading<sp/>space<sp/>before<sp/>the<sp/>&quot;Hello&quot;<sp/>and<sp/>the<sp/>double<sp/>space<sp/>after<sp/>the<sp/>comma<sp/>are</highlight></codeline>
+<codeline><highlight class="normal">preserved.<sp/>Line-feeds<sp/>are<sp/>preserved,<sp/>as<sp/>in<sp/>this<sp/>example:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&lt;element&gt;<sp/>Hello<sp/>again,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>World&lt;/element&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">However,<sp/>white<sp/>space<sp/>between<sp/>elements<sp/>is<sp/>**not**<sp/>preserved.<sp/>Although<sp/>not<sp/>strictly</highlight></codeline>
+<codeline><highlight class="normal">compliant,<sp/>tracking<sp/>and<sp/>reporting<sp/>inter-element<sp/>space<sp/>is<sp/>awkward,<sp/>and<sp/>not<sp/>normally</highlight></codeline>
+<codeline><highlight class="normal">valuable.<sp/>TinyXML-2<sp/>sees<sp/>these<sp/>as<sp/>the<sp/>same<sp/>XML:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&lt;document&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;data&gt;1&lt;/data&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;data&gt;2&lt;/data&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;data&gt;3&lt;/data&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&lt;/document&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&lt;document&gt;&lt;data&gt;1&lt;/data&gt;&lt;data&gt;2&lt;/data&gt;&lt;data&gt;3&lt;/data&gt;&lt;/document&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Whitespace<sp/>Collapse</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">For<sp/>some<sp/>applications,<sp/>it<sp/>is<sp/>preferable<sp/>to<sp/>collapse<sp/>whitespace.<sp/>Collapsing</highlight></codeline>
+<codeline><highlight class="normal">whitespace<sp/>gives<sp/>you<sp/>&quot;HTML-like&quot;<sp/>behavior,<sp/>which<sp/>is<sp/>sometimes<sp/>more<sp/>suitable</highlight></codeline>
+<codeline><highlight class="normal">for<sp/>hand<sp/>typed<sp/>documents.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>supports<sp/>this<sp/>with<sp/>the<sp/>&apos;whitespace&apos;<sp/>parameter<sp/>to<sp/>the<sp/>XMLDocument<sp/>constructor.</highlight></codeline>
+<codeline><highlight class="normal">(The<sp/>default<sp/>is<sp/>to<sp/>preserve<sp/>whitespace,<sp/>as<sp/>described<sp/>above.)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">However,<sp/>you<sp/>may<sp/>also<sp/>use<sp/>COLLAPSE_WHITESPACE,<sp/>which<sp/>will:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">*<sp/>Remove<sp/>leading<sp/>and<sp/>trailing<sp/>whitespace</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>Convert<sp/>newlines<sp/>and<sp/>line-feeds<sp/>into<sp/>a<sp/>space<sp/>character</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>Collapse<sp/>a<sp/>run<sp/>of<sp/>any<sp/>number<sp/>of<sp/>space<sp/>characters<sp/>into<sp/>a<sp/>single<sp/>space<sp/>character</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>(currently)<sp/>there<sp/>is<sp/>a<sp/>performance<sp/>impact<sp/>for<sp/>using<sp/>COLLAPSE_WHITESPACE.</highlight></codeline>
+<codeline><highlight class="normal">It<sp/>essentially<sp/>causes<sp/>the<sp/>XML<sp/>to<sp/>be<sp/>parsed<sp/>twice.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Error<sp/>Reporting</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>reports<sp/>the<sp/>line<sp/>number<sp/>of<sp/>any<sp/>errors<sp/>in<sp/>an<sp/>XML<sp/>document<sp/>that</highlight></codeline>
+<codeline><highlight class="normal">cannot<sp/>be<sp/>parsed<sp/>correctly.<sp/>In<sp/>addition,<sp/>all<sp/>nodes<sp/>(elements,<sp/>declarations,</highlight></codeline>
+<codeline><highlight class="normal">text,<sp/>comments<sp/>etc.)<sp/>and<sp/>attributes<sp/>have<sp/>a<sp/>line<sp/>number<sp/>recorded<sp/>as<sp/>they<sp/>are<sp/>parsed.</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>allows<sp/>an<sp/>application<sp/>that<sp/>performs<sp/>additional<sp/>validation<sp/>of<sp/>the<sp/>parsed</highlight></codeline>
+<codeline><highlight class="normal">XML<sp/>document<sp/>(e.g.<sp/>application-implemented<sp/>DTD<sp/>validation)<sp/>to<sp/>report</highlight></codeline>
+<codeline><highlight class="normal">line<sp/>number<sp/>information<sp/>for<sp/>error<sp/>messages.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Entities</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>recognizes<sp/>the<sp/>pre-defined<sp/>&quot;character<sp/>entities&quot;,<sp/>meaning<sp/>special</highlight></codeline>
+<codeline><highlight class="normal">characters.<sp/>Namely:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;amp;<sp/><sp/><sp/>&amp;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;lt;<sp/><sp/><sp/><sp/>&lt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;gt;<sp/><sp/><sp/><sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;quot;<sp/><sp/>&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;apos;<sp/><sp/>&apos;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">These<sp/>are<sp/>recognized<sp/>when<sp/>the<sp/>XML<sp/>document<sp/>is<sp/>read,<sp/>and<sp/>translated<sp/>to<sp/>their</highlight></codeline>
+<codeline><highlight class="normal">UTF-8<sp/>equivalents.<sp/>For<sp/>instance,<sp/>text<sp/>with<sp/>the<sp/>XML<sp/>of:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Far<sp/>&amp;amp;<sp/>Away</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">will<sp/>have<sp/>the<sp/>Value()<sp/>of<sp/>&quot;Far<sp/>&amp;<sp/>Away&quot;<sp/>when<sp/>queried<sp/>from<sp/>the<sp/>XMLText<sp/>object,</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>will<sp/>be<sp/>written<sp/>back<sp/>to<sp/>the<sp/>XML<sp/>stream/file<sp/>as<sp/>an<sp/>ampersand.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Additionally,<sp/>any<sp/>character<sp/>can<sp/>be<sp/>specified<sp/>by<sp/>its<sp/>Unicode<sp/>code<sp/>point:</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>syntax<sp/>`&amp;#xA0;`<sp/>or<sp/>`&amp;#160;`<sp/>are<sp/>both<sp/>to<sp/>the<sp/>non-breaking<sp/>space<sp/>character.</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>called<sp/>a<sp/>&apos;numeric<sp/>character<sp/>reference&apos;.<sp/>Any<sp/>numeric<sp/>character<sp/>reference</highlight></codeline>
+<codeline><highlight class="normal">that<sp/>isn&apos;t<sp/>one<sp/>of<sp/>the<sp/>special<sp/>entities<sp/>above,<sp/>will<sp/>be<sp/>read,<sp/>but<sp/>written<sp/>as<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">regular<sp/>code<sp/>point.<sp/>The<sp/>output<sp/>is<sp/>correct,<sp/>but<sp/>the<sp/>entity<sp/>syntax<sp/>isn&apos;t<sp/>preserved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Printing</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Print<sp/>to<sp/>file</highlight></codeline>
+<codeline><highlight class="normal">You<sp/>can<sp/>directly<sp/>use<sp/>the<sp/>convenience<sp/>function:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>XMLDocument<sp/>doc;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>doc.SaveFile(<sp/>&quot;foo.xml&quot;<sp/>);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Or<sp/>the<sp/>XMLPrinter<sp/>class:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>XMLPrinter<sp/>printer(<sp/>fp<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>doc.Print(<sp/>&amp;printer<sp/>);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Print<sp/>to<sp/>memory</highlight></codeline>
+<codeline><highlight class="normal">Printing<sp/>to<sp/>memory<sp/>is<sp/>supported<sp/>by<sp/>the<sp/>XMLPrinter.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>XMLPrinter<sp/>printer;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>doc.Print(<sp/>&amp;printer<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>printer.CStr()<sp/>has<sp/>a<sp/>const<sp/>char*<sp/>to<sp/>the<sp/>XML</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Print<sp/>without<sp/>an<sp/>XMLDocument</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">When<sp/>loading,<sp/>an<sp/>XML<sp/>parser<sp/>is<sp/>very<sp/>useful.<sp/>However,<sp/>sometimes</highlight></codeline>
+<codeline><highlight class="normal">when<sp/>saving,<sp/>it<sp/>just<sp/>gets<sp/>in<sp/>the<sp/>way.<sp/>The<sp/>code<sp/>is<sp/>often<sp/>set<sp/>up</highlight></codeline>
+<codeline><highlight class="normal">for<sp/>streaming,<sp/>and<sp/>constructing<sp/>the<sp/>DOM<sp/>is<sp/>just<sp/>overhead.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>Printer<sp/>supports<sp/>the<sp/>streaming<sp/>case.<sp/>The<sp/>following<sp/>code</highlight></codeline>
+<codeline><highlight class="normal">prints<sp/>out<sp/>a<sp/>trivially<sp/>simple<sp/>XML<sp/>file<sp/>without<sp/>ever<sp/>creating</highlight></codeline>
+<codeline><highlight class="normal">an<sp/>XML<sp/>document.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>XMLPrinter<sp/>printer(<sp/>fp<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printer.OpenElement(<sp/>&quot;foo&quot;<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printer.PushAttribute(<sp/>&quot;foo&quot;,<sp/>&quot;bar&quot;<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printer.CloseElement();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Examples</highlight></codeline>
+<codeline><highlight class="normal">--------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Load<sp/>and<sp/>parse<sp/>an<sp/>XML<sp/>file.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/*<sp/>------<sp/>Example<sp/>1:<sp/>Load<sp/>and<sp/>parse<sp/>an<sp/>XML<sp/>file.<sp/>----<sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>XMLDocument<sp/>doc;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>doc.LoadFile(<sp/>&quot;dream.xml&quot;<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Lookup<sp/>information.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/*<sp/>------<sp/>Example<sp/>2:<sp/>Lookup<sp/>information.<sp/>----<sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>XMLDocument<sp/>doc;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>doc.LoadFile(<sp/>&quot;dream.xml&quot;<sp/>);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Structure<sp/>of<sp/>the<sp/>XML<sp/>file:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>-<sp/>Element<sp/>&quot;PLAY&quot;<sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>root<sp/>Element,<sp/>which<sp/>is<sp/>the</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FirstChildElement<sp/>of<sp/>the<sp/>Document</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>-<sp/>-<sp/>Element<sp/>&quot;TITLE&quot;<sp/><sp/><sp/>child<sp/>of<sp/>the<sp/>root<sp/>PLAY<sp/>Element</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>-<sp/>-<sp/>-<sp/>Text<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>child<sp/>of<sp/>the<sp/>TITLE<sp/>Element</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Navigate<sp/>to<sp/>the<sp/>title,<sp/>using<sp/>the<sp/>convenience<sp/>function,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>with<sp/>a<sp/>dangerous<sp/>lack<sp/>of<sp/>error<sp/>checking.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>char*<sp/>title<sp/>=<sp/>doc.FirstChildElement(<sp/>&quot;PLAY&quot;<sp/>)-&gt;FirstChildElement(<sp/>&quot;TITLE&quot;<sp/>)-&gt;GetText();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(<sp/>&quot;Name<sp/>of<sp/>play<sp/>(1):<sp/>%s\n&quot;,<sp/>title<sp/>);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Text<sp/>is<sp/>just<sp/>another<sp/>Node<sp/>to<sp/>TinyXML-2.<sp/>The<sp/>more</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>general<sp/>way<sp/>to<sp/>get<sp/>to<sp/>the<sp/>XMLText:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>XMLText*<sp/>textNode<sp/>=<sp/>doc.FirstChildElement(<sp/>&quot;PLAY&quot;<sp/>)-&gt;FirstChildElement(<sp/>&quot;TITLE&quot;<sp/>)-&gt;FirstChild()-&gt;ToText();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>title<sp/>=<sp/>textNode-&gt;Value();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printf(<sp/>&quot;Name<sp/>of<sp/>play<sp/>(2):<sp/>%s\n&quot;,<sp/>title<sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Using<sp/>and<sp/>Installing</highlight></codeline>
+<codeline><highlight class="normal">--------------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">There<sp/>are<sp/>2<sp/>files<sp/>in<sp/>TinyXML-2:</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>tinyxml2.cpp</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>tinyxml2.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">And<sp/>additionally<sp/>a<sp/>test<sp/>file:</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>xmltest.cpp</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Generally<sp/>speaking,<sp/>the<sp/>intent<sp/>is<sp/>that<sp/>you<sp/>simply<sp/>include<sp/>the<sp/>tinyxml2.cpp<sp/>and<sp/></highlight></codeline>
+<codeline><highlight class="normal">tinyxml2.h<sp/>files<sp/>in<sp/>your<sp/>project<sp/>and<sp/>build<sp/>with<sp/>your<sp/>other<sp/>source<sp/>code.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">There<sp/>is<sp/>also<sp/>a<sp/>CMake<sp/>build<sp/>included.<sp/>CMake<sp/>is<sp/>the<sp/>general<sp/>build<sp/>for<sp/>TinyXML-2.</highlight></codeline>
+<codeline><highlight class="normal">Additional<sp/>build<sp/>systems<sp/>are<sp/>costly<sp/>to<sp/>maintain,<sp/>and<sp/>tend<sp/>to<sp/>bit-rot.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">A<sp/>Visual<sp/>Studio<sp/>project<sp/>is<sp/>included,<sp/>but<sp/>that<sp/>is<sp/>largely<sp/>for<sp/>developer<sp/>convenience,</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>is<sp/>not<sp/>intended<sp/>to<sp/>integrate<sp/>well<sp/>with<sp/>other<sp/>builds.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Building<sp/>TinyXML-2<sp/>-<sp/>Using<sp/>vcpkg</highlight></codeline>
+<codeline><highlight class="normal">--------------------------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">You<sp/>can<sp/>download<sp/>and<sp/>install<sp/>TinyXML-2<sp/>using<sp/>the<sp/>[vcpkg](https://github.com/Microsoft/vcpkg)<sp/>dependency<sp/>manager:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>git<sp/>clone<sp/>https://github.com/Microsoft/vcpkg.git</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cd<sp/>vcpkg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./bootstrap-vcpkg.sh</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./vcpkg<sp/>integrate<sp/>install</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./vcpkg<sp/>install<sp/>tinyxml2</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>TinyXML-2<sp/>port<sp/>in<sp/>vcpkg<sp/>is<sp/>kept<sp/>up<sp/>to<sp/>date<sp/>by<sp/>Microsoft<sp/>team<sp/>members<sp/>and<sp/>community<sp/>contributors.<sp/>If<sp/>the<sp/>version<sp/>is<sp/>out<sp/>of<sp/>date,<sp/>please<sp/>[create<sp/>an<sp/>issue<sp/>or<sp/>pull<sp/>request](https://github.com/Microsoft/vcpkg)<sp/>on<sp/>the<sp/>vcpkg<sp/>repository.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Versioning</highlight></codeline>
+<codeline><highlight class="normal">----------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>uses<sp/>semantic<sp/>versioning.<sp/>http://semver.org/<sp/>Releases<sp/>are<sp/>now<sp/>tagged<sp/>in<sp/>github.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Note<sp/>that<sp/>the<sp/>major<sp/>version<sp/>will<sp/>(probably)<sp/>change<sp/>fairly<sp/>rapidly.<sp/>API<sp/>changes<sp/>are<sp/>fairly</highlight></codeline>
+<codeline><highlight class="normal">common.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">License</highlight></codeline>
+<codeline><highlight class="normal">-------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>is<sp/>released<sp/>under<sp/>the<sp/>zlib<sp/>license:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>software<sp/>is<sp/>provided<sp/>&apos;as-is&apos;,<sp/>without<sp/>any<sp/>express<sp/>or<sp/>implied</highlight></codeline>
+<codeline><highlight class="normal">warranty.<sp/>In<sp/>no<sp/>event<sp/>will<sp/>the<sp/>authors<sp/>be<sp/>held<sp/>liable<sp/>for<sp/>any</highlight></codeline>
+<codeline><highlight class="normal">damages<sp/>arising<sp/>from<sp/>the<sp/>use<sp/>of<sp/>this<sp/>software.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Permission<sp/>is<sp/>granted<sp/>to<sp/>anyone<sp/>to<sp/>use<sp/>this<sp/>software<sp/>for<sp/>any</highlight></codeline>
+<codeline><highlight class="normal">purpose,<sp/>including<sp/>commercial<sp/>applications,<sp/>and<sp/>to<sp/>alter<sp/>it<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">redistribute<sp/>it<sp/>freely,<sp/>subject<sp/>to<sp/>the<sp/>following<sp/>restrictions:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>The<sp/>origin<sp/>of<sp/>this<sp/>software<sp/>must<sp/>not<sp/>be<sp/>misrepresented;<sp/>you<sp/>must</highlight></codeline>
+<codeline><highlight class="normal">not<sp/>claim<sp/>that<sp/>you<sp/>wrote<sp/>the<sp/>original<sp/>software.<sp/>If<sp/>you<sp/>use<sp/>this</highlight></codeline>
+<codeline><highlight class="normal">software<sp/>in<sp/>a<sp/>product,<sp/>an<sp/>acknowledgment<sp/>in<sp/>the<sp/>product<sp/>documentation</highlight></codeline>
+<codeline><highlight class="normal">would<sp/>be<sp/>appreciated<sp/>but<sp/>is<sp/>not<sp/>required.</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Altered<sp/>source<sp/>versions<sp/>must<sp/>be<sp/>plainly<sp/>marked<sp/>as<sp/>such,<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">must<sp/>not<sp/>be<sp/>misrepresented<sp/>as<sp/>being<sp/>the<sp/>original<sp/>software.</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>This<sp/>notice<sp/>may<sp/>not<sp/>be<sp/>removed<sp/>or<sp/>altered<sp/>from<sp/>any<sp/>source</highlight></codeline>
+<codeline><highlight class="normal">distribution.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Contributors</highlight></codeline>
+<codeline><highlight class="normal">------------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Thanks<sp/>very<sp/>much<sp/>to<sp/>everyone<sp/>who<sp/>sends<sp/>suggestions,<sp/>bugs,<sp/>ideas,<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">encouragement.<sp/>It<sp/>all<sp/>helps,<sp/>and<sp/>makes<sp/>this<sp/>project<sp/>fun.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>original<sp/>TinyXML-1<sp/>has<sp/>many<sp/>contributors,<sp/>who<sp/>all<sp/>deserve<sp/>thanks</highlight></codeline>
+<codeline><highlight class="normal">in<sp/>shaping<sp/>what<sp/>is<sp/>a<sp/>very<sp/>successful<sp/>library.<sp/>Extra<sp/>thanks<sp/>to<sp/>Yves</highlight></codeline>
+<codeline><highlight class="normal">Berquin<sp/>and<sp/>Andrew<sp/>Ellerton<sp/>who<sp/>were<sp/>key<sp/>contributors.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">TinyXML-2<sp/>grew<sp/>from<sp/>that<sp/>effort.<sp/>Lee<sp/>Thomason<sp/>is<sp/>the<sp/>original<sp/>author</highlight></codeline>
+<codeline><highlight class="normal">of<sp/>TinyXML-2<sp/>(and<sp/>TinyXML-1)<sp/>but<sp/>TinyXML-2<sp/>has<sp/>been<sp/>and<sp/>is<sp/>being<sp/>improved</highlight></codeline>
+<codeline><highlight class="normal">by<sp/>many<sp/>contributors.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Thanks<sp/>to<sp/>John<sp/>Mackay<sp/>at<sp/>http://john.mackay.rosalilastudio.com<sp/>for<sp/>the<sp/>TinyXML-2<sp/>logo!</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="readme.md"/>
+  </compounddef>
+</doxygen>

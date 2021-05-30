@@ -1,0 +1,2994 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classOGLFT_1_1Face" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OGLFT::Face</compoundname>
+    <derivedcompoundref refid="classOGLFT_1_1Polygonal" prot="public" virt="non-virtual">OGLFT::Polygonal</derivedcompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1Raster" prot="public" virt="non-virtual">OGLFT::Raster</derivedcompoundref>
+    <derivedcompoundref refid="classOGLFT_1_1Texture" prot="public" virt="non-virtual">OGLFT::Texture</derivedcompoundref>
+    <includes refid="OGLFT_8h" local="no">OGLFT.h</includes>
+    <innerclass refid="structOGLFT_1_1Face_1_1FaceData" prot="private">OGLFT::Face::FaceData</innerclass>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" static="no" strong="no">
+        <type></type>
+        <name>HorizontalJustification</name>
+        <enumvalue id="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public">
+          <name>LEFT</name>
+          <briefdescription>
+<para>Left justified justification of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public">
+          <name>ORIGIN</name>
+          <briefdescription>
+<para>Natural origin alignment of text (default) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public">
+          <name>CENTER</name>
+          <briefdescription>
+<para>Center justified alignment of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public">
+          <name>RIGHT</name>
+          <briefdescription>
+<para>Right justified alignment of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Thanks to the standard formerly known as PHIGS. Horizontal text justification constants. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="252" column="5" bodyfile="liboglft/OGLFT.h" bodystart="252" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="enum" id="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" static="no" strong="no">
+        <type></type>
+        <name>VerticalJustification</name>
+        <enumvalue id="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public">
+          <name>BOTTOM</name>
+          <briefdescription>
+<para>Descender alignment of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public">
+          <name>BASELINE</name>
+          <briefdescription>
+<para>Baseline alignment of text (default) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public">
+          <name>MIDDLE</name>
+          <briefdescription>
+<para>Centered alignment of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public">
+          <name>TOP</name>
+          <briefdescription>
+<para>Ascender justification of text. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Thanks to the standard formerly known as PHIGS. Vertical text justification constants. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="261" column="5" bodyfile="liboglft/OGLFT.h" bodystart="261" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="enum" id="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" static="no" strong="no">
+        <type></type>
+        <name>GlyphCompileMode</name>
+        <enumvalue id="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public">
+          <name>COMPILE</name>
+          <briefdescription>
+<para>Compile new glyphs when seen for the first time. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public">
+          <name>IMMEDIATE</name>
+          <briefdescription>
+<para>Do not <emphasis>create</emphasis> display lists for glyphs. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Control how OpenGL display lists are created for individual glyphs. The default mode is to create display lists for each glyph as it is requested. Therefore, the <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> drawing routines cannot themselves be called from within an open display list. In IMMEDIATE mode, cached glyphs will be drawn if available, otherwise the FreeType data for a glyph is re-rendered each time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="274" column="5" bodyfile="liboglft/OGLFT.h" bodystart="274" bodyend="277"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" static="no">
+        <type>std::map&lt; FT_UInt, GLuint &gt;</type>
+        <definition>typedef std::map&lt; FT_UInt, GLuint &gt; OGLFT::Face::GlyphDLists</definition>
+        <argsstring></argsstring>
+        <name>GlyphDLists</name>
+        <briefdescription>
+<para>Type of the cache of defined glyph to display list mapping. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="346" column="22" bodyfile="liboglft/OGLFT.h" bodystart="346" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" static="no">
+        <type>GlyphDLists::const_iterator</type>
+        <definition>typedef GlyphDLists::const_iterator OGLFT::Face::GDLCI</definition>
+        <argsstring></argsstring>
+        <name>GDLCI</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A convenience definition of the iterator over the glyph to display list map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="350" column="41" bodyfile="liboglft/OGLFT.h" bodystart="350" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" static="no">
+        <type>GlyphDLists::iterator</type>
+        <definition>typedef GlyphDLists::iterator OGLFT::Face::GDLI</definition>
+        <argsstring></argsstring>
+        <name>GDLI</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A convenience definition of the iterator over the glyph to display list map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="354" column="35" bodyfile="liboglft/OGLFT.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; FaceData &gt;</type>
+        <definition>std::vector&lt; FaceData &gt; OGLFT::Face::faces_</definition>
+        <argsstring></argsstring>
+        <name>faces_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The FreeType face - experimentally, this is now an array of faces so that we can handle a wider range of UNICODE points in case a face doesn&apos;t cover the points of interest. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="298" column="17" bodyfile="liboglft/OGLFT.h" bodystart="298" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::valid_</definition>
+        <argsstring></argsstring>
+        <name>valid_</name>
+        <briefdescription>
+<para>Did a font load OK? </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="301" column="10" bodyfile="liboglft/OGLFT.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" static="no" mutable="no">
+        <type>enum <ref refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" kindref="member">GlyphCompileMode</ref></type>
+        <definition>enum GlyphCompileMode OGLFT::Face::compile_mode_</definition>
+        <argsstring></argsstring>
+        <name>compile_mode_</name>
+        <briefdescription>
+<para>Glyph display list creation mode. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="301" column="10" bodyfile="liboglft/OGLFT.h" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OGLFT::Face::point_size_</definition>
+        <argsstring></argsstring>
+        <name>point_size_</name>
+        <briefdescription>
+<para>Nominal point size. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="307" column="11" bodyfile="liboglft/OGLFT.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" static="no" mutable="no">
+        <type>FT_UInt</type>
+        <definition>FT_UInt OGLFT::Face::resolution_</definition>
+        <argsstring></argsstring>
+        <name>resolution_</name>
+        <briefdescription>
+<para>Display resolution in pixels per inch. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="310" column="13" bodyfile="liboglft/OGLFT.h" bodystart="310" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::advance_</definition>
+        <argsstring></argsstring>
+        <name>advance_</name>
+        <briefdescription>
+<para>Does rendering text affect the MODELVIEW matrix? </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="313" column="10" bodyfile="liboglft/OGLFT.h" bodystart="313" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::foreground_color_[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>foreground_color_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Foreground color (I really wanted to avoid this, but not really possible without state queries, which you can&apos;t put into display lists. Anyway, you&apos;ll be able to get even more fancy by passing in a function to map the color with, so why balk at this?) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="320" column="13" bodyfile="liboglft/OGLFT.h" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::background_color_[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>background_color_</name>
+        <briefdescription>
+<para>Background color (what modes would use this?) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="323" column="13" bodyfile="liboglft/OGLFT.h" bodystart="323" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" static="no" mutable="no">
+        <type>enum <ref refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" kindref="member">HorizontalJustification</ref></type>
+        <definition>enum HorizontalJustification OGLFT::Face::horizontal_justification_</definition>
+        <argsstring></argsstring>
+        <name>horizontal_justification_</name>
+        <briefdescription>
+<para>PHIGS-like horizontal positioning of text. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="323" column="13" bodyfile="liboglft/OGLFT.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" static="no" mutable="no">
+        <type>enum <ref refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" kindref="member">VerticalJustification</ref></type>
+        <definition>enum VerticalJustification OGLFT::Face::vertical_justification_</definition>
+        <argsstring></argsstring>
+        <name>vertical_justification_</name>
+        <briefdescription>
+<para>PHIGS-like vertical positioning of text. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="323" column="13" bodyfile="liboglft/OGLFT.h" bodystart="329" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::string_rotation_</definition>
+        <argsstring></argsstring>
+        <name>string_rotation_</name>
+        <briefdescription>
+<para>Rotate an entire string in the Z plane. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="332" column="13" bodyfile="liboglft/OGLFT.h" bodystart="332" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" static="no" mutable="no">
+        <type>FT_UInt</type>
+        <definition>FT_UInt OGLFT::Face::rotation_reference_glyph_</definition>
+        <argsstring></argsstring>
+        <name>rotation_reference_glyph_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Let the user decide which character to use as the rotation reference. Use &quot;o&quot; by default, I suppose. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="336" column="13" bodyfile="liboglft/OGLFT.h" bodystart="336" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" static="no" mutable="no">
+        <type>FT_Face</type>
+        <definition>FT_Face OGLFT::Face::rotation_reference_face_</definition>
+        <argsstring></argsstring>
+        <name>rotation_reference_face_</name>
+        <briefdescription>
+<para>The rotation reference character could be in any face. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="339" column="13" bodyfile="liboglft/OGLFT.h" bodystart="339" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::rotation_offset_y_</definition>
+        <argsstring></argsstring>
+        <name>rotation_offset_y_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>These are the translation offsets provided by the rotation reference character; for whom, we&apos;ve discovered, only the Y position is relevant. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="343" column="13" bodyfile="liboglft/OGLFT.h" bodystart="343" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" static="no" mutable="no">
+        <type><ref refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" kindref="member">GlyphDLists</ref></type>
+        <definition>GlyphDLists OGLFT::Face::glyph_dlists_</definition>
+        <argsstring></argsstring>
+        <name>glyph_dlists_</name>
+        <briefdescription>
+<para>Cache of defined glyph display lists. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="357" column="17" bodyfile="liboglft/OGLFT.h" bodystart="357" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespaceOGLFT_1a331dcaf8f179a981082b98fd073918d8" kindref="member">DisplayLists</ref></type>
+        <definition>DisplayLists OGLFT::Face::character_display_lists_</definition>
+        <argsstring></argsstring>
+        <name>character_display_lists_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The user can supply an array of display list which are invoked before each glyph is rendered. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="361" column="18" bodyfile="liboglft/OGLFT.h" bodystart="361" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Face::Face</definition>
+        <argsstring>(const char *filename, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Face</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> by loading a font from the given file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filename which contains the font face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="372" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="74" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OGLFT::Face::Face</definition>
+        <argsstring>(FT_Face face, float point_size=12, FT_UInt resolution=100)</argsstring>
+        <name>Face</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+          <defval>12</defval>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+          <defval>100</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Alternatively, the user may have already opened a face and just wants to draw with it. This is useful for Multiple Master fonts or combining multiple files to increase UNICODE point coverage. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open Freetype FT_Face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the initial point size of the font to generate. A point is essentially 1/72th of an inch. Defaults to 12. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pixel density of the display in dots per inch (DPI). Defaults to 100 DPI. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="384" column="5" bodyfile="liboglft/OGLFT.cpp" bodystart="100" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>OGLFT::Face::~Face</definition>
+        <argsstring>(void)</argsstring>
+        <name>~Face</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Deleting a <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> frees its FreeType face (and anything else it&apos;s styles have allocated). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="390" column="13" bodyfile="liboglft/OGLFT.cpp" bodystart="156" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::isValid</definition>
+        <argsstring>(void) const</argsstring>
+        <name>isValid</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Let the user test to see if the font was loaded OK. <simplesect kind="return"><para>true if the FT_Face was successfully created. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="396" column="10" bodyfile="liboglft/OGLFT.h" bodystart="396" bodyend="396"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::addAuxiliaryFace</definition>
+        <argsstring>(const char *filename)</argsstring>
+        <name>addAuxiliaryFace</name>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Add another FT_Face to the <ref refid="namespaceOGLFT" kindref="compound">OGLFT</ref> <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>. Generally used to add more coverage of UNICODE points (at least that&apos;s the plan). This routine takes a filename and takes ownership of the FT_Face. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name of file containing font face data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if face was successfully added. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="405" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="165" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::addAuxiliaryFace</definition>
+        <argsstring>(FT_Face face)</argsstring>
+        <name>addAuxiliaryFace</name>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Add another FT_Face to the <ref refid="namespaceOGLFT" kindref="compound">OGLFT</ref> <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>. Generally used to add more coverage of UNICODE points (at least that&apos;s the plan). This routine takes an already open FT_Face. The user is responsible for clean up. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>open FreeType FT_Face </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if face was successfully added. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="415" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="183" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setCompileMode</definition>
+        <argsstring>(enum GlyphCompileMode compile_mode)</argsstring>
+        <name>setCompileMode</name>
+        <param>
+          <type>enum <ref refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" kindref="member">GlyphCompileMode</ref></type>
+          <declname>compile_mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>By default, each time a new character is seen, its glyph is rendered into a display list. This means that a display list cannot already be open (since OpenGL doesn&apos;t allow nested display list creation). Rendering can be set into immediate mode in which case glyphs are rendered from display lists if available, but are otherwise generated anew each time. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>compile_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new compile mode. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="426" column="10" bodyfile="liboglft/OGLFT.h" bodystart="426" bodyend="429"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>enum <ref refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" kindref="member">GlyphCompileMode</ref></type>
+        <definition>enum GlyphCompileMode OGLFT::Face::compileMode</definition>
+        <argsstring>(void) const</argsstring>
+        <name>compileMode</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the current glyph compile mode. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="426" column="10" bodyfile="liboglft/OGLFT.h" bodystart="434" bodyend="434"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setPointSize</definition>
+        <argsstring>(float point_size)</argsstring>
+        <name>setPointSize</name>
+        <param>
+          <type>float</type>
+          <declname>point_size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>For the rasterized styles (<ref refid="classOGLFT_1_1Monochrome" kindref="compound">Monochrome</ref>, <ref refid="classOGLFT_1_1Grayscale" kindref="compound">Grayscale</ref>, <ref refid="classOGLFT_1_1Translucent" kindref="compound">Translucent</ref>, <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref>), glyphs are rendered at the pixel size given by:</para>
+<para>point_size [pts] * / 72 [pts/in] * resolution [dots/in] = [dots].</para>
+<para>For the polygon styles (<ref refid="classOGLFT_1_1Outline" kindref="compound">Outline</ref>, <ref refid="classOGLFT_1_1Filled" kindref="compound">Filled</ref>, <ref refid="classOGLFT_1_1Solid" kindref="compound">Solid</ref>), the &quot;nominal&quot; size of the glyphs is:</para>
+<para>point_size[pts] / 72 [pts/in] * resolution [dots/in] / units_per_EM [font unit/EM] = [dots * EM].</para>
+<para>If the MODELVIEW and PROJECTION matrices are such that one screen pixel corresponds to one modeling unit, then polygonal Faces will be the same size as raster Faces.</para>
+<para>Note that changing the point size after <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> creation will invalidate the cache of OpenGL display lists and any other information which the individual styles have cached. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>point_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new point size in points (1/72-th inch). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="457" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="194" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float OGLFT::Face::pointSize</definition>
+        <argsstring>(void)</argsstring>
+        <name>pointSize</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the current point size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="462" column="11" bodyfile="liboglft/OGLFT.h" bodystart="462" bodyend="462"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setResolution</definition>
+        <argsstring>(FT_UInt resolution)</argsstring>
+        <name>setResolution</name>
+        <param>
+          <type>FT_UInt</type>
+          <declname>resolution</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>For the rasterized styles (<ref refid="classOGLFT_1_1Monochrome" kindref="compound">Monochrome</ref>, <ref refid="classOGLFT_1_1Grayscale" kindref="compound">Grayscale</ref>, <ref refid="classOGLFT_1_1Translucent" kindref="compound">Translucent</ref>, <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref>), the exact rendered size of the glyphs depends on the resolution of the display (as opposed to the polygon styles whose size is controlled by the viewing matrices). The <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref> style is slightly different because the glyphs are texture-mapped onto an arbitrary rectangle; here, the resolution only controls how accurately the glyph is rendered. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the resolution in DPI (dots per inch). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="474" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="208" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>FT_UInt</type>
+        <definition>FT_UInt OGLFT::Face::resolution</definition>
+        <argsstring>(void)</argsstring>
+        <name>resolution</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the current raster resolution. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="479" column="13" bodyfile="liboglft/OGLFT.h" bodystart="479" bodyend="479"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setAdvance</definition>
+        <argsstring>(bool advance)</argsstring>
+        <name>setAdvance</name>
+        <param>
+          <type>bool</type>
+          <declname>advance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If advance is true, then the changes made to the MODELVIEW matrix to render a string are allowed to remain. Otherwise, the library pushes the current MODELVIEW matrix onto the matrix stack, renders the string and then pops it off again. Rendering a character always modifies the MODELVIEW matrix. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>advance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether or not the MODELVIEW matrix should be left translated by the advancement of a rendered string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="490" column="10" bodyfile="liboglft/OGLFT.h" bodystart="490" bodyend="490"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OGLFT::Face::advance</definition>
+        <argsstring>(void) const</argsstring>
+        <name>advance</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the advance value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="495" column="10" bodyfile="liboglft/OGLFT.h" bodystart="495" bodyend="495"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setForegroundColor</definition>
+        <argsstring>(GLfloat red=0.0, GLfloat green=0.0, GLfloat blue=0.0, GLfloat alpha=1.0)</argsstring>
+        <name>setForegroundColor</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>red</declname>
+          <defval>0.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>green</declname>
+          <defval>0.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>blue</declname>
+          <defval>0.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>alpha</declname>
+          <defval>1.0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal color of the glyphs. A lot of other things can alter what you actually see! Note that changing the foreground color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>red</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the red component of the foreground color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>green</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the green component of the foreground color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the blue component of the foreground color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>alpha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the alpha component of the foreground color. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="506" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="241" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setForegroundColor</definition>
+        <argsstring>(const GLfloat foreground_color[4])</argsstring>
+        <name>setForegroundColor</name>
+        <param>
+          <type>const GLfloat</type>
+          <declname>foreground_color</declname>
+          <array>[4]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal color of the glyphs. A lot of other things can alter what you actually see! Note that changing the foreground color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>foreground_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>an array of 4 values corresponding to the red, green, blue and alpha components of the foreground color. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="518" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="260" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setForegroundColor</definition>
+        <argsstring>(const QRgb foreground_color)</argsstring>
+        <name>setForegroundColor</name>
+        <param>
+          <type>const QRgb</type>
+          <declname>foreground_color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal color of the glyphs. A lot of other things can alter what you actually see! Note that changing the foreground color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>foreground_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the foreground color as an unsigned int. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="526" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="296" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::foregroundRed</definition>
+        <argsstring>(void) const</argsstring>
+        <name>foregroundRed</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the red component of the foreground color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="531" column="13" bodyfile="liboglft/OGLFT.h" bodystart="531" bodyend="531"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::foregroundGreen</definition>
+        <argsstring>(void) const</argsstring>
+        <name>foregroundGreen</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the green component of the foreground color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="535" column="13" bodyfile="liboglft/OGLFT.h" bodystart="535" bodyend="535"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::foregroundBlue</definition>
+        <argsstring>(void) const</argsstring>
+        <name>foregroundBlue</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the blue component of the foreground color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="539" column="13" bodyfile="liboglft/OGLFT.h" bodystart="539" bodyend="539"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::foregroundAlpha</definition>
+        <argsstring>(void) const</argsstring>
+        <name>foregroundAlpha</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the alpha component of the foreground color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="543" column="13" bodyfile="liboglft/OGLFT.h" bodystart="543" bodyend="543"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setBackgroundColor</definition>
+        <argsstring>(GLfloat red=1.0, GLfloat green=1.0, GLfloat blue=1.0, GLfloat alpha=0.0)</argsstring>
+        <name>setBackgroundColor</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>red</declname>
+          <defval>1.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>green</declname>
+          <defval>1.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>blue</declname>
+          <defval>1.0</defval>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>alpha</declname>
+          <defval>0.0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal background color of the glyphs. A lot of other things can alter what you actually see! Note that changing the background color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>red</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the red component of the background color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>green</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the green component of the background color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the blue component of the background color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>alpha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the alpha component of the background color. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="554" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="222" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setBackgroundColor</definition>
+        <argsstring>(const GLfloat background_color[4])</argsstring>
+        <name>setBackgroundColor</name>
+        <param>
+          <type>const GLfloat</type>
+          <declname>background_color</declname>
+          <array>[4]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal background color of the glyphs. A lot of other things can alter what you actually see! Note that changing the background color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>background_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>an array of 4 values corresponding to the red, green, blue and alpha components of the background color. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="566" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="278" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setBackgroundColor</definition>
+        <argsstring>(const QRgb background_color)</argsstring>
+        <name>setBackgroundColor</name>
+        <param>
+          <type>const QRgb</type>
+          <declname>background_color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is the nominal background color of the glyphs. A lot of other things can alter what you actually see! Note that changing the background color invalidates the glyph cache. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>background_color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the background color as an unsigned int. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="574" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="320" bodyend="340"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::backgroundRed</definition>
+        <argsstring>(void) const</argsstring>
+        <name>backgroundRed</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the red component of the background color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="579" column="13" bodyfile="liboglft/OGLFT.h" bodystart="579" bodyend="579"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::backgroundGreen</definition>
+        <argsstring>(void) const</argsstring>
+        <name>backgroundGreen</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the green component of the background color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="583" column="13" bodyfile="liboglft/OGLFT.h" bodystart="583" bodyend="583"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::backgroundBlue</definition>
+        <argsstring>(void) const</argsstring>
+        <name>backgroundBlue</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the blue component of the background color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="587" column="13" bodyfile="liboglft/OGLFT.h" bodystart="587" bodyend="587"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::backgroundAlpha</definition>
+        <argsstring>(void) const</argsstring>
+        <name>backgroundAlpha</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the alpha component of the background color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="591" column="13" bodyfile="liboglft/OGLFT.h" bodystart="591" bodyend="591"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ac6610d5d5a48ed756c27031d8d5f371a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Face::setCharacterRotationZ</definition>
+        <argsstring>(GLfloat character_rotation_z)=0</argsstring>
+        <name>setCharacterRotationZ</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a69aea627036450195367f83783656530">setCharacterRotationZ</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a358bdf4d5615763bc00f3ebb23389f0f">setCharacterRotationZ</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a3d3d9ef0474bb6d7459619a30c26c571">setCharacterRotationZ</reimplementedby>
+        <param>
+          <type>GLfloat</type>
+          <declname>character_rotation_z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the individual character rotation in the Z direction. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_rotation_z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of z rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="597" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1adf5b61447db39a1bcc7fa6a383646085" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>GLfloat</type>
+        <definition>virtual GLfloat OGLFT::Face::characterRotationZ</definition>
+        <argsstring>(void) const =0</argsstring>
+        <name>characterRotationZ</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1abdaa6a2054af958304472c4bcda77136">characterRotationZ</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1ad340aeabc19265aac5e3d5babf091d2c">characterRotationZ</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1aa0ce54780e176a48c1bd1d63499986a3">characterRotationZ</reimplementedby>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the character rotation in the Z direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="602" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setCharacterRotationReference</definition>
+        <argsstring>(unsigned char c)</argsstring>
+        <name>setCharacterRotationReference</name>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The z rotation angle needs a center. Nominate a character whose center is to be the center of rotation. By default, use &quot;o&quot;. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rotation reference character. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="609" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="384" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setStringRotation</definition>
+        <argsstring>(GLfloat string_rotation)</argsstring>
+        <name>setStringRotation</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>string_rotation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rotate an entire string through the given angle (in the Z plane only). (Somewhat pointless for the vector styles since you can do mostly the same thing with the MODELVIEW transform, however, for what its worth, this routine uses the FreeType rotation function to compute the &quot;proper&quot; metrics for glyph advance.) <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>string_rotation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>angle in degrees of z rotation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="619" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="344" bodyend="380"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>GLfloat</type>
+        <definition>GLfloat OGLFT::Face::stringRotation</definition>
+        <argsstring>(void) const</argsstring>
+        <name>stringRotation</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the (Z plane) string rotation angle. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="624" column="13" bodyfile="liboglft/OGLFT.h" bodystart="624" bodyend="624"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setHorizontalJustification</definition>
+        <argsstring>(enum HorizontalJustification horizontal_justification)</argsstring>
+        <name>setHorizontalJustification</name>
+        <param>
+          <type>enum <ref refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" kindref="member">HorizontalJustification</ref></type>
+          <declname>horizontal_justification</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the horizontal justification. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>horizontal_justification</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new horizontal justification. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="630" column="10" bodyfile="liboglft/OGLFT.h" bodystart="630" bodyend="634"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>enum <ref refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" kindref="member">HorizontalJustification</ref></type>
+        <definition>enum HorizontalJustification OGLFT::Face::horizontalJustification</definition>
+        <argsstring>(void) const</argsstring>
+        <name>horizontalJustification</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the horizontal justification. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="630" column="10" bodyfile="liboglft/OGLFT.h" bodystart="639" bodyend="640"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setVerticalJustification</definition>
+        <argsstring>(enum VerticalJustification vertical_justification)</argsstring>
+        <name>setVerticalJustification</name>
+        <param>
+          <type>enum <ref refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" kindref="member">VerticalJustification</ref></type>
+          <declname>vertical_justification</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the vertical justification. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vertical_justification</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new vertical justification </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="646" column="10" bodyfile="liboglft/OGLFT.h" bodystart="646" bodyend="650"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>enum <ref refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" kindref="member">VerticalJustification</ref></type>
+        <definition>enum VerticalJustification OGLFT::Face::verticaljustification</definition>
+        <argsstring>(void) const</argsstring>
+        <name>verticaljustification</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the vertical justification. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="646" column="10" bodyfile="liboglft/OGLFT.h" bodystart="655" bodyend="656"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::setCharacterDisplayLists</definition>
+        <argsstring>(const DisplayLists &amp;character_display_lists)</argsstring>
+        <name>setCharacterDisplayLists</name>
+        <param>
+          <type>const <ref refid="namespaceOGLFT_1a331dcaf8f179a981082b98fd073918d8" kindref="member">DisplayLists</ref> &amp;</type>
+          <declname>character_display_lists</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Specify an OpenGL display list to be invoked before each character in a string. <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> makes a copy of the argument. Pass an empty DisplayLists to disable this feature. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character_display_lists</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>STL vector&lt;GLuint&gt; containing a display list to invoke before each glyph in a string is drawn. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="665" column="10" bodyfile="liboglft/OGLFT.h" bodystart="665" bodyend="668"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespaceOGLFT_1a331dcaf8f179a981082b98fd073918d8" kindref="member">DisplayLists</ref> &amp;</type>
+        <definition>DisplayLists&amp; OGLFT::Face::characterDisplayLists</definition>
+        <argsstring>(void)</argsstring>
+        <name>characterDisplayLists</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a reference to the array of character display lists. This is the live list as stored in the <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="674" column="18" bodyfile="liboglft/OGLFT.h" bodystart="674" bodyend="675"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ab75c0ac5bfc964c2a3f70af06584d678" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double OGLFT::Face::height</definition>
+        <argsstring>(void) const =0</argsstring>
+        <name>height</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a0ca22a7954bc78a0392bc760eab356f5">height</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a1c9a6e2dd8cbb199d4454144ee4279d2">height</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a6ec5a311395d676f39dd4cd1afc6b26a">height</reimplementedby>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the height (i.e., line spacing) at the current character size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="680" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ac67aed67bb8afa5b4613942232e49bc4" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>virtual BBox OGLFT::Face::measure</definition>
+        <argsstring>(unsigned char c)=0</argsstring>
+        <name>measure</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a8c0fce468679e8cd18b960e4f2af9698">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1ae57fb48a06098073f54030082357225d">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a4cdf0fbad9e254d69e817a1ba945ac99">measure</reimplementedby>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a character. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="687" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a111cb1a7d026503717d1a44ccab3c967" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>virtual BBox OGLFT::Face::measure</definition>
+        <argsstring>(QChar c)=0</argsstring>
+        <name>measure</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a610bc9bd03581ff6784028ca0fe23399">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a831405885339b4b18e269e3f7ceee000">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a8fe78dc45d5aea4141533665c9d30e52">measure</reimplementedby>
+        <param>
+          <type>QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a character. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of c. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="694" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1adcb1e6fe4f8e23e9fb06e5136a074f1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measure</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>measure</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a4cdf57befc33dd828bce4c3ffb320f60">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1aaf247577a65468fa6ec8f9cdbe11aa02">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a6bdabdd23f0f5f1ed21ce4f9a4599509">measure</reimplementedby>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a string. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="701" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="411" bodyend="429"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measureRaw</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>measureRaw</name>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a string without conversion to modeling coordinates. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="708" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="431" bodyend="468"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measure</definition>
+        <argsstring>(const QString &amp;s)</argsstring>
+        <name>measure</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a string. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="715" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="471" bodyend="488"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aadfa3cf55099e261b7d31bcd3283d379" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measure</definition>
+        <argsstring>(const QString &amp;format, double number)</argsstring>
+        <name>measure</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1a6bf72d1f468b011c99264bb891d3beff">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a89c562c509407dac5820364538caa9f5">measure</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a4c837c1052a0663648802585ca6835e8">measure</reimplementedby>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a real number formatted as specified. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(see draw for valid formats) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>real number. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of the formatted number. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="722" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="490" bodyend="493"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measureRaw</definition>
+        <argsstring>(const QString &amp;s)</argsstring>
+        <name>measureRaw</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the bounding box info for a string without conversion to modeling coordinates. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding box of s. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="729" column="18" bodyfile="liboglft/OGLFT.cpp" bodystart="495" bodyend="534"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Face::compile</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>compile</name>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compile a string into an OpenGL display list for later rendering. Essentially, the string is rendered at the origin of the current MODELVIEW. Note: no other display lists should be open when this routine is called. Also, the <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> does not keep track of these lists, so you must delete them in order to recover the memory. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to compile. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list name for the string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="741" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="726" bodyend="752"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Face::compile</definition>
+        <argsstring>(const QString &amp;s)</argsstring>
+        <name>compile</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compile a string into an OpenGL display list for later rendering. Essentially, the string is rendered at the origin of the current MODELVIEW. Note: no other display lists should be open when this routine is called. Also, the <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> does not keep track of these lists, so you must delete them in order to recover the memory. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to compile. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list name for the string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="753" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="756" bodyend="780"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Face::compile</definition>
+        <argsstring>(unsigned char c)</argsstring>
+        <name>compile</name>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compile a single character (glyph) into an OpenGL display list for later rendering. The <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> <emphasis>does</emphasis> keep track of these display lists, so do not delete them. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to compile. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list name for the character. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="762" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="785" bodyend="810"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>GLuint</type>
+        <definition>GLuint OGLFT::Face::compile</definition>
+        <argsstring>(const QChar c)</argsstring>
+        <name>compile</name>
+        <param>
+          <type>const QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compile a single character (glyph) into an OpenGL display list for later rendering. The <ref refid="classOGLFT_1_1Face" kindref="compound">Face</ref> <emphasis>does</emphasis> keep track of these display lists, so do not delete them. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to compile. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list name for the character. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="771" column="12" bodyfile="liboglft/OGLFT.cpp" bodystart="816" bodyend="841"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a (latin1) string using the current MODELVIEW matrix. If advance is true, then the final glyph advance changes to the MODELVIEW matrix are left in place. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="779" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="850" bodyend="863"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(const QString &amp;s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a (UNICODE) string using the current MODELVIEW matrix. If advance is true, then the final glyph advance changes to the MODELVIEW matrix are left in place. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="787" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="872" bodyend="885"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(unsigned char c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the character using the current MODELVIEW matrix. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="795" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="891" bodyend="925"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(const QChar c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>const QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the character using the current MODELVIEW matrix. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="804" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="930" bodyend="966"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, unsigned char c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the (latin1) character at the given 2D point. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="814" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="971" bodyend="981"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, GLfloat z, unsigned char c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the (latin1) character at the given 3D point. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Z position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="824" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="986" bodyend="996"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, QChar c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the (UNICODE) character at the given 2D point. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="834" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1001" bodyend="1011"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, GLfloat z, QChar c)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>QChar</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw the (UNICODE) character at the given 3D point. Note that the MODELVIEW matrix is modified by the glyph advance. Draw a string if you don&apos;t want the MODELVIEW matrix changed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Z position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) character to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="844" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1016" bodyend="1026"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, const char *s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a string at the given 2D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="852" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1031" bodyend="1087"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, GLfloat z, const char *s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a string at the given 3D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Z position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (latin1) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="860" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1091" bodyend="1147"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, const QString &amp;s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a string at the given 2D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="868" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1152" bodyend="1204"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, GLfloat z, const QString &amp;s)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a string at the given 3D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Z position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the (UNICODE) string to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="876" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1208" bodyend="1308"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, const QString &amp;format, double number)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a real number per the given format at the given 2D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Like a typical printf format. Regular text is printed while a &apos;&apos; introduces the real number&apos;s format. Includes the following format flags: <itemizedlist>
+<listitem><para>%x.yf - floating point in field width x and precision y </para>
+</listitem>
+<listitem><para>%x.ye - scientific notation in field width x and precision y </para>
+</listitem>
+<listitem><para>%x.yg - pick best floating or scientific in field width x and precision y </para>
+</listitem>
+<listitem><para>%p - draw as a proper fraction, e.g. 1 1/2. Note: this currently requires a special font which encodes glyphs to be drawn for the numerator and demoninator in the UNICODE Private Area (0xE000).</para>
+</listitem>
+</itemizedlist>
+</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the numeric value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="894" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1312" bodyend="1315"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::draw</definition>
+        <argsstring>(GLfloat x, GLfloat y, GLfloat z, const QString &amp;format, double number)</argsstring>
+        <name>draw</name>
+        <param>
+          <type>GLfloat</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw a real number per the given format at the given 3D point. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the X position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the Z position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Like a typical printf format. Regular text is printed while a &apos;&apos; introduces the real number&apos;s format. Includes the following format flags: <itemizedlist>
+<listitem><para>%x.yf - floating point in field width x and precision y </para>
+</listitem>
+<listitem><para>%x.ye - scientific notation in field width x and precision y </para>
+</listitem>
+<listitem><para>%x.yg - pick best floating or scientific in field width x and precision y </para>
+</listitem>
+<listitem><para>%p - draw as a proper fraction, e.g. 1 1/2. Note: this currently requires a special font which encodes glyphs to be drawn for the numerator and demoninator in the UNICODE Private Area (0xE000).</para>
+</listitem>
+</itemizedlist>
+</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the numeric value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="913" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="1319" bodyend="1323"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Face::ascender</definition>
+        <argsstring>(void)</argsstring>
+        <name>ascender</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the nominal ascender from the face. This is in &quot;notional&quot; units. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="920" column="9" bodyfile="liboglft/OGLFT.h" bodystart="920" bodyend="920"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int OGLFT::Face::descender</definition>
+        <argsstring>(void)</argsstring>
+        <name>descender</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the nominal descender from the face. This is in &quot;notional&quot; units. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="926" column="9" bodyfile="liboglft/OGLFT.h" bodystart="926" bodyend="926"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ab92453fd3a4a33d3d4c2e88b7e0f4b6a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>GLuint</type>
+        <definition>virtual GLuint OGLFT::Face::compileGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)=0</argsstring>
+        <name>compileGlyph</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1aec7ff2066d90e6634715d9cc4c328204">compileGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1abd2a881f784f5ac1c242137f656f2d9f">compileGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a0172ad6859856a000f7cdf73bd7db025">compileGlyph</reimplementedby>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Some styles, in particular the <ref refid="classOGLFT_1_1Texture" kindref="compound">Texture</ref>, need specialized steps to compile a glyph into an OpenGL display list. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the display list of the compiled glyph. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="936" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a32ee2eb902462680aef9da95c845185c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Face::renderGlyph</definition>
+        <argsstring>(FT_Face face, FT_UInt glyph_index)=0</argsstring>
+        <name>renderGlyph</name>
+        <reimplementedby refid="classOGLFT_1_1Outline_1ac439a60c7e74a93c8a62c2489f317451">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Filled_1aa72dad6404e8b4bb3fdc9495e594bd8a">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Solid_1a0555d81bd789280a799c2437ab494924">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Monochrome_1a4b0efbc18168bd54274b6c728517be88">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Grayscale_1aae5ac835389c8d9ccd993942f8240d0e">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Translucent_1ac483d44fbae80c809a59be47b7bd6ed6">renderGlyph</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a086c67338821119cd14b77172f9d60fa">renderGlyph</reimplementedby>
+        <param>
+          <type>FT_Face</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>FT_UInt</type>
+          <declname>glyph_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Each style implements its own glyph rendering routine. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the FT_Face containing the glyph. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the glyph in face. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="941" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aae7b18f84114e436bde9d5e1f0be7624" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Face::setCharSize</definition>
+        <argsstring>(void)=0</argsstring>
+        <name>setCharSize</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1afbdb8108eb4d4c63fe3939adf5ae6be3">setCharSize</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1af64e5a433d842741af87399d17a68528">setCharSize</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a91bb7ee23e6669696be4ec63984c5dc7">setCharSize</reimplementedby>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>There is a slight different between the way in which the polygonal and raster styles select the character size for FreeType to generate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="945" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1aa3247d90589f553cf340a31e04907547" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Face::clearCaches</definition>
+        <argsstring>(void)=0</argsstring>
+        <name>clearCaches</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1aeb8bf8c9dd7a3137859739877df90782">clearCaches</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a76b63208d9eb78e7975c4491ffa357b8">clearCaches</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1a88293c451ded41ff941b823865ef0c4c">clearCaches</reimplementedby>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The different styles have different caching needs (well, really only the texture style currently has more than the display list cache). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="949" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a8a7d7ceca630eb978728d23f52cdb9dd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OGLFT::Face::setRotationOffset</definition>
+        <argsstring>(void)=0</argsstring>
+        <name>setRotationOffset</name>
+        <reimplementedby refid="classOGLFT_1_1Polygonal_1aa43ed9ab42bcc8215d32861d608a3245">setRotationOffset</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Raster_1a9b23721944836d5fd8c5c7d83a590469">setRotationOffset</reimplementedby>
+        <reimplementedby refid="classOGLFT_1_1Texture_1ad48bd989a2bb922154d924210d7d6916">setRotationOffset</reimplementedby>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The polygonal and raster styles compute different values for the Z rotation offset. (It&apos;s in integer pixels for the raster styles and in floating point pixels for the polygonal styles.) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="954" column="18"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOGLFT_1_1Face_1a0b84ac5717d5a574eb8f503749ea11a2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OGLFT::Face::init</definition>
+        <argsstring>(void)</argsstring>
+        <name>init</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="957" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="117" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad62362d3c1eff7a4739d0638c30bafbc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measure_nominal</definition>
+        <argsstring>(const char *s)</argsstring>
+        <name>measure_nominal</name>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="958" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="539" bodyend="571"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1ad9e568f85aad0a355b8084add6d97762" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structOGLFT_1_1BBox" kindref="compound">BBox</ref></type>
+        <definition>BBox OGLFT::Face::measure_nominal</definition>
+        <argsstring>(const QString &amp;s)</argsstring>
+        <name>measure_nominal</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="960" column="10" bodyfile="liboglft/OGLFT.cpp" bodystart="576" bodyend="608"/>
+      </memberdef>
+      <memberdef kind="function" id="classOGLFT_1_1Face_1af8074e9e88cd275cd25acb52336aeb34" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>QString</type>
+        <definition>QString OGLFT::Face::format_number</definition>
+        <argsstring>(const QString &amp;format, double number)</argsstring>
+        <name>format_number</name>
+        <param>
+          <type>const QString &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="liboglft/OGLFT.h" line="961" column="13" bodyfile="liboglft/OGLFT.cpp" bodystart="615" bodyend="721"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>A face (aka font) used to render text with OpenGL. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This is an abstract class, but it does define most the functions that you are likely to call to manipulate the rendering of the text. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="11">
+        <label>OGLFT::GrayscaleTexture</label>
+        <link refid="classOGLFT_1_1GrayscaleTexture"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OGLFT::Polygonal</label>
+        <link refid="classOGLFT_1_1Polygonal"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OGLFT::Filled</label>
+        <link refid="classOGLFT_1_1Filled"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>OGLFT::Texture</label>
+        <link refid="classOGLFT_1_1Texture"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OGLFT::Solid</label>
+        <link refid="classOGLFT_1_1Solid"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>OGLFT::Monochrome</label>
+        <link refid="classOGLFT_1_1Monochrome"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>OGLFT::Grayscale</label>
+        <link refid="classOGLFT_1_1Grayscale"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>OGLFT::TranslucentTexture</label>
+        <link refid="classOGLFT_1_1TranslucentTexture"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>OGLFT::Raster</label>
+        <link refid="classOGLFT_1_1Raster"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>OGLFT::Outline</label>
+        <link refid="classOGLFT_1_1Outline"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>OGLFT::Translucent</label>
+        <link refid="classOGLFT_1_1Translucent"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>OGLFT::MonochromeTexture</label>
+        <link refid="classOGLFT_1_1MonochromeTexture"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OGLFT::Face</label>
+        <link refid="classOGLFT_1_1Face"/>
+      </node>
+    </inheritancegraph>
+    <location file="liboglft/OGLFT.h" line="248" column="3" bodyfile="liboglft/OGLFT.h" bodystart="248" bodyend="963"/>
+    <listofallmembers>
+      <member refid="classOGLFT_1_1Face_1ad4488eeb08ec7276c113cbd604407f1a" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a36495d970812d989750abf3b2f0d5e78" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>addAuxiliaryFace</name></member>
+      <member refid="classOGLFT_1_1Face_1a2910eccf419149a5bffa6c24f17039e4" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>advance</name></member>
+      <member refid="classOGLFT_1_1Face_1a73d5b97d344cd1a361b2bd70066710ff" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>advance_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaee3b0cb32b5fbd7d91d3ba5bfb4a1af" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>ascender</name></member>
+      <member refid="classOGLFT_1_1Face_1a9f9e8ba0789938807ca43fc7df35ac69" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>background_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8138b2b5ff34170cf0c9e6f76ae1a97" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>backgroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a25e607aabef943b25bdcc89b9ccbef31" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>backgroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a1d650032c56665494c11aec2b7c0b89d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>backgroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1ac0adda405b97c5a28b8c2c9daf6605f7" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>backgroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a464730254c6eb9d7af349f8cdda320a3" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>BASELINE</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a0cef19c77517138d1786c9c17ddf88ff" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>BOTTOM</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da56e437a6ed98d67a9f203861a36103a9" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>CENTER</name></member>
+      <member refid="classOGLFT_1_1Face_1a02240bac858afab5c2d92bdb3c1e1658" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>character_display_lists_</name></member>
+      <member refid="classOGLFT_1_1Face_1a89c47bd45d94ede87f6cb5fcb023997e" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>characterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1adf5b61447db39a1bcc7fa6a383646085" prot="public" virt="pure-virtual"><scope>OGLFT::Face</scope><name>characterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Face_1aa3247d90589f553cf340a31e04907547" prot="protected" virt="pure-virtual"><scope>OGLFT::Face</scope><name>clearCaches</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda631995e2683fdd2ff9921782a97e9ece" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>COMPILE</name></member>
+      <member refid="classOGLFT_1_1Face_1a8ae8f1a810a54c46398d1ee5233aa98c" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a0493b121bf7eb659ae23bb2cb208fe4b" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1ad8cda460e9ae47d9b1da5a4a90d9de06" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a7a0a3e9c8dfc50eecd5ca9169d9cd0a3" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>compile</name></member>
+      <member refid="classOGLFT_1_1Face_1a50507f90d4ef05585d739b4f4f52a731" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>compile_mode_</name></member>
+      <member refid="classOGLFT_1_1Face_1ab92453fd3a4a33d3d4c2e88b7e0f4b6a" prot="protected" virt="pure-virtual"><scope>OGLFT::Face</scope><name>compileGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1ac7a8edfe14721fb7f03e9889093e99a6" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>compileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a63eba05fd6600636ef64727512ccafb9" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>descender</name></member>
+      <member refid="classOGLFT_1_1Face_1afbcc9b6065d608b192382cb74c6842ff" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a4655bfb6ef845281cd1eb436f0b6f9d9" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aecf96b948584e8e51cb54107160673f2" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aeaa442f32cdceadd14b01ffb1745d475" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a177d4076a042d5d4e49ef3688bb30f08" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a274c27a4e2cb2d01bd339adf330ea6bb" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aff0ca539445a91ac775a1091cdf3bbbd" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a873b299287f5acca898a3807f8b4d2d3" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a3dbc5e534bfb03469199fbe73ae3578a" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7c0fb48355426ba52b6bca9dee28c9" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ad70f85c90bea36071b3515da616a63ef" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1ace93ca4eba6834c862e7995e2978b910" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a95b426bbe7abdfa829afeead226898bd" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1a7da4260b57d7e0b4bed1b2f8741af6ec" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>draw</name></member>
+      <member refid="classOGLFT_1_1Face_1af22ec04d47692bf3c143a4a96f4740df" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a6ada8631d7ec73bbbe7dfd1e5ba0e69d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>Face</name></member>
+      <member refid="classOGLFT_1_1Face_1a430e89f9370c13f94e860fb06a5bd9e5" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>faces_</name></member>
+      <member refid="classOGLFT_1_1Face_1a8927d3253e59ec38caec92227c72957a" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>foreground_color_</name></member>
+      <member refid="classOGLFT_1_1Face_1a48e4c618e07018d5eec4bfbb4da32575" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>foregroundAlpha</name></member>
+      <member refid="classOGLFT_1_1Face_1a9b3918df2f61ac9e82cd9c011ffa232a" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>foregroundBlue</name></member>
+      <member refid="classOGLFT_1_1Face_1a6a9e060afa4c769c4cc2b984ba654646" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>foregroundGreen</name></member>
+      <member refid="classOGLFT_1_1Face_1af13717250631dc122abc0a9676c28b23" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>foregroundRed</name></member>
+      <member refid="classOGLFT_1_1Face_1af8074e9e88cd275cd25acb52336aeb34" prot="private" virt="non-virtual"><scope>OGLFT::Face</scope><name>format_number</name></member>
+      <member refid="classOGLFT_1_1Face_1acb60f52246b2217bd4808b82d8063674" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>GDLCI</name></member>
+      <member refid="classOGLFT_1_1Face_1a26333479eaf5485309c51c4e226da1f6" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>GDLI</name></member>
+      <member refid="classOGLFT_1_1Face_1acd3586f940e612bd1764d5efc87f076e" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>glyph_dlists_</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23ed" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>GlyphCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a85da4e46e5a01a4af40625f8a5a8271e" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>GlyphDLists</name></member>
+      <member refid="classOGLFT_1_1Face_1ab75c0ac5bfc964c2a3f70af06584d678" prot="public" virt="pure-virtual"><scope>OGLFT::Face</scope><name>height</name></member>
+      <member refid="classOGLFT_1_1Face_1a2f04b9d12e1e0e754374baeb6fd4e774" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>horizontal_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>HorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1ab9833a0a61216e020a697eb5d809f228" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>horizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1abf6101def8cdec28e2e63972581e23eda30bd768d58566154c768e8c18e50b194" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>IMMEDIATE</name></member>
+      <member refid="classOGLFT_1_1Face_1a0b84ac5717d5a574eb8f503749ea11a2" prot="private" virt="non-virtual"><scope>OGLFT::Face</scope><name>init</name></member>
+      <member refid="classOGLFT_1_1Face_1a2d100af93999e5bf3bb56ef99a94b256" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>isValid</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4dae590f14445eb4e652aaca2d77cbb0b97" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>LEFT</name></member>
+      <member refid="classOGLFT_1_1Face_1ac67aed67bb8afa5b4613942232e49bc4" prot="public" virt="pure-virtual"><scope>OGLFT::Face</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1a111cb1a7d026503717d1a44ccab3c967" prot="public" virt="pure-virtual"><scope>OGLFT::Face</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1adcb1e6fe4f8e23e9fb06e5136a074f1b" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ae78fe4e7a8dc85811f384b2415469e5c" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1aadfa3cf55099e261b7d31bcd3283d379" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>measure</name></member>
+      <member refid="classOGLFT_1_1Face_1ad62362d3c1eff7a4739d0638c30bafbc" prot="private" virt="non-virtual"><scope>OGLFT::Face</scope><name>measure_nominal</name></member>
+      <member refid="classOGLFT_1_1Face_1ad9e568f85aad0a355b8084add6d97762" prot="private" virt="non-virtual"><scope>OGLFT::Face</scope><name>measure_nominal</name></member>
+      <member refid="classOGLFT_1_1Face_1ac8f628fa39c9abffed0ea93be28b07c9" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1a0da71a2f42c3c392bb7bacd61ff1e282" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>measureRaw</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4af15e903b1fe2d5593e8a21a2001b7419" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>MIDDLE</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da12618cd966081c58a32f49eed805885d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>ORIGIN</name></member>
+      <member refid="classOGLFT_1_1Face_1a7b3097ca64596a40d8adfddb8f01ac5f" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>point_size_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9759d70b8ffdedd752093ce246b1baa1" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>pointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1a32ee2eb902462680aef9da95c845185c" prot="protected" virt="pure-virtual"><scope>OGLFT::Face</scope><name>renderGlyph</name></member>
+      <member refid="classOGLFT_1_1Face_1aadd54cbce218d4182ee968f2c9f541c9" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>resolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a639136f85b51c285b5cc8f0eeba8a190" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>resolution_</name></member>
+      <member refid="classOGLFT_1_1Face_1a82474cfad525291b05f33af8b828ce4da9b69e55cb1f3aff2ace000b0af0935a5" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>RIGHT</name></member>
+      <member refid="classOGLFT_1_1Face_1a264ba72c107e9d6948504847c413caee" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>rotation_offset_y_</name></member>
+      <member refid="classOGLFT_1_1Face_1a81de8dd9466b24242fcaa48d15dad92b" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>rotation_reference_face_</name></member>
+      <member refid="classOGLFT_1_1Face_1aaca7c4e7f94ccf9b691d5c0b729d47ec" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>rotation_reference_glyph_</name></member>
+      <member refid="classOGLFT_1_1Face_1aacb7b1287c70c5005001da0c075d67d5" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setAdvance</name></member>
+      <member refid="classOGLFT_1_1Face_1a5c5fab5c983f48dd67dd5ffe1d4af454" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a396d417cef13d436f258af11c475ff2c" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad7ede05f81a4af5466448399ed48d4a0" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setBackgroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aa1be3b7662cc280b71447cdb21068fb3" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setCharacterDisplayLists</name></member>
+      <member refid="classOGLFT_1_1Face_1a488c8bb864f327b0db47c5ff18a5591d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setCharacterRotationReference</name></member>
+      <member refid="classOGLFT_1_1Face_1ac6610d5d5a48ed756c27031d8d5f371a" prot="public" virt="pure-virtual"><scope>OGLFT::Face</scope><name>setCharacterRotationZ</name></member>
+      <member refid="classOGLFT_1_1Face_1aae7b18f84114e436bde9d5e1f0be7624" prot="protected" virt="pure-virtual"><scope>OGLFT::Face</scope><name>setCharSize</name></member>
+      <member refid="classOGLFT_1_1Face_1afe8b5539df543ac8242ca8faa1be878d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setCompileMode</name></member>
+      <member refid="classOGLFT_1_1Face_1a8748c749e2b2c4d75f726730c2b37ba8" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1ad042b52e54e63a36554d1045ce444271" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1a508621eb41ecfc6c4383d1fa4ae2b95d" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setForegroundColor</name></member>
+      <member refid="classOGLFT_1_1Face_1aed67b7ce1d5959af4350022c8adc3b2b" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setHorizontalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1aca208d97e30c1d0b6597873d5a426d1b" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setPointSize</name></member>
+      <member refid="classOGLFT_1_1Face_1af63a4f90bd014e1a61cef5166b800c58" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setResolution</name></member>
+      <member refid="classOGLFT_1_1Face_1a8a7d7ceca630eb978728d23f52cdb9dd" prot="protected" virt="pure-virtual"><scope>OGLFT::Face</scope><name>setRotationOffset</name></member>
+      <member refid="classOGLFT_1_1Face_1ab4f56e6a9201b2d1e3aac40e65158aae" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setStringRotation</name></member>
+      <member refid="classOGLFT_1_1Face_1ad373d9685b455aa0dff43237f47fd751" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>setVerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1adf46982cf5baec8213325ef02ef37843" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>string_rotation_</name></member>
+      <member refid="classOGLFT_1_1Face_1aa0a9a442f584229449ebb649aec5c3ec" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>stringRotation</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4a016d9789522981499e74e19e9e5e56bc" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>TOP</name></member>
+      <member refid="classOGLFT_1_1Face_1ad42c8686f330eaf3213fb694af696d42" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>valid_</name></member>
+      <member refid="classOGLFT_1_1Face_1ad77d86e753fbb1ae9e91d716044e818a" prot="protected" virt="non-virtual"><scope>OGLFT::Face</scope><name>vertical_justification_</name></member>
+      <member refid="classOGLFT_1_1Face_1a9a43c7d98b7223a27c1a394a00938173" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>verticaljustification</name></member>
+      <member refid="classOGLFT_1_1Face_1ae1fc67b15000461e0ae3a9e7503301d4" prot="public" virt="non-virtual"><scope>OGLFT::Face</scope><name>VerticalJustification</name></member>
+      <member refid="classOGLFT_1_1Face_1a27896f732caf1b035ad67eb45189459f" prot="public" virt="virtual"><scope>OGLFT::Face</scope><name>~Face</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
