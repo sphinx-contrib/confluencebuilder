@@ -1708,11 +1708,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # h2
 
     def visit_rubric(self, node):
-        self.body.append(self._start_tag(node, 'h{}'.format(self._title_level)))
+        self.body.append(self._start_tag(node, 'p',
+            **{'style': 'font-weight: bold; margin-top: 30px'}))
         self.context.append(self._end_tag(node))
 
     def depart_rubric(self, node):
-        self.body.append(self.context.pop()) # h<x>
+        self.body.append(self.context.pop()) # p
 
     def visit_seealso(self, node):
         self._visit_admonition(node, 'info', admonitionlabels['seealso'])
