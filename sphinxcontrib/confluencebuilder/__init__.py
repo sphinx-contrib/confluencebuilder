@@ -239,7 +239,10 @@ def setup(app):
     # users will need to explicitly load 'sphinx.ext.mathbase'.
     if (imgmath is not None and
             'sphinx.ext.imgmath' not in app.config.extensions):
-        imgmath.setup(app)
+        def lazy_bind_imgmath(app):
+            if app.builder.name in ['confluence', 'singleconfluence']:
+                imgmath.setup(app)
+        app.connect('builder-inited', lazy_bind_imgmath)
 
     return {
         'version': __version__,
