@@ -98,9 +98,17 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
                 'param1',
                 'param2',
                 _('Throws') + ':',
-                'SomeError',
-                _('Returns') + ':',
             ]
+
+            # in sphinx v4.1+, exception are no longer strong styled
+            if parse_version(sphinx_version) < parse_version('4.1'):
+                expected_stronged.extend([
+                    'SomeError',
+                ])
+
+            expected_stronged.extend([
+                _('Returns') + ':',
+            ])
 
             stronged = desc.find_all('strong')
             self.assertEqual(len(stronged), len(expected_stronged))
