@@ -1810,6 +1810,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_acronym(self, node):
         self.body.append(self.context.pop()) # acronym
 
+    def depart_line(self, node):
+        next_sibling = first(node.traverse(
+            include_self=False, descend=False, siblings=True))
+        if isinstance(next_sibling, nodes.line):
+            self.body.append('<br />')
+
     def visit_line_block(self, node):
         self.body.append(self._start_tag(node, 'p'))
         self.context.append(self._end_tag(node))
