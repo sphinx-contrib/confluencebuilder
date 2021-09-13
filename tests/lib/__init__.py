@@ -104,7 +104,11 @@ def prepare_conf():
     a Sphinx application instance.
     """
     config = {}
-    config['extensions'] = [EXT_NAME]
+    config['extensions'] = [
+        EXT_NAME,
+        # include any forced-injected extensions (config support)
+        'sphinx.ext.imgmath',
+    ]
     config['confluence_publish'] = False
 
     # support pre-Sphinx v2.0 installations which default to 'contents'
