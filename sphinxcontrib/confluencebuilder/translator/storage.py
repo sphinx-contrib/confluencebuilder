@@ -79,7 +79,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.apply_hierarchy_children_macro = False
 
     def encode(self, text):
-        return self._encode_sf(text)
+        text = self._encode_sf(text)
+        return ConfluenceBaseTranslator.encode(self, text)
 
     # ---------
     # structure
@@ -2221,7 +2222,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the escaped text
         """
-        return data.replace(']]>', ']]]]><![CDATA[>')
+        data = data.replace(']]>', ']]]]><![CDATA[>')
+        return ConfluenceBaseTranslator.encode(self, data)
 
     def _encode_sf(self, data):
         """
