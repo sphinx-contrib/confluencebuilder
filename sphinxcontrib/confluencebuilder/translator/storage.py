@@ -1312,6 +1312,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # <dynamic>
 
     def visit_image(self, node):
+        if 'uri' not in node or not node['uri']:
+            ConfluenceLogger.verbose('skipping image with no uri')
+            raise nodes.SkipNode
+
         uri = node['uri']
         uri = self._encode_sf(uri)
 
