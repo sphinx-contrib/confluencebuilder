@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 import io
 import sys
+import unicodedata
 
 class ConfluenceBaseTranslator(BaseTranslator):
     _tracked_deprecated_raw_type = False
@@ -291,10 +292,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
         self._docnames.pop()
 
     # ##########################################################################
-    # #                                                                        #
-    # # virtual methods                                                        #
-    # #                                                                        #
-    # ##########################################################################
 
     def encode(self, text):
-        raise NotImplementedError('translator does not implement text encoding')
+        # remove any non-space control characters that cannot be published to a
+        # confluence instance
+        return ''.join(c for c in text if c.isspace()
+            or unicodedata.category(c)[0] != 'C')
