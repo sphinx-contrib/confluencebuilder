@@ -23,7 +23,7 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
         self.dataset = os.path.join(test_dir, 'datasets', 'hierarchy')
 
     def test_config_hierarchy_max_depth(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = build_sphinx(self.dataset, config=self.config, relax=True)
 
         index = os.path.join(out_dir, 'index.conf')
         self.assertTrue(os.path.exists(index),
@@ -43,7 +43,7 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
 
     def test_config_hierarchy_parent_registration(self):
         ConfluenceState.reset()
-        build_sphinx(self.dataset, config=self.config)
+        build_sphinx(self.dataset, config=self.config, relax=True)
 
         # root toctree should not have a parent
         root_doc = ConfluenceState.parentDocname('index')
@@ -63,7 +63,7 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
         self.assertEqual(parent_doc, 'toctree-doc2')
 
     def test_storage_config_hierarchy_max_depth(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = build_sphinx(self.dataset, config=self.config, relax=True)
 
         # ensure data is merged in when capping the depth
         doc2_expected_headers = [

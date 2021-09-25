@@ -393,10 +393,12 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
     def test_config_check_max_doc_depth(self):
         self.config['confluence_max_doc_depth'] = 2
-        self._try_config()
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
 
         self.config['confluence_max_doc_depth'] = '2'
-        self._try_config()
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
 
         self.config['confluence_max_doc_depth'] = -1
         with self.assertRaises(ConfluenceConfigurationError):
@@ -411,7 +413,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         defines = {
             'confluence_max_doc_depth': '1',
         }
-        self._try_config(edefs=defines)
+        with self.assertRaises(SphinxWarning):
+            self._try_config(edefs=defines)
 
     def test_config_check_parent_page(self):
         self.config['confluence_parent_page'] = 'dummy'
