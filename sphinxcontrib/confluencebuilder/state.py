@@ -85,7 +85,7 @@ class ConfluenceState:
         base_tail = ''
 
         if (config.confluence_ignore_titlefix_on_index and
-                docname == config.master_doc):
+                docname == config.root_doc):
             postfix = None
             prefix = None
         else:

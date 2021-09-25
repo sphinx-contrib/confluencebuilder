@@ -83,3 +83,8 @@ def apply_defaults(conf):
         if getattr(conf, key) is not None:
             if not isinstance(getattr(conf, key), int) and conf[key]:
                 conf[key] = int(conf[key])
+
+    # if running an older version of Sphinx which does not define `root_doc`,
+    # copy it over now from the legacy configuration
+    if 'root_doc' not in conf:
+        conf.root_doc = conf.master_doc

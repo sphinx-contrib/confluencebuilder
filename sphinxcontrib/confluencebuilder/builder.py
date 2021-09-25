@@ -78,7 +78,6 @@ class ConfluenceBuilder(Builder):
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
         self.link_suffix = None
-        self.master_doc_page_id = None
         self.metadata = {}
         self.nav_next = {}
         self.nav_prev = {}
@@ -87,6 +86,7 @@ class ConfluenceBuilder(Builder):
         self.publish_denylist = []
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
+        self.root_doc_page_id = None
         self.secnumbers = {}
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
@@ -220,7 +220,7 @@ class ConfluenceBuilder(Builder):
 
     def prepare_writing(self, docnames):
         ordered_docnames = []
-        traversed = [self.config.master_doc]
+        traversed = [self.config.root_doc]
 
         # prepare caching doctree hook
         #
@@ -230,13 +230,13 @@ class ConfluenceBuilder(Builder):
         self._original_get_doctree = self.env.get_doctree
         self.env.get_doctree = self._get_doctree
 
-        # process the document structure of the master document, allowing:
+        # process the document structure of the root document, allowing:
         #  - populating a publish order to ensure parent pages are created first
         #     (when using hierarchy mode)
         #  - squash pages which exceed maximum depth (if configured with a max
         #     depth value)
         self.process_tree_structure(
-            ordered_docnames, self.config.master_doc, traversed)
+            ordered_docnames, self.config.root_doc, traversed)
 
         # track relations between accepted documents
         #
@@ -429,11 +429,11 @@ class ConfluenceBuilder(Builder):
     def publish_doc(self, docname, output):
         conf = self.config
         title = ConfluenceState.title(docname)
-        is_root_doc = self.config.master_doc == docname
+        is_root_doc = self.config.root_doc == docname
 
         parent_id = None
-        if self.config.master_doc and self.config.confluence_page_hierarchy:
-            if self.config.master_doc != docname:
+        if self.config.root_doc and self.config.confluence_page_hierarchy:
+            if self.config.root_doc != docname:
                 parent = ConfluenceState.parentDocname(docname)
                 parent_id = ConfluenceState.uploadId(parent)
         if not parent_id:
@@ -458,21 +458,21 @@ class ConfluenceBuilder(Builder):
             uploaded_id = self.publisher.storePage(title, data, parent_id)
         ConfluenceState.registerUploadId(docname, uploaded_id)
 
-        if self.config.master_doc == docname:
-            self.master_doc_page_id = uploaded_id
+        if self.config.root_doc == docname:
+            self.root_doc_page_id = uploaded_id
 
         # if purging is enabled and we have yet to populate a list of legacy
         # pages to cache, populate pages in our target scope now
         if conf.confluence_purge and self.legacy_pages is None:
             if conf.confluence_publish_root:
                 baseid = conf.confluence_publish_root
-            elif conf.confluence_purge_from_master and self.master_doc_page_id:
-                baseid = self.master_doc_page_id
+            elif conf.confluence_purge_from_master and self.root_doc_page_id:
+                baseid = self.root_doc_page_id
             else:
                 baseid = self.parent_id
 
             # if no base identifier and dry running, ignore legacy page
-            # searching as there is no initial master document to reference
+            # searching as there is no initial root document to reference
             # against
             if (conf.confluence_purge_from_master and
                     conf.confluence_publish_dryrun and not baseid):
@@ -530,11 +530,11 @@ class ConfluenceBuilder(Builder):
                     legacy_asset_info.pop(attachment_id, None)
 
     def publish_finalize(self):
-        if self.master_doc_page_id:
+        if self.root_doc_page_id:
             if self.config.confluence_master_homepage is True:
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
-                self.publisher.updateSpaceHome(self.master_doc_page_id)
+                self.publisher.updateSpaceHome(self.root_doc_page_id)
                 self.info('done\n')
 
             if self.cloud:
@@ -545,7 +545,7 @@ class ConfluenceBuilder(Builder):
             self.info('Publish point: ' + point_url.format(
                 self.config.confluence_server_url,
                 self.config.confluence_space_name,
-                self.master_doc_page_id))
+                self.root_doc_page_id))
 
     def publish_purge(self):
         if self.config.confluence_purge:
