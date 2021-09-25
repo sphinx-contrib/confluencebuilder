@@ -14,7 +14,7 @@ class TestConfluenceRstReferences(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = prepare_conf()
-        self.config['master_doc'] = 'references'
+        self.config['root_doc'] = 'references'
         test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(test_dir, 'datasets', 'common')
         self.filenames = [

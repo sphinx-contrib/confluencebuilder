@@ -14,7 +14,7 @@ class TestConfluenceConfigTitlefix(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = prepare_conf()
-        self.config['master_doc'] = 'titlefix'
+        self.config['root_doc'] = 'titlefix'
         test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(test_dir, 'datasets', 'common')
         self.filenames = [
