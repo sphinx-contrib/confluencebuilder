@@ -290,8 +290,8 @@ dictionaries with keys 'id' and 'name' which identify the JIRA instances.
 
     # ##################################################################
 
-    # confluence_master_homepage
-    validator.conf('confluence_master_homepage') \
+    # confluence_root_homepage
+    validator.conf('confluence_root_homepage') \
              .bool()
 
     # ##################################################################
@@ -429,8 +429,8 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
-    # confluence_purge_from_master
-    validator.conf('confluence_purge_from_master') \
+    # confluence_purge_from_root
+    validator.conf('confluence_purge_from_root') \
              .bool()
 
     # ##################################################################

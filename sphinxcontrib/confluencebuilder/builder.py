@@ -466,7 +466,7 @@ class ConfluenceBuilder(Builder):
         if conf.confluence_purge and self.legacy_pages is None:
             if conf.confluence_publish_root:
                 baseid = conf.confluence_publish_root
-            elif conf.confluence_purge_from_master and self.root_doc_page_id:
+            elif conf.confluence_purge_from_root and self.root_doc_page_id:
                 baseid = self.root_doc_page_id
             else:
                 baseid = self.parent_id
@@ -474,7 +474,7 @@ class ConfluenceBuilder(Builder):
             # if no base identifier and dry running, ignore legacy page
             # searching as there is no initial root document to reference
             # against
-            if (conf.confluence_purge_from_master and
+            if (conf.confluence_purge_from_root and
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
             elif self.config.confluence_adv_aggressive_search is True:
@@ -531,7 +531,7 @@ class ConfluenceBuilder(Builder):
 
     def publish_finalize(self):
         if self.root_doc_page_id:
-            if self.config.confluence_master_homepage is True:
+            if self.config.confluence_root_homepage is True:
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
                 self.publisher.updateSpaceHome(self.root_doc_page_id)

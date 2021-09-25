@@ -101,8 +101,8 @@ def setup(app):
     app.add_config_value('confluence_disable_notifications', None, False)
     """Define a series of labels to apply to all published pages."""
     app.add_config_value('confluence_global_labels', None, False)
-    """Enablement of configuring master as space's homepage."""
-    app.add_config_value('confluence_master_homepage', None, False)
+    """Enablement of configuring root as space's homepage."""
+    app.add_config_value('confluence_root_homepage', None, False)
     """Parent page's name to publish documents under."""
     app.add_config_value('confluence_parent_page', None, False)
     """Perform a dry run of publishing to inspect what publishing will do."""
@@ -117,8 +117,8 @@ def setup(app):
     app.add_config_value('confluence_publish_root', None, '')
     """Enablement of purging legacy child pages from a parent page."""
     app.add_config_value('confluence_purge', None, False)
-    """Enablement of purging legacy child pages from a master page."""
-    app.add_config_value('confluence_purge_from_master', None, False)
+    """Enablement of purging legacy child pages from a root page."""
+    app.add_config_value('confluence_purge_from_root', None, False)
     """docname-2-title dictionary for title overrides."""
     app.add_config_value('confluence_title_overrides', None, 'env')
     """Timeout for network-related calls (publishing)."""
@@ -195,8 +195,12 @@ def setup(app):
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
 
     """(configuration - deprecated)"""
+    # replaced by confluence_root_homepage
+    app.add_config_value('confluence_master_homepage', None, False)
     # replaced by confluence_publish_allowlist
     app.add_config_value('confluence_publish_subset', None, False)
+    # replaced by confluence_purge_from_root
+    app.add_config_value('confluence_purge_from_master', None, False)
 
     # ##########################################################################
 

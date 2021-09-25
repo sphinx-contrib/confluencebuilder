@@ -65,7 +65,9 @@ def apply_defaults(conf):
         'confluence_publish_onlynew',
         'confluence_purge',
         'confluence_purge_from_master',
+        'confluence_purge_from_root',
         'confluence_remove_title',
+        'confluence_root_homepage',
         'confluence_watch',
     ]
     for key in config2bool:
