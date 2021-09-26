@@ -101,7 +101,7 @@ For a complete list of supported markup, extensions, etc.; consult the
 following:
 
  | Atlassian Confluence Builder for Sphinx - Features
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/compatibilities
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/features
 
 For a complete list of directives supported by this extension, please consult:
 
