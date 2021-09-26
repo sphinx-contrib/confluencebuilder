@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -9,7 +9,7 @@ from sphinx.transforms.post_transforms import SphinxPostTransform
 import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
-copyright = '2020 Sphinx Confluence Builder Contributors'
+copyright = '2021 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
@@ -17,8 +17,6 @@ release = sphinxcontrib.confluencebuilder.__version__
 supported_confluence_ver = '6.13+'
 supported_python_ver = '2.7 or 3.6+'
 supported_sphinx_ver = '1.8 or 2.4+'
-
-master_doc = 'contents'
 
 # reStructuredText string included at the end of every source
 rst_epilog = """
@@ -111,6 +109,8 @@ class DocumentationPostTransform(SphinxPostTransform):
                 classes.append('literal-link')
 
 def setup(app):
+    app.require_sphinx('4.0')
+
     # append unreleased version-alert
     app.add_js_file('version-alert.js')
 

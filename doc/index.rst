@@ -9,7 +9,7 @@ Documentation contents
     configuration
     builders
     directives
-    compatibilities
+    features
     tips
     changelog
 

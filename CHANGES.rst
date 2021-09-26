@@ -1,8 +1,24 @@
+development
+===========
+
+* **(note)** ``confluence_max_doc_depth`` support is deprecated
+* ``confluence_master_homepage`` renamed to ``confluence_root_homepage``
+* ``confluence_purge_from_master`` renamed to ``confluence_purge_from_root``
+* always publish without xsrf checks (minimize confluence instance logging)
+* always strip control characters from content
+* ensure publish events use legacy editor
+* fixed issue where ``sphinx.ext.imgmath`` was forced for non-confluence builds
+* fixed issue where rubrics were built as headers and not titled paragraphs
+* handle extensions providing unicode attributes (e.g. ``sphinxcontrib.drawio``)
+* improve formatting when processing markdown content
+* prevent exceptions where third-party extensions provide invalid image uris
+* support rendering explicit newline entries
+
 1.5.0 (2021-05-25)
 ==================
 
 * fixed issue where this extension conflicts with docutils's translator attribs
-* fixed issue with :doc:<> references when using singlebuilder
+* fixed issue with ``:doc:<>`` references when using singlebuilder
 * fixed issue with alignment changes in newer sphinx
 * fixed issue with caption/title changes in newer docutils/sphinx
 * fixed issue with singlebuilder processing assets

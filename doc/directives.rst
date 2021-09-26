@@ -68,7 +68,8 @@ Common
             .. confluence_metadata::
                 :labels: label-a label-b
 
-    See also ``confluence_global_labels`` (:ref:`ref<confluence_global_labels>`).
+    See also ``confluence_global_labels``
+    (:ref:`ref<confluence_global_labels>`).
 
 JIRA
 ----

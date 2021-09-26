@@ -48,7 +48,7 @@ The recommended method to installing this extension is using pip_:
 For a more in-depth installation information, see also:
 
  | Atlassian Confluence Builder for Sphinx - Installation
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/install.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/install
 
 Usage
 =====
@@ -71,7 +71,7 @@ Usage
 For more information on the usage of this extension, see also:
 
  | Atlassian Confluence Builder for Sphinx - Tutorial
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/tutorial.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/tutorial
 
 Configuration
 =============
@@ -92,7 +92,7 @@ and publishing:
 For a complete list of configuration options, see also:
 
  | Atlassian Confluence Builder for Sphinx - Configuration
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/configuration.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/configuration
 
 Directives
 ==========
@@ -100,22 +100,16 @@ Directives
 For a complete list of directives supported by this extension, please consult:
 
  | Atlassian Confluence Builder for Sphinx - Directives
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/directives
 
 Demonstration
 =============
 
-The set of example documents used to assist in validation/testing can be found
-here:
-
- | Atlassian Confluence Builder for Sphinx - Validation Set
- | https://github.com/sphinx-contrib/confluencebuilder/tree/master/tests/validation-sets
-
-The active and older versions of published validation documents can be found
-here:
+A demonstration of this extension can be seen by inspecting the published
+validation/testing documents found here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
- | https://sphinxcontrib-confluencebuilder.atlassian.net/
+ | https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/STABLE
 
 Compatibilities
 ===============
@@ -124,7 +118,7 @@ For a complete list of supported markup, extensions, etc.; consult the
 following:
 
  | Atlassian Confluence Builder for Sphinx - Compatibilities
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/compatibilities.html
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/compatibilities
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
