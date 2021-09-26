@@ -18,6 +18,8 @@ supported_confluence_ver = '6.13+'
 supported_python_ver = '2.7 or 3.6+'
 supported_sphinx_ver = '1.8 or 2.4+'
 
+root_doc = 'contents'
+
 # reStructuredText string included at the end of every source
 rst_epilog = """
 .. |supported_confluence_ver| replace:: {}
@@ -44,12 +46,6 @@ html_static_path = ['_static']
 
 html_additional_pages = {
     'index': 'index.html',
-    # interim redirect of a contents-to-index for external links which may not
-    # have been updated yet
-    'contents': 'contents-redirect.html',
-    # interim redirect of a compatibilities-to-features for external links which
-    # may not have been updated yet
-    'compatibilities': 'compatibilities-redirect.html',
 }
 
 html_sidebars = {
