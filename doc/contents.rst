@@ -16,7 +16,7 @@ Documentation contents
 Indices and tables
 ==================
 
-.. only:: builder_html
+.. only:: builder_html or builder_dirhtml
 
     * :ref:`genindex`
     * :ref:`search`
