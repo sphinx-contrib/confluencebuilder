@@ -209,7 +209,7 @@ brings up another concern, feel free to bring up an issue:
 .. _bullet lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists
 .. _centered: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-centered
 .. _citations: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#citations
-.. _code block macro: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
+.. _code block macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-code-block-macro/
 .. _code: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block
 .. _compound paragraph: https://docutils.sourceforge.io/docs/ref/rst/directives.html#compound-paragraph
 .. _container: https://docutils.sourceforge.io/docs/ref/rst/directives.html#container
