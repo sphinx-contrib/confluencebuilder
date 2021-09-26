@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -9,7 +9,7 @@ from sphinx.transforms.post_transforms import SphinxPostTransform
 import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
-copyright = '2020 Sphinx Confluence Builder Contributors'
+copyright = '2021 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
