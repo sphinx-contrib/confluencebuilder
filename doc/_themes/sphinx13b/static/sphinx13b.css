@@ -1,6 +1,6 @@
 /*
 :copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 */
 
@@ -230,6 +230,13 @@ h3 {
     margin: 1em 0 -0.3em 0;
     font-size: 1.3em;
     font-weight: 300;
+}
+
+div.body p, div.body dd, div.body li, div.body blockquote {
+    -moz-hyphens: unset !important;
+    -ms-hyphens: unset !important;
+    -webkit-hyphens: unset !important;
+    hyphens: unset !important;
 }
 
 div.body h1 a, div.body h2 a, div.body h3 a, div.body h4 a, div.body h5 a, div.body h6 a {

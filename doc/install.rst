@@ -146,6 +146,7 @@ To install the bleeding edge sources, the following pip_ command can be used:
 .. only:: latex
 
     .. include:: install-virtualenv.rst
+        :start-after: :orphan:
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/

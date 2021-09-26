@@ -1,6 +1,6 @@
 {#
 :copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 #}
 {%- extends "basic/layout.html" %}
@@ -54,7 +54,7 @@ $(window).scroll(function() {
 
 {% block rootrellink %}
     <li><a href="{{ pathto('index') }}">Home</a>&#160;|</li>
-    <li><a href="{{ pathto('contents') }}">Documentation</a> &#187;</li>
+    <li><a href="{{ pathto('index') }}">Documentation</a> &#187;</li>
 {% endblock %}
 
 {% block header %}
@@ -67,7 +67,7 @@ $(window).scroll(function() {
     </div>
     <div class="quick-links">
         <ul>
-            <li><a href="{{ pathto('contents') }}">Documentation</a></li>
+            <li><a href="{{ pathto('index') }}">Documentation</a></li>
             <li><a href="{{ pathto('install') }}">Install</a></li>
         </ul>
     </div>
