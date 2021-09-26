@@ -201,6 +201,13 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     doctrees_dir = os.path.join(out_dir, '.doctrees')
 
+    # support pre-Sphinx v4.0 installations which do not have `root_doc` by
+    # swapping to the obsolete configuration name
+    if parse_version(sphinx_version) < parse_version('4.0'):
+        if 'root_doc' in conf:
+            conf['master_doc'] = conf['root_doc']
+            del conf['root_doc']
+
     with docutils_namespace():
         app = Sphinx(
             src_dir,                # output for document sources
@@ -250,12 +257,12 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     if configs:
         root_doc = 'index'
         for config in configs:
-            if config and 'master_doc' in config:
-                root_doc = config['master_doc']
+            if config and 'root_doc' in config:
+                root_doc = config['root_doc']
                 break
 
         if root_doc not in filenames:
-            configs[-1]['master_doc'] = filenames[0] # update last config
+            configs[-1]['root_doc'] = filenames[0] # update last config
 
     return files
 

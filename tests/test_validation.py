@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -68,9 +68,7 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # finalize
         if cls.config['confluence_space_name'].startswith('~'):
-            cls.config['confluence_master_homepage'] = False
-        else:
-            cls.config['confluence_master_homepage'] = True
+            cls.config['confluence_root_homepage'] = False
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_purge'] = False
@@ -91,11 +89,10 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=cls.config, out_dir=doc_dir)
 
         # finalize configuration for tests
-        cls.config['confluence_master_homepage'] = False
         cls.config['confluence_parent_page'] = cls.test_key
         cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_purge'] = True
-        cls.config['confluence_purge_from_master'] = True
+        cls.config['confluence_purge_from_root'] = True
 
     def test_extended_autodocs(self):
         if parse_version(sphinx_version) < parse_version('2.3.1'):

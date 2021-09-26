@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -64,7 +64,7 @@ class ConfluenceAssetManager:
         self.keys = set()
         self.outdir = outdir
         self.path2asset = {}
-        self.root_doc = config.master_doc
+        self.root_doc = config.root_doc
 
     def build(self):
         """

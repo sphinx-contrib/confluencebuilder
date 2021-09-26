@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -14,7 +14,7 @@ class TestConfluenceUseCaseNestedRef(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.config = prepare_conf()
-        self.config['master_doc'] = 'nested-ref-contents'
+        self.config['root_doc'] = 'nested-ref-contents'
         test_dir = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(test_dir, 'datasets', 'use-cases')
         self.filenames = [

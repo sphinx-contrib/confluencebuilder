@@ -197,7 +197,7 @@ Generic configuration
 
     A positive integer value, if provided, to indicate the maximum depth
     permitted for a nested child page before its contents is inlined with a
-    parent. The root of all pages is typically the configured master_doc_. The
+    parent. The root of all pages is typically the configured root_doc_. The
     root page is considered to be at a depth of zero. By default, the maximum
     document depth is disabled with a value of ``None``.
 
@@ -216,9 +216,9 @@ Generic configuration
 .. confval:: confluence_page_hierarchy
 
     A boolean value to whether or not nest pages in a hierarchical ordered. The
-    root of all pages is typically the configured master_doc_. If a master_doc_
+    root of all pages is typically the configured root_doc_. If a root_doc_
     instance contains a toctree_, listed documents will become child pages of
-    the master_doc_. This cycle continues for child pages with their own
+    the root_doc_. This cycle continues for child pages with their own
     toctree_ markups. By default, hierarchy mode is disabled with a value of
     ``False``.
 
@@ -226,7 +226,7 @@ Generic configuration
 
         confluence_page_hierarchy = True
 
-    Note that even if hierarchy mode is enabled, the configured master_doc_ page
+    Note that even if hierarchy mode is enabled, the configured root_doc_ page
     and other published pages that are not defined in the complete toctree_,
     these documents will still be published and uploaded to either the
     configured |confluence_parent_page|_ or in the root of the space.
@@ -374,18 +374,18 @@ Publishing configuration
     :ref:`directive <confluence_metadata>`. See also
     |confluence_append_labels|_.
 
-.. |confluence_master_homepage| replace:: ``confluence_master_homepage``
-.. _confluence_master_homepage:
+.. |confluence_root_homepage| replace:: ``confluence_root_homepage``
+.. _confluence_root_homepage:
 
-.. confval:: confluence_master_homepage
+.. confval:: confluence_root_homepage
 
     A boolean value to whether or not force the configured space's homepage to
-    be set to the page defined by the Sphinx configuration's master_doc_. By
-    default, the master_doc_ configuration is ignored with a value of ``False``.
+    be set to the page defined by the Sphinx configuration's root_doc_. By
+    default, the root_doc_ configuration is ignored with a value of ``False``.
 
     .. code-block:: python
 
-        confluence_master_homepage = False
+        confluence_root_homepage = False
 
 .. |confluence_parent_page| replace:: ``confluence_parent_page``
 .. _confluence_parent_page:
@@ -409,7 +409,7 @@ Publishing configuration
         confluence_parent_page = 'MyAwesomeDocs'
 
     If a parent page is not set, consider using the
-    |confluence_master_homepage|_ option as well. Note that the page's name can
+    |confluence_root_homepage|_ option as well. Note that the page's name can
     be case-sensitive in most (if not all) versions of Confluence.
 
     See also |confluence_publish_root|_.
@@ -522,27 +522,27 @@ Publishing configuration
     See also:
 
     - |confluence_publish_dryrun|_
-    - |confluence_purge_from_master|_
+    - |confluence_purge_from_root|_
 
-.. |confluence_purge_from_master| replace:: ``confluence_purge_from_master``
-.. _confluence_purge_from_master:
+.. |confluence_purge_from_root| replace:: ``confluence_purge_from_root``
+.. _confluence_purge_from_root:
 
-.. confval:: confluence_purge_from_master
+.. confval:: confluence_purge_from_root
 
     A boolean value to which indicates that any purging attempt should be done from
-    the root of a published master_doc_ page (instead of a configured parent page;
+    the root of a published root_doc_ page (instead of a configured parent page;
     i.e. |confluence_parent_page|_). In specific publishing scenarios, a user may
     wish to publish multiple documentation sets based off a single parent/container
     page. To prevent any purging between multiple documentation sets, this option
     can be set to ``True``. When generating legacy pages to be removed, this
     extension will only attempt to populate legacy pages based off the children of
-    the master_doc_ page. This option requires |confluence_purge|_ to be set to
+    the root_doc_ page. This option requires |confluence_purge|_ to be set to
     ``True`` before taking effect. If |confluence_publish_root|_ is set, this
     option is implicitly enabled.
 
     .. code-block:: python
 
-        confluence_purge_from_master = False
+        confluence_purge_from_root = False
 
     See also |confluence_purge|_.
 
@@ -1171,11 +1171,23 @@ Advanced processing configuration
 Deprecated options
 ------------------
 
+.. confval:: confluence_master_homepage
+
+    .. versionchanged:: 1.6
+
+    This option has been renamed to |confluence_root_homepage|_.
+
 .. confval:: confluence_publish_subset
 
     .. versionchanged:: 1.3
 
     This option has been renamed to |confluence_publish_allowlist|_.
+
+.. confval:: confluence_purge_from_master
+
+    .. versionchanged:: 1.6
+
+    This option has been renamed to |confluence_purge_from_root|_.
 
 .. references ------------------------------------------------------------------
 
@@ -1190,7 +1202,7 @@ Deprecated options
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
 .. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
-.. _master_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-master_doc
+.. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
 .. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc

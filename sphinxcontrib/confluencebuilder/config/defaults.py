@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -65,7 +65,9 @@ def apply_defaults(conf):
         'confluence_publish_onlynew',
         'confluence_purge',
         'confluence_purge_from_master',
+        'confluence_purge_from_root',
         'confluence_remove_title',
+        'confluence_root_homepage',
         'confluence_watch',
     ]
     for key in config2bool:
@@ -83,3 +85,8 @@ def apply_defaults(conf):
         if getattr(conf, key) is not None:
             if not isinstance(getattr(conf, key), int) and conf[key]:
                 conf[key] = int(conf[key])
+
+    # if running an older version of Sphinx which does not define `root_doc`,
+    # copy it over now from the legacy configuration
+    if 'root_doc' not in conf:
+        conf.root_doc = conf.master_doc

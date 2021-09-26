@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -17,8 +17,12 @@ DEPRECATED_CONFIGS = {
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':
         'to be removed in a future version',
+    'confluence_master_homepage':
+        'use "confluence_root_homepage" instead',
     'confluence_publish_subset':
         'use "confluence_publish_allowlist" instead',
+    'confluence_purge_from_master':
+        'use "confluence_purge_from_root" instead',
 }
 
 def deprecated(validator):
