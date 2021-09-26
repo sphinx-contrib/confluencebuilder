@@ -18,8 +18,6 @@ supported_confluence_ver = '6.13+'
 supported_python_ver = '2.7 or 3.6+'
 supported_sphinx_ver = '1.8 or 2.4+'
 
-master_doc = 'contents'
-
 # reStructuredText string included at the end of every source
 rst_epilog = """
 .. |supported_confluence_ver| replace:: {}
@@ -111,6 +109,8 @@ class DocumentationPostTransform(SphinxPostTransform):
                 classes.append('literal-link')
 
 def setup(app):
+    app.require_sphinx('4.0')
+
     # append unreleased version-alert
     app.add_js_file('version-alert.js')
 
