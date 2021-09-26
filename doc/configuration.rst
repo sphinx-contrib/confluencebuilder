@@ -37,8 +37,8 @@ Essential configuration
 .. confval:: confluence_publish
 
     A boolean that decides whether or not to allow publishing. This option must
-    be explicitly set to ``True`` if a user wishes to publish content. By default,
-    the value is set to ``False``.
+    be explicitly set to ``True`` if a user wishes to publish content. By
+    default, the value is set to ``False``.
 
     .. code-block:: python
 
@@ -235,10 +235,10 @@ Generic configuration
 
     .. versionadded:: 1.2
 
-    A string value to where to include previous/next buttons (if any) based on the
-    detected order of documents to be included in processing. Values accepted are
-    either ``bottom``, ``both``, ``top`` or ``None``. By default, no previous/next
-    links are generated with a value of ``None``.
+    A string value to where to include previous/next buttons (if any) based on
+    the detected order of documents to be included in processing. Values
+    accepted are either ``bottom``, ``both``, ``top`` or ``None``. By default,
+    no previous/next links are generated with a value of ``None``.
 
     .. code-block:: python
 
@@ -529,16 +529,16 @@ Publishing configuration
 
 .. confval:: confluence_purge_from_root
 
-    A boolean value to which indicates that any purging attempt should be done from
-    the root of a published root_doc_ page (instead of a configured parent page;
-    i.e. |confluence_parent_page|_). In specific publishing scenarios, a user may
-    wish to publish multiple documentation sets based off a single parent/container
-    page. To prevent any purging between multiple documentation sets, this option
-    can be set to ``True``. When generating legacy pages to be removed, this
-    extension will only attempt to populate legacy pages based off the children of
-    the root_doc_ page. This option requires |confluence_purge|_ to be set to
-    ``True`` before taking effect. If |confluence_publish_root|_ is set, this
-    option is implicitly enabled.
+    A boolean value to which indicates that any purging attempt should be done
+    from the root of a published root_doc_ page (instead of a configured parent
+    page; i.e. |confluence_parent_page|_). In specific publishing scenarios, a
+    user may wish to publish multiple documentation sets based off a single
+    parent/container page. To prevent any purging between multiple documentation
+    sets, this option can be set to ``True``. When generating legacy pages to be
+    removed, this extension will only attempt to populate legacy pages based off
+    the children of the root_doc_ page. This option requires |confluence_purge|_
+    to be set to ``True`` before taking effect. If |confluence_publish_root|_ is
+    set, this option is implicitly enabled.
 
     .. code-block:: python
 
@@ -582,8 +582,8 @@ Publishing configuration
 
 .. confval:: confluence_timeout
 
-    Force a timeout (in seconds) for network interaction. The timeout used by this
-    extension is not explicitly configured (i.e. managed by Requests_). By
+    Force a timeout (in seconds) for network interaction. The timeout used by
+    this extension is not explicitly configured (i.e. managed by Requests_). By
     default, assume that any network interaction will not timeout. Since the
     target Confluence instance is most likely to be found on an external server,
     is it recommended to explicitly configure a timeout value based on the
