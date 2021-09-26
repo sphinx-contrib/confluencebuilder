@@ -44,9 +44,6 @@ html_static_path = ['_static']
 
 html_additional_pages = {
     'index': 'index.html',
-    # interim redirect of a contents-to-index for external links which may not
-    # have been updated yet
-    'contents': 'contents-redirect.html',
     # interim redirect of a compatibilities-to-features for external links which
     # may not have been updated yet
     'compatibilities': 'compatibilities-redirect.html',
