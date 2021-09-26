@@ -195,6 +195,12 @@ Generic configuration
 
 .. confval:: confluence_max_doc_depth
 
+    .. important::
+
+        This feature is deprecated. If there is a desire to generate a single
+        document page instead, consider using the ``singleconfluence``
+        :doc:`builder <builders>` instead.
+
     A positive integer value, if provided, to indicate the maximum depth
     permitted for a nested child page before its contents is inlined with a
     parent. The root of all pages is typically the configured root_doc_. The
@@ -204,14 +210,6 @@ Generic configuration
     .. code-block:: python
 
         confluence_max_doc_depth = 2
-
-    .. important::
-
-        This feature still supports a document depth of ``0``, where all child
-        pages of the root document will be merged into a single document.
-        Setting this value to ``0`` is considered deprecated. An alternative
-        approach to generating a single document page is to use the
-        ``singleconfluence`` :doc:`builder <builders>` instead.
 
 .. confval:: confluence_page_hierarchy
 
@@ -230,6 +228,12 @@ Generic configuration
     and other published pages that are not defined in the complete toctree_,
     these documents will still be published and uploaded to either the
     configured |confluence_parent_page|_ or in the root of the space.
+
+    .. important::
+
+        This feature will default to ``True`` in a v2.0 release. Users who do
+        not want to use hierarchy mode should explicitly configure this to
+        ``False`` in their configurations.
 
 .. confval:: confluence_prev_next_buttons_location
 
@@ -368,7 +372,10 @@ Publishing configuration
 
     .. code-block:: python
 
-        confluence_global_labels = ['label-a', 'label-b']
+        confluence_global_labels = [
+            'label-a',
+            'label-b',
+        ]
 
     For per-document labels, please consult the ``confluence_metadata``
     :ref:`directive <confluence_metadata>`. See also
@@ -378,6 +385,8 @@ Publishing configuration
 .. _confluence_root_homepage:
 
 .. confval:: confluence_root_homepage
+
+    .. versionadded:: 1.6
 
     A boolean value to whether or not force the configured space's homepage to
     be set to the page defined by the Sphinx configuration's root_doc_. By
@@ -528,6 +537,8 @@ Publishing configuration
 .. _confluence_purge_from_root:
 
 .. confval:: confluence_purge_from_root
+
+    .. versionadded:: 1.6
 
     A boolean value to which indicates that any purging attempt should be done
     from the root of a published root_doc_ page (instead of a configured parent
@@ -1008,6 +1019,8 @@ Advanced publishing configuration
 
 .. confval:: confluence_server_cookies
 
+    .. versionadded:: 1.2
+
     A dictionary value which allows a user to pass key-value cookie information
     for authentication purposes. This is useful for users who need to
     authenticate with a single sign-on (SSO) provider to access a target
@@ -1018,7 +1031,7 @@ Advanced publishing configuration
 
         confluence_server_cookies = {
             'SESSION_ID': '<session id string>',
-            'U_ID': '<username>'
+            'U_ID': '<username>',
         }
 
 Advanced processing configuration
@@ -1097,7 +1110,7 @@ Advanced processing configuration
         confluence_jira_servers = {
             'server-1': {
                 'id': '<UUID of JIRA Instance>',
-                'name': '<Name of JIRA Instance>'
+                'name': '<Name of JIRA Instance>',
             }
         }
 
