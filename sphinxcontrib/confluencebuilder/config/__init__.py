@@ -26,9 +26,9 @@ def handle_config_inited(app, config):
             config[new] = config[orig]
 
     # copy over deprecated configuration names to new names (if any)
-    handle_legacy('confluence_master_homepage', 'confluence_root_homepage')
     handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
-    handle_legacy('confluence_purge_from_master', 'confluence_purge_from_root')
+    handle_legacy('confluence_purge_from_root', 'confluence_purge_from_master')
+    handle_legacy('confluence_root_homepage', 'confluence_master_homepage')
 
 def process_ask_configs(config):
     """

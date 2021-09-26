@@ -46,11 +46,11 @@ def deprecated(validator):
 
     # promote singleconfluence over confluence_max_doc_depth=0
     if config.confluence_max_doc_depth == 0:
-        ConfluenceLogger.warn('%s with a value of zero is deprecated; '
-            "use the 'singleconfluence' builder instead" % key)
+        ConfluenceLogger.warn('confluence_max_doc_depth with a value of zero '
+            "is deprecated; use the 'singleconfluence' builder instead")
     elif config.confluence_max_doc_depth:
-        ConfluenceLogger.warn('%s is deprecated and will be removed; '
-            "consider using the 'singleconfluence' builder instead" % key)
+        ConfluenceLogger.warn('confluence_max_doc_depth is deprecated and will '
+            "be removed; consider using the 'singleconfluence' builder instead")
 
 def warnings(validator):
     """

@@ -153,7 +153,7 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(self.datasets, 'hierarchy')
         doc_dir = prepare_dirs('validation-set-hierarchy')
 
-        build_sphinx(dataset, config=config, out_dir=doc_dir)
+        build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
 
     def test_nonjsonresponse(self):
         config = dict(self.config)
