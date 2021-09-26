@@ -1,5 +1,5 @@
-development
-===========
+1.6.0 (2021-09-26)
+==================
 
 * **(note)** ``confluence_max_doc_depth`` support is deprecated
 * ``confluence_master_homepage`` renamed to ``confluence_root_homepage``
