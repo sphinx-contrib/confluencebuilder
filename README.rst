@@ -94,8 +94,14 @@ For a complete list of configuration options, see also:
  | Atlassian Confluence Builder for Sphinx - Configuration
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/configuration
 
-Directives
-==========
+Features
+========
+
+For a complete list of supported markup, extensions, etc.; consult the
+following:
+
+ | Atlassian Confluence Builder for Sphinx - Features
+ | https://sphinxcontrib-confluencebuilder.readthedocs.io/compatibilities
 
 For a complete list of directives supported by this extension, please consult:
 
@@ -110,15 +116,6 @@ validation/testing documents found here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
  | https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/STABLE
-
-Compatibilities
-===============
-
-For a complete list of supported markup, extensions, etc.; consult the
-following:
-
- | Atlassian Confluence Builder for Sphinx - Compatibilities
- | https://sphinxcontrib-confluencebuilder.readthedocs.io/compatibilities
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
