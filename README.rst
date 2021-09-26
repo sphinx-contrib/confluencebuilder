@@ -105,17 +105,11 @@ For a complete list of directives supported by this extension, please consult:
 Demonstration
 =============
 
-The set of example documents used to assist in validation/testing can be found
-here:
-
- | Atlassian Confluence Builder for Sphinx - Validation Set
- | https://github.com/sphinx-contrib/confluencebuilder/tree/master/tests/validation-sets
-
-The active and older versions of published validation documents can be found
-here:
+A demonstration of this extension can be seen by inspecting the published
+validation/testing documents found here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
- | https://sphinxcontrib-confluencebuilder.atlassian.net/
+ | https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/STABLE
 
 Compatibilities
 ===============
