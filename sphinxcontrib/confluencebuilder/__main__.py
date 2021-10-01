@@ -85,6 +85,8 @@ def usage():
 
 (other options)
  -h, --help            show this help
+ --no-color            explicitly disable colorized output
+ -V, --verbose         enable verbose messages
  --version             show the version
  --work-dir            working (documentation) directory to use
                         (defaults to working directory)
