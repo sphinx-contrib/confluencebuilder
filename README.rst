@@ -58,7 +58,9 @@ Usage
 
 .. code-block:: python
 
-   extensions = ['sphinxcontrib.confluencebuilder']
+   extensions = [
+       'sphinxcontrib.confluencebuilder',
+   ]
 
 - Run sphinx-build with the builder ``confluence``:
 
@@ -97,13 +99,12 @@ For a complete list of configuration options, see also:
 Features
 ========
 
-For a complete list of supported markup, extensions, etc.; consult the
-following:
+For a complete list of supported markup, extensions, etc.; see:
 
  | Atlassian Confluence Builder for Sphinx - Features
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/features
 
-For a complete list of directives supported by this extension, please consult:
+For a complete list of directives supported by this extension, see:
 
  | Atlassian Confluence Builder for Sphinx - Directives
  | https://sphinxcontrib-confluencebuilder.readthedocs.io/directives
