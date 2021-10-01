@@ -133,6 +133,15 @@ pages. Only use this action if you know what you are doing.
         print('No pages detected on this space. Exiting...')
         return 0
 
+    if args.verbose:
+        print('-------------------------')
+        page_names = []
+        for p in legacy_pages:
+            page_names.append(publisher._name_cache[p])
+        sorted(page_names)
+        print('\n'.join(page_names))
+        print('-------------------------')
+
     print('')
     if not ask_question('Are you sure you want to REMOVE these pages?'):
         return 0
