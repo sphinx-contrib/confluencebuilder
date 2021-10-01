@@ -28,6 +28,7 @@ def wipe_main(args_parser):
     """
 
     args_parser.add_argument('--danger', action='store_true')
+    args_parser.add_argument('--parent', '-P', action='store_true')
 
     known_args = sys.argv[1:]
     args, unknown_args = args_parser.parse_known_args(known_args)
@@ -71,6 +72,7 @@ To use this action, the argument '--danger' must be set.
             aggressive_search = app.config.confluence_adv_aggressive_search
             server_url = app.config.confluence_server_url
             space_name = app.config.confluence_space_name
+            parent_name = app.config.confluence_parent_page
 
             # initialize the publisher (if permitted)
             if app.config.confluence_publish:
@@ -81,6 +83,10 @@ To use this action, the argument '--danger' must be set.
 
     if not publisher:
         print('(error) publishing not configured in sphinx configuration')
+        return 1
+
+    if args.parent and not parent_name:
+        print('(error) parent option provided but no parent page is configured')
         return 1
 
     # reminder warning
@@ -105,18 +111,28 @@ pages. Only use this action if you know what you are doing.
     # user has confirmed; start an attempt to wipe
     publisher.connect()
 
+    base_page_id = None
+    if args.parent:
+        base_page_id = publisher.getBasePageId()
+
     if aggressive_search:
-        legacy_pages = publisher.getDescendantsCompat(None)
+        legacy_pages = publisher.getDescendantsCompat(base_page_id)
     else:
-        legacy_pages = publisher.getDescendants(None)
-    if not legacy_pages:
-        print('No pages are published on this space. Exiting...')
-        return 0
+        legacy_pages = publisher.getDescendants(base_page_id)
 
     print('         URL:', server_url)
     print('       Space:', space_name)
-    logger.note('       Pages: All Pages')
+    if base_page_id:
+        logger.note('       Pages: Child pages of ' + parent_name)
+    else:
+        logger.note('       Pages: All Pages')
     print(' Total pages:', len(legacy_pages))
+
+    if not legacy_pages:
+        print('')
+        print('No pages detected on this space. Exiting...')
+        return 0
+
     print('')
     if not ask_question('Are you sure you want to REMOVE these pages?'):
         return 0
