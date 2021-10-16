@@ -4,11 +4,13 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinx.application import Sphinx
-from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import os
 import sys
+
+from sphinx.application import Sphinx
+from sphinx.util.docutils import docutils_namespace
+
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
 #: default builder to invoke when one is not specified
 DEFAULT_BUILDER = 'confluence'

@@ -4,14 +4,16 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+import os
+
 from docutils import nodes
 from sphinx import addnodes
-from sphinx.util.osutil import canon_path
 from sphinx.util.images import guess_mimetype
-from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
-from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
+from sphinx.util.osutil import canon_path
+
+from sphinxcontrib.confluencebuilder.std.confluence import (
+    INVALID_CHARS, SUPPORTED_IMAGE_TYPES)
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-import os
 
 """
 default content type to use if a type cannot be detected for an asset

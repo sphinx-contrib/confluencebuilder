@@ -6,12 +6,15 @@
 """
 
 from __future__ import unicode_literals
+
+import re
+import zlib
 from os import path
+
+import requests
+
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-import re
-import requests
-import zlib
 
 """
 inventory filename to hold intersphinx information

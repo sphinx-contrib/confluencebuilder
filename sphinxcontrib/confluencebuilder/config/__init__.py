@@ -4,10 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder import compat
-from sphinxcontrib.confluencebuilder import util
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import sys
+
+from sphinxcontrib.confluencebuilder import compat, util
+from sphinxcontrib.confluencebuilder.exceptions import \
+    ConfluenceConfigurationError
+
 
 def handle_config_inited(app, config):
     """

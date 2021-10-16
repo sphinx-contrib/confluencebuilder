@@ -6,6 +6,7 @@
 
 from docutils import nodes
 
+
 class ConfluenceNavigationNode(nodes.General, nodes.Element):
 
     """

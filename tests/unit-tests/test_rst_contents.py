@@ -4,12 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
-from tests.lib import parse
-from tests.lib import prepare_conf
 import os
 import re
 import unittest
+
+from tests.lib import build_sphinx, parse, prepare_conf
+
 
 class TestConfluenceRstContents(unittest.TestCase):
     @classmethod

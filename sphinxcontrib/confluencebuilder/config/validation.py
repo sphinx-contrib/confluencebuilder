@@ -4,10 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
-from sphinxcontrib.confluencebuilder.util import str2bool
 import os
+
+from sphinxcontrib.confluencebuilder.exceptions import \
+    ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.util import (extract_strings_from_file,
+                                                  str2bool)
 
 try:
     basestring

@@ -4,17 +4,19 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from docutils import nodes
-from docutils.nodes import NodeVisitor as BaseTranslator
-from os import path
-from sphinx.util.osutil import SEP
-from sphinx.util.osutil import canon_path
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 import io
 import sys
 import unicodedata
+from os import path
+
+from docutils import nodes
+from docutils.nodes import NodeVisitor as BaseTranslator
+from sphinx.util.osutil import SEP, canon_path
+
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.std.sphinx import (
+    DEFAULT_ALIGNMENT, DEFAULT_HIGHLIGHT_STYLE)
+
 
 class ConfluenceBaseTranslator(BaseTranslator):
     _tracked_deprecated_raw_type = False

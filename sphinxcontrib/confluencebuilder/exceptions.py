@@ -4,8 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinx.errors import ConfigError
-from sphinx.errors import SphinxError
+from sphinx.errors import ConfigError, SphinxError
+
 
 class ConfluenceError(SphinxError):
     category = 'sphinxcontrib.confluencebuilder error'

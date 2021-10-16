@@ -5,7 +5,10 @@
 """
 
 from sphinx.builders import Builder
-from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
+
+from sphinxcontrib.confluencebuilder.config.checks import \
+    validate_configuration
+
 
 class ConfluenceReportBuilder(Builder):
     name = 'internal-confluence-report'

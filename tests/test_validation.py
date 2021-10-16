@@ -4,16 +4,16 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
-from tests.lib import build_sphinx
-from tests.lib import enable_sphinx_info
-from tests.lib import prepare_conf
-from tests.lib import prepare_dirs
 import os
 import sys
 import unittest
+
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
+
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
+from tests.lib import (build_sphinx, enable_sphinx_info, prepare_conf,
+                       prepare_dirs)
 
 DEFAULT_TEST_DESC = 'test state'
 DEFAULT_TEST_KEY = 'test-holder'

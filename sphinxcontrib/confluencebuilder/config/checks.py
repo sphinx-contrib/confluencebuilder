@@ -4,12 +4,16 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.config.notifications import deprecated
-from sphinxcontrib.confluencebuilder.config.notifications import warnings
-from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-from requests.auth import AuthBase
 import os
+
+from requests.auth import AuthBase
+
+from sphinxcontrib.confluencebuilder.config.notifications import (deprecated,
+                                                                  warnings)
+from sphinxcontrib.confluencebuilder.config.validation import \
+    ConfigurationValidation
+from sphinxcontrib.confluencebuilder.exceptions import \
+    ConfluenceConfigurationError
 
 try:
     basestring

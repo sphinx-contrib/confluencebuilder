@@ -4,15 +4,18 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+import os
+import sys
+from tempfile import TemporaryDirectory
+
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
+
 from sphinxcontrib.confluencebuilder.compat import input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
-from tempfile import TemporaryDirectory
-import os
-import sys
+
 
 def wipe_main(args_parser):
     """

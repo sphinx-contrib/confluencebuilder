@@ -4,16 +4,16 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
-from tests.lib import build_sphinx
-from tests.lib import parse
-from tests.lib import prepare_conf
-from tests.lib import prepare_dirs
 import mimetypes
 import os
 import shutil
 import sys
 import unittest
+
+from sphinxcontrib.confluencebuilder.std.confluence import \
+    SUPPORTED_IMAGE_TYPES
+from tests.lib import build_sphinx, parse, prepare_conf, prepare_dirs
+
 
 class TestConfluenceSphinxImageCandidate(unittest.TestCase):
     @classmethod

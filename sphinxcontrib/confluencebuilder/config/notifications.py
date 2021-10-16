@@ -4,8 +4,9 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 import mimetypes
+
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 """
 dictionary of deprecated configuration entries and associated message

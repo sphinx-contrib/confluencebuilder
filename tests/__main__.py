@@ -4,12 +4,13 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import enable_sphinx_info
 import argparse
 import fnmatch
 import os
 import sys
 import unittest
+
+from tests.lib import enable_sphinx_info
 
 """
 default verbosity for unit tests

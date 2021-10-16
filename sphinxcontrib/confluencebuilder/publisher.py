@@ -8,16 +8,16 @@ See also:
     https://docs.atlassian.com/confluence/REST/latest/
 """
 
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.rest import Rest
 import json
 import time
+
+from sphinxcontrib.confluencebuilder.exceptions import (
+    ConfluenceBadApiError, ConfluenceBadSpaceError,
+    ConfluenceConfigurationError, ConfluenceMissingPageIdError,
+    ConfluencePermissionError, ConfluenceUnreconciledPageError)
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.rest import Rest
+
 
 class ConfluencePublisher():
     def __init__(self):

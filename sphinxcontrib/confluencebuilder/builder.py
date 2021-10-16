@@ -4,12 +4,13 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
+
+import io
+from os import path
+
 from docutils import nodes
 from docutils.io import StringOutput
-from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.errors import ExtensionError
@@ -17,23 +18,25 @@ from sphinx.locale import __
 from sphinx.util import status_iterator
 from sphinx.util.math import wrap_displaymath
 from sphinx.util.osutil import ensuredir
-from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
-from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
+
+from sphinxcontrib.confluencebuilder.assets import (ConfluenceAssetManager,
+                                                    ConfluenceSupportedImages)
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
-from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
+from sphinxcontrib.confluencebuilder.config.checks import \
+    validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
-from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import (ConfluenceNavigationNode,
+                                                   confluence_metadata)
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
-from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
-from sphinxcontrib.confluencebuilder.util import first
+from sphinxcontrib.confluencebuilder.translator.storage import \
+    ConfluenceStorageFormatTranslator
+from sphinxcontrib.confluencebuilder.util import (ConfluenceUtil,
+                                                  extract_strings_from_file,
+                                                  first)
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
-import io
 
 try:
     basestring
@@ -42,16 +45,15 @@ except NameError:
 
 # load graphviz extension if available to handle node pre-processing
 try:
-    from sphinx.ext.graphviz import GraphvizError
-    from sphinx.ext.graphviz import graphviz
-    from sphinx.ext.graphviz import render_dot
+    from sphinx.ext.graphviz import GraphvizError, graphviz, render_dot
 except ImportError:
     graphviz = None
 
 # load imgmath extension if available to handle math node pre-processing
 try:
-    from sphinx.ext import imgmath
     import itertools
+
+    from sphinx.ext import imgmath
 except ImportError:
     imgmath = None
 

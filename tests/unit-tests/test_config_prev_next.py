@@ -5,11 +5,13 @@
 """
 
 from __future__ import unicode_literals
-from tests.lib import build_sphinx
-from tests.lib import prepare_conf
+
 import io
 import os
 import unittest
+
+from tests.lib import build_sphinx, prepare_conf
+
 
 class TestConfluenceConfigPrevNext(unittest.TestCase):
     @classmethod

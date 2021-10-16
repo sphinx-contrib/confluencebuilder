@@ -4,12 +4,14 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder import compat
-from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
-from hashlib import sha256
 import getpass
 import os
 import subprocess
+from hashlib import sha256
+
+from sphinxcontrib.confluencebuilder import compat
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
+
 
 class ConfluenceUtil:
     """

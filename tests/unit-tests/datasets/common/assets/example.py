@@ -2,6 +2,7 @@
 
 import sys
 
+
 def main():
     print('this is an example')
 

@@ -5,6 +5,7 @@
 """
 
 from __future__ import absolute_import
+
 from sphinx import version_info as sphinx_version_info
 
 """

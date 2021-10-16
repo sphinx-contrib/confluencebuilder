@@ -5,18 +5,19 @@
 """
 
 from sphinx.util import docutils
+
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
-from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
-from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
-from sphinxcontrib.confluencebuilder.directives import JiraDirective
-from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
+from sphinxcontrib.confluencebuilder.directives import (
+    ConfluenceExpandDirective, ConfluenceMetadataDirective, JiraDirective,
+    JiraIssueDirective)
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
-from sphinxcontrib.confluencebuilder.nodes import jira
-from sphinxcontrib.confluencebuilder.nodes import jira_issue
-from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
-from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
+from sphinxcontrib.confluencebuilder.nodes import (confluence_metadata, jira,
+                                                   jira_issue)
+from sphinxcontrib.confluencebuilder.reportbuilder import \
+    ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.singlebuilder import \
+    SingleConfluenceBuilder
 
 # load autosummary extension if available to add additional nodes
 try:

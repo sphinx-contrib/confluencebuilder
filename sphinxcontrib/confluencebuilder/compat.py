@@ -5,7 +5,8 @@
 """
 
 from sphinx.locale import __
-from sphinx.util.console import bold # pylint: disable=no-name-in-module
+from sphinx.util.console import bold  # pylint: disable=no-name-in-module
+
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 # input support with all supported python interpreters

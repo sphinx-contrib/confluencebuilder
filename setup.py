@@ -4,11 +4,11 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from distutils.command.clean import clean
-from distutils import dir_util
-from setuptools import find_packages
-from setuptools import setup
 import os
+from distutils import dir_util
+from distutils.command.clean import clean
+
+from setuptools import find_packages, setup
 
 with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()

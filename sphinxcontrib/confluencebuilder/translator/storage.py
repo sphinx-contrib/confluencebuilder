@@ -6,25 +6,25 @@
 """
 
 from __future__ import unicode_literals
-from docutils import nodes
-from os import path
-from sphinx import addnodes
-from sphinx.locale import _
-from sphinx.locale import admonitionlabels
-from sphinx.util.images import get_image_size
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
-from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
-from sphinxcontrib.confluencebuilder.std.confluence import INDENT
-from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
-from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from sphinxcontrib.confluencebuilder.util import first
+
 import math
 import posixpath
 import sys
+from os import path
+
+from docutils import nodes
+from sphinx import addnodes
+from sphinx.locale import _, admonitionlabels
+from sphinx.util.images import get_image_size
+
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.std.confluence import (
+    FALLBACK_HIGHLIGHT_STYLE, FCMMO, INDENT, LITERAL2LANG_MAP)
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
+from sphinxcontrib.confluencebuilder.util import first
 
 try:
     unicode

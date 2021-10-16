@@ -4,11 +4,13 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from collections import deque
-from sphinx.util import logging
-from sphinx.util.console import bold # pylint: disable=no-name-in-module
 import io
 import sys
+from collections import deque
+
+from sphinx.util import logging
+from sphinx.util.console import bold  # pylint: disable=no-name-in-module
+
 
 class ConfluenceLogger():
     """

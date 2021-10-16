@@ -4,21 +4,21 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceCertificateError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthenticationFailedUrlError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
-from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
-from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
-from requests.adapters import HTTPAdapter
 import json
-import requests
 import ssl
+
+import requests
+from requests.adapters import HTTPAdapter
+
+from sphinxcontrib.confluencebuilder.exceptions import (
+    ConfluenceAuthenticationFailedUrlError, ConfluenceBadApiError,
+    ConfluenceBadServerUrlError, ConfluenceCertificateError,
+    ConfluencePermissionError, ConfluenceProxyPermissionError,
+    ConfluenceSeraphAuthenticationFailedUrlError, ConfluenceSslError,
+    ConfluenceTimeoutError)
+from sphinxcontrib.confluencebuilder.std.confluence import (API_REST_BIND_PATH,
+                                                            NOCHECK)
+
 
 class SslAdapter(HTTPAdapter):
     def __init__(self, cert, password=None, disable_validation=False,

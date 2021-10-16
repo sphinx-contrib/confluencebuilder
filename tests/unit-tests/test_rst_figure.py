@@ -4,12 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
-from tests.lib import build_sphinx
-from tests.lib import parse
-from tests.lib import prepare_conf
 import os
 import unittest
+
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
+from tests.lib import build_sphinx, parse, prepare_conf
+
 
 class TestConfluenceRstFigure(unittest.TestCase):
     @classmethod

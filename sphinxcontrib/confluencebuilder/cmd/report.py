@@ -4,22 +4,25 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+import os
+import platform
+import sys
 from collections import OrderedDict
+from tempfile import TemporaryDirectory
+from xml.etree import ElementTree
+
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
+
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
-from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.reportbuilder import \
+    ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-from tempfile import TemporaryDirectory
-from xml.etree import ElementTree
-import os
-import platform
-import sys
 
 try:
     from urllib.parse import urlparse

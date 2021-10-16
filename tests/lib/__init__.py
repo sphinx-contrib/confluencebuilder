@@ -4,20 +4,20 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from bs4 import BeautifulSoup
-from contextlib import contextmanager
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
-from sphinx.application import Sphinx
-from sphinx.util.console import color_terminal
-from sphinx.util.console import nocolor
-from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder import compat
-from sphinxcontrib.confluencebuilder import util
 import inspect
 import os
 import shutil
 import sys
+from contextlib import contextmanager
+
+from bs4 import BeautifulSoup
+from pkg_resources import parse_version
+from sphinx.__init__ import __version__ as sphinx_version
+from sphinx.application import Sphinx
+from sphinx.util.console import color_terminal, nocolor
+from sphinx.util.docutils import docutils_namespace
+
+from sphinxcontrib.confluencebuilder import compat, util
 
 """
 full extension name

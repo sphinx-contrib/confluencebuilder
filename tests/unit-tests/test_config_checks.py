@@ -4,18 +4,18 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from requests.auth import AuthBase
-from requests.auth import HTTPDigestAuth
-from sphinx.errors import SphinxWarning
-from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
-from tests.lib import EXT_NAME
-from tests.lib import mock_getpass
-from tests.lib import mock_input
-from tests.lib import prepare_conf
-from tests.lib import prepare_sphinx
 import os
 import unittest
+
+from requests.auth import AuthBase, HTTPDigestAuth
+from sphinx.errors import SphinxWarning
+
+from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.exceptions import \
+    ConfluenceConfigurationError
+from tests.lib import (EXT_NAME, mock_getpass, mock_input, prepare_conf,
+                       prepare_sphinx)
+
 
 class TestConfluenceConfigChecks(unittest.TestCase):
     @classmethod

@@ -4,13 +4,14 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives
-from sphinxcontrib.confluencebuilder.nodes import confluence_expand
-from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
-from sphinxcontrib.confluencebuilder.nodes import jira
-from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from uuid import UUID
+
+from docutils.parsers.rst import Directive, directives
+
+from sphinxcontrib.confluencebuilder.nodes import (confluence_expand,
+                                                   confluence_metadata, jira,
+                                                   jira_issue)
+
 
 def string_list(argument):
     """

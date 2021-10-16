@@ -4,15 +4,15 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
-from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
-from tests.lib import build_sphinx
-from tests.lib import enable_sphinx_info
-from tests.lib import prepare_dirs
-from tests.lib import prepare_sphinx
 import argparse
 import os
 import sys
+
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
+from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from tests.lib import (build_sphinx, enable_sphinx_info, prepare_dirs,
+                       prepare_sphinx)
+
 
 def process_sandbox(target_sandbox, builder=None, defines=None):
     test_dir = os.path.dirname(os.path.realpath(__file__))

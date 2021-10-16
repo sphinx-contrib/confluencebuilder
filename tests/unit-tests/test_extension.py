@@ -4,11 +4,11 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import EXT_NAME
-from tests.lib import prepare_conf
-from tests.lib import prepare_sphinx
 import os
 import unittest
+
+from tests.lib import EXT_NAME, prepare_conf, prepare_sphinx
+
 
 class TestConfluenceExtension(unittest.TestCase):
     @classmethod

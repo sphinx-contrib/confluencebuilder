@@ -4,12 +4,12 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from collections import namedtuple
-from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from tests.lib import prepare_conf
-from tests.lib import prepare_sphinx
 import os
 import unittest
+from collections import namedtuple
+
+from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
+from tests.lib import prepare_conf, prepare_sphinx
 
 Reporter = namedtuple('Reporter', 'warning')
 
