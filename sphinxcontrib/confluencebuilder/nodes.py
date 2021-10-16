@@ -20,11 +20,13 @@ class ConfluenceNavigationNode(nodes.General, nodes.Element):
         bottom: show navigation information at the bottom of a document
         top: show navigation information at the top of a document
     """
+
     def __init__(self):
         nodes.Element.__init__(self)
 
         self.bottom = False
         self.top = False
+
 
 class confluence_expand(nodes.Element):
     """
@@ -34,6 +36,7 @@ class confluence_expand(nodes.Element):
     using Confluence's expand macro.
     """
 
+
 class confluence_metadata(nodes.Element):
     """
     confluence metadata node
@@ -41,6 +44,7 @@ class confluence_metadata(nodes.Element):
     A Confluence builder defined metadata node holds metadata information for a
     given document.
     """
+
 
 class jira(nodes.Element, nodes.Structural):
     """
@@ -57,9 +61,11 @@ class jira(nodes.Element, nodes.Structural):
     Attributes:
         params: dictionary of parameters to pass into a jira macro
     """
-    def __init__(self, rawsource='', *children, **attributes):
+
+    def __init__(self, rawsource="", *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
         self.params = {}
+
 
 class jira_issue(nodes.Element, nodes.Structural):
     """
@@ -76,6 +82,7 @@ class jira_issue(nodes.Element, nodes.Structural):
     Attributes:
         params: dictionary of parameters to pass into a jira macro
     """
-    def __init__(self, rawsource='', *children, **attributes):
+
+    def __init__(self, rawsource="", *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
         self.params = {}

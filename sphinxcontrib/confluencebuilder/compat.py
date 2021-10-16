@@ -19,15 +19,16 @@ except NameError:
 try:
     from sphinx.util import progress_message
 except ImportError:
+
     class progress_message:
         def __init__(self, msg):
             self.msg = msg
 
         def __enter__(self):
-            ConfluenceLogger.info(bold(self.msg + '... '), nonl=True)
+            ConfluenceLogger.info(bold(self.msg + "... "), nonl=True)
 
         def __exit__(self, type, value, traceback):
             if type:
-                ConfluenceLogger.info(__('failed'))
+                ConfluenceLogger.info(__("failed"))
             else:
-                ConfluenceLogger.info(__('done'))
+                ConfluenceLogger.info(__("done"))

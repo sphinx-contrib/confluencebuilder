@@ -11,18 +11,21 @@ import requests
 from requests.adapters import HTTPAdapter
 
 from sphinxcontrib.confluencebuilder.exceptions import (
-    ConfluenceAuthenticationFailedUrlError, ConfluenceBadApiError,
-    ConfluenceBadServerUrlError, ConfluenceCertificateError,
-    ConfluencePermissionError, ConfluenceProxyPermissionError,
-    ConfluenceSeraphAuthenticationFailedUrlError, ConfluenceSslError,
-    ConfluenceTimeoutError)
-from sphinxcontrib.confluencebuilder.std.confluence import (API_REST_BIND_PATH,
-                                                            NOCHECK)
+    ConfluenceAuthenticationFailedUrlError,
+    ConfluenceBadApiError,
+    ConfluenceBadServerUrlError,
+    ConfluenceCertificateError,
+    ConfluencePermissionError,
+    ConfluenceProxyPermissionError,
+    ConfluenceSeraphAuthenticationFailedUrlError,
+    ConfluenceSslError,
+    ConfluenceTimeoutError,
+)
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH, NOCHECK
 
 
 class SslAdapter(HTTPAdapter):
-    def __init__(self, cert, password=None, disable_validation=False,
-                 *args, **kwargs):
+    def __init__(self, cert, password=None, disable_validation=False, *args, **kwargs):
         self._certfile, self._keyfile = cert
         self._password = password
         self._disable_validation = disable_validation
@@ -31,19 +34,20 @@ class SslAdapter(HTTPAdapter):
     def init_poolmanager(self, *args, **kwargs):
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         try:
-            context.load_cert_chain(certfile=self._certfile,
-                                    keyfile=self._keyfile,
-                                    password=self._password)
+            context.load_cert_chain(
+                certfile=self._certfile, keyfile=self._keyfile, password=self._password
+            )
         except ssl.SSLError as ex:
             raise ConfluenceCertificateError(ex)
         if self._disable_validation:
             context.check_hostname = False
 
-        kwargs['ssl_context'] = context
+        kwargs["ssl_context"] = context
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
+
 class Rest:
-    CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
+    CONFLUENCE_DEFAULT_ENCODING = "utf-8"
 
     def __init__(self, config):
         self.url = config.confluence_server_url
@@ -52,14 +56,16 @@ class Rest:
 
     def _setup_session(self, config):
         session = requests.Session()
-        session.headers.update({
-            'User-Agent': 'Sphinx Confluence Builder',
-            'X-Atlassian-Token': NOCHECK,
-        })
+        session.headers.update(
+            {
+                "User-Agent": "Sphinx Confluence Builder",
+                "X-Atlassian-Token": NOCHECK,
+            }
+        )
         session.timeout = config.confluence_timeout
         session.proxies = {
-            'http': config.confluence_proxy,
-            'https': config.confluence_proxy,
+            "http": config.confluence_proxy,
+            "https": config.confluence_proxy,
         }
 
         # add custom header options based off the user's configuration
@@ -80,9 +86,11 @@ class Rest:
         # see: https://github.com/requests/requests/issues/2519 for more
         # information.
         if config.confluence_client_cert:
-            adapter = SslAdapter(config.confluence_client_cert,
-                                 config.confluence_client_cert_pass,
-                                 config.confluence_disable_ssl_validation)
+            adapter = SslAdapter(
+                config.confluence_client_cert,
+                config.confluence_client_cert_pass,
+                config.confluence_disable_ssl_validation,
+            )
             session.mount(self.url, adapter)
 
         if config.confluence_server_auth:
@@ -90,7 +98,7 @@ class Rest:
         elif config.confluence_server_user:
             passwd = config.confluence_server_pass
             if passwd is None:
-                passwd = ''
+                passwd = ""
             session.auth = (config.confluence_server_user, passwd)
 
         if config.confluence_server_cookies:
@@ -99,7 +107,7 @@ class Rest:
         return session
 
     def get(self, key, params):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key
+        restUrl = self.url + API_REST_BIND_PATH + "/" + key
         try:
             rsp = self.session.get(restUrl, params=params)
         except requests.exceptions.Timeout:
@@ -123,13 +131,14 @@ class Rest:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+            raise ConfluenceBadServerUrlError(
+                self.url, "REST reply did not provide valid JSON data."
+            )
 
         return json_data
 
     def post(self, key, data, files=None):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key
+        restUrl = self.url + API_REST_BIND_PATH + "/" + key
         try:
             rsp = self.session.post(restUrl, json=data, files=files)
         except requests.exceptions.Timeout:
@@ -157,13 +166,14 @@ class Rest:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+            raise ConfluenceBadServerUrlError(
+                self.url, "REST reply did not provide valid JSON data."
+            )
 
         return json_data
 
     def put(self, key, value, data):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        restUrl = self.url + API_REST_BIND_PATH + "/" + key + "/" + str(value)
         try:
             rsp = self.session.put(restUrl, json=data)
         except requests.exceptions.Timeout:
@@ -191,13 +201,14 @@ class Rest:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
         except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+            raise ConfluenceBadServerUrlError(
+                self.url, "REST reply did not provide valid JSON data."
+            )
 
         return json_data
 
     def delete(self, key, value):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        restUrl = self.url + API_REST_BIND_PATH + "/" + key + "/" + str(value)
         try:
             rsp = self.session.delete(restUrl)
         except requests.exceptions.Timeout:
@@ -225,7 +236,7 @@ class Rest:
         err += "URL: " + self.url + API_REST_BIND_PATH + "\n"
         err += "API: " + key + "\n"
         try:
-            err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
-        except: # noqa: E722
-            err += 'DATA: <not-or-invalid-json>'
+            err += "DATA: {}".format(json.dumps(rsp.json(), indent=2))
+        except:  # noqa: E722
+            err += "DATA: <not-or-invalid-json>"
         return err

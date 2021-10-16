@@ -15,7 +15,9 @@ from sphinx.util.osutil import SEP, canon_path
 
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.std.sphinx import (
-    DEFAULT_ALIGNMENT, DEFAULT_HIGHLIGHT_STYLE)
+    DEFAULT_ALIGNMENT,
+    DEFAULT_HIGHLIGHT_STYLE,
+)
 
 
 class ConfluenceBaseTranslator(BaseTranslator):
@@ -33,6 +35,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         document: the document being translated
         builder: the sphinx builder instance
     """
+
     def __init__(self, document, builder):
         BaseTranslator.__init__(self, document)
         self.builder = builder
@@ -40,21 +43,21 @@ class ConfluenceBaseTranslator(BaseTranslator):
         config = builder.config
 
         # acquire the active document name from the builder
-        assert 'source' in document
-        self.docname = canon_path(self.builder.env.path2doc(document['source']))
+        assert "source" in document
+        self.docname = canon_path(self.builder.env.path2doc(document["source"]))
 
         # determine the active document's parent path to assist it title mapping
         # for relative document uris
         # (see '_visit_reference_intern_uri')
         if SEP in self.docname:
-            self.docparent = self.docname[0:self.docname.rfind(SEP) + 1]
+            self.docparent = self.docname[0 : self.docname.rfind(SEP) + 1]
         else:
-            self.docparent = ''
+            self.docparent = ""
 
         self.assets = builder.assets
         self.body = []
         self.context = []
-        self.nl = '\n'
+        self.nl = "\n"
         self._docnames = [self.docname]
         self._literal = False
         self._section_level = 1
@@ -81,34 +84,36 @@ class ConfluenceBaseTranslator(BaseTranslator):
         pass
 
     def depart_document(self, node):
-        self.body_final = ''
+        self.body_final = ""
 
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
-            headerFile = path.join(self.builder.env.srcdir,
-                self.builder.config.confluence_header_file)
+            headerFile = path.join(
+                self.builder.env.srcdir, self.builder.config.confluence_header_file
+            )
             try:
-                with io.open(headerFile, encoding='utf-8') as file:
+                with io.open(headerFile, encoding="utf-8") as file:
                     self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(headerFile, err))
+                self.warn("error reading file {}: {}".format(headerFile, err))
 
-        self.body_final += ''.join(self.body)
+        self.body_final += "".join(self.body)
 
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
-            footerFile = path.join(self.builder.env.srcdir,
-                self.builder.config.confluence_footer_file)
+            footerFile = path.join(
+                self.builder.env.srcdir, self.builder.config.confluence_footer_file
+            )
             try:
-                with io.open(footerFile, encoding='utf-8') as file:
+                with io.open(footerFile, encoding="utf-8") as file:
                     self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(footerFile, err))
+                self.warn("error reading file {}: {}".format(footerFile, err))
 
     def visit_Text(self, node):
         text = node.astext()
         if not self._literal:
-            text = text.replace(self.nl, ' ')
+            text = text.replace(self.nl, " ")
         text = self.encode(text)
         self.body.append(text)
         raise nodes.SkipNode
@@ -117,7 +122,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         node_name = node.__class__.__name__
         ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
         if node_name in ignore_nodes:
-            ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
+            ConfluenceLogger.verbose("ignore node {} (conf)".format(node_name))
             raise nodes.SkipNode
 
         # allow users to override unknown nodes
@@ -132,7 +137,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             handler[node_name](self, node)
             raise nodes.SkipNode
 
-        raise NotImplementedError('unknown node: ' + node_name)
+        raise NotImplementedError("unknown node: " + node_name)
 
     # ---------
     # structure
@@ -264,11 +269,13 @@ class ConfluenceBaseTranslator(BaseTranslator):
         self.depart_reference(node)
 
     def visit_raw(self, node):
-        if 'confluence' in node.get('format', '').split():
+        if "confluence" in node.get("format", "").split():
             if not self._tracked_deprecated_raw_type:
                 self._tracked_deprecated_raw_type = True
-                self.warn('the raw "confluence" type is deprecated; '
-                    'use "confluence_storage" instead')
+                self.warn(
+                    'the raw "confluence" type is deprecated; '
+                    'use "confluence_storage" instead'
+                )
 
             self.body.append(self.nl.join(node.astext().splitlines()))
         raise nodes.SkipNode
@@ -288,7 +295,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
     def visit_start_of_file(self, node):
         # track active inlined documents (singleconfluence builder) for anchors
-        self._docnames.append(node['docname'])
+        self._docnames.append(node["docname"])
 
     def depart_start_of_file(self, node):
         self._docnames.pop()
@@ -298,5 +305,6 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def encode(self, text):
         # remove any non-space control characters that cannot be published to a
         # confluence instance
-        return ''.join(c for c in text if c.isspace()
-            or unicodedata.category(c)[0] != 'C')
+        return "".join(
+            c for c in text if c.isspace() or unicodedata.category(c)[0] != "C"
+        )

@@ -15,13 +15,14 @@ class TestConfluenceRstRaw(unittest.TestCase):
     def setUpClass(self):
         self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        self.dataset = os.path.join(test_dir, "datasets", "common")
 
     def test_storage_rst_raw_default(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['raw-storage'])
+        out_dir = build_sphinx(
+            self.dataset, config=self.config, filenames=["raw-storage"]
+        )
 
-        with parse('raw-storage', out_dir) as data:
-            strong = data.find('strong')
+        with parse("raw-storage", out_dir) as data:
+            strong = data.find("strong")
             self.assertIsNotNone(strong)
-            self.assertEqual(strong.text, 'raw content')
+            self.assertEqual(strong.text, "raw content")

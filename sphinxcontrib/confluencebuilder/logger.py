@@ -12,13 +12,14 @@ from sphinx.util import logging
 from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 
 
-class ConfluenceLogger():
+class ConfluenceLogger:
     """
     confluence logger class
 
     This class is used to manage an internally logger instance and provide
     methods to easily log message at specific logging levels.
     """
+
     logger = None
 
     @staticmethod
@@ -35,20 +36,22 @@ class ConfluenceLogger():
                                  logging features before attempting to load a
                                  Sphinx application
         """
-        ConfluenceLogger.logger = logging.getLogger('confluence')
+        ConfluenceLogger.logger = logging.getLogger("confluence")
 
         # setup logging for features like coloring before starting Sphinx
         if preload:
+
             class MockSphinx:
                 def __init__(self):
                     self.messagelog = deque(maxlen=10)
                     self.verbosity = 0
                     self.warningiserror = False
                     self._warncount = 0
+
             try:
                 logging.setup(MockSphinx(), sys.stdout, sys.stderr)
             except Exception:
-                pass # fail silently if mocked application is missing something
+                pass  # fail silently if mocked application is missing something
 
     @staticmethod
     def error(msg, *args, **kwargs):
@@ -96,7 +99,7 @@ class ConfluenceLogger():
          https://docs.python.org/3/library/logging.html#logging.Logger.debug
         """
         if ConfluenceLogger.logger:
-            msg = '[confluence] ' + msg
+            msg = "[confluence] " + msg
             ConfluenceLogger.logger.verbose(msg, *args, **kwargs)
 
     @staticmethod
@@ -121,9 +124,9 @@ class ConfluenceLogger():
         This is solely for manually debugging unexpected scenarios.
         """
         try:
-            with io.open('trace.log', 'a', encoding='utf-8') as file:
-                file.write(u'[%s]\n' % container)
+            with io.open("trace.log", "a", encoding="utf-8") as file:
+                file.write(u"[%s]\n" % container)
                 file.write(data)
-                file.write(u'\n')
+                file.write(u"\n")
         except (IOError, OSError) as err:
-            ConfluenceLogger.warn('unable to trace: %s' % err)
+            ConfluenceLogger.warn("unable to trace: %s" % err)

@@ -16,6 +16,7 @@ imposed limitation [1].
 """
 CONFLUENCE_MAX_TITLE_LEN = 255
 
+
 class ConfluenceState:
     """
     confluence state tracking
@@ -24,6 +25,7 @@ class ConfluenceState:
     operation. This includes, but not limited to, remember title names for
     documents, tracking reference identifiers to other document names and more.
     """
+
     doc2uploadId = {}
     doc2parentDoc = {}
     doc2title = {}
@@ -48,7 +50,8 @@ class ConfluenceState:
         """
         ConfluenceState.doc2parentDoc[docname] = parent_docname
         ConfluenceLogger.verbose(
-            "setting parent of %s to: %s" % (docname, parent_docname))
+            "setting parent of %s to: %s" % (docname, parent_docname)
+        )
 
     @staticmethod
     def registerTarget(refid, target):
@@ -82,10 +85,9 @@ class ConfluenceState:
         beginning (or at the end) of the provided title value.
         """
         try_max = CONFLUENCE_MAX_TITLE_LEN
-        base_tail = ''
+        base_tail = ""
 
-        if (config.confluence_ignore_titlefix_on_index and
-                docname == config.root_doc):
+        if config.confluence_ignore_titlefix_on_index and docname == config.root_doc:
             postfix = None
             prefix = None
         else:
@@ -101,8 +103,9 @@ class ConfluenceState:
 
         if len(title) > try_max:
             title = title[0:try_max]
-            ConfluenceLogger.warn("document title has been trimmed due to "
-                "length: %s" % docname)
+            ConfluenceLogger.warn(
+                "document title has been trimmed due to " "length: %s" % docname
+            )
 
         base_title = title
         title += base_tail
@@ -111,11 +114,14 @@ class ConfluenceState:
         offset = 2
         while title.lower() in ConfluenceState.title2doc:
             if offset == 2:
-                ConfluenceLogger.warn('title conflict detected with '
+                ConfluenceLogger.warn(
+                    "title conflict detected with "
                     "'{}' and '{}'".format(
-                        ConfluenceState.title2doc[title.lower()], docname))
+                        ConfluenceState.title2doc[title.lower()], docname
+                    )
+                )
 
-            tail = ' ({}){}'.format(offset, base_tail)
+            tail = " ({}){}".format(offset, base_tail)
             try_max = CONFLUENCE_MAX_TITLE_LEN + len(tail)
             if len(base_title) > try_max:
                 base_title = base_title[0:try_max]
@@ -158,8 +164,7 @@ class ConfluenceState:
         tracked in this state (see also `uploadId`).
         """
         ConfluenceState.doc2uploadId[docname] = id
-        ConfluenceLogger.verbose(
-            "tracking docname %s's upload id: %s" % (docname, id))
+        ConfluenceLogger.verbose("tracking docname %s's upload id: %s" % (docname, id))
 
     @staticmethod
     def reset():

@@ -22,7 +22,8 @@ from sphinxcontrib.confluencebuilder import compat, util
 """
 full extension name
 """
-EXT_NAME = 'sphinxcontrib.confluencebuilder'
+EXT_NAME = "sphinxcontrib.confluencebuilder"
+
 
 def enable_sphinx_info(verbosity=None):
     """
@@ -34,17 +35,18 @@ def enable_sphinx_info(verbosity=None):
     Args:
         verbosity (optional): configure verbosity on the sphinx application
     """
-    os.environ['SPHINX_STATUS'] = '1'
+    os.environ["SPHINX_STATUS"] = "1"
     if verbosity:
-        os.environ['SPHINX_VERBOSITY'] = str(verbosity)
+        os.environ["SPHINX_VERBOSITY"] = str(verbosity)
+
 
 @contextmanager
 def mock_getpass(mock):
-    def _(prompt='Password: ', stream=sys.stdout):
+    def _(prompt="Password: ", stream=sys.stdout):
         stream.write(prompt)
-        stream.write('(mocked input> ')
+        stream.write("(mocked input> ")
         stream.write(mock)
-        stream.write('\n')
+        stream.write("\n")
         return mock
 
     try:
@@ -54,10 +56,11 @@ def mock_getpass(mock):
     finally:
         util.getpass2 = original
 
+
 @contextmanager
 def mock_input(mock):
-    def _(prompt=''):
-        print(prompt + '(mocked input> ' + mock)
+    def _(prompt=""):
+        print(prompt + "(mocked input> " + mock)
         return mock
 
     try:
@@ -66,6 +69,7 @@ def mock_input(mock):
         yield
     finally:
         compat.input = original
+
 
 @contextmanager
 def parse(filename, dirname=None):
@@ -89,11 +93,12 @@ def parse(filename, dirname=None):
     else:
         target = filename
 
-    target += '.conf'
+    target += ".conf"
 
-    with open(target, 'r') as fp:
-        soup = BeautifulSoup(fp, 'html.parser')
+    with open(target, "r") as fp:
+        soup = BeautifulSoup(fp, "html.parser")
         yield soup
+
 
 def prepare_conf():
     """
@@ -104,18 +109,19 @@ def prepare_conf():
     a Sphinx application instance.
     """
     config = {}
-    config['extensions'] = [
+    config["extensions"] = [
         EXT_NAME,
         # include any forced-injected extensions (config support)
-        'sphinx.ext.imgmath',
+        "sphinx.ext.imgmath",
     ]
-    config['confluence_publish'] = False
+    config["confluence_publish"] = False
 
     # support pre-Sphinx v2.0 installations which default to 'contents'
-    if parse_version(sphinx_version) < parse_version('2.0'):
-        config['master_doc'] = 'index'
+    if parse_version(sphinx_version) < parse_version("2.0"):
+        config["master_doc"] = "index"
 
     return config
+
 
 def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
@@ -141,7 +147,7 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
     lib_dir = os.path.dirname(os.path.realpath(__file__))
     test_dir = os.path.join(lib_dir, os.pardir)
     base_dir = os.path.join(test_dir, os.pardir)
-    output_dir = os.path.join(base_dir, 'output')
+    output_dir = os.path.join(base_dir, "output")
     container_dir = os.path.abspath(os.path.join(output_dir, container))
     if postfix:
         container_dir += postfix
@@ -150,9 +156,11 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
 
     return container_dir
 
+
 @contextmanager
-def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
-        builder=None, relax=False):
+def prepare_sphinx(
+    src_dir, config=None, out_dir=None, extra_config=None, builder=None, relax=False
+):
     """
     prepare a sphinx application instance
 
@@ -181,47 +189,49 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     warnerr = not relax
 
     sts = None
-    if 'SPHINX_STATUS' in os.environ:
+    if "SPHINX_STATUS" in os.environ:
         sts = sys.stdout
 
     verbosity = 0
-    if 'SPHINX_VERBOSITY' in os.environ:
+    if "SPHINX_VERBOSITY" in os.environ:
         try:
-            verbosity = int(os.environ['SPHINX_VERBOSITY'])
+            verbosity = int(os.environ["SPHINX_VERBOSITY"])
         except ValueError:
             pass
 
     # default to using this extension's builder
     if not builder:
-        builder = 'confluence'
+        builder = "confluence"
 
     if not out_dir:
         # 3 = prepare_dirs, this, contextmanager
         out_dir = prepare_dirs(f_back_count=3)
 
-    doctrees_dir = os.path.join(out_dir, '.doctrees')
+    doctrees_dir = os.path.join(out_dir, ".doctrees")
 
     # support pre-Sphinx v4.0 installations which do not have `root_doc` by
     # swapping to the obsolete configuration name
-    if parse_version(sphinx_version) < parse_version('4.0'):
-        if 'root_doc' in conf:
-            conf['master_doc'] = conf['root_doc']
-            del conf['root_doc']
+    if parse_version(sphinx_version) < parse_version("4.0"):
+        if "root_doc" in conf:
+            conf["master_doc"] = conf["root_doc"]
+            del conf["root_doc"]
 
     with docutils_namespace():
         app = Sphinx(
-            src_dir,                # output for document sources
-            conf_dir,               # configuration directory
-            out_dir,                # output for generated documents
-            doctrees_dir,           # output for doctree files
-            builder,                # builder to execute
-            confoverrides=conf,     # load provided configuration (volatile)
-            status=sts,             # status output
-            warning=sys.stderr,     # warnings output
-            warningiserror=warnerr, # treat warnings as errors
-            verbosity=verbosity)    # verbosity
+            src_dir,  # output for document sources
+            conf_dir,  # configuration directory
+            out_dir,  # output for generated documents
+            doctrees_dir,  # output for doctree files
+            builder,  # builder to execute
+            confoverrides=conf,  # load provided configuration (volatile)
+            status=sts,  # status output
+            warning=sys.stderr,  # warnings output
+            warningiserror=warnerr,  # treat warnings as errors
+            verbosity=verbosity,
+        )  # verbosity
 
         yield app
+
 
 def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     """
@@ -252,22 +262,30 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     """
     files = []
     for filename in filenames:
-        files.append(os.path.join(src_dir, filename + '.rst'))
+        files.append(os.path.join(src_dir, filename + ".rst"))
 
     if configs:
-        root_doc = 'index'
+        root_doc = "index"
         for config in configs:
-            if config and 'root_doc' in config:
-                root_doc = config['root_doc']
+            if config and "root_doc" in config:
+                root_doc = config["root_doc"]
                 break
 
         if root_doc not in filenames:
-            configs[-1]['root_doc'] = filenames[0] # update last config
+            configs[-1]["root_doc"] = filenames[0]  # update last config
 
     return files
 
-def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
-        builder=None, relax=False, filenames=None):
+
+def build_sphinx(
+    src_dir,
+    config=None,
+    out_dir=None,
+    extra_config=None,
+    builder=None,
+    relax=False,
+    filenames=None,
+):
     """
     prepare a sphinx application instance
 
@@ -301,12 +319,18 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
         # sphinx application requires full paths for explicit filenames
         extra_config = dict(extra_config) if extra_config else {}
-        files = prepare_sphinx_filenames(src_dir, filenames,
-            configs=(config, extra_config))
+        files = prepare_sphinx_filenames(
+            src_dir, filenames, configs=(config, extra_config)
+        )
 
     with prepare_sphinx(
-            src_dir, config=config, out_dir=out_dir, extra_config=extra_config,
-            builder=builder, relax=relax) as app:
+        src_dir,
+        config=config,
+        out_dir=out_dir,
+        extra_config=extra_config,
+        builder=builder,
+        relax=relax,
+    ) as app:
         app.build(force_all=force_all, filenames=files)
 
     return out_dir

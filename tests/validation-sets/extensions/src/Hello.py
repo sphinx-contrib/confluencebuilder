@@ -2,6 +2,7 @@
 This is a module docstring
 """
 
+
 class Hello(object):
     """
     This is a Hello class docstring
@@ -22,7 +23,7 @@ class Hello(object):
         """
         This is a say_hello method decorator
         """
-        print('Hello %s' % self.name)
+        print("Hello %s" % self.name)
 
     def foo(self, arg1, arg2):
         """
@@ -43,4 +44,4 @@ class Hello(object):
         :rtype: string
         :raises: TypeError
         """
-        return '' + 1
+        return "" + 1

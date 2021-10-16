@@ -12,13 +12,16 @@ from sphinx.util.images import guess_mimetype
 from sphinx.util.osutil import canon_path
 
 from sphinxcontrib.confluencebuilder.std.confluence import (
-    INVALID_CHARS, SUPPORTED_IMAGE_TYPES)
+    INVALID_CHARS,
+    SUPPORTED_IMAGE_TYPES,
+)
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 
 """
 default content type to use if a type cannot be detected for an asset
 """
-DEFAULT_CONTENT_TYPE = 'application/octet-stream'
+DEFAULT_CONTENT_TYPE = "application/octet-stream"
+
 
 class ConfluenceAsset:
     """
@@ -32,12 +35,14 @@ class ConfluenceAsset:
         type: the content type of the asset
         hash: the hash of the asset
     """
+
     def __init__(self, key, path, type, hash):
         self.docnames = set()
         self.path = path
         self.hash = hash
         self.key = key
         self.type = type
+
 
 class ConfluenceAssetManager:
     """
@@ -58,6 +63,7 @@ class ConfluenceAssetManager:
         env: the build environment
         outdir: configured output directory (where assets may be stored)
     """
+
     def __init__(self, config, env, outdir):
         self.assets = []
         self.env = env
@@ -88,16 +94,25 @@ class ConfluenceAssetManager:
         for asset in self.assets:
             if self.force_standalone:
                 for docname in asset.docnames:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        docname)
+                    entry = (asset.key, asset.path, asset.type, asset.hash, docname)
                     data.append(entry)
             else:
                 if len(asset.docnames) > 1:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        self.root_doc)
+                    entry = (
+                        asset.key,
+                        asset.path,
+                        asset.type,
+                        asset.hash,
+                        self.root_doc,
+                    )
                 else:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        next(iter(asset.docnames)))
+                    entry = (
+                        asset.key,
+                        asset.path,
+                        asset.type,
+                        asset.hash,
+                        next(iter(asset.docnames)),
+                    )
                 data.append(entry)
         return data
 
@@ -130,8 +145,7 @@ class ConfluenceAssetManager:
             # created after pre-processing occurred. Attempt to re-process the
             # node as a standalone image.
             if not asset and not docname and node.document:
-                docname = canon_path(
-                    self.env.path2doc(node.document['source']))
+                docname = canon_path(self.env.path2doc(node.document["source"]))
 
             if not asset and docname:
                 if isinstance(node, nodes.image):
@@ -146,8 +160,7 @@ class ConfluenceAssetManager:
 
                 if not docname:
                     if self.force_standalone:
-                        docname = canon_path(
-                            self.env.path2doc(node.document['source']))
+                        docname = canon_path(self.env.path2doc(node.document["source"]))
                         assert docname in asset.docnames
                     else:
                         if len(asset.docnames) > 1:
@@ -212,8 +225,8 @@ class ConfluenceAssetManager:
             standalone (optional): ignore hash mappings (defaults to False)
         """
 
-        target = node['reftarget']
-        if target.find('://') == -1:
+        target = node["reftarget"]
+        if target.find("://") == -1:
             path = self._interpretAssetPath(node)
             if path:
                 self._handleEntry(path, docname, standalone)
@@ -232,8 +245,8 @@ class ConfluenceAssetManager:
             standalone (optional): ignore hash mappings (defaults to False)
         """
 
-        uri = str(node['uri'])
-        if not uri.startswith('data:') and uri.find('://') == -1:
+        uri = str(node["uri"])
+        if not uri.startswith("data:") and uri.find("://") == -1:
             path = self._interpretAssetPath(node)
             if path:
                 self._handleEntry(path, docname, standalone)
@@ -275,13 +288,13 @@ class ConfluenceAssetManager:
                 # Confluence does not allow attachments with select characters.
                 # Filter out the asset name to a compatible key value.
                 for rep in INVALID_CHARS:
-                    key = key.replace(rep, '_')
+                    key = key.replace(rep, "_")
 
                 filename, file_ext = os.path.splitext(key)
                 idx = 1
                 while key in self.keys:
                     idx += 1
-                    key = '{}_{}{}'.format(filename, idx, file_ext)
+                    key = "{}_{}{}".format(filename, idx, file_ext)
                 self.keys.add(key)
 
                 asset = ConfluenceAsset(key, path, type_, hash)
@@ -294,7 +307,7 @@ class ConfluenceAssetManager:
                 asset = self.hash2asset[hash]
                 self.path2asset[path] = asset
         else:
-            assert(self.hash2asset[asset.hash] == asset)
+            assert self.hash2asset[asset.hash] == asset
 
         # track (if not already) that this document uses this asset
         asset.docnames.add(docname)
@@ -316,13 +329,13 @@ class ConfluenceAssetManager:
         path = None
         if isinstance(node, nodes.image):
             # uri's will be relative to documentation root.
-            path = str(node['uri'])
+            path = str(node["uri"])
         elif isinstance(node, addnodes.download_reference):
             # reftarget will be a reference to the asset with respect to the
             # document (refdoc) holding this reference. Use reftarget and refdoc
             # to find a proper path.
-            docdir = os.path.dirname(node['refdoc'])
-            path = os.path.join(docdir, node['reftarget'])
+            docdir = os.path.dirname(node["refdoc"])
+            path = os.path.join(docdir, node["reftarget"])
 
         abspath = None
         if path:
@@ -344,6 +357,7 @@ class ConfluenceAssetManager:
             abspath = None
 
         return abspath
+
 
 class ConfluenceSupportedImages:
     def __init__(self):

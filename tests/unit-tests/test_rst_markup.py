@@ -15,37 +15,38 @@ class TestConfluenceRstMarkup(unittest.TestCase):
     def setUpClass(self):
         self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        self.dataset = os.path.join(test_dir, "datasets", "common")
         self.filenames = [
-            'markup',
+            "markup",
         ]
 
     def test_storage_rst_markup(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = build_sphinx(
+            self.dataset, config=self.config, filenames=self.filenames
+        )
 
-        with parse('markup', out_dir) as data:
-            emphasis = data.find('em', text='emphasis')
+        with parse("markup", out_dir) as data:
+            emphasis = data.find("em", text="emphasis")
             self.assertIsNotNone(emphasis)
 
-            strong_emphasis = data.find('strong', text='strong emphasis')
+            strong_emphasis = data.find("strong", text="strong emphasis")
             self.assertIsNotNone(strong_emphasis)
 
-            interpreted = data.find('em', text='interpreted')
+            interpreted = data.find("em", text="interpreted")
             self.assertIsNotNone(interpreted)
 
-            inline = data.find('code', text='inline')
+            inline = data.find("code", text="inline")
             self.assertIsNotNone(inline)
 
-            subscript = data.find('sub', text='subscript')
+            subscript = data.find("sub", text="subscript")
             self.assertIsNotNone(subscript)
 
-            superscript = data.find('sup', text='superscript')
+            superscript = data.find("sup", text="superscript")
             self.assertIsNotNone(superscript)
 
-            ems = data.find_all('em')
+            ems = data.find_all("em")
             self.assertIsNotNone(len(ems), 3)
             guilabel = ems[-1]
-            self.assertEqual(guilabel.text, 'guilabel')
-            guilabel_hint = guilabel.find('u', text='g')
+            self.assertEqual(guilabel.text, "guilabel")
+            guilabel_hint = guilabel.find("u", text="g")
             self.assertIsNotNone(guilabel_hint)

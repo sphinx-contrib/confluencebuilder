@@ -17,10 +17,10 @@ class TestConfluenceExtension(unittest.TestCase):
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
 
     def test_extension_registration(self):
-        mock_ds = os.path.join(self.test_dir, 'datasets', 'common')
+        mock_ds = os.path.join(self.test_dir, "datasets", "common")
 
         with prepare_sphinx(mock_ds, config=self.config) as app:
-            if hasattr(app, 'extensions'):
+            if hasattr(app, "extensions"):
                 extensions = list(app.extensions.keys())
             else:
                 extensions = list(app._extensions.keys())

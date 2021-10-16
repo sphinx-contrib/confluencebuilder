@@ -7,8 +7,7 @@
 import sys
 
 from sphinxcontrib.confluencebuilder import compat, util
-from sphinxcontrib.confluencebuilder.exceptions import \
-    ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 
 
 def handle_config_inited(app, config):
@@ -28,9 +27,10 @@ def handle_config_inited(app, config):
             config[new] = config[orig]
 
     # copy over deprecated configuration names to new names (if any)
-    handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
-    handle_legacy('confluence_purge_from_root', 'confluence_purge_from_master')
-    handle_legacy('confluence_root_homepage', 'confluence_master_homepage')
+    handle_legacy("confluence_publish_allowlist", "confluence_publish_subset")
+    handle_legacy("confluence_purge_from_root", "confluence_purge_from_master")
+    handle_legacy("confluence_root_homepage", "confluence_master_homepage")
+
 
 def process_ask_configs(config):
     """
@@ -46,27 +46,27 @@ def process_ask_configs(config):
     """
 
     if config.confluence_ask_user:
-        print('(request to accept username from interactive session)')
-        print(' Instance: ' + config.confluence_server_url)
+        print("(request to accept username from interactive session)")
+        print(" Instance: " + config.confluence_server_url)
 
         default_user = config.confluence_server_user
-        u_str = ''
+        u_str = ""
         if default_user:
-            u_str = ' [{}]'.format(default_user)
+            u_str = " [{}]".format(default_user)
 
-        target_user = compat.input(' User{}: '.format(u_str)) or default_user
+        target_user = compat.input(" User{}: ".format(u_str)) or default_user
         if not target_user:
-            raise ConfluenceConfigurationError('no user provided')
+            raise ConfluenceConfigurationError("no user provided")
 
         config.confluence_server_user = target_user
 
     if config.confluence_ask_password:
-        print('(request to accept password from interactive session)')
+        print("(request to accept password from interactive session)")
         if not config.confluence_ask_user:
-            print(' Instance: ' + config.confluence_server_url)
-            print('     User: ' + config.confluence_server_user)
-        sys.stdout.write(' Password: ')
+            print(" Instance: " + config.confluence_server_url)
+            print("     User: " + config.confluence_server_user)
+        sys.stdout.write(" Password: ")
         sys.stdout.flush()
-        config.confluence_server_pass = util.getpass2('')
+        config.confluence_server_pass = util.getpass2("")
         if not config.confluence_server_pass:
-            raise ConfluenceConfigurationError('no password provided')
+            raise ConfluenceConfigurationError("no password provided")

@@ -19,17 +19,17 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
 def main():
     parser = argparse.ArgumentParser(
-        prog='sphinx-build-confluence',
+        prog="sphinx-build-confluence",
         add_help=False,
-        description='Sphinx extension to output Atlassian Confluence content.')
+        description="Sphinx extension to output Atlassian Confluence content.",
+    )
 
-    parser.add_argument('action', nargs='?')
-    parser.add_argument('--help', '-h', action='store_true')
-    parser.add_argument('--no-color', '-N', dest='color')
-    parser.add_argument('--verbose', '-V', action='count', default=0)
-    parser.add_argument('--version', action='version',
-        version='%(prog)s ' + version)
-    parser.add_argument('--work-dir')
+    parser.add_argument("action", nargs="?")
+    parser.add_argument("--help", "-h", action="store_true")
+    parser.add_argument("--no-color", "-N", dest="color")
+    parser.add_argument("--verbose", "-V", action="count", default=0)
+    parser.add_argument("--version", action="version", version="%(prog)s " + version)
+    parser.add_argument("--work-dir")
 
     args, _ = parser.parse_known_args()
     if args.help:
@@ -37,23 +37,24 @@ def main():
         sys.exit(0)
 
     logger.initialize(preload=True)
-    if args.color == 'no' or (args.color == 'auto' and not color_terminal()):
+    if args.color == "no" or (args.color == "auto" and not color_terminal()):
         nocolor()
     # disable color (on windows) by default when using virtualenv since it
     # appears to be causing issues
-    elif getattr(sys, 'base_prefix', sys.prefix) != sys.prefix:
-        if sys.platform == 'win32':
+    elif getattr(sys, "base_prefix", sys.prefix) != sys.prefix:
+        if sys.platform == "win32":
             nocolor()
 
     # invoke a desired command mainline
-    if args.action == 'report':
+    if args.action == "report":
         rv = report_main(parser)
-    elif args.action == 'wipe':
+    elif args.action == "wipe":
         rv = wipe_main(parser)
     else:
         rv = build_main(parser)
 
     return rv
+
 
 def usage():
     """
@@ -65,7 +66,7 @@ def usage():
     Returns:
         the usage string
     """
-    return ("""sphinx-build-confluence [action] <options>
+    return """sphinx-build-confluence [action] <options>
 
 (actions)
  <builder>             specify a builder to invoke (defaults to 'confluence')
@@ -93,7 +94,8 @@ def usage():
  --version             show the version
  --work-dir            working (documentation) directory to use
                         (defaults to working directory)
-""")
+"""
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main())

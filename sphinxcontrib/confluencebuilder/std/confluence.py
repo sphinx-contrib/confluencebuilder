@@ -11,7 +11,7 @@ from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 """
 confluence trailing bind path for rest api
 """
-API_REST_BIND_PATH = 'rest/api'
+API_REST_BIND_PATH = "rest/api"
 
 """
 confluence default (paragraph) indent offset (in pixels)
@@ -21,7 +21,7 @@ INDENT = 30
 """
 confluence restricted filename (attachment) characters
 """
-INVALID_CHARS = ['\\', '/', '"', ':', '?', '*', '|', '<', '>']
+INVALID_CHARS = ["\\", "/", '"', ":", "?", "*", "|", "<", ">"]
 
 """
 confluence default first-child masked margin offset (in pixels)
@@ -46,97 +46,97 @@ by Pygments [5].
 """
 LITERAL2LANG_MAP = {
     # ActionScript
-    'actionscript3': 'actionscript3',
-    'as3': 'actionscript3',
+    "actionscript3": "actionscript3",
+    "as3": "actionscript3",
     # AppleScript (Confluence >=6.0)
-    'applescript': 'applescript',
+    "applescript": "applescript",
     # Bash
-    'bash': 'bash',
-    'ksh': 'bash',
-    'sh': 'bash',
-    'shell': 'bash',
-    'zsh': 'bash',
+    "bash": "bash",
+    "ksh": "bash",
+    "sh": "bash",
+    "shell": "bash",
+    "zsh": "bash",
     # C#
-    'c#': 'csharp',
-    'csharp': 'csharp',
+    "c#": "csharp",
+    "csharp": "csharp",
     # C++
-    'c': 'cpp',
-    'c++': 'cpp',
-    'cpp': 'cpp',
+    "c": "cpp",
+    "c++": "cpp",
+    "cpp": "cpp",
     # ColdFusion
-    'cfc': 'coldfusion',
-    'coldfusion': 'coldfusion',
+    "cfc": "coldfusion",
+    "coldfusion": "coldfusion",
     # CSS
-    'css': 'css',
+    "css": "css",
     # Delphi
-    'delphi': 'delphi',
-    'pas': 'delphi',
-    'pascal': 'delphi',
-    'objectpascal': 'delphi',
+    "delphi": "delphi",
+    "pas": "delphi",
+    "pascal": "delphi",
+    "objectpascal": "delphi",
     # Diff
-    'diff': 'diff',
-    'udiff': 'diff',
+    "diff": "diff",
+    "udiff": "diff",
     # Erlang
-    'erlang': 'erlang',
+    "erlang": "erlang",
     # Groovy
-    'groovy': 'groovy',
+    "groovy": "groovy",
     # HTML and XML
-    'html': 'html/xml',
-    'html/xml': 'html/xml',
-    'xml': 'html/xml',
-    'xslt': 'html/xml',
+    "html": "html/xml",
+    "html/xml": "html/xml",
+    "xml": "html/xml",
+    "xslt": "html/xml",
     # Java
-    'java': 'java',
+    "java": "java",
     # Java FX
-    'javafx': 'javafx',
+    "javafx": "javafx",
     # JavaScript
-    'javascript': 'javascript',
-    'js': 'javascript',
+    "javascript": "javascript",
+    "js": "javascript",
     # Plain Text
-    'none': 'none',
-    'raw': 'none',
-    'text': 'none',
+    "none": "none",
+    "raw": "none",
+    "text": "none",
     # Perl (Confluence <=5.10)
-    'perl': 'perl',
-    'pl': 'perl',
+    "perl": "perl",
+    "pl": "perl",
     # PHP (Confluence <=5.10)
-    'php': 'php',
-    'php3': 'php',
-    'php4': 'php',
-    'php5': 'php',
+    "php": "php",
+    "php3": "php",
+    "php4": "php",
+    "php5": "php",
     # PowerShell
-    'posh': 'powershell',
-    'powershell': 'powershell',
-    'ps1': 'powershell',
-    'psm1': 'powershell',
+    "posh": "powershell",
+    "powershell": "powershell",
+    "ps1": "powershell",
+    "psm1": "powershell",
     # Python
-    'py': 'python',
-    'py3': 'python',
-    'python': 'python',
-    'python3': 'python',
-    'sage': 'python',
+    "py": "python",
+    "py3": "python",
+    "python": "python",
+    "python3": "python",
+    "sage": "python",
     # Ruby
-    'duby': 'ruby',
-    'rb': 'ruby',
-    'ruby': 'ruby',
+    "duby": "ruby",
+    "rb": "ruby",
+    "ruby": "ruby",
     # Sass
-    'sass': 'sass',
+    "sass": "sass",
     # Scala
-    'scala': 'scala',
+    "scala": "scala",
     # SQL
-    'sql': 'sql',
+    "sql": "sql",
     # Visual Basic
-    'vb': 'vb',
-    'vbscript': 'vb',
+    "vb": "vb",
+    "vbscript": "vb",
     # YAML (Confluence Server >=6.7)
-    'yaml': 'yaml',
+    "yaml": "yaml",
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.
     # To follow Sphinx's method of highlighting, use Confluence's 'python'
     # highlight type as the target language for the default type.
     #
     # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
-    DEFAULT_HIGHLIGHT_STYLE: 'python'
+    DEFAULT_HIGHLIGHT_STYLE: "python",
 }
 
 """
@@ -145,7 +145,7 @@ fallback highlight language
 When provided a language type that is not supported by Confluence is detected on
 a code block, this fallback style will be applied instead.
 """
-FALLBACK_HIGHLIGHT_STYLE = 'none'
+FALLBACK_HIGHLIGHT_STYLE = "none"
 
 """
 no-check value to inject into a X-Atlassian-Token header
@@ -157,10 +157,10 @@ supported Confluence instances, the `no-check` value should work. The
 environment variable `CONFLUENCEBUILDER_LEGACY_NOCHECK` can be set for users who
 experience may experience issues with the newer value.
 """
-if 'CONFLUENCEBUILDER_LEGACY_NOCHECK' in os.environ:
-    NOCHECK = 'nocheck'
+if "CONFLUENCEBUILDER_LEGACY_NOCHECK" in os.environ:
+    NOCHECK = "nocheck"
 else:
-    NOCHECK = 'no-check'
+    NOCHECK = "no-check"
 
 """
 supported image types
@@ -172,9 +172,9 @@ which also observed to be rendering with Confluence Cloud:
     confluence/webapp/WEB-INF/classes/mime.types
 """
 SUPPORTED_IMAGE_TYPES = [
-    'image/gif',
-    'image/jpeg',
-    'image/png',
-    'image/svg+xml',
-    'image/x-ms-bmp', # image/bmp
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "image/svg+xml",
+    "image/x-ms-bmp",  # image/bmp
 ]

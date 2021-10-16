@@ -15,28 +15,29 @@ class TestConfluenceRstOptionLists(unittest.TestCase):
     def setUpClass(self):
         self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        self.dataset = os.path.join(test_dir, "datasets", "common")
         self.filenames = [
-            'option-lists',
+            "option-lists",
         ]
 
     def test_storage_rst_option_lists(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = build_sphinx(
+            self.dataset, config=self.config, filenames=self.filenames
+        )
 
-        with parse('option-lists', out_dir) as data:
-            options_table = data.find('table')
+        with parse("option-lists", out_dir) as data:
+            options_table = data.find("table")
             self.assertIsNotNone(options_table)
 
-            rows = options_table.find_all('tr')
+            rows = options_table.find_all("tr")
             self.assertEqual(len(rows), 6)
 
             for row in rows:
-                cols = row.find_all('td')
+                cols = row.find_all("td")
                 self.assertIsNotNone(cols)
                 self.assertEqual(len(cols), 2)
 
-                option_label = cols[0].find('code', recursive=False)
+                option_label = cols[0].find("code", recursive=False)
                 self.assertIsNotNone(option_label)
                 self.assertIsNotNone(option_label.contents)
 
@@ -44,17 +45,17 @@ class TestConfluenceRstOptionLists(unittest.TestCase):
 
             # c flag with argument
             row = rows[2]
-            emphasized_arg = row.find('em')
+            emphasized_arg = row.find("em")
             self.assertIsNotNone(emphasized_arg)
-            self.assertEqual(emphasized_arg.text, 'arg')
+            self.assertEqual(emphasized_arg.text, "arg")
 
             # d flag with detailed description
             row = rows[3]
-            detailed_list = row.find('ul')
+            detailed_list = row.find("ul")
             self.assertIsNotNone(detailed_list)
 
             # long-option with value
             row = rows[5]
-            emphasized_arg = row.find('em')
+            emphasized_arg = row.find("em")
             self.assertIsNotNone(emphasized_arg)
-            self.assertEqual(emphasized_arg.text, 'value')
+            self.assertEqual(emphasized_arg.text, "value")

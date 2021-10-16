@@ -10,8 +10,8 @@ from docutils import writers
 
 
 class ConfluenceWriter(writers.Writer):
-    supported = ('text',)
-    settings_spec = ('No options here.', '', ())
+    supported = ("text",)
+    settings_spec = ("No options here.", "", ())
     settings_defaults = {}
 
     def __init__(self, builder):
@@ -22,5 +22,5 @@ class ConfluenceWriter(writers.Writer):
     def translate(self):
         visitor = self.builder.create_translator(self.document, self.builder)
         self.document.walkabout(visitor)
-        if hasattr(visitor, 'body_final'):
+        if hasattr(visitor, "body_final"):
             self.output = visitor.body_final

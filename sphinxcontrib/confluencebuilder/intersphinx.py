@@ -19,7 +19,8 @@ from sphinxcontrib.confluencebuilder.state import ConfluenceState
 """
 inventory filename to hold intersphinx information
 """
-INVENTORY_FILENAME = 'objects.inv'
+INVENTORY_FILENAME = "objects.inv"
+
 
 def build_intersphinx(builder):
     """
@@ -33,60 +34,73 @@ def build_intersphinx(builder):
     Args:
         builder: the builder
     """
+
     def escape(string):
-        return re.sub("\\s+", ' ', string)
+        return re.sub("\\s+", " ", string)
 
     if builder.cloud:
-        pages_part = 'pages/{}/'
+        pages_part = "pages/{}/"
     else:
-        pages_part = 'pages/viewpage.action?pageId={}'
+        pages_part = "pages/viewpage.action?pageId={}"
 
-    with open(path.join(builder.outdir, INVENTORY_FILENAME), 'wb') as f:
+    with open(path.join(builder.outdir, INVENTORY_FILENAME), "wb") as f:
         # header
-        f.write((
-            '# Sphinx inventory version 2\n'
-            '# Project: %s\n'
-            '# Version: %s\n'
-            '# The remainder of this file is compressed using zlib.\n' % (
-                escape(builder.env.config.project),
-                escape(builder.env.config.version))).encode())
+        f.write(
+            (
+                "# Sphinx inventory version 2\n"
+                "# Project: %s\n"
+                "# Version: %s\n"
+                "# The remainder of this file is compressed using zlib.\n"
+                % (
+                    escape(builder.env.config.project),
+                    escape(builder.env.config.version),
+                )
+            ).encode()
+        )
 
         # contents
         compressor = zlib.compressobj(9)
 
         for domainname, domain in sorted(builder.env.domains.items()):
-            if domainname == 'std':
+            if domainname == "std":
                 for name, dispname, typ, docname, raw_anchor, prio in sorted(
-                        domain.get_objects()):
+                    domain.get_objects()
+                ):
 
                     page_id = ConfluenceState.uploadId(docname)
                     if not page_id:
                         continue
 
-                    target_name = '{}#{}'.format(docname, raw_anchor)
+                    target_name = "{}#{}".format(docname, raw_anchor)
                     target = ConfluenceState.target(target_name)
 
                     if raw_anchor and target:
                         title = ConfluenceState.title(docname)
-                        anchor = 'id-' + title + '-' + target
-                        anchor = anchor.replace(' ', '')
+                        anchor = "id-" + title + "-" + target
+                        anchor = anchor.replace(" ", "")
 
                         # confluence will convert quotes to right-quotes for
                         # anchor values; replace and encode the anchor value
-                        anchor = anchor.replace('"', '”')
-                        anchor = anchor.replace("'", '’')
-                        anchor = requests.utils.quote(anchor.encode('utf-8'))
+                        anchor = anchor.replace('"', "”")
+                        anchor = anchor.replace("'", "’")
+                        anchor = requests.utils.quote(anchor.encode("utf-8"))
                     else:
-                        anchor = ''
+                        anchor = ""
 
                     uri = pages_part.format(page_id)
                     if anchor:
-                        uri += '#' + anchor
+                        uri += "#" + anchor
                     if dispname == name:
-                        dispname = '-'
-                    entry = ('%s %s:%s %s %s %s\n' %
-                             (name, domainname, typ, prio, uri, dispname))
-                    ConfluenceLogger.verbose('(intersphinx) ' + entry.strip())
-                    f.write(compressor.compress(entry.encode('utf-8')))
+                        dispname = "-"
+                    entry = "%s %s:%s %s %s %s\n" % (
+                        name,
+                        domainname,
+                        typ,
+                        prio,
+                        uri,
+                        dispname,
+                    )
+                    ConfluenceLogger.verbose("(intersphinx) " + entry.strip())
+                    f.write(compressor.compress(entry.encode("utf-8")))
 
         f.write(compressor.flush())

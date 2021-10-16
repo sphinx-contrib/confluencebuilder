@@ -37,7 +37,7 @@ class ConfluenceUtil:
         """
         BLOCKSIZE = 65536
         sha = sha256()
-        with open(asset, 'rb') as file:
+        with open(asset, "rb") as file:
             buff = file.read(BLOCKSIZE)
             while len(buff) > 0:
                 sha.update(buff)
@@ -56,15 +56,16 @@ class ConfluenceUtil:
         """
         if url:
             # removing any trailing forward slash user provided
-            if url.endswith('/'):
+            if url.endswith("/"):
                 url = url[:-1]
             # check for rest bind path; strip and return if found
             if url.endswith(API_REST_BIND_PATH):
-                url = url[:-len(API_REST_BIND_PATH)]
+                url = url[: -len(API_REST_BIND_PATH)]
             # restore trailing forward flash
-            elif not url.endswith('/'):
-                url += '/'
+            elif not url.endswith("/"):
+                url += "/"
         return url
+
 
 def extract_strings_from_file(filename):
     """
@@ -86,11 +87,12 @@ def extract_strings_from_file(filename):
         with open(filename) as f:
             for raw_line in f:
                 line = raw_line.strip()
-                if not line or line.startswith('#'):
+                if not line or line.startswith("#"):
                     continue
                 filelist.append(line)
 
     return filelist
+
 
 def first(it):
     """
@@ -108,7 +110,8 @@ def first(it):
     """
     return next(iter(it), None)
 
-def getpass2(prompt='Password: '):
+
+def getpass2(prompt="Password: "):
     """
     prompt the user for a password without echoing
 
@@ -137,17 +140,22 @@ def getpass2(prompt='Password: '):
     # For environments where this override may be causing issues, a user can
     # configure the `CONFLUENCEBUILDER_NO_GETPASS_HOOK` environment variable to
     # disable this feature.
-    if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
-            'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
-        subprocess.check_call(['stty', '-echo'])
+    if (
+        os.name == "nt"
+        and "MSYSTEM" in os.environ
+        and "TERM" in os.environ
+        and "CONFLUENCEBUILDER_NO_GETPASS_HOOK" not in os.environ
+    ):
+        subprocess.check_call(["stty", "-echo"])
         try:
             value = compat.input(prompt)
         finally:
-            subprocess.check_call(['stty', 'echo'])
-        print('')
+            subprocess.check_call(["stty", "echo"])
+        print("")
         return value
     else:
         return getpass.getpass(prompt=prompt)
+
 
 def str2bool(value):
     """
@@ -169,9 +177,9 @@ def str2bool(value):
     """
 
     value = value.lower()
-    if value in ['y', 'yes', 't', 'true', 'on', '1']:
+    if value in ["y", "yes", "t", "true", "on", "1"]:
         return True
-    elif value in ['n', 'no', 'f', 'false', 'off', '0']:
+    elif value in ["n", "no", "f", "false", "off", "0"]:
         return False
     else:
         raise ValueError

@@ -15,21 +15,22 @@ class TestConfluenceRstAttribution(unittest.TestCase):
     def setUpClass(self):
         self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        self.dataset = os.path.join(test_dir, "datasets", "common")
         self.filenames = [
-            'attribution',
+            "attribution",
         ]
 
     def test_storage_rst_attribution(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = build_sphinx(
+            self.dataset, config=self.config, filenames=self.filenames
+        )
 
-        with parse('attribution', out_dir) as data:
-            quote = data.find('blockquote')
+        with parse("attribution", out_dir) as data:
+            quote = data.find("blockquote")
             self.assertIsNotNone(quote)
 
             parts = list(quote.children)
             self.assertEqual(len(parts), 2)
 
-            self.assertEqual(parts[0].text.strip(), 'quote')
-            self.assertEqual(parts[1].strip(), '-- source')
+            self.assertEqual(parts[0].text.strip(), "quote")
+            self.assertEqual(parts[1].strip(), "-- source")

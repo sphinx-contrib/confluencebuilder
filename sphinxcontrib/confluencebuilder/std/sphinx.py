@@ -13,7 +13,7 @@ sphinx's default highlight style
 
 [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
 """
-DEFAULT_HIGHLIGHT_STYLE = 'default'
+DEFAULT_HIGHLIGHT_STYLE = "default"
 
 """
 sphinx's default alignment
@@ -21,6 +21,6 @@ sphinx's default alignment
 [1]: https://github.com/sphinx-doc/sphinx/issues/4550
 """
 if sphinx_version_info >= (2, 0):
-    DEFAULT_ALIGNMENT = 'center'
+    DEFAULT_ALIGNMENT = "center"
 else:
-    DEFAULT_ALIGNMENT = None # 'left'
+    DEFAULT_ALIGNMENT = None  # 'left'

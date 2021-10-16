@@ -30,22 +30,23 @@ def wipe_main(args_parser):
         the exit code
     """
 
-    args_parser.add_argument('--danger', action='store_true')
-    args_parser.add_argument('--parent', '-P', action='store_true')
+    args_parser.add_argument("--danger", action="store_true")
+    args_parser.add_argument("--parent", "-P", action="store_true")
 
     known_args = sys.argv[1:]
     args, unknown_args = args_parser.parse_known_args(known_args)
     if unknown_args:
-        logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
+        logger.warn("unknown arguments: {}".format(" ".join(unknown_args)))
 
     work_dir = args.work_dir if args.work_dir else os.getcwd()
 
     # protection warning
     if not args.danger:
-        print('')
+        print("")
         sys.stdout.flush()
-        logger.warn('!!! DANGER DANGER DANGER !!!')
-        print("""
+        logger.warn("!!! DANGER DANGER DANGER !!!")
+        print(
+            """
 A request has been made to attempt to wipe the pages from a configured
 Confluence instance. This is a helper utility call to assist a user in cleaning
 out a space since removing a bulk set of data may not be trivial for a user.
@@ -55,10 +56,11 @@ assistance from an administrator from a Confluence instance to recover pages.
 Only use this action if you know what you are doing.
 
 To use this action, the argument '--danger' must be set.
-            """)
+            """
+        )
         sys.stdout.flush()
-        logger.warn('!!! DANGER DANGER DANGER !!!')
-        print('')
+        logger.warn("!!! DANGER DANGER DANGER !!!")
+        print("")
         return 1
 
     # check configuration and prepare publisher
@@ -66,11 +68,12 @@ To use this action, the argument '--danger' must be set.
     with TemporaryDirectory() as tmp_dir:
         with docutils_namespace():
             app = Sphinx(
-                work_dir,     # document sources
-                work_dir,     # directory with configuration
-                tmp_dir,      # output for generated documents
-                tmp_dir,      # output for doctree files
-                'confluence') # builder to execute
+                work_dir,  # document sources
+                work_dir,  # directory with configuration
+                tmp_dir,  # output for generated documents
+                tmp_dir,  # output for doctree files
+                "confluence",
+            )  # builder to execute
 
             aggressive_search = app.config.confluence_adv_aggressive_search
             server_url = app.config.confluence_server_url
@@ -85,31 +88,33 @@ To use this action, the argument '--danger' must be set.
                 publisher.init(app.config)
 
     if not publisher:
-        print('(error) publishing not configured in sphinx configuration')
+        print("(error) publishing not configured in sphinx configuration")
         return 1
 
     if args.parent and not parent_name:
-        print('(error) parent option provided but no parent page is configured')
+        print("(error) parent option provided but no parent page is configured")
         return 1
 
     # reminder warning
-    print('')
+    print("")
     sys.stdout.flush()
-    logger.warn('!!! DANGER DANGER DANGER !!!')
-    print("""
+    logger.warn("!!! DANGER DANGER DANGER !!!")
+    print(
+        """
 A request has been made to attempt to wipe the pages from a configured
 Confluence instance.  This action is not reversible with this tool and may
 require assistance from an administrator from a Confluence instance to recover
 pages. Only use this action if you know what you are doing.
-        """)
+        """
+    )
     sys.stdout.flush()
 
-    logger.warn('!!! DANGER DANGER DANGER !!!')
-    print('')
+    logger.warn("!!! DANGER DANGER DANGER !!!")
+    print("")
 
-    if not ask_question('Are you sure you want to continue?'):
+    if not ask_question("Are you sure you want to continue?"):
         return 0
-    print('')
+    print("")
 
     # user has confirmed; start an attempt to wipe
     publisher.connect()
@@ -123,42 +128,43 @@ pages. Only use this action if you know what you are doing.
     else:
         legacy_pages = publisher.getDescendants(base_page_id)
 
-    print('         URL:', server_url)
-    print('       Space:', space_name)
+    print("         URL:", server_url)
+    print("       Space:", space_name)
     if base_page_id:
-        logger.note('       Pages: Child pages of ' + parent_name)
+        logger.note("       Pages: Child pages of " + parent_name)
     else:
-        logger.note('       Pages: All Pages')
-    print(' Total pages:', len(legacy_pages))
+        logger.note("       Pages: All Pages")
+    print(" Total pages:", len(legacy_pages))
 
     if not legacy_pages:
-        print('')
-        print('No pages detected on this space. Exiting...')
+        print("")
+        print("No pages detected on this space. Exiting...")
         return 0
 
     if args.verbose:
-        print('-------------------------')
+        print("-------------------------")
         page_names = []
         for p in legacy_pages:
             page_names.append(publisher._name_cache[p])
         sorted(page_names)
-        print('\n'.join(page_names))
-        print('-------------------------')
+        print("\n".join(page_names))
+        print("-------------------------")
 
-    print('')
-    if not ask_question('Are you sure you want to REMOVE these pages?'):
+    print("")
+    if not ask_question("Are you sure you want to REMOVE these pages?"):
         return 0
-    print('')
+    print("")
 
-    logger.info('Removing pages...', nonl=True)
+    logger.info("Removing pages...", nonl=True)
     for page_id in legacy_pages:
         publisher.removePage(page_id)
-        logger.info('.', nonl=True)
-    logger.info(' done\n')
+        logger.info(".", nonl=True)
+    logger.info(" done\n")
 
     return 0
 
-def ask_question(question, default='no'):
+
+def ask_question(question, default="no"):
     """
     ask the user a question
 
@@ -173,19 +179,19 @@ def ask_question(question, default='no'):
     """
 
     if default is None:
-        prompt = ' [y/n] '
-    elif default == 'yes':
-        prompt = ' [Y/n] '
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
     elif default:
-        prompt = ' [y/N] '
+        prompt = " [y/N] "
 
     while True:
         rsp = input(question + prompt).strip().lower()
-        if default is not None and rsp == '':
-            return default == 'yes'
-        elif rsp in ('y', 'yes'):
+        if default is not None and rsp == "":
+            return default == "yes"
+        elif rsp in ("y", "yes"):
             return True
-        elif rsp in ('n', 'no', 'q'): # q for 'quit'
+        elif rsp in ("n", "no", "q"):  # q for 'quit'
             return False
         else:
             print("Please respond with 'y' or 'n'.\n")

@@ -15,36 +15,36 @@ class TestConfluenceSphinxManpage(unittest.TestCase):
     def setUpClass(self):
         self.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        self.dataset = os.path.join(test_dir, "datasets", "common")
         self.filenames = [
-            'manpage',
+            "manpage",
         ]
 
     def test_storage_sphinx_manpage_config(self):
         config = dict(self.config)
-        config['manpages_url'] = 'https://manpages.example.com/{path}'
+        config["manpages_url"] = "https://manpages.example.com/{path}"
 
-        out_dir = build_sphinx(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = build_sphinx(self.dataset, config=config, filenames=self.filenames)
 
-        with parse('manpage', out_dir) as data:
-            em = data.find('em')
+        with parse("manpage", out_dir) as data:
+            em = data.find("em")
             self.assertIsNotNone(em)
 
-            link = em.find('a', recursive=False)
+            link = em.find("a", recursive=False)
             self.assertIsNotNone(link)
-            self.assertTrue(link.has_attr('href'))
-            self.assertEqual(link['href'], 'https://manpages.example.com/ls(1)')
-            self.assertEqual(link.text, 'ls(1)')
+            self.assertTrue(link.has_attr("href"))
+            self.assertEqual(link["href"], "https://manpages.example.com/ls(1)")
+            self.assertEqual(link.text, "ls(1)")
 
     def test_storage_sphinx_manpage_noconfig(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = build_sphinx(
+            self.dataset, config=self.config, filenames=self.filenames
+        )
 
-        with parse('manpage', out_dir) as data:
-            em = data.find('em')
+        with parse("manpage", out_dir) as data:
+            em = data.find("em")
             self.assertIsNotNone(em)
-            self.assertEqual(em.text, 'ls(1)')
+            self.assertEqual(em.text, "ls(1)")
 
-            link = data.find('a')
+            link = data.find("a")
             self.assertIsNone(link)

@@ -19,23 +19,29 @@ from sphinx.util import status_iterator
 from sphinx.util.math import wrap_displaymath
 from sphinx.util.osutil import ensuredir
 
-from sphinxcontrib.confluencebuilder.assets import (ConfluenceAssetManager,
-                                                    ConfluenceSupportedImages)
+from sphinxcontrib.confluencebuilder.assets import (
+    ConfluenceAssetManager,
+    ConfluenceSupportedImages,
+)
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
-from sphinxcontrib.confluencebuilder.config.checks import \
-    validate_configuration
+from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.nodes import (ConfluenceNavigationNode,
-                                                   confluence_metadata)
+from sphinxcontrib.confluencebuilder.nodes import (
+    ConfluenceNavigationNode,
+    confluence_metadata,
+)
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib.confluencebuilder.translator.storage import \
-    ConfluenceStorageFormatTranslator
-from sphinxcontrib.confluencebuilder.util import (ConfluenceUtil,
-                                                  extract_strings_from_file,
-                                                  first)
+from sphinxcontrib.confluencebuilder.translator.storage import (
+    ConfluenceStorageFormatTranslator,
+)
+from sphinxcontrib.confluencebuilder.util import (
+    ConfluenceUtil,
+    extract_strings_from_file,
+    first,
+)
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 
 try:
@@ -64,11 +70,12 @@ if graphviz:
     except ImportError:
         inheritance_diagram = None
 
+
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     default_translator_class = ConfluenceStorageFormatTranslator
-    name = 'confluence'
-    format = 'confluence_storage'
+    name = "confluence"
+    format = "confluence_storage"
     supported_image_types = ConfluenceSupportedImages()
     supported_remote_images = True
 
@@ -77,7 +84,7 @@ class ConfluenceBuilder(Builder):
 
         self.cache_doctrees = {}
         self.cloud = False
-        self.file_suffix = '.conf'
+        self.file_suffix = ".conf"
         self.info = ConfluenceLogger.info
         self.link_suffix = None
         self.metadata = {}
@@ -111,10 +118,10 @@ class ConfluenceBuilder(Builder):
             for type_ in self.config.confluence_additional_mime_types:
                 self.supported_image_types.register(type_)
 
-        if 'graphviz_output_format' in self.config:
-            self.graphviz_output_format = self.config['graphviz_output_format']
+        if "graphviz_output_format" in self.config:
+            self.graphviz_output_format = self.config["graphviz_output_format"]
         else:
-            self.graphviz_output_format = 'png'
+            self.graphviz_output_format = "png"
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)
@@ -127,13 +134,14 @@ class ConfluenceBuilder(Builder):
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
         if old_url != new_url:
-            ConfluenceLogger.warn('normalizing confluence url from '
-                '{} to {} '.format(old_url, new_url))
+            ConfluenceLogger.warn(
+                "normalizing confluence url from " "{} to {} ".format(old_url, new_url)
+            )
             self.config.confluence_server_url = new_url
 
         # detect if Confluence Cloud if using the Atlassian domain
         if new_url:
-            self.cloud = new_url.endswith('.atlassian.net/wiki/')
+            self.cloud = new_url.endswith(".atlassian.net/wiki/")
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
@@ -178,8 +186,8 @@ class ConfluenceBuilder(Builder):
                 return None
 
             # if provided via command line, treat as a list
-            if option in config['overrides'] and isinstance(value, basestring):
-                value = value.split(',')
+            if option in config["overrides"] and isinstance(value, basestring):
+                value = value.split(",")
 
             if isinstance(value, basestring):
                 files = extract_strings_from_file(value)
@@ -188,8 +196,8 @@ class ConfluenceBuilder(Builder):
 
             return set(files) if files else None
 
-        self.publish_allowlist = prepare_subset('confluence_publish_allowlist')
-        self.publish_denylist = prepare_subset('confluence_publish_denylist')
+        self.publish_allowlist = prepare_subset("confluence_publish_allowlist")
+        self.publish_denylist = prepare_subset("confluence_publish_denylist")
 
     def get_outdated_docs(self):
         """
@@ -201,8 +209,7 @@ class ConfluenceBuilder(Builder):
             if docname not in self.env.all_docs:
                 yield docname
                 continue
-            sourcename = path.join(self.env.srcdir, docname +
-                                   self.file_suffix)
+            sourcename = path.join(self.env.srcdir, docname + self.file_suffix)
             targetname = path.join(self.outdir, self.file_transform(docname))
 
             try:
@@ -237,8 +244,7 @@ class ConfluenceBuilder(Builder):
         #     (when using hierarchy mode)
         #  - squash pages which exceed maximum depth (if configured with a max
         #     depth value)
-        self.process_tree_structure(
-            ordered_docnames, self.config.root_doc, traversed)
+        self.process_tree_structure(ordered_docnames, self.config.root_doc, traversed)
 
         # track relations between accepted documents
         #
@@ -257,8 +263,10 @@ class ConfluenceBuilder(Builder):
             doctree = self.env.get_doctree(docname)
 
             # acquire title from override (if any), or parse first title entity
-            if (self.config.confluence_title_overrides and
-                    docname in self.config.confluence_title_overrides):
+            if (
+                self.config.confluence_title_overrides
+                and docname in self.config.confluence_title_overrides
+            ):
                 doctitle = self.config.confluence_title_overrides[docname]
             else:
                 doctitle = self._parse_doctree_title(docname, doctree)
@@ -267,12 +275,14 @@ class ConfluenceBuilder(Builder):
             # value that can be applied to this document
             if doctitle:
                 secnumbers = self.env.toc_secnumbers.get(docname, {})
-                if self.add_secnumbers and secnumbers.get(''):
-                    doctitle = ('.'.join(map(str, secnumbers[''])) +
-                        self.secnumber_suffix + doctitle)
+                if self.add_secnumbers and secnumbers.get(""):
+                    doctitle = (
+                        ".".join(map(str, secnumbers[""]))
+                        + self.secnumber_suffix
+                        + doctitle
+                    )
 
-                doctitle = ConfluenceState.registerTitle(docname, doctitle,
-                    self.config)
+                doctitle = ConfluenceState.registerTitle(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:
@@ -281,9 +291,8 @@ class ConfluenceBuilder(Builder):
             # track the toctree depth for a document, which a translator can
             # use as a hint when dealing with max-depth capabilities
             toctree = first(doctree.traverse(addnodes.toctree))
-            if toctree and toctree.get('maxdepth') > 0:
-                ConfluenceState.registerToctreeDepth(
-                    docname, toctree.get('maxdepth'))
+            if toctree and toctree.get("maxdepth") > 0:
+                ConfluenceState.registerToctreeDepth(docname, toctree.get("maxdepth"))
 
             # register title targets for references
             self._register_doctree_title_targets(docname, doctree)
@@ -330,19 +339,22 @@ class ConfluenceBuilder(Builder):
         doctree = self.env.get_doctree(docname)
         for toctreenode in doctree.traverse(addnodes.toctree):
             if not omit and max_depth is not None:
-                if (toctreenode['maxdepth'] == -1 or
-                        depth + toctreenode['maxdepth'] > max_depth):
+                if (
+                    toctreenode["maxdepth"] == -1
+                    or depth + toctreenode["maxdepth"] > max_depth
+                ):
                     new_depth = max_depth - depth
                     assert new_depth >= 0
-                    toctreenode['maxdepth'] = new_depth
+                    toctreenode["maxdepth"] = new_depth
             movednodes = []
-            for child in toctreenode['includefiles']:
+            for child in toctreenode["includefiles"]:
                 if child not in traversed:
                     ConfluenceState.registerParentDocname(child, docname)
                     traversed.append(child)
 
                     children = self.process_tree_structure(
-                        ordered, child, traversed, depth + 1)
+                        ordered, child, traversed, depth + 1
+                    )
                     if children:
                         movednodes.append(children)
                         self._fix_std_labels(child, docname)
@@ -350,7 +362,7 @@ class ConfluenceBuilder(Builder):
             if movednodes:
                 modified = True
                 toctreenode.replace_self(movednodes)
-                toctreenode.parent['classes'].remove('toctree-wrapper')
+                toctreenode.parent["classes"].remove("toctree-wrapper")
 
         if omit:
             container = addnodes.start_of_file(docname=docname)
@@ -363,13 +375,13 @@ class ConfluenceBuilder(Builder):
         if docname in self.omitted_docnames:
             return
 
-        if self.prev_next_loc in ('top', 'both'):
+        if self.prev_next_loc in ("top", "both"):
             navnode = self._build_navigation_node(docname)
             if navnode:
                 navnode.top = True
                 doctree.insert(0, navnode)
 
-        if self.prev_next_loc in ('bottom', 'both'):
+        if self.prev_next_loc in ("bottom", "both"):
             navnode = self._build_navigation_node(docname)
             if navnode:
                 navnode.bottom = True
@@ -389,17 +401,17 @@ class ConfluenceBuilder(Builder):
                 # to build.
                 ids = []
 
-                if 'ids' in title_element:
-                    ids.extend(title_element['ids'])
+                if "ids" in title_element:
+                    ids.extend(title_element["ids"])
 
                 parent = title_element.parent
-                if isinstance(parent, nodes.section) and 'ids' in parent:
-                    ids.extend(parent['ids'])
+                if isinstance(parent, nodes.section) and "ids" in parent:
+                    ids.extend(parent["ids"])
 
                 if ids:
                     for node in doctree.traverse(nodes.reference):
-                        if 'refid' in node and node['refid']:
-                            top_ref = (node['refid'] in ids)
+                        if "refid" in node and node["refid"]:
+                            top_ref = node["refid"] in ids
 
                             # allow a derived class to hint if this is a #top
                             # reference node
@@ -407,26 +419,27 @@ class ConfluenceBuilder(Builder):
                                 top_ref = self._top_ref_check(node)
 
                             if top_ref:
-                                node['top-reference'] = True
+                                node["top-reference"] = True
                                 break
 
                 title_element.parent.remove(title_element)
 
         # This method is taken from TextBuilder.write_doc()
         # with minor changes to support :confval:`rst_file_transform`.
-        destination = StringOutput(encoding='utf-8')
+        destination = StringOutput(encoding="utf-8")
 
         self.writer.write(doctree, destination)
         outfilename = path.join(self.outdir, self.file_transform(docname))
         if self.writer.output is not None:
             ensuredir(path.dirname(outfilename))
             try:
-                with io.open(outfilename, 'w', encoding='utf-8') as file:
+                with io.open(outfilename, "w", encoding="utf-8") as file:
                     if self.writer.output:
                         file.write(self.writer.output)
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn("error writing file "
-                    "%s: %s" % (outfilename, err))
+                ConfluenceLogger.warn(
+                    "error writing file " "%s: %s" % (outfilename, err)
+                )
 
     def publish_doc(self, docname, output):
         conf = self.config
@@ -442,20 +455,21 @@ class ConfluenceBuilder(Builder):
             parent_id = self.parent_id
 
         data = {
-            'content': output,
-            'labels': [],
+            "content": output,
+            "labels": [],
         }
 
         if self.config.confluence_global_labels:
-            data['labels'].extend(self.config.confluence_global_labels)
+            data["labels"].extend(self.config.confluence_global_labels)
 
         metadata = self.metadata[docname]
-        if 'labels' in metadata:
-            data['labels'].extend([v for v in metadata['labels']])
+        if "labels" in metadata:
+            data["labels"].extend([v for v in metadata["labels"]])
 
         if conf.confluence_publish_root and is_root_doc:
-            uploaded_id = self.publisher.storePageById(title,
-                conf.confluence_publish_root, data)
+            uploaded_id = self.publisher.storePageById(
+                title, conf.confluence_publish_root, data
+            )
         else:
             uploaded_id = self.publisher.storePage(title, data, parent_id)
         ConfluenceState.registerUploadId(docname, uploaded_id)
@@ -476,8 +490,11 @@ class ConfluenceBuilder(Builder):
             # if no base identifier and dry running, ignore legacy page
             # searching as there is no initial root document to reference
             # against
-            if (conf.confluence_purge_from_root and
-                    conf.confluence_publish_dryrun and not baseid):
+            if (
+                conf.confluence_purge_from_root
+                and conf.confluence_publish_dryrun
+                and not baseid
+            ):
                 self.legacy_pages = []
             elif self.config.confluence_adv_aggressive_search is True:
                 self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
@@ -512,18 +529,20 @@ class ConfluenceBuilder(Builder):
             if page_id:
                 ConfluenceState.registerUploadId(docname, page_id)
             else:
-                ConfluenceLogger.warn('cannot publish asset since publishing '
-                    'point cannot be found ({}): {}'.format(key, docname))
+                ConfluenceLogger.warn(
+                    "cannot publish asset since publishing "
+                    "point cannot be found ({}): {}".format(key, docname)
+                )
                 return
 
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
-            attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash)
+            attachment_id = publisher.storeAttachment(page_id, key, output, type, hash)
         elif conf.confluence_asset_override:
             # forced publishing of the asset
             attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash, force=True)
+                page_id, key, output, type, hash, force=True
+            )
 
         if attachment_id and conf.confluence_purge:
             if page_id in self.legacy_assets:
@@ -534,49 +553,58 @@ class ConfluenceBuilder(Builder):
     def publish_finalize(self):
         if self.root_doc_page_id:
             if self.config.confluence_root_homepage is True:
-                self.info('updating space\'s homepage... ',
-                    nonl=(not self._verbose))
+                self.info("updating space's homepage... ", nonl=(not self._verbose))
                 self.publisher.updateSpaceHome(self.root_doc_page_id)
-                self.info('done\n')
+                self.info("done\n")
 
             if self.cloud:
-                point_url = '{0}spaces/{1}/pages/{2}'
+                point_url = "{0}spaces/{1}/pages/{2}"
             else:
-                point_url = '{0}pages/viewpage.action?pageId={2}'
+                point_url = "{0}pages/viewpage.action?pageId={2}"
 
-            self.info('Publish point: ' + point_url.format(
-                self.config.confluence_server_url,
-                self.config.confluence_space_name,
-                self.root_doc_page_id))
+            self.info(
+                "Publish point: "
+                + point_url.format(
+                    self.config.confluence_server_url,
+                    self.config.confluence_space_name,
+                    self.root_doc_page_id,
+                )
+            )
 
     def publish_purge(self):
         if self.config.confluence_purge:
             if self.publish_allowlist or self.publish_denylist:
-                self.warn('confluence_purge disabled due to '
-                    'confluence_publish_allowlist/confluence_publish_denylist')
+                self.warn(
+                    "confluence_purge disabled due to "
+                    "confluence_publish_allowlist/confluence_publish_denylist"
+                )
                 return
 
             if self.legacy_pages:
                 n = len(self.legacy_pages)
-                self.info('removing legacy pages... (total: {}) '.format(n),
-                    nonl=(not self._verbose))
+                self.info(
+                    "removing legacy pages... (total: {}) ".format(n),
+                    nonl=(not self._verbose),
+                )
                 for legacy_page_id in self.legacy_pages:
                     self.publisher.removePage(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
-                self.info('done\n')
+                self.info("done\n")
 
             n = 0
             for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
-                self.info('removing legacy assets... (total: {}) '.format(n),
-                    nonl=(not self._verbose))
+                self.info(
+                    "removing legacy assets... (total: {}) ".format(n),
+                    nonl=(not self._verbose),
+                )
                 for legacy_asset_info in self.legacy_assets.values():
                     for id in legacy_asset_info.keys():
                         self.publisher.removeAttachment(id)
-                self.info('done\n')
+                self.info("done\n")
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
@@ -589,49 +617,55 @@ class ConfluenceBuilder(Builder):
             self.parent_id = self.publisher.getBasePageId()
 
             for docname in status_iterator(
-                    self.publish_docnames, 'publishing documents... ',
-                    length=len(self.publish_docnames),
-                    verbosity=self._verbose):
+                self.publish_docnames,
+                "publishing documents... ",
+                length=len(self.publish_docnames),
+                verbosity=self._verbose,
+            ):
                 if self._check_publish_skip(docname):
-                    self.verbose(docname + ' skipped due to configuration')
+                    self.verbose(docname + " skipped due to configuration")
                     continue
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
-                    with io.open(docfile, 'r', encoding='utf-8') as file:
+                    with io.open(docfile, "r", encoding="utf-8") as file:
                         output = file.read()
                         self.publish_doc(docname, output)
 
                 except (IOError, OSError) as err:
-                    ConfluenceLogger.warn("error reading file %s: "
-                        "%s" % (docfile, err))
+                    ConfluenceLogger.warn(
+                        "error reading file %s: " "%s" % (docfile, err)
+                    )
 
             def to_asset_name(asset):
                 return asset[0]
 
             assets = self.assets.build()
-            for asset in status_iterator(assets, 'publishing assets... ',
-                    length=len(assets), verbosity=self._verbose,
-                    stringify_func=to_asset_name):
+            for asset in status_iterator(
+                assets,
+                "publishing assets... ",
+                length=len(assets),
+                verbosity=self._verbose,
+                stringify_func=to_asset_name,
+            ):
                 key, absfile, type, hash, docname = asset
                 if self._check_publish_skip(docname):
-                    self.verbose(key + ' skipped due to configuration')
+                    self.verbose(key + " skipped due to configuration")
                     continue
 
                 try:
-                    with open(absfile, 'rb') as file:
+                    with open(absfile, "rb") as file:
                         output = file.read()
                         self.publish_asset(key, docname, output, type, hash)
                 except (IOError, OSError) as err:
-                    ConfluenceLogger.warn("error reading asset %s: "
-                        "%s" % (key, err))
+                    ConfluenceLogger.warn("error reading asset %s: " "%s" % (key, err))
 
             self.publish_purge()
             self.publish_finalize()
 
-            self.info('building intersphinx... ', nonl=(not self._verbose))
+            self.info("building intersphinx... ", nonl=(not self._verbose))
             build_intersphinx(self)
-            self.info('done\n')
+            self.info("done\n")
 
     def cleanup(self):
         if self.publish:
@@ -657,18 +691,20 @@ class ConfluenceBuilder(Builder):
         navnode = ConfluenceNavigationNode()
 
         if docname in self.nav_prev:
-            prev_label = '← ' + __('Previous')
-            reference = nodes.reference(prev_label, prev_label, internal=True,
-                refuri=self.nav_prev[docname])
+            prev_label = "← " + __("Previous")
+            reference = nodes.reference(
+                prev_label, prev_label, internal=True, refuri=self.nav_prev[docname]
+            )
             reference._navnode = True
             reference._navnode_next = False
             reference._navnode_previous = True
             navnode.append(reference)
 
         if docname in self.nav_next:
-            next_label = __('Next') + ' →'
-            reference = nodes.reference(next_label, next_label, internal=True,
-                refuri=self.nav_next[docname])
+            next_label = __("Next") + " →"
+            reference = nodes.reference(
+                next_label, next_label, internal=True, refuri=self.nav_next[docname]
+            )
             reference._navnode = True
             reference._navnode_next = True
             reference._navnode_previous = False
@@ -710,8 +746,8 @@ class ConfluenceBuilder(Builder):
         metadata = self.metadata.setdefault(docname, {})
 
         for node in doctree.traverse(confluence_metadata):
-            labels = metadata.setdefault('labels', [])
-            labels.extend(node['params']['labels'])
+            labels = metadata.setdefault("labels", [])
+            labels.extend(node["params"]["labels"])
             node.parent.remove(node)
 
     def _find_title_element(self, doctree):
@@ -745,23 +781,23 @@ class ConfluenceBuilder(Builder):
         squashed page's labels can be moved into a parent document's label set.
         """
         # see also: sphinx/domains/std.py
-        std_domain = self.env.get_domain('std')
+        std_domain = self.env.get_domain("std")
         try:
-            citation_domain = self.env.get_domain('citation')
+            citation_domain = self.env.get_domain("citation")
         except ExtensionError:
             citation_domain = None
 
-        if 'anonlabels' in std_domain.data:
-            anonlabels = std_domain.data['anonlabels']
+        if "anonlabels" in std_domain.data:
+            anonlabels = std_domain.data["anonlabels"]
             for key, (fn, _l) in list(anonlabels.items()):
                 if fn == olddocname:
                     data = anonlabels[key]
                     anonlabels[key] = newdocname, data[1]
 
         citations = None
-        if 'citations' in std_domain.data: # Sphinx <2.1
-            citations = std_domain.data['citations']
-        elif citation_domain: # Sphinx >=2.1
+        if "citations" in std_domain.data:  # Sphinx <2.1
+            citations = std_domain.data["citations"]
+        elif citation_domain:  # Sphinx >=2.1
             citations = citation_domain.citations
         if citations:
             for key, (fn, _l, lineno) in list(citations.items()):
@@ -769,29 +805,29 @@ class ConfluenceBuilder(Builder):
                     data = citations[key]
                     citations[key] = newdocname, data[1], data[2]
 
-        if 'citation_refs' in std_domain.data: # Sphinx <2.0
-            citation_refs = std_domain.data['citation_refs']
+        if "citation_refs" in std_domain.data:  # Sphinx <2.0
+            citation_refs = std_domain.data["citation_refs"]
             for key, docnames in list(citation_refs.items()):
                 if fn == olddocname:
                     data = citation_refs[key]
                     citation_refs[key] = newdocname
 
-        if 'labels' in std_domain.data:
-            labels = std_domain.data['labels']
+        if "labels" in std_domain.data:
+            labels = std_domain.data["labels"]
             for key, (fn, _l, _l) in list(labels.items()):
                 if fn == olddocname:
                     data = labels[key]
                     labels[key] = newdocname, data[1], data[2]
 
-        if 'objects' in std_domain.data:
-            objects = std_domain.data['objects']
+        if "objects" in std_domain.data:
+            objects = std_domain.data["objects"]
             for key, (fn, _l) in list(objects.items()):
                 if fn == olddocname:
                     data = objects[key]
                     objects[key] = newdocname, data[1]
 
-        if 'progoptions' in std_domain.data:
-            progoptions = std_domain.data['progoptions']
+        if "progoptions" in std_domain.data:
+            progoptions = std_domain.data["progoptions"]
             for key, (fn, _l) in list(progoptions.items()):
                 if fn == olddocname:
                     data = progoptions[key]
@@ -831,31 +867,34 @@ class ConfluenceBuilder(Builder):
         for node in doctree.traverse(nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
-                if 'ids' in section_node:
-                    target = ''.join(node.astext().split())
+                if "ids" in section_node:
+                    target = "".join(node.astext().split())
 
                     # when confluence has a header that contains a link, the
                     # automatically assigned identifier removes any underscores
                     if node.next_node(addnodes.pending_xref):
-                        target = target.replace('_', '')
+                        target = target.replace("_", "")
 
                     if self.add_secnumbers:
-                        anchorname = '#' + target
+                        anchorname = "#" + target
                         if anchorname not in secnumbers:
-                            anchorname = ''
+                            anchorname = ""
 
                         secnumber = secnumbers.get(anchorname)
                         if secnumber:
-                            target = ('.'.join(map(str, secnumber)) +
-                                self.secnumber_suffix + target)
+                            target = (
+                                ".".join(map(str, secnumber))
+                                + self.secnumber_suffix
+                                + target
+                            )
 
                     section_id = doc_used_names.get(target, 0)
                     doc_used_names[target] = section_id + 1
                     if section_id > 0:
-                        target = '{}.{}'.format(target, section_id)
+                        target = "{}.{}".format(target, section_id)
 
-                    for id in section_node['ids']:
-                        id = '{}#{}'.format(docname, id)
+                    for id in section_node["ids"]:
+                        id = "{}#{}".format(docname, id)
                         ConfluenceState.registerTarget(id, target)
 
     def _replace_graphviz_nodes(self, doctree):
@@ -883,23 +922,28 @@ class ConfluenceBuilder(Builder):
         class MockTranslator:
             def __init__(self, builder):
                 self.builder = builder
+
         mock_translator = MockTranslator(self)
 
         for node in doctree.traverse(graphviz):
             try:
-                _, out_filename = render_dot(mock_translator, node['code'],
-                    node['options'], self.graphviz_output_format, 'graphviz')
+                _, out_filename = render_dot(
+                    mock_translator,
+                    node["code"],
+                    node["options"],
+                    self.graphviz_output_format,
+                    "graphviz",
+                )
                 if not out_filename:
                     node.parent.remove(node)
                     continue
 
-                new_node = nodes.image(candidates={'?'}, uri=out_filename)
-                if 'align' in node:
-                    new_node['align'] = node['align']
+                new_node = nodes.image(candidates={"?"}, uri=out_filename)
+                if "align" in node:
+                    new_node["align"] = node["align"]
                 node.replace_self(new_node)
             except GraphvizError as exc:
-                ConfluenceLogger.warn('dot code {}: {}'.format(
-                    node['code'], exc))
+                ConfluenceLogger.warn("dot code {}: {}".format(node["code"], exc))
                 node.parent.remove(node)
 
     def _replace_inheritance_diagram(self, doctree):
@@ -931,29 +975,35 @@ class ConfluenceBuilder(Builder):
         class MockTranslator:
             def __init__(self, builder):
                 self.builder = builder
+
         mock_translator = MockTranslator(self)
 
         for node in doctree.traverse(inheritance_diagram.inheritance_diagram):
-            graph = node['graph']
+            graph = node["graph"]
 
             graph_hash = inheritance_diagram.get_graph_hash(node)
-            name = 'inheritance%s' % graph_hash
+            name = "inheritance%s" % graph_hash
 
             dotcode = graph.generate_dot(name, {}, env=self.env)
 
             try:
-                _, out_filename = render_dot(mock_translator, dotcode, {},
-                    self.graphviz_output_format, 'inheritance')
+                _, out_filename = render_dot(
+                    mock_translator,
+                    dotcode,
+                    {},
+                    self.graphviz_output_format,
+                    "inheritance",
+                )
                 if not out_filename:
                     node.parent.remove(node)
                     continue
 
-                new_node = nodes.image(candidates={'?'}, uri=out_filename)
-                if 'align' in node:
-                    new_node['align'] = node['align']
+                new_node = nodes.image(candidates={"?"}, uri=out_filename)
+                if "align" in node:
+                    new_node["align"] = node["align"]
                 node.replace_self(new_node)
             except GraphvizError as exc:
-                ConfluenceLogger.warn('dot code {}: {}'.format(dotcode, exc))
+                ConfluenceLogger.warn("dot code {}: {}".format(dotcode, exc))
                 node.parent.remove(node)
 
     def _replace_math_blocks(self, doctree):
@@ -976,36 +1026,36 @@ class ConfluenceBuilder(Builder):
         class MockTranslator:
             def __init__(self, builder):
                 self.builder = builder
+
         mock_translator = MockTranslator(self)
 
-        for node in itertools.chain(doctree.traverse(nodes.math),
-                doctree.traverse(nodes.math_block)):
+        for node in itertools.chain(
+            doctree.traverse(nodes.math), doctree.traverse(nodes.math_block)
+        ):
             try:
                 if not isinstance(node, nodes.math):
-                    if node['nowrap']:
+                    if node["nowrap"]:
                         latex = node.astext()
                     else:
                         latex = wrap_displaymath(node.astext(), None, False)
                 else:
-                    latex = '$' + node.astext() + '$'
+                    latex = "$" + node.astext() + "$"
 
                 mf, depth = imgmath.render_math(mock_translator, latex)
                 if not mf:
                     continue
 
                 new_node = nodes.image(
-                    candidates={'?'},
-                    uri=path.join(self.outdir, mf),
-                    **node.attributes)
-                new_node['from_math'] = True
+                    candidates={"?"}, uri=path.join(self.outdir, mf), **node.attributes
+                )
+                new_node["from_math"] = True
                 if not isinstance(node, nodes.math):
-                    new_node['align'] = 'center'
+                    new_node["align"] = "center"
                 if depth is not None:
-                    new_node['math_depth'] = depth
+                    new_node["math_depth"] = depth
                 node.replace_self(new_node)
             except imgmath.MathExtError as exc:
-                ConfluenceLogger.warn('inline latex {}: {}'.format(
-                    node.astext(), exc))
+                ConfluenceLogger.warn("inline latex {}: {}".format(node.astext(), exc))
 
     def _top_ref_check(self, node):
         """
@@ -1039,10 +1089,14 @@ class ConfluenceBuilder(Builder):
             if not self.config.confluence_disable_autogen_title:
                 doctitle = "autogen-{}".format(docname)
                 if self.publish:
-                    ConfluenceLogger.warn("document will be published using an "
-                        "generated title value: {}".format(docname))
+                    ConfluenceLogger.warn(
+                        "document will be published using an "
+                        "generated title value: {}".format(docname)
+                    )
             elif self.publish:
-                ConfluenceLogger.warn("document will not be published since it "
-                    "has no title: {}".format(docname))
+                ConfluenceLogger.warn(
+                    "document will not be published since it "
+                    "has no title: {}".format(docname)
+                )
 
         return doctitle

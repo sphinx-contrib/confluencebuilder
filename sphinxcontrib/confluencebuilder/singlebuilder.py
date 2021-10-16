@@ -17,7 +17,7 @@ from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
-    name = 'singleconfluence'
+    name = "singleconfluence"
 
     def __init__(self, app):
         super(SingleConfluenceBuilder, self).__init__(app)
@@ -25,9 +25,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def assemble_doctree(self):
         root_doc = self.config.root_doc
         tree = self.env.get_doctree(root_doc)
-        tree = inline_all_toctrees(
-            self, set(), root_doc, tree, darkgreen, [root_doc])
-        tree['docname'] = root_doc
+        tree = inline_all_toctrees(self, set(), root_doc, tree, darkgreen, [root_doc])
+        tree["docname"] = root_doc
 
         self.env.resolve_references(tree, root_doc, self)
         self._fix_refuris(tree)
@@ -39,7 +38,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         for docname, secnums in self.env.toc_secnumbers.items():
             for id, secnum in secnums.items():
-                alias = '{}/{}'.format(docname, id)
+                alias = "{}/{}".format(docname, id)
                 new_secnumbers[alias] = secnum
 
         return {self.config.root_doc: new_secnumbers}
@@ -49,7 +48,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         for docname, fignumlist in self.env.toc_fignumbers.items():
             for figtype, fignums in fignumlist.items():
-                alias = '{}/{}'.format(docname, figtype)
+                alias = "{}/{}".format(docname, figtype)
                 new_fignumbers.setdefault(alias, {})
 
                 for id, fignum in fignums.items():
@@ -58,31 +57,29 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         return {self.config.root_doc: new_fignumbers}
 
     def get_outdated_docs(self):
-        return 'all documents'
+        return "all documents"
 
     def get_relative_uri(self, from_, to, typ=None):
         return self.get_target_uri(to, typ)
 
     def get_target_uri(self, docname, typ=None):
         if docname in self.env.all_docs:
-            return '{}{}#{}'.format(
-                self.config.root_doc, self.link_suffix, docname)
+            return "{}{}#{}".format(self.config.root_doc, self.link_suffix, docname)
         else:
             return self.link_transform(docname)
 
-    def write(self, build_docnames, updated_docnames, method='update'):
+    def write(self, build_docnames, updated_docnames, method="update"):
         docnames = self.env.all_docs
         if self.config.root_doc not in docnames:
-            ConfluenceLogger.error('singleconfluence requires root_doc')
+            ConfluenceLogger.error("singleconfluence requires root_doc")
             return
 
         root_doctitle = self._process_root_document()
         if not root_doctitle:
-            ConfluenceLogger.error(
-                'singleconfluence requires title on root_doc')
+            ConfluenceLogger.error("singleconfluence requires title on root_doc")
             return
 
-        with progress_message(__('assembling single confluence document')):
+        with progress_message(__("assembling single confluence document")):
             # assemble toc section/figure numbers
             #
             # Both the environment's `toc_secnumbers` and `toc_fignumbers`
@@ -97,9 +94,11 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             assembled_toc_secnumbers = self.assemble_toc_secnumbers()
             assembled_toc_fignumbers = self.assemble_toc_fignumbers()
             self.env.toc_secnumbers.setdefault(self.config.root_doc, {}).update(
-                assembled_toc_secnumbers[self.config.root_doc])
+                assembled_toc_secnumbers[self.config.root_doc]
+            )
             self.env.toc_fignumbers.setdefault(self.config.root_doc, {}).update(
-                assembled_toc_fignumbers[self.config.root_doc])
+                assembled_toc_fignumbers[self.config.root_doc]
+            )
 
             # register title targets for references before assembling doc
             # re-works them into a single document
@@ -111,7 +110,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             self._prepare_doctree_writing(self.config.root_doc, doctree)
             self.assets.processDocument(doctree, self.config.root_doc)
 
-        with progress_message(__('writing single confluence document')):
+        with progress_message(__("writing single confluence document")):
             self.write_doc_serialized(self.config.root_doc, doctree)
             self.write_doc(self.config.root_doc, doctree)
 
@@ -136,29 +135,31 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         root_docuri = self.config.root_doc + self.file_suffix
 
         for refnode in doctree.traverse(nodes.reference):
-            if 'refuri' not in refnode:
+            if "refuri" not in refnode:
                 continue
 
-            refuri = refnode['refuri']
-            idx = refuri.find('#')
+            refuri = refnode["refuri"]
+            idx = refuri.find("#")
             if idx < 0:
                 continue
 
-            idx2 = refuri.find('#', idx + 1)
+            idx2 = refuri.find("#", idx + 1)
             if idx2 >= 0:
-                refnode['refid'] = refuri[idx2 + 1:]
-                del refnode['refuri']
-            elif refuri.startswith(root_docuri + '#'):
-                refnode['refid'] = refuri[idx + 1:]
-                del refnode['refuri']
+                refnode["refid"] = refuri[idx2 + 1 :]
+                del refnode["refuri"]
+            elif refuri.startswith(root_docuri + "#"):
+                refnode["refid"] = refuri[idx + 1 :]
+                del refnode["refuri"]
 
     def _process_root_document(self):
         docname = self.config.root_doc
 
         # Extract the title from the root document as it will be used to decide
         # which Confluence page the document will be published to.
-        if (self.config.confluence_title_overrides and
-                docname in self.config.confluence_title_overrides):
+        if (
+            self.config.confluence_title_overrides
+            and docname in self.config.confluence_title_overrides
+        ):
             doctitle = self.config.confluence_title_overrides[docname]
         else:
             doctree = self.env.get_doctree(docname)
@@ -188,7 +189,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         Returns:
             whether or not the node should be a #top reference
         """
-        return node['refid'] == self.config.root_doc
+        return node["refid"] == self.config.root_doc
 
     def _register_doctree_title_targets(self, docname, doctree):
         """
@@ -207,7 +208,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         secnumbers = self.env.toc_secnumbers.get(self.config.root_doc, {})
 
         docref_set = False
-        doc_anchorname = '%s/' % docname
+        doc_anchorname = "%s/" % docname
         root_section = None
         title_node = self._find_title_element(doctree)
         if title_node:
@@ -216,26 +217,29 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         for node in doctree.traverse(nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
-                if 'ids' in section_node:
-                    title_name = ''.join(node.astext().split())
+                if "ids" in section_node:
+                    title_name = "".join(node.astext().split())
 
-                    for id in section_node['ids']:
+                    for id in section_node["ids"]:
                         target = title_name
 
-                        anchorname = '%s/#%s' % (docname, id)
+                        anchorname = "%s/#%s" % (docname, id)
                         if anchorname not in secnumbers:
-                            anchorname = '%s/' % id
+                            anchorname = "%s/" % id
 
                         if self.add_secnumbers:
                             secnumber = secnumbers.get(anchorname)
                             if secnumber:
-                                target = ('.'.join(map(str, secnumber)) +
-                                    self.secnumber_suffix + target)
+                                target = (
+                                    ".".join(map(str, secnumber))
+                                    + self.secnumber_suffix
+                                    + target
+                                )
 
                         section_id = doc_used_names.get(target, 0)
                         doc_used_names[target] = section_id + 1
                         if section_id > 0:
-                            target = '{}.{}'.format(target, section_id)
+                            target = "{}.{}".format(target, section_id)
 
                         ConfluenceState.registerTarget(anchorname, target)
 
@@ -263,6 +267,5 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                         # to the leading section which has this mapping.
                         if section_node == root_section and not docref_set:
                             if doc_anchorname != anchorname:
-                                ConfluenceState.registerTarget(
-                                    doc_anchorname, target)
+                                ConfluenceState.registerTarget(doc_anchorname, target)
                             docref_set = True
