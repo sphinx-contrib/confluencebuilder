@@ -82,7 +82,7 @@ class ConfluenceConfigurationError(ConfluenceError, ConfigError):
     pass
 
 class ConfluenceMissingPageIdError(ConfluenceError):
-    def __init__(self, space_name, page_id):
+    def __init__(self, space_key, page_id):
         SphinxError.__init__(self,
             """---\n"""
             """A request to publish to a specific Confluence page identifier """
@@ -90,7 +90,7 @@ class ConfluenceMissingPageIdError(ConfluenceError):
             """    Space: {}\n"""
             """  Page Id: {}\n"""
             """\n"""
-            """---\n""".format(space_name, page_id)
+            """---\n""".format(space_key, page_id)
         )
 
 class ConfluencePermissionError(ConfluenceError):

@@ -52,7 +52,7 @@ def setup(app):
     """Username to login to Confluence API with."""
     app.add_config_value('confluence_server_user', None, False)
     """Confluence Space to publish to."""
-    app.add_config_value('confluence_space_name', None, False)
+    app.add_config_value('confluence_space_key', None, False)
 
     """(configuration - generic)"""
     """Add page and section numbers if doctree has :numbered: option"""
@@ -183,6 +183,8 @@ def setup(app):
     app.add_config_value('confluence_publish_subset', None, False)
     # replaced by confluence_purge_from_root
     app.add_config_value('confluence_purge_from_master', None, False)
+    # replaced by confluence_space_key
+    app.add_config_value('confluence_space_name', None, False)
 
     # ##########################################################################
 

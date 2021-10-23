@@ -34,7 +34,7 @@ class ConfluencePublisher():
         self.parent_id = config.confluence_parent_page_id_check
         self.parent_name = config.confluence_parent_page
         self.server_url = config.confluence_server_url
-        self.space_name = config.confluence_space_name
+        self.space_key = config.confluence_space_key
         self.watch = config.confluence_watch
 
         # append labels by default
@@ -48,7 +48,7 @@ class ConfluencePublisher():
         self.rest_client = Rest(self.config)
 
         rsp = self.rest_client.get('space', {
-            'spaceKey': self.space_name,
+            'spaceKey': self.space_key,
             'limit': 1
         })
 
@@ -60,7 +60,7 @@ class ConfluencePublisher():
             # based off its descriptive name. If something is found, hint to the
             # user to use a space's key value instead.
             search_fields = {
-                'cql': 'type=space and space.title~"' + self.space_name + '"',
+                'cql': 'type=space and space.title~"' + self.space_key + '"',
                 'limit': 2,
             }
             rsp = self.rest_client.get('search', search_fields)
@@ -74,7 +74,7 @@ class ConfluencePublisher():
                     '''There appears to be a space '{0}' which has a name ''' \
                     ''''{1}'. Did you mean to use this space?\n''' \
                     '''\n''' \
-                    '''   confluence_space_name = '{0}'\n''' \
+                    '''   confluence_space_key = '{0}'\n''' \
                     ''''''.format(space_key, space_name)
 
             elif rsp['size'] > 1:
@@ -84,11 +84,11 @@ class ConfluencePublisher():
                     '''name '{}'. The unique key of the space should be ''' \
                     '''used instead. See also:\n\n''' \
                     '''   https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/\n''' \
-                    ''''''.format(self.space_name)
+                    ''''''.format(self.space_key)
 
             pw_set = bool(self.config.confluence_server_pass)
             raise ConfluenceBadSpaceError(
-                self.space_name,
+                self.space_key,
                 self.config.confluence_server_user,
                 pw_set,
                 extra_desc)
@@ -105,7 +105,7 @@ class ConfluencePublisher():
 
         rsp = self.rest_client.get('content', {
             'type': 'page',
-            'spaceKey': self.space_name,
+            'spaceKey': self.space_key,
             'title': self.parent_name,
             'status': 'current'
         })
@@ -143,7 +143,7 @@ class ConfluencePublisher():
         if page_id:
             search_fields = {'cql': 'ancestor=' + str(page_id)}
         else:
-            search_fields = {'cql': 'space="' + self.space_name +
+            search_fields = {'cql': 'space="' + self.space_key +
                 '" and type=page'}
 
         # Configure a larger limit value than the default (no provided
@@ -292,7 +292,7 @@ class ConfluencePublisher():
 
         rsp = self.rest_client.get('content', {
             'type': 'page',
-            'spaceKey': self.space_name,
+            'spaceKey': self.space_key,
             'title': page_name,
             'status': 'current',
             'expand': expand,
@@ -355,7 +355,7 @@ class ConfluencePublisher():
         page_id = None
 
         page_name = page_name.lower()
-        search_fields = {'cql': 'space="' + self.space_name +
+        search_fields = {'cql': 'space="' + self.space_key +
             '" and type=page and title~"' + page_name + '"'}
         search_fields['limit'] = 1000
 
@@ -623,7 +623,7 @@ class ConfluencePublisher():
         except ConfluenceBadApiError as ex:
             if str(ex).find('No content found with id') == -1:
                 raise
-            raise ConfluenceMissingPageIdError(self.space_name, page_id)
+            raise ConfluenceMissingPageIdError(self.space_key, page_id)
 
         try:
             self._updatePage(page, page_name, data)
@@ -702,8 +702,8 @@ class ConfluencePublisher():
 
         page = self.rest_client.get('content/' + page_id, None)
         try:
-            self.rest_client.put('space', self.space_name, {
-                'key': self.space_name,
+            self.rest_client.put('space', self.space_key, {
+                'key': self.space_key,
                 'name': self.space_display_name,
                 'homepage': page
             })
@@ -734,7 +734,7 @@ class ConfluencePublisher():
                 }
             },
             'space': {
-                'key': self.space_name,
+                'key': self.space_key,
             },
         }
 

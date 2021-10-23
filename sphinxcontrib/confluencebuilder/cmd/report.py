@@ -230,9 +230,16 @@ def report_main(args_parser):
 
             config['confluence_server_url'] = value
 
-        # remove space name, but track casing
-        if 'confluence_space_name' in config:
-            value = config['confluence_space_name']
+        # remove space key, but track casing
+        space_cfgs = [
+            'confluence_space_key',
+            'confluence_space_name', # deprecated
+        ]
+        for space_cfg in space_cfgs:
+            if space_cfg not in config:
+                continue
+
+            value = config[space_cfg]
             if value.startswith('~'):
                 value = '(set; user)'
             elif value.isupper():
@@ -241,7 +248,7 @@ def report_main(args_parser):
                 value = '(set; lower)'
             else:
                 value = '(set; mixed)'
-            config['confluence_space_name'] = value
+            config[space_cfg] = value
 
     print('')
     print('Confluence builder report has been generated.')

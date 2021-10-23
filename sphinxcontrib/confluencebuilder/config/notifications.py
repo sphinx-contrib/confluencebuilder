@@ -23,6 +23,8 @@ DEPRECATED_CONFIGS = {
         'use "confluence_publish_allowlist" instead',
     'confluence_purge_from_master':
         'use "confluence_purge_from_root" instead',
+    'confluence_space_name':
+        'use "confluence_space_key" instead',
 }
 
 def deprecated(validator):

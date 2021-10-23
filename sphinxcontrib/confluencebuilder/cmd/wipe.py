@@ -71,7 +71,7 @@ To use this action, the argument '--danger' must be set.
 
             aggressive_search = app.config.confluence_adv_aggressive_search
             server_url = app.config.confluence_server_url
-            space_name = app.config.confluence_space_name
+            space_key = app.config.confluence_space_key
             parent_name = app.config.confluence_parent_page
 
             # initialize the publisher (if permitted)
@@ -121,7 +121,7 @@ pages. Only use this action if you know what you are doing.
         legacy_pages = publisher.getDescendants(base_page_id)
 
     print('         URL:', server_url)
-    print('       Space:', space_name)
+    print('       Space:', space_key)
     if base_page_id:
         logger.note('       Pages: Child pages of ' + parent_name)
     else:
