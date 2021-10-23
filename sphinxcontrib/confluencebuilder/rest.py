@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -57,10 +57,11 @@ class Rest:
             'X-Atlassian-Token': NOCHECK,
         })
         session.timeout = config.confluence_timeout
-        session.proxies = {
-            'http': config.confluence_proxy,
-            'https': config.confluence_proxy,
-        }
+        if config.confluence_proxy is not None:
+            session.proxies = {
+                'http': config.confluence_proxy,
+                'https': config.confluence_proxy,
+            }
 
         # add custom header options based off the user's configuration
         if config.confluence_publish_headers:
