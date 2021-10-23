@@ -51,10 +51,47 @@ class ConfluencePublisher():
             'spaceKey': self.space_name,
             'limit': 1
         })
+
+        # handle if the provided space key was not found
         if rsp['size'] == 0:
+            extra_desc = ''
+
+            # If the space key was not found, attempt to search for the space
+            # based off its descriptive name. If something is found, hint to the
+            # user to use a space's key value instead.
+            search_fields = {
+                'cql': 'type=space and space.title~"' + self.space_name + '"',
+                'limit': 2,
+            }
+            rsp = self.rest_client.get('search', search_fields)
+
+            if rsp['size'] == 1:
+                detected_space = rsp['results'][0]
+                space_key = detected_space['space']['key']
+                space_name = detected_space['title']
+                extra_desc = \
+                    '''\n''' \
+                    '''There appears to be a space '{0}' which has a name ''' \
+                    ''''{1}'. Did you mean to use this space?\n''' \
+                    '''\n''' \
+                    '''   confluence_space_name = '{0}'\n''' \
+                    ''''''.format(space_key, space_name)
+
+            elif rsp['size'] > 1:
+                extra_desc = \
+                    '''\n''' \
+                    '''Multiple spaces have been detected which use the ''' \
+                    '''name '{}'. The unique key of the space should be ''' \
+                    '''used instead. See also:\n\n''' \
+                    '''   https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/\n''' \
+                    ''''''.format(self.space_name)
+
             pw_set = bool(self.config.confluence_server_pass)
-            raise ConfluenceBadSpaceError(self.space_name,
-                self.config.confluence_server_user, pw_set)
+            raise ConfluenceBadSpaceError(
+                self.space_name,
+                self.config.confluence_server_user,
+                pw_set,
+                extra_desc)
         self.space_display_name = rsp['results'][0]['name']
 
     def disconnect(self):
