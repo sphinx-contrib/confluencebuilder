@@ -22,6 +22,7 @@ from xml.etree import ElementTree
 import os
 import platform
 import sys
+import traceback
 
 try:
     from urllib.parse import urlparse
@@ -117,8 +118,9 @@ def report_main(args_parser):
                 # initialize the publisher (if needed later)
                 publisher.init(app.config)
 
-    except Exception as ex:
-        logger.error(ex)
+    except Exception:
+        sys.stdout.flush()
+        logger.error(traceback.format_exc())
         if os.path.isfile(os.path.join(work_dir, 'conf.py')):
             configuration_load_issue = 'unable to load configuration'
         else:
@@ -138,8 +140,9 @@ def report_main(args_parser):
             publisher.connect()
             info += ' connected: yes\n'
             session = publisher.rest_client.session
-        except Exception as ex:
-            logger.error(ex)
+        except Exception:
+            sys.stdout.flush()
+            logger.error(traceback.format_exc())
             info += ' connected: no\n'
             rv = 1
 
@@ -175,8 +178,9 @@ def report_main(args_parser):
                         rsp.status_code))
                     info += '   fetched: error ({})\n'.format(rsp.status_code)
                     rv = 1
-            except Exception as ex:
-                logger.error(ex)
+            except Exception:
+                sys.stdout.flush()
+                logger.error(traceback.format_exc())
                 info += 'failure to determine confluence data\n'
                 rv = 1
 
