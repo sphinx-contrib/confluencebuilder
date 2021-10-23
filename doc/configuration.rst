@@ -78,11 +78,19 @@ Essential configuration
         - The space key is **case-sensitive** (typically uppercase).
 
     `Key of the space`_ in Confluence to be used to publish generated documents
-    to.
+    to. For example:
 
     .. code-block:: python
 
         confluence_space_key = 'MYAWESOMESPACE'
+
+    If attempting to publish to a user's personal space, the space's key will
+    typically start with a tilde value followed by the space's identifier. For
+    example:
+
+    .. code-block:: python
+
+        confluence_space_key = '~123456789' 
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:
