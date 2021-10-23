@@ -37,7 +37,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_publish'] = True
         self.config['confluence_server_url'] = \
             'https://intranet-wiki.example.com/'
-        self.config['confluence_space_name'] = 'DUMMY'
+        self.config['confluence_space_key'] = 'DUMMY'
 
     def _try_config(self, config=None, edefs=None, dataset=None):
         config = config if config else self.minimal_config
@@ -699,18 +699,18 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
     def test_config_check_space_name(self):
-        self.config['confluence_space_name'] = 'DUMMY'
+        self.config['confluence_space_key'] = 'DUMMY'
         self._try_config()
 
         # enable publishing enabled checks
         self._prepare_valid_publish()
 
-        # without `confluence_space_name` with publishing should throw an error
-        self.config['confluence_space_name'] = None
+        # without `confluence_space_key` with publishing should throw an error
+        self.config['confluence_space_key'] = None
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
-        self.config['confluence_space_name'] = 'DUMMY2'
+        self.config['confluence_space_key'] = 'DUMMY2'
         self._try_config()
 
     def test_config_check_title_overrides(self):

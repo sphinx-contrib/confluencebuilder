@@ -31,16 +31,16 @@ class TestConfluenceValidation(unittest.TestCase):
         enable_sphinx_info()
 
         # build configuration
+        space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_parent_page'] = None
         cls.config['confluence_publish'] = True
-        cls.config['confluence_space_name'] = os.getenv(
-            SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
+        cls.config['confluence_space_key'] = space_key
         cls.config['confluence_timeout'] = 1
         cls.config['imgmath_font_size'] = 14
         cls.config['imgmath_image_format'] = 'svg'
@@ -67,7 +67,7 @@ class TestConfluenceValidation(unittest.TestCase):
             pass
 
         # finalize
-        if cls.config['confluence_space_name'].startswith('~'):
+        if cls.config['confluence_space_key'].startswith('~'):
             cls.config['confluence_root_homepage'] = False
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''

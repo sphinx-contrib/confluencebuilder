@@ -544,7 +544,7 @@ class ConfluenceBuilder(Builder):
 
             self.info('Publish point: ' + point_url.format(
                 self.config.confluence_server_url,
-                self.config.confluence_space_name,
+                self.config.confluence_space_key,
                 self.root_doc_page_id))
 
     def publish_purge(self):

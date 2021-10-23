@@ -8,7 +8,7 @@ Confluence generation and publishing:
 
     extensions = ['sphinxcontrib.confluencebuilder']
     confluence_publish = True
-    confluence_space_name = 'TEST'
+    confluence_space_key = 'TEST'
     confluence_parent_page = 'Documentation'
     confluence_server_url = 'https://intranet-wiki.example.com/'
     confluence_server_user = 'myawesomeuser'
@@ -64,20 +64,33 @@ Essential configuration
 
         confluence_server_url = 'https://intranet-wiki.example.com/'
 
-.. |confluence_space_name| replace:: ``confluence_space_name``
-.. _confluence_space_name:
+.. |confluence_space_key| replace:: ``confluence_space_key``
+.. _confluence_space_key:
 
-.. confval:: confluence_space_name
+.. confval:: confluence_space_key
+
+    .. versionadded:: 1.7
 
     .. note::
 
-        The space name is **case-sensitive**.
+        - Use the key value for the space, not the name of the space. For
+          example, ``MYAWESOMESPACE`` instead of ``My Awesome Space``.
+        - The space key is **case-sensitive** (typically uppercase).
 
-    Key of the space in Confluence to be used to publish generated documents to.
+    `Key of the space`_ in Confluence to be used to publish generated documents
+    to. For example:
 
     .. code-block:: python
 
-        confluence_space_name = 'MyAwesomeSpace'
+        confluence_space_key = 'MYAWESOMESPACE'
+
+    If attempting to publish to a user's personal space, the space's key will
+    typically start with a tilde value followed by the space's identifier. For
+    example:
+
+    .. code-block:: python
+
+        confluence_space_key = '~123456789' 
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:
@@ -405,7 +418,7 @@ Publishing configuration
 
         This option cannot be used with |confluence_publish_root|_.
 
-    The root page found inside the configured space (|confluence_space_name|_)
+    The root page found inside the configured space (|confluence_space_key|_)
     where published pages will be a descendant of. The parent page value is used
     to match with the title of an existing page. If this option is not provided,
     new pages will be published to the root of the configured space. If the
@@ -1202,10 +1215,17 @@ Deprecated options
 
     This option has been renamed to |confluence_purge_from_root|_.
 
+.. confval:: confluence_space_name
+
+    .. versionchanged:: 1.7
+
+    This option has been renamed to |confluence_space_key|_.
+
 .. references ------------------------------------------------------------------
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
+.. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
 .. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification

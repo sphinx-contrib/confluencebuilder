@@ -85,7 +85,7 @@ Next, include a series of publish-related settings to the configuration file:
 .. code-block:: python
 
     confluence_publish = True
-    confluence_space_name = 'TEST'
+    confluence_space_key = 'TEST'
     confluence_ask_password = True
     # (for Confluence Cloud)
     confluence_server_url = 'https://example.atlassian.net/wiki/'
@@ -99,7 +99,7 @@ targeted.
 
 .. note::
 
-    The configuration of the space name (``confluence_space_name``) is
+    The configuration of the space key (``confluence_space_key``) is
     case-sensitive. Ensure the value matches the case found on the Confluence
     instances (typically, uppercase).
 

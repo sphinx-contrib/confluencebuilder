@@ -487,8 +487,8 @@ following:
 
     # ##################################################################
 
-    # confluence_space_name
-    validator.conf('confluence_space_name') \
+    # confluence_space_key
+    validator.conf('confluence_space_key') \
              .string()
 
     # ##################################################################
@@ -530,12 +530,12 @@ server URL has not. Ensure 'confluence_server_url' has been set to target
 Confluence instance to be published to.
 """)
 
-        if not config.confluence_space_name:
+        if not config.confluence_space_key and not config.confluence_space_name:
             raise ConfluenceConfigurationError(
-"""confluence space name not provided
+"""confluence space key not provided
 
 While publishing has been configured using 'confluence_publish', the Confluence
-space name has not. Ensure 'confluence_space_name' has been set to space's name
+space key has not. Ensure 'confluence_space_key' has been set to space's key
 which content should be published under.
 """)
 

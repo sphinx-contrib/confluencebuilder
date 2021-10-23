@@ -29,6 +29,7 @@ def handle_config_inited(app, config):
     handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
     handle_legacy('confluence_purge_from_root', 'confluence_purge_from_master')
     handle_legacy('confluence_root_homepage', 'confluence_master_homepage')
+    handle_legacy('confluence_space_key', 'confluence_space_name')
 
 def process_ask_configs(config):
     """

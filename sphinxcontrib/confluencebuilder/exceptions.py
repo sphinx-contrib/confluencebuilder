@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -34,22 +34,23 @@ class ConfluenceBadApiError(ConfluenceError):
         )
 
 class ConfluenceBadSpaceError(ConfluenceError):
-    def __init__(self, space_name, uname, pw_set):
+    def __init__(self, space_key, uname, pw_set, extras):
         uname_value = uname if uname else '(empty)'
         pw_value = '<set>' if pw_set else '(empty)'
         SphinxError.__init__(self,
             """---\n"""
-            """The configured Confluence space does not appear to be """
+            """The configured Confluence space key does not appear to be """
             """valid:\n\n"""
-            """    Space: {}\n"""
-            """ Username: {}\n"""
-            """ Password: {}\n"""
+            """    Space key: {}\n"""
+            """     Username: {}\n"""
+            """     Password: {}\n"""
             """\n"""
             """Ensure the server is running or your Confluence URL is valid. """
             """Also ensure your authentication options are properly set.\n"""
             """\n"""
-            """Note: Confluence space names are case-sensitive.\n"""
-            """---\n""".format(space_name, uname_value, pw_value)
+            """Note: Confluence space keys are case-sensitive.\n"""
+            """{}"""
+            """---\n""".format(space_key, uname_value, pw_value, extras)
         )
 
 class ConfluenceBadServerUrlError(ConfluenceError):
@@ -81,7 +82,7 @@ class ConfluenceConfigurationError(ConfluenceError, ConfigError):
     pass
 
 class ConfluenceMissingPageIdError(ConfluenceError):
-    def __init__(self, space_name, page_id):
+    def __init__(self, space_key, page_id):
         SphinxError.__init__(self,
             """---\n"""
             """A request to publish to a specific Confluence page identifier """
@@ -89,7 +90,7 @@ class ConfluenceMissingPageIdError(ConfluenceError):
             """    Space: {}\n"""
             """  Page Id: {}\n"""
             """\n"""
-            """---\n""".format(space_name, page_id)
+            """---\n""".format(space_key, page_id)
         )
 
 class ConfluencePermissionError(ConfluenceError):
