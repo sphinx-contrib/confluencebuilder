@@ -8,7 +8,7 @@ Confluence generation and publishing:
 
     extensions = ['sphinxcontrib.confluencebuilder']
     confluence_publish = True
-    confluence_space_name = 'TEST'
+    confluence_space_key = 'TEST'
     confluence_parent_page = 'Documentation'
     confluence_server_url = 'https://intranet-wiki.example.com/'
     confluence_server_user = 'myawesomeuser'
@@ -64,10 +64,12 @@ Essential configuration
 
         confluence_server_url = 'https://intranet-wiki.example.com/'
 
-.. |confluence_space_name| replace:: ``confluence_space_name``
-.. _confluence_space_name:
+.. |confluence_space_key| replace:: ``confluence_space_key``
+.. _confluence_space_key:
 
-.. confval:: confluence_space_name
+.. confval:: confluence_space_key
+
+    .. versionadded:: 1.7
 
     .. note::
 
@@ -80,7 +82,7 @@ Essential configuration
 
     .. code-block:: python
 
-        confluence_space_name = 'MYAWESOMESPACE'
+        confluence_space_key = 'MYAWESOMESPACE'
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:
@@ -408,7 +410,7 @@ Publishing configuration
 
         This option cannot be used with |confluence_publish_root|_.
 
-    The root page found inside the configured space (|confluence_space_name|_)
+    The root page found inside the configured space (|confluence_space_key|_)
     where published pages will be a descendant of. The parent page value is used
     to match with the title of an existing page. If this option is not provided,
     new pages will be published to the root of the configured space. If the
@@ -1204,6 +1206,12 @@ Deprecated options
     .. versionchanged:: 1.6
 
     This option has been renamed to |confluence_purge_from_root|_.
+
+.. confval:: confluence_space_name
+
+    .. versionchanged:: 1.7
+
+    This option has been renamed to |confluence_space_key|_.
 
 .. references ------------------------------------------------------------------
 
