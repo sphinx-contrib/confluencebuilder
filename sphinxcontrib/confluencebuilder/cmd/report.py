@@ -137,6 +137,8 @@ def report_main(args_parser):
         session = None
         try:
             print('connecting to confluence instance...')
+            sys.stdout.flush()
+
             publisher.connect()
             info += ' connected: yes\n'
             session = publisher.rest_client.session
