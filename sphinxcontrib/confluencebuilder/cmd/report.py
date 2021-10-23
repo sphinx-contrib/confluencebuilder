@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
+from __future__ import print_function
 from collections import OrderedDict
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
@@ -15,7 +16,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-from tempfile import TemporaryDirectory
+from sphinxcontrib.confluencebuilder.util import temp_dir
 from xml.etree import ElementTree
 import os
 import platform
@@ -23,7 +24,7 @@ import sys
 
 try:
     from urllib.parse import urlparse
-except NameError:
+except ImportError:
     from urlparse import urlparse
 
 #: rest point to fetch instance manifest state
@@ -76,7 +77,7 @@ def report_main(args_parser):
     publisher = ConfluencePublisher()
 
     try:
-        with TemporaryDirectory() as tmp_dir:
+        with temp_dir() as tmp_dir:
             with docutils_namespace():
                 print('fetching configuration information...')
                 app = Sphinx(

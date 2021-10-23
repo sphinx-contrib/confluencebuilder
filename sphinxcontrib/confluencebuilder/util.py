@@ -4,12 +4,15 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from contextlib import contextmanager
 from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from hashlib import sha256
 import getpass
 import os
+import shutil
 import subprocess
+import tempfile
 
 class ConfluenceUtil:
     """
@@ -173,3 +176,18 @@ def str2bool(value):
         return False
     else:
         raise ValueError
+
+@contextmanager
+def temp_dir():
+    """
+    generate a temporary directory
+
+    Creates a temporary directory into the system's default temporary folder.
+    This is a context-supported call and will automatically remove the directory
+    when completed.
+    """
+    dir_ = tempfile.mkdtemp()
+    try:
+        yield dir_
+    finally:
+        shutil.rmtree(dir_, ignore_errors=True)
