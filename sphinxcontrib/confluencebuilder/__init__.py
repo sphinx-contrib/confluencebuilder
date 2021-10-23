@@ -40,24 +40,6 @@ def setup(app):
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
 
-    # Images defined by data uri schemas can be resolved into generated images
-    # after a document's post-transformation stage. After a document's doctree
-    # has been resolved, re-check for any images that have been translated.
-    def assetsDocTreeResolvedHook(app, doctree, docname):
-        app.builder.assets.processDocument(doctree, docname, True)
-    def builderInitedHook(app):
-        if type(app.builder) == ConfluenceBuilder:
-            app.connect('doctree-resolved', assetsDocTreeResolvedHook)
-    app.connect('builder-inited', builderInitedHook)
-
-    # remove math-node-migration post-transform as this extension manages both
-    # future and legacy math implementations (removing this transform removes
-    # a warning notification to the user)
-    for transform in app.registry.get_post_transforms():
-        if transform.__name__ == 'MathNodeMigrator':
-            app.registry.get_post_transforms().remove(transform)
-            break
-
     # ##########################################################################
 
     """(configuration - essential)"""
@@ -204,35 +186,61 @@ def setup(app):
 
     # ##########################################################################
 
-    """JIRA directives"""
-    """Adds the custom nodes needed for JIRA directives"""
-    if not docutils.is_node_registered(jira):
-        app.add_node(jira)
-    if not docutils.is_node_registered(jira_issue):
-        app.add_node(jira_issue)
-    """Wires up the directives themselves"""
-    app.add_directive('jira', JiraDirective)
-    app.add_directive('jira_issue', JiraIssueDirective)
-
-    """Confluence directives"""
-    """Adds the custom nodes needed for Confluence directives"""
-    if not docutils.is_node_registered(confluence_metadata):
-        app.add_node(confluence_metadata)
-    """Wires up the directives themselves"""
-    app.add_directive('confluence_expand', ConfluenceExpandDirective)
-    app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
-
     # hook onto configuration initialization to finalize its state before
     # passing it to the builder (e.g. handling deprecated options)
     app.connect('config-inited', handle_config_inited)
 
-    # inject the compatible autosummary nodes if the extension is loaded
-    def inject_autosummary_notes_hook(app):
-        for ext in app.extensions.values():
-            if ext.name == 'sphinx.ext.autosummary':
-                add_autosummary_nodes(app)
-                break
-    app.connect('builder-inited', inject_autosummary_notes_hook)
+    # hook on a builder initialization event, to perform additional
+    # configuration required when a user is using a confluence builder
+    app.connect('builder-inited', confluence_builder_inited)
+
+    return {
+        'version': __version__,
+        'parallel_read_safe': True,
+        'parallel_write_safe': True,
+    }
+
+def confluence_builder_inited(app):
+    """
+    invoked when the configured sphinx builder is initialized
+
+    Handling a `builder-inited` event generated from Sphinx.
+    """
+
+    # ignore non-confluence builder types
+    if type(app.builder) != ConfluenceBuilder:
+        return
+
+    # register nodes required by confluence-specific directives
+    if not docutils.is_node_registered(confluence_metadata):
+        app.add_node(confluence_metadata)
+    if not docutils.is_node_registered(jira):
+        app.add_node(jira)
+    if not docutils.is_node_registered(jira_issue):
+        app.add_node(jira_issue)
+
+    # register directives
+    app.add_directive('confluence_expand', ConfluenceExpandDirective)
+    app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
+    app.add_directive('jira', JiraDirective)
+    app.add_directive('jira_issue', JiraIssueDirective)
+
+    # inject compatible autosummary nodes if the extension is loaded
+    for ext in app.extensions.values():
+        if ext.name == 'sphinx.ext.autosummary':
+            app.registry.add_translation_handlers(
+                autosummary.autosummary_table,
+                confluence=(
+                    autosummary.autosummary_table_visit_html,
+                    autosummary.autosummary_noop)
+            )
+            app.registry.add_translation_handlers(
+                autosummary.autosummary_toc,
+                confluence=(
+                    autosummary.autosummary_toc_visit_html,
+                    autosummary.autosummary_noop)
+            )
+            break
 
     # lazy bind sphinx.ext.imgmath to provide configuration options
     #
@@ -241,35 +249,21 @@ def setup(app):
     # outlined in the sphinx.ext.imgmath in this extension. This applies for
     # Sphinx 1.8 and higher which math support is embedded; for older versions,
     # users will need to explicitly load 'sphinx.ext.mathbase'.
-    if (imgmath is not None and
-            'sphinx.ext.imgmath' not in app.config.extensions):
-        def lazy_bind_imgmath(app):
-            if app.builder.name in ['confluence', 'singleconfluence']:
-                imgmath.setup(app)
-        app.connect('builder-inited', lazy_bind_imgmath)
+    if imgmath is not None:
+        if 'sphinx.ext.imgmath' not in app.config.extensions:
+            imgmath.setup(app)
 
-    return {
-        'version': __version__,
-        'parallel_read_safe': True,
-        'parallel_write_safe': True,
-    }
+    # remove math-node-migration post-transform as this extension manages both
+    # future and legacy math implementations (removing this transform removes
+    # a warning notification to the user)
+    for transform in app.registry.get_post_transforms():
+        if transform.__name__ == 'MathNodeMigrator':
+            app.registry.get_post_transforms().remove(transform)
+            break
 
-def add_autosummary_nodes(app):
-    """
-    register custom nodes from autosummary extension
-
-    The autosummary extensions adds custom nodes to the doctree.
-    Add the required translation handlers manually.
-    """
-    app.registry.add_translation_handlers(
-        autosummary.autosummary_table,
-        confluence=(
-            autosummary.autosummary_table_visit_html,
-            autosummary.autosummary_noop)
-    )
-    app.registry.add_translation_handlers(
-        autosummary.autosummary_toc,
-        confluence=(
-            autosummary.autosummary_toc_visit_html,
-            autosummary.autosummary_noop)
-    )
+    # Images defined by data uri schemas can be resolved into generated images
+    # after a document's post-transformation stage. After a document's doctree
+    # has been resolved, re-check for any images that have been translated.
+    def resolve_assets_hook(app, doctree, docname):
+        app.builder.assets.processDocument(doctree, docname, True)
+    app.connect('doctree-resolved', resolve_assets_hook)
