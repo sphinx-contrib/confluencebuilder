@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -22,7 +22,7 @@ class TestConfluenceMetadata(unittest.TestCase):
             ],
             configs=[self.config])
 
-    def test_confluence_metadata_directive(self):
+    def test_confluence_metadata_directive_expected(self):
         with prepare_sphinx(self.dataset, config=self.config) as app:
             app.build(filenames=self.filenames)
             builder_metadata = app.builder.metadata
@@ -38,3 +38,13 @@ class TestConfluenceMetadata(unittest.TestCase):
             self.assertEqual(len(labels), 2)
             self.assertTrue('tag-a' in labels)
             self.assertTrue('tag-c' in labels)
+
+    def test_confluence_metadata_directive_ignore(self):
+        opts = {
+            'builder': 'html',
+            'config': self.config,
+            'relax': True,
+        }
+        with prepare_sphinx(self.dataset, **opts) as app:
+            # build attempt should not throw an exception/error
+            app.build(filenames=self.filenames)

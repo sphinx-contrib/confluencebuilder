@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2019-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -54,7 +54,7 @@ class TestConfluenceJira(unittest.TestCase):
         with self.assertRaises(SphinxWarning):
             build_sphinx(dataset, config=self.config)
 
-    def test_storage_confluence_jira_directive(self):
+    def test_storage_confluence_jira_directive_expected(self):
         dataset = os.path.join(self.container, 'valid')
 
         config = dict(self.config)
@@ -121,3 +121,14 @@ class TestConfluenceJira(unittest.TestCase):
             sid = jira_macro.find('ac:parameter', {'ac:name': 'serverId'})
             self.assertIsNotNone(sid)
             self.assertEqual(sid.text, '00000000-0000-9876-0000-000000000000')
+
+    def test_storage_confluence_jira_directive_ignore(self):
+        dataset = os.path.join(self.container, 'valid')
+        opts = {
+            'builder': 'html',
+            'config': self.config,
+            'relax': True,
+        }
+
+        # build attempt should not throw an exception/error
+        build_sphinx(dataset, **opts)

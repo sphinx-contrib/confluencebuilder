@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -104,7 +104,7 @@ class JiraBaseDirective(Directive):
         # if a server key is provided, fetch values from configuration
         elif target_server:
             config = self.state.document.settings.env.config
-            if 'confluence_jira_servers' not in config:
+            if not config.confluence_jira_servers:
                 raise self.error(':server: is set but no '
                                  'confluence_jira_servers defined in config')
             jira_servers = config['confluence_jira_servers']
