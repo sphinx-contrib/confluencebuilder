@@ -501,7 +501,7 @@ class ConfluenceBuilder(Builder):
         title = ConfluenceState.title(docname)
         page_id = ConfluenceState.uploadId(docname)
 
-        if not page_id:
+        if not page_id and not conf.confluence_publish_dryrun:
             # A page identifier may not be tracked in cases where only a subset
             # of documents are published and the target page an asset will be
             # published to was not part of the request. In this case, ask the

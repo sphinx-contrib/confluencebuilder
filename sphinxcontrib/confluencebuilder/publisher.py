@@ -402,7 +402,10 @@ class ConfluencePublisher():
         HASH_KEY = 'SCB_KEY'
         uploaded_attachment_id = None
 
-        _, attachment = self.getAttachment(page_id, name)
+        if self.dryrun:
+            attachment = None
+        else:
+            _, attachment = self.getAttachment(page_id, name)
 
         # check if attachment (of same hash) is already published to this page
         comment = None
