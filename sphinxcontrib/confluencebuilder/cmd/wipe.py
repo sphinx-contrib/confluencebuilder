@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from __future__ import print_function
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.compat import input
@@ -59,6 +60,7 @@ To use this action, the argument '--danger' must be set.
         return 1
 
     # check configuration and prepare publisher
+    dryrun = False
     publisher = None
     with temp_dir() as tmp_dir:
         with docutils_namespace():
@@ -70,6 +72,7 @@ To use this action, the argument '--danger' must be set.
                 'confluence') # builder to execute
 
             aggressive_search = app.config.confluence_adv_aggressive_search
+            dryrun = app.config.confluence_publish_dryrun
             server_url = app.config.confluence_server_url
             space_key = app.config.confluence_space_key
             parent_name = app.config.confluence_parent_page
@@ -127,6 +130,8 @@ pages. Only use this action if you know what you are doing.
     else:
         logger.note('       Pages: All Pages')
     print(' Total pages:', len(legacy_pages))
+    if dryrun:
+        print('     Dry run:', 'Enabled (no pages will be removed)')
 
     if not legacy_pages:
         print('')
@@ -148,10 +153,14 @@ pages. Only use this action if you know what you are doing.
     print('')
 
     logger.info('Removing pages...', nonl=True)
+    if dryrun:
+        logger.info('')
     for page_id in legacy_pages:
         publisher.removePage(page_id)
-        logger.info('.', nonl=True)
-    logger.info(' done\n')
+        if not dryrun:
+            logger.info('.', nonl=True)
+    if not dryrun:
+        logger.info(' done\n')
 
     return 0
 
