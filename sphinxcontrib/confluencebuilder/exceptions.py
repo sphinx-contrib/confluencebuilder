@@ -24,7 +24,7 @@ class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
         )
 
 class ConfluenceBadApiError(ConfluenceError):
-    def __init__(self, details):
+    def __init__(self, code, details):
         SphinxError.__init__(self,
             """---\n"""
             """An unsupported Confluence API call has been made.\n"""
@@ -32,6 +32,7 @@ class ConfluenceBadApiError(ConfluenceError):
             """%s""" % details +
             """\n---\n"""
         )
+        self.status_code = code
 
 class ConfluenceBadSpaceError(ConfluenceError):
     def __init__(self, space_key, uname, pw_set, extras):

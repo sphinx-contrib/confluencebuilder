@@ -116,7 +116,8 @@ class Rest:
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
         if not rsp.ok:
-            raise ConfluenceBadApiError(self._format_error(rsp, key))
+            errdata = self._format_error(rsp, key)
+            raise ConfluenceBadApiError(rsp.status_code, errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -150,7 +151,7 @@ class Rest:
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
-            raise ConfluenceBadApiError(errdata)
+            raise ConfluenceBadApiError(rsp.status_code, errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -184,7 +185,7 @@ class Rest:
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
-            raise ConfluenceBadApiError(errdata)
+            raise ConfluenceBadApiError(rsp.status_code, errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 
@@ -214,7 +215,8 @@ class Rest:
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
         if not rsp.ok:
-            raise ConfluenceBadApiError(self._format_error(rsp, key))
+            errdata = self._format_error(rsp, key)
+            raise ConfluenceBadApiError(rsp.status_code, errdata)
 
     def close(self):
         self.session.close()

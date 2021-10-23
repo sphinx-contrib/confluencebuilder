@@ -9,6 +9,7 @@ See also:
 """
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
@@ -47,10 +48,17 @@ class ConfluencePublisher():
     def connect(self):
         self.rest_client = Rest(self.config)
 
-        rsp = self.rest_client.get('space', {
-            'spaceKey': self.space_key,
-            'limit': 1
-        })
+        try:
+            rsp = self.rest_client.get('space', {
+                'spaceKey': self.space_key,
+                'limit': 1
+            })
+        except ConfluenceBadApiError as e:
+            if e.status_code != 404:
+                raise
+
+            server_url = self.config.confluence_server_url
+            raise ConfluenceBadServerUrlError(server_url, e)
 
         # handle if the provided space key was not found
         if rsp['size'] == 0:
@@ -549,7 +557,7 @@ class ConfluencePublisher():
                                 rsp, indent=2))
                         except TypeError:
                             api_err += 'DATA: <not-or-invalid-json>'
-                        raise ConfluenceBadApiError(api_err)
+                        raise ConfluenceBadApiError(-1, api_err)
 
                     uploaded_page_id = rsp['id']
                 except ConfluenceBadApiError as ex:
