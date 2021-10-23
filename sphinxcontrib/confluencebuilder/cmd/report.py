@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from __future__ import print_function
 from collections import OrderedDict
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
