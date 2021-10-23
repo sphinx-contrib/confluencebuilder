@@ -15,7 +15,7 @@ the page name does exist, it will be updated).
 A user must be cautious when mixing a space with manually prepared content and
 published content from this extension. Consider the following use case.
 
-A space MyAwesomeSpace already exists with the following content:
+A space ``MYAWESOMESPACE`` already exists with the following content:
 
 * MyHome
 * About

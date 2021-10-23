@@ -71,13 +71,16 @@ Essential configuration
 
     .. note::
 
-        The space name is **case-sensitive**.
+        - Use the key value for the space, not the name of the space. For
+          example, ``MYAWESOMESPACE`` instead of ``My Awesome Space``.
+        - The space key is **case-sensitive** (typically uppercase).
 
-    Key of the space in Confluence to be used to publish generated documents to.
+    `Key of the space`_ in Confluence to be used to publish generated documents
+    to.
 
     .. code-block:: python
 
-        confluence_space_name = 'MyAwesomeSpace'
+        confluence_space_name = 'MYAWESOMESPACE'
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:
@@ -1206,6 +1209,7 @@ Deprecated options
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
+.. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
 .. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
