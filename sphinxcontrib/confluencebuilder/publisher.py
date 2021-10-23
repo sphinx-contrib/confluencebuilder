@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 
 See also:
@@ -27,7 +27,7 @@ class ConfluencePublisher():
     def init(self, config):
         self.config = config
         self.append_labels = config.confluence_append_labels
-        self.can_labels = 'labels' not in config.confluence_adv_restricted
+        self.can_labels = True
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
@@ -40,6 +40,9 @@ class ConfluencePublisher():
         # append labels by default
         if self.append_labels is None:
             self.append_labels = True
+
+        if config.confluence_adv_restricted is not None:
+            self.can_labels = 'labels' not in config.confluence_adv_restricted
 
     def connect(self):
         self.rest_client = Rest(self.config)

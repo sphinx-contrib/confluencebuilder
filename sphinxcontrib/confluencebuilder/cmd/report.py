@@ -12,6 +12,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
@@ -21,6 +22,7 @@ from xml.etree import ElementTree
 import os
 import platform
 import sys
+import traceback
 
 try:
     from urllib.parse import urlparse
@@ -68,6 +70,7 @@ def report_main(args_parser):
         logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
 
     rv = 0
+    offline = args.offline
     work_dir = args.work_dir if args.work_dir else os.getcwd()
 
     # setup sphinx engine to extract configuration
@@ -88,8 +91,10 @@ def report_main(args_parser):
                     ConfluenceReportBuilder.name) # builder to execute
 
                 if app.config.confluence_publish:
-                    process_ask_configs(app.config)
-
+                    try:
+                        process_ask_configs(app.config)
+                    except ConfluenceConfigurationError:
+                        offline = True
                 # extract configuration information
                 for k, v in app.config.values.items():
                     raw = getattr(app.config, k)
@@ -113,8 +118,9 @@ def report_main(args_parser):
                 # initialize the publisher (if needed later)
                 publisher.init(app.config)
 
-    except Exception as ex:
-        logger.error(ex)
+    except Exception:
+        sys.stdout.flush()
+        logger.error(traceback.format_exc())
         if os.path.isfile(os.path.join(work_dir, 'conf.py')):
             configuration_load_issue = 'unable to load configuration'
         else:
@@ -124,18 +130,21 @@ def report_main(args_parser):
     # attempt to fetch confluence instance version
     confluence_publish = config.get('confluence_publish')
     confluence_server_url = config.get('confluence_server_url')
-    if not args.offline and confluence_publish and confluence_server_url:
+    if not offline and confluence_publish and confluence_server_url:
         base_url = ConfluenceUtil.normalizeBaseUrl(confluence_server_url)
         info = ''
 
         session = None
         try:
             print('connecting to confluence instance...')
+            sys.stdout.flush()
+
             publisher.connect()
             info += ' connected: yes\n'
             session = publisher.rest_client.session
-        except Exception as ex:
-            logger.error(ex)
+        except Exception:
+            sys.stdout.flush()
+            logger.error(traceback.format_exc())
             info += ' connected: no\n'
             rv = 1
 
@@ -171,8 +180,9 @@ def report_main(args_parser):
                         rsp.status_code))
                     info += '   fetched: error ({})\n'.format(rsp.status_code)
                     rv = 1
-            except Exception as ex:
-                logger.error(ex)
+            except Exception:
+                sys.stdout.flush()
+                logger.error(traceback.format_exc())
                 info += 'failure to determine confluence data\n'
                 rv = 1
 
@@ -223,10 +233,12 @@ def report_main(args_parser):
         # remove space name, but track casing
         if 'confluence_space_name' in config:
             value = config['confluence_space_name']
-            if value.isupper():
+            if value.startswith('~'):
+                value = '(set; user)'
+            elif value.isupper():
                 value = '(set; upper)'
             elif value.islower():
-                value = '(set; upper)'
+                value = '(set; lower)'
             else:
                 value = '(set; mixed)'
             config['confluence_space_name'] = value
