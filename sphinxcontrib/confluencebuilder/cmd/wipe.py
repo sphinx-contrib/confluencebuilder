@@ -10,7 +10,7 @@ from sphinxcontrib.confluencebuilder.compat import input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
-from tempfile import TemporaryDirectory
+from sphinxcontrib.confluencebuilder.util import temp_dir
 import os
 import sys
 
@@ -60,7 +60,7 @@ To use this action, the argument '--danger' must be set.
 
     # check configuration and prepare publisher
     publisher = None
-    with TemporaryDirectory() as tmp_dir:
+    with temp_dir() as tmp_dir:
         with docutils_namespace():
             app = Sphinx(
                 work_dir,     # document sources

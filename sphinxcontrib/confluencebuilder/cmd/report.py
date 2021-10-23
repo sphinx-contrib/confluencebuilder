@@ -15,7 +15,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-from tempfile import TemporaryDirectory
+from sphinxcontrib.confluencebuilder.util import temp_dir
 from xml.etree import ElementTree
 import os
 import platform
@@ -76,7 +76,7 @@ def report_main(args_parser):
     publisher = ConfluencePublisher()
 
     try:
-        with TemporaryDirectory() as tmp_dir:
+        with temp_dir() as tmp_dir:
             with docutils_namespace():
                 print('fetching configuration information...')
                 app = Sphinx(
