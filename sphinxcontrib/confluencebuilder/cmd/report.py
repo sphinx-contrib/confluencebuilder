@@ -233,10 +233,12 @@ def report_main(args_parser):
         # remove space name, but track casing
         if 'confluence_space_name' in config:
             value = config['confluence_space_name']
-            if value.isupper():
+            if value.startswith('~'):
+                value = '(set; user)'
+            elif value.isupper():
                 value = '(set; upper)'
             elif value.islower():
-                value = '(set; upper)'
+                value = '(set; lower)'
             else:
                 value = '(set; mixed)'
             config['confluence_space_name'] = value
