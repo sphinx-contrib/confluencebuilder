@@ -12,6 +12,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
@@ -68,6 +69,7 @@ def report_main(args_parser):
         logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
 
     rv = 0
+    offline = args.offline
     work_dir = args.work_dir if args.work_dir else os.getcwd()
 
     # setup sphinx engine to extract configuration
@@ -88,8 +90,10 @@ def report_main(args_parser):
                     ConfluenceReportBuilder.name) # builder to execute
 
                 if app.config.confluence_publish:
-                    process_ask_configs(app.config)
-
+                    try:
+                        process_ask_configs(app.config)
+                    except ConfluenceConfigurationError:
+                        offline = True
                 # extract configuration information
                 for k, v in app.config.values.items():
                     raw = getattr(app.config, k)
@@ -124,7 +128,7 @@ def report_main(args_parser):
     # attempt to fetch confluence instance version
     confluence_publish = config.get('confluence_publish')
     confluence_server_url = config.get('confluence_server_url')
-    if not args.offline and confluence_publish and confluence_server_url:
+    if not offline and confluence_publish and confluence_server_url:
         base_url = ConfluenceUtil.normalizeBaseUrl(confluence_server_url)
         info = ''
 
