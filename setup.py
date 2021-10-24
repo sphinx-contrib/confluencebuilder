@@ -30,10 +30,9 @@ class ExtendedClean(clean):
                 dir_util.remove_tree(extra, dry_run=self.dry_run)
 
 requires = [
-    'future>=0.16.0',
     'requests>=2.14.0',
     'sphinx>=1.8',
-    ]
+]
 
 setup(
     name='sphinxcontrib-confluencebuilder',
