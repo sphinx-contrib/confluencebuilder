@@ -1,3 +1,13 @@
+development
+===========
+
+* ``confluence_space_name`` renamed to ``confluence_space_key``
+* fixed issue where publishing could fail without a proxy set for older requests
+* fixed issue where report/wipe commands would fail in python 2.7
+* improve dry-run reflecting new attachments to be published
+* prevent issues with extension directives causing errors with other builders
+* support the consideration of ``confluence_parent_page`` for wipe requests
+
 1.6.0 (2021-09-26)
 ==================
 

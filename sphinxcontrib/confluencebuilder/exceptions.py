@@ -12,7 +12,7 @@ class ConfluenceError(SphinxError):
 
 class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
-        SphinxError.__init__(self,
+        super(ConfluenceAuthenticationFailedUrlError, self).__init__(
             """---\n"""
             """Unable to authenticate with the Confluence server.\n"""
             """\n"""
@@ -25,7 +25,7 @@ class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
 
 class ConfluenceBadApiError(ConfluenceError):
     def __init__(self, code, details):
-        SphinxError.__init__(self,
+        super(ConfluenceBadApiError, self).__init__(
             """---\n"""
             """An unsupported Confluence API call has been made.\n"""
             """\n"""
@@ -38,7 +38,7 @@ class ConfluenceBadSpaceError(ConfluenceError):
     def __init__(self, space_key, uname, pw_set, extras):
         uname_value = uname if uname else '(empty)'
         pw_value = '<set>' if pw_set else '(empty)'
-        SphinxError.__init__(self,
+        super(ConfluenceBadSpaceError, self).__init__(
             """---\n"""
             """The configured Confluence space key does not appear to be """
             """valid:\n\n"""
@@ -56,7 +56,7 @@ class ConfluenceBadSpaceError(ConfluenceError):
 
 class ConfluenceBadServerUrlError(ConfluenceError):
     def __init__(self, server_url, ex):
-        SphinxError.__init__(self,
+        super(ConfluenceBadServerUrlError, self).__init__(
             """---\n"""
             """An issue has been detected when trying to communicate with """
             """Confluence server.\n"""
@@ -71,7 +71,7 @@ class ConfluenceBadServerUrlError(ConfluenceError):
 
 class ConfluenceCertificateError(ConfluenceError):
     def __init__(self, ex):
-        SphinxError.__init__(self,
+        super(ConfluenceCertificateError, self).__init__(
             """---\n"""
             """An SSL issue has been detected when trying to load the """
             """the certificates provided.\n"""
@@ -84,7 +84,7 @@ class ConfluenceConfigurationError(ConfluenceError, ConfigError):
 
 class ConfluenceMissingPageIdError(ConfluenceError):
     def __init__(self, space_key, page_id):
-        SphinxError.__init__(self,
+        super(ConfluenceMissingPageIdError, self).__init__(
             """---\n"""
             """A request to publish to a specific Confluence page identifier """
             """has failed as the identifier could not be found.\n\n"""
@@ -96,7 +96,7 @@ class ConfluenceMissingPageIdError(ConfluenceError):
 
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
-        SphinxError.__init__(self,
+        super(ConfluencePermissionError, self).__init__(
             """---\n"""
             """Do not have permission for this action on the Confluence """
             """server.\n\n"""
@@ -106,7 +106,7 @@ class ConfluencePermissionError(ConfluenceError):
 
 class ConfluenceProxyPermissionError(ConfluenceError):
     def __init__(self):
-        SphinxError.__init__(self,
+        super(ConfluenceProxyPermissionError, self).__init__(
             """---\n"""
             """Unable to authenticate with the proxy server.\n"""
             """\n"""
@@ -116,7 +116,7 @@ class ConfluenceProxyPermissionError(ConfluenceError):
 
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
-        SphinxError.__init__(self,
+        super(ConfluenceSeraphAuthenticationFailedUrlError, self).__init__(
             """---\n"""
             """Unable to authenticate with the Confluence server.\n"""
             """\n"""
@@ -130,7 +130,7 @@ class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
 
 class ConfluenceSslError(ConfluenceError):
     def __init__(self, server_url, ex):
-        SphinxError.__init__(self,
+        super(ConfluenceSslError, self).__init__(
             """---\n"""
             """An SSL issue has been detected when trying to communicate """
             """with Confluence server.\n"""
@@ -145,7 +145,7 @@ class ConfluenceSslError(ConfluenceError):
 
 class ConfluenceTimeoutError(ConfluenceError):
     def __init__(self, server_url):
-        SphinxError.__init__(self,
+        super(ConfluenceTimeoutError, self).__init__(
             """---\n"""
             """A request to communicate with the Confluence server has """
             """timed out.\n"""
@@ -158,7 +158,7 @@ class ConfluenceTimeoutError(ConfluenceError):
 
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, ex):
-        SphinxError.__init__(self,
+        super(ConfluenceUnreconciledPageError, self).__init__(
             """---\n"""
             """Unable to update unreconciled page: %s """ % page_name +
             """(id: %s)\n""" % str(page_id) +

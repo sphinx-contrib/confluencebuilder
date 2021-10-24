@@ -762,14 +762,14 @@ class ConfluenceBuilder(Builder):
         elif citation_domain: # Sphinx >=2.1
             citations = citation_domain.citations
         if citations:
-            for key, (fn, _l, lineno) in list(citations.items()):
+            for key, (fn, _l, _) in list(citations.items()):
                 if fn == olddocname:
                     data = citations[key]
                     citations[key] = newdocname, data[1], data[2]
 
         if 'citation_refs' in std_domain.data: # Sphinx <2.0
             citation_refs = std_domain.data['citation_refs']
-            for key, docnames in list(citation_refs.items()):
+            for key, _ in list(citation_refs.items()):
                 if fn == olddocname:
                     data = citation_refs[key]
                     citation_refs[key] = newdocname

@@ -13,9 +13,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import os
 
-"""
-default content type to use if a type cannot be detected for an asset
-"""
+# default content type to use if a type cannot be detected for an asset
 DEFAULT_CONTENT_TYPE = 'application/octet-stream'
 
 class ConfluenceAsset:

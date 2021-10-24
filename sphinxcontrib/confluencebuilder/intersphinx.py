@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -13,9 +13,7 @@ import re
 import requests
 import zlib
 
-"""
-inventory filename to hold intersphinx information
-"""
+# inventory filename to hold intersphinx information
 INVENTORY_FILENAME = 'objects.inv'
 
 def build_intersphinx(builder):

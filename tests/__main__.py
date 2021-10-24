@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -11,9 +11,7 @@ import os
 import sys
 import unittest
 
-"""
-default verbosity for unit tests
-"""
+# default verbosity for unit tests
 DEFAULT_VERBOSITY = 2
 
 def main():
