@@ -12,11 +12,11 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 try:
     input = raw_input
 except NameError:
-    input = input
+    input = input  # pylint: disable=W0127
 
 # load sphinx's progress_message or use a compatible instance
 try:
-    from sphinx.util import progress_message
+    from sphinx.util import progress_message  # pylint: disable=W0611
 except ImportError:
     class progress_message:
         def __init__(self, msg):
