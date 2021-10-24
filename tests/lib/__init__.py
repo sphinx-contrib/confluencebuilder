@@ -133,7 +133,7 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
     if not container:
         frame = inspect.currentframe()
-        for i in range(f_back_count):
+        for _ in range(f_back_count):
             frame = frame.f_back
         container = frame.f_code.co_name
     lib_dir = os.path.dirname(os.path.realpath(__file__))
