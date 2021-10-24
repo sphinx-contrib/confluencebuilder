@@ -13,9 +13,7 @@ import re
 import requests
 import zlib
 
-"""
-inventory filename to hold intersphinx information
-"""
+# inventory filename to hold intersphinx information
 INVENTORY_FILENAME = 'objects.inv'
 
 def build_intersphinx(builder):

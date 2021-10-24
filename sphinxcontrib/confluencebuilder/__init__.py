@@ -42,141 +42,141 @@ def setup(app):
 
     # ##########################################################################
 
-    """(configuration - essential)"""
-    """Enablement of publishing."""
+    # (configuration - essential)
+    # Enablement of publishing.
     app.add_config_value('confluence_publish', None, False)
-    """API key/password to login to Confluence API with."""
+    # API key/password to login to Confluence API with.
     app.add_config_value('confluence_server_pass', None, False)
-    """URL of the Confluence instance to publish to."""
+    # URL of the Confluence instance to publish to.
     app.add_config_value('confluence_server_url', None, False)
-    """Username to login to Confluence API with."""
+    # Username to login to Confluence API with.
     app.add_config_value('confluence_server_user', None, False)
-    """Confluence Space to publish to."""
+    # Confluence Space to publish to.
     app.add_config_value('confluence_space_key', None, False)
 
-    """(configuration - generic)"""
-    """Add page and section numbers if doctree has :numbered: option"""
+    # (configuration - generic)
+    # Add page and section numbers if doctree has :numbered: option
     app.add_config_value('confluence_add_secnumbers', None, False)
-    """Default alignment for tables, figures, etc."""
+    # Default alignment for tables, figures, etc.
     app.add_config_value('confluence_default_alignment', None, 'env')
-    """File to get page header information from."""
+    # File to get page header information from.
     app.add_config_value('confluence_header_file', None, False)
-    """File to get page footer information from."""
+    # File to get page footer information from.
     app.add_config_value('confluence_footer_file', None, False)
-    """Enablement of the maximum document depth (before inlining)."""
+    # Enablement of the maximum document depth (before inlining).
     app.add_config_value('confluence_max_doc_depth', None, False)
-    """Enablement of publishing pages into a hierarchy from a root toctree."""
+    # Enablement of publishing pages into a hierarchy from a root toctree.
     app.add_config_value('confluence_page_hierarchy', None, False)
-    """Show previous/next buttons (bottom, top, both, None)."""
+    # Show previous/next buttons (bottom, top, both, None).
     app.add_config_value('confluence_prev_next_buttons_location', None, False)
-    """Suffix to put after section numbers, before section name"""
+    # Suffix to put after section numbers, before section name
     app.add_config_value('confluence_secnumber_suffix', None, False)
 
-    """(configuration - publishing)"""
-    """Request for publish password to come from interactive session."""
+    # (configuration - publishing)
+    # Request for publish password to come from interactive session.
     app.add_config_value('confluence_ask_password', None, False)
-    """Request for publish username to come from interactive session."""
+    # Request for publish username to come from interactive session.
     app.add_config_value('confluence_ask_user', None, False)
-    """Explicitly prevent auto-generation of titles for titleless documents."""
+    # Explicitly prevent auto-generation of titles for titleless documents.
     app.add_config_value('confluence_disable_autogen_title', None, False)
-    """Explicitly prevent page notifications on update."""
+    # Explicitly prevent page notifications on update.
     app.add_config_value('confluence_disable_notifications', None, False)
-    """Define a series of labels to apply to all published pages."""
+    # Define a series of labels to apply to all published pages.
     app.add_config_value('confluence_global_labels', None, False)
-    """Enablement of configuring root as space's homepage."""
+    # Enablement of configuring root as space's homepage.
     app.add_config_value('confluence_root_homepage', None, False)
-    """Parent page's name to publish documents under."""
+    # Parent page's name to publish documents under.
     app.add_config_value('confluence_parent_page', None, False)
-    """Perform a dry run of publishing to inspect what publishing will do."""
+    # Perform a dry run of publishing to inspect what publishing will do.
     app.add_config_value('confluence_publish_dryrun', None, '')
-    """Publish only new content (no page updates, etc.)."""
+    # Publish only new content (no page updates, etc.).
     app.add_config_value('confluence_publish_onlynew', None, '')
-    """Postfix to apply to title of published pages."""
+    # Postfix to apply to title of published pages.
     app.add_config_value('confluence_publish_postfix', None, False)
-    """Prefix to apply to published pages."""
+    # Prefix to apply to published pages.
     app.add_config_value('confluence_publish_prefix', None, False)
-    """Root page's identifier to publish documents into."""
+    # Root page's identifier to publish documents into.
     app.add_config_value('confluence_publish_root', None, '')
-    """Enablement of purging legacy child pages from a parent page."""
+    # Enablement of purging legacy child pages from a parent page.
     app.add_config_value('confluence_purge', None, False)
-    """Enablement of purging legacy child pages from a root page."""
+    # Enablement of purging legacy child pages from a root page.
     app.add_config_value('confluence_purge_from_root', None, False)
-    """docname-2-title dictionary for title overrides."""
+    # docname-2-title dictionary for title overrides.
     app.add_config_value('confluence_title_overrides', None, 'env')
-    """Timeout for network-related calls (publishing)."""
+    # Timeout for network-related calls (publishing).
     app.add_config_value('confluence_timeout', None, False)
-    """Whether or not new content should be watched."""
+    # Whether or not new content should be watched.
     app.add_config_value('confluence_watch', None, False)
 
-    """(configuration - advanced publishing)"""
-    """Register additional mime types to be selected for image candidates."""
+    # (configuration - advanced publishing)
+    # Register additional mime types to be selected for image candidates.
     app.add_config_value('confluence_additional_mime_types', None, False)
-    """Whether or not labels will be appended instead of overwriting them."""
+    # Whether or not labels will be appended instead of overwriting them.
     app.add_config_value('confluence_append_labels', None, False)
-    """Forcing all assets to be standalone."""
+    # Forcing all assets to be standalone.
     app.add_config_value('confluence_asset_force_standalone', None, False)
-    """Tri-state asset handling (auto, force push or disable)."""
+    # Tri-state asset handling (auto, force push or disable).
     app.add_config_value('confluence_asset_override', None, False)
-    """File/path to Certificate Authority"""
+    # File/path to Certificate Authority
     app.add_config_value('confluence_ca_cert', None, False)
-    """Path to client certificate to use for publishing"""
+    # Path to client certificate to use for publishing
     app.add_config_value('confluence_client_cert', None, False)
-    """Password for client certificate to use for publishing"""
+    # Password for client certificate to use for publishing
     app.add_config_value('confluence_client_cert_pass', None, False)
-    """Disable SSL validation with Confluence server."""
+    # Disable SSL validation with Confluence server.
     app.add_config_value('confluence_disable_ssl_validation', None, False)
-    """Ignore adding a titlefix on the index document."""
+    # Ignore adding a titlefix on the index document.
     app.add_config_value('confluence_ignore_titlefix_on_index', None, False)
-    """Parent page's identifier to publish documents under."""
+    # Parent page's identifier to publish documents under.
     app.add_config_value('confluence_parent_page_id_check', None, False)
-    """Proxy server needed to communicate with Confluence server."""
+    # Proxy server needed to communicate with Confluence server.
     app.add_config_value('confluence_proxy', None, False)
-    """Subset of documents which are allowed to be published."""
+    # Subset of documents which are allowed to be published.
     app.add_config_value('confluence_publish_allowlist', None, False)
-    """Subset of documents which are denied to be published."""
+    # Subset of documents which are denied to be published.
     app.add_config_value('confluence_publish_denylist', None, False)
-    """Header(s) to use for Confluence REST interaction."""
+    # Header(s) to use for Confluence REST interaction.
     app.add_config_value('confluence_publish_headers', None, False)
-    """Authentication passthrough for Confluence REST interaction."""
+    # Authentication passthrough for Confluence REST interaction.
     app.add_config_value('confluence_server_auth', None, False)
-    """Cookie(s) to use for Confluence REST interaction."""
+    # Cookie(s) to use for Confluence REST interaction.
     app.add_config_value('confluence_server_cookies', None, False)
 
-    """(configuration - advanced processing)"""
-    """Filename suffix for generated files."""
+    # (configuration - advanced processing)
+    # Filename suffix for generated files.
     app.add_config_value('confluence_file_suffix', None, False)
-    """Translation of docname to a filename."""
+    # Translation of docname to a filename.
     app.add_config_value('confluence_file_transform', None, False)
-    """Configuration for named JIRA Servers"""
+    # Configuration for named JIRA Servers
     app.add_config_value('confluence_jira_servers', None, True)
-    """Translation of a raw language to code block macro language."""
+    # Translation of a raw language to code block macro language.
     app.add_config_value('confluence_lang_transform', None, False)
-    """Link suffix for generated files."""
+    # Link suffix for generated files.
     app.add_config_value('confluence_link_suffix', None, False)
-    """Translation of docname to a (partial) URI."""
+    # Translation of docname to a (partial) URI.
     app.add_config_value('confluence_link_transform', None, False)
-    """Remove a detected title from generated documents."""
+    # Remove a detected title from generated documents.
     app.add_config_value('confluence_remove_title', None, False)
 
-    """(configuration - undocumented)"""
-    """Enablement for aggressive descendents search (for purge)."""
+    # (configuration - undocumented)
+    # Enablement for aggressive descendents search (for purge).
     app.add_config_value('confluence_adv_aggressive_search', None, False)
-    """Enablement of the children macro for hierarchy mode."""
+    # Enablement of the children macro for hierarchy mode.
     app.add_config_value('confluence_adv_hierarchy_child_macro', None, False)
-    """List of node types to ignore if no translator support exists."""
+    # List of node types to ignore if no translator support exists.
     app.add_config_value('confluence_adv_ignore_nodes', None, False)
-    """Unknown node handler dictionary for advanced integrations."""
+    # Unknown node handler dictionary for advanced integrations.
     app.add_config_value('confluence_adv_node_handler', None, '')
-    """Enablement of permitting raw html blocks to be used in storage format."""
+    # Enablement of permitting raw html blocks to be used in storage format.
     app.add_config_value('confluence_adv_permit_raw_html', None, False)
-    """List of optional features/macros/etc. restricted for use."""
+    # List of optional features/macros/etc. restricted for use.
     app.add_config_value('confluence_adv_restricted', None, False)
-    """Enablement of tracing processed data."""
+    # Enablement of tracing processed data.
     app.add_config_value('confluence_adv_trace_data', None, False)
-    """Do not cap sections to a maximum of six (6) levels."""
+    # Do not cap sections to a maximum of six (6) levels.
     app.add_config_value('confluence_adv_writer_no_section_cap', None, False)
 
-    """(configuration - deprecated)"""
+    # (configuration - deprecated)
     # replaced by confluence_root_homepage
     app.add_config_value('confluence_master_homepage', None, False)
     # replaced by confluence_publish_allowlist

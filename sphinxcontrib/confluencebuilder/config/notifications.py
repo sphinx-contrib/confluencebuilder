@@ -7,9 +7,7 @@
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 import mimetypes
 
-"""
-dictionary of deprecated configuration entries and associated message
-"""
+# dictionary of deprecated configuration entries and associated message
 DEPRECATED_CONFIGS = {
     'confluence_adv_hierarchy_child_macro':
         'to be removed in a future version',

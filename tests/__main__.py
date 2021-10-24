@@ -11,9 +11,7 @@ import os
 import sys
 import unittest
 
-"""
-default verbosity for unit tests
-"""
+# default verbosity for unit tests
 DEFAULT_VERBOSITY = 2
 
 def main():

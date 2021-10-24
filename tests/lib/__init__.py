@@ -19,9 +19,7 @@ import os
 import shutil
 import sys
 
-"""
-full extension name
-"""
+# full extension name
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
 
 def enable_sphinx_info(verbosity=None):
