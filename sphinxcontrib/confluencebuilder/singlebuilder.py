@@ -17,9 +17,6 @@ from sphinxcontrib.confluencebuilder.state import ConfluenceState
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
 
-    def __init__(self, app):
-        super(SingleConfluenceBuilder, self).__init__(app)
-
     def assemble_doctree(self):
         root_doc = self.config.root_doc
         tree = self.env.get_doctree(root_doc)
