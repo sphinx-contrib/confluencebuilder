@@ -287,7 +287,7 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
                 refdoc=mock_docname,
                 refexplicit=True,
                 reftarget=node['refuri'],
-                )
+            )
             node.replace_self(new_node)
 
     if sphinx_toolbox_collapse:
