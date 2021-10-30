@@ -83,7 +83,9 @@ and publishing:
 
 .. code-block:: python
 
-   extensions = ['sphinxcontrib.confluencebuilder']
+   extensions = [
+       'sphinxcontrib.confluencebuilder',
+   ]
    confluence_publish = True
    confluence_space_name = 'TEST'
    confluence_parent_page = 'Documentation'
