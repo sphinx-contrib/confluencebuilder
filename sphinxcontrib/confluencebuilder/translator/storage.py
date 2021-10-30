@@ -1789,6 +1789,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     visit_jira = _visit_jira_node
     visit_jira_issue = _visit_jira_node
 
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-toolbox
+    # ---------------------------------------------------
+
+    def visit_ItalicAbbreviationNode(self, node):
+        self.body.append(self._start_tag(node, 'i'))
+        self.context.append(self._end_tag(node))
+        self.visit_abbreviation(node)
+
+    def depart_ItalicAbbreviationNode(self, node):
+        self.depart_abbreviation(node)
+        self.body.append(self.context.pop()) # i
+
     # -------------
     # miscellaneous
     # -------------
