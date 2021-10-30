@@ -20,8 +20,8 @@ Atlassian Confluence Builder for Sphinx
    :target: https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder/
    :alt: PyPI download month
 
-Sphinx_ extension to build Confluence storage format files and optionally
-publish them to a Confluence instance.
+Sphinx_ extension to build Confluence® compatible markup format files and
+optionally publish them to a Confluence instance.
 
 Requirements
 ============
@@ -83,7 +83,9 @@ and publishing:
 
 .. code-block:: python
 
-   extensions = ['sphinxcontrib.confluencebuilder']
+   extensions = [
+       'sphinxcontrib.confluencebuilder',
+   ]
    confluence_publish = True
    confluence_space_name = 'TEST'
    confluence_parent_page = 'Documentation'
@@ -117,6 +119,13 @@ validation/testing documents found here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
  | https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/STABLE
+
+----
+
+| Atlassian Confluence Builder for Sphinx project is unaffiliated with
+  Atlassian.
+| Atlassian is a registered trademark of Atlassian Pty Ltd.
+| Confluence is a registered trademark of Atlassian Pty Ltd.
 
 .. _Confluence: https://www.atlassian.com/software/confluence
 .. _Python: https://www.python.org/
