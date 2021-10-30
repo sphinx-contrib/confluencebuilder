@@ -1822,11 +1822,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append('<br />')
 
     def visit_line_block(self, node):
-        self.body.append(self._start_tag(node, 'p'))
+        style = 'margin-left: {}px;'.format(INDENT)
+
+        # add top padding for the first block, to ensure some separation from a
+        # previous sibling element
+        if not isinstance(node.parent, nodes.line_block):
+            style += 'padding-top: {}px;'.format(FCMMO)
+
+        self.body.append(self._start_tag(node, 'div', **{'style': style}))
         self.context.append(self._end_tag(node))
 
     def depart_line_block(self, node):
-        self.body.append(self.context.pop()) # p
+        self.body.append(self.context.pop()) # div
 
     def visit_raw(self, node):
         # providing an advanced option to allow raw html injection in the output
