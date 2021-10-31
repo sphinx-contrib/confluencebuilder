@@ -461,8 +461,8 @@ class ConfluencePublisher():
             raw_data = data
             XML_DEC = b'<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
             if mimetype == 'image/svg+xml':
-                if raw_data.lstrip().startswith(b'<?xml'):
-                    raw_data = XML_DEC + raw_data
+                if not raw_data.lstrip().startswith(b'<?xml'):
+                    raw_data = XML_DEC + b'\n' + raw_data
 
             data = {
                 'comment': '{}:{}'.format(HASH_KEY, hash),
