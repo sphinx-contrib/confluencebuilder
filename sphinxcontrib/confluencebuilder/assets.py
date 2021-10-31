@@ -112,7 +112,7 @@ class ConfluenceAssetManager:
             docname (optional): force the document name for this asset
 
         Returns:
-            the key and document name
+            the key, document name and path
         """
         key = None
 
@@ -153,8 +153,9 @@ class ConfluenceAssetManager:
 
         if not key:
             docname = None
+            path = None
 
-        return key, docname
+        return key, docname, path
 
     def process(self, docnames):
         """

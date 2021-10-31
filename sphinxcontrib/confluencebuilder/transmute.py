@@ -60,6 +60,13 @@ try:
 except ImportError:
     sphinx_toolbox_github_repos_and_users = False
 
+# load sphinx-gallary extension if available
+try:
+    from sphinx_gallery.directives import imgsgnode as sphinx_gallery_imgsgnode
+    sphinx_gallery = True
+except ImportError:
+    sphinx_gallery = False
+
 # load sphinxcontrib-mermaid extension if available
 try:
     from sphinxcontrib.mermaid import MermaidError
@@ -100,6 +107,8 @@ def doctree_transmute(builder, doctree):
     # --------------------------
     # sphinx external extensions
     # --------------------------
+
+    replace_sphinx_gallery_nodes(builder, doctree)
 
     replace_sphinx_toolbox_nodes(builder, doctree)
 
@@ -318,6 +327,28 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
         for node in doctree.traverse(sphinx_toolbox_GitHubObjectLinkNode):
             new_node = nodes.reference(node.name, node.name, refuri=node.url)
             node.replace_self(new_node)
+
+
+def replace_sphinx_gallery_nodes(builder, doctree):
+    """
+    replace mermaid nodes with images
+
+    mermaid nodes are pre-processed and replaced with respective images in the
+    processed documentation set.
+
+    Args:
+        builder: the builder
+        doctree: the doctree to replace blocks on
+    """
+
+    if not sphinx_gallery:
+        return
+
+    for node in doctree.traverse(sphinx_gallery_imgsgnode):
+        new_node = nodes.image(candidates={'?'}, **node.attributes)
+        if 'align' in node:
+            new_node['align'] = node['align']
+        node.replace_self(new_node)
 
 
 def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
