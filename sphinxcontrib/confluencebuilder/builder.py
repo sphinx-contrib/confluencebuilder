@@ -528,25 +528,37 @@ class ConfluenceBuilder(Builder):
 
             if self.legacy_pages:
                 n = len(self.legacy_pages)
-                self.info('removing legacy pages... (total: {}) '.format(n),
+                self.info('removing legacy pages (total: {}) ...'.format(n),
                     nonl=(not self._verbose))
+
                 for legacy_page_id in self.legacy_pages:
                     self.publisher.removePage(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
-                self.info('done\n')
+
+                    if not self._verbose:
+                        self.info('.', nonl=True)
+
+                if not self._verbose:
+                    self.info(' done\n')
 
             n = 0
             for legacy_asset_info in self.legacy_assets.values():
                 n += len(legacy_asset_info.keys())
             if n > 0:
-                self.info('removing legacy assets... (total: {}) '.format(n),
+                self.info('removing legacy assets (total: {}) ...'.format(n),
                     nonl=(not self._verbose))
+
                 for legacy_asset_info in self.legacy_assets.values():
                     for id in legacy_asset_info.keys():
                         self.publisher.removeAttachment(id)
-                self.info('done\n')
+
+                    if not self._verbose:
+                        self.info('.', nonl=True)
+
+                if not self._verbose:
+                    self.info(' done\n')
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
