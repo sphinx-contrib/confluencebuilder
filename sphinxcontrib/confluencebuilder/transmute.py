@@ -60,7 +60,7 @@ try:
 except ImportError:
     sphinx_toolbox_github_repos_and_users = False
 
-# load sphinx-gallary extension if available
+# load sphinx-gallery extension if available
 try:
     from sphinx_gallery.directives import imgsgnode as sphinx_gallery_imgsgnode
     sphinx_gallery = True
@@ -331,10 +331,10 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
 
 def replace_sphinx_gallery_nodes(builder, doctree):
     """
-    replace mermaid nodes with images
+    replace sphinx-gallery nodes with images
 
-    mermaid nodes are pre-processed and replaced with respective images in the
-    processed documentation set.
+    sphinx-gallery nodes are pre-processed and replaced with respective images
+    in the processed documentation set.
 
     Args:
         builder: the builder
