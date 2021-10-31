@@ -1318,6 +1318,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         uri = node['uri']
         uri = self._encode_sf(uri)
+        internal_img = uri.find('://') == -1 and not uri.startswith('data:')
+
+        if internal_img:
+            asset_docname = None
+            if self.builder.name == 'singleconfluence':
+                asset_docname = self._docnames[-1]
+
+            image_key, hosting_docname, image_path = self.assets.fetch(node,
+                docname=asset_docname)
+            if not image_key:
+                self.warn('unable to find image: {}', node['uri'])
+                raise nodes.SkipNode
 
         if node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
@@ -1358,14 +1370,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['ac:alt'] = alt
 
         if 'scale' in node and 'width' not in node:
-            fulluri = path.join(self.builder.srcdir, uri)
-            size = get_image_size(fulluri)
-            if size is None:
-                self.warn('could not obtain image size; :scale: option is '
-                    'ignored for {}'.format(fulluri))
+            if internal_img:
+                size = get_image_size(image_path)
+                if size is None:
+                    self.warn('could not obtain image size; :scale: option is '
+                        'ignored for ' + image_path)
+                else:
+                    scale = node['scale'] / 100.0
+                    node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
             else:
-                scale = node['scale'] / 100.0
-                node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
+                self.warn('cannot not obtain image size for external image; '
+                    ':scale: option is ignored for ' + uri)
 
         if 'height' in node:
             self.warn('height value for image is unsupported in confluence')
@@ -1377,7 +1392,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if not width.endswith('px'):
                 self.warn('unsupported unit type for confluence: ' + width)
 
-        if uri.find('://') != -1 or uri.startswith('data:'):
+        if not internal_img:
             # an external or embedded image
             #
             # Note: it would be rare that embedded images will be detected at
@@ -1392,16 +1407,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
-            asset_docname = None
-            if self.builder.name == 'singleconfluence':
-                asset_docname = self._docnames[-1]
-
-            image_key, hosting_docname = self.assets.fetch(node,
-                docname=asset_docname)
-            if not image_key:
-                self.warn('unable to find image: ' '{}'.format(node['uri']))
-                raise nodes.SkipNode
-
             hosting_doctitle = ConfluenceState.title(
                 hosting_docname, hosting_docname)
             hosting_doctitle = self._encode_sf(hosting_doctitle)
