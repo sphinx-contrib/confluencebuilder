@@ -325,6 +325,15 @@ class ConfluenceAssetManager:
             path = os.path.normpath(path)
             if os.path.isabs(path):
                 abspath = path
+
+                # some extensions will prefix the path of an asset with `/`,
+                # with the intent of that path being the root from the
+                # configured source directory instead of an absolute path on the
+                # system -- to handle this use case, if a provided absolute path
+                # cannot be found, attempt to find an asset based on a path
+                # based in the source directory
+                if not os.path.isfile(abspath) and path[0] == os.sep:
+                    abspath = os.path.join(self.env.srcdir, path[1:])
             else:
                 abspath = os.path.join(self.env.srcdir, path)
 
