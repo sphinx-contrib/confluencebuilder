@@ -55,6 +55,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
         self._building_footnotes = False
         self._figure_context = []
+        self._list_context = [False]
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._reference_context = []
         self._thead_context = []
@@ -287,14 +288,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 pass
 
     def visit_bullet_list(self, node):
+        # [sphinx-gallary] if a list item is build with sphinx-gallary providing
+        # a `horizontal` class type, the extension produces html output in an
+        # hlist fashion; replicate this here
+        if 'sphx-glr-horizontal' in node.get('classes', []):
+            self.visit_hlist(node)
+            self._list_context.append('sphx-glr-horizontal')
+            return
+
         attribs = {}
         self._apply_leading_list_item_offets(node, attribs)
 
         self.body.append(self._start_tag(node, 'ul', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
+        self._list_context.append(False)
 
     def depart_bullet_list(self, node):
+        if self._list_context[-1] == 'sphx-glr-horizontal':
+            self.depart_hlist(node)
+            return
+
         self.body.append(self.context.pop()) # ul
+        self._list_context.pop()
 
     def visit_enumerated_list(self, node):
         attribs = {}
@@ -335,6 +350,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # ol
 
     def visit_list_item(self, node):
+        if self._list_context[-1] == 'sphx-glr-horizontal':
+            self.visit_hlistcol(node)
+            return
+
         # apply margin offset if flagged (see _apply_leading_list_item_offets)
         attribs = {}
         try:
@@ -347,6 +366,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.context.append(self._end_tag(node))
 
     def depart_list_item(self, node):
+        if self._list_context[-1] == 'sphx-glr-horizontal':
+            self.depart_hlistcol(node)
+            return
+
         self.body.append(self.context.pop()) # li
 
     # ---------------------------------
@@ -1318,6 +1341,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         uri = node['uri']
         uri = self._encode_sf(uri)
+        internal_img = uri.find('://') == -1 and not uri.startswith('data:')
+
+        if internal_img:
+            asset_docname = None
+            if self.builder.name == 'singleconfluence':
+                asset_docname = self._docnames[-1]
+
+            image_key, hosting_docname, image_path = self.assets.fetch(node,
+                docname=asset_docname)
+            if not image_key:
+                self.warn('unable to find image: {}', node['uri'])
+                raise nodes.SkipNode
 
         if node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
@@ -1358,14 +1393,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['ac:alt'] = alt
 
         if 'scale' in node and 'width' not in node:
-            fulluri = path.join(self.builder.srcdir, uri)
-            size = get_image_size(fulluri)
-            if size is None:
-                self.warn('could not obtain image size; :scale: option is '
-                    'ignored for {}'.format(fulluri))
+            if internal_img:
+                size = get_image_size(image_path)
+                if size is None:
+                    self.warn('could not obtain image size; :scale: option is '
+                        'ignored for ' + image_path)
+                else:
+                    scale = node['scale'] / 100.0
+                    node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
             else:
-                scale = node['scale'] / 100.0
-                node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
+                self.warn('cannot not obtain image size for external image; '
+                    ':scale: option is ignored for ' + uri)
 
         if 'height' in node:
             self.warn('height value for image is unsupported in confluence')
@@ -1377,7 +1415,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if not width.endswith('px'):
                 self.warn('unsupported unit type for confluence: ' + width)
 
-        if uri.find('://') != -1 or uri.startswith('data:'):
+        # [sphinx-gallary] create "thumbnail" images for sphinx-gallary
+        #
+        # If a sphinx-gallary-specific class type is detected for an image,
+        # assume there is a desire for thumbnail-like images. Images are then
+        # restricted with a specific height (a pattern observed when restricting
+        # images to a smaller size with a Confluence editor). Although, if the
+        # detected image size is smaller than our target, ignore any forced size
+        # changes.
+        elif 'sphx-glr-multi-img' in node.get('class', []):
+            size = None
+            if image_path:
+                size = get_image_size(image_path)
+
+            if not size or size[1] > 250:
+                attribs['ac:height'] = '250'
+
+        if not internal_img:
             # an external or embedded image
             #
             # Note: it would be rare that embedded images will be detected at
@@ -1392,16 +1446,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
-            asset_docname = None
-            if self.builder.name == 'singleconfluence':
-                asset_docname = self._docnames[-1]
-
-            image_key, hosting_docname = self.assets.fetch(node,
-                docname=asset_docname)
-            if not image_key:
-                self.warn('unable to find image: ' '{}'.format(node['uri']))
-                raise nodes.SkipNode
-
             hosting_doctitle = ConfluenceState.title(
                 hosting_docname, hosting_docname)
             hosting_doctitle = self._encode_sf(hosting_doctitle)
@@ -1448,7 +1492,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.name == 'singleconfluence':
                 asset_docname = self._docnames[-1]
 
-            file_key, hosting_docname = self.assets.fetch(node,
+            file_key, hosting_docname, _ = self.assets.fetch(node,
                 docname=asset_docname)
             if not file_key:
                 self.warn('unable to find download: ' '{}'.format(
