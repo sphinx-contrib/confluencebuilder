@@ -423,9 +423,9 @@ class ConfluencePublisher():
                 comment = metadata['comment']
 
         if not force and comment:
-            parts = comment.split(HASH_KEY + ':')
+            parts = comment.split(HASH_KEY + ':', 1)
             if len(parts) > 1:
-                tracked_hash = parts[1]
+                tracked_hash = ''.join(parts[1].split())
                 if hash == tracked_hash:
                     ConfluenceLogger.verbose('attachment ({}) is already '
                         'published to document with same hash'.format(name))
@@ -464,8 +464,13 @@ class ConfluencePublisher():
                 if not raw_data.lstrip().startswith(b'<?xml'):
                     raw_data = XML_DEC + b'\n' + raw_data
 
+            # split hash comment into chunks to minize rendering issues with a
+            # single one-world-long-hash value
+            chunked_hash = '\n'.join(
+                [hash[i:i + 16] for i in range(0, len(hash), 16)])
+
             data = {
-                'comment': '{}:{}'.format(HASH_KEY, hash),
+                'comment': '{}:{}'.format(HASH_KEY, chunked_hash),
                 'file': (name, raw_data, mimetype),
             }
 
