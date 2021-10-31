@@ -283,6 +283,11 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
         doctree: the doctree to replace nodes on
     """
 
+    # allow users to disabled third-party implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-sphinx_toolbox' in restricted:
+        return
+
     if sphinx_toolbox_assets:
         for node in doctree.traverse(sphinx_toolbox_AssetNode):
             # mock a docname based off the configured sphinx_toolbox's asset
@@ -341,6 +346,11 @@ def replace_sphinx_gallery_nodes(builder, doctree):
         doctree: the doctree to replace blocks on
     """
 
+    # allow users to disabled third-party implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-sphinx_gallery' in restricted:
+        return
+
     if not sphinx_gallery:
         return
 
@@ -362,6 +372,11 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
         builder: the builder
         doctree: the doctree to replace blocks on
     """
+
+    # allow users to disabled third-party implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-sphinxcontrib.mermaid' in restricted:
+        return
 
     if not sphinxcontrib_mermaid:
         return
