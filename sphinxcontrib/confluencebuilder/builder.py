@@ -27,7 +27,7 @@ from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
+from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
