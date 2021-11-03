@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -20,16 +20,13 @@ from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
 from sphinxcontrib.confluencebuilder.std.confluence import INDENT
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import first
 import math
 import posixpath
 import sys
 
-try:
-    unicode
-except NameError:
-    unicode = str
 
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     _tracked_unknown_code_lang = []
@@ -80,7 +77,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.apply_hierarchy_children_macro = False
 
     def encode(self, text):
-        text = self._encode_sf(text)
+        text = encode_storage_format(text)
         return ConfluenceBaseTranslator.encode(self, text)
 
     # ---------
@@ -206,7 +203,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if isinstance(node.parent, nodes.entry):
             for class_ in node.parent.get('classes', []):
                 if class_.startswith('text-align:'):
-                    attribs['style'] = self._encode_sf(class_)
+                    attribs['style'] = self.encode(class_)
                     break
 
         self.body.append(self._start_tag(node, 'p', **attribs))
@@ -590,7 +587,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         title = node.get('scb-caption', None)
         if title:
-            title = self._encode_sf(title)
+            title = self.encode(title)
 
         if node.get('linenos', False):
             num = 'true'
@@ -624,7 +621,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
             self.body.append(self._start_tag(node, 'pre'))
-            self.body.append(self._encode_sf(data))
+            self.body.append(self.encode(data))
             self.body.append(self._end_tag(node))
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
@@ -659,7 +656,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
             self.body.append(self._start_tag(node, 'pre'))
-            self.body.append(self._encode_sf(data))
+            self.body.append(self.encode(data))
             self.body.append(self._end_tag(node))
             self.body.append(self._start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
@@ -816,7 +813,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if title_node:
             self.body.append(self._start_tag(node, 'p'))
             self.body.append(self._start_tag(node, 'strong'))
-            self.body.append(self._encode_sf(title_node.astext()))
+            self.body.append(self.encode(title_node.astext()))
             self.body.append(self._end_tag(node))
             self.body.append(self._end_tag(node))
 
@@ -945,14 +942,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def _visit_reference_extern(self, node):
         uri = node['refuri']
-        uri = self._encode_sf(uri)
+        uri = self.encode(uri)
 
         attribs = {}
         attribs['href'] = uri
 
         if 'reftitle' in node:
             title = node['reftitle']
-            title = self._encode_sf(title)
+            title = self.encode(title)
             attribs['title'] = title
 
         self.body.append(self._start_tag(node, 'a', **attribs))
@@ -974,7 +971,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         target = ConfluenceState.target(anchorname)
         if target:
             anchor_value = target
-            anchor_value = self._encode_sf(anchor_value)
+            anchor_value = self.encode(anchor_value)
         elif not self.can_anchor:
             anchor_value = None
         else:
@@ -1029,7 +1026,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             target = ConfluenceState.target(target_name)
             if target:
                 anchor_value = target
-                anchor_value = self._encode_sf(anchor_value)
+                anchor_value = self.encode(anchor_value)
             elif self.can_anchor:
                 anchor_value = anchor
 
@@ -1043,7 +1040,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # build link to internal anchor (on another page)
         #  Note: plain-text-link body cannot have inline markup; add the node
         #        contents into body and skip processing the rest of this node.
-        doctitle = self._encode_sf(doctitle)
+        doctitle = self.encode(doctitle)
         self.body.append(self._start_ac_link(node, anchor_value))
         self.body.append(self._start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
@@ -1129,10 +1126,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # footnote label and back reference(s)
         if (not self.can_anchor
                 or 'backrefs' not in node or not node['backrefs']):
-            label_text = self._encode_sf(label_text)
+            label_text = self.encode(label_text)
             self.body.append(label_text)
         elif len(node['backrefs']) > 1:
-            label_text = self._encode_sf(label_text)
+            label_text = self.encode(label_text)
             self.body.append(label_text)
 
             self.body.append(self._start_tag(node, 'div'))
@@ -1179,7 +1176,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if not self.can_anchor:
             self.body.append(self._start_tag(node, 'sup'))
-            self.body.append(self._encode_sf(text))
+            self.body.append(self.encode(text))
             self.body.append(self._end_tag(node, suffix='')) # sup
             raise nodes.SkipNode
 
@@ -1340,7 +1337,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             raise nodes.SkipNode
 
         uri = node['uri']
-        uri = self._encode_sf(uri)
+        uri = self.encode(uri)
         internal_img = uri.find('://') == -1 and not uri.startswith('data:')
 
         if internal_img:
@@ -1389,7 +1386,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if 'alt' in node:
             alt = node['alt']
-            alt = self._encode_sf(alt)
+            alt = self.encode(alt)
             attribs['ac:alt'] = alt
 
         if 'scale' in node and 'width' not in node:
@@ -1448,7 +1445,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             hosting_doctitle = ConfluenceState.title(
                 hosting_docname, hosting_docname)
-            hosting_doctitle = self._encode_sf(hosting_doctitle)
+            hosting_doctitle = self.encode(hosting_doctitle)
 
             self.body.append(self._start_ac_image(node, **attribs))
             self.body.append(self._start_ri_attachment(node, image_key))
@@ -1480,7 +1477,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_download_reference(self, node):
         uri = node['reftarget']
-        uri = self._encode_sf(uri)
+        uri = self.encode(uri)
 
         if uri.find('://') != -1:
             self.body.append(self._start_tag(node, 'strong'))
@@ -1500,7 +1497,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 raise nodes.SkipNode
 
             hosting_doctitle = ConfluenceState.title(hosting_docname)
-            hosting_doctitle = self._encode_sf(hosting_doctitle)
+            hosting_doctitle = self.encode(hosting_doctitle)
 
             # If the view-file macro is permitted along with it not being an
             # explicitly referenced asset.
@@ -1591,13 +1588,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         for production in node:
             if production['tokenname']:
                 formatted_token = production['tokenname'].ljust(max_len)
-                formatted_token = self._encode_sf(formatted_token)
+                formatted_token = self.encode(formatted_token)
                 self.body.append('{} ::='.format(formatted_token))
                 lastname = production['tokenname']
             else:
                 self.body.append('{}    '.format(' ' * len(lastname)))
             text = production.astext()
-            text = self._encode_sf(text)
+            text = self.encode(text)
             self.body.append(text + self.nl)
 
         self.body.append(self._end_tag(node))
@@ -1854,7 +1851,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         if 'explanation' in node:
             title_value = node['explanation']
-            title_value = self._encode_sf(title_value)
+            title_value = self.encode(title_value)
             attribs['title'] = title_value
 
         self.body.append(self._start_tag(node, 'abbr', **attribs))
@@ -2299,33 +2296,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         data = data.replace(']]>', ']]]]><![CDATA[>')
         return ConfluenceBaseTranslator.encode(self, data)
 
-    def _encode_sf(self, data):
-        """
-        encodes text to be inserted directly into a storage format area
-
-        A helper used to return content that has been properly encoded and can
-        be directly placed inside a Confluence storage-format-prepared document.
-
-        Args:
-            data: the text
-
-        Returns:
-            the encoded text
-        """
-        STORAGE_FORMAT_REPLACEMENTS = {
-            ('<', '&lt;'),
-            ('>', '&gt;'),
-            ('"', '&quot;'),
-            ("'", '&apos;'),
-        }
-
-        # first pass needs to handle ampersand
-        data = unicode(data).replace('&', '&amp;')
-
-        for find, encoded in STORAGE_FORMAT_REPLACEMENTS:
-            data = data.replace(find, encoded)
-        return data
-
     def _fetch_alignment(self, node):
         """
         fetch the alignment to be used on a node
@@ -2352,6 +2322,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 alignment = self._default_alignment
 
         if alignment:
-            alignment = self._encode_sf(alignment)
+            alignment = self.encode(alignment)
 
         return alignment

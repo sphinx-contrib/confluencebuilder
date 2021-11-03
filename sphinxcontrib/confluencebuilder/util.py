@@ -13,6 +13,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import unicodedata
 
 class ConfluenceUtil:
     """
@@ -149,6 +150,23 @@ def getpass2(prompt='Password: '):
         return value
     else:
         return getpass.getpass(prompt=prompt)
+
+def remove_nonspace_control_chars(text):
+    """
+    remove any non-space control characters from text
+
+    This utility calls removes any non-space control characters that cannot be
+    published to a Confluence instance.
+
+    Args:
+        text: the text to sanitize
+
+    Returns:
+        the sanitized text
+    """
+
+    return ''.join(c for c in text if c.isspace()
+        or unicodedata.category(c)[0] != 'C')
 
 def str2bool(value):
     """
