@@ -65,6 +65,8 @@ def setup(app):
     app.add_config_value('confluence_header_file', None, False)
     # File to get page footer information from.
     app.add_config_value('confluence_footer_file', None, False)
+    # Enablement of a generated search documents
+    app.add_config_value('confluence_include_search', None, '')
     # Enablement of the maximum document depth (before inlining).
     app.add_config_value('confluence_max_doc_depth', None, False)
     # Enablement of publishing pages into a hierarchy from a root toctree.

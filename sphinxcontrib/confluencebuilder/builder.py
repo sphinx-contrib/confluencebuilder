@@ -31,6 +31,7 @@ from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
+from sphinxcontrib.confluencebuilder.storage.search import generate_storage_format_search
 from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
@@ -72,6 +73,7 @@ class ConfluenceBuilder(Builder):
         self.root_doc_page_id = None
         self.secnumbers = {}
         self.use_index = None
+        self.use_search = None
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
@@ -89,6 +91,7 @@ class ConfluenceBuilder(Builder):
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
         self.use_index = config.confluence_use_index
+        self.use_search = config.confluence_include_search
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
@@ -211,6 +214,9 @@ class ConfluenceBuilder(Builder):
         # official docnames list
         if self.use_index is None and 'genindex' in docnames:
             self.use_index = True
+        if self.use_search is None and 'search' in docnames:
+            self.use_search = True
+
         # generate domain index information
         self.domain_indices = {}
         indices_config = self.config.confluence_domain_indices
@@ -300,6 +306,9 @@ class ConfluenceBuilder(Builder):
         if self.use_index and not ConfluenceState.title('genindex'):
             ConfluenceState.registerTitle('genindex', __('Index'), self.config)
 
+        if self.use_search and not ConfluenceState.title('search'):
+            ConfluenceState.registerTitle('search', __('Search'), self.config)
+
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
                 if ConfluenceState.title(indexname):
@@ -315,6 +324,10 @@ class ConfluenceBuilder(Builder):
         if self.use_index:
             anonlabels['genindex'] = 'genindex', ''
             labels['genindex'] = 'genindex', '', ''
+
+        if self.use_search:
+            anonlabels['search'] = 'search', ''
+            labels['search'] = 'search', '', ''
 
         if self.domain_indices:
             for indexname, _ in self.domain_indices.items():
@@ -640,6 +653,16 @@ class ConfluenceBuilder(Builder):
 
                 if not self._verbose:
                     self.info(' done')
+
+        # build search
+        if self.use_search:
+            self.info('generating search...', nonl=(not self._verbose))
+
+            self._generate_special_document('search',
+                generate_storage_format_search)
+
+            if not self._verbose:
+                self.info(' done')
 
         # publish generated output (if desired)
         if self.publish:
