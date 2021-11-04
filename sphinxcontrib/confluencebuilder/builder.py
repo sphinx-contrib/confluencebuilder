@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 :copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -28,6 +29,7 @@ from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
 from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
@@ -55,6 +57,7 @@ class ConfluenceBuilder(Builder):
 
         self.cache_doctrees = {}
         self.cloud = False
+        self.domain_indices = {}
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
         self.link_suffix = None
@@ -208,6 +211,22 @@ class ConfluenceBuilder(Builder):
         # official docnames list
         if self.use_index is None and 'genindex' in docnames:
             self.use_index = True
+        # generate domain index information
+        self.domain_indices = {}
+        indices_config = self.config.confluence_domain_indices
+        if indices_config:
+            for domain_name in sorted(self.env.domains):
+                domain = self.env.domains[domain_name]
+                for indexcls in domain.indices:
+                    indexname = '%s-%s' % (domain.name, indexcls.name)
+
+                    if isinstance(indices_config, list):
+                        if indexname not in indices_config:
+                            continue
+
+                    content, _ = indexcls(domain).generate()
+                    if content:
+                        self.domain_indices[indexname] = (indexcls, content)
 
         # prepare caching doctree hook
         #
@@ -281,6 +300,14 @@ class ConfluenceBuilder(Builder):
         if self.use_index and not ConfluenceState.title('genindex'):
             ConfluenceState.registerTitle('genindex', __('Index'), self.config)
 
+        if self.domain_indices:
+            for indexname, indexdata in self.domain_indices.items():
+                if ConfluenceState.title(indexname):
+                    continue
+
+                indexcls, _ = indexdata
+                title = indexcls.localname
+                ConfluenceState.registerTitle(indexname, title, self.config)
 
         # register labels for special documents (if needed)
         labels = self.env.domaindata['std']['labels']
@@ -288,6 +315,11 @@ class ConfluenceBuilder(Builder):
         if self.use_index:
             anonlabels['genindex'] = 'genindex', ''
             labels['genindex'] = 'genindex', '', ''
+
+        if self.domain_indices:
+            for indexname, _ in self.domain_indices.items():
+                anonlabels[indexname] = indexname, ''
+                labels[indexname] = indexname, '', ''
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
@@ -596,6 +628,18 @@ class ConfluenceBuilder(Builder):
 
             if not self._verbose:
                 self.info(' done')
+
+        # build domain indexes
+        if self.domain_indices:
+            for indexname, indexdata in self.domain_indices.items():
+                self.info('generating index ({})...'.format(indexname),
+                    nonl=(not self._verbose))
+
+                self._generate_special_document(indexname,
+                    generate_storage_format_domainindex)
+
+                if not self._verbose:
+                    self.info(' done')
 
         # publish generated output (if desired)
         if self.publish:

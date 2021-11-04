@@ -59,6 +59,8 @@ def setup(app):
     app.add_config_value('confluence_add_secnumbers', None, False)
     # Default alignment for tables, figures, etc.
     app.add_config_value('confluence_default_alignment', None, 'env')
+    # Enablement of a generated domain index documents
+    app.add_config_value('confluence_domain_indices', None, '')
     # File to get page header information from.
     app.add_config_value('confluence_header_file', None, False)
     # File to get page footer information from.

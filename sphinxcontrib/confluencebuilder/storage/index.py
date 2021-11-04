@@ -13,6 +13,46 @@ import posixpath
 import os
 
 
+def generate_storage_format_domainindex(builder, docname, f):
+    """
+    generate the domain index content for the builder into the provided file
+
+    This call can be used to generate a domain index for a provided builder.
+    This generated index can then be included in the list of documents to be
+    published to an instance.
+
+    Args:
+        builder: the builder
+        docname: the docname
+        f: the file to write to
+    """
+
+    _, content = builder.domain_indices[docname]
+
+    # pre-process link entries to use final document titles/anchor values
+    for key, entries in content:
+        for (i, entry) in enumerate(entries):
+            if isinstance(entry, list):
+                refuri = '{}#{}'.format(entry[2], entry[3])
+                doctitle, anchor_value = process_doclink(builder.config, refuri)
+                entry[2] = doctitle
+                entry[3] = anchor_value
+            else:
+                refuri = '{}#{}'.format(entry.docname, entry.anchor)
+                doctitle, anchor_value = process_doclink(builder.config, refuri)
+                entries[i] = entries[i]._replace(
+                    docname=doctitle, anchor=anchor_value)
+
+    # fetch raw template data
+    domainindex_template = os.path.join('templates', 'domainindex.html')
+    template_data = pkgutil.get_data(__name__, domainindex_template)
+
+    # process the template with the generated index
+    t = Template(template_data.decode('utf-8'))
+    output = t.render(index=content)
+    f.write(output)
+
+
 def generate_storage_format_genindex(builder, docname, f):
     """
     generate the genindex content for the builder into the provided file
