@@ -7,6 +7,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
+from collections import defaultdict
 from docutils import nodes
 from docutils.io import StringOutput
 from os import path
@@ -27,6 +28,7 @@ from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
 from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
@@ -56,7 +58,7 @@ class ConfluenceBuilder(Builder):
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
         self.link_suffix = None
-        self.metadata = {}
+        self.metadata = defaultdict(dict)
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
@@ -66,6 +68,7 @@ class ConfluenceBuilder(Builder):
         self.publisher = ConfluencePublisher()
         self.root_doc_page_id = None
         self.secnumbers = {}
+        self.use_index = None
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
         self._original_get_doctree = None
@@ -82,6 +85,7 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
+        self.use_index = config.confluence_use_index
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
@@ -200,6 +204,11 @@ class ConfluenceBuilder(Builder):
         ordered_docnames = []
         traversed = [self.config.root_doc]
 
+        # default enable special document names if they are references in the
+        # official docnames list
+        if self.use_index is None and 'genindex' in docnames:
+            self.use_index = True
+
         # prepare caching doctree hook
         #
         # We'll temporarily override the environment's 'get_doctree' method to
@@ -266,6 +275,19 @@ class ConfluenceBuilder(Builder):
 
             # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
+
+        # register titles for special documents (if needed); if a title is not
+        # already set from a placeholder document, configure a default title
+        if self.use_index and not ConfluenceState.title('genindex'):
+            ConfluenceState.registerTitle('genindex', __('Index'), self.config)
+
+
+        # register labels for special documents (if needed)
+        labels = self.env.domaindata['std']['labels']
+        anonlabels = self.env.domaindata['std']['anonlabels']
+        if self.use_index:
+            anonlabels['genindex'] = 'genindex', ''
+            labels['genindex'] = 'genindex', '', ''
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
@@ -565,6 +587,17 @@ class ConfluenceBuilder(Builder):
         if self._original_get_doctree:
             self.env.get_doctree = self._original_get_doctree
 
+        # build index
+        if self.use_index:
+            self.info('generating index...', nonl=(not self._verbose))
+
+            self._generate_special_document('genindex',
+                generate_storage_format_genindex)
+
+            if not self._verbose:
+                self.info(' done')
+
+        # publish generated output (if desired)
         if self.publish:
             self.legacy_assets = {}
             self.legacy_pages = None
@@ -778,6 +811,32 @@ class ConfluenceBuilder(Builder):
                 if fn == olddocname:
                     data = progoptions[key]
                     progoptions[key] = newdocname, data[1]
+
+    def _generate_special_document(self, docname, generator):
+        """
+        generate a special document
+
+        Provides support to generate the contents of a document for Sphinx
+        "special" documents -- specifically, genindex, search and domain index
+        documents.
+
+        Args:
+            docname: the docname to generate
+            generator: instance which will generate content for a file
+        """
+
+        # register document if its not already registered for publishing
+        # (i.e. placeholder documents)
+        if docname not in self.publish_docnames:
+            self.publish_docnames.append(docname)
+
+        # generate/replace the document in the output directory
+        fname = path.join(self.outdir, docname + self.file_suffix)
+        try:
+            with io.open(fname, 'w', encoding='utf-8') as f:
+                generator(self, docname, f)
+        except (IOError, OSError) as err:
+            self.warn('error writing file %s: %s', docname, err)
 
     def _get_doctree(self, docname):
         """

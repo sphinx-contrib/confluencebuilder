@@ -71,6 +71,8 @@ def setup(app):
     app.add_config_value('confluence_prev_next_buttons_location', None, False)
     # Suffix to put after section numbers, before section name
     app.add_config_value('confluence_secnumber_suffix', None, False)
+    # Enablement of a generated index document
+    app.add_config_value('confluence_use_index', None, '')
 
     # (configuration - publishing)
     # Request for publish password to come from interactive session.

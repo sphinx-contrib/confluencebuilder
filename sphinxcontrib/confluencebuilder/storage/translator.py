@@ -21,6 +21,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import INDENT
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.storage import encode_storage_format
+from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import first
 import math
@@ -1016,19 +1017,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._reference_context.append(self._end_tag(node, suffix=''))
             return
 
-        anchor_value = None
-        if '#' in node['refuri']:
-            anchor = node['refuri'].split('#')[1]
-            target_name = '{}#{}'.format(docname, anchor)
-
-            # check if this target is reachable without an anchor; if so, use
-            # the identifier value instead
-            target = ConfluenceState.target(target_name)
-            if target:
-                anchor_value = target
-                anchor_value = self.encode(anchor_value)
-            elif self.can_anchor:
-                anchor_value = anchor
+        anchor_value = intern_uri_anchor_value(
+            self.builder.config, docname, node['refuri'])
 
         navnode = getattr(node, '_navnode', False)
 
