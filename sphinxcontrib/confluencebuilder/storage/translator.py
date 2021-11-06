@@ -1096,7 +1096,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not self._building_footnotes:
             self.body.append(self._start_tag(node, 'table', suffix=self.nl))
             self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
+            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl,
+                **{'style': 'border: none'}))
             self.context.append(self._end_tag(node))
             self._building_footnotes = True
 
@@ -1105,7 +1106,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
 
-        self.body.append(self._start_tag(node, 'td'))
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
 
         # footnote anchor
         if self.can_anchor:
@@ -1146,7 +1148,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_link(node))
         self.body.append(self._end_tag(node))
 
-        self.body.append(self._start_tag(node, 'td'))
+        self.body.append(self._start_tag(node, 'td',
+            **{'style': 'border: none'}))
         self.context.append(self._end_tag(node))
 
     def depart_footnote(self, node):
