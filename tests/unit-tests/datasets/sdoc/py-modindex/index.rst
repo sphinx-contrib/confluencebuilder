@@ -1,0 +1,4 @@
+root
+====
+
+.. py:module:: Timer
