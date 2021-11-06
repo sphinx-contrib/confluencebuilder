@@ -174,6 +174,25 @@ Generic configuration
 
         confluence_default_alignment = 'left'
 
+.. confval:: confluence_domain_indices
+
+    .. versionadded:: 1.7
+
+    A boolean or list value to configure whether or not generate domain-specific
+    indices. If configured to a value of ``True``, all domain-specific indices
+    generated when processing a documentation set will have a Confluence
+    document created. If configured with a list of index names, any matching
+    domain-index with a matching name will have a Confluence document created.
+    By default, domain-specific indices are disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_domain_indices = True
+         (or)
+        confluence_domain_indices = [
+            'py-modindex',
+        ]
+
 .. |confluence_header_file| replace:: ``confluence_header_file``
 .. _confluence_header_file:
 
@@ -205,6 +224,24 @@ Generic configuration
         confluence_footer_file = 'assets/footer.tpl'
 
     See also |confluence_header_file|_.
+
+.. confval:: confluence_include_search
+
+    .. versionadded:: 1.7
+
+    A boolean value to configure whether or not generate a search page. If
+    configured to a value of ``True``, a search page will be created with a
+    search macro configured to search on the configured space. If a ``search``
+    document is registered in a documentation's toctree_, a search page will be
+    generated and will replace the contents of the provided ``search`` page. To
+    avoid the implicit enablement of this feature, the generation of a search
+    page can be explicitly disabled by setting this value to ``False``. By
+    default, search page generation is automatically managed with a value of
+    ``None``.
+
+    .. code-block:: python
+
+        confluence_include_search = True
 
 .. confval:: confluence_max_doc_depth
 
@@ -275,6 +312,23 @@ Generic configuration
         confluence_secnumber_suffix = '. '
 
     See also |confluence_add_secnumbers|_.
+
+.. confval:: confluence_use_index
+
+    .. versionadded:: 1.7
+
+    A boolean value to configure whether or not generate an index page. If
+    configured to a value of ``True``, an index page will be created. If a
+    ``genindex`` document is registered in a documentation's toctree_, index
+    content will be generated and will replace the contents of the provided
+    ``genindex`` page. To avoid the implicit enablement of this feature, the
+    generation of an index page can be explicitly disabled by setting this value
+    to ``False``. By default, index generation is automatically managed with a
+    value of ``None``.
+
+    .. code-block:: python
+
+        confluence_use_index = True
 
 Publishing configuration
 ------------------------

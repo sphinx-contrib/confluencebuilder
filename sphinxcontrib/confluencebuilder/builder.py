@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 :copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
+from collections import defaultdict
 from docutils import nodes
 from docutils.io import StringOutput
 from os import path
@@ -27,7 +29,10 @@ from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from sphinxcontrib.confluencebuilder.translator.storage import ConfluenceStorageFormatTranslator
+from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
+from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
+from sphinxcontrib.confluencebuilder.storage.search import generate_storage_format_search
+from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
@@ -53,10 +58,11 @@ class ConfluenceBuilder(Builder):
 
         self.cache_doctrees = {}
         self.cloud = False
+        self.domain_indices = {}
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
         self.link_suffix = None
-        self.metadata = {}
+        self.metadata = defaultdict(dict)
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
@@ -66,8 +72,12 @@ class ConfluenceBuilder(Builder):
         self.publisher = ConfluencePublisher()
         self.root_doc_page_id = None
         self.secnumbers = {}
+        self.use_index = None
+        self.use_search = None
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
+        self._cached_footer_data = None
+        self._cached_header_data = None
         self._original_get_doctree = None
         self._verbose = self.app.verbosity
 
@@ -82,6 +92,8 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
+        self.use_index = config.confluence_use_index
+        self.use_search = config.confluence_include_search
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
@@ -200,6 +212,30 @@ class ConfluenceBuilder(Builder):
         ordered_docnames = []
         traversed = [self.config.root_doc]
 
+        # default enable special document names if they are references in the
+        # official docnames list
+        if self.use_index is None and 'genindex' in docnames:
+            self.use_index = True
+        if self.use_search is None and 'search' in docnames:
+            self.use_search = True
+
+        # generate domain index information
+        self.domain_indices = {}
+        indices_config = self.config.confluence_domain_indices
+        if indices_config:
+            for domain_name in sorted(self.env.domains):
+                domain = self.env.domains[domain_name]
+                for indexcls in domain.indices:
+                    indexname = '%s-%s' % (domain.name, indexcls.name)
+
+                    if isinstance(indices_config, list):
+                        if indexname not in indices_config:
+                            continue
+
+                    content, _ = indexcls(domain).generate()
+                    if content:
+                        self.domain_indices[indexname] = (indexcls, content)
+
         # prepare caching doctree hook
         #
         # We'll temporarily override the environment's 'get_doctree' method to
@@ -266,6 +302,39 @@ class ConfluenceBuilder(Builder):
 
             # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
+
+        # register titles for special documents (if needed); if a title is not
+        # already set from a placeholder document, configure a default title
+        if self.use_index and not ConfluenceState.title('genindex'):
+            ConfluenceState.registerTitle('genindex', __('Index'), self.config)
+
+        if self.use_search and not ConfluenceState.title('search'):
+            ConfluenceState.registerTitle('search', __('Search'), self.config)
+
+        if self.domain_indices:
+            for indexname, indexdata in self.domain_indices.items():
+                if ConfluenceState.title(indexname):
+                    continue
+
+                indexcls, _ = indexdata
+                title = indexcls.localname
+                ConfluenceState.registerTitle(indexname, title, self.config)
+
+        # register labels for special documents (if needed)
+        labels = self.env.domaindata['std']['labels']
+        anonlabels = self.env.domaindata['std']['anonlabels']
+        if self.use_index:
+            anonlabels['genindex'] = 'genindex', ''
+            labels['genindex'] = 'genindex', '', ''
+
+        if self.use_search:
+            anonlabels['search'] = 'search', ''
+            labels['search'] = 'search', '', ''
+
+        if self.domain_indices:
+            for indexname, _ in self.domain_indices.items():
+                anonlabels[indexname] = indexname, ''
+                labels[indexname] = indexname, '', ''
 
         # Scan for assets that may exist in the documents to be published. This
         # will find most if not all assets in the documentation set. The
@@ -565,6 +634,39 @@ class ConfluenceBuilder(Builder):
         if self._original_get_doctree:
             self.env.get_doctree = self._original_get_doctree
 
+        # build index
+        if self.use_index:
+            self.info('generating index...', nonl=(not self._verbose))
+
+            self._generate_special_document('genindex',
+                generate_storage_format_genindex)
+
+            if not self._verbose:
+                self.info(' done')
+
+        # build domain indexes
+        if self.domain_indices:
+            for indexname, indexdata in self.domain_indices.items():
+                self.info('generating index ({})...'.format(indexname),
+                    nonl=(not self._verbose))
+
+                self._generate_special_document(indexname,
+                    generate_storage_format_domainindex)
+
+                if not self._verbose:
+                    self.info(' done')
+
+        # build search
+        if self.use_search:
+            self.info('generating search...', nonl=(not self._verbose))
+
+            self._generate_special_document('search',
+                generate_storage_format_search)
+
+            if not self._verbose:
+                self.info(' done')
+
+        # publish generated output (if desired)
         if self.publish:
             self.legacy_assets = {}
             self.legacy_pages = None
@@ -778,6 +880,60 @@ class ConfluenceBuilder(Builder):
                 if fn == olddocname:
                     data = progoptions[key]
                     progoptions[key] = newdocname, data[1]
+
+    def _generate_special_document(self, docname, generator):
+        """
+        generate a special document
+
+        Provides support to generate the contents of a document for Sphinx
+        "special" documents -- specifically, genindex, search and domain index
+        documents.
+
+        Args:
+            docname: the docname to generate
+            generator: instance which will generate content for a file
+        """
+
+        # register document if its not already registered for publishing
+        # (i.e. placeholder documents)
+        if docname not in self.publish_docnames:
+            self.publish_docnames.append(docname)
+
+        # cache header data (if any)
+        if self._cached_header_data is None:
+            self._cached_header_data = ''
+
+            if self.config.confluence_header_file is not None:
+                fname = path.join(self.env.srcdir,
+                    self.config.confluence_header_file)
+                try:
+                    with io.open(fname, encoding='utf-8') as file:
+                        self._cached_header_data = file.read() + '\n'
+                except (IOError, OSError) as err:
+                    self.warn('error reading file {}: {}'.format(fname, err))
+
+        # cache footer data (if any)
+        if self._cached_footer_data is None:
+            self._cached_footer_data = ''
+
+            if self.config.confluence_footer_file is not None:
+                fname = path.join(self.env.srcdir,
+                    self.config.confluence_footer_file)
+                try:
+                    with io.open(fname, encoding='utf-8') as file:
+                        self._cached_footer_data = file.read() + '\n'
+                except (IOError, OSError) as err:
+                    self.warn('error reading file {}: {}'.format(fname, err))
+
+        # generate/replace the document in the output directory
+        fname = path.join(self.outdir, docname + self.file_suffix)
+        try:
+            with io.open(fname, 'w', encoding='utf-8') as f:
+                f.write(self._cached_header_data)
+                generator(self, docname, f)
+                f.write(self._cached_footer_data)
+        except (IOError, OSError) as err:
+            self.warn('error writing file %s: %s', docname, err)
 
     def _get_doctree(self, docname):
         """

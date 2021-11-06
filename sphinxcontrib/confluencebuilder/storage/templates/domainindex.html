@@ -1,0 +1,53 @@
+{#
+Template for a storage-format domainindex document.
+
+:copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+#}
+
+<hr />
+<div style="text-align: center">
+    {% for (key, _) in index -%}
+    <ac:link ac:anchor="{{ key|upper }}">
+        <ac:link-body><strong>{{ key|upper }}</strong></ac:link-body>
+    </ac:link>
+    {% if not loop.last %}| {% endif %}
+    {%- endfor %}
+</div>
+<hr />
+
+<table>
+    <tbody style="border: none">
+{%- for key, entries in index %}
+<tr>
+    <td colspan="2" style="border: none">
+        <h1>{{ key|upper }}</h1>
+    </td>
+</tr>
+
+{% for (name, grouptype, page, anchor, extra, qualifier, description) in entries %}
+<tr>
+    <td style="border: none">
+        {%- if grouptype == 2 %}<p style="margin-top: 0; margin-left: 30px;">{% endif -%}
+        {%- if page %}
+            <ac:link{% if anchor %} ac:anchor="{{ anchor }}"{% endif %}>
+                <ri:page ri:content-title="{{ page }}" />
+                <ac:link-body>{{ name|e }}</ac:link-body>
+            </ac:link>
+        {%- else -%}
+            {{ name|e }}
+        {%- endif -%}
+        {%- if extra %} <em>({{ extra|e }})</em>{% endif -%}
+        {%- if grouptype == 2 %}</p>{% endif %}
+    </td>
+    <td style="border: none">
+        {%- if qualifier %}<strong>{{ qualifier|e }}:</strong>{% endif -%}
+        <em>{{ description|e }}</em>
+    </td>
+</tr>
+{% endfor %}
+
+{% endfor %}
+    </tbody>
+</table>

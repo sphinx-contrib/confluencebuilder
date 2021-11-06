@@ -12,9 +12,9 @@ from sphinx.util.osutil import canon_path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.util import remove_nonspace_control_chars
 import io
 import sys
-import unicodedata
 
 class ConfluenceBaseTranslator(BaseTranslator):
     _tracked_deprecated_raw_type = False
@@ -296,5 +296,4 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def encode(self, text):
         # remove any non-space control characters that cannot be published to a
         # confluence instance
-        return ''.join(c for c in text if c.isspace()
-            or unicodedata.category(c)[0] != 'C')
+        return remove_nonspace_control_chars(text)
