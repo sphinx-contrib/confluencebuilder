@@ -90,7 +90,7 @@ Essential configuration
 
     .. code-block:: python
 
-        confluence_space_key = '~123456789' 
+        confluence_space_key = '~123456789'
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:
