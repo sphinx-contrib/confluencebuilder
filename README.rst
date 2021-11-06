@@ -118,7 +118,7 @@ A demonstration of this extension can be seen by inspecting the published
 validation/testing documents found here:
 
  | Atlassian Confluence Builder for Sphinx - Online Demo on Confluence Cloud
- | https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/STABLE
+ | https://sphinxcontrib-confluencebuilder.atlassian.net/
 
 ----
 
