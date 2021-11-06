@@ -42,33 +42,33 @@ if graphviz:
 try:
     from sphinx_toolbox.assets import AssetNode as sphinx_toolbox_AssetNode
     sphinx_toolbox_assets = True
-except:
+except:  # noqa: E722
     sphinx_toolbox_assets = False
 
 try:
     from sphinx_toolbox.collapse import CollapseNode as sphinx_toolbox_CollapseNode
     sphinx_toolbox_collapse = True
-except:
+except:  # noqa: E722
     sphinx_toolbox_collapse = False
 
 try:
     from sphinx_toolbox.github.issues import IssueNode as sphinx_toolbox_IssueNode
     from sphinx_toolbox.github.issues import IssueNodeWithName as sphinx_toolbox_IssueNodeWithName
     sphinx_toolbox_github_issues = True
-except:
+except:  # noqa: E722
     sphinx_toolbox_github_issues = False
 
 try:
     from sphinx_toolbox.github.repos_and_users import GitHubObjectLinkNode as sphinx_toolbox_GitHubObjectLinkNode
     sphinx_toolbox_github_repos_and_users = True
-except:
+except:  # noqa: E722
     sphinx_toolbox_github_repos_and_users = False
 
 # load sphinx-gallery extension if available
 try:
     from sphinx_gallery.directives import imgsgnode as sphinx_gallery_imgsgnode
     sphinx_gallery = True
-except:
+except:  # noqa: E722
     sphinx_gallery = False
 
 # load sphinxcontrib-mermaid extension if available
@@ -77,7 +77,7 @@ try:
     from sphinxcontrib.mermaid import mermaid
     from sphinxcontrib.mermaid import render_mm as mermaid_render
     sphinxcontrib_mermaid = True
-except:
+except:  # noqa: E722
     sphinxcontrib_mermaid = False
 
 # re-enable pylint warnings from above
