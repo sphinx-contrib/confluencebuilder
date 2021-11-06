@@ -73,7 +73,6 @@ setup(
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
     test_suite='tests',
-    tests_require=['sphinx'],
     cmdclass={
         'clean': ExtendedClean,
     },
