@@ -30,6 +30,7 @@ class ExtendedClean(clean):
                 dir_util.remove_tree(extra, dry_run=self.dry_run)
 
 requires = [
+    'docutils<0.18;python_version<"3.0"',  # legacy docutils for older sphinx
     'requests>=2.14.0',
     'sphinx>=1.8',
 ]
@@ -72,7 +73,6 @@ setup(
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
     test_suite='tests',
-    tests_require=['sphinx'],
     cmdclass={
         'clean': ExtendedClean,
     },

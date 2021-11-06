@@ -6,7 +6,9 @@ Confluence generation and publishing:
 
 .. code-block:: python
 
-    extensions = ['sphinxcontrib.confluencebuilder']
+    extensions = [
+        'sphinxcontrib.confluencebuilder',
+    ]
     confluence_publish = True
     confluence_space_key = 'TEST'
     confluence_parent_page = 'Documentation'
@@ -90,7 +92,7 @@ Essential configuration
 
     .. code-block:: python
 
-        confluence_space_key = '~123456789' 
+        confluence_space_key = '~123456789'
 
 .. |confluence_server_user| replace:: ``confluence_server_user``
 .. _confluence_server_user:

@@ -1,5 +1,5 @@
-Compatibilities
-===============
+Features
+========
 
 The following outlines the reStructuredText_/Sphinx_ markup, configuration
 entries and more supported by this extension. The intent of this extension is to
