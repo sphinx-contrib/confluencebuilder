@@ -28,6 +28,8 @@ def generate_storage_format_domainindex(builder, docname, f):
     """
 
     _, content = builder.domain_indices[docname]
+    if not content:
+        return
 
     # pre-process link entries to use final document titles/anchor values
     for key, entries in content:
@@ -68,6 +70,8 @@ def generate_storage_format_genindex(builder, docname, f):
     """
 
     genindex = IndexEntries(builder.env).create_index(builder)
+    if not genindex:
+        return
 
     # pre-process link entries to use final document titles/anchor values
     for key, columns in genindex:
