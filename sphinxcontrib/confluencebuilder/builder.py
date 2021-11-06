@@ -576,7 +576,7 @@ class ConfluenceBuilder(Builder):
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
                 self.publisher.updateSpaceHome(self.root_doc_page_id)
-                self.info('done\n')
+                self.info('done')
 
             if self.cloud:
                 point_url = '{0}spaces/{1}/pages/{2}'
@@ -704,7 +704,7 @@ class ConfluenceBuilder(Builder):
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)
-            self.info('done\n')
+            self.info('done')
 
     def cleanup(self):
         if self.publish:
