@@ -5,7 +5,19 @@ development
 * fixed issue where publishing could fail without a proxy set for older requests
 * fixed issue where report/wipe commands would fail in python 2.7
 * improve dry-run reflecting new attachments to be published
+* improve indentations for line-block content
+* improve support for attached svg images with length/scaling modifiers
+* improve support for svg images without an xml declaration
+* improve support non-pixel length units for images
+* improve support when using the sphinx-gallery extension
+* improve support when using the sphinx_toolbox extension
+* improve support when using the sphinxcontrib-mermaid extension
+* improve support when using the sphinxcontrib-needs extension
 * prevent issues with extension directives causing errors with other builders
+* remove borders on footnote tables
+* support domain indices generation/processing
+* support genindex generation/processing
+* support search generation
 * support the consideration of ``confluence_parent_page`` for wipe requests
 
 1.6.0 (2021-09-26)
