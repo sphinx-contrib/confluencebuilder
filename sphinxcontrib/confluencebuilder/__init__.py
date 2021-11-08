@@ -268,10 +268,3 @@ def confluence_builder_inited(app):
         if transform.__name__ == 'MathNodeMigrator':
             app.registry.get_post_transforms().remove(transform)
             break
-
-    # Images defined by data uri schemas can be resolved into generated images
-    # after a document's post-transformation stage. After a document's doctree
-    # has been resolved, re-check for any images that have been translated.
-    def resolve_assets_hook(app, doctree, docname):
-        app.builder.assets.processDocument(doctree, docname, True)
-    app.connect('doctree-resolved', resolve_assets_hook)

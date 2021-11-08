@@ -10,6 +10,8 @@ from sphinx import addnodes
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
+from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
+from sphinxcontrib.confluencebuilder.svg import svg_initialize
 from sphinxcontrib.confluencebuilder.util import first
 
 # load graphviz extension if available to handle node pre-processing
@@ -121,6 +123,32 @@ def doctree_transmute(builder, doctree):
     replace_sphinx_toolbox_nodes(builder, doctree)
 
     replace_sphinxcontrib_mermaid_nodes(builder, doctree)
+
+    # -------------------
+    # post-transmute work
+    # -------------------
+
+    # re-work svg entries to support confluence
+    prepare_svgs(builder, doctree)
+
+
+def prepare_svgs(builder, doctree):
+    """
+    process any svgs found in a doctree to work on confluence
+
+    The following will process a doctree for any SVG images to ensure they are
+    compatible with published on a Confluence instance. See
+    `confluence_supported_svg` for more details.
+
+    Args:
+        builder: the builder
+        doctree: the doctree to check for svgs
+    """
+
+    svg_initialize()
+
+    for node in doctree.traverse(nodes.image):
+        confluence_supported_svg(builder, node)
 
 
 def replace_graphviz_nodes(builder, doctree):

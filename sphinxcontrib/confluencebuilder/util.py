@@ -7,9 +7,12 @@
 from contextlib import contextmanager
 from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
+from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
+from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
 from hashlib import sha256
 import getpass
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -68,6 +71,84 @@ class ConfluenceUtil:
                 url += '/'
         return url
 
+def convert_px_length(value, unit):
+    """
+    convert a length value to an integer pixel-equivalent value
+
+    This call accepts a length value and associated units and will return a
+    pixel-length representation of the provided length value. If no units are
+    provided in this call, it will be assumed that the units are already
+    represented by a pixel unit.
+
+    Args:
+        value: the value to convert
+        unit: the units of the value
+
+    Returns:
+        the length in pixels
+    """
+
+    if value is None:
+        return None
+
+    fvalue = float(value)
+
+    if unit is None:
+        return int(round(fvalue))
+
+    if unit == 'px':
+        pass
+    elif unit == 'em':
+        fvalue *= FONT_SIZE
+    elif unit == 'ex':
+        fvalue *= FONT_X_HEIGHT
+    elif unit == 'mm':
+        fvalue *= 3.7795
+    elif unit == 'cm':
+        fvalue *= 37.7952
+    elif unit == 'in':
+        fvalue *= 96
+    elif unit == 'pt':
+        fvalue *= 1.3333
+    elif unit == 'pc':
+        fvalue *= 16
+    else:
+        return None
+
+    return int(round(fvalue))
+
+def extract_length(value):
+    """
+    extract length data from a provided value
+
+    Returns a tuple of a detected length value and a length unit. If no unit
+    type can be extracted, it will be assumed that the provided value has no
+    unit.
+
+    Args:
+        value: the value to parse
+
+    Returns:
+        the length and unit type
+    """
+
+    if not value:
+        return None, None
+
+    matched = re.match(r'^\s*(\d*\.?\d*)\s*(\S*)?\s*$', value)
+    if not matched:
+        return None, None
+
+    amount, unit = matched.groups()
+
+    if not amount:
+        amount = None
+        unit = None
+    elif not unit:
+        unit = None
+
+    return amount, unit
+
 def extract_strings_from_file(filename):
     """
     extracts strings from a provided filename
@@ -93,6 +174,54 @@ def extract_strings_from_file(filename):
                 filelist.append(line)
 
     return filelist
+
+def find_env_abspath(env, outdir, path):
+    """
+    find an existing absolute path for a provided path in a sphinx environment
+
+    This call will accept a path string and attempt to return an absolute path
+    to the file (if it exists). If no path can be found, this call will return
+    `None`.
+
+    Args:
+        env: the build environment
+        outdir: the build's output directory
+        path: the path to use
+
+    Returns:
+        the absolute path
+    """
+
+    abspath = None
+    if path:
+        path = os.path.normpath(path)
+        if os.path.isabs(path):
+            abspath = path
+
+            # some generated nodes will prefix the path of an asset with `/`,
+            # with the intent of that path being the root from the
+            # configured source directory instead of an absolute path on the
+            # system -- check the environment's source directory first before
+            # checking the full system's path
+            if path[0] == os.sep:
+                new_path = os.path.join(env.srcdir, path[1:])
+
+                if os.path.isfile(new_path):
+                    abspath = new_path
+        else:
+            abspath = os.path.join(env.srcdir, path)
+
+            # extensions may dump a generated asset in the output directory; if
+            # the absolute mapping to the source directory does not find the
+            # asset, attempt to bind the path based on the output directory
+            if not os.path.isfile(abspath):
+                abspath = os.path.join(outdir, path)
+
+    # if no asset can be found, ensure a `None` path is returned
+    if not os.path.isfile(abspath):
+        abspath = None
+
+    return abspath
 
 def first(it):
     """

@@ -12,6 +12,7 @@ from sphinx import addnodes
 from sphinx.locale import _
 from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
+from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
@@ -22,9 +23,11 @@ from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
+from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
+from sphinxcontrib.confluencebuilder.util import convert_px_length
+from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import first
-import math
 import posixpath
 import sys
 
@@ -1368,16 +1371,33 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = node['uri']
         uri = self.encode(uri)
         internal_img = uri.find('://') == -1 and not uri.startswith('data:')
+        is_svg = uri.startswith('data:image/svg+xml') or \
+            guess_mimetype(uri) == 'image/svg+xml'
 
         if internal_img:
             asset_docname = None
             if self.builder.name == 'singleconfluence':
                 asset_docname = self._docnames[-1]
 
-            image_key, hosting_docname, image_path = self.assets.fetch(node,
-                docname=asset_docname)
+            image_key, hosting_docname, image_path = \
+                self.assets.fetch(node, docname=asset_docname)
+
+            # if this image has not already be processed (injected at a later
+            # stage in the sphinx process); try processing it now
             if not image_key:
-                self.warn('unable to find image: {}', node['uri'])
+                # if this is an svg image, additional processing may also needed
+                if is_svg:
+                    confluence_supported_svg(self.builder, node)
+
+                if not asset_docname:
+                    asset_docname = self.docname
+
+                image_key, hosting_docname, image_path = \
+                    self.assets.process_image_node(
+                        node, asset_docname, standalone=True)
+
+            if not image_key:
+                self.warn('unable to find image: ' + uri)
                 raise nodes.SkipNode
 
         if node.get('from_math') and node.get('math_depth'):
@@ -1418,28 +1438,57 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             alt = self.encode(alt)
             attribs['ac:alt'] = alt
 
-        if 'scale' in node and 'width' not in node:
+        # extract height, width and scale values on this image
+        height, hu = extract_length(node.get('height'))
+        scale = node.get('scale')
+        width, wu = extract_length(node.get('width'))
+
+        # if a scale value is provided and a height/width is not set, attempt to
+        # determine the size of the image so that we can apply a scale value on
+        # the detected size values
+        if scale and not height and not width:
             if internal_img:
                 size = get_image_size(image_path)
                 if size is None:
                     self.warn('could not obtain image size; :scale: option is '
                         'ignored for ' + image_path)
                 else:
-                    scale = node['scale'] / 100.0
-                    node['width'] = str(int(math.ceil(size[0] * scale))) + 'px'
+                    width = size[0]
+                    wu = 'px'
             else:
                 self.warn('cannot not obtain image size for external image; '
                     ':scale: option is ignored for ' + uri)
 
-        if 'height' in node:
-            self.warn('height value for image is unsupported in confluence')
+        # apply scale factor to height/width fields
+        if scale:
+            if height:
+                height = int(round(float(height) * scale / 100))
+            if width:
+                width = int(round(float(width) * scale / 100))
 
-        if 'width' in node:
-            width = node['width']
+        # confluence only supports pixel sizes -- adjust any other unit type
+        # (if possible) to a pixel length
+        if height:
+            height = convert_px_length(height, hu)
+            if height is None:
+                self.warn('unsupported unit type for confluence: ' + hu)
+        if width:
+            width = convert_px_length(width, wu)
+            if width is None:
+                self.warn('unsupported unit type for confluence: ' + wu)
+
+        # disable height/width entries for attached svgs as using these
+        # attributes can result in a "broken image" rendering; instead, we will
+        # track any desired height/width entry and inject them when publishing
+        if internal_img and is_svg and (height or width):
+            height = None
+            width = None
+
+        # apply width/height fields on the image macro
+        if height:
+            attribs['ac:height'] = height
+        if width:
             attribs['ac:width'] = width
-
-            if not width.endswith('px'):
-                self.warn('unsupported unit type for confluence: ' + width)
 
         # [sphinx-gallary] create "thumbnail" images for sphinx-gallary
         #
@@ -1449,13 +1498,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # images to a smaller size with a Confluence editor). Although, if the
         # detected image size is smaller than our target, ignore any forced size
         # changes.
-        elif 'sphx-glr-multi-img' in node.get('class', []):
-            size = None
-            if image_path:
+        if height is None and width is None and internal_img and not is_svg:
+            if 'sphx-glr-multi-img' in node.get('class', []):
                 size = get_image_size(image_path)
 
-            if not size or size[1] > 250:
-                attribs['ac:height'] = '250'
+                if not size or size[1] > 250:
+                    attribs['ac:height'] = '250'
 
         if not internal_img:
             # an external or embedded image
@@ -1518,8 +1566,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.name == 'singleconfluence':
                 asset_docname = self._docnames[-1]
 
-            file_key, hosting_docname, _ = self.assets.fetch(node,
-                docname=asset_docname)
+            file_key, hosting_docname, _ = \
+                self.assets.fetch(node, docname=asset_docname)
+
+            # if this file has not already be processed (injected at a later
+            # stage in the sphinx process); try processing it now
+            if not file_key:
+                if not asset_docname:
+                    asset_docname = self.docname
+
+                file_key, hosting_docname, _ = \
+                    self.assets.process_file_node(
+                        node, asset_docname, standalone=True)
+
             if not file_key:
                 self.warn('unable to find download: ' '{}'.format(
                     node['reftarget']))
