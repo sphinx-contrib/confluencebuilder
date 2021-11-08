@@ -109,20 +109,9 @@ supported in a Confluence format document)*
 Extensions
 ----------
 
-.. note::
-
-    Atlassian Confluence Builder for Sphinx does not plan to directly support
-    external extensions provided outside of `Sphinx's main source repository`_.
-    However, changes are considered towards this extension's processing and API
-    to make it flexible for other extensions to integrate.
-
-    Developers wishing to integrate an extension with Atlassian Confluence
-    Builder can either attempt to add implementation inside the extension
-    itself (if permitted and rational), or create a new extension which can bind
-    both desired extensions together (e.g. `sphinx-confluence-nbsphinx-test`_).
-
-This extension will attempt to support any extension that is integrated into
-Sphinx's repository. The following extensions are currently supported:
+This extension will attempt to support any extension that is integrated in
+`Sphinx's main source repository`. The following section shows the status of
+each of these extensions:
 
 .. only:: latex
 
@@ -183,6 +172,89 @@ Type                              Notes
                                   references for the ``html`` builder.
 ================================= =====
 
+.. raw:: latex
+
+    \newpage
+
+Extensions (Third-party)
+------------------------
+
+.. note::
+
+    Support with third-party extensions (if any) may be limited. While an
+    extension may work with other builders (such as the ``html`` builder), it
+    may be implemented in a way which it cannot be integrated with this
+    extension. In addition, some features that an extension may use (e.g. using
+    JavaScript) cannot be used with a stock Confluence instance and therefore,
+    cannot be supported.
+
+Atlassian Confluence Builder for Sphinx does not guarantee support for
+third-party extensions found outside of `Sphinx's main source repository`_.
+Changes are considered towards this extension's processing and API to make it
+flexible for other extensions to integrate. Also, this extension *may* provide
+optional support for select third-party extensions (if permitted and rational),
+to help improve user experience.
+
+Developers wishing to integrate a third-party extension with Atlassian
+Confluence Builder can either attempt to add implementation inside the
+third-party extension itself, propose non-intrusive changes to this extension
+or create a new extension which can bind both desired extensions together
+(e.g. `sphinx-confluence-nbsphinx-test`_). Any changes directly submitted to be
+added into this extension's repository will be limited to the arbitrary
+release/development windows of this extension.
+
+The following table show a most recent state of various third-party extensions
+interacting with this extension:
+
+.. only:: latex
+
+    .. tabularcolumns:: |p{5cm}|p{11cm}|
+
+================================= =====
+Type                              Notes
+================================= =====
+`mlx.traceability`_               Limited support.
+
+                                  Formatting of content may not be as expected.
+`sphinx-gallery`_                 Supported
+`sphinx-needs`_                   Limited support.
+
+                                  Formatting of content may not be as expected.
+                                  The ``needs_default_layout`` option may need
+                                  to be tailored specifically for a Confluence
+                                  build.
+`sphinx-toolbox`_                 Supported
+`sphinxcontrib-actdiag`_          Limited support.
+
+                                  PNGs only; cannot configure for SVG at this
+                                  time.
+`sphinxcontrib-blockdiag`_        Limited support.
+
+                                  PNGs only; cannot configure for SVG at this
+                                  time.
+`sphinxcontrib-httpdomain`_       Supported
+`sphinxcontrib-mermaid`_          Limited support.
+
+                                  Requires a PNG/SVG configuration.
+`sphinxcontrib-nwdiag`_           Limited support.
+
+                                  PNGs only; cannot configure for SVG at this
+                                  time.
+`sphinxcontrib-plantuml`_         Supported.
+
+                                  sphinxcontrib-plantuml provides its own
+                                  support for this extension.
+`sphinxcontrib-programoutput`_    Supported
+`sphinxcontrib-seqdiag`_          Limited support.
+
+                                  PNGs only; cannot configure for SVG at this
+                                  time.
+================================= =====
+
+.. raw:: latex
+
+    \newpage
+
 Other
 -----
 
@@ -191,6 +263,7 @@ brings up another concern, feel free to bring up an issue:
 
     | Atlassian Confluence Builder for Confluence - Issues
     | https://github.com/sphinx-contrib/confluencebuilder/issues
+
 
 .. _Sphinx's main source repository: https://github.com/sphinx-doc/sphinx/tree/master/sphinx/ext
 .. _Sphinx: https://www.sphinx-doc.org/
@@ -223,6 +296,8 @@ brings up another concern, feel free to bring up an issue:
 .. _manpage: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-manpage
 .. _manpages_url: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-manpages_url
 .. _math: https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
+.. _mlx.traceability: https://melexis.github.io/sphinx-traceability-extension/
+.. _nbsphinx: https://nbsphinx.readthedocs.io/
 .. _numfig: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-numfig
 .. _numfig_format: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-numfig_format
 .. _option lists: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#option-lists
@@ -235,6 +310,9 @@ brings up another concern, feel free to bring up an issue:
 .. _rubric: https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric
 .. _sections: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
 .. _sphinx-confluence-nbsphinx-test: https://github.com/jdknight/sphinx-confluence-nbsphinx-test
+.. _sphinx-gallery: https://sphinx-gallery.github.io/
+.. _sphinx-needs: https://sphinxcontrib-needs.readthedocs.io/
+.. _sphinx-toolbox: https://sphinx-toolbox.readthedocs.io/
 .. _sphinx.ext.autodoc: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 .. _sphinx.ext.autosectionlabel: https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html
 .. _sphinx.ext.autosummary: https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html
@@ -255,6 +333,14 @@ brings up another concern, feel free to bring up an issue:
 .. _sphinx.ext.napoleon: https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 .. _sphinx.ext.todo: https://www.sphinx-doc.org/en/master/usage/extensions/todo.html
 .. _sphinx.ext.viewcode: https://www.sphinx-doc.org/en/master/usage/extensions/viewcode.html
+.. _sphinxcontrib-actdiag: https://pypi.org/project/sphinxcontrib-actdiag/
+.. _sphinxcontrib-blockdiag: https://pypi.org/project/sphinxcontrib-blockdiag/
+.. _sphinxcontrib-httpdomain: https://sphinxcontrib-httpdomain.readthedocs.io/
+.. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
+.. _sphinxcontrib-nwdiag: https://pypi.org/project/sphinxcontrib-nwdiag/
+.. _sphinxcontrib-plantuml: https://pypi.org/project/sphinxcontrib-plantuml/
+.. _sphinxcontrib-programoutput: https://sphinxcontrib-programoutput.readthedocs.io/
+.. _sphinxcontrib-seqdiag: https://pypi.org/project/sphinxcontrib-seqdiag/
 .. _tables: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#tables
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _transitions: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#transitions
