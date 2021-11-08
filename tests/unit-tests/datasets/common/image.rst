@@ -15,8 +15,23 @@ image
     :width: 200px
     :alt: alt text
 
-.. internal image with scaling
+.. internal image with alignment
 
 .. image:: ../../assets/image01.png
     :align: right
-    :scale: 20%
+
+.. internal image with no length units (assumed pixel size)
+
+.. image:: ../../assets/image01.png
+    :width: 123
+
+.. internal image with scaling
+
+.. image:: ../../assets/image01.png
+    :scale: 50%
+    :width: 100px
+
+.. internal image with non-pixel units
+
+.. image:: ../../assets/image01.png
+    :width: 2in

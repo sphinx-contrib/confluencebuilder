@@ -26,7 +26,7 @@ class TestConfluenceRstImage(unittest.TestCase):
 
         with parse('image', out_dir) as data:
             images = data.find_all('ac:image', recursive=False)
-            self.assertEqual(len(images), 3)
+            self.assertEqual(len(images), 6)
 
             # ##########################################################
             # basic image
@@ -47,7 +47,7 @@ class TestConfluenceRstImage(unittest.TestCase):
             self.assertTrue(image.has_attr('ac:alt'))
             self.assertEqual(image['ac:alt'], 'alt text')
             self.assertTrue(image.has_attr('ac:width'))
-            self.assertEqual(image['ac:width'], '200px')
+            self.assertEqual(image['ac:width'], '200')
             self.assertFalse(image.has_attr('ac:align'))
 
             attachment = image.find('ri:attachment')
@@ -55,14 +55,48 @@ class TestConfluenceRstImage(unittest.TestCase):
             self.assertEqual(attachment['ri:filename'], 'image01.png')
 
             # ##########################################################
-            # image with alignment and scaling
+            # image with alignment
+            # ##########################################################
+            image = images.pop(0)
+
+            self.assertTrue(image.has_attr('ac:align'))
+            self.assertEqual(image['ac:align'], 'right')
+
+            attachment = image.find('ri:attachment')
+            self.assertTrue(attachment.has_attr('ri:filename'))
+            self.assertEqual(attachment['ri:filename'], 'image01.png')
+
+            # ##########################################################
+            # image with no length units
             # ##########################################################
             image = images.pop(0)
 
             self.assertTrue(image.has_attr('ac:width'))
-            self.assertIsNotNone(image['ac:width'])
-            self.assertTrue(image.has_attr('ac:align'))
-            self.assertEqual(image['ac:align'], 'right')
+            self.assertEqual(image['ac:width'], '123')
+
+            attachment = image.find('ri:attachment')
+            self.assertTrue(attachment.has_attr('ri:filename'))
+            self.assertEqual(attachment['ri:filename'], 'image01.png')
+
+            # ##########################################################
+            # image with scaling
+            # ##########################################################
+            image = images.pop(0)
+
+            self.assertTrue(image.has_attr('ac:width'))
+            self.assertEqual(image['ac:width'], '50')
+
+            attachment = image.find('ri:attachment')
+            self.assertTrue(attachment.has_attr('ri:filename'))
+            self.assertEqual(attachment['ri:filename'], 'image01.png')
+
+            # ##########################################################
+            # image with non-pixel units
+            # ##########################################################
+            image = images.pop(0)
+
+            self.assertTrue(image.has_attr('ac:width'))
+            self.assertEqual(image['ac:width'], '192')
 
             attachment = image.find('ri:attachment')
             self.assertTrue(attachment.has_attr('ri:filename'))
