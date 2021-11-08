@@ -19,6 +19,12 @@ INVALID_CHARS = ['\\', '/', '"', ':', '?', '*', '|', '<', '>']
 # confluence default first-child masked margin offset (in pixels)
 FCMMO = 10
 
+# confluence font size observed from its default theme
+FONT_SIZE = 14
+
+# confluence font x-height size observed from its default theme
+FONT_X_HEIGHT = 7
+
 # sphinx literal to confluence language map
 #
 # Provides a map of Sphinx literal language values to respective and supported*
