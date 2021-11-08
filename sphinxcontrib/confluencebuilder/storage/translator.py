@@ -818,7 +818,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_tag(node))
             self.body.append(self._end_tag(node))
 
-        self.body.append(self._start_tag(node, 'table', suffix=self.nl))
+        table_classes = node.get('classes', [])
+        attribs = {}
+
+        # [sphinxcontrib-needs]
+        # force needs tables to a maximum width
+        needs_styles = ['need', 'NEEDS_TABLE', 'NEEDS_DATATABLES']
+        node.__needs_table = any(ns in table_classes for ns in needs_styles)
+        if node.__needs_table:
+            attribs['style'] = 'width: 100%;'
+
+        self.body.append(self._start_tag(
+            node, 'table', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
 
         # track the thead context
@@ -835,9 +846,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_tgroup(self, node):
         node.stubs = []
-        # if column widths are explicitly given, apply specific column widths
+
+        apply_colwidths = False
         table_classes = node.parent.get('classes', [])
+
+        # if column widths are explicitly given, apply specific column widths
         if 'colwidths-given' in table_classes:
+            apply_colwidths = True
+
+        # [sphinxcontrib-needs]
+        # force applying column widths if this is a needs table
+        if node.parent.__needs_table:
+            apply_colwidths = True
+
+        if apply_colwidths:
             has_colspec = False
             for colspec in node.traverse(nodes.colspec):
                 if not has_colspec:
@@ -878,20 +900,34 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop()) # tr
 
     def visit_entry(self, node):
+        row = node.parent
+        tgroup = row.parent.parent
+        table = tgroup.parent
+
         if self._thead_context[-1]:
             target_tag = 'th'
-        elif node.parent.parent.parent.stubs[node.parent.column]:
+        elif node.parent.parent.parent.stubs[row.column]:
             target_tag = 'th'
         else:
             target_tag = 'td'
 
-        node.parent.column += 1
+        row.column += 1
 
         attribs = {}
         if 'morecols' in node:
             attribs['colspan'] = node['morecols'] + 1
         if 'morerows' in node:
             attribs['rowspan'] = node['morerows'] + 1
+
+        # [sphinxcontrib-needs]
+        # if this is entry in a needs table, apply various styling
+        if table.__needs_table:
+            if 'head' in row.get('classes', []):
+                target_tag = 'th'
+            if 'head_center' in node.get('classes', []):
+                attribs['style'] = 'text-align: center;'
+            if 'head_right' in node.get('classes', []):
+                attribs['style'] = 'text-align: right;'
 
         self.body.append(self._start_tag(node, target_tag, **attribs))
         self.context.append(self._end_tag(node))
