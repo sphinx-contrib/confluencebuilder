@@ -1869,14 +1869,24 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append('<br />')
 
     def visit_line_block(self, node):
-        style = 'margin-left: {}px;'.format(INDENT)
+        attribs = {}
+        style = ''
 
-        # add top padding for the first block, to ensure some separation from a
-        # previous sibling element
-        if not isinstance(node.parent, nodes.line_block):
+        # indent this line-block if its not the first element in the parent or
+        # if the parent is also a line-block
+        if node.parent[0] != node or isinstance(node.parent, nodes.line_block):
+            style += 'margin-left: {}px;'.format(INDENT)
+
+        # if this line-block is not the first element in the parent and the
+        # parent is not a line-block, add some separation from a previous
+        # sibling element
+        if node.parent[0] != node and not isinstance(node.parent, nodes.line_block):
             style += 'padding-top: {}px;'.format(FCMMO)
 
-        self.body.append(self._start_tag(node, 'div', **{'style': style}))
+        if style:
+            attribs['style'] = style
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
         self.context.append(self._end_tag(node))
 
     def depart_line_block(self, node):
