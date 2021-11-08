@@ -102,15 +102,6 @@ Type                    Notes
 *(note: directive options "class" and "name" are ignored as they are not
 supported in a Confluence format document)*
 
-Miscellaneous
--------------
-
-This extension currently does not support the generation of indexed content
-(e.g. ``genindex`` or ``modindex``).
-
-This extension does not include support for generating a "Search" document as
-Confluence provides its own advanced search capabilities.
-
 .. raw:: latex
 
     \newpage
