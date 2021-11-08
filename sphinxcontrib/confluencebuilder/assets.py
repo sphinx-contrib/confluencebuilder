@@ -11,6 +11,7 @@ from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import find_env_abspath
 import os
 
 # default content type to use if a type cannot be detected for an asset
@@ -116,26 +117,9 @@ class ConfluenceAssetManager:
         """
         key = None
 
-        path = self._interpretAssetPath(node)
+        path = self._interpret_asset_path(node)
         if path:
             asset = self.path2asset.get(path, None)
-
-            # process node if asset is missing (third-party extensions)
-            #
-            # If a node's asset cannot be found, this image node may have been
-            # created after pre-processing occurred. Attempt to re-process the
-            # node as a standalone image.
-            if not asset and not docname and node.document:
-                docname = canon_path(
-                    self.env.path2doc(node.document['source']))
-
-            if not asset and docname:
-                if isinstance(node, nodes.image):
-                    self.processImageNode(node, docname, standalone=True)
-                elif isinstance(node, addnodes.download_reference):
-                    self.processFileNode(node, docname, standalone=True)
-
-                asset = self.path2asset.get(path, None)
 
             if asset:
                 key = asset.key
@@ -189,13 +173,13 @@ class ConfluenceAssetManager:
         """
         image_nodes = doctree.traverse(nodes.image)
         for node in image_nodes:
-            self.processImageNode(node, docname, standalone)
+            self.process_image_node(node, docname, standalone)
 
         file_nodes = doctree.traverse(addnodes.download_reference)
         for node in file_nodes:
-            self.processFileNode(node, docname, standalone)
+            self.process_file_node(node, docname, standalone)
 
-    def processFileNode(self, node, docname, standalone=False):
+    def process_file_node(self, node, docname, standalone=False):
         """
         process an file node
 
@@ -207,15 +191,20 @@ class ConfluenceAssetManager:
             node: the file node
             docname: the document's name
             standalone (optional): ignore hash mappings (defaults to False)
+
+        Returns:
+            the key, document name and path
         """
 
         target = node['reftarget']
         if target.find('://') == -1:
-            path = self._interpretAssetPath(node)
+            path = self._interpret_asset_path(node)
             if path:
-                self._handleEntry(path, docname, standalone)
+                return self._handle_entry(path, docname, standalone)
 
-    def processImageNode(self, node, docname, standalone=False):
+        return None, None, None
+
+    def process_image_node(self, node, docname, standalone=False):
         """
         process an image node
 
@@ -227,15 +216,20 @@ class ConfluenceAssetManager:
             node: the image node
             docname: the document's name
             standalone (optional): ignore hash mappings (defaults to False)
+
+        Returns:
+            the key, document name and path
         """
 
         uri = str(node['uri'])
         if not uri.startswith('data:') and uri.find('://') == -1:
-            path = self._interpretAssetPath(node)
+            path = self._interpret_asset_path(node)
             if path:
-                self._handleEntry(path, docname, standalone)
+                return self._handle_entry(path, docname, standalone)
 
-    def _handleEntry(self, path, docname, standalone=False):
+        return None, None, None
+
+    def _handle_entry(self, path, docname, standalone=False):
         """
         handle an asset entry
 
@@ -296,7 +290,9 @@ class ConfluenceAssetManager:
         # track (if not already) that this document uses this asset
         asset.docnames.add(docname)
 
-    def _interpretAssetPath(self, node):
+        return asset.key, docname, asset.path
+
+    def _interpret_asset_path(self, node):
         """
         find an absolute path for a target assert
 
@@ -321,35 +317,7 @@ class ConfluenceAssetManager:
             docdir = os.path.dirname(node['refdoc'])
             path = os.path.join(docdir, node['reftarget'])
 
-        abspath = None
-        if path:
-            path = os.path.normpath(path)
-            if os.path.isabs(path):
-                abspath = path
-
-                # some extensions will prefix the path of an asset with `/`,
-                # with the intent of that path being the root from the
-                # configured source directory instead of an absolute path on the
-                # system -- to handle this use case, if a provided absolute path
-                # cannot be found, attempt to find an asset based on a path
-                # based in the source directory
-                if not os.path.isfile(abspath) and path[0] == os.sep:
-                    abspath = os.path.join(self.env.srcdir, path[1:])
-            else:
-                abspath = os.path.join(self.env.srcdir, path)
-
-                # a third party extension may dump a generated asset in the
-                # output directory; if the absolute mapping to the source
-                # directory does not find the asset, attempt to bind the path
-                # based on the output directory
-                if not os.path.isfile(abspath):
-                    abspath = os.path.join(self.outdir, path)
-
-        # if no asset can be found, ensure a `None` path is returned
-        if not os.path.isfile(abspath):
-            abspath = None
-
-        return abspath
+        return find_env_abspath(self.env, self.outdir, path)
 
 class ConfluenceSupportedImages:
     def __init__(self):

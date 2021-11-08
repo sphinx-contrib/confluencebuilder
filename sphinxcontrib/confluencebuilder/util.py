@@ -175,6 +175,54 @@ def extract_strings_from_file(filename):
 
     return filelist
 
+def find_env_abspath(env, outdir, path):
+    """
+    find an existing absolute path for a provided path in a sphinx environment
+
+    This call will accept a path string and attempt to return an absolute path
+    to the file (if it exists). If no path can be found, this call will return
+    `None`.
+
+    Args:
+        env: the build environment
+        outdir: the build's output directory
+        path: the path to use
+
+    Returns:
+        the absolute path
+    """
+
+    abspath = None
+    if path:
+        path = os.path.normpath(path)
+        if os.path.isabs(path):
+            abspath = path
+
+            # some generated nodes will prefix the path of an asset with `/`,
+            # with the intent of that path being the root from the
+            # configured source directory instead of an absolute path on the
+            # system -- check the environment's source directory first before
+            # checking the full system's path
+            if path[0] == os.sep:
+                new_path = os.path.join(env.srcdir, path[1:])
+
+                if os.path.isfile(new_path):
+                    abspath = new_path
+        else:
+            abspath = os.path.join(env.srcdir, path)
+
+            # extensions may dump a generated asset in the output directory; if
+            # the absolute mapping to the source directory does not find the
+            # asset, attempt to bind the path based on the output directory
+            if not os.path.isfile(abspath):
+                abspath = os.path.join(outdir, path)
+
+    # if no asset can be found, ensure a `None` path is returned
+    if not os.path.isfile(abspath):
+        abspath = None
+
+    return abspath
+
 def first(it):
     """
     returns the first element in an iterable

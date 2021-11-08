@@ -444,26 +444,6 @@ class ConfluencePublisher():
 
         # publish attachment
         try:
-            # ensure svg attachment as xml declaration
-            #
-            # This is a special case of manipulating attachment data in the
-            # publishing stage of this extension. SVG files must have an XML
-            # declaration in them, or Confluence will not accept them. This
-            # extension will not modify references image files on the disk (not
-            # to edit a documentation's original content) or try to maintain a
-            # duplicate cache of image files that need to correct these SVG
-            # files. Instead, when ready to publish SVG content data to a
-            # Confluence instance, we will sanity check that the declaration
-            # exists on the first line. If not, it will be injected at the start
-            # before publishing. Still does bypass some hash-tracking concepts,
-            # but managing hash entries based off the original source content is
-            # fine and should not have any significant side effects.
-            raw_data = data
-            XML_DEC = b'<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-            if mimetype == 'image/svg+xml':
-                if not raw_data.lstrip().startswith(b'<?xml'):
-                    raw_data = XML_DEC + b'\n' + raw_data
-
             # split hash comment into chunks to minize rendering issues with a
             # single one-world-long-hash value
             chunked_hash = '\n'.join(
@@ -471,7 +451,7 @@ class ConfluencePublisher():
 
             data = {
                 'comment': '{}:{}'.format(HASH_KEY, chunked_hash),
-                'file': (name, raw_data, mimetype),
+                'file': (name, data, mimetype),
             }
 
             if not self.notify:
