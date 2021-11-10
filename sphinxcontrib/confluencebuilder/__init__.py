@@ -216,7 +216,7 @@ def confluence_builder_inited(app):
     """
 
     # ignore non-confluence builder types
-    if type(app.builder) != ConfluenceBuilder:
+    if not isinstance(app.builder, ConfluenceBuilder):
         return
 
     # register nodes required by confluence-specific directives
