@@ -446,11 +446,12 @@ class ConfluencePublisher():
         try:
             # split hash comment into chunks to minize rendering issues with a
             # single one-world-long-hash value
+            hash = '{}:{}'.format(HASH_KEY, hash)
             chunked_hash = '\n'.join(
                 [hash[i:i + 16] for i in range(0, len(hash), 16)])
 
             data = {
-                'comment': '{}:{}'.format(HASH_KEY, chunked_hash),
+                'comment': chunked_hash,
                 'file': (name, data, mimetype),
             }
 
