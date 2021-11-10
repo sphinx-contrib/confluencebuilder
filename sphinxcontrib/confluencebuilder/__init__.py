@@ -216,7 +216,7 @@ def confluence_builder_inited(app):
     """
 
     # ignore non-confluence builder types
-    if type(app.builder) != ConfluenceBuilder:
+    if not isinstance(app.builder, ConfluenceBuilder):
         return
 
     # register nodes required by confluence-specific directives
@@ -240,13 +240,19 @@ def confluence_builder_inited(app):
                 autosummary.autosummary_table,
                 confluence=(
                     autosummary.autosummary_table_visit_html,
-                    autosummary.autosummary_noop)
+                    autosummary.autosummary_noop),
+                singleconfluence=(
+                    autosummary.autosummary_table_visit_html,
+                    autosummary.autosummary_noop),
             )
             app.registry.add_translation_handlers(
                 autosummary.autosummary_toc,
                 confluence=(
                     autosummary.autosummary_toc_visit_html,
-                    autosummary.autosummary_noop)
+                    autosummary.autosummary_noop),
+                singleconfluence=(
+                    autosummary.autosummary_toc_visit_html,
+                    autosummary.autosummary_noop),
             )
             break
 

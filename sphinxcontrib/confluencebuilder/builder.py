@@ -93,8 +93,10 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
-        self.use_index = config.confluence_use_index
-        self.use_search = config.confluence_include_search
+
+        if self.name != 'singleconfluence':
+            self.use_index = config.confluence_use_index
+            self.use_search = config.confluence_include_search
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
@@ -223,7 +225,7 @@ class ConfluenceBuilder(Builder):
         # generate domain index information
         self.domain_indices = {}
         indices_config = self.config.confluence_domain_indices
-        if indices_config:
+        if indices_config and self.name != 'singleconfluence':
             for domain_name in sorted(self.env.domains):
                 domain = self.env.domains[domain_name]
                 for indexcls in domain.indices:
@@ -342,8 +344,10 @@ class ConfluenceBuilder(Builder):
         # exception is assets which may be finalized during a document's post
         # transformation stage (e.g. embedded images are converted into real
         # images in Sphinx, which is then provided to a translator). Embedded
-        # images are detected during an 'doctree-resolved' hook (see __init__).
-        self.assets.process(ordered_docnames)
+        # images and other late-injected assets are processed in a translator
+        # when needed.
+        if self.name != 'singleconfluence':
+            self.assets.process(ordered_docnames)
 
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
