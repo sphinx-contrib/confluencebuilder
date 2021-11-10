@@ -110,7 +110,7 @@ Extensions
 ----------
 
 This extension will attempt to support any extension that is integrated in
-`Sphinx's main source repository`. The following section shows the status of
+`Sphinx's main source repository`_. The following section shows the status of
 each of these extensions:
 
 .. only:: latex
