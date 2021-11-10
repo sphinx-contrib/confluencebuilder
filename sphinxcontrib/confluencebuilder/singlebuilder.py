@@ -11,8 +11,7 @@ from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import progress_message
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
@@ -68,13 +67,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def write(self, build_docnames, updated_docnames, method='update'):
         docnames = self.env.all_docs
         if self.config.root_doc not in docnames:
-            ConfluenceLogger.error('singleconfluence requires root_doc')
+            logger.error('singleconfluence requires root_doc')
             return
 
         root_doctitle = self._process_root_document()
         if not root_doctitle:
-            ConfluenceLogger.error(
-                'singleconfluence requires title on root_doc')
+            logger.error('singleconfluence requires title on root_doc')
             return
 
         with progress_message(__('assembling single confluence document')):
@@ -162,7 +160,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 return None
 
         # register the title for the root document (for references, assets, ...)
-        ConfluenceState.registerTitle(docname, doctitle, self.config)
+        self.state.registerTitle(docname, doctitle, self.config)
 
         # register the root document for publishing
         self.publish_docnames.append(docname)
@@ -232,7 +230,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                         if section_id > 0:
                             target = '{}.{}'.format(target, section_id)
 
-                        ConfluenceState.registerTarget(anchorname, target)
+                        self.state.registerTarget(anchorname, target)
 
                         # register a "document target" if the document's base
                         # identifier is set to a value which does not match the
@@ -258,6 +256,6 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                         # to the leading section which has this mapping.
                         if section_node == root_section and not docref_set:
                             if doc_anchorname != anchorname:
-                                ConfluenceState.registerTarget(
+                                self.state.registerTarget(
                                     doc_anchorname, target)
                             docref_set = True

@@ -7,8 +7,7 @@
 
 from __future__ import unicode_literals
 from os import path
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import re
 import requests
 import zlib
@@ -54,15 +53,15 @@ def build_intersphinx(builder):
                 for name, dispname, typ, docname, raw_anchor, prio in sorted(
                         domain.get_objects()):
 
-                    page_id = ConfluenceState.uploadId(docname)
+                    page_id = builder.state.uploadId(docname)
                     if not page_id:
                         continue
 
                     target_name = '{}#{}'.format(docname, raw_anchor)
-                    target = ConfluenceState.target(target_name)
+                    target = builder.state.target(target_name)
 
                     if raw_anchor and target:
-                        title = ConfluenceState.title(docname)
+                        title = builder.state.title(docname)
                         anchor = 'id-' + title + '-' + target
                         anchor = anchor.replace(' ', '')
 
@@ -81,7 +80,7 @@ def build_intersphinx(builder):
                         dispname = '-'
                     entry = ('%s %s:%s %s %s %s\n' %
                              (name, domainname, typ, prio, uri, dispname))
-                    ConfluenceLogger.verbose('(intersphinx) ' + entry.strip())
+                    logger.verbose('(intersphinx) ' + entry.strip())
                     f.write(compressor.compress(entry.encode('utf-8')))
 
         f.write(compressor.flush())

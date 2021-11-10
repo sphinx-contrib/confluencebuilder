@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -34,7 +34,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def __init__(self, document, builder):
         BaseTranslator.__init__(self, document)
         self.builder = builder
-        self.warn = document.reporter.warning
+        self.state = builder.state
+        self.verbose = ConfluenceLogger.verbose
+        self.warn = ConfluenceLogger.warn
         config = builder.config
 
         # acquire the active document name from the builder
@@ -115,7 +117,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         node_name = node.__class__.__name__
         ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
         if node_name in ignore_nodes:
-            ConfluenceLogger.verbose('ignore node {} (conf)'.format(node_name))
+            self.verbose('ignore node {} (conf)'.format(node_name))
             raise nodes.SkipNode
 
         # allow users to override unknown nodes

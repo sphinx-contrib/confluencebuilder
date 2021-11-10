@@ -4,16 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-
-# maximum length for a confluence page title
-#
-# The maximum length of a Confluence page is set to 255. This is a Confluence-
-# imposed limitation [1].
-#
-# [1]: confluence-project/confluence-core/confluence/src/
-#       java/com/atlassian/confluence/pages/AbstractPage::isValidTitleLength
-CONFLUENCE_MAX_TITLE_LEN = 255
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
 class ConfluenceState:
     """
@@ -46,8 +38,8 @@ class ConfluenceState:
         [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
         """
         ConfluenceState.doc2parentDoc[docname] = parent_docname
-        ConfluenceLogger.verbose(
-            "setting parent of %s to: %s" % (docname, parent_docname))
+        logger.verbose(
+            'setting parent of %s to: %s' % (docname, parent_docname))
 
     @staticmethod
     def registerTarget(refid, target):
@@ -63,7 +55,7 @@ class ConfluenceState:
         writer can properly prepare a link; see also `target`).
         """
         ConfluenceState.refid2target[refid] = target
-        ConfluenceLogger.verbose("mapping %s to target: %s" % (refid, target))
+        logger.verbose('mapping %s to target: %s' % (refid, target))
 
     @staticmethod
     def registerTitle(docname, title, config):
@@ -100,8 +92,8 @@ class ConfluenceState:
 
         if len(title) > try_max:
             title = title[0:try_max]
-            ConfluenceLogger.warn("document title has been trimmed due to "
-                "length: %s" % docname)
+            logger.warn('document title has been trimmed due to '
+                'length: %s' % docname)
 
         base_title = title
         title += base_tail
@@ -110,7 +102,7 @@ class ConfluenceState:
         offset = 2
         while title.lower() in ConfluenceState.title2doc:
             if offset == 2:
-                ConfluenceLogger.warn('title conflict detected with '
+                logger.warn('title conflict detected with '
                     "'{}' and '{}'".format(
                         ConfluenceState.title2doc[title.lower()], docname))
 
@@ -124,7 +116,7 @@ class ConfluenceState:
 
         ConfluenceState.doc2title[docname] = title
         ConfluenceState.title2doc[title.lower()] = docname
-        ConfluenceLogger.verbose("mapping %s to title: %s" % (docname, title))
+        logger.verbose('mapping %s to title: %s' % (docname, title))
         return title
 
     @staticmethod
@@ -140,7 +132,7 @@ class ConfluenceState:
         [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#id3
         """
         ConfluenceState.doc2ttd[docname] = depth
-        ConfluenceLogger.verbose("track %s toc-depth: %s" % (docname, depth))
+        logger.verbose('track %s toc-depth: %s' % (docname, depth))
 
     @staticmethod
     def registerUploadId(docname, id):
@@ -157,8 +149,7 @@ class ConfluenceState:
         tracked in this state (see also `uploadId`).
         """
         ConfluenceState.doc2uploadId[docname] = id
-        ConfluenceLogger.verbose(
-            "tracking docname %s's upload id: %s" % (docname, id))
+        logger.verbose("tracking docname %s's upload id: %s" % (docname, id))
 
     @staticmethod
     def reset():
