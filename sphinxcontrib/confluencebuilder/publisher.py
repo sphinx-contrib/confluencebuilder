@@ -15,7 +15,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationEr
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
 import json
 import time
@@ -427,7 +427,7 @@ class ConfluencePublisher():
             if len(parts) > 1:
                 tracked_hash = ''.join(parts[1].split())
                 if hash == tracked_hash:
-                    ConfluenceLogger.verbose('attachment ({}) is already '
+                    logger.verbose('attachment ({}) is already '
                         'published to document with same hash'.format(name))
                     return attachment['id']
 
@@ -497,7 +497,7 @@ class ConfluencePublisher():
         uploaded_page_id = None
 
         if self.config.confluence_adv_trace_data:
-            ConfluenceLogger.trace('data', data['content'])
+            logger.trace('data', data['content'])
 
         if self.dryrun:
             _, page = self.getPage(page_name, 'version,ancestors')
@@ -575,7 +575,7 @@ class ConfluencePublisher():
                     if str(ex).find('title already exists') == -1:
                         raise
 
-                    ConfluenceLogger.verbose('title already exists warning '
+                    logger.verbose('title already exists warning '
                         'for page {}'.format(page_name))
 
                     _, page = self.getPageCaseInsensitive(page_name)
@@ -697,7 +697,7 @@ class ConfluencePublisher():
             if str(ex).find('No content found with id') == -1:
                 raise
 
-            ConfluenceLogger.verbose('ignore missing delete for page '
+            logger.verbose('ignore missing delete for page '
                 'identifier: {}'.format(page_id))
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
@@ -810,8 +810,7 @@ class ConfluencePublisher():
             # will fail as it normally would.
             if str(ex).find('OptimisticLockException') == -1:
                 raise
-            ConfluenceLogger.warn(
-                'remote page updated failed; retrying...')
+            logger.warn('remote page updated failed; retrying...')
             time.sleep(1)
             self.rest_client.put('content', page['id'], updatePage)
 
@@ -836,7 +835,7 @@ class ConfluencePublisher():
             s += ' ({})'.format(id)
         if misc:
             s += ' ' + misc
-        ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+        logger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
 
     def _onlynew(self, msg, id=None, misc=''):
         """
@@ -856,7 +855,7 @@ class ConfluencePublisher():
             s += ' ' + self._name_cache[id]
         if id:
             s += ' ({})'.format(id)
-        ConfluenceLogger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+        logger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
 
     def _populate_labels(self, page, labels):
         """

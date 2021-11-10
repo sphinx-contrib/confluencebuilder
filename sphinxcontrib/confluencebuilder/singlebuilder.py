@@ -11,7 +11,7 @@ from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import progress_message
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
@@ -68,13 +68,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def write(self, build_docnames, updated_docnames, method='update'):
         docnames = self.env.all_docs
         if self.config.root_doc not in docnames:
-            ConfluenceLogger.error('singleconfluence requires root_doc')
+            logger.error('singleconfluence requires root_doc')
             return
 
         root_doctitle = self._process_root_document()
         if not root_doctitle:
-            ConfluenceLogger.error(
-                'singleconfluence requires title on root_doc')
+            logger.error('singleconfluence requires title on root_doc')
             return
 
         with progress_message(__('assembling single confluence document')):

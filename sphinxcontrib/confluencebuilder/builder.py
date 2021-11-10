@@ -115,7 +115,7 @@ class ConfluenceBuilder(Builder):
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
         if old_url != new_url:
-            ConfluenceLogger.warn('normalizing confluence url from '
+            self.warn('normalizing confluence url from '
                 '{} to {} '.format(old_url, new_url))
             self.config.confluence_server_url = new_url
 
@@ -464,8 +464,7 @@ class ConfluenceBuilder(Builder):
                     if self.writer.output:
                         file.write(self.writer.output)
             except (IOError, OSError) as err:
-                ConfluenceLogger.warn("error writing file "
-                    "%s: %s" % (outfilename, err))
+                self.warn('error writing file %s: %s' % (outfilename, err))
 
     def publish_doc(self, docname, output):
         conf = self.config
@@ -551,7 +550,7 @@ class ConfluenceBuilder(Builder):
             if page_id:
                 ConfluenceState.registerUploadId(docname, page_id)
             else:
-                ConfluenceLogger.warn('cannot publish asset since publishing '
+                self.warn('cannot publish asset since publishing '
                     'point cannot be found ({}): {}'.format(key, docname))
                 return
 
@@ -676,8 +675,7 @@ class ConfluenceBuilder(Builder):
                         self.publish_doc(docname, output)
 
                 except (IOError, OSError) as err:
-                    ConfluenceLogger.warn("error reading file %s: "
-                        "%s" % (docfile, err))
+                    self.warn('error reading file %s: %s' % (docfile, err))
 
             def to_asset_name(asset):
                 return asset[0]
@@ -696,8 +694,7 @@ class ConfluenceBuilder(Builder):
                         output = file.read()
                         self.publish_asset(key, docname, output, type, hash)
                 except (IOError, OSError) as err:
-                    ConfluenceLogger.warn("error reading asset %s: "
-                        "%s" % (key, err))
+                    self.warn('error reading asset %s: %s' % (key, err))
 
             self.publish_purge()
             self.publish_finalize()
@@ -1017,10 +1014,10 @@ class ConfluenceBuilder(Builder):
             if not self.config.confluence_disable_autogen_title:
                 doctitle = "autogen-{}".format(docname)
                 if self.publish:
-                    ConfluenceLogger.warn("document will be published using an "
-                        "generated title value: {}".format(docname))
+                    self.warn('document will be published using an '
+                        'generated title value: {}'.format(docname))
             elif self.publish:
-                ConfluenceLogger.warn("document will not be published since it "
-                    "has no title: {}".format(docname))
+                self.warn('document will not be published since it '
+                    'has no title: {}'.format(docname))
 
         return doctitle

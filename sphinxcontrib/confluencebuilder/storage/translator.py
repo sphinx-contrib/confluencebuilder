@@ -14,7 +14,6 @@ from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
 from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
-from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
@@ -957,7 +956,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # when a local table of contents contains a section name which is a
         # reference to another document
         if self._reference_context:
-            ConfluenceLogger.verbose('skipping nested reference container')
+            self.verbose('skipping nested reference container')
             return
 
         if 'iscurrent' in node:
@@ -1365,7 +1364,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_image(self, node):
         if 'uri' not in node or not node['uri']:
-            ConfluenceLogger.verbose('skipping image with no uri')
+            self.verbose('skipping image with no uri')
             raise nodes.SkipNode
 
         uri = node['uri']
