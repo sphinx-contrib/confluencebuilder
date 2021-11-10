@@ -1387,6 +1387,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 if is_svg:
                     confluence_supported_svg(self.builder, node)
 
+                if not asset_docname:
+                    asset_docname = self.docname
+
                 image_key, hosting_docname, image_path = \
                     self.assets.process_image_node(
                         node, asset_docname, standalone=True)
@@ -1567,6 +1570,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # if this file has not already be processed (injected at a later
             # stage in the sphinx process); try processing it now
             if not file_key:
+                if not asset_docname:
+                    asset_docname = self.docname
+
                 file_key, hosting_docname, _ = \
                     self.assets.process_file_node(
                         node, asset_docname, standalone=True)
