@@ -14,7 +14,6 @@ from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
 from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
-from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
 from sphinxcontrib.confluencebuilder.std.confluence import INDENT
@@ -60,7 +59,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
         self._thead_context = []
         self.colspecs = []
-        self._tocdepth = ConfluenceState.toctreeDepth(self.docname)
+        self._tocdepth = self.state.toctreeDepth(self.docname)
 
         # helpers for dealing with disabled/unsupported features
         restricted = config.confluence_adv_restricted
@@ -154,7 +153,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # fallback link to jump to the desired point in a document).
         if self.builder.name == 'singleconfluence' and self.can_anchor:
             doc_anchorname = '%s/' % node['docname']
-            doc_target = ConfluenceState.target(doc_anchorname)
+            doc_target = self.state.target(doc_anchorname)
             if not doc_target:
                 doc_id = node['docname']
                 self.body.append(self._start_ac_macro(node, 'anchor'))
@@ -1007,7 +1006,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
-        target = ConfluenceState.target(anchorname)
+        target = self.state.target(anchorname)
         if target:
             anchor_value = target
             anchor_value = self.encode(anchor_value)
@@ -1045,7 +1044,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def _visit_reference_intern_uri(self, node):
         docname = posixpath.normpath(
             self.docparent + path.splitext(node['refuri'].split('#')[0])[0])
-        doctitle = ConfluenceState.title(docname)
+        doctitle = self.state.title(docname)
         if not doctitle:
             self.warn('unable to build link to document due to '
                 'missing title (in {}): {}'.format(self.docname, docname))
@@ -1108,7 +1107,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # only build an anchor if required (e.g. is a reference label
             # already provided by a build section element)
             target_name = '{}#{}'.format(self.docname, anchor)
-            target = ConfluenceState.target(target_name)
+            target = self.state.target(target_name)
             if not target:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', anchor))
@@ -1519,7 +1518,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
-            hosting_doctitle = ConfluenceState.title(
+            hosting_doctitle = self.state.title(
                 hosting_docname, hosting_docname)
             hosting_doctitle = self.encode(hosting_doctitle)
 
@@ -1583,7 +1582,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     node['reftarget']))
                 raise nodes.SkipNode
 
-            hosting_doctitle = ConfluenceState.title(hosting_docname)
+            hosting_doctitle = self.state.title(hosting_docname)
             hosting_doctitle = self.encode(hosting_doctitle)
 
             # If the view-file macro is permitted along with it not being an
