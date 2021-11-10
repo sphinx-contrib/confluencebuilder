@@ -10,6 +10,15 @@ import os
 # confluence trailing bind path for rest api
 API_REST_BIND_PATH = 'rest/api'
 
+# maximum length for a confluence page title
+#
+# The maximum length of a Confluence page is set to 255. This is a Confluence-
+# imposed limitation [1].
+#
+# [1]: confluence-project/confluence-core/confluence/src/
+#       java/com/atlassian/confluence/pages/AbstractPage::isValidTitleLength
+CONFLUENCE_MAX_TITLE_LEN = 255
+
 # confluence default (paragraph) indent offset (in pixels)
 INDENT = 30
 
