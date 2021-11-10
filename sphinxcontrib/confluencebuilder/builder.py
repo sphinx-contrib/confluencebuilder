@@ -344,8 +344,10 @@ class ConfluenceBuilder(Builder):
         # exception is assets which may be finalized during a document's post
         # transformation stage (e.g. embedded images are converted into real
         # images in Sphinx, which is then provided to a translator). Embedded
-        # images are detected during an 'doctree-resolved' hook (see __init__).
-        self.assets.process(ordered_docnames)
+        # images and other late-injected assets are processed in a translator
+        # when needed.
+        if self.name != 'singleconfluence':
+            self.assets.process(ordered_docnames)
 
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
