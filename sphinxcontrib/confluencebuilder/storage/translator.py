@@ -581,7 +581,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             lang = LITERAL2LANG_MAP[lang]
         else:
             if lang not in self._tracked_unknown_code_lang:
-                self.warn('unknown code language: {}'.format(lang))
+                self.warn('unsupported code language for confluence: ' + lang)
                 self._tracked_unknown_code_lang.append(lang)
             lang = LITERAL2LANG_MAP[FALLBACK_HIGHLIGHT_STYLE]
 
