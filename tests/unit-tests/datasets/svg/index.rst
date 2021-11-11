@@ -5,14 +5,17 @@ svgs
 
 .. image:: svg.svg
 
-.. image:: svg-viewbox.svg
-
 .. image:: svg-none.svg
 
 
 .. doctype should be injected into this document
 
 .. image:: svg-doctype.svg
+
+
+.. viewbox sizes should be added into height/width
+
+.. image:: svg-viewbox.svg
 
 
 .. applying length/scale options into the svgs
