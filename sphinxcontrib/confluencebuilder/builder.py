@@ -609,18 +609,23 @@ class ConfluenceBuilder(Builder):
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
 
-            n = 0
+            legacy_assets = {}
             for legacy_asset_info in self.legacy_assets.values():
-                n += len(legacy_asset_info.keys())
-            if n > 0:
-                for legacy_asset_info in status_iterator(
-                        self.legacy_assets.values(),
-                        'removing legacy assets... ',
-                        length=n,
-                        verbosity=self._verbose):
+                for attachment_id, attachment_name in legacy_asset_info.items():
+                    legacy_assets[attachment_id] = attachment_name
 
-                    for id in legacy_asset_info.keys():
-                        self.publisher.removeAttachment(id)
+            if legacy_assets:
+                def to_asset_name(attachment_id):
+                    return legacy_assets[attachment_id]
+
+                for attachment_id in status_iterator(
+                        legacy_assets.keys(),
+                        'removing legacy assets... ',
+                        length=len(legacy_assets.keys()),
+                        verbosity=self._verbose,
+                        stringify_func=to_asset_name):
+
+                    self.publisher.removeAttachment(attachment_id)
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
