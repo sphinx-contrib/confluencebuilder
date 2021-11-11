@@ -8,8 +8,8 @@
 from docutils import nodes
 from sphinx.locale import __
 from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
-from sphinx.util.nodes import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
@@ -20,10 +20,11 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         root_doc = self.config.root_doc
         tree = self.env.get_doctree(root_doc)
         tree = inline_all_toctrees(
-            self, set(), root_doc, tree, darkgreen, [root_doc])
+            self, set(), root_doc, tree, darkgreen, [root_doc],
+            replace=not self.config.singleconfluence_toctree)
         tree['docname'] = root_doc
 
-        self.env.resolve_references(tree, root_doc, self)
+        self.env.get_and_resolve_doctree(root_doc, self, doctree=tree)
         self._fix_refuris(tree)
 
         return tree

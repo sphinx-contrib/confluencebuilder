@@ -77,6 +77,8 @@ def setup(app):
     app.add_config_value('confluence_secnumber_suffix', None, False)
     # Enablement of a generated index document
     app.add_config_value('confluence_use_index', None, '')
+    # Enablement for toctrees for singleconfluence documents.
+    app.add_config_value('singleconfluence_toctree', None, 'singleconfluence')
 
     # (configuration - publishing)
     # Request for publish password to come from interactive session.
