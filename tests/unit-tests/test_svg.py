@@ -49,14 +49,6 @@ class TestSvg(unittest.TestCase):
 
             attachment = image.find('ri:attachment')
             self.assertTrue(attachment.has_attr('ri:filename'))
-            self.assertEqual(attachment['ri:filename'], 'svg-viewbox.svg')
-            self.assertFalse(attachment.has_attr('ac:height'))
-            self.assertFalse(attachment.has_attr('ac:width'))
-
-            image = images.pop(0)
-
-            attachment = image.find('ri:attachment')
-            self.assertTrue(attachment.has_attr('ri:filename'))
             self.assertEqual(attachment['ri:filename'], 'svg-none.svg')
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
@@ -77,6 +69,23 @@ class TestSvg(unittest.TestCase):
             with open(fname, 'rb') as f:
                 svg_data = f.read()
                 self.assertTrue(svg_data.lstrip().startswith(b'<?xml'))
+
+            # ##########################################################
+            # viewbox sizes into height/width attributes
+            # ##########################################################
+
+            image = images.pop(0)
+
+            attachment = image.find('ri:attachment')
+            self.assertTrue(attachment.has_attr('ri:filename'))
+            self.assertNotEqual(attachment['ri:filename'], 'svg-viewbox.svg')
+            self.assertFalse(attachment.has_attr('ac:height'))
+            self.assertFalse(attachment.has_attr('ac:width'))
+
+            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            svg_width, svg_height = self._extract_svg_size(fname)
+            self.assertEqual(svg_height, 100)
+            self.assertEqual(svg_width, 25)
 
             # ##########################################################
             # applying length/scale options into the svgs
