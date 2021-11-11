@@ -93,11 +93,13 @@ def confluence_supported_svg(builder, node):
         svg_width = svg_root.attrib['width']
 
     # try to fallback on the viewbox attribute
+    viewbox = False
     if svg_height is None or svg_width is None:
         if 'viewBox' in svg_root.attrib:
             try:
                 _, _, svg_width, svg_height = \
                     svg_root.attrib['viewBox'].split(' ')
+                viewbox = True
             except ValueError:
                 pass
 
@@ -113,6 +115,13 @@ def confluence_supported_svg(builder, node):
     height, hu = extract_length(node.get('height'))
     scale = node.get('scale')
     width, wu = extract_length(node.get('width'))
+
+    # confluence can have difficulty rendering svgs with only a viewbox entry;
+    # if a viewbox is used, use it for the height/width if these options have
+    # not been explicitly configured on the directive
+    if viewbox and not height and not width:
+        height = svg_height
+        width = svg_width
 
     # if only one size is set, fetch (and scale) the other
     if width and not height:
