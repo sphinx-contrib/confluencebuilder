@@ -34,16 +34,18 @@ class TestConfluenceUseCaseNestedRef(unittest.TestCase):
             toc_link = root_toc.find('ac:link')
             self.assertIsNotNone(toc_link)
             self.assertTrue(toc_link.has_attr('ac:anchor'))
-            # note: anchor will be `customname` as confluence will strip
-            #       underscores in headers with links
-            self.assertEqual(toc_link['ac:anchor'], 'customname')
+            self.assertEqual(toc_link['ac:anchor'], 'custom_name')
 
             toc_link_body = toc_link.find('ac:link-body', recursive=False)
             self.assertIsNotNone(toc_link_body)
             self.assertEqual(toc_link_body.text, 'custom_name')
 
+            # header links
+            headers = data.find_all('h2')
+            self.assertEqual(len(headers), 3)
+
             # header link to external page
-            header = data.find('h2', recursive=False)
+            header = headers.pop(0)
             self.assertIsNotNone(header)
 
             header_link = header.find('ac:link', recursive=False)
@@ -53,3 +55,29 @@ class TestConfluenceUseCaseNestedRef(unittest.TestCase):
             header_link_body = header_link.find('ac:link-body', recursive=False)
             self.assertIsNotNone(header_link_body)
             self.assertEqual(header_link_body.text, 'custom_name')
+
+            # header link to external page's header
+            header = headers.pop(0)
+            self.assertIsNotNone(header)
+
+            header_link = header.find('ac:link', recursive=False)
+            self.assertIsNotNone(header_link)
+            self.assertTrue(header_link.has_attr('ac:anchor'))
+            self.assertEqual(header_link['ac:anchor'], 'section')
+
+            header_link_body = header_link.find('ac:link-body', recursive=False)
+            self.assertIsNotNone(header_link_body)
+            self.assertEqual(header_link_body.text, 'custom_name2')
+
+            # header link to external page's anchor
+            header = headers.pop(0)
+            self.assertIsNotNone(header)
+
+            header_link = header.find('ac:link', recursive=False)
+            self.assertIsNotNone(header_link)
+            self.assertTrue(header_link.has_attr('ac:anchor'))
+            self.assertEqual(header_link['ac:anchor'], 'ref2')
+
+            header_link_body = header_link.find('ac:link-body', recursive=False)
+            self.assertIsNotNone(header_link_body)
+            self.assertEqual(header_link_body.text, 'custom_name3')

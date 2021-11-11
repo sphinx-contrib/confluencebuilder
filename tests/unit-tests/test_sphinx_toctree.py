@@ -135,9 +135,9 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
 
             docs = root_toc.findChildren('li', recursive=False)
             self.assertIsNotNone(docs)
-            self.assertEqual(len(docs), 1)
+            self.assertEqual(len(docs), 4)
 
-            group = docs[0]
+            group = docs.pop(0)
             self._verify_link(group, '1. doc')
 
             group_docs = group.find('ul', recursive=False)
@@ -147,6 +147,18 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
             self.assertIsNotNone(sub_docs)
             self.assertEqual(len(sub_docs), 1)
             self._verify_link(sub_docs[0], '1.1. child')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1. doc',
+                label='2. section with spaces')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1. doc',
+                label='3. section_with_underscores')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1. doc',
+                label='4. section with a large name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae volutpat ipsum, quis sodales eros. Aenean quis nunc quis leo aliquam gravida. Fusce accumsan nibh vitae enim ullamcorper iaculis. Duis eget augue dolor. Curabitur at enim elit. Nullam luctus mollis magna. Pellentesque pellentesque, leo quis suscipit finibus, diam justo convallis.')
 
         with parse('doc', out_dir) as data:
             root_toc = data.find('ul', recursive=False)
@@ -208,9 +220,9 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
 
             docs = root_toc.findChildren('li', recursive=False)
             self.assertIsNotNone(docs)
-            self.assertEqual(len(docs), 1)
+            self.assertEqual(len(docs), 4)
 
-            group = docs[0]
+            group = docs.pop(0)
             self._verify_link(group, 'doc')
 
             group_docs = group.find('ul', recursive=False)
@@ -220,6 +232,15 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
             self.assertIsNotNone(sub_docs)
             self.assertEqual(len(sub_docs), 1)
             self._verify_link(sub_docs[0], 'child')
+
+            group = docs.pop(0)
+            self._verify_link(group, 'doc', label='section with spaces')
+
+            group = docs.pop(0)
+            self._verify_link(group, 'doc', label='section_with_underscores')
+
+            group = docs.pop(0)
+            self._verify_link(group, 'doc', label='section with a large name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae volutpat ipsum, quis sodales eros. Aenean quis nunc quis leo aliquam gravida. Fusce accumsan nibh vitae enim ullamcorper iaculis. Duis eget augue dolor. Curabitur at enim elit. Nullam luctus mollis magna. Pellentesque pellentesque, leo quis suscipit finibus, diam justo convallis.')
 
         with parse('doc', out_dir) as data:
             root_toc = data.find('ul', recursive=False)
@@ -246,9 +267,9 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
 
             docs = root_toc.findChildren('li', recursive=False)
             self.assertIsNotNone(docs)
-            self.assertEqual(len(docs), 1)
+            self.assertEqual(len(docs), 4)
 
-            group = docs[0]
+            group = docs.pop(0)
             self._verify_link(group, '1!Z /+4doc')
 
             group_docs = group.find('ul', recursive=False)
@@ -258,6 +279,18 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
             self.assertIsNotNone(sub_docs)
             self.assertEqual(len(sub_docs), 1)
             self._verify_link(sub_docs[0], '1.1!Z /+4child')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1!Z /+4doc',
+                label='2!Z /+4section with spaces')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1!Z /+4doc',
+                label='3!Z /+4section_with_underscores')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1!Z /+4doc',
+                label='4!Z /+4section with a large name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae volutpat ipsum, quis sodales eros. Aenean quis nunc quis leo aliquam gravida. Fusce accumsan nibh vitae enim ullamcorper iaculis. Duis eget augue dolor. Curabitur at enim elit. Nullam luctus mollis magna. Pellentesque pellentesque, leo quis suscipit finibus, diam justo convallis.')
 
         with parse('doc', out_dir) as data:
             root_toc = data.find('ul', recursive=False)

@@ -88,7 +88,7 @@ class TestConfluenceSinglepageToctree(unittest.TestCase):
         with parse('index', out_dir) as data:
             tags = data.find_all()
             self.assertIsNotNone(tags)
-            self.assertEqual(len(tags), 3)
+            self.assertEqual(len(tags), 6)
 
             doc_header = tags.pop(0)
             self.assertEqual(doc_header.name, 'h2')
@@ -101,3 +101,15 @@ class TestConfluenceSinglepageToctree(unittest.TestCase):
             content = tags.pop(0)
             self.assertEqual(content.name, 'p')
             self.assertEqual(content.text, 'content')
+
+            doc_header = tags.pop(0)
+            self.assertEqual(doc_header.name, 'h2')
+            self.assertEqual(doc_header.text, '2. section with spaces')
+
+            doc_header = tags.pop(0)
+            self.assertEqual(doc_header.name, 'h2')
+            self.assertEqual(doc_header.text, '3. section_with_underscores')
+
+            doc_header = tags.pop(0)
+            self.assertEqual(doc_header.name, 'h2')
+            self.assertEqual(doc_header.text, '4. section with a large name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae volutpat ipsum, quis sodales eros. Aenean quis nunc quis leo aliquam gravida. Fusce accumsan nibh vitae enim ullamcorper iaculis. Duis eget augue dolor. Curabitur at enim elit. Nullam luctus mollis magna. Pellentesque pellentesque, leo quis suscipit finibus, diam justo convallis.')
