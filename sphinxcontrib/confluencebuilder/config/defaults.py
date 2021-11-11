@@ -69,6 +69,7 @@ def apply_defaults(conf):
         'confluence_remove_title',
         'confluence_root_homepage',
         'confluence_watch',
+        'singleconfluence_toctree',
     ]
     for key in config2bool:
         if getattr(conf, key) is not None:
