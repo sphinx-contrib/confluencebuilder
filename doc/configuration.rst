@@ -17,10 +17,9 @@ Confluence generation and publishing:
     confluence_ask_password = True
     confluence_page_hierarchy = True
 
-All configurations introduced by this extension are prefixed with
-``confluence_``. This extension may take advantage of a subset of
-`Sphinx configurations`_ as well when preparing documents. View the entire list
-of configuration options below.
+All configurations introduced by this extension are listed below. This
+extension may take advantage of a subset of `Sphinx configurations`_ as well
+when preparing documents.
 
 .. only:: latex
 
@@ -331,6 +330,18 @@ Generic configuration
     .. code-block:: python
 
         confluence_use_index = True
+
+.. confval:: singleconfluence_toctree
+
+    .. versionadded:: 1.7
+
+    A boolean value to configure whether or not TOC trees will remain in place
+    when building with a ``singleconfluence`` builder. By default, this option
+    is disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        singleconfluence_toctree = True
 
 Publishing configuration
 ------------------------
