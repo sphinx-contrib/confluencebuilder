@@ -1929,6 +1929,50 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.depart_abbreviation(node)
         self.body.append(self.context.pop()) # i
 
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-youtube
+    # ---------------------------------------------------
+
+    def _visit_video(self, node, uri):
+        height, hu = node.get('height') or (None, None)
+        width, wu = node.get('width') or (None, None)
+
+        if height:
+            height = convert_px_length(height, hu)
+            if height is None:
+                self.warn('unsupported unit type for confluence: ' + hu)
+
+        if width:
+            width = convert_px_length(width, wu)
+            if width is None:
+                self.warn('unsupported unit type for confluence: ' + wu)
+
+        attribs = {}
+        alignment = self._fetch_alignment(node)
+        if alignment and alignment != 'left':
+            attribs['style'] = 'text-align: {};'.format(alignment)
+
+        ri_url = self._start_tag(
+            node, 'ri:url', empty=True, **{'ri:value': uri})
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.body.append(self._start_ac_macro(node, 'widget'))
+        self.body.append(self._build_ac_param(node, 'url', ri_url))
+        if height:
+            self.body.append(self._build_ac_param(node, 'height', height))
+        if width:
+            self.body.append(self._build_ac_param(node, 'width', width))
+        self.body.append(self._end_ac_macro(node))
+        self.body.append(self._end_tag(node))
+
+        raise nodes.SkipNode
+
+    def visit_vimeo(self, node):
+        self._visit_video(node, 'https://vimeo.com/' + node['id'])
+
+    def visit_youtube(self, node):
+        self._visit_video(node, 'https://www.youtube.com/watch?v=' + node['id'])
+
     # -------------
     # miscellaneous
     # -------------
@@ -2098,7 +2142,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             the content
         """
         return (self._start_tag(node, 'ac:parameter', **{'ac:name': name}) +
-            value + self._end_tag(node))
+            str(value) + self._end_tag(node))
 
     def _start_ac_image(self, node, **kwargs):
         """
