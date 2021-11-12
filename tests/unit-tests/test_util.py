@@ -7,6 +7,7 @@
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil as UTIL
 import unittest
 
+
 class TestConfluenceUtil(unittest.TestCase):
     def test_util_normalize_baseurl(self):
         data = {

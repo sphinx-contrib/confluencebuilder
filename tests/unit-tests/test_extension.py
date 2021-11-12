@@ -10,6 +10,7 @@ from tests.lib import prepare_sphinx
 import os
 import unittest
 
+
 class TestConfluenceExtension(unittest.TestCase):
     @classmethod
     def setUpClass(self):

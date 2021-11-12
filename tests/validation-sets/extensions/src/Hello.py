@@ -2,6 +2,7 @@
 This is a module docstring
 """
 
+
 class Hello(object):
     """
     This is a Hello class docstring

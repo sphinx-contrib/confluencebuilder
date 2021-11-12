@@ -15,6 +15,7 @@ from sphinxcontrib.confluencebuilder.util import temp_dir
 import os
 import sys
 
+
 def wipe_main(args_parser):
     """
     wipe mainline
@@ -163,6 +164,7 @@ pages. Only use this action if you know what you are doing.
         logger.info(' done\n')
 
     return 0
+
 
 def ask_question(question, default='no'):
     """

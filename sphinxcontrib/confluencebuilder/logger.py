@@ -10,6 +10,7 @@ from sphinx.util.console import bold # pylint: disable=no-name-in-module
 import io
 import sys
 
+
 class ConfluenceLogger():
     """
     confluence logger class

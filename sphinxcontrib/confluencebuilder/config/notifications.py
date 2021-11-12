@@ -25,6 +25,7 @@ DEPRECATED_CONFIGS = {
         'use "confluence_space_key" instead',
 }
 
+
 def deprecated(validator):
     """
     inform users of deprecated configurations
@@ -51,6 +52,7 @@ def deprecated(validator):
     elif config.confluence_max_doc_depth:
         logger.warn('confluence_max_doc_depth is deprecated and will '
             "be removed; consider using the 'singleconfluence' builder instead")
+
 
 def warnings(validator):
     """

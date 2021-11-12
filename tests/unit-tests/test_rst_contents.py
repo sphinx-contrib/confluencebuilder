@@ -11,6 +11,7 @@ import os
 import re
 import unittest
 
+
 class TestConfluenceRstContents(unittest.TestCase):
     @classmethod
     def setUpClass(self):

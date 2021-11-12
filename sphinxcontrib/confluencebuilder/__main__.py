@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import argparse
 import sys
 
+
 def main():
     parser = argparse.ArgumentParser(
         prog='sphinx-build-confluence',
@@ -51,6 +52,7 @@ def main():
         rv = build_main(parser)
 
     return rv
+
 
 def usage():
     """
@@ -91,6 +93,7 @@ def usage():
  --work-dir            working (documentation) directory to use
                         (defaults to working directory)
 """)
+
 
 if __name__ == '__main__':
     sys.exit(main())

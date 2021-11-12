@@ -7,6 +7,7 @@
 from sphinxcontrib.confluencebuilder.util import convert_px_length
 import unittest
 
+
 class TestConfluenceUtilConvertPxLength(unittest.TestCase):
     def test_util_convertpxlen_invalid(self):
         self.assertIsNone(convert_px_length(None, None))

@@ -12,6 +12,7 @@ from tests.lib import prepare_conf
 import os
 import unittest
 
+
 class TestConfluenceSphinxCodeblockHighlight(unittest.TestCase):
     @classmethod
     def setUpClass(self):

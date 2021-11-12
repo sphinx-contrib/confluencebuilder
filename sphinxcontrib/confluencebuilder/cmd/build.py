@@ -13,6 +13,7 @@ import sys
 #: default builder to invoke when one is not specified
 DEFAULT_BUILDER = 'confluence'
 
+
 def build_main(args_parser):
     """
     build mainline

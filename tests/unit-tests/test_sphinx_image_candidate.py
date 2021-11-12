@@ -15,6 +15,7 @@ import shutil
 import sys
 import unittest
 
+
 class TestConfluenceSphinxImageCandidate(unittest.TestCase):
     @classmethod
     def setUpClass(self):

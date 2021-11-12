@@ -11,6 +11,7 @@ from tests.lib import prepare_conf
 import os
 import unittest
 
+
 class TestConfluenceRstFigure(unittest.TestCase):
     @classmethod
     def setUpClass(self):

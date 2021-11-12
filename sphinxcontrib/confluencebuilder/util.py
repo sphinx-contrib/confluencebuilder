@@ -18,6 +18,7 @@ import subprocess
 import tempfile
 import unicodedata
 
+
 class ConfluenceUtil:
     """
     confluence utility helper class
@@ -71,6 +72,7 @@ class ConfluenceUtil:
                 url += '/'
         return url
 
+
 def convert_px_length(value, unit):
     """
     convert a length value to an integer pixel-equivalent value
@@ -117,6 +119,7 @@ def convert_px_length(value, unit):
 
     return int(round(fvalue))
 
+
 def extract_length(value):
     """
     extract length data from a provided value
@@ -149,6 +152,7 @@ def extract_length(value):
 
     return amount, unit
 
+
 def extract_strings_from_file(filename):
     """
     extracts strings from a provided filename
@@ -174,6 +178,7 @@ def extract_strings_from_file(filename):
                 filelist.append(line)
 
     return filelist
+
 
 def find_env_abspath(env, outdir, path):
     """
@@ -223,6 +228,7 @@ def find_env_abspath(env, outdir, path):
 
     return abspath
 
+
 def first(it):
     """
     returns the first element in an iterable
@@ -238,6 +244,7 @@ def first(it):
         the first element
     """
     return next(iter(it), None)
+
 
 def getpass2(prompt='Password: '):
     """
@@ -280,6 +287,7 @@ def getpass2(prompt='Password: '):
     else:
         return getpass.getpass(prompt=prompt)
 
+
 def remove_nonspace_control_chars(text):
     """
     remove any non-space control characters from text
@@ -296,6 +304,7 @@ def remove_nonspace_control_chars(text):
 
     return ''.join(c for c in text if c.isspace()
         or unicodedata.category(c)[0] != 'C')
+
 
 def str2bool(value):
     """
@@ -323,6 +332,7 @@ def str2bool(value):
         return False
     else:
         raise ValueError
+
 
 @contextmanager
 def temp_dir():

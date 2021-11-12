@@ -20,6 +20,7 @@ import json
 import requests
 import ssl
 
+
 class SslAdapter(HTTPAdapter):
     def __init__(self, cert, password=None, disable_validation=False,
                  *args, **kwargs):
@@ -41,6 +42,7 @@ class SslAdapter(HTTPAdapter):
 
         kwargs['ssl_context'] = context
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
+
 
 class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'

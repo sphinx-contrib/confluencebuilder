@@ -16,6 +16,7 @@ from sphinxcontrib.confluencebuilder.util import remove_nonspace_control_chars
 import io
 import sys
 
+
 class ConfluenceBaseTranslator(BaseTranslator):
     _tracked_deprecated_raw_type = False
 

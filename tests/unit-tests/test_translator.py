@@ -13,10 +13,12 @@ import unittest
 
 Reporter = namedtuple('Reporter', 'warning')
 
+
 class DummyDocument(dict):
     def __init__(self, source, warn=False):
         self['source'] = source
         self.reporter = Reporter(warn)
+
 
 class TestConfluenceBaseTranslator(unittest.TestCase):
     @classmethod

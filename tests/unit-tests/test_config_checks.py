@@ -17,6 +17,7 @@ from tests.lib import prepare_sphinx
 import os
 import unittest
 
+
 class TestConfluenceConfigChecks(unittest.TestCase):
     @classmethod
     def setUpClass(self):

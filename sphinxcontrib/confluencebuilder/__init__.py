@@ -32,6 +32,7 @@ except ImportError:
 
 __version__ = '1.7.0.dev0'
 
+
 def setup(app):
     ConfluenceLogger.initialize()
 
@@ -209,6 +210,7 @@ def setup(app):
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
+
 
 def confluence_builder_inited(app):
     """

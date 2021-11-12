@@ -14,6 +14,7 @@ import unittest
 # default verbosity for unit tests
 DEFAULT_VERBOSITY = 2
 
+
 def main():
     """
     process main for unit tests
@@ -95,6 +96,7 @@ def main():
         verbosity=DEFAULT_VERBOSITY)
     return 0 if runner.run(suite).wasSuccessful() else 1
 
+
 def find_tests(entity, pattern):
     """
     search for a unit test with a matching wildcard pattern
@@ -123,6 +125,7 @@ def find_tests(entity, pattern):
 
     return found_tests, issued_tests
 
+
 def usage():
     """
     display the usage for invoking the unit test engine
@@ -142,6 +145,7 @@ tests to run for this execution.
  -h, --help            show this help
  -V, --verbose         enable verbose messages
 """)
+
 
 if __name__ == "__main__":
     sys.exit(main())

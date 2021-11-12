@@ -16,6 +16,7 @@ try:
 except NameError:
     basestring = str
 
+
 def validate_configuration(builder):
     """
     validate a builder's configuration state

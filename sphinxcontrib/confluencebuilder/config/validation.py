@@ -14,6 +14,7 @@ try:
 except NameError:
     basestring = str
 
+
 class ConfigurationValidation():
     def __init__(self, builder):
         """

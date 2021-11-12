@@ -9,6 +9,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from docutils import writers
 
+
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
     settings_spec = ('No options here.', '', ())

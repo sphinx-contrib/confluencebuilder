@@ -12,6 +12,7 @@ from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from uuid import UUID
 
+
 def string_list(argument):
     """
     string-list validator
@@ -35,6 +36,7 @@ def string_list(argument):
 
     return data
 
+
 class ConfluenceExpandDirective(Directive):
     has_content = True
     option_spec = {
@@ -52,6 +54,7 @@ class ConfluenceExpandDirective(Directive):
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
 
+
 class ConfluenceMetadataDirective(Directive):
     has_content = False
     option_spec = {
@@ -67,6 +70,7 @@ class ConfluenceMetadataDirective(Directive):
             params[kebab_case_to_camel_case(k)] = v
 
         return [node]
+
 
 class JiraBaseDirective(Directive):
     has_content = False
@@ -132,6 +136,7 @@ class JiraBaseDirective(Directive):
     def _build_jira_node(self):
         raise NotImplementedError()
 
+
 class JiraDirective(JiraBaseDirective):
     option_spec = {
         'columns': directives.unchanged,
@@ -148,6 +153,7 @@ class JiraDirective(JiraBaseDirective):
         self.options['jql-query'] = self.arguments[0]
         return node
 
+
 class JiraIssueDirective(JiraBaseDirective):
     option_spec = {
         'server': directives.unchanged,
@@ -159,6 +165,7 @@ class JiraIssueDirective(JiraBaseDirective):
         node = jira_issue()
         self.options['key'] = self.arguments[0]
         return node
+
 
 def kebab_case_to_camel_case(s):
     """

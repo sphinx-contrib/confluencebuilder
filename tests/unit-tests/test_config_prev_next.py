@@ -11,6 +11,7 @@ import io
 import os
 import unittest
 
+
 class TestConfluenceConfigPrevNext(unittest.TestCase):
     @classmethod
     def setUpClass(self):
