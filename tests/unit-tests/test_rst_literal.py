@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -10,6 +10,7 @@ from tests.lib import parse
 from tests.lib import prepare_conf
 import os
 import unittest
+
 
 class TestConfluenceRstLiteral(unittest.TestCase):
     @classmethod
@@ -141,4 +142,4 @@ class TestConfluenceRstLiteral(unittest.TestCase):
 
             firstline = block.find('ac:parameter', {'ac:name': 'firstline'})
             self.assertIsNotNone(firstline)
-            self.assertEqual(firstline.text, '5')
+            self.assertEqual(firstline.text, '6')

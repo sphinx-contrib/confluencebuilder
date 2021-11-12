@@ -6,6 +6,7 @@
 
 from sphinxcontrib.confluencebuilder.util import str2bool
 
+
 def apply_defaults(conf):
     """
     applies default values for select configurations

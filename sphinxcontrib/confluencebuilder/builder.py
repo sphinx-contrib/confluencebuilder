@@ -45,6 +45,7 @@ try:
 except NameError:
     basestring = str
 
+
 class ConfluenceBuilder(Builder):
     allow_parallel = True
     default_translator_class = ConfluenceStorageFormatTranslator

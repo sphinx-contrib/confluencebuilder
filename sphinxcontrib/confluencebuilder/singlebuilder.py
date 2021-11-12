@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
+
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -11,6 +11,7 @@ from tests.lib import parse
 from tests.lib import prepare_conf
 import os
 import unittest
+
 
 class TestConfluenceSphinxCodeblockHighlight(unittest.TestCase):
     @classmethod

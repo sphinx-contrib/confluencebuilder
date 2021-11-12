@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -10,6 +10,7 @@ from tests.lib import prepare_conf
 import io
 import os
 import unittest
+
 
 class TestConfluenceConfigPrevNext(unittest.TestCase):
     @classmethod

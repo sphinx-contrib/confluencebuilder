@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2019-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -14,6 +14,7 @@ import argparse
 import os
 import sys
 
+
 def process_sandbox(target_sandbox, builder=None, defines=None):
     test_dir = os.path.dirname(os.path.realpath(__file__))
     base_dir = os.path.join(test_dir, os.pardir)
@@ -26,6 +27,7 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
     doc_dir = prepare_dirs(container)
     build_sphinx(sandbox_dir, out_dir=doc_dir, builder=builder,
         extra_config=defines, relax=True)
+
 
 def process_raw_upload(target_sandbox):
     test_dir = os.path.dirname(os.path.realpath(__file__))
@@ -60,6 +62,7 @@ def process_raw_upload(target_sandbox):
             print('[sandbox] any key to retry; q to quit')
             if input().lower() == 'q':
                 break
+
 
 def main():
     enable_sphinx_info()
@@ -98,6 +101,7 @@ def main():
         process_sandbox(args.sandbox, args.builder, defines)
 
     return 0
+
 
 if __name__ == '__main__':
     sys.exit(main())

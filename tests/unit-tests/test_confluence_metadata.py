@@ -10,6 +10,7 @@ from tests.lib import prepare_sphinx_filenames
 import os
 import unittest
 
+
 class TestConfluenceMetadata(unittest.TestCase):
     @classmethod
     def setUpClass(self):

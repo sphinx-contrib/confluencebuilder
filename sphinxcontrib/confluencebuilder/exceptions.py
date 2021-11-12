@@ -7,8 +7,10 @@
 from sphinx.errors import ConfigError
 from sphinx.errors import SphinxError
 
+
 class ConfluenceError(SphinxError):
     category = 'sphinxcontrib.confluencebuilder error'
+
 
 class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
@@ -23,6 +25,7 @@ class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
             """---\n"""
         )
 
+
 class ConfluenceBadApiError(ConfluenceError):
     def __init__(self, code, details):
         super(ConfluenceBadApiError, self).__init__(
@@ -33,6 +36,7 @@ class ConfluenceBadApiError(ConfluenceError):
             """\n---\n"""
         )
         self.status_code = code
+
 
 class ConfluenceBadSpaceError(ConfluenceError):
     def __init__(self, space_key, uname, pw_set, extras):
@@ -54,6 +58,7 @@ class ConfluenceBadSpaceError(ConfluenceError):
             """---\n""".format(space_key, uname_value, pw_value, extras)
         )
 
+
 class ConfluenceBadServerUrlError(ConfluenceError):
     def __init__(self, server_url, ex):
         super(ConfluenceBadServerUrlError, self).__init__(
@@ -69,6 +74,7 @@ class ConfluenceBadServerUrlError(ConfluenceError):
             """---\n"""
         )
 
+
 class ConfluenceCertificateError(ConfluenceError):
     def __init__(self, ex):
         super(ConfluenceCertificateError, self).__init__(
@@ -79,8 +85,10 @@ class ConfluenceCertificateError(ConfluenceError):
             """---\n"""
         )
 
+
 class ConfluenceConfigurationError(ConfluenceError, ConfigError):
     pass
+
 
 class ConfluenceMissingPageIdError(ConfluenceError):
     def __init__(self, space_key, page_id):
@@ -94,6 +102,7 @@ class ConfluenceMissingPageIdError(ConfluenceError):
             """---\n""".format(space_key, page_id)
         )
 
+
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
         super(ConfluencePermissionError, self).__init__(
@@ -104,6 +113,7 @@ class ConfluencePermissionError(ConfluenceError):
             """---\n"""
         )
 
+
 class ConfluenceProxyPermissionError(ConfluenceError):
     def __init__(self):
         super(ConfluenceProxyPermissionError, self).__init__(
@@ -113,6 +123,7 @@ class ConfluenceProxyPermissionError(ConfluenceError):
             """Ensure your proxy's username and password are correct.\n"""
             """---\n"""
         )
+
 
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
@@ -127,6 +138,7 @@ class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
             """try contacting your Confluence administrator for help.\n"""
             """---\n"""
         )
+
 
 class ConfluenceSslError(ConfluenceError):
     def __init__(self, server_url, ex):
@@ -143,6 +155,7 @@ class ConfluenceSslError(ConfluenceError):
             """---\n"""
         )
 
+
 class ConfluenceTimeoutError(ConfluenceError):
     def __init__(self, server_url):
         super(ConfluenceTimeoutError, self).__init__(
@@ -155,6 +168,7 @@ class ConfluenceTimeoutError(ConfluenceError):
             """    %s\n""" % server_url +
             """---\n"""
         )
+
 
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, ex):

@@ -7,6 +7,7 @@
 from sphinxcontrib.confluencebuilder.util import extract_length
 import unittest
 
+
 class TestConfluenceUtilExtractLength(unittest.TestCase):
     def test_util_extractlen_invalid(self):
         self.assertEqual(extract_length(None), (None, None))

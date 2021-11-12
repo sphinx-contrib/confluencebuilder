@@ -17,6 +17,7 @@ import os
 # default content type to use if a type cannot be detected for an asset
 DEFAULT_CONTENT_TYPE = 'application/octet-stream'
 
+
 class ConfluenceAsset:
     """
     a confluence asset
@@ -35,6 +36,7 @@ class ConfluenceAsset:
         self.hash = hash
         self.key = key
         self.type = type
+
 
 class ConfluenceAssetManager:
     """
@@ -318,6 +320,7 @@ class ConfluenceAssetManager:
             path = os.path.join(docdir, node['reftarget'])
 
         return find_env_abspath(self.env, self.outdir, path)
+
 
 class ConfluenceSupportedImages:
     def __init__(self):

@@ -7,6 +7,7 @@
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
+
 class ConfluenceState:
     """
     confluence state tracking

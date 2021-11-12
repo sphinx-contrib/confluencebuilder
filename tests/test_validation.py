@@ -25,6 +25,7 @@ SPACE_ENV_KEY = 'CONFLUENCE_SPACE'
 TESTDESC_ENV_KEY = 'CONFLUENCE_TEST_DESC'
 TESTKEY_ENV_KEY = 'CONFLUENCE_TEST_KEY'
 
+
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -188,6 +189,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_publish_postfix'] = ' (nomacro)'
 
         build_sphinx(dataset, config=config, out_dir=doc_dir)
+
 
 if __name__ == '__main__':
     sys.exit(unittest.main(failfast=True, verbosity=0))

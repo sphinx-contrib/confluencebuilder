@@ -20,6 +20,7 @@ from sphinxcontrib.confluencebuilder.rest import Rest
 import json
 import time
 
+
 class ConfluencePublisher():
     def __init__(self):
         self.space_display_name = None

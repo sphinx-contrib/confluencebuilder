@@ -22,6 +22,7 @@ import sys
 # full extension name
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
 
+
 def enable_sphinx_info(verbosity=None):
     """
     enable verbosity for features handled by this utility class
@@ -35,6 +36,7 @@ def enable_sphinx_info(verbosity=None):
     os.environ['SPHINX_STATUS'] = '1'
     if verbosity:
         os.environ['SPHINX_VERBOSITY'] = str(verbosity)
+
 
 @contextmanager
 def mock_getpass(mock):
@@ -52,6 +54,7 @@ def mock_getpass(mock):
     finally:
         util.getpass2 = original
 
+
 @contextmanager
 def mock_input(mock):
     def _(prompt=''):
@@ -64,6 +67,7 @@ def mock_input(mock):
         yield
     finally:
         compat.input = original
+
 
 @contextmanager
 def parse(filename, dirname=None):
@@ -93,6 +97,7 @@ def parse(filename, dirname=None):
         soup = BeautifulSoup(fp, 'html.parser')
         yield soup
 
+
 def prepare_conf():
     """
     prepare minimal sphinx configuration for sphinx application
@@ -114,6 +119,7 @@ def prepare_conf():
         config['master_doc'] = 'index'
 
     return config
+
 
 def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
@@ -147,6 +153,7 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
     shutil.rmtree(container_dir, ignore_errors=True)
 
     return container_dir
+
 
 @contextmanager
 def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
@@ -221,6 +228,7 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
         yield app
 
+
 def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     """
     prepare explicit filenames for a sphinx application instance
@@ -263,6 +271,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
             configs[-1]['root_doc'] = filenames[0] # update last config
 
     return files
+
 
 def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder=None, relax=False, filenames=None):

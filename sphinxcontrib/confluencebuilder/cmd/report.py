@@ -47,6 +47,7 @@ IGNORE_BUILDER_CONFS = (
     'xml_',
 )
 
+
 def report_main(args_parser):
     """
     report mainline
@@ -283,6 +284,7 @@ def report_main(args_parser):
     logger.note('------------[ cut here ]------------')
 
     return rv
+
 
 def single_line_version(value):
     """

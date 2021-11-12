@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2019-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2019-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from docutils import nodes
+
 
 class ConfluenceNavigationNode(nodes.General, nodes.Element):
 
@@ -25,6 +26,7 @@ class ConfluenceNavigationNode(nodes.General, nodes.Element):
         self.bottom = False
         self.top = False
 
+
 class confluence_expand(nodes.Element):
     """
     confluence expand node
@@ -33,6 +35,7 @@ class confluence_expand(nodes.Element):
     using Confluence's expand macro.
     """
 
+
 class confluence_metadata(nodes.Element):
     """
     confluence metadata node
@@ -40,6 +43,7 @@ class confluence_metadata(nodes.Element):
     A Confluence builder defined metadata node holds metadata information for a
     given document.
     """
+
 
 class jira(nodes.Element, nodes.Structural):
     """
@@ -59,6 +63,7 @@ class jira(nodes.Element, nodes.Structural):
     def __init__(self, rawsource='', *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
         self.params = {}
+
 
 class jira_issue(nodes.Element, nodes.Structural):
     """

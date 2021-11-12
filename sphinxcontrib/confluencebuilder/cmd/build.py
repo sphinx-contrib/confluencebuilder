@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -12,6 +12,7 @@ import sys
 
 #: default builder to invoke when one is not specified
 DEFAULT_BUILDER = 'confluence'
+
 
 def build_main(args_parser):
     """

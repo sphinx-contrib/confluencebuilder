@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2018-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil as UTIL
 import unittest
+
 
 class TestConfluenceUtil(unittest.TestCase):
     def test_util_normalize_baseurl(self):

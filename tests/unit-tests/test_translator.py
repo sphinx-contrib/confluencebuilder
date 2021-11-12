@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -13,10 +13,12 @@ import unittest
 
 Reporter = namedtuple('Reporter', 'warning')
 
+
 class DummyDocument(dict):
     def __init__(self, source, warn=False):
         self['source'] = source
         self.reporter = Reporter(warn)
+
 
 class TestConfluenceBaseTranslator(unittest.TestCase):
     @classmethod

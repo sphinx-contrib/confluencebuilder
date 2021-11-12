@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2020 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -9,6 +9,7 @@ from sphinx.util import logging
 from sphinx.util.console import bold # pylint: disable=no-name-in-module
 import io
 import sys
+
 
 class ConfluenceLogger():
     """
