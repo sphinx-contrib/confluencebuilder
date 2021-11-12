@@ -2,6 +2,7 @@ development
 ===========
 
 * ``confluence_space_name`` renamed to ``confluence_space_key``
+* fixed issue where links to numbered section would not work
 * fixed issue where publishing could fail without a proxy set for older requests
 * fixed issue where report/wipe commands would fail in python 2.7
 * improve dry-run reflecting new attachments to be published
@@ -13,9 +14,11 @@ development
 * improve support when using the sphinx_toolbox extension
 * improve support when using the sphinxcontrib-mermaid extension
 * improve support when using the sphinxcontrib-needs extension
+* improve support when using the sphinxcontrib-youtube extension
 * prevent issues with extension directives causing errors with other builders
 * remove borders on footnote tables
 * support domain indices generation/processing
+* support for leaving resolved toctrees for singleconfluence
 * support genindex generation/processing
 * support search generation
 * support the consideration of ``confluence_parent_page`` for wipe requests
