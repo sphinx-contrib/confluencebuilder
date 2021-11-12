@@ -224,6 +224,10 @@ Type                              Notes
                                   to be tailored specifically for a Confluence
                                   build.
 `sphinx-toolbox`_                 Supported
+`sphinxcontrib-aafig`_            Supported.
+
+                                  May require configuration of the
+                                  ``aafig_format`` option.
 `sphinxcontrib-actdiag`_          Limited support.
 
                                   PNGs only; cannot configure for SVG at this
@@ -240,6 +244,7 @@ Type                              Notes
 
                                   PNGs only; cannot configure for SVG at this
                                   time.
+`sphinxcontrib-openapi`_          Supported
 `sphinxcontrib-plantuml`_         Supported.
 
                                   sphinxcontrib-plantuml provides its own
@@ -249,6 +254,8 @@ Type                              Notes
 
                                   PNGs only; cannot configure for SVG at this
                                   time.
+`sphinxcontrib-svgbob`_           Supported
+`sphinxcontrib-youtube`_          Supported
 ================================= =====
 
 .. raw:: latex
@@ -333,14 +340,18 @@ brings up another concern, feel free to bring up an issue:
 .. _sphinx.ext.napoleon: https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 .. _sphinx.ext.todo: https://www.sphinx-doc.org/en/master/usage/extensions/todo.html
 .. _sphinx.ext.viewcode: https://www.sphinx-doc.org/en/master/usage/extensions/viewcode.html
+.. _sphinxcontrib-aafig: https://pypi.org/project/sphinxcontrib-aafig/
 .. _sphinxcontrib-actdiag: https://pypi.org/project/sphinxcontrib-actdiag/
 .. _sphinxcontrib-blockdiag: https://pypi.org/project/sphinxcontrib-blockdiag/
 .. _sphinxcontrib-httpdomain: https://sphinxcontrib-httpdomain.readthedocs.io/
 .. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
 .. _sphinxcontrib-nwdiag: https://pypi.org/project/sphinxcontrib-nwdiag/
+.. _sphinxcontrib-openapi: https://sphinxcontrib-openapi.readthedocs.io/
 .. _sphinxcontrib-plantuml: https://pypi.org/project/sphinxcontrib-plantuml/
 .. _sphinxcontrib-programoutput: https://sphinxcontrib-programoutput.readthedocs.io/
 .. _sphinxcontrib-seqdiag: https://pypi.org/project/sphinxcontrib-seqdiag/
+.. _sphinxcontrib-svgbob: https://pypi.org/project/sphinxcontrib-svgbob/
+.. _sphinxcontrib-youtube: https://pypi.org/project/sphinxcontrib-youtube/
 .. _tables: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#tables
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _transitions: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#transitions
