@@ -259,6 +259,7 @@ def report_main(args_parser):
     print('Please copy the following text for the GitHub issue:')
     print('')
     logger.note('------------[ cut here ]------------')
+    print('```')
     print('(system)')
     print(' platform:', single_line_version(platform.platform()))
     print('   python:', single_line_version(sys.version))
@@ -284,6 +285,7 @@ def report_main(args_parser):
         print('(confluence instance)')
         print(confluence_instance_info.rstrip())
 
+    print('```')
     logger.note('------------[ cut here ]------------')
 
     return rv
