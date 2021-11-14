@@ -236,7 +236,9 @@ Type                              Notes
 
                                   PNGs only; cannot configure for SVG at this
                                   time.
+`sphinxcontrib-drawio`_           Supported
 `sphinxcontrib-httpdomain`_       Supported
+`sphinxcontrib-kroki`_            Supported
 `sphinxcontrib-mermaid`_          Limited support.
 
                                   Requires a PNG/SVG configuration.
@@ -343,7 +345,9 @@ brings up another concern, feel free to bring up an issue:
 .. _sphinxcontrib-aafig: https://pypi.org/project/sphinxcontrib-aafig/
 .. _sphinxcontrib-actdiag: https://pypi.org/project/sphinxcontrib-actdiag/
 .. _sphinxcontrib-blockdiag: https://pypi.org/project/sphinxcontrib-blockdiag/
+.. _sphinxcontrib-drawio: https://pypi.org/project/sphinxcontrib-drawio/
 .. _sphinxcontrib-httpdomain: https://sphinxcontrib-httpdomain.readthedocs.io/
+.. _sphinxcontrib-kroki: https://pypi.org/project/sphinxcontrib-kroki/
 .. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
 .. _sphinxcontrib-nwdiag: https://pypi.org/project/sphinxcontrib-nwdiag/
 .. _sphinxcontrib-openapi: https://sphinxcontrib-openapi.readthedocs.io/
