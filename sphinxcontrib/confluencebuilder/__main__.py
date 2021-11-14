@@ -12,6 +12,7 @@ from sphinxcontrib.confluencebuilder.cmd.report import report_main
 from sphinxcontrib.confluencebuilder.cmd.wipe import wipe_main
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import argparse
+import os
 import sys
 
 
@@ -22,8 +23,11 @@ def main():
         description='Sphinx extension to output Atlassian Confluence content.')
 
     parser.add_argument('action', nargs='?')
+    parser.add_argument('--color', default='auto',
+        action='store_const', const='yes')
     parser.add_argument('--help', '-h', action='store_true')
-    parser.add_argument('--no-color', '-N', dest='color')
+    parser.add_argument('--no-color', '-N', dest='color',
+        action='store_const', const='no')
     parser.add_argument('--verbose', '-V', action='count', default=0)
     parser.add_argument('--version', action='version',
         version='%(prog)s ' + version)
@@ -34,14 +38,12 @@ def main():
         print(usage())
         sys.exit(0)
 
-    logger.initialize(preload=True)
-    if args.color == 'no' or (args.color == 'auto' and not color_terminal()):
+    if args.color == 'no' or (args.color == 'auto' and
+            'MSYSTEM' not in os.environ and not color_terminal()):
         nocolor()
-    # disable color (on windows) by default when using virtualenv since it
-    # appears to be causing issues
-    elif getattr(sys, 'base_prefix', sys.prefix) != sys.prefix:
-        if sys.platform == 'win32':
-            nocolor()
+
+    # pre-load logging support if sphinx is not loaded (to prevent blank lines)
+    logger.initialize(preload=True)
 
     # invoke a desired command mainline
     if args.action == 'report':
@@ -84,10 +86,12 @@ def usage():
 
 (wipe arguments)
  --danger              flag that must be set to use this action
+ -P, --parent          only remove pages from the configured parent page
 
 (other options)
+ --color[=WHEN]        when to colorize output: never, always or auto
  -h, --help            show this help
- --no-color            explicitly disable colorized output
+ -N, --no-color        explicitly disable colorized output
  -V, --verbose         enable verbose messages
  --version             show the version
  --work-dir            working (documentation) directory to use

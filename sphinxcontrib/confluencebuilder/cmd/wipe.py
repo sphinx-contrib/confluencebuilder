@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 from sphinx.application import Sphinx
+from sphinx.locale import __
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.compat import input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
@@ -14,6 +15,7 @@ from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.util import temp_dir
 import os
 import sys
+import traceback
 
 
 def wipe_main(args_parser):
@@ -57,40 +59,52 @@ To use this action, the argument '--danger' must be set.
             """)
         sys.stdout.flush()
         logger.warn('!!! DANGER DANGER DANGER !!!')
-        print('')
         return 1
 
     # check configuration and prepare publisher
     dryrun = False
     publisher = None
-    with temp_dir() as tmp_dir:
-        with docutils_namespace():
-            app = Sphinx(
-                work_dir,     # document sources
-                work_dir,     # directory with configuration
-                tmp_dir,      # output for generated documents
-                tmp_dir,      # output for doctree files
-                'confluence') # builder to execute
 
-            aggressive_search = app.config.confluence_adv_aggressive_search
-            dryrun = app.config.confluence_publish_dryrun
-            server_url = app.config.confluence_server_url
-            space_key = app.config.confluence_space_key
-            parent_name = app.config.confluence_parent_page
+    try:
+        with temp_dir() as tmp_dir:
+            with docutils_namespace():
+                app = Sphinx(
+                    work_dir,           # document sources
+                    work_dir,           # directory with configuration
+                    tmp_dir,            # output for built documents
+                    tmp_dir,            # output for doctree files
+                    'confluence',       # builder to execute
+                    status=sys.stdout,  # sphinx status output
+                    warning=sys.stderr) # sphinx warning output
 
-            # initialize the publisher (if permitted)
-            if app.config.confluence_publish:
-                process_ask_configs(app.config)
+                aggressive_search = app.config.confluence_adv_aggressive_search
+                dryrun = app.config.confluence_publish_dryrun
+                server_url = app.config.confluence_server_url
+                space_key = app.config.confluence_space_key
+                parent_name = app.config.confluence_parent_page
 
-                publisher = ConfluencePublisher()
-                publisher.init(app.config)
+                # initialize the publisher (if permitted)
+                if app.config.confluence_publish:
+                    process_ask_configs(app.config)
+
+                    publisher = ConfluencePublisher()
+                    publisher.init(app.config)
+
+    except Exception:
+        sys.stdout.flush()
+        logger.error(traceback.format_exc())
+        if os.path.isfile(os.path.join(work_dir, 'conf.py')):
+            logger.error('unable to load configuration')
+        else:
+            logger.error('no documentation/missing configuration')
+        return 1
 
     if not publisher:
-        print('(error) publishing not configured in sphinx configuration')
+        logger.error('publishing not configured in sphinx configuration')
         return 1
 
     if args.parent and not parent_name:
-        print('(error) parent option provided but no parent page is configured')
+        logger.error('parent option provided but no parent page is configured')
         return 1
 
     # reminder warning
@@ -99,7 +113,7 @@ To use this action, the argument '--danger' must be set.
     logger.warn('!!! DANGER DANGER DANGER !!!')
     print("""
 A request has been made to attempt to wipe the pages from a configured
-Confluence instance.  This action is not reversible with this tool and may
+Confluence instance. This action is not reversible with this tool and may
 require assistance from an administrator from a Confluence instance to recover
 pages. Only use this action if you know what you are doing.
         """)
@@ -161,7 +175,7 @@ pages. Only use this action if you know what you are doing.
         if not dryrun:
             logger.info('.', nonl=True)
     if not dryrun:
-        logger.info(' done\n')
+        logger.info(__('done'))
 
     return 0
 
