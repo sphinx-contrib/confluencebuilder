@@ -796,8 +796,9 @@ class ConfluencePublisher():
         if parent_id:
             updatePage['ancestors'] = [{'id': parent_id}]
 
+        page_id_explicit = page['id'] + '?status=current'
         try:
-            self.rest_client.put('content', page['id'], updatePage)
+            self.rest_client.put('content', page_id_explicit, updatePage)
         except ConfluenceBadApiError as ex:
             if str(ex).find('unreconciled') != -1:
                 raise ConfluenceUnreconciledPageError(
@@ -814,7 +815,7 @@ class ConfluencePublisher():
                 raise
             logger.warn('remote page updated failed; retrying...')
             time.sleep(1)
-            self.rest_client.put('content', page['id'], updatePage)
+            self.rest_client.put('content', page_id_explicit, updatePage)
 
     def _dryrun(self, msg, id=None, misc=''):
         """
