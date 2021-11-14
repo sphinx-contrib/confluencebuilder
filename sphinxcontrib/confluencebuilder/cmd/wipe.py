@@ -66,11 +66,13 @@ To use this action, the argument '--danger' must be set.
     with temp_dir() as tmp_dir:
         with docutils_namespace():
             app = Sphinx(
-                work_dir,     # document sources
-                work_dir,     # directory with configuration
-                tmp_dir,      # output for generated documents
-                tmp_dir,      # output for doctree files
-                'confluence') # builder to execute
+                work_dir,           # document sources
+                work_dir,           # directory with configuration
+                tmp_dir,            # output for built documents
+                tmp_dir,            # output for doctree files
+                'confluence',       # builder to execute
+                status=sys.stdout,  # sphinx status output
+                warning=sys.stderr) # sphinx warning output
 
             aggressive_search = app.config.confluence_adv_aggressive_search
             dryrun = app.config.confluence_publish_dryrun

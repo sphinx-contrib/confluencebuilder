@@ -68,6 +68,8 @@ def build_main(args_parser):
             doctrees_dir,           # output for doctree files
             builder,                # builder to execute
             confoverrides=defines,  # configuration overload
+            status=sys.stdout,      # sphinx status output
+            warning=sys.stderr,     # sphinx warning output
             freshenv=True,          # fresh environment
             verbosity=verbosity)    # verbosity
         app.build(force_all=True)
