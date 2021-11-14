@@ -172,25 +172,29 @@ class ConfluenceTimeoutError(ConfluenceError):
 
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, ex):
-        super(ConfluenceUnreconciledPageError, self).__init__(
-            """---\n"""
-            """Unable to update unreconciled page: %s """ % page_name +
-            """(id: %s)\n""" % str(page_id) +
-            """\n"""
-            """Unable to update the target page due to the Confluence """
-            """instance reporting an unreconciled page. A workaround for """
-            """this is to manually browse the page using a browser which """
-            """will force Confluence to reconcile the page. A link to the """
-            """page is a follows:\n"""
-            """\n"""
-            """   %spages/viewpage.action?pageId=%s""" % (url, str(page_id)) +
-            """\n\n"""
-            """If this is observed on Confluence v6.x, v7.3.3 or higher, """
-            """please report this issue to the developers of the Confluence """
-            """builder extension.\n"""
-            """\n"""
-            """See also: https://jira.atlassian.com/browse/CONFSERVER-59196\n"""
-            """\n(details: %s""" % ex +
-            """)\n"""
-            """---\n"""
-        )
+        super(ConfluenceUnreconciledPageError, self).__init__('''
+---
+Unable to update unreconciled page: {name} (id: {id})
+
+Unable to update the target page due to the Confluence instance reporting an
+unreconciled page. This is either due to a conflict with another instance
+updating the page, Confluence having trouble updating a large page request or
+possibly an old Confluence version bug [1] (pre-v7.3.3).
+
+A possible workaround for this is to manually browse the page using a browser
+which could help force Confluence to reconcile the page. A link to the page is
+a follows:
+
+   {url}pages/viewpage.action?pageId={id}
+
+If an attempt to re-publish fails after a page refresh attempt, a user could
+also try manually deleting the page and retrying again. If the page cannot be
+removed, assistance from a Confluence administrator may be needed. See also the
+sphinx-contrib/confluencebuilder#528 [2] discussion on GitHub.
+
+[1]: https://jira.atlassian.com/browse/CONFSERVER-59196
+[2]: https://github.com/sphinx-contrib/confluencebuilder/issues/528
+
+(details: {ex})
+---
+'''.format(name=page_name, id=page_id, url=url, ex=ex))
