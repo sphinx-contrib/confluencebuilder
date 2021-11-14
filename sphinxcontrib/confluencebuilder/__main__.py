@@ -86,6 +86,7 @@ def usage():
 
 (wipe arguments)
  --danger              flag that must be set to use this action
+ -P, --parent          only remove pages from the configured parent page
 
 (other options)
  --color[=WHEN]        when to colorize output: never, always or auto
