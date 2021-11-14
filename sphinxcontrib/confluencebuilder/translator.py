@@ -133,7 +133,8 @@ class ConfluenceBaseTranslator(BaseTranslator):
             handler[node_name](self, node)
             raise nodes.SkipNode
 
-        raise NotImplementedError('unknown node: ' + node_name)
+        self.warn('unknown node: ' + node_name)
+        raise nodes.SkipNode
 
     # ---------
     # structure
