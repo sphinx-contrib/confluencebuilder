@@ -15,6 +15,7 @@ from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.util import temp_dir
 import os
 import sys
+import traceback
 
 
 def wipe_main(args_parser):
@@ -63,29 +64,40 @@ To use this action, the argument '--danger' must be set.
     # check configuration and prepare publisher
     dryrun = False
     publisher = None
-    with temp_dir() as tmp_dir:
-        with docutils_namespace():
-            app = Sphinx(
-                work_dir,           # document sources
-                work_dir,           # directory with configuration
-                tmp_dir,            # output for built documents
-                tmp_dir,            # output for doctree files
-                'confluence',       # builder to execute
-                status=sys.stdout,  # sphinx status output
-                warning=sys.stderr) # sphinx warning output
 
-            aggressive_search = app.config.confluence_adv_aggressive_search
-            dryrun = app.config.confluence_publish_dryrun
-            server_url = app.config.confluence_server_url
-            space_key = app.config.confluence_space_key
-            parent_name = app.config.confluence_parent_page
+    try:
+        with temp_dir() as tmp_dir:
+            with docutils_namespace():
+                app = Sphinx(
+                    work_dir,           # document sources
+                    work_dir,           # directory with configuration
+                    tmp_dir,            # output for built documents
+                    tmp_dir,            # output for doctree files
+                    'confluence',       # builder to execute
+                    status=sys.stdout,  # sphinx status output
+                    warning=sys.stderr) # sphinx warning output
 
-            # initialize the publisher (if permitted)
-            if app.config.confluence_publish:
-                process_ask_configs(app.config)
+                aggressive_search = app.config.confluence_adv_aggressive_search
+                dryrun = app.config.confluence_publish_dryrun
+                server_url = app.config.confluence_server_url
+                space_key = app.config.confluence_space_key
+                parent_name = app.config.confluence_parent_page
 
-                publisher = ConfluencePublisher()
-                publisher.init(app.config)
+                # initialize the publisher (if permitted)
+                if app.config.confluence_publish:
+                    process_ask_configs(app.config)
+
+                    publisher = ConfluencePublisher()
+                    publisher.init(app.config)
+
+    except Exception:
+        sys.stdout.flush()
+        logger.error(traceback.format_exc())
+        if os.path.isfile(os.path.join(work_dir, 'conf.py')):
+            logger.error('unable to load configuration')
+        else:
+            logger.error('no documentation/missing configuration')
+        return 1
 
     if not publisher:
         logger.error('publishing not configured in sphinx configuration')
