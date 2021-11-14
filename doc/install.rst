@@ -139,8 +139,7 @@ To install the bleeding edge sources, the following pip_ command can be used:
 
 .. code-block:: shell
 
-    pip install \
-        git+https://github.com/sphinx-contrib/confluencebuilder.git
+    pip install git+https://github.com/sphinx-contrib/confluencebuilder.git
 
 .. pdf inclusion hack
 .. only:: latex
