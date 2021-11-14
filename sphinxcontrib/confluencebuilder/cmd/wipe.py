@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 from sphinx.application import Sphinx
+from sphinx.locale import __
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.compat import input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
@@ -57,7 +58,6 @@ To use this action, the argument '--danger' must be set.
             """)
         sys.stdout.flush()
         logger.warn('!!! DANGER DANGER DANGER !!!')
-        print('')
         return 1
 
     # check configuration and prepare publisher
@@ -88,11 +88,11 @@ To use this action, the argument '--danger' must be set.
                 publisher.init(app.config)
 
     if not publisher:
-        print('(error) publishing not configured in sphinx configuration')
+        logger.error('publishing not configured in sphinx configuration')
         return 1
 
     if args.parent and not parent_name:
-        print('(error) parent option provided but no parent page is configured')
+        logger.error('parent option provided but no parent page is configured')
         return 1
 
     # reminder warning
@@ -101,7 +101,7 @@ To use this action, the argument '--danger' must be set.
     logger.warn('!!! DANGER DANGER DANGER !!!')
     print("""
 A request has been made to attempt to wipe the pages from a configured
-Confluence instance.  This action is not reversible with this tool and may
+Confluence instance. This action is not reversible with this tool and may
 require assistance from an administrator from a Confluence instance to recover
 pages. Only use this action if you know what you are doing.
         """)
@@ -163,7 +163,7 @@ pages. Only use this action if you know what you are doing.
         if not dryrun:
             logger.info('.', nonl=True)
     if not dryrun:
-        logger.info(' done\n')
+        logger.info(__('done'))
 
     return 0
 
