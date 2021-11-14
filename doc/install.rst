@@ -8,13 +8,13 @@ Atlassian Confluence Builder for Sphinx |version| depends on:
 * Sphinx_ |supported_sphinx_ver|
 * Confluence_ Cloud or Server |supported_confluence_ver|
 
-The recommended method of installation is using pip_.
+The recommended method of installing or upgrading is using pip_:
 
 .. code-block:: shell
 
-    pip install sphinxcontrib-confluencebuilder
+    pip install -U sphinxcontrib-confluencebuilder
      (or)
-    python -m pip install sphinxcontrib-confluencebuilder
+    python -m pip install -U sphinxcontrib-confluencebuilder
 
 To verify the package has been installed, the following command can be used:
 
@@ -38,9 +38,9 @@ consult the instructions in :doc:`install-virtualenv`.
 
     .. code-block:: shell
 
-        pip install --upgrade setuptools
+        pip install -U setuptools
          (or)
-        python -m pip install --upgrade setuptools
+        python -m pip install -U setuptools
 
 .. raw:: latex
 
@@ -139,8 +139,7 @@ To install the bleeding edge sources, the following pip_ command can be used:
 
 .. code-block:: shell
 
-    pip install \
-        git+https://github.com/sphinx-contrib/confluencebuilder.git
+    pip install git+https://github.com/sphinx-contrib/confluencebuilder.git
 
 .. pdf inclusion hack
 .. only:: latex

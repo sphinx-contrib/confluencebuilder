@@ -115,7 +115,8 @@ following:
 .. code-block:: doscon
 
     > virtualenv sphinx-venv
-    > source sphinx-venv\Scripts\activate.bat
+    > (or: python -m virtualenv sphinx-venv)
+    > sphinx-venv\Scripts\activate.bat
     > python -m pip install sphinxcontrib-confluencebuilder
     > python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
