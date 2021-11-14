@@ -796,25 +796,41 @@ class ConfluencePublisher():
         if parent_id:
             updatePage['ancestors'] = [{'id': parent_id}]
 
+        page_id_explicit = page['id'] + '?status=current'
         try:
-            self.rest_client.put('content', page['id'], updatePage)
+            self.rest_client.put('content', page_id_explicit, updatePage)
         except ConfluenceBadApiError as ex:
-            if str(ex).find('unreconciled') != -1:
-                raise ConfluenceUnreconciledPageError(
-                    page_name, page['id'], self.server_url, ex)
 
-            # Confluence Cloud may (rarely) fail to complete a
-            # content request with an OptimisticLockException/
-            # StaleObjectStateException exception. It is suspected
-            # that this is just an instance timing/processing issue.
-            # If this is observed, wait a moment and retry the
-            # content request. If it happens again, the put request
-            # will fail as it normally would.
-            if str(ex).find('OptimisticLockException') == -1:
+            # Handle select API failures by waiting a moment and retrying the
+            # content request. If it happens again, the put request will fail as
+            # it normally would.
+            retry_errors = [
+                # Confluence Cloud may (rarely) fail to complete a content
+                # request with an OptimisticLockException/
+                # StaleObjectStateException exception. It is suspected that this
+                # is just an instance timing/processing issue.
+                'OptimisticLockException',
+
+                # Confluence may report an unreconciled error -- either from a
+                # conflict with another instance updating the same page or some
+                # select backend issues processing previous updates on a page.
+                'unreconciled',
+            ]
+
+            if not any(x in str(ex) for x in retry_errors):
                 raise
+
             logger.warn('remote page updated failed; retrying...')
-            time.sleep(1)
-            self.rest_client.put('content', page['id'], updatePage)
+            time.sleep(3)
+
+            try:
+                self.rest_client.put('content', page_id_explicit, updatePage)
+            except ConfluenceBadApiError as ex:
+                if 'unreconciled' in str(ex):
+                    raise ConfluenceUnreconciledPageError(
+                        page_name, page['id'], self.server_url, ex)
+
+                raise
 
     def _dryrun(self, msg, id=None, misc=''):
         """
