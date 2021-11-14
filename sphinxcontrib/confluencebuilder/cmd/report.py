@@ -124,9 +124,11 @@ def report_main(args_parser):
 
     except Exception:
         sys.stdout.flush()
-        logger.error(traceback.format_exc())
+        tb_msg = traceback.format_exc()
+        logger.error(tb_msg)
         if os.path.isfile(os.path.join(work_dir, 'conf.py')):
             configuration_load_issue = 'unable to load configuration'
+            configuration_load_issue += '\n\n' + tb_msg.strip()
         else:
             configuration_load_issue = 'no documentation/missing configuration'
         rv = 1
