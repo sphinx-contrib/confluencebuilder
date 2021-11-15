@@ -52,6 +52,9 @@ class Rest:
         self.session = self._setup_session(config)
         self.verbosity = config.sphinx_verbosity
 
+    def __del__(self):
+        self.session.close()
+
     def _setup_session(self, config):
         session = requests.Session()
         session.headers.update({
