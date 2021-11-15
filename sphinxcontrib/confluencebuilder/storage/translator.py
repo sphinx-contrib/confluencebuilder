@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from docutils import nodes
 from os import path
 from sphinx import addnodes
-from sphinx.locale import _
+from sphinx.locale import _ as SL
 from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
 from sphinx.util.images import guess_mimetype
@@ -771,7 +771,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._build_ac_param(node, '', node['ids'][0]))
             self.body.append(self._end_ac_macro(node))
 
-        self._visit_admonition(node, 'info', title=_('Todo'))
+        self._visit_admonition(node, 'info', title=SL('Todo'))
 
     def _visit_warning(self, node):
         self._visit_admonition(node, 'warning')

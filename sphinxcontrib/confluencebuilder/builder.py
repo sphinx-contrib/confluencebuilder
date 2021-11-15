@@ -15,7 +15,7 @@ from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.errors import ExtensionError
-from sphinx.locale import __
+from sphinx.locale import _ as SL
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
@@ -313,10 +313,10 @@ class ConfluenceBuilder(Builder):
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
         if self.use_index and not self.state.title('genindex'):
-            self.state.registerTitle('genindex', __('Index'), self.config)
+            self.state.registerTitle('genindex', SL('Index'), self.config)
 
         if self.use_search and not self.state.title('search'):
-            self.state.registerTitle('search', __('Search'), self.config)
+            self.state.registerTitle('search', SL('Search'), self.config)
 
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
@@ -741,7 +741,7 @@ class ConfluenceBuilder(Builder):
         navnode = ConfluenceNavigationNode()
 
         if docname in self.nav_prev:
-            prev_label = '← ' + __('Previous')
+            prev_label = '← ' + SL('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
             reference._navnode = True
@@ -750,7 +750,7 @@ class ConfluenceBuilder(Builder):
             navnode.append(reference)
 
         if docname in self.nav_next:
-            next_label = __('Next') + ' →'
+            next_label = SL('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
             reference._navnode = True
