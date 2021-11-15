@@ -1145,7 +1145,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self._end_tag(node))
             self._building_footnotes = True
 
-        label_text = label_node.astext()
+        label_text = '[' + label_node.astext() + ']'
 
         self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
         self.context.append(self._end_tag(node))
