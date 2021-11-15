@@ -28,6 +28,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_footer
 from sphinxcontrib.confluencebuilder.nodes import confluence_header
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
@@ -918,6 +919,12 @@ class ConfluenceBuilder(Builder):
         footer_node = confluence_footer()
 
         prev_next_loc = self.config.confluence_prev_next_buttons_location
+
+        # add page generation notice
+        if self.config.confluence_page_generation_notice:
+            pgn_node = confluence_page_generation_notice()
+            header_node.append(pgn_node)
+            add_header_node = True
 
         # add header next/previous
         if prev_next_loc in ('top', 'both'):

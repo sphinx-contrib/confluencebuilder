@@ -53,6 +53,7 @@ def generate_storage_format_domainindex(builder, docname, f):
     ctx = {
         'L': sccb_translation,
         'index': content,
+        'pagegen_notice': builder.config.confluence_page_generation_notice,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)
@@ -95,6 +96,7 @@ def generate_storage_format_genindex(builder, docname, f):
     ctx = {
         'L': sccb_translation,
         'index': genindex,
+        'pagegen_notice': builder.config.confluence_page_generation_notice,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)

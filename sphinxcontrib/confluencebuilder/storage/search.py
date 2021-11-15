@@ -32,6 +32,7 @@ def generate_storage_format_search(builder, docname, f):
     # process the template with the generated index
     ctx = {
         'L': sccb_translation,
+        'pagegen_notice': builder.config.confluence_page_generation_notice,
         'space': space_name,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)

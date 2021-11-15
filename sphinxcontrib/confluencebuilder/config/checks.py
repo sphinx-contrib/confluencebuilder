@@ -330,6 +330,12 @@ If planning to use a depth of zero, it is recommended to use the
 
     # ##################################################################
 
+    # confluence_page_generation_notice
+    validator.conf('confluence_page_generation_notice') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_prev_next_buttons_location
     try:
         validator.conf('confluence_prev_next_buttons_location') \

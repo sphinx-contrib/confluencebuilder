@@ -45,6 +45,16 @@ class confluence_metadata(nodes.Element):
     """
 
 
+class confluence_page_generation_notice(nodes.TextElement):
+    """
+    confluence page generation notice node
+
+    A Confluence builder defined page generation notice node, used to create a
+    helpful message for users to indicate that the document's content has been
+    generated.
+    """
+
+
 class jira(nodes.Element, nodes.Structural):
     """
     jira (query) node

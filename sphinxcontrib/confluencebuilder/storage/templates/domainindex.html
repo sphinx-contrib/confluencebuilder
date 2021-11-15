@@ -6,7 +6,16 @@ Template for a storage-format domainindex document.
 :license: BSD-2-Clause (LICENSE)
 #}
 
-<hr />
+{%- if pagegen_notice -%}
+    <div style="color: #707070; font-size: 12px;">
+        {{ L('This page has been automatically generated.') }}
+    </div>
+
+    <hr style="clear: both; padding-top: 10px; margin-bottom: 30px" />
+{%- else -%}
+    <hr />
+{%- endif %}
+
 <div style="text-align: center">
     {% for (key, _) in index -%}
     <ac:link ac:anchor="{{ key|upper }}">

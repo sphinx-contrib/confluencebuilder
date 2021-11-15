@@ -61,6 +61,7 @@ def apply_defaults(conf):
         'confluence_disable_ssl_validation',
         'confluence_ignore_titlefix_on_index',
         'confluence_master_homepage',
+        'confluence_page_generation_notice',
         'confluence_page_hierarchy',
         'confluence_publish_dryrun',
         'confluence_publish_onlynew',

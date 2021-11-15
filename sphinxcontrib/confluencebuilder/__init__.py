@@ -77,6 +77,8 @@ def setup(app):
     app.add_config_value('confluence_include_search', None, '')
     # Enablement of the maximum document depth (before inlining).
     app.add_config_value('confluence_max_doc_depth', None, 'env')
+    # Enablement of a "page generated" notice.
+    app.add_config_value('confluence_page_generation_notice', None, 'env')
     # Enablement of publishing pages into a hierarchy from a root toctree.
     app.add_config_value('confluence_page_hierarchy', None, False)
     # Show previous/next buttons (bottom, top, both, None).

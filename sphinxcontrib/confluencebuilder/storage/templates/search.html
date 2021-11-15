@@ -5,6 +5,14 @@ Template for a storage-format search document.
 :license: BSD-2-Clause (LICENSE)
 #}
 
+{%- if pagegen_notice -%}
+    <div style="color: #707070; font-size: 12px;">
+        {{ L('This page has been automatically generated.') }}
+    </div>
+
+    <hr style="clear: both; padding-top: 10px; margin-bottom: 30px" />
+{%- endif %}
+
 <ac:structured-macro ac:name="livesearch">
     <ac:parameter ac:name="additional">page excerpt</ac:parameter>
     <ac:parameter ac:name="size">large</ac:parameter>
