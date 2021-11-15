@@ -106,7 +106,7 @@ class TestConfluenceRstCitations(unittest.TestCase):
             self.assertEqual(ac_link['ac:anchor'], 'id1')
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, 'CIT01')
+            self.assertEqual(link_body.text, '[CIT01]')
 
             self.assertEqual(tds[1].text.strip(), 'citation 1')
 
@@ -127,6 +127,6 @@ class TestConfluenceRstCitations(unittest.TestCase):
             self.assertEqual(ac_link['ac:anchor'], 'id2')
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, 'CIT02')
+            self.assertEqual(link_body.text, '[CIT02]')
 
             self.assertEqual(tds[1].text.strip(), 'citation 2')

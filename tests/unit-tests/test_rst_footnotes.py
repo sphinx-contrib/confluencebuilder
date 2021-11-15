@@ -129,7 +129,7 @@ class TestConfluenceRstFootnotes(unittest.TestCase):
             self.assertEqual(ac_link['ac:anchor'], 'id3')
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, '2')
+            self.assertEqual(link_body.text, '[2]')
 
             self.assertEqual(tds[1].text.strip(), 'footnote 2')
 
@@ -150,7 +150,7 @@ class TestConfluenceRstFootnotes(unittest.TestCase):
             self.assertEqual(ac_link['ac:anchor'], 'id1')
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, '1')
+            self.assertEqual(link_body.text, '[1]')
 
             self.assertEqual(tds[1].text.strip(), 'footnote num')
 
@@ -171,6 +171,6 @@ class TestConfluenceRstFootnotes(unittest.TestCase):
             self.assertEqual(ac_link['ac:anchor'], 'id2')
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, '3')
+            self.assertEqual(link_body.text, '[3]')
 
             self.assertEqual(tds[1].text.strip(), 'footnote note')
