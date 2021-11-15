@@ -4,7 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from jinja2 import Template
 import pkgutil
 import os
 
@@ -30,6 +29,8 @@ def generate_storage_format_search(builder, docname, f):
     template_data = pkgutil.get_data(__name__, search_template)
 
     # process the template with the generated index
-    t = Template(template_data.decode('utf-8'))
-    output = t.render(space=space_name)
+    ctx = {
+        'space': space_name,
+    }
+    output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)

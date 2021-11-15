@@ -4,7 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from jinja2 import Template
 from sphinx.environment.adapters.indexentries import IndexEntries
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
@@ -50,8 +49,10 @@ def generate_storage_format_domainindex(builder, docname, f):
     template_data = pkgutil.get_data(__name__, domainindex_template)
 
     # process the template with the generated index
-    t = Template(template_data.decode('utf-8'))
-    output = t.render(index=content)
+    ctx = {
+        'index': content,
+    }
+    output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)
 
 
@@ -89,8 +90,10 @@ def generate_storage_format_genindex(builder, docname, f):
     template_data = pkgutil.get_data(__name__, genindex_template)
 
     # process the template with the generated index
-    t = Template(template_data.decode('utf-8'))
-    output = t.render(index=genindex)
+    ctx = {
+        'index': genindex,
+    }
+    output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)
 
 

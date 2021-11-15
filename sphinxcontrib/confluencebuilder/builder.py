@@ -116,6 +116,9 @@ class ConfluenceBuilder(Builder):
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config)
 
+        self.create_template_bridge()
+        self.templates.init(self)
+
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
         if old_url != new_url:
