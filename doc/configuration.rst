@@ -262,6 +262,18 @@ Generic configuration
 
         confluence_max_doc_depth = 2
 
+.. confval:: confluence_page_generation_notice
+
+    .. versionadded:: 1.7
+
+    A boolean value to whether or not to generate a message at the top of each
+    document that the page has been automatically generated. By default, this
+    notice is disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_page_generation_notice = True
+
 .. confval:: confluence_page_hierarchy
 
     A boolean value to whether or not nest pages in a hierarchical ordered. The
