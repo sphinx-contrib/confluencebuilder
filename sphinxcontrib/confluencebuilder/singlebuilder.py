@@ -6,11 +6,11 @@
 """
 
 from docutils import nodes
-from sphinx.locale import __
 from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message
+from sphinxcontrib.confluencebuilder.locale import C
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
 
@@ -77,7 +77,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             logger.error('singleconfluence requires title on root_doc')
             return
 
-        with progress_message(__('assembling single confluence document')):
+        with progress_message(C('assembling single confluence document')):
             # assemble toc section/figure numbers
             #
             # Both the environment's `toc_secnumbers` and `toc_fignumbers`
@@ -106,7 +106,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             self._prepare_doctree_writing(self.config.root_doc, doctree)
             self.assets.processDocument(doctree, self.config.root_doc)
 
-        with progress_message(__('writing single confluence document')):
+        with progress_message(C('writing single confluence document')):
             self.write_doc_serialized(self.config.root_doc, doctree)
             self.write_doc(self.config.root_doc, doctree)
 

@@ -10,6 +10,11 @@ from setuptools import find_packages
 from setuptools import setup
 import os
 
+try:
+    from babel.messages import frontend as babel
+except ImportError:
+    babel = None
+
 with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()
 
@@ -34,6 +39,18 @@ requires = [
     'requests>=2.14.0',
     'sphinx>=1.8',
 ]
+
+cmdclass={
+    'clean': ExtendedClean,
+}
+
+if babel:
+    cmdclass.update({
+        'compile_catalog': babel.compile_catalog,
+        'extract_messages': babel.extract_messages,
+        'init_catalog': babel.init_catalog,
+        'update_catalog': babel.update_catalog,
+    })
 
 setup(
     name='sphinxcontrib-confluencebuilder',
@@ -73,9 +90,7 @@ setup(
     install_requires=requires,
     namespace_packages=['sphinxcontrib'],
     test_suite='tests',
-    cmdclass={
-        'clean': ExtendedClean,
-    },
+    cmdclass=cmdclass,
     entry_points={
         'console_scripts': [
             'sphinx-build-confluence = sphinxcontrib.confluencebuilder.__main__:main',

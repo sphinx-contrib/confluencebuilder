@@ -1,0 +1,15 @@
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:80
+msgid "assembling single confluence document"
+msgstr ""
+
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:109
+msgid "writing single confluence document"
+msgstr ""
+
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
+#: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
+#: sphinxcontrib/confluencebuilder/storage/translator.py:1917
+msgid "This page has been automatically generated."
+msgstr ""
+

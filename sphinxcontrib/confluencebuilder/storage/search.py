@@ -4,9 +4,9 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from jinja2 import Template
-import pkgutil
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
 import os
+import pkgutil
 
 
 def generate_storage_format_search(builder, docname, f):
@@ -30,6 +30,10 @@ def generate_storage_format_search(builder, docname, f):
     template_data = pkgutil.get_data(__name__, search_template)
 
     # process the template with the generated index
-    t = Template(template_data.decode('utf-8'))
-    output = t.render(space=space_name)
+    ctx = {
+        'L': sccb_translation,
+        'pagegen_notice': builder.config.confluence_page_generation_notice,
+        'space': space_name,
+    }
+    output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)

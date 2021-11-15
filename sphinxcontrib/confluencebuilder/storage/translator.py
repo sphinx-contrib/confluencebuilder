@@ -9,11 +9,12 @@ from __future__ import unicode_literals
 from docutils import nodes
 from os import path
 from sphinx import addnodes
-from sphinx.locale import _
+from sphinx.locale import _ as SL
 from sphinx.locale import admonitionlabels
 from sphinx.util.images import get_image_size
 from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
+from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
 from sphinxcontrib.confluencebuilder.std.confluence import INDENT
@@ -56,6 +57,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._figure_context = []
         self._list_context = [False]
         self._manpage_url = getattr(config, 'manpages_url', None)
+        self._needs_navnode_spacing = False
         self._reference_context = []
         self._thead_context = []
         self.colspecs = []
@@ -771,7 +773,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._build_ac_param(node, '', node['ids'][0]))
             self.body.append(self._end_ac_macro(node))
 
-        self._visit_admonition(node, 'info', title=_('Todo'))
+        self._visit_admonition(node, 'info', title=SL('Todo'))
 
     def _visit_warning(self, node):
         self._visit_admonition(node, 'warning')
@@ -1060,6 +1062,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         navnode = getattr(node, '_navnode', False)
 
         if navnode:
+            if self._needs_navnode_spacing:
+                self.body.append(self._start_tag(node, 'p', empty=True,
+                    **{'style': 'clear: both'}))
+                self._needs_navnode_spacing = False
+
             float = 'right' if node._navnode_next else 'left'
             self.body.append(self._start_tag(node, 'div',
                 **{'style': 'float: ' + float + ';'}))
@@ -1868,21 +1875,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- extension -- confluence builder
     # -----------------------------------------
 
-    def visit_ConfluenceNavigationNode(self, node):
-        if node.bottom:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
-
-    def depart_ConfluenceNavigationNode(self, node):
-        if node.top:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style':
-                    'clear: both; padding-top: 10px; margin-bottom: 30px'}))
-        else:
-            self.body.append('<div style="clear: both"> </div>\n')
-
     def visit_confluence_expand(self, node):
         if not self.can_expand:
             raise nodes.SkipNode
@@ -1897,6 +1889,41 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_confluence_expand(self, node):
         self.body.append(self.context.pop()) # macro
+
+    def visit_confluence_footer(self, node):
+        self.body.append(self._start_tag(
+            node, 'hr', suffix=self.nl, empty=True,
+            **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
+
+    def depart_confluence_footer(self, node):
+        self.body.append('<div style="clear: both"> </div>\n')
+
+    def visit_confluence_header(self, node):
+        pass
+
+    def depart_confluence_header(self, node):
+        self.body.append(self._start_tag(
+            node, 'hr', suffix=self.nl, empty=True,
+            **{'style':
+                'clear: both; padding-top: 10px; margin-bottom: 30px'}))
+
+    def visit_confluence_page_generation_notice(self, node):
+        attribs = {
+            'style': 'color: #707070; font-size: 12px;'
+        }
+
+        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.body.append(self.encode(
+            L('This page has been automatically generated.')))
+        self.body.append(self._end_tag(node))
+
+        # flag that if any navnodes are created, additional spacing is needed
+        self._needs_navnode_spacing = True
+
+        raise nodes.SkipNode
+
+    def depart_confluence_page_generation_notice(self, node):
+        self.body.append(self.context.pop()) # div
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira

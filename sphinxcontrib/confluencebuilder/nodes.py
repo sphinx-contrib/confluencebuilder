@@ -7,26 +7,6 @@
 from docutils import nodes
 
 
-class ConfluenceNavigationNode(nodes.General, nodes.Element):
-
-    """
-    confluence navigational node
-
-    A Confluence builder defined navigational node provides information on how
-    to manipulate documents to add navigational enhancements (e.g. next,
-    previous, etc.) at the top or bottom of pages (based on user configuration).
-
-    Attributes:
-        bottom: show navigation information at the bottom of a document
-        top: show navigation information at the top of a document
-    """
-    def __init__(self):
-        nodes.Element.__init__(self)
-
-        self.bottom = False
-        self.top = False
-
-
 class confluence_expand(nodes.Element):
     """
     confluence expand node
@@ -36,12 +16,42 @@ class confluence_expand(nodes.Element):
     """
 
 
+class confluence_footer(nodes.General, nodes.Element):
+    """
+    confluence footer node
+
+    A Confluence builder defined footer node provides additional generates
+    nodes such as navigational nodes (e.g. next, previous, etc.) for the bottom
+    of a document.
+    """
+
+
+class confluence_header(nodes.General, nodes.Element):
+    """
+    confluence header node
+
+    A Confluence builder defined header node provides additional generates
+    nodes such as navigational nodes (e.g. next, previous, etc.) for the top of
+    a document.
+    """
+
+
 class confluence_metadata(nodes.Element):
     """
     confluence metadata node
 
     A Confluence builder defined metadata node holds metadata information for a
     given document.
+    """
+
+
+class confluence_page_generation_notice(nodes.TextElement):
+    """
+    confluence page generation notice node
+
+    A Confluence builder defined page generation notice node, used to create a
+    helpful message for users to indicate that the document's content has been
+    generated.
     """
 
 

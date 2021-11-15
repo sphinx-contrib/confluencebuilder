@@ -15,7 +15,7 @@ from os import path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.errors import ExtensionError
-from sphinx.locale import __
+from sphinx.locale import _ as SL
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
@@ -25,8 +25,10 @@ from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
-from sphinxcontrib.confluencebuilder.nodes import ConfluenceNavigationNode
+from sphinxcontrib.confluencebuilder.nodes import confluence_footer
+from sphinxcontrib.confluencebuilder.nodes import confluence_header
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
@@ -116,6 +118,9 @@ class ConfluenceBuilder(Builder):
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config)
 
+        self.create_template_bridge()
+        self.templates.init(self)
+
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
         if old_url != new_url:
@@ -141,8 +146,6 @@ class ConfluenceBuilder(Builder):
         # Function to convert the docname to a relative URI.
         def link_transform(docname):
             return docname + self.link_suffix
-
-        self.prev_next_loc = self.config.confluence_prev_next_buttons_location
 
         if self.config.confluence_file_transform is not None:
             self.file_transform = self.config.confluence_file_transform
@@ -310,10 +313,10 @@ class ConfluenceBuilder(Builder):
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
         if self.use_index and not self.state.title('genindex'):
-            self.state.registerTitle('genindex', __('Index'), self.config)
+            self.state.registerTitle('genindex', SL('Index'), self.config)
 
         if self.use_search and not self.state.title('search'):
-            self.state.registerTitle('search', __('Search'), self.config)
+            self.state.registerTitle('search', SL('Search'), self.config)
 
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
@@ -408,17 +411,7 @@ class ConfluenceBuilder(Builder):
         if docname in self.omitted_docnames:
             return
 
-        if self.prev_next_loc in ('top', 'both'):
-            navnode = self._build_navigation_node(docname)
-            if navnode:
-                navnode.top = True
-                doctree.insert(0, navnode)
-
-        if self.prev_next_loc in ('bottom', 'both'):
-            navnode = self._build_navigation_node(docname)
-            if navnode:
-                navnode.bottom = True
-                doctree.append(navnode)
+        self._header_footer_init(docname, doctree)
 
         self.secnumbers = self.env.toc_secnumbers.get(docname, {})
         self.fignumbers = self.env.toc_fignumbers.get(docname, {})
@@ -718,45 +711,6 @@ class ConfluenceBuilder(Builder):
         if self.publish:
             self.publisher.disconnect()
 
-    def _build_navigation_node(self, docname):
-        """
-        build a navigation node for a document
-
-        Requests to build a navigation node for a provided document name. If
-        this document has no navigational hints to apply, this method will
-        return a `None` value.
-
-        Args:
-            docname: the document name
-
-        Returns:
-            returns a navigation node; ``None`` if no nav-node for document
-        """
-        if docname not in self.nav_prev and docname not in self.nav_next:
-            return None
-
-        navnode = ConfluenceNavigationNode()
-
-        if docname in self.nav_prev:
-            prev_label = '← ' + __('Previous')
-            reference = nodes.reference(prev_label, prev_label, internal=True,
-                refuri=self.nav_prev[docname])
-            reference._navnode = True
-            reference._navnode_next = False
-            reference._navnode_previous = True
-            navnode.append(reference)
-
-        if docname in self.nav_next:
-            next_label = __('Next') + ' →'
-            reference = nodes.reference(next_label, next_label, internal=True,
-                refuri=self.nav_next[docname])
-            reference._navnode = True
-            reference._navnode_next = True
-            reference._navnode_previous = False
-            navnode.append(reference)
-
-        return navnode
-
     def _check_publish_skip(self, docname):
         """
         check publishing should be skipped for the provided docname
@@ -946,6 +900,87 @@ class ConfluenceBuilder(Builder):
         if docname not in self.cache_doctrees:
             self.cache_doctrees[docname] = self._original_get_doctree(docname)
         return self.cache_doctrees[docname]
+
+    def _header_footer_init(self, docname, doctree):
+        """
+        initialize header/footer nodes (if needed) for a document
+
+        Generates header/footers nodes and injects them into a provided doctree.
+
+        Args:
+            docname: the document name
+            doctree: the doctree
+        """
+
+        add_header_node = False
+        add_footer_node = False
+
+        header_node = confluence_header()
+        footer_node = confluence_footer()
+
+        prev_next_loc = self.config.confluence_prev_next_buttons_location
+
+        # add page generation notice
+        if self.config.confluence_page_generation_notice:
+            pgn_node = confluence_page_generation_notice()
+            header_node.append(pgn_node)
+            add_header_node = True
+
+        # add header next/previous
+        if prev_next_loc in ('top', 'both'):
+            if self._header_footer_inject_navnode(docname, header_node):
+                add_header_node = True
+
+        # add footer next/previous
+        if prev_next_loc in ('bottom', 'both'):
+            if self._header_footer_inject_navnode(docname, footer_node):
+                add_footer_node = True
+
+        # inject header/footer nodes into doctree if there is content to add
+        if add_header_node:
+            doctree.insert(0, header_node)
+
+        if add_footer_node:
+            doctree.append(footer_node)
+
+    def _header_footer_inject_navnode(self, docname, node):
+        """
+        inject navigational nodes for a document's header/footer node
+
+        Requests to build a navigation nodes for a provided document name to be
+        added into a provided header/footer node. If this document has no
+        navigational hints to apply, this method has no effect.
+
+        Args:
+            docname: the document name
+            node: the node to inject navigational nodes into
+
+        Returns:
+            whether or not any nodes have been injected
+        """
+
+        if docname not in self.nav_prev and docname not in self.nav_next:
+            return False
+
+        if docname in self.nav_prev:
+            prev_label = '← ' + SL('Previous')
+            reference = nodes.reference(prev_label, prev_label, internal=True,
+                refuri=self.nav_prev[docname])
+            reference._navnode = True
+            reference._navnode_next = False
+            reference._navnode_previous = True
+            node.append(reference)
+
+        if docname in self.nav_next:
+            next_label = SL('Next') + ' →'
+            reference = nodes.reference(next_label, next_label, internal=True,
+                refuri=self.nav_next[docname])
+            reference._navnode = True
+            reference._navnode_next = True
+            reference._navnode_previous = False
+            node.append(reference)
+
+        return True
 
     def _register_doctree_title_targets(self, docname, doctree):
         """

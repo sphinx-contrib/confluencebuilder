@@ -2,4 +2,5 @@ include README.rst
 include LICENSE
 include CHANGES.rst
 
+recursive-include sphinxcontrib/confluencebuilder/locale *.pot *.po *.mo
 recursive-include sphinxcontrib/confluencebuilder/storage/templates *

@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from os import path
 from sphinx.util import docutils
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
@@ -11,6 +12,7 @@ from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import JiraDirective
 from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
+from sphinxcontrib.confluencebuilder.locale import MESSAGE_CATALOG_NAME
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import jira
@@ -41,6 +43,11 @@ def setup(app):
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
 
+    # register this extension's locale
+    package_dir = path.abspath(path.dirname(__file__))
+    locale_dir = path.join(package_dir, 'locale')
+    app.add_message_catalog(MESSAGE_CATALOG_NAME, locale_dir)
+
     # ##########################################################################
 
     # (configuration - essential)
@@ -70,6 +77,8 @@ def setup(app):
     app.add_config_value('confluence_include_search', None, '')
     # Enablement of the maximum document depth (before inlining).
     app.add_config_value('confluence_max_doc_depth', None, 'env')
+    # Enablement of a "page generated" notice.
+    app.add_config_value('confluence_page_generation_notice', None, 'env')
     # Enablement of publishing pages into a hierarchy from a root toctree.
     app.add_config_value('confluence_page_hierarchy', None, False)
     # Show previous/next buttons (bottom, top, both, None).
