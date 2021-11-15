@@ -1868,21 +1868,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- extension -- confluence builder
     # -----------------------------------------
 
-    def visit_ConfluenceNavigationNode(self, node):
-        if node.bottom:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
-
-    def depart_ConfluenceNavigationNode(self, node):
-        if node.top:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True,
-                **{'style':
-                    'clear: both; padding-top: 10px; margin-bottom: 30px'}))
-        else:
-            self.body.append('<div style="clear: both"> </div>\n')
-
     def visit_confluence_expand(self, node):
         if not self.can_expand:
             raise nodes.SkipNode
@@ -1897,6 +1882,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_confluence_expand(self, node):
         self.body.append(self.context.pop()) # macro
+
+    def visit_confluence_footer(self, node):
+        self.body.append(self._start_tag(
+            node, 'hr', suffix=self.nl, empty=True,
+            **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
+
+    def depart_confluence_footer(self, node):
+        self.body.append('<div style="clear: both"> </div>\n')
+
+    def visit_confluence_header(self, node):
+        pass
+
+    def depart_confluence_header(self, node):
+        self.body.append(self._start_tag(
+            node, 'hr', suffix=self.nl, empty=True,
+            **{'style':
+                'clear: both; padding-top: 10px; margin-bottom: 30px'}))
 
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
