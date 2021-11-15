@@ -4,8 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-import pkgutil
 import os
+import pkgutil
 
 
 def generate_storage_format_search(builder, docname, f):

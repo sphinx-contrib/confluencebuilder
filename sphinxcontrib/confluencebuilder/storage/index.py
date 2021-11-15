@@ -7,9 +7,9 @@
 from sphinx.environment.adapters.indexentries import IndexEntries
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
+import os
 import pkgutil
 import posixpath
-import os
 
 
 def generate_storage_format_domainindex(builder, docname, f):
