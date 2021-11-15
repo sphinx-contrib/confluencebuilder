@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
 import os
 import pkgutil
 
@@ -30,6 +31,7 @@ def generate_storage_format_search(builder, docname, f):
 
     # process the template with the generated index
     ctx = {
+        'L': sccb_translation,
         'space': space_name,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)

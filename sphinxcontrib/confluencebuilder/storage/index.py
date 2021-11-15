@@ -5,6 +5,7 @@
 """
 
 from sphinx.environment.adapters.indexentries import IndexEntries
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 import os
@@ -50,6 +51,7 @@ def generate_storage_format_domainindex(builder, docname, f):
 
     # process the template with the generated index
     ctx = {
+        'L': sccb_translation,
         'index': content,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
@@ -91,6 +93,7 @@ def generate_storage_format_genindex(builder, docname, f):
 
     # process the template with the generated index
     ctx = {
+        'L': sccb_translation,
         'index': genindex,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
