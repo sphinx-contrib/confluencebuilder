@@ -14,6 +14,44 @@ Confluence Cloud with an organization account and a user account (tilde-leading)
 as well as all Confluence supported server revisions (consult
 `Atlassian Support End of Life Policy`_ for the most recent list).
 
+Internationalization
+--------------------
+
+When new translations are added into the implementation/templates, ensure these
+messages are included in the portable object template (``.pot``):
+
+.. code-block:: shell-session
+
+    $ python setup.py extract_messages
+    running extract_messages
+    ...
+    writing PO template file to sphinxcontrib/confluencebuilder/locale/sphinxcontrib.confluencebuilder.pot
+
+If adding support for a new locale, invoke the following:
+
+.. code-block:: shell-session
+
+    $ python setup.py init_catalog --locale <locale>
+    running init_catalog
+    ...
+
+Ensure each supported locale has the most recent portable object (``.po``)
+state:
+
+.. code-block:: shell-session
+
+    $ python setup.py update_catalog
+    running update_catalog
+    ...
+
+Compile machine objects  (``.mo``) using the following:
+
+.. code-block:: shell-session
+
+    $ python setup.py compile_catalog
+    running compile_catalog
+    ...
+
 Release steps
 -------------
 
@@ -22,6 +60,7 @@ following steps are performed:
 
 - Ensure newly added/changed configuration options are properly reflecting a
   ``versionadded`` or equivalent hint.
+- Ensure message catalogs are up-to-date (see "Internationalization"; above).
 - Update ``CHANGES.rst``, replacing the development title with release version
   and date.
 - Ensure version values in the implementation are incremented and tagged
