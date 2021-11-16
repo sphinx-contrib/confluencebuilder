@@ -173,10 +173,11 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder (optional): the builder to use
         relax (optional): do not generate warnings as errors
     """
-    # Enable coloring of warning and other messages.  Note that this can
+
+    # Enable coloring of warning and other messages. Note that this can
     # cause sys.stderr to be mocked which is why we pass the new value
     # explicitly on the call to Sphinx() below.
-    if not color_terminal():
+    if 'MSYSTEM' not in os.environ and not color_terminal():
         nocolor()
 
     conf = dict(config) if config else {}

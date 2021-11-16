@@ -11,6 +11,7 @@ from tests.lib import enable_sphinx_info
 from tests.lib import prepare_dirs
 from tests.lib import prepare_sphinx
 import argparse
+import io
 import os
 import sys
 
@@ -50,7 +51,7 @@ def process_raw_upload(target_sandbox):
                 'labels': [],
             }
 
-            with open(raw_file, 'r') as f:
+            with io.open(raw_file, 'r', encoding='utf-8') as f:
                 data['content'] = f.read()
 
             print('[sandbox] publishing page...')
