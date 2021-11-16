@@ -125,6 +125,30 @@ class ConfluenceProxyPermissionError(ConfluenceError):
         )
 
 
+class ConfluencePublishCheckError(ConfluenceError):
+    pass
+
+
+class ConfluencePublishSelfAncestorError(ConfluencePublishCheckError):
+    def __init__(self, page_name):
+        super(ConfluencePublishSelfAncestorError, self).__init__('''
+---
+Ancestor publish check failed for: {name}
+
+A request has been made to publish a page as a child of itself. This is most
+likely due to a configuration of `confluence_parent_page` with the same value of
+the title page for the documentation's `root_doc`. If this is the case and the
+configuration uses `confluence_page_hierarchy`, there may be no need to set the
+`confluence_parent_page` option for this documentation's configuration. However,
+if `confluence_page_hierarchy` is not set, users will most likely want to use
+the `confluence_publish_root` option instead.
+
+If the above does not appear to be related to the current use case, please
+inform the maintainers of this extension.
+---
+'''.format(name=page_name))
+
+
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
         super(ConfluenceSeraphAuthenticationFailedUrlError, self).__init__(
