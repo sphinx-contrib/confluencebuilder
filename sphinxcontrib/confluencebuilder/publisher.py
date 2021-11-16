@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
@@ -795,6 +796,9 @@ class ConfluencePublisher():
 
         if parent_id:
             updatePage['ancestors'] = [{'id': parent_id}]
+
+            if page['id'] == parent_id:
+                raise ConfluencePublishSelfAncestorError(page_name)
 
         page_id_explicit = page['id'] + '?status=current'
         try:
