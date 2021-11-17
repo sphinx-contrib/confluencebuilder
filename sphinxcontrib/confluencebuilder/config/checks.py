@@ -494,6 +494,69 @@ following:
 
     # ##################################################################
 
+    # confluence_sourcelink
+    validator.conf('confluence_sourcelink') \
+             .dict_str_str()
+
+    if config.confluence_sourcelink:
+        sourcelink = config.confluence_sourcelink
+
+        # check if a supported template type is provided
+        supported_types = [
+            'bitbucket',
+            'github',
+            'gitlab',
+        ]
+        if 'type' in sourcelink:
+            if sourcelink['type'] not in supported_types:
+                raise ConfluenceConfigurationError('''\
+unsupported type provided in confluence_sourcelink
+
+The following types are supported:
+
+ - {}
+'''.format('\n - '.join(supported_types)))
+
+            # ensure requires options are set
+            required = [
+                'owner',
+                'repo',
+                'version',
+            ]
+            if not all(k in sourcelink for k in required):
+                raise ConfluenceConfigurationError('''\
+required option missing in confluence_sourcelink
+
+The following options are required for the provided template type:
+
+ - {}
+'''.format('\n - '.join(required)))
+
+        # if not using a template type, ensure url is set
+        elif 'url' not in sourcelink or not sourcelink['url']:
+            raise ConfluenceConfigurationError('''\
+url option is not set in confluence_sourcelink
+
+If a template type is not being configured for a source link,
+the `url` field must be configured.
+''')
+
+        reserved = [
+            'page',
+            'suffix',
+        ]
+        if any(k in sourcelink for k in reserved):
+            raise ConfluenceConfigurationError('''\
+reserved option set in confluence_sourcelink
+
+The following options are reserved with confluence_sourcelink
+and cannot be set:
+
+ - {}
+'''.format('\n - '.join(reserved)))
+
+    # ##################################################################
+
     # confluence_space_key
     validator.conf('confluence_space_key') \
              .string()

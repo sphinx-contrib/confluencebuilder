@@ -46,6 +46,9 @@ def apply_defaults(conf):
     if conf.confluence_secnumber_suffix is None:
         conf.confluence_secnumber_suffix = '. '
 
+    if conf.confluence_sourcelink is None:
+        conf.confluence_sourcelink = {}
+
     config2bool = [
         'confluence_add_secnumbers',
         'confluence_adv_aggressive_search',

@@ -55,6 +55,27 @@ class confluence_page_generation_notice(nodes.TextElement):
     """
 
 
+class confluence_source_link(nodes.Element, nodes.Structural):
+    """
+    confluence source link node
+
+    Provides a source link node to hint at the creation of a reference which
+    points to a generation document's original source document (or source
+    location).
+
+    Args:
+        rawsource: raw text from which this element was constructed
+        *children: list of child nodes
+        **attributes: dictionary of attribute to apply to the element
+
+    Attributes:
+        params: dictionary of parameters to configure the node
+    """
+    def __init__(self, rawsource='', *children, **attributes):
+        nodes.Element.__init__(self, rawsource, *children, **attributes)
+        self.params = {}
+
+
 class jira(nodes.Element, nodes.Structural):
     """
     jira (query) node

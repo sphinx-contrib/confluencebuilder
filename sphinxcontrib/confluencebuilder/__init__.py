@@ -85,6 +85,8 @@ def setup(app):
     app.add_config_value('confluence_prev_next_buttons_location', None, 'env')
     # Suffix to put after section numbers, before section name
     app.add_config_value('confluence_secnumber_suffix', None, 'env')
+    # Enablement of a "Edit/Show Source" reference on each document
+    app.add_config_value('confluence_sourcelink', None, 'env')
     # Enablement of a generated index document
     app.add_config_value('confluence_use_index', None, '')
     # Enablement for toctrees for singleconfluence documents.

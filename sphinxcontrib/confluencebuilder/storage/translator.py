@@ -1925,6 +1925,45 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_confluence_page_generation_notice(self, node):
         self.body.append(self.context.pop()) # div
 
+    def visit_confluence_source_link(self, node):
+        uri = node.params['url']
+
+        docname = self.docname
+        suffix = self.builder.env.doc2path(docname, base=None)[len(docname):]
+        uri = uri.format(page=docname, suffix=suffix, **node.params)
+
+        source_text = node.params.get('text', L('Edit Source'))
+        uri = self.encode(uri)
+
+        div_attribs = {
+            'style': 'float: right; padding-bottom: 4px',
+        }
+
+        span_attribs = {
+            'class': 'aui-icon aui-icon-small '
+                     'aui-iconfont-edit-small aui-iconfont-edit-filled',
+        }
+
+        # if a header file is defined, ensure the source link does not overlap
+        # with any user-defined header data
+        if self.builder.config.confluence_header_file is not None:
+            self.body.append('<div style="clear: both"> </div>\n')
+
+        self.body.append(self._start_tag(node, 'div', **div_attribs))
+        self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+        self.body.append(self._start_tag(node, 'span', **span_attribs))
+        self.body.append(self.encode(source_text)) # span-icon-content
+        self.body.append(self._end_tag(node, suffix='')) # span
+        self.body.append(self.encode(source_text)) # visible text
+        self.body.append(self._end_tag(node)) # a
+
+        self.body.append(self._end_tag(node)) # div
+
+        # flag that if any navnodes are created, additional spacing is needed
+        self._needs_navnode_spacing = True
+
+        raise nodes.SkipNode
+
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
     # ------------------------------------------
