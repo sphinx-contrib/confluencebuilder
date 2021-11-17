@@ -250,6 +250,29 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(SphinxWarning):
             self._try_config()
 
+    def test_config_check_domain_indices(self):
+        self.config['confluence_domain_indices'] = True
+        self._try_config()
+
+        self.config['confluence_domain_indices'] = []
+        self._try_config()
+
+        self.config['confluence_domain_indices'] = [
+            'js-modindex',
+            'py-modindex',
+        ]
+        self._try_config()
+
+        self.config['confluence_domain_indices'] = 'py-modindex'
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_domain_indices'] = [
+            None,
+        ]
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_emptyconfig(self):
         # default state of this extension with a builder should be a valid
         # configuration state; documentation should be generated (with no
