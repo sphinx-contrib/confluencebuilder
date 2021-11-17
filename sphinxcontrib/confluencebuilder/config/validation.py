@@ -399,7 +399,7 @@ class ConfigurationValidation():
         key, the translation will be performed and returned with this call.
 
         Args:
-            permit_empty (optional): whether or not all an empty string of this
+            permit_empty (optional): whether or not an empty string of this
                                       value is considered to be a set value
 
         Returns:

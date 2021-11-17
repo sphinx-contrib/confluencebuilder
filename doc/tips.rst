@@ -70,6 +70,8 @@ content can use the ``confluence_publish_prefix``
 See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
 :ref:`title overrides capability <confluence_title_overrides>`.
 
+.. index:: Math (recommended options)
+
 Recommended options for math
 ----------------------------
 
@@ -89,6 +91,8 @@ is recommended to provide a timeout value based on the environment being used
 (see ``confluence_timeout``; :ref:`ref<confluence_timeout>`).
 
 .. _tip_manage_publish_subset:
+
+.. index:: Continuous integration
 
 Publishing with a CI secret key
 -------------------------------
@@ -114,6 +118,9 @@ applying a secret key is through an environment variable. For example:
 The above will read an environment variable ``SECRET_KEY`` prepared by a CI
 script which will be set on the ``confluence_server_pass``
 (:ref:`ref<confluence_server_pass>`) configuration.
+
+.. index:: Wiping a space
+.. index:: Page removal; Wiping a space
 
 Wiping a space
 --------------

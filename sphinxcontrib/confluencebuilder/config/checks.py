@@ -80,6 +80,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_append_labels
+    validator.conf('confluence_append_labels') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_ask_password
     validator.conf('confluence_ask_password') \
              .bool()
@@ -94,6 +100,12 @@ def validate_configuration(builder):
 
     # confluence_asset_force_standalone
     validator.conf('confluence_asset_force_standalone') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_asset_override
+    validator.conf('confluence_asset_override') \
              .bool()
 
     # ##################################################################
@@ -173,6 +185,23 @@ default alignment for tables, figures, etc. Accepted values include 'left',
 
     # ##################################################################
 
+    # confluence_domain_indices
+    try:
+        validator.conf('confluence_domain_indices').bool()
+    except ConfluenceConfigurationError:
+        try:
+            validator.conf('confluence_domain_indices').strings()
+        except ConfluenceConfigurationError:
+            raise ConfluenceConfigurationError('''\
+confluence_domain_indices is not a boolean or collection of strings
+
+The option 'confluence_domain_indices' has been provided to indicate that
+domain indices should be generated. This value can either be set to `True` or
+set to a list of domains (strings) to be included.
+''')
+
+    # ##################################################################
+
     # confluence_file_suffix
     validator.conf('confluence_file_suffix') \
              .string()
@@ -234,6 +263,12 @@ to a proper file path.
 
     # confluence_ignore_titlefix_on_index
     validator.conf('confluence_ignore_titlefix_on_index') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_include_search
+    validator.conf('confluence_include_search') \
              .bool()
 
     # ##################################################################
@@ -584,6 +619,12 @@ value (e.g. 2).
 
     # ##################################################################
 
+    # confluence_use_index
+    validator.conf('confluence_use_index') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_watch
     validator.conf('confluence_watch') \
              .bool()
@@ -650,6 +691,12 @@ When configuring for a publishing container, a user can configure for either
 'confluence_parent_page' or 'confluence_publish_root'; however, both cannot be
 configured at the same time.
 """)
+
+    # ##################################################################
+
+    # singleconfluence_toctree
+    validator.conf('singleconfluence_toctree') \
+             .bool()
 
     # ##################################################################
 
