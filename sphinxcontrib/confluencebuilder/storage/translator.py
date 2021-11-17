@@ -1949,9 +1949,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
-    def depart_confluence_page_generation_notice(self, node):
-        self.body.append(self.context.pop()) # div
-
     def visit_confluence_source_link(self, node):
         uri = node.params['url']
 
