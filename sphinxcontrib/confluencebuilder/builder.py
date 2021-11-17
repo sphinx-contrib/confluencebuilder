@@ -291,8 +291,7 @@ class ConfluenceBuilder(Builder):
                     doctitle = ('.'.join(map(str, secnumbers[''])) +
                         self.secnumber_suffix + doctitle)
 
-                doctitle = self.state.registerTitle(docname, doctitle,
-                    self.config)
+                self.state.registerTitle(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:
