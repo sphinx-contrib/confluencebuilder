@@ -184,7 +184,7 @@ def ask_question(question, default='no'):
     """
     ask the user a question
 
-    The mainline for the 'wipe' action.
+    Prompt for asking yes or no for a wipe action.
 
     Args:
         question: the question
@@ -198,7 +198,7 @@ def ask_question(question, default='no'):
         prompt = ' [y/n] '
     elif default == 'yes':
         prompt = ' [Y/n] '
-    elif default:
+    else:
         prompt = ' [y/N] '
 
     while True:
@@ -207,7 +207,7 @@ def ask_question(question, default='no'):
             return default == 'yes'
         elif rsp in ('y', 'yes'):
             return True
-        elif rsp in ('n', 'no', 'q'): # q for 'quit'
+        elif rsp in ('n', 'no', 'q'):  # q for 'quit'
             return False
         else:
             print("Please respond with 'y' or 'n'.\n")
