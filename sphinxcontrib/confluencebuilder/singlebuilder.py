@@ -104,7 +104,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
             doctree = self.assemble_doctree()
             self._prepare_doctree_writing(self.config.root_doc, doctree)
-            self.assets.processDocument(doctree, self.config.root_doc)
+            self.assets.process_document(doctree, self.config.root_doc)
 
         with progress_message(C('writing single confluence document')):
             self.write_doc_serialized(self.config.root_doc, doctree)

@@ -105,9 +105,9 @@ class Rest:
         return session
 
     def get(self, key, params):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key
+        rest_url = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            rsp = self.session.get(restUrl, params=params)
+            rsp = self.session.get(rest_url, params=params)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -136,9 +136,9 @@ class Rest:
         return json_data
 
     def post(self, key, data, files=None):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key
+        rest_url = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            rsp = self.session.post(restUrl, json=data, files=files)
+            rsp = self.session.post(rest_url, json=data, files=files)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -170,9 +170,9 @@ class Rest:
         return json_data
 
     def put(self, key, value, data):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
-            rsp = self.session.put(restUrl, json=data)
+            rsp = self.session.put(rest_url, json=data)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -204,9 +204,9 @@ class Rest:
         return json_data
 
     def delete(self, key, value):
-        restUrl = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
-            rsp = self.session.delete(restUrl)
+            rsp = self.session.delete(rest_url)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:

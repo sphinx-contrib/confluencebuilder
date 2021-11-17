@@ -157,9 +157,9 @@ class ConfluenceAssetManager:
         """
         for docname in docnames:
             doctree = self.env.get_doctree(docname)
-            self.processDocument(doctree, docname)
+            self.process_document(doctree, docname)
 
-    def processDocument(self, doctree, docname, standalone=False):
+    def process_document(self, doctree, docname, standalone=False):
         """
         process a document for assets
 
