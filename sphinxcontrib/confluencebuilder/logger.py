@@ -11,7 +11,7 @@ import io
 import sys
 
 
-class ConfluenceLogger():
+class ConfluenceLogger:
     """
     confluence logger class
 
