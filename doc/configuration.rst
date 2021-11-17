@@ -649,6 +649,116 @@ Publishing configuration
 
     See also |confluence_purge|_.
 
+.. confval:: confluence_sourcelink
+
+    .. versionadded:: 1.7
+
+    Provides options to include a link to the documentation's sources at the top
+    of each page. This can either be a generic URL or customized to link to
+    individual documents in a repository.
+
+    An example of a simple link is as follows:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'url': 'https//www.example.com/',
+        }
+
+    Templates for popular hosting services are available. Instead of defining
+    a ``url`` option, the ``type`` option can instead be set to one of the
+    following types:
+
+    - ``bitbucket``
+    - ``github``
+    - ``gitlab``
+
+    Options to set for these types are as follows:
+
+    .. rst-class:: spacedtable
+
+    +-----------------+-------------------------------------------------------+
+    | Option          | Description                                           |
+    +=================+=======================================================+
+    | | ``owner``     | The owner (group or user) of a project.               |
+    | | *(required)*  |                                                       |
+    +-----------------+-------------------------------------------------------+
+    | | ``repo``      | The name of the repository.                           |
+    | | *(required)*  |                                                       |
+    +-----------------+-------------------------------------------------------+
+    | ``container``   | The folder inside the repository which is holding the |
+    |                 | documentation. This will vary per project, for        |
+    |                 | example, this may be ``Documentation/`` or ``doc/``.  |
+    |                 | If the documentation resides in the root of the       |
+    |                 | repository, this option can be omitted or set to an   |
+    |                 | empty string.                                         |
+    +-----------------+-------------------------------------------------------+
+    | | ``version``   | The version of the sources to list. This is typically |
+    | | *(required)*  | set to either a branch (e.g. ``main``) or tag value.  |
+    +-----------------+-------------------------------------------------------+
+    | ``view``        | The view mode to configure. By default, this value is |
+    |                 | set to ``blob`` for GitHub/GitLab and ``view`` for    |
+    |                 | Bitbucket.                                            |
+    |                 |                                                       |
+    |                 | GitHub/GitLab users may wish to change this to        |
+    |                 | ``edit`` to create a link directly to the editing     |
+    |                 | view for a specific document.                         |
+    +-----------------+-------------------------------------------------------+
+    | ``host``        | The hostname value to override.                       |
+    |                 |                                                       |
+    |                 | This option is useful for instances where a custom    |
+    |                 | domain may be configured for an organization.         |
+    +-----------------+-------------------------------------------------------+
+    | ``protocol``    | The protocol value to override (defaults to           |
+    |                 | ``https``).                                           |
+    +-----------------+-------------------------------------------------------+
+
+    For example, a project hosted on GitHub can use the following:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'type': 'github',
+            'owner': 'sphinx-contrib',
+            'repo': 'confluencebuilder',
+            'container': 'doc/',
+            'version': 'master',
+            'view': 'edit',
+        }
+
+    For unique environments, the source URL can be customized through the
+    ``url`` option. This option is treated as a format string which can be
+    populated based on the configuration and individual documents being
+    processed. An example is as follows:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'url': 'https://git.example.com/mydocs/{page}{suffix}',
+        }
+
+    This configures a base URL, where ``page`` and ``suffix`` will be generated
+    automatically. Any option provided in the ``confluence_sourcelink``
+    dictionary will be forwarded to the format option. For example:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'base': 'https://git.example.com/mydocs',
+            'url': '{base}/{version}/{page}{suffix}',
+            'version': 'main',
+        }
+
+    The ``text`` option can be used to override the name of the link observed
+    at the top of the page:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            ...
+            'text': 'Edit Source',
+        }
+
 .. |confluence_title_overrides| replace:: ``confluence_title_overrides``
 .. _confluence_title_overrides:
 

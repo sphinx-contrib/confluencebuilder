@@ -407,6 +407,10 @@ div.viewcode-block:target {
     table-layout: fixed;
 }
 
+.spacedtable td {
+    padding: 1em 8px 1em 5px !important;
+}
+
 .download-pypi {
     float: right;
     line-height: 4.1em;

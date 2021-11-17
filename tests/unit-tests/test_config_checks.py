@@ -714,6 +714,77 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_space_key'] = 'DUMMY2'
         self._try_config()
 
+    def test_config_check_sourcelink(self):
+        self.config['confluence_sourcelink'] = {}
+        self._try_config()
+
+        self.config['confluence_sourcelink'] = {
+            'url': 'https://example.com',
+        }
+        self._try_config()
+
+        self.config['confluence_sourcelink'] = {
+            'dummy': 'value',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_sourcelink'] = {
+            'url': None,
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        # reserved check
+        self.config['confluence_sourcelink'] = {
+            'url': 'https://example.com',
+            'page': 'test',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_sourcelink'] = {
+            'url': 'https://example.com',
+            'suffix': 'test',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        # templates
+        supported_templates = [
+            'bitbucket',
+            'github',
+            'gitlab',
+        ]
+
+        for template in supported_templates:
+            valid_template = {
+                'type': template,
+                'owner': 'test',
+                'repo': 'test',
+                'version': 'test',
+            }
+            self.config['confluence_sourcelink'] = dict(valid_template)
+            self._try_config()
+
+            sourcelink = dict(valid_template)
+            del sourcelink['owner']
+            self.config['confluence_sourcelink'] = sourcelink
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config()
+
+            sourcelink = dict(valid_template)
+            del sourcelink['repo']
+            self.config['confluence_sourcelink'] = sourcelink
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config()
+
+            sourcelink = dict(valid_template)
+            del sourcelink['version']
+            self.config['confluence_sourcelink'] = sourcelink
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config()
+
     def test_config_check_title_overrides(self):
         self.config['confluence_title_overrides'] = {}
         self._try_config()

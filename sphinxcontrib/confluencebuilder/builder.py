@@ -29,6 +29,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_footer
 from sphinxcontrib.confluencebuilder.nodes import confluence_header
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
+from sphinxcontrib.confluencebuilder.nodes import confluence_source_link
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
@@ -919,6 +920,43 @@ class ConfluenceBuilder(Builder):
         footer_node = confluence_footer()
 
         prev_next_loc = self.config.confluence_prev_next_buttons_location
+
+        # add source link
+        if self.config.confluence_sourcelink:
+            default_host = ''
+            default_view = 'blob'
+
+            sourcelink = dict(self.config.confluence_sourcelink)
+            if 'url' not in sourcelink:
+                url_base = '{protocol}://{host}/{owner}/{repo}/'
+
+                source_type = sourcelink.get('type')
+                if source_type == 'bitbucket':
+                    default_host = 'bitbucket.org'
+                    default_view = 'view'
+                    url = 'src/{version}/{container}{page}{suffix}?mode={view}'
+                elif source_type == 'github':
+                    default_host = 'github.com'
+                    url = '{view}/{version}/{container}{page}{suffix}'
+                elif source_type == 'gitlab':
+                    default_host = 'gitlab.com'
+                    url = '{view}/{version}/{container}{page}{suffix}'
+                else:
+                    # unsupported source type should not pass here after this
+                    # extension's configuration check
+                    assert False
+
+                sourcelink['url'] = url_base + url
+
+            sourcelink.setdefault('container', '')
+            sourcelink.setdefault('protocol', 'https')
+            sourcelink.setdefault('host', default_host)
+            sourcelink.setdefault('view', default_view)
+
+            es_node = confluence_source_link()
+            es_node.params.update(sourcelink)
+            header_node.append(es_node)
+            add_header_node = True
 
         # add page generation notice
         if self.config.confluence_page_generation_notice:
