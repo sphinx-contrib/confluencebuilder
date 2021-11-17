@@ -136,7 +136,7 @@ class ConfluenceState:
         logger.verbose('track %s toc-depth: %s' % (docname, depth))
 
     @staticmethod
-    def registerUploadId(docname, id):
+    def registerUploadId(docname, id_):
         """
         register a page (upload) identifier for a docname
 
@@ -149,8 +149,8 @@ class ConfluenceState:
         published documents will determine if a page's upload identifier is
         tracked in this state (see also `uploadId`).
         """
-        ConfluenceState.doc2uploadId[docname] = id
-        logger.verbose("tracking docname %s's upload id: %s" % (docname, id))
+        ConfluenceState.doc2uploadId[docname] = id_
+        logger.verbose("tracking docname %s's upload id: %s" % (docname, id_))
 
     @staticmethod
     def reset():

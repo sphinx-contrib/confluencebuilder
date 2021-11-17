@@ -407,9 +407,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.context.pop())  # dt
 
         if 'ids' in node and self.can_anchor:
-            for id in node['ids']:
+            for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id))
+                self.body.append(self._build_ac_param(node, '', id_))
                 self.body.append(self._end_ac_macro(node))
 
         self.body.append(self._start_tag(node, 'dt'))
@@ -1022,9 +1022,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if (self.can_anchor and anchor_value and (is_citation or self._topic)
                 and 'ids' in node):
-            for id in node['ids']:
+            for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id))
+                self.body.append(self._build_ac_param(node, '', id_))
                 self.body.append(self._end_ac_macro(node))
 
         if is_citation:
@@ -1067,9 +1067,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     **{'style': 'clear: both'}))
                 self._needs_navnode_spacing = False
 
-            float = 'right' if node._navnode_next else 'left'
+            float_ = 'right' if node._navnode_next else 'left'
             self.body.append(self._start_tag(node, 'div',
-                **{'style': 'float: ' + float + ';'}))
+                **{'style': 'float: ' + float_ + ';'}))
 
         # build link to internal anchor (on another page)
         #  Note: plain-text-link body cannot have inline markup; add the node
@@ -1120,9 +1120,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._build_ac_param(node, '', anchor))
                 self.body.append(self._end_ac_macro(node))
         elif 'ids' in node and 'refuri' not in node:
-            for id in node['ids']:
+            for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id))
+                self.body.append(self._build_ac_param(node, '', id_))
                 self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
@@ -1421,8 +1421,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 else:
                     key = figtype
 
-                id = node['ids'][0]
-                number = self.builder.fignumbers.get(key, {}).get(id, ())
+                id_ = node['ids'][0]
+                number = self.builder.fignumbers.get(key, {}).get(id_, ())
                 number = '.'.join(map(str, number))
             else:
                 number = node['number']
@@ -1774,9 +1774,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_desc_signature_line(self, node):
         if self._desc_sig_ids and self.can_anchor:
-            for id in self._desc_sig_ids:
+            for id_ in self._desc_sig_ids:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id))
+                self.body.append(self._build_ac_param(node, '', id_))
                 self.body.append(self._end_ac_macro(node))
 
         if self._desc_sig_ids is None:
@@ -2304,7 +2304,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         return self._end_tag(node, suffix='')
 
-    def _start_ac_macro(self, node, type, empty=False):
+    def _start_ac_macro(self, node, type_, empty=False):
         """
         generates a confluence macro start tag
 
@@ -2315,14 +2315,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         Args:
             node: the node processing the macro
-            type: the type of macro
+            type_: the type of macro
             empty (optional): tag will not hold child nodes (defaults to False)
 
         Returns:
             the content
         """
         return self._start_tag(node, 'ac:structured-macro',
-            suffix=self.nl, empty=empty, **{'ac:name': type})
+            suffix=self.nl, empty=empty, **{'ac:name': type_})
 
     def _end_ac_macro(self, node):
         """

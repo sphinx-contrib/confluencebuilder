@@ -32,8 +32,8 @@ except ImportError:
         def __enter__(self):
             logger.info(bold(self.msg + '... '), nonl=True)
 
-        def __exit__(self, type, value, traceback):
-            if type:
+        def __exit__(self, type_, value, traceback):
+            if type_:
                 logger.info(__('failed'))
             else:
                 logger.info(__('done'))

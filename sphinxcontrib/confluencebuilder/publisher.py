@@ -859,7 +859,7 @@ class ConfluencePublisher():
             s += ' ' + misc
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
-    def _onlynew(self, msg, id=None, misc=''):
+    def _onlynew(self, msg, id_=None):
         """
         log an only-new mode message
 

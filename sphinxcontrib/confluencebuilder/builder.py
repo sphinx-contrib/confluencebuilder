@@ -534,7 +534,7 @@ class ConfluenceBuilder(Builder):
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
-    def publish_asset(self, key, docname, output, type, hash):
+    def publish_asset(self, key, docname, output, type_, hash_):
         conf = self.config
         publisher = self.publisher
 
@@ -557,11 +557,11 @@ class ConfluenceBuilder(Builder):
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
             attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash)
+                page_id, key, output, type_, hash_)
         elif conf.confluence_asset_override:
             # forced publishing of the asset
             attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash, force=True)
+                page_id, key, output, type_, hash_, force=True)
 
         if attachment_id and conf.confluence_purge:
             if page_id in self.legacy_assets:
@@ -689,7 +689,7 @@ class ConfluenceBuilder(Builder):
             for asset in status_iterator(assets, 'publishing assets... ',
                     length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
-                key, absfile, type, hash, docname = asset
+                key, absfile, type_, hash_, docname = asset
                 if self._check_publish_skip(docname):
                     self.verbose(key + ' skipped due to configuration')
                     continue
@@ -697,7 +697,7 @@ class ConfluenceBuilder(Builder):
                 try:
                     with open(absfile, 'rb') as file:
                         output = file.read()
-                        self.publish_asset(key, docname, output, type, hash)
+                        self.publish_asset(key, docname, output, type_, hash_)
                 except (IOError, OSError) as err:
                     self.warn('error reading asset %s: %s' % (key, err))
 
@@ -1057,9 +1057,9 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = '{}.{}'.format(target, section_id)
 
-                    for id in section_node['ids']:
-                        id = '{}#{}'.format(docname, id)
-                        self.state.registerTarget(id, target)
+                    for id_ in section_node['ids']:
+                        id_ = '{}#{}'.format(docname, id_)
+                        self.state.registerTarget(id_, target)
 
     def _top_ref_check(self, node):
         """
