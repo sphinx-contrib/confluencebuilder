@@ -67,7 +67,8 @@ def usage():
     Returns:
         the usage string
     """
-    return ("""sphinx-build-confluence [action] <options>
+    return '''\
+sphinx-build-confluence [action] <options>
 
 (actions)
  <builder>             specify a builder to invoke (defaults to 'confluence')
@@ -97,7 +98,7 @@ def usage():
  --version             show the version
  --work-dir            working (documentation) directory to use
                         (defaults to working directory)
-""")
+'''
 
 
 if __name__ == '__main__':

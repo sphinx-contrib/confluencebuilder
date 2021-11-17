@@ -35,6 +35,12 @@ class ExtendedClean(clean):
             if os.path.exists(extra):
                 dir_util.remove_tree(extra, dry_run=self.dry_run)
 
+
+description = '''\
+Sphinx extension to output Atlassian Confluence Storage \
+Markup documents and publish to Confluence instances.\
+'''
+
 requires = [
     'docutils<0.18;python_version<"3.0"',  # legacy docutils for older sphinx
     'requests>=2.14.0',
@@ -63,8 +69,7 @@ setup(
     license='BSD',  # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',
-    description="""Sphinx extension to output Atlassian Confluence Storage """
-                """Markup documents and publish to Confluence instances.""",
+    description=description,
     long_description=long_desc,
     zip_safe=False,
     classifiers=[
