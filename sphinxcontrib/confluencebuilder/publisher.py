@@ -325,7 +325,7 @@ class ConfluencePublisher:
         return ``None`` entries.
 
         Args:
-            page_name: the page name
+            page_id: the page identifier
             expand (optional): data to expand on
 
         Returns:
