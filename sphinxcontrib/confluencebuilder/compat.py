@@ -17,9 +17,9 @@ from typing import cast
 
 # input support with all supported python interpreters
 try:
-    input = raw_input
+    compat_input = raw_input
 except NameError:
-    input = input  # pylint: disable=W0127
+    compat_input = input  # pylint: disable=W0127
 
 # load sphinx's progress_message or use a compatible instance
 try:

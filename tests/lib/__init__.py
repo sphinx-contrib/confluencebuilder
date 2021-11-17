@@ -62,11 +62,11 @@ def mock_input(mock):
         return mock
 
     try:
-        original = compat.input
-        compat.input = _
+        original = compat.compat_input
+        compat.compat_input = _
         yield
     finally:
-        compat.input = original
+        compat.compat_input = original
 
 
 @contextmanager
