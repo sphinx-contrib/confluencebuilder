@@ -77,6 +77,8 @@ Jira
 The following directives can be used to help include Jira macros into generated
 Confluence documents.
 
+.. index:: Jira; Adding a Jira table
+
 .. rst:directive:: .. jira:: [jql]
 
     .. versionadded:: 1.2
@@ -161,6 +163,8 @@ Confluence documents.
                 :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
                 :server-name: MyAwesomeJiraServer
 
+
+.. index:: Jira; Adding a single Jira link
 
 .. rst:directive:: .. jira_issue:: [issue-id]
 

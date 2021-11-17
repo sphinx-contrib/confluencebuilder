@@ -591,6 +591,8 @@ Publishing configuration
 
     See also |confluence_parent_page|_.
 
+.. index:: Page removal; Automatically purging pages
+
 .. |confluence_purge| replace:: ``confluence_purge``
 .. _confluence_purge:
 
@@ -1279,6 +1281,8 @@ Advanced processing configuration
     provided function is used to perform translations for both Sphinx's
     get_outdated_docs_ and write_doc_ methods. The default translation will be
     the combination of "``docname`` + |confluence_file_suffix|_".
+
+.. index:: Jira; Configuring Jira servers
 
 .. _confluence_jira_servers:
 
