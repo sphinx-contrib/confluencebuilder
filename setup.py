@@ -18,6 +18,7 @@ except ImportError:
 with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()
 
+
 # remove extra resources not removed by the default clean operation
 class ExtendedClean(clean):
     def run(self):
@@ -40,17 +41,19 @@ requires = [
     'sphinx>=1.8',
 ]
 
-cmdclass={
+cmdclass = {
     'clean': ExtendedClean,
 }
 
 if babel:
-    cmdclass.update({
-        'compile_catalog': babel.compile_catalog,
-        'extract_messages': babel.extract_messages,
-        'init_catalog': babel.init_catalog,
-        'update_catalog': babel.update_catalog,
-    })
+    cmdclass.update(
+        {
+            'compile_catalog': babel.compile_catalog,
+            'extract_messages': babel.extract_messages,
+            'init_catalog': babel.init_catalog,
+            'update_catalog': babel.update_catalog,
+        }
+    )
 
 setup(
     name='sphinxcontrib-confluencebuilder',

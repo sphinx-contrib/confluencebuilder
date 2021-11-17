@@ -437,7 +437,7 @@ class ConfluenceBuilder(Builder):
                 if ids:
                     for node in doctree.traverse(nodes.reference):
                         if 'refid' in node and node['refid']:
-                            top_ref = (node['refid'] in ids)
+                            top_ref = node['refid'] in ids
 
                             # allow a derived class to hint if this is a #top
                             # reference node

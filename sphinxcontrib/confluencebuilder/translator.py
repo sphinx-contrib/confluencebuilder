@@ -48,7 +48,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # for relative document uris
         # (see '_visit_reference_intern_uri')
         if SEP in self.docname:
-            self.docparent = self.docname[0:self.docname.rfind(SEP) + 1]
+            self.docparent = self.docname[0 : self.docname.rfind(SEP) + 1]
         else:
             self.docparent = ''
 

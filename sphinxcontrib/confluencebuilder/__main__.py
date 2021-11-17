@@ -20,7 +20,8 @@ def main():
     parser = argparse.ArgumentParser(
         prog='sphinx-build-confluence',
         add_help=False,
-        description='Sphinx extension to output Atlassian Confluence content.')
+        description='Sphinx extension to output Atlassian Confluence content.',
+    )
 
     parser.add_argument('action', nargs='?')
     parser.add_argument('--color', default='auto',

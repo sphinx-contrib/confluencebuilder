@@ -56,7 +56,7 @@ html_sidebars = {
     ],
 }
 
-html_context  = {
+html_context = {
     'supported_confluence_ver': supported_confluence_ver,
     'supported_python_ver': supported_python_ver,
     'supported_sphinx_ver': supported_sphinx_ver,
@@ -96,6 +96,7 @@ latex_logo = '_static/logo.png'
 
 # -- Application hook -----------------------------------------------------
 
+
 class DocumentationPostTransform(SphinxPostTransform):
     default_priority = 400
 
@@ -106,6 +107,7 @@ class DocumentationPostTransform(SphinxPostTransform):
             if isinstance(next(iter(node.children), None), nodes.literal):
                 classes = node.get('classes', [])
                 classes.append('literal-link')
+
 
 def setup(app):
     app.require_sphinx('4.0')
