@@ -7,7 +7,7 @@
 from hashlib import sha256
 from sphinx.util.images import guess_mimetype
 from sphinx.util.osutil import ensuredir
-from sphinxcontrib.confluencebuilder.util import convert_px_length
+from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
 import os
@@ -106,15 +106,26 @@ def confluence_supported_svg(builder, node):
     # if tracking an svg width/height, ensure the sizes are in pixels
     if svg_height:
         svg_height, svg_height_units = extract_length(svg_height)
-        svg_height = convert_px_length(svg_height, svg_height_units)
+        svg_height = convert_length(svg_height, svg_height_units, pct=False)
     if svg_width:
         svg_width, svg_width_units = extract_length(svg_width)
-        svg_width = convert_px_length(svg_width, svg_width_units)
+        svg_width = convert_length(svg_width, svg_width_units, pct=False)
 
     # extract length/scale properties from the node
     height, hu = extract_length(node.get('height'))
     scale = node.get('scale')
     width, wu = extract_length(node.get('width'))
+
+    # if a percentage is detected, ignore these lengths when attempting to
+    # perform any adjustments; percentage hints for internal images will be
+    # managed with container tags in the translator
+    if hu == '%':
+        height = None
+        hu = None
+
+    if wu == '%':
+        width = None
+        wu = None
 
     # confluence can have difficulty rendering svgs with only a viewbox entry;
     # if a viewbox is used, use it for the height/width if these options have
@@ -160,13 +171,13 @@ def confluence_supported_svg(builder, node):
     # confluence only supports pixel sizes -- adjust any other unit type
     # (if possible) to a pixel length
     if height:
-        height = convert_px_length(height, hu)
+        height = convert_length(height, hu, pct=False)
         if height is None:
-            builder.warn('unsupported unit type for confluence: ' + hu)
+            builder.warn('unsupported svg unit type for confluence: ' + hu)
     if width:
-        width = convert_px_length(width, wu)
+        width = convert_length(width, wu, pct=False)
         if width is None:
-            builder.warn('unsupported unit type for confluence: ' + wu)
+            builder.warn('unsupported svg unit type for confluence: ' + wu)
 
     # if we have a height/width to apply, adjust the svg
     if height and width:
