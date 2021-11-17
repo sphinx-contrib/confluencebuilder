@@ -1286,15 +1286,15 @@ Advanced processing configuration
 
     .. versionadded:: 1.2
 
-    Provides a dictionary of named JIRA servers to reference when using the
+    Provides a dictionary of named Jira servers to reference when using the
     ``jira`` or ``jira_issue`` directives. In a typical Confluence environment
-    which is linked with a JIRA instance, users do not need to take advantage of
+    which is linked with a Jira instance, users do not need to take advantage of
     this configuration -- Confluence should automatically be able to link to
-    respectively JIRA issues or map JIRA query languages with a configured JIRA
-    instance. In select cases where an instance has more than one JIRA instance
-    attached, a user may need to explicitly reference a JIRA instance to
-    properly render a JIRA macro. JIRA-related directives have the ability to
-    reference JIRA instances, with a combination of a UUID and name; for
+    respectively Jira issues or map Jira query languages with a configured Jira
+    instance. In select cases where an instance has more than one Jira instance
+    attached, a user may need to explicitly reference a Jira instance to
+    properly render a Jira macro. Jira-related directives have the ability to
+    reference Jira instances, with a combination of a UUID and name; for
     example:
 
     .. code-block:: rst
@@ -1304,15 +1304,15 @@ Advanced processing configuration
             :server-name: MyAwesomeJiraServer
 
     It may be tedious for some projects to add this information in each
-    document. As an alternative, a configuration can define JIRA instance
+    document. As an alternative, a configuration can define Jira instance
     information inside a configuration option as follows:
 
     .. code-block:: python
 
         confluence_jira_servers = {
             'server-1': {
-                'id': '<UUID of JIRA Instance>',
-                'name': '<Name of JIRA Instance>',
+                'id': '<UUID of Jira Instance>',
+                'name': '<Name of Jira Instance>',
             }
         }
 

@@ -71,17 +71,17 @@ Common
     See also ``confluence_global_labels``
     (:ref:`ref<confluence_global_labels>`).
 
-JIRA
+Jira
 ----
 
-The following directives can be used to help include JIRA macros into generated
+The following directives can be used to help include Jira macros into generated
 Confluence documents.
 
 .. rst:directive:: .. jira:: [jql]
 
     .. versionadded:: 1.2
 
-    The ``jira`` directive allows a user to build a JIRA macro to be configured
+    The ``jira`` directive allows a user to build a Jira macro to be configured
     with a provided JQL query. For example:
 
     .. code-block:: rst
@@ -94,7 +94,7 @@ Confluence documents.
         :type: comma separated numbers
 
         A comma-separated list of columns to use when displaying the macro to
-        show in the JIRA table.
+        show in the Jira table.
 
         .. code-block:: rst
 
@@ -126,7 +126,7 @@ Confluence documents.
     .. rst:directive:option:: server: instance
         :type: string
 
-        Indicates a named JIRA server provided via ``confluence_jira_servers``
+        Indicates a named Jira server provided via ``confluence_jira_servers``
         (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
         and ``server-name`` cannot be set.
 
@@ -138,7 +138,7 @@ Confluence documents.
     .. rst:directive:option:: server-id: uuid
         :type: string
 
-        The UUID of the JIRA server to link with. When set, the option
+        The UUID of the Jira server to link with. When set, the option
         ``server-name`` needs to be set and the option ``server`` cannot be set.
 
         .. code-block:: rst
@@ -151,7 +151,7 @@ Confluence documents.
     .. rst:directive:option:: server-name: name
         :type: string
 
-        The name of the JIRA server to link with. When set, the option
+        The name of the Jira server to link with. When set, the option
         ``server-id`` needs to be set and the option ``server`` cannot be set.
 
         .. code-block:: rst
@@ -166,8 +166,8 @@ Confluence documents.
 
     .. versionadded:: 1.2
 
-    The ``jira_issue`` directive allows a user to build a JIRA macro to be
-    configured with a provided JIRA key. For example:
+    The ``jira_issue`` directive allows a user to build a Jira macro to be
+    configured with a provided Jira key. For example:
 
     .. code-block:: rst
 
@@ -178,7 +178,7 @@ Confluence documents.
     .. rst:directive:option:: server: instance
         :type: string
 
-        Indicates a named JIRA server provided via ``confluence_jira_servers``
+        Indicates a named Jira server provided via ``confluence_jira_servers``
         (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
         and ``server-name`` cannot be set.
 
@@ -190,7 +190,7 @@ Confluence documents.
     .. rst:directive:option:: server-id: uuid
         :type: string
 
-        The UUID of the JIRA server to link with. When set, the option
+        The UUID of the Jira server to link with. When set, the option
         ``server-name`` needs to be set and the option ``server`` cannot be set.
 
         .. code-block:: rst
@@ -203,7 +203,7 @@ Confluence documents.
     .. rst:directive:option:: server-name: name
         :type: string
 
-        The name of the JIRA server to link with. When set, the option
+        The name of the Jira server to link with. When set, the option
         ``server-id`` needs to be set and the option ``server`` cannot be set.
 
         .. code-block:: rst
