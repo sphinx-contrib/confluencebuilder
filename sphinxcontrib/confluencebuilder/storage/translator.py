@@ -289,7 +289,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 pass
 
     def visit_bullet_list(self, node):
-        # [sphinx-gallary] if a list item is build with sphinx-gallary providing
+        # [sphinx-gallery] if a list item is build with sphinx-gallery providing
         # a `horizontal` class type, the extension produces html output in an
         # hlist fashion; replicate this here
         if 'sphx-glr-horizontal' in node.get('classes', []):
@@ -678,7 +678,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             style = ''
 
-            # Confluece's WYSIWYG, when indenting paragraphs, will produce
+            # Confluence's WYSIWYG, when indenting paragraphs, will produce
             # paragraphs will margin values offset by 30 pixels units. The same
             # indentation is applied here via a style value.
             style += 'margin-left: {}px;'.format(INDENT)
@@ -1473,7 +1473,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if width:
                 width = int(round(float(width) * scale / 100))
 
-        # confluence only supports pixel sizes and perctenage sizes in select
+        # confluence only supports pixel sizes and percentage sizes in select
         # cases (e.g. applying a percentage width for an attached image can
         # result in an macro render error) -- adjust any other unit type (if
         # possible) to an acceptable pixel/percentage length
@@ -1519,9 +1519,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if width:
             attribs['ac:width'] = width
 
-        # [sphinx-gallary] create "thumbnail" images for sphinx-gallary
+        # [sphinx-gallery] create "thumbnail" images for sphinx-gallery
         #
-        # If a sphinx-gallary-specific class type is detected for an image,
+        # If a sphinx-gallery-specific class type is detected for an image,
         # assume there is a desire for thumbnail-like images. Images are then
         # restricted with a specific height (a pattern observed when restricting
         # images to a smaller size with a Confluence editor). Although, if the
