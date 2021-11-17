@@ -73,18 +73,19 @@ class ConfluenceUtil:
         return url
 
 
-def convert_px_length(value, unit):
+def convert_length(value, unit, pct=True):
     """
-    convert a length value to an integer pixel-equivalent value
+    convert a length value to a confluence-supported integer-equivalent value
 
     This call accepts a length value and associated units and will return a
-    pixel-length representation of the provided length value. If no units are
-    provided in this call, it will be assumed that the units are already
-    represented by a pixel unit.
+    pixel or percentage length representation of the provided length value. If
+    no units are provided in this call, it will be assumed that the units are
+    already represented by a pixel unit.
 
     Args:
         value: the value to convert
         unit: the units of the value
+        pct: permit a percentage value
 
     Returns:
         the length in pixels
@@ -114,6 +115,8 @@ def convert_px_length(value, unit):
         fvalue *= 1.3333
     elif unit == 'pc':
         fvalue *= 16
+    elif pct and unit == '%':
+        pass
     else:
         return None
 

@@ -24,7 +24,7 @@ from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from sphinxcontrib.confluencebuilder.util import convert_px_length
+from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import first
 import posixpath
@@ -1379,6 +1379,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         is_svg = uri.startswith('data:image/svg+xml') or \
             guess_mimetype(uri) == 'image/svg+xml'
 
+        node.__confluence_wrapped_img = False
+
         if internal_img:
             asset_docname = None
             if self.builder.name == 'singleconfluence':
@@ -1471,14 +1473,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if width:
                 width = int(round(float(width) * scale / 100))
 
-        # confluence only supports pixel sizes -- adjust any other unit type
-        # (if possible) to a pixel length
+        # confluence only supports pixel sizes and perctenage sizes in select
+        # cases (e.g. applying a percentage width for an attached image can
+        # result in an macro render error) -- adjust any other unit type (if
+        # possible) to an acceptable pixel/percentage length
         if height:
-            height = convert_px_length(height, hu)
+            height = convert_length(height, hu)
             if height is None:
                 self.warn('unsupported unit type for confluence: ' + hu)
         if width:
-            width = convert_px_length(width, wu)
+            width = convert_length(width, wu)
             if width is None:
                 self.warn('unsupported unit type for confluence: ' + wu)
 
@@ -1488,6 +1492,26 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if internal_img and is_svg and (height or width):
             height = None
             width = None
+
+        # if this in an internal (attached image) and a percentage is applied,
+        # these length cannot be applied to the ac:width/height fields or a
+        # macro render error can occur; instead, wrap the image around
+        if internal_img and (hu == '%' or wu == '%'):
+            style = 'display: inline-block;'
+
+            if hu == '%':
+                style += 'height: {}%;'.format(height)
+                height = None
+                hu = None
+
+            if wu == '%':
+                style += 'width: {}%;'.format(width)
+                width = None
+                wu = None
+
+            self.body.append(self._start_tag(node, 'div', **{'style': style}))
+            self.context.append(self._end_tag(node))
+            node.__confluence_wrapped_img = True
 
         # apply width/height fields on the image macro
         if height:
@@ -1538,6 +1562,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_image(node))
 
     def depart_image(self, node):
+        if node.__confluence_wrapped_img:
+            self.body.append(self.context.pop()) # (inlined) div
+
         if node.get('from_math') and node.get('math_depth'):
             self.body.append(self.context.pop()) # span
 
@@ -1965,12 +1992,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         width, wu = node.get('width') or (None, None)
 
         if height:
-            height = convert_px_length(height, hu)
+            height = convert_length(height, hu)
             if height is None:
                 self.warn('unsupported unit type for confluence: ' + hu)
 
         if width:
-            width = convert_px_length(width, wu)
+            width = convert_length(width, wu)
             if width is None:
                 self.warn('unsupported unit type for confluence: ' + wu)
 
