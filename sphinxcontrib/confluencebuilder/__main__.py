@@ -5,7 +5,7 @@
 """
 
 from sphinx.util.console import color_terminal
-from sphinx.util.console import nocolor # pylint: disable=no-name-in-module
+from sphinx.util.console import nocolor  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder import __version__ as version
 from sphinxcontrib.confluencebuilder.cmd.build import build_main
 from sphinxcontrib.confluencebuilder.cmd.report import report_main

@@ -795,9 +795,9 @@ class ConfluenceBuilder(Builder):
                     anonlabels[key] = newdocname, data[1]
 
         citations = None
-        if 'citations' in std_domain.data: # Sphinx <2.1
+        if 'citations' in std_domain.data:  # Sphinx <2.1
             citations = std_domain.data['citations']
-        elif citation_domain: # Sphinx >=2.1
+        elif citation_domain:  # Sphinx >=2.1
             citations = citation_domain.citations
         if citations:
             for key, (fn, _l, _) in list(citations.items()):
@@ -805,7 +805,7 @@ class ConfluenceBuilder(Builder):
                     data = citations[key]
                     citations[key] = newdocname, data[1], data[2]
 
-        if 'citation_refs' in std_domain.data: # Sphinx <2.0
+        if 'citation_refs' in std_domain.data:  # Sphinx <2.0
             citation_refs = std_domain.data['citation_refs']
             for key, _ in list(citation_refs.items()):
                 if fn == olddocname:

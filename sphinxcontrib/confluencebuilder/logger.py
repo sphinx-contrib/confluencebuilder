@@ -6,7 +6,7 @@
 
 from collections import deque
 from sphinx.util import logging
-from sphinx.util.console import bold # pylint: disable=no-name-in-module
+from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 import io
 import sys
 
@@ -47,7 +47,7 @@ class ConfluenceLogger():
             try:
                 logging.setup(MockSphinx(), sys.stdout, sys.stderr)
             except Exception:
-                pass # fail silently if mocked application is missing something
+                pass  # fail silently if mocked application is missing something
 
     @staticmethod
     def error(msg, *args, **kwargs):

@@ -45,7 +45,7 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             # description
             desc = definition.find('dd', recursive=False)
             self.assertIsNotNone(desc)
-            self.assertEqual(desc.text, '') # no description in this example
+            self.assertEqual(desc.text, '')  # no description in this example
 
     def test_storage_sphinx_domain_cpp(self):
         out_dir = build_sphinx(self.dataset, config=self.config,
@@ -66,7 +66,7 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             # description
             desc = definition.find('dd', recursive=False)
             self.assertIsNotNone(desc)
-            self.assertEqual(desc.text, '') # no description in this example
+            self.assertEqual(desc.text, '')  # no description in this example
 
     def test_storage_sphinx_domain_js(self):
         out_dir = build_sphinx(self.dataset, config=self.config,

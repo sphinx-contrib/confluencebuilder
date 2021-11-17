@@ -6,7 +6,7 @@
 """
 
 from docutils import nodes
-from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
+from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message

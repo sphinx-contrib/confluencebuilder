@@ -10,7 +10,7 @@ from docutils import nodes
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
 from sphinx.locale import __
-from sphinx.util.console import bold # pylint: disable=no-name-in-module
+from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees as sphinx_inline_all_toctrees
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
@@ -45,7 +45,7 @@ def inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
                         traversed, replace):
     # TODO: https://github.com/sphinx-doc/sphinx/pull/9839
     if False and sphinx_version_info > (4, 4):
-        return sphinx_inline_all_toctrees(builder, # pylint: disable=E1123
+        return sphinx_inline_all_toctrees(builder,  # pylint: disable=E1123
             docnameset, docname, tree, colorfunc, traversed, replace=replace)
     else:
         return _inline_all_toctrees(builder, docnameset, docname, tree,

@@ -216,16 +216,16 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     with docutils_namespace():
         app = Sphinx(
-            src_dir,                # output for document sources
-            conf_dir,               # configuration directory
-            out_dir,                # output for generated documents
-            doctrees_dir,           # output for doctree files
-            builder,                # builder to execute
-            confoverrides=conf,     # load provided configuration (volatile)
-            status=sts,             # status output
-            warning=sys.stderr,     # warnings output
-            warningiserror=warnerr, # treat warnings as errors
-            verbosity=verbosity)    # verbosity
+            src_dir,                 # output for document sources
+            conf_dir,                # configuration directory
+            out_dir,                 # output for generated documents
+            doctrees_dir,            # output for doctree files
+            builder,                 # builder to execute
+            confoverrides=conf,      # load provided configuration (volatile)
+            status=sts,              # status output
+            warning=sys.stderr,      # warnings output
+            warningiserror=warnerr,  # treat warnings as errors
+            verbosity=verbosity)     # verbosity
 
         yield app
 
@@ -269,7 +269,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
                 break
 
         if root_doc not in filenames:
-            configs[-1]['root_doc'] = filenames[0] # update last config
+            configs[-1]['root_doc'] = filenames[0]  # update last config
 
     return files
 

@@ -64,7 +64,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             builder.init()
 
     def test_config_check_ask_password(self):
-        print('') # space out ask output if an unbuffered run
+        print('')  # space out ask output if an unbuffered run
 
         self.config['confluence_ask_password'] = True
         self._try_config()
@@ -115,13 +115,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config(edefs=defines)
 
         defines = {
-            'confluence_ask_password': '', # empty to "unset"
+            'confluence_ask_password': '',  # empty to "unset"
         }
         with mock_getpass(''):
             self._try_config(edefs=defines)
 
     def test_config_check_ask_user(self):
-        print('') # space out ask output if an unbuffered run
+        print('')  # space out ask output if an unbuffered run
 
         self.config['confluence_ask_user'] = True
         self._try_config()
@@ -164,7 +164,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config(edefs=defines)
 
         defines = {
-            'confluence_ask_user': '', # empty to "unset"
+            'confluence_ask_user': '',  # empty to "unset"
         }
         with mock_input(''):
             self._try_config(edefs=defines)

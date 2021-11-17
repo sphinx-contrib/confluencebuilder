@@ -83,7 +83,7 @@ class TestConfluenceRstContents(unittest.TestCase):
                 header_link = header.find('ac:link')
                 self.assertIsNotNone(header_link)
                 self.assertTrue(header_link.has_attr('ac:anchor'))
-                self.assertEqual(header_link['ac:anchor'], 'toc') # fixed
+                self.assertEqual(header_link['ac:anchor'], 'toc')  # fixed
 
                 link_body = header_link.find('ac:link-body', recursive=False)
                 self.assertIsNotNone(link_body)
@@ -136,7 +136,7 @@ class TestConfluenceRstContents(unittest.TestCase):
 
     def test_storage_rst_contents_links(self):
         expected_header_text = self.expected_header_text[:]
-        expected_header_text.remove('toc') # skip toc header
+        expected_header_text.remove('toc')  # skip toc header
 
         out_dir = build_sphinx(self.dataset, config=self.config,
             filenames=['contents'])

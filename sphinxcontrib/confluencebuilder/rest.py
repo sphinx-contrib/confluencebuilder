@@ -234,6 +234,6 @@ class Rest:
         err += "API: " + key + "\n"
         try:
             err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
-        except: # noqa: E722
+        except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err

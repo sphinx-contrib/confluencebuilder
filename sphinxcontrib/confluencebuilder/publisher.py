@@ -857,7 +857,7 @@ class ConfluencePublisher():
             s += ' ({})'.format(id)
         if misc:
             s += ' ' + misc
-        logger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+        logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
     def _onlynew(self, msg, id=None, misc=''):
         """
@@ -877,7 +877,7 @@ class ConfluencePublisher():
             s += ' ' + self._name_cache[id]
         if id:
             s += ' ({})'.format(id)
-        logger.info(s + min(80, 80 - len(s)) * ' ') # 80c-min clearing
+        logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
     def _populate_labels(self, page, labels):
         """

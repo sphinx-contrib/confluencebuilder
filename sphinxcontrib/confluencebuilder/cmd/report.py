@@ -86,13 +86,13 @@ def report_main(args_parser):
                 print('fetching configuration information...')
                 builder = ConfluenceReportBuilder.name
                 app = Sphinx(
-                    work_dir,           # document sources
-                    work_dir,           # directory with configuration
-                    tmp_dir,            # output for built documents
-                    tmp_dir,            # output for doctree files
-                    builder,            # builder to execute
-                    status=sys.stdout,  # sphinx status output
-                    warning=sys.stderr) # sphinx warning output
+                    work_dir,            # document sources
+                    work_dir,            # directory with configuration
+                    tmp_dir,             # output for built documents
+                    tmp_dir,             # output for doctree files
+                    builder,             # builder to execute
+                    status=sys.stdout,   # sphinx status output
+                    warning=sys.stderr)  # sphinx warning output
 
                 if app.config.confluence_publish:
                     try:
@@ -239,7 +239,7 @@ def report_main(args_parser):
         # remove space key, but track casing
         space_cfgs = [
             'confluence_space_key',
-            'confluence_space_name', # deprecated
+            'confluence_space_name',  # deprecated
         ]
         for space_cfg in space_cfgs:
             if space_cfg not in config:

@@ -43,7 +43,7 @@ def main():
 
         try:
             verbosity = int(args.verbose)
-            verbosity -= 1 # ignore first level for 'status' information
+            verbosity -= 1  # ignore first level for 'status' information
         except ValueError:
             pass
 
