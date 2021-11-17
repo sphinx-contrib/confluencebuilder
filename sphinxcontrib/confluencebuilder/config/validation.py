@@ -15,7 +15,7 @@ except NameError:
     basestring = str
 
 
-class ConfigurationValidation():
+class ConfigurationValidation:
     def __init__(self, builder):
         """
         configuration validation helper

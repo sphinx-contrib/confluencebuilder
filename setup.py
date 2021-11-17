@@ -18,6 +18,7 @@ except ImportError:
 with open('README.rst', 'r') as readme_rst:
     long_desc = readme_rst.read()
 
+
 # remove extra resources not removed by the default clean operation
 class ExtendedClean(clean):
     def run(self):
@@ -34,23 +35,31 @@ class ExtendedClean(clean):
             if os.path.exists(extra):
                 dir_util.remove_tree(extra, dry_run=self.dry_run)
 
+
+description = '''\
+Sphinx extension to output Atlassian Confluence Storage \
+Markup documents and publish to Confluence instances.\
+'''
+
 requires = [
     'docutils<0.18;python_version<"3.0"',  # legacy docutils for older sphinx
     'requests>=2.14.0',
     'sphinx>=1.8',
 ]
 
-cmdclass={
+cmdclass = {
     'clean': ExtendedClean,
 }
 
 if babel:
-    cmdclass.update({
-        'compile_catalog': babel.compile_catalog,
-        'extract_messages': babel.extract_messages,
-        'init_catalog': babel.init_catalog,
-        'update_catalog': babel.update_catalog,
-    })
+    cmdclass.update(
+        {
+            'compile_catalog': babel.compile_catalog,
+            'extract_messages': babel.extract_messages,
+            'init_catalog': babel.init_catalog,
+            'update_catalog': babel.update_catalog,
+        }
+    )
 
 setup(
     name='sphinxcontrib-confluencebuilder',
@@ -60,8 +69,7 @@ setup(
     license='BSD',  # 2-clause
     author='Anthony Shaw',
     author_email='anthonyshaw@apache.org',
-    description="""Sphinx extension to output Atlassian Confluence Storage """
-                """Markup documents and publish to Confluence instances.""",
+    description=description,
     long_description=long_desc,
     zip_safe=False,
     classifiers=[

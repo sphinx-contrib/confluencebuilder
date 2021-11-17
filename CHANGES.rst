@@ -184,7 +184,7 @@ development
 * improve support for various confluence url configurations
 * improve support in handling literal block languages
 * support automatic title generation for documents (if missing)
-* support ``:linenothreshold:`` option for hightlight directive
+* support ``:linenothreshold:`` option for highlight directive
 * support maximum page depth (nesting documents)
 * support the raw directive
 * support two-way ssl connections

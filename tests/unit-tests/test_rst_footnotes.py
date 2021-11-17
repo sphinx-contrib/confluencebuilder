@@ -66,7 +66,7 @@ class TestConfluenceRstFootnotes(unittest.TestCase):
 
             link_body = ac_link.find('ac:plain-text-link-body')
             self.assertIsNotNone(link_body)
-            self.assertEqual(link_body.text, '[3]') # 3 since 2 was pre-reserved
+            self.assertEqual(link_body.text, '[3]')  # 3 since 2 was used
 
             # leader anchor back to this footnote b
             anchor_tag = container.find_previous_sibling()

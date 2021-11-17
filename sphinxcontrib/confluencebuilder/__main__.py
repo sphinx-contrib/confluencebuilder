@@ -5,7 +5,7 @@
 """
 
 from sphinx.util.console import color_terminal
-from sphinx.util.console import nocolor # pylint: disable=no-name-in-module
+from sphinx.util.console import nocolor  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder import __version__ as version
 from sphinxcontrib.confluencebuilder.cmd.build import build_main
 from sphinxcontrib.confluencebuilder.cmd.report import report_main
@@ -20,7 +20,8 @@ def main():
     parser = argparse.ArgumentParser(
         prog='sphinx-build-confluence',
         add_help=False,
-        description='Sphinx extension to output Atlassian Confluence content.')
+        description='Sphinx extension to output Atlassian Confluence content.',
+    )
 
     parser.add_argument('action', nargs='?')
     parser.add_argument('--color', default='auto',
@@ -66,7 +67,8 @@ def usage():
     Returns:
         the usage string
     """
-    return ("""sphinx-build-confluence [action] <options>
+    return '''\
+sphinx-build-confluence [action] <options>
 
 (actions)
  <builder>             specify a builder to invoke (defaults to 'confluence')
@@ -96,7 +98,7 @@ def usage():
  --version             show the version
  --work-dir            working (documentation) directory to use
                         (defaults to working directory)
-""")
+'''
 
 
 if __name__ == '__main__':

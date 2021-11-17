@@ -16,4 +16,4 @@ DEFAULT_HIGHLIGHT_STYLE = 'default'
 if sphinx_version_info >= (2, 0):
     DEFAULT_ALIGNMENT = 'center'
 else:
-    DEFAULT_ALIGNMENT = None # 'left'
+    DEFAULT_ALIGNMENT = None  # 'left'

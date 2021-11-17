@@ -55,7 +55,8 @@ def process_ask_configs(config):
         if default_user:
             u_str = ' [{}]'.format(default_user)
 
-        target_user = compat.input(' User{}: '.format(u_str)) or default_user
+        input_ = compat.compat_input
+        target_user = input_(' User{}: '.format(u_str)) or default_user
         if not target_user:
             raise ConfluenceConfigurationError('no user provided')
 

@@ -48,7 +48,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # for relative document uris
         # (see '_visit_reference_intern_uri')
         if SEP in self.docname:
-            self.docparent = self.docname[0:self.docname.rfind(SEP) + 1]
+            self.docparent = self.docname[0 : self.docname.rfind(SEP) + 1]
         else:
             self.docparent = ''
 
@@ -86,25 +86,25 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
-            headerFile = path.join(self.builder.env.srcdir,
+            header_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
-                with io.open(headerFile, encoding='utf-8') as file:
+                with io.open(header_file, encoding='utf-8') as file:
                     self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(headerFile, err))
+                self.warn('error reading file {}: {}'.format(header_file, err))
 
         self.body_final += ''.join(self.body)
 
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
-            footerFile = path.join(self.builder.env.srcdir,
+            footer_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
-                with io.open(footerFile, encoding='utf-8') as file:
+                with io.open(footer_file, encoding='utf-8') as file:
                     self.body_final += file.read() + self.nl
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(footerFile, err))
+                self.warn('error reading file {}: {}'.format(footer_file, err))
 
     def visit_Text(self, node):
         text = node.astext()

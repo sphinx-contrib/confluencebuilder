@@ -282,7 +282,8 @@ def getpass2(prompt='Password: '):
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
         subprocess.check_call(['stty', '-echo'])
         try:
-            value = compat.input(prompt)
+            input_ = compat.compat_input
+            value = input_(prompt)
         finally:
             subprocess.check_call(['stty', 'echo'])
         print('')

@@ -8,7 +8,7 @@ from __future__ import print_function
 from sphinx.application import Sphinx
 from sphinx.locale import __
 from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder.compat import input
+from sphinxcontrib.confluencebuilder.compat import compat_input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
@@ -69,13 +69,13 @@ To use this action, the argument '--danger' must be set.
         with temp_dir() as tmp_dir:
             with docutils_namespace():
                 app = Sphinx(
-                    work_dir,           # document sources
-                    work_dir,           # directory with configuration
-                    tmp_dir,            # output for built documents
-                    tmp_dir,            # output for doctree files
-                    'confluence',       # builder to execute
-                    status=sys.stdout,  # sphinx status output
-                    warning=sys.stderr) # sphinx warning output
+                    work_dir,            # document sources
+                    work_dir,            # directory with configuration
+                    tmp_dir,             # output for built documents
+                    tmp_dir,             # output for doctree files
+                    'confluence',        # builder to execute
+                    status=sys.stdout,   # sphinx status output
+                    warning=sys.stderr)  # sphinx warning output
 
                 aggressive_search = app.config.confluence_adv_aggressive_search
                 dryrun = app.config.confluence_publish_dryrun
@@ -184,7 +184,7 @@ def ask_question(question, default='no'):
     """
     ask the user a question
 
-    The mainline for the 'wipe' action.
+    Prompt for asking yes or no for a wipe action.
 
     Args:
         question: the question
@@ -198,16 +198,16 @@ def ask_question(question, default='no'):
         prompt = ' [y/n] '
     elif default == 'yes':
         prompt = ' [Y/n] '
-    elif default:
+    else:
         prompt = ' [y/N] '
 
     while True:
-        rsp = input(question + prompt).strip().lower()
+        rsp = compat_input(question + prompt).strip().lower()
         if default is not None and rsp == '':
             return default == 'yes'
         elif rsp in ('y', 'yes'):
             return True
-        elif rsp in ('n', 'no', 'q'): # q for 'quit'
+        elif rsp in ('n', 'no', 'q'):  # q for 'quit'
             return False
         else:
             print("Please respond with 'y' or 'n'.\n")

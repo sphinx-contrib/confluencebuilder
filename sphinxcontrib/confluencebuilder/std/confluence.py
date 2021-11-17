@@ -175,5 +175,5 @@ SUPPORTED_IMAGE_TYPES = [
     'image/jpeg',
     'image/png',
     'image/svg+xml',
-    'image/x-ms-bmp', # image/bmp
+    'image/x-ms-bmp',  # image/bmp
 ]

@@ -291,8 +291,7 @@ class ConfluenceBuilder(Builder):
                     doctitle = ('.'.join(map(str, secnumbers[''])) +
                         self.secnumber_suffix + doctitle)
 
-                doctitle = self.state.registerTitle(docname, doctitle,
-                    self.config)
+                self.state.registerTitle(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:
@@ -438,7 +437,7 @@ class ConfluenceBuilder(Builder):
                 if ids:
                     for node in doctree.traverse(nodes.reference):
                         if 'refid' in node and node['refid']:
-                            top_ref = (node['refid'] in ids)
+                            top_ref = node['refid'] in ids
 
                             # allow a derived class to hint if this is a #top
                             # reference node
@@ -534,7 +533,7 @@ class ConfluenceBuilder(Builder):
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
-    def publish_asset(self, key, docname, output, type, hash):
+    def publish_asset(self, key, docname, output, type_, hash_):
         conf = self.config
         publisher = self.publisher
 
@@ -557,11 +556,11 @@ class ConfluenceBuilder(Builder):
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
             attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash)
+                page_id, key, output, type_, hash_)
         elif conf.confluence_asset_override:
             # forced publishing of the asset
             attachment_id = publisher.storeAttachment(
-                page_id, key, output, type, hash, force=True)
+                page_id, key, output, type_, hash_, force=True)
 
         if attachment_id and conf.confluence_purge:
             if page_id in self.legacy_assets:
@@ -689,7 +688,7 @@ class ConfluenceBuilder(Builder):
             for asset in status_iterator(assets, 'publishing assets... ',
                     length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
-                key, absfile, type, hash, docname = asset
+                key, absfile, type_, hash_, docname = asset
                 if self._check_publish_skip(docname):
                     self.verbose(key + ' skipped due to configuration')
                     continue
@@ -697,7 +696,7 @@ class ConfluenceBuilder(Builder):
                 try:
                     with open(absfile, 'rb') as file:
                         output = file.read()
-                        self.publish_asset(key, docname, output, type, hash)
+                        self.publish_asset(key, docname, output, type_, hash_)
                 except (IOError, OSError) as err:
                     self.warn('error reading asset %s: %s' % (key, err))
 
@@ -795,9 +794,9 @@ class ConfluenceBuilder(Builder):
                     anonlabels[key] = newdocname, data[1]
 
         citations = None
-        if 'citations' in std_domain.data: # Sphinx <2.1
+        if 'citations' in std_domain.data:  # Sphinx <2.1
             citations = std_domain.data['citations']
-        elif citation_domain: # Sphinx >=2.1
+        elif citation_domain:  # Sphinx >=2.1
             citations = citation_domain.citations
         if citations:
             for key, (fn, _l, _) in list(citations.items()):
@@ -805,7 +804,7 @@ class ConfluenceBuilder(Builder):
                     data = citations[key]
                     citations[key] = newdocname, data[1], data[2]
 
-        if 'citation_refs' in std_domain.data: # Sphinx <2.0
+        if 'citation_refs' in std_domain.data:  # Sphinx <2.0
             citation_refs = std_domain.data['citation_refs']
             for key, _ in list(citation_refs.items()):
                 if fn == olddocname:
@@ -1057,9 +1056,9 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = '{}.{}'.format(target, section_id)
 
-                    for id in section_node['ids']:
-                        id = '{}#{}'.format(docname, id)
-                        self.state.registerTarget(id, target)
+                    for id_ in section_node['ids']:
+                        id_ = '{}#{}'.format(docname, id_)
+                        self.state.registerTarget(id_, target)
 
     def _top_ref_check(self, node):
         """

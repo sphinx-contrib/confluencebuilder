@@ -6,7 +6,7 @@
 """
 
 from docutils import nodes
-from sphinx.util.console import darkgreen # pylint: disable=no-name-in-module
+from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message
@@ -34,8 +34,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         new_secnumbers = {}
 
         for docname, secnums in self.env.toc_secnumbers.items():
-            for id, secnum in secnums.items():
-                alias = '{}/{}'.format(docname, id)
+            for id_, secnum in secnums.items():
+                alias = '{}/{}'.format(docname, id_)
                 new_secnumbers[alias] = secnum
 
         return {self.config.root_doc: new_secnumbers}
@@ -48,8 +48,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 alias = '{}/{}'.format(docname, figtype)
                 new_fignumbers.setdefault(alias, {})
 
-                for id, fignum in fignums.items():
-                    new_fignumbers[alias][id] = fignum
+                for id_, fignum in fignums.items():
+                    new_fignumbers[alias][id_] = fignum
 
         return {self.config.root_doc: new_fignumbers}
 
@@ -104,7 +104,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
             doctree = self.assemble_doctree()
             self._prepare_doctree_writing(self.config.root_doc, doctree)
-            self.assets.processDocument(doctree, self.config.root_doc)
+            self.assets.process_document(doctree, self.config.root_doc)
 
         with progress_message(C('writing single confluence document')):
             self.write_doc_serialized(self.config.root_doc, doctree)
@@ -214,12 +214,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 if 'ids' in section_node:
                     title_name = ''.join(node.astext().split())
 
-                    for id in section_node['ids']:
+                    for id_ in section_node['ids']:
                         target = title_name
 
-                        anchorname = '%s/#%s' % (docname, id)
+                        anchorname = '%s/#%s' % (docname, id_)
                         if anchorname not in secnumbers:
-                            anchorname = '%s/' % id
+                            anchorname = '%s/' % id_
 
                         if self.add_secnumbers:
                             secnumber = secnumbers.get(anchorname)

@@ -122,7 +122,7 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
             doc = docs[0]
             doc_tags = doc.findChildren(recursive=False)
             self.assertIsNotNone(doc_tags)
-            self.assertEqual(len(doc_tags), 1) # no other links beyond depth
+            self.assertEqual(len(doc_tags), 1)  # no other links beyond depth
             self._verify_link(doc, 'doc')
 
     def test_storage_sphinx_toctree_numbered_default(self):

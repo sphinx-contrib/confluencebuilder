@@ -426,12 +426,12 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
 
     for node in doctree.traverse(mermaid):
         try:
-            format = builder.config.mermaid_output_format
-            if format == 'raw':
-                format = 'png'
+            format_ = builder.config.mermaid_output_format
+            if format_ == 'raw':
+                format_ = 'png'
 
             fname, _ = mermaid_render(mock_translator,
-                node['code'], node['options'], format, 'mermaid')
+                node['code'], node['options'], format_, 'mermaid')
             if not fname:
                 node.parent.remove(node)
                 continue
