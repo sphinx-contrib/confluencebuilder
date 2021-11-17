@@ -55,7 +55,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
         self._building_footnotes = False
         self._figure_context = []
-        self._list_context = [False]
+        self._list_context = ['']
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._needs_navnode_spacing = False
         self._reference_context = []
@@ -302,7 +302,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.body.append(self._start_tag(node, 'ul', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
-        self._list_context.append(False)
+        self._list_context.append('')
 
     def depart_bullet_list(self, node):
         if self._list_context[-1] == 'sphx-glr-horizontal':
