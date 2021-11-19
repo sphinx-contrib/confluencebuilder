@@ -33,9 +33,9 @@ def apply_defaults(conf):
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
 
-    if (not conf.confluence_file_suffix or
-            conf.confluence_file_suffix.endswith('.')):
-        conf.confluence_file_suffix = '.conf'
+    if conf.confluence_file_suffix:
+        if conf.confluence_file_suffix.endswith('.'):
+            conf.confluence_file_suffix = '.conf'
 
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
