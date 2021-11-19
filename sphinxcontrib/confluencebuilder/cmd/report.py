@@ -110,7 +110,11 @@ def report_main(args_parser):
                     else:
                         value = raw
 
-                    if not args.full_config and not k.startswith('confluence_'):
+                    prefixes = (
+                        'confluence_',
+                        'singleconfluence_',
+                    )
+                    if not args.full_config and not k.startswith(prefixes):
                         continue
 
                     # always extract some known builder configurations
