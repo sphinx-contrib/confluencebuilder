@@ -254,7 +254,62 @@ class TestConfluenceSphinxToctree(unittest.TestCase):
             doc = docs[0]
             self._verify_link(doc, 'child')
 
-    def test_storage_sphinx_toctree_numbered_secnumbers_suffix(self):
+    def test_storage_sphinx_toctree_numbered_secnumbers_suffix_empty(self):
+        """validate toctree secnumber supports empty str (storage)"""
+        #
+        # Ensure that the toctree secnumber suffix value can be set to an
+        # empty string.
+
+        dataset = os.path.join(self.test_dir, 'datasets', 'toctree-numbered')
+
+        config = dict(self.config)
+        config['confluence_secnumber_suffix'] = ''
+
+        out_dir = build_sphinx(dataset, config=config)
+
+        with parse('index', out_dir) as data:
+            root_toc = data.find('ul', recursive=False)
+            self.assertIsNotNone(root_toc)
+
+            docs = root_toc.findChildren('li', recursive=False)
+            self.assertIsNotNone(docs)
+            self.assertEqual(len(docs), 4)
+
+            group = docs.pop(0)
+            self._verify_link(group, '1doc')
+
+            group_docs = group.find('ul', recursive=False)
+            self.assertIsNotNone(group_docs)
+
+            sub_docs = group_docs.findChildren('li', recursive=False)
+            self.assertIsNotNone(sub_docs)
+            self.assertEqual(len(sub_docs), 1)
+            self._verify_link(sub_docs[0], '1.1child')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1doc',
+                label='2section with spaces')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1doc',
+                label='3section_with_underscores')
+
+            group = docs.pop(0)
+            self._verify_link(group, '1doc',
+                label='4section with a large name - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae volutpat ipsum, quis sodales eros. Aenean quis nunc quis leo aliquam gravida. Fusce accumsan nibh vitae enim ullamcorper iaculis. Duis eget augue dolor. Curabitur at enim elit. Nullam luctus mollis magna. Pellentesque pellentesque, leo quis suscipit finibus, diam justo convallis.')
+
+        with parse('doc', out_dir) as data:
+            root_toc = data.find('ul', recursive=False)
+            self.assertIsNotNone(root_toc)
+
+            docs = root_toc.findChildren('li', recursive=False)
+            self.assertIsNotNone(docs)
+            self.assertEqual(len(docs), 1)
+
+            doc = docs[0]
+            self._verify_link(doc, '1.1child')
+
+    def test_storage_sphinx_toctree_numbered_secnumbers_suffix_set(self):
         dataset = os.path.join(self.test_dir, 'datasets', 'toctree-numbered')
 
         config = dict(self.config)
