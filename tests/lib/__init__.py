@@ -14,13 +14,117 @@ from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
+from threading import Thread
 import inspect
+import json
 import os
 import shutil
 import sys
+import time
+
+try:
+    import http.server as http_server
+except ImportError:
+    import SimpleHTTPServer as http_server
+
+try:
+    import socketserver as server_socket
+except ImportError:
+    import SocketServer as server_socket
+
 
 # full extension name
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
+
+
+class ConfluenceInstanceServer(server_socket.TCPServer):
+
+    def __init__(self):
+        """
+        confluence instance server
+
+        Helps spawn an TCP server on a random local port to help emulate a
+        Confluence instance.
+        """
+        LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
+        server_socket.TCPServer.__init__(self,
+            LOCAL_RANDOM_PORT, ConfluenceInstanceRequestHandler)
+
+        self.unittest_get_rsp = []
+
+    def register_get_rsp(self, code, data):
+        """
+        register a get response
+
+        Registers a response the instance should return when a GET request is
+        being served.
+
+        Args:
+            code: the response code
+            data: the data
+        """
+        if data:
+            if isinstance(data, dict):
+                data = json.dumps(data)
+
+            data = data.encode('utf-8')
+
+        self.unittest_get_rsp.append((code, data))
+
+
+class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
+    """
+    confluence instance request handler
+
+    Provides the handler implementation when a z instance
+    wishes to serve an HTTP request. This handler will pull responses (if any)
+    populated into the server instance. If no responses are provided, the
+    default response will be a 500 error with no data.
+
+    Args:
+        code: the response code
+        data: the data
+    """
+
+    def do_GET(self):
+        """
+        serve a get request
+
+        This method is called when a GET request is being processed by this
+        handler.
+        """
+
+        try:
+            code, data = self.server.unittest_get_rsp.pop()
+        except IndexError:
+            code = 500
+            data = None
+
+        self.send_response(code)
+        self.end_headers()
+        if data:
+            self.wfile.write(data)
+
+
+class MockedConfig(dict):
+    """
+    mocked sphinx configuration
+
+    Provides a class to mock a Sphinx configuration for testing, to support both
+    dictionary key and attribute calls.
+    """
+
+    def __getattr__(self, name):
+        if name in self:
+            return self[name]
+
+        return None
+
+    def __setattr__(self, name, value):
+        self[name] = value
+
+    def clone(self):
+        return MockedConfig(self)
 
 
 def enable_sphinx_info(verbosity=None):
@@ -36,6 +140,54 @@ def enable_sphinx_info(verbosity=None):
     os.environ['SPHINX_STATUS'] = '1'
     if verbosity:
         os.environ['SPHINX_VERBOSITY'] = str(verbosity)
+
+
+@contextmanager
+def mock_confluence_instance(config=None, ignore_requests=False):
+    """
+    spawns a mocked confluence instance which publishing attempts to be checked
+
+    The following spawns a mocked Confluence instance, which will create an
+    local HTTP server to serve API requests from a publisher instance.
+
+    Args:
+        config (optional): the configuration to populate a publisher url on
+        ignore_requests (optional): whether or not requests made to the server
+                                     should be ignored (default: ``False``)
+
+    Yields:
+        the http daemon
+    """
+
+    serve_thread = None
+
+    try:
+        # spawn a mocked server instance
+        daemon = ConfluenceInstanceServer()
+
+        host, port = daemon.server_address
+        if config:
+            config.confluence_server_url = 'http://{}:{}/'.format(host, port)
+
+        # start accepting requests
+        if not ignore_requests:
+            def serve_forever(daemon):
+                daemon.serve_forever()
+
+            serve_thread = Thread(target=serve_forever, args=(daemon,))
+            serve_thread.start()
+
+        # yeild context for a moment to help threads to ready up
+        time.sleep(0)
+
+        yield daemon
+
+    finally:
+        if serve_thread:
+            daemon.shutdown()
+            serve_thread.join()
+        else:
+            daemon.socket.close()
 
 
 @contextmanager
@@ -106,7 +258,8 @@ def prepare_conf():
     dictionary for unit tests to extend. This dictionary can be passed into
     a Sphinx application instance.
     """
-    config = {}
+
+    config = MockedConfig()
     config['extensions'] = [
         EXT_NAME,
         # include any forced-injected extensions (config support)
