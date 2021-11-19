@@ -24,7 +24,7 @@ from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilde
 try:
     from sphinx.ext import autosummary
 except ImportError:
-    pass
+    autosummary = None
 
 # load imgmath extension if available to handle math configuration options
 try:
@@ -248,28 +248,33 @@ def confluence_builder_inited(app):
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
 
-    # inject compatible autosummary nodes if the extension is loaded
-    for ext in app.extensions.values():
-        if ext.name == 'sphinx.ext.autosummary':
-            app.registry.add_translation_handlers(
-                autosummary.autosummary_table,
-                confluence=(
-                    autosummary.autosummary_table_visit_html,
-                    autosummary.autosummary_noop),
-                singleconfluence=(
-                    autosummary.autosummary_table_visit_html,
-                    autosummary.autosummary_noop),
-            )
-            app.registry.add_translation_handlers(
-                autosummary.autosummary_toc,
-                confluence=(
-                    autosummary.autosummary_toc_visit_html,
-                    autosummary.autosummary_noop),
-                singleconfluence=(
-                    autosummary.autosummary_toc_visit_html,
-                    autosummary.autosummary_noop),
-            )
-            break
+    # inject compatible autosummary nodes if the extension is available/loaded
+    if autosummary:
+        for ext in app.extensions.values():
+            if ext.name == 'sphinx.ext.autosummary':
+                app.registry.add_translation_handlers(
+                    autosummary.autosummary_table,
+                    confluence=(
+                        autosummary.autosummary_table_visit_html,
+                        autosummary.autosummary_noop,
+                    ),
+                    singleconfluence=(
+                        autosummary.autosummary_table_visit_html,
+                        autosummary.autosummary_noop,
+                    ),
+                )
+                app.registry.add_translation_handlers(
+                    autosummary.autosummary_toc,
+                    confluence=(
+                        autosummary.autosummary_toc_visit_html,
+                        autosummary.autosummary_noop,
+                    ),
+                    singleconfluence=(
+                        autosummary.autosummary_toc_visit_html,
+                        autosummary.autosummary_noop,
+                    ),
+                )
+                break
 
     # lazy bind sphinx.ext.imgmath to provide configuration options
     #
