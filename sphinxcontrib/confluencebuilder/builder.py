@@ -553,6 +553,8 @@ class ConfluenceBuilder(Builder):
                     'point cannot be found ({}): {}'.format(key, docname))
                 return
 
+        attachment_id = None
+
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
             attachment_id = publisher.storeAttachment(
