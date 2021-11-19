@@ -49,6 +49,7 @@ class ConfluencePublisher:
 
     def connect(self):
         self.rest_client = Rest(self.config)
+        server_url = self.config.confluence_server_url
 
         try:
             rsp = self.rest_client.get('space', {
@@ -56,11 +57,12 @@ class ConfluencePublisher:
                 'limit': 1
             })
         except ConfluenceBadApiError as e:
-            if e.status_code != 404:
-                raise
-
-            server_url = self.config.confluence_server_url
             raise ConfluenceBadServerUrlError(server_url, e)
+
+        # if no size entry is provided, this a non-Confluence API server
+        if 'size' not in rsp:
+            raise ConfluenceBadServerUrlError(server_url,
+                'server did not provide an expected response (no size)')
 
         # handle if the provided space key was not found
         if rsp['size'] == 0:
@@ -102,7 +104,20 @@ class ConfluencePublisher:
                 self.config.confluence_server_user,
                 pw_set,
                 extra_desc)
-        self.space_display_name = rsp['results'][0]['name']
+
+        # sanity check that we have any result
+        if 'results' not in rsp or not rsp['results']:
+            raise ConfluenceBadServerUrlError(server_url,
+                'server did not provide an expected response (no results)')
+
+        result = rsp['results'][0]
+
+        if not isinstance(result, dict) or not result.get('name'):
+            raise ConfluenceBadServerUrlError(server_url,
+                'server did not provide an expected response (no name)')
+
+        # track the space's display name
+        self.space_display_name = result['name']
 
     def disconnect(self):
         self.rest_client.close()
