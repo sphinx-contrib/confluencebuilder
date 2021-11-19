@@ -50,6 +50,7 @@ class Rest:
     def __init__(self, config):
         self.url = config.confluence_server_url
         self.session = self._setup_session(config)
+        self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
 
     def __del__(self):
@@ -61,7 +62,7 @@ class Rest:
             'User-Agent': 'Sphinx Confluence Builder',
             'X-Atlassian-Token': NOCHECK,
         })
-        session.timeout = config.confluence_timeout
+
         if config.confluence_proxy is not None:
             session.proxies = {
                 'http': config.confluence_proxy,
@@ -106,8 +107,10 @@ class Rest:
 
     def get(self, key, params):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key
+
         try:
-            rsp = self.session.get(rest_url, params=params)
+            rsp = self.session.get(
+                rest_url, params=params, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -138,7 +141,8 @@ class Rest:
     def post(self, key, data, files=None):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key
         try:
-            rsp = self.session.post(rest_url, json=data, files=files)
+            rsp = self.session.post(
+                rest_url, json=data, files=files, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -172,7 +176,7 @@ class Rest:
     def put(self, key, value, data):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
-            rsp = self.session.put(rest_url, json=data)
+            rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:
@@ -206,7 +210,7 @@ class Rest:
     def delete(self, key, value):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
         try:
-            rsp = self.session.delete(rest_url)
+            rsp = self.session.delete(rest_url, timeout=self.timeout)
         except requests.exceptions.Timeout:
             raise ConfluenceTimeoutError(self.url)
         except requests.exceptions.SSLError as ex:

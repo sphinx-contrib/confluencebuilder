@@ -42,7 +42,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
         cls.config['confluence_space_key'] = space_key
-        cls.config['confluence_timeout'] = 1
+        cls.config['confluence_timeout'] = 10
         cls.config['imgmath_font_size'] = 14
         cls.config['imgmath_image_format'] = 'svg'
         cls.config['imgmath_use_preview'] = True
