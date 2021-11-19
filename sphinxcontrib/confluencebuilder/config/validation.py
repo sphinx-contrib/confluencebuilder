@@ -300,7 +300,7 @@ class ConfigurationValidation:
 
         return self
 
-    def string(self, permit_empty=False):
+    def string(self):
         """
         checks if a configuration is a string
 
@@ -312,14 +312,11 @@ class ConfigurationValidation:
         In the event that the configuration is not set (e.g. a value of `None`),
         this method will have no effect.
 
-        Args:
-            permit_empty (optional): whether or not all an empty string of this
-                                      value is considered to be a set value
-
         Returns:
             the validator instance
         """
-        value = self._value(permit_empty=True)
+
+        value = self._value()
 
         if value is not None and not isinstance(value, basestring):
             raise ConfluenceConfigurationError(
@@ -390,17 +387,13 @@ class ConfigurationValidation:
 
         return self
 
-    def _value(self, permit_empty=False):
+    def _value(self):
         """
         return a value for a configuration
 
         Return the value (if any) of the provided key found in the registered
         builder's configuration. If any configuration translator is set for a
         key, the translation will be performed and returned with this call.
-
-        Args:
-            permit_empty (optional): whether or not an empty string of this
-                                      value is considered to be a set value
 
         Returns:
             the value for a key
@@ -410,12 +403,10 @@ class ConfigurationValidation:
         if value is not None and self._translate:
             value = self._translate(value)
 
-        # If an empty string, treat (in most cases) that this value is actually
-        # a `None` value. This permits callers from passing "empty"/unset
-        # configuration entries via the command line to "clear" a configuration
-        # value. Note that this does not apply to all configuration entries (for
-        # example, see `confluence_secnumber_suffix`).
-        if not permit_empty and isinstance(value, basestring) and not value:
+        # If an empty string, treat that this value is actually a `None` value.
+        # This permits callers from passing "empty"/unset configuration entries
+        # via the command line to "clear" a configuration value.
+        if isinstance(value, basestring) and not value:
             value = None
 
         return value
