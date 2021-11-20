@@ -45,7 +45,11 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
 
         Helps spawn an TCP server on a random local port to help emulate a
         Confluence instance.
+
+        Attributes:
+            unittest_get_rsp: responses to use in the handler
         """
+
         LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
         server_socket.TCPServer.__init__(self,
             LOCAL_RANDOM_PORT, ConfluenceInstanceRequestHandler)
@@ -80,10 +84,6 @@ class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
     wishes to serve an HTTP request. This handler will pull responses (if any)
     populated into the server instance. If no responses are provided, the
     default response will be a 500 error with no data.
-
-    Args:
-        code: the response code
-        data: the data
     """
 
     def do_GET(self):
@@ -286,6 +286,7 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
         container (optional): the output container name to use
         f_back_count (optional): number of frame objects to move back when
                                   attempting to auto-generate a container name
+        postfix (optional): postfix to add to the container directory
 
     Returns:
         the output directory
