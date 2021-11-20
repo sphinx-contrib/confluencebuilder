@@ -487,7 +487,7 @@ class ConfluencePublisher:
 
         # publish attachment
         try:
-            # split hash comment into chunks to minize rendering issues with a
+            # split hash comment into chunks to minimize rendering issues with a
             # single one-world-long-hash value
             hash_ = '{}:{}'.format(HASH_KEY, hash_)
             chunked_hash = '\n'.join(

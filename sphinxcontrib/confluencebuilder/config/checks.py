@@ -700,6 +700,6 @@ configured at the same time.
 
     # ##################################################################
 
-    # inform users of aadditional configuration information
+    # inform users of additional configuration information
     deprecated(validator)
     warnings(validator)

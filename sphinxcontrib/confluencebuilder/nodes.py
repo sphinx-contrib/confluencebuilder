@@ -49,7 +49,7 @@ class confluence_newline(nodes.Element):
     """
     confluence newline node
 
-    A Confluence builder defined newline node which provides a convience hint
+    A Confluence builder defined newline node which provides a convenience hint
     that a newline should be injected into a document (for users not wanted to
     define a custom raw type).
     """
