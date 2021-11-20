@@ -8,6 +8,7 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from uuid import UUID
@@ -68,6 +69,15 @@ class ConfluenceMetadataDirective(Directive):
 
         for k, v in self.options.items():
             params[kebab_case_to_camel_case(k)] = v
+
+        return [node]
+
+
+class ConfluenceNewline(Directive):
+    has_content = False
+
+    def run(self):
+        node = confluence_newline()
 
         return [node]
 

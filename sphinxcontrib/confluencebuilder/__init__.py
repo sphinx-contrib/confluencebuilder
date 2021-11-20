@@ -10,6 +10,7 @@ from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceNewline
 from sphinxcontrib.confluencebuilder.directives import JiraDirective
 from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
 from sphinxcontrib.confluencebuilder.locale import MESSAGE_CATALOG_NAME
@@ -245,6 +246,7 @@ def confluence_builder_inited(app):
     # register directives
     app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
+    app.add_directive('confluence_newline', ConfluenceNewline)
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
 
