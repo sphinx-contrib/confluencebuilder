@@ -82,6 +82,9 @@ Common
 
         .. confluence_newline::
 
+
+.. _jira-directives:
+
 Jira
 ----
 
@@ -175,7 +178,7 @@ Confluence documents.
                 :server-name: MyAwesomeJiraServer
 
 
-.. index:: Jira; Adding a single Jira link
+.. index:: Jira; Adding a single Jira link (directive)
 
 .. rst:directive:: .. jira_issue:: [issue-id]
 
@@ -227,6 +230,8 @@ Confluence documents.
             .. jira_issue:: TEST-123
                 :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
                 :server-name: MyAwesomeJiraServer
+
+    See also :ref:`Jira roles <jira-roles>`.
 
 .. references ------------------------------------------------------------------
 
