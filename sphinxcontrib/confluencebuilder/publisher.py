@@ -372,7 +372,6 @@ class ConfluencePublisher:
         Returns:
             the page id and page object
         """
-        page = None
 
         page = self.rest_client.get('content/{}'.format(page_id), {
             'status': 'current',
