@@ -15,13 +15,13 @@ import unittest
 
 class TestConfluenceConfigPrevNext(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
-        self.config['confluence_max_doc_depth'] = 1
-        self.config['confluence_page_hierarchy'] = True
+    def setUpClass(cls):
+        cls.config = prepare_conf()
+        cls.config['confluence_max_doc_depth'] = 1
+        cls.config['confluence_page_hierarchy'] = True
 
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'hierarchy')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'hierarchy')
 
     def test_config_hierarchy_max_depth(self):
         out_dir = build_sphinx(self.dataset, config=self.config, relax=True)

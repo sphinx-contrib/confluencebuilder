@@ -13,12 +13,12 @@ import unittest
 
 class TestConfluenceUseCaseNestedRef(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
-        self.config['root_doc'] = 'nested-ref-contents'
+    def setUpClass(cls):
+        cls.config = prepare_conf()
+        cls.config['root_doc'] = 'nested-ref-contents'
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'use-cases')
-        self.filenames = [
+        cls.dataset = os.path.join(test_dir, 'datasets', 'use-cases')
+        cls.filenames = [
             'nested-ref-contents',
             'nested-ref-external',
         ]

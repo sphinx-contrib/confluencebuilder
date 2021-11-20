@@ -13,11 +13,11 @@ import unittest
 
 class TestConfluenceRstAdmonitions(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
-        self.filenames = [
+        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.filenames = [
             'admonitions',
         ]
 

@@ -22,9 +22,9 @@ class DummyDocument(dict):
 
 class TestConfluenceBaseTranslator(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
-        self.test_dir = os.path.dirname(os.path.realpath(__file__))
+    def setUpClass(cls):
+        cls.config = prepare_conf()
+        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
 
     def test_translator_docname_and_docparent(self):
         mock_ds = os.path.join(self.test_dir, 'datasets', 'common')

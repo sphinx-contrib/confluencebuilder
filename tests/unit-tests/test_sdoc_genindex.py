@@ -13,11 +13,11 @@ import unittest
 
 class TestSdocGenindex(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.container = os.path.join(test_dir, 'datasets')
-        self.template_dir = os.path.join(test_dir, 'templates')
+        cls.container = os.path.join(test_dir, 'datasets')
+        cls.template_dir = os.path.join(test_dir, 'templates')
 
     def test_storage_sdoc_genindex_default_missing(self):
         """validate genindex is not added by default (storage)"""

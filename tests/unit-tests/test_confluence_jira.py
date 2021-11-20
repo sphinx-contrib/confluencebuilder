@@ -14,10 +14,10 @@ import unittest
 
 class TestConfluenceJira(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.container = os.path.join(test_dir, 'datasets', 'jira')
+        cls.container = os.path.join(test_dir, 'datasets', 'jira')
 
     def test_confluence_jira_directive_bad_sid(self):
         dataset = os.path.join(self.container, 'bad-sid')

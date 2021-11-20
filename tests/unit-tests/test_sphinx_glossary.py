@@ -13,12 +13,12 @@ import unittest
 
 class TestConfluenceSphinxDomains(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
-        self.config['root_doc'] = 'glossary'
+    def setUpClass(cls):
+        cls.config = prepare_conf()
+        cls.config['root_doc'] = 'glossary'
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
-        self.filenames = [
+        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.filenames = [
             'glossary',
             'glossary-ref',
         ]

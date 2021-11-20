@@ -13,10 +13,10 @@ import unittest
 
 class TestConfluenceRstRaw(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
 
     def test_storage_rst_raw_default(self):
         out_dir = build_sphinx(self.dataset, config=self.config,

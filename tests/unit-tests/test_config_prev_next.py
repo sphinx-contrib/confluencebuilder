@@ -14,10 +14,10 @@ import unittest
 
 class TestConfluenceConfigPrevNext(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'prevnext')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'prevnext')
 
     def test_config_prevnext_bottom(self):
         config = dict(self.config)
