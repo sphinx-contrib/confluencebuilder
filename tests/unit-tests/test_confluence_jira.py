@@ -133,3 +133,23 @@ class TestConfluenceJira(unittest.TestCase):
 
         # build attempt should not throw an exception/error
         build_sphinx(dataset, **opts)
+
+    def test_storage_confluence_jira_role_expected(self):
+        dataset = os.path.join(self.container, 'valid-role')
+
+        out_dir = build_sphinx(dataset, config=self.config)
+
+        with parse('index', out_dir) as data:
+            p_tag = data.find('p')
+            self.assertIsNotNone(p_tag)
+
+            macro = p_tag.find('ac:structured-macro', {'ac:name': 'jira'})
+            self.assertIsNotNone(macro)
+
+            key = macro.find('ac:parameter', {'ac:name': 'key'})
+            self.assertIsNotNone(key)
+            self.assertEqual(key.text, 'TEST-456')
+
+            summary = macro.find('ac:parameter', {'ac:name': 'showSummary'})
+            self.assertIsNotNone(summary)
+            self.assertEqual(summary.text, 'false')
