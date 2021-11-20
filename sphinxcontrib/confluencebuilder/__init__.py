@@ -19,6 +19,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.roles import JiraRole
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 
 # load autosummary extension if available to add additional nodes
@@ -249,6 +250,9 @@ def confluence_builder_inited(app):
     app.add_directive('confluence_newline', ConfluenceNewline)
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
+
+    # register roles
+    app.add_role('jira', JiraRole)
 
     # inject compatible autosummary nodes if the extension is available/loaded
     if autosummary:
