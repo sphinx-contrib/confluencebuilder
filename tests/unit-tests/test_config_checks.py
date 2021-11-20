@@ -47,7 +47,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with prepare_sphinx(dataset, config=config, extra_config=edefs) as app:
             builder = ConfluenceBuilder(app)
 
-            class MockedPublisher():
+            class MockedPublisher:
                 def init(self, config):
                     pass
 
@@ -645,7 +645,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_server_auth'] = ValidAuth()
         self._try_config()
 
-        class InvalidAuth():
+        class InvalidAuth:
             pass
 
         self.config['confluence_server_auth'] = InvalidAuth()
