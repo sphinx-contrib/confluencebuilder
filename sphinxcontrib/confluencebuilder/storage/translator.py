@@ -1291,6 +1291,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         elif classes in [['accelerator']]:
             self.body.append(self._start_tag(node, 'u'))
             has_added = True
+        elif classes in [['strike']]:
+            self.body.append(self._start_tag(node, 's'))
+            has_added = True
         elif isinstance(node.parent, addnodes.desc_parameter):
             # check if an identifier in signature
             if classes in [['n']]:
