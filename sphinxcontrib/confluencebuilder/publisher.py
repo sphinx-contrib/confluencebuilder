@@ -140,7 +140,7 @@ class ConfluencePublisher:
 
         ancestors = set()
 
-        _, page = self.getPageById(page_id, 'ancestors')
+        _, page = self.get_page_by_id(page_id, 'ancestors')
 
         if 'ancestors' in page:
             for ancestor in page['ancestors']:
@@ -148,7 +148,7 @@ class ConfluencePublisher:
 
         return ancestors
 
-    def getBasePageId(self):
+    def get_base_page_id(self):
         base_page_id = None
 
         if not self.parent_name:
@@ -176,7 +176,7 @@ class ConfluencePublisher:
 
         return base_page_id
 
-    def getDescendants(self, page_id):
+    def get_descendants(self, page_id):
         """
         generate a list of descendants
 
@@ -219,7 +219,7 @@ class ConfluencePublisher:
 
         return descendants
 
-    def getDescendantsCompat(self, page_id):
+    def get_descendants_compat(self, page_id):
         """
         generate a list of descendants (aggressive)
 
@@ -242,7 +242,7 @@ class ConfluencePublisher:
         visited_pages = set()
 
         def find_legacy_pages(page_id, pages):
-            descendants = self.getDescendants(page_id)
+            descendants = self.get_descendants(page_id)
             for descendant in descendants:
                 if descendant not in pages:
                     pages.add(descendant)
@@ -251,7 +251,7 @@ class ConfluencePublisher:
         find_legacy_pages(page_id, visited_pages)
         return visited_pages
 
-    def getAttachment(self, page_id, name):
+    def get_attachment(self, page_id, name):
         """
         get attachment information with the provided page id and name
 
@@ -282,7 +282,7 @@ class ConfluencePublisher:
 
         return attachment_id, attachment
 
-    def getAttachments(self, page_id):
+    def get_attachments(self, page_id):
         """
         get all known attachments for a provided page id
 
@@ -322,7 +322,7 @@ class ConfluencePublisher:
 
         return attachment_info
 
-    def getPage(self, page_name, expand='version'):
+    def get_page(self, page_name, expand='version'):
         """
         get page information with the provided page name
 
@@ -356,7 +356,7 @@ class ConfluencePublisher:
 
         return page_id, page
 
-    def getPageById(self, page_id, expand='version'):
+    def get_page_by_id(self, page_id, expand='version'):
         """
         get page information with the provided page name
 
@@ -372,7 +372,6 @@ class ConfluencePublisher:
         Returns:
             the page id and page object
         """
-        page = None
 
         page = self.rest_client.get('content/{}'.format(page_id), {
             'status': 'current',
@@ -385,7 +384,7 @@ class ConfluencePublisher:
 
         return page_id, page
 
-    def getPageCaseInsensitive(self, page_name):
+    def get_page_case_insensitive(self, page_name):
         """
         get page information with the provided page name (case-insensitive)
 
@@ -416,7 +415,7 @@ class ConfluencePublisher:
             for result in rsp['results']:
                 result_title = result['title']
                 if page_name == result_title.lower():
-                    page_id, page = self.getPage(result_title)
+                    page_id, page = self.get_page(result_title)
                     break
 
             if page_id or rsp['size'] != rsp['limit']:
@@ -429,7 +428,7 @@ class ConfluencePublisher:
 
         return page_id, page
 
-    def storeAttachment(self, page_id, name, data, mimetype, hash, force=False):
+    def store_attachment(self, page_id, name, data, mimetype, hash_, force=False):
         """
         request to store an attachment on a provided page
 
@@ -444,7 +443,7 @@ class ConfluencePublisher:
             name: the attachment name
             data: the attachment data
             mimetype: the mime type of this attachment
-            hash: the hash of the attachment
+            hash_: the hash of the attachment
             force (optional): force publishing if exists (defaults to False)
 
         Returns:
@@ -456,7 +455,7 @@ class ConfluencePublisher:
         if self.dryrun:
             attachment = None
         else:
-            _, attachment = self.getAttachment(page_id, name)
+            _, attachment = self.get_attachment(page_id, name)
 
         # check if attachment (of same hash) is already published to this page
         comment = None
@@ -469,7 +468,7 @@ class ConfluencePublisher:
             parts = comment.split(HASH_KEY + ':', 1)
             if len(parts) > 1:
                 tracked_hash = ''.join(parts[1].split())
-                if hash == tracked_hash:
+                if hash_ == tracked_hash:
                     logger.verbose('attachment ({}) is already '
                         'published to document with same hash'.format(name))
                     return attachment['id']
@@ -487,11 +486,11 @@ class ConfluencePublisher:
 
         # publish attachment
         try:
-            # split hash comment into chunks to minize rendering issues with a
+            # split hash comment into chunks to minimize rendering issues with a
             # single one-world-long-hash value
-            hash = '{}:{}'.format(HASH_KEY, hash)
+            hash_ = '{}:{}'.format(HASH_KEY, hash_)
             chunked_hash = '\n'.join(
-                [hash[i:i + 16] for i in range(0, len(hash), 16)])
+                [hash_[i:i + 16] for i in range(0, len(hash_), 16)])
 
             data = {
                 'comment': chunked_hash,
@@ -523,7 +522,7 @@ class ConfluencePublisher:
 
         return uploaded_attachment_id
 
-    def storePage(self, page_name, data, parent_id=None):
+    def store_page(self, page_name, data, parent_id=None):
         """
         request to store page information to a confluence instance
 
@@ -544,7 +543,7 @@ class ConfluencePublisher:
             logger.trace('data', data['content'])
 
         if self.dryrun:
-            _, page = self.getPage(page_name, 'version,ancestors')
+            _, page = self.get_page(page_name, 'version,ancestors')
 
             if not page:
                 self._dryrun('adding new page ' + page_name)
@@ -566,7 +565,7 @@ class ConfluencePublisher:
         if self.can_labels and self.append_labels:
             expand += ',metadata.labels'
 
-        _, page = self.getPage(page_name, expand=expand)
+        _, page = self.get_page(page_name, expand=expand)
 
         if self.onlynew and page:
             self._onlynew('skipping existing page', page['id'])
@@ -575,12 +574,12 @@ class ConfluencePublisher:
         try:
             # new page
             if not page:
-                newPage = self._buildPage(page_name, data)
+                new_page = self._build_page(page_name, data)
 
                 # only the legacy editor is supported at this time; forced v1
                 # since Confluence Cloud appears to have an inconsistent default
                 # editor
-                newPage['metadata'] = {
+                new_page['metadata'] = {
                     'properties': {
                         'editor': {
                             'value': 'v1',
@@ -589,13 +588,13 @@ class ConfluencePublisher:
                 }
 
                 if self.can_labels:
-                    self._populate_labels(newPage, data['labels'])
+                    self._populate_labels(new_page, data['labels'])
 
                 if parent_id:
-                    newPage['ancestors'] = [{'id': parent_id}]
+                    new_page['ancestors'] = [{'id': parent_id}]
 
                 try:
-                    rsp = self.rest_client.post('content', newPage)
+                    rsp = self.rest_client.post('content', new_page)
 
                     if 'id' not in rsp:
                         api_err = ('Confluence reports a successful page ' +
@@ -622,7 +621,7 @@ class ConfluencePublisher:
                     logger.verbose('title already exists warning '
                         'for page {}'.format(page_name))
 
-                    _, page = self.getPageCaseInsensitive(page_name)
+                    _, page = self.get_page_case_insensitive(page_name)
                     if not page:
                         raise
 
@@ -632,7 +631,7 @@ class ConfluencePublisher:
 
             # update existing page
             if page:
-                self._updatePage(page, page_name, data, parent_id=parent_id)
+                self._update_page(page, page_name, data, parent_id=parent_id)
                 uploaded_page_id = page['id']
 
         except ConfluencePermissionError:
@@ -646,7 +645,7 @@ class ConfluencePublisher:
 
         return uploaded_page_id
 
-    def storePageById(self, page_name, page_id, data):
+    def store_page_by_id(self, page_name, page_id, data):
         """
         request to store page information on the page with a matching id
 
@@ -665,7 +664,7 @@ class ConfluencePublisher:
             return page_id
 
         if self.dryrun:
-            _, page = self.getPageById(page_id)
+            _, page = self.get_page_by_id(page_id)
 
             if not page:
                 self._dryrun('unable to find page with id', page_id)
@@ -679,14 +678,14 @@ class ConfluencePublisher:
             expand += ',metadata.labels'
 
         try:
-            _, page = self.getPageById(page_id, expand=expand)
+            _, page = self.get_page_by_id(page_id, expand=expand)
         except ConfluenceBadApiError as ex:
             if str(ex).find('No content found with id') == -1:
                 raise
             raise ConfluenceMissingPageIdError(self.space_key, page_id)
 
         try:
-            self._updatePage(page, page_name, data)
+            self._update_page(page, page_name, data)
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to add page """
@@ -698,7 +697,7 @@ class ConfluencePublisher:
 
         return page_id
 
-    def removeAttachment(self, id):
+    def remove_attachment(self, id_):
         """
         request to remove an attachment
 
@@ -706,24 +705,24 @@ class ConfluencePublisher:
         attachment.
 
         Args:
-            id: the attachment
+            id_: the attachment
         """
         if self.dryrun:
-            self._dryrun('removing attachment', id)
+            self._dryrun('removing attachment', id_)
             return
         elif self.onlynew:
-            self._onlynew('attachment removal restricted', id)
+            self._onlynew('attachment removal restricted', id_)
             return
 
         try:
-            self.rest_client.delete('content', id)
+            self.rest_client.delete('content', id_)
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to delete """
                 """from the configured space."""
             )
 
-    def removePage(self, page_id):
+    def remove_page(self, page_id):
         if self.dryrun:
             self._dryrun('removing page', page_id)
             return
@@ -764,7 +763,7 @@ class ConfluencePublisher:
         """
         self._ancestors_cache = ancestors
 
-    def updateSpaceHome(self, page_id):
+    def update_space_home(self, page_id):
         if not page_id:
             return
 
@@ -788,7 +787,7 @@ class ConfluencePublisher:
                 """space's homepage."""
             )
 
-    def _buildPage(self, page_name, data):
+    def _build_page(self, page_name, data):
         """
         build a page entity used for a new or updated page event
 
@@ -815,7 +814,7 @@ class ConfluencePublisher:
 
         return page
 
-    def _updatePage(self, page, page_name, data, parent_id=None):
+    def _update_page(self, page, page_name, data, parent_id=None):
         """
         build a page update and publish it to the confluence instance
 
@@ -831,9 +830,9 @@ class ConfluencePublisher:
         """
         last_version = int(page['version']['number'])
 
-        updatePage = self._buildPage(page_name, data)
-        updatePage['id'] = page['id']
-        updatePage['version'] = {
+        update_page = self._build_page(page_name, data)
+        update_page['id'] = page['id']
+        update_page['version'] = {
             'number': last_version + 1,
         }
 
@@ -845,23 +844,23 @@ class ConfluencePublisher:
                         'labels', {}).get('results', {})
                 ])
 
-            self._populate_labels(updatePage, labels)
+            self._populate_labels(update_page, labels)
 
         if not self.notify:
-            updatePage['version']['minorEdit'] = True
+            update_page['version']['minorEdit'] = True
 
         if parent_id:
             if page['id'] in self._ancestors_cache:
                 raise ConfluencePublishAncestorError(page_name)
 
-            updatePage['ancestors'] = [{'id': parent_id}]
+            update_page['ancestors'] = [{'id': parent_id}]
 
             if page['id'] == parent_id:
                 raise ConfluencePublishSelfAncestorError(page_name)
 
         page_id_explicit = page['id'] + '?status=current'
         try:
-            self.rest_client.put('content', page_id_explicit, updatePage)
+            self.rest_client.put('content', page_id_explicit, update_page)
         except ConfluenceBadApiError as ex:
 
             # Handle select API failures by waiting a moment and retrying the
@@ -887,7 +886,7 @@ class ConfluencePublisher:
             time.sleep(3)
 
             try:
-                self.rest_client.put('content', page_id_explicit, updatePage)
+                self.rest_client.put('content', page_id_explicit, update_page)
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(
@@ -895,7 +894,7 @@ class ConfluencePublisher:
 
                 raise
 
-    def _dryrun(self, msg, id=None, misc=''):
+    def _dryrun(self, msg, id_=None, misc=''):
         """
         log a dry run mode message
 
@@ -905,15 +904,15 @@ class ConfluencePublisher:
 
         Args:
             msg: the message
-            id (optional): identifier (name mapping) associated with the message
+            id_ (optional): identifier (name mapping) associated with the message
             misc (optional): additional information to append
         """
         s = '[dryrun] '
         s += msg
-        if id and id in self._name_cache:
-            s += ' ' + self._name_cache[id]
-        if id:
-            s += ' ({})'.format(id)
+        if id_ and id_ in self._name_cache:
+            s += ' ' + self._name_cache[id_]
+        if id_:
+            s += ' ({})'.format(id_)
         if misc:
             s += ' ' + misc
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
@@ -928,14 +927,14 @@ class ConfluencePublisher:
 
         Args:
             msg: the message
-            id (optional): identifier (name mapping) associated with the message
+            id_ (optional): identifier (name mapping) associated with the message
         """
         s = '[only-new] '
         s += msg
-        if id and id in self._name_cache:
-            s += ' ' + self._name_cache[id]
-        if id:
-            s += ' ({})'.format(id)
+        if id_ and id_ in self._name_cache:
+            s += ' ' + self._name_cache[id_]
+        if id_:
+            s += ' ({})'.format(id_)
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
     def _populate_labels(self, page, labels):

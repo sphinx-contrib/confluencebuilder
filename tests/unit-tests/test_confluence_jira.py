@@ -14,10 +14,10 @@ import unittest
 
 class TestConfluenceJira(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.container = os.path.join(test_dir, 'datasets', 'jira')
+        cls.container = os.path.join(test_dir, 'datasets', 'jira')
 
     def test_confluence_jira_directive_bad_sid(self):
         dataset = os.path.join(self.container, 'bad-sid')
@@ -96,9 +96,10 @@ class TestConfluenceJira(unittest.TestCase):
             self.assertIsNotNone(jql)
             self.assertEqual(jql.text, 'project = "TEST"')
 
-            max = jira_macro.find('ac:parameter', {'ac:name': 'maximumIssues'})
-            self.assertIsNotNone(max)
-            self.assertEqual(max.text, '5')
+            max_issues = jira_macro.find(
+                'ac:parameter', {'ac:name': 'maximumIssues'})
+            self.assertIsNotNone(max_issues)
+            self.assertEqual(max_issues.text, '5')
 
             sname = jira_macro.find('ac:parameter', {'ac:name': 'server'})
             self.assertIsNotNone(sname)

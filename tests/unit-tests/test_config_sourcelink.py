@@ -13,10 +13,10 @@ import unittest
 
 class TestConfluenceConfigSourceLink(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'minimal')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'minimal')
 
     def test_storage_sourcelink_custom_text(self):
         """validate sourcelink can handle custom options (storage)"""

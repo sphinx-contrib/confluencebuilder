@@ -13,15 +13,15 @@ import unittest
 
 class TestConfluenceMetadata(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
-        self.filenames = prepare_sphinx_filenames(self.dataset,
+        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.filenames = prepare_sphinx_filenames(cls.dataset,
             [
                 'metadata',
             ],
-            configs=[self.config])
+            configs=[cls.config])
 
     def test_confluence_metadata_directive_expected(self):
         with prepare_sphinx(self.dataset, config=self.config) as app:

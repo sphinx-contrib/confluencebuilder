@@ -56,7 +56,7 @@ def process_raw_upload(target_sandbox):
 
             print('[sandbox] publishing page...')
             try:
-                publisher.storePage('raw', data)
+                publisher.store_page('raw', data)
             except ConfluenceBadApiError as ex:
                 print('[sandbox] failed to publish content:', ex)
 

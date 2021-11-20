@@ -20,13 +20,13 @@ import unittest
 
 class TestConfluenceConfigChecks(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(self.test_dir, 'datasets', 'common')
-        self.dummy_exists = os.path.join(self.test_dir, 'assets', 'dummy')
-        self.dummy_missing = os.path.join(self.test_dir, 'assets', 'missing')
+    def setUpClass(cls):
+        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
+        cls.dataset = os.path.join(cls.test_dir, 'datasets', 'common')
+        cls.dummy_exists = os.path.join(cls.test_dir, 'assets', 'dummy')
+        cls.dummy_missing = os.path.join(cls.test_dir, 'assets', 'missing')
 
-        self.minimal_config = {'extensions': EXT_NAME}
+        cls.minimal_config = {'extensions': EXT_NAME}
 
     def run(self, result=None):
         # unique configuration each run to avoid copying it in each test
@@ -47,7 +47,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with prepare_sphinx(dataset, config=config, extra_config=edefs) as app:
             builder = ConfluenceBuilder(app)
 
-            class MockedPublisher():
+            class MockedPublisher:
                 def init(self, config):
                     pass
 
@@ -645,7 +645,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_server_auth'] = ValidAuth()
         self._try_config()
 
-        class InvalidAuth():
+        class InvalidAuth:
             pass
 
         self.config['confluence_server_auth'] = InvalidAuth()

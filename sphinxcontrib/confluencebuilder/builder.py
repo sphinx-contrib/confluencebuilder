@@ -123,7 +123,7 @@ class ConfluenceBuilder(Builder):
         self.templates.init(self)
 
         old_url = self.config.confluence_server_url
-        new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
+        new_url = ConfluenceUtil.normalize_base_url(old_url)
         if old_url != new_url:
             self.warn('normalizing confluence url from '
                 '{} to {} '.format(old_url, new_url))
@@ -281,7 +281,7 @@ class ConfluenceBuilder(Builder):
                     doctitle = ('.'.join(map(str, secnumbers[''])) +
                         self.secnumber_suffix + doctitle)
 
-                self.state.registerTitle(docname, doctitle, self.config)
+                self.state.register_title(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:
@@ -291,7 +291,7 @@ class ConfluenceBuilder(Builder):
             # use as a hint when dealing with max-depth capabilities
             toctree = first(doctree.traverse(addnodes.toctree))
             if toctree and toctree.get('maxdepth') > 0:
-                self.state.registerToctreeDepth(
+                self.state.register_toctree_depth(
                     docname, toctree.get('maxdepth'))
 
             # register title targets for references
@@ -303,10 +303,10 @@ class ConfluenceBuilder(Builder):
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
         if self.use_index and not self.state.title('genindex'):
-            self.state.registerTitle('genindex', SL('Index'), self.config)
+            self.state.register_title('genindex', SL('Index'), self.config)
 
         if self.use_search and not self.state.title('search'):
-            self.state.registerTitle('search', SL('Search'), self.config)
+            self.state.register_title('search', SL('Search'), self.config)
 
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
@@ -315,7 +315,7 @@ class ConfluenceBuilder(Builder):
 
                 indexcls, _ = indexdata
                 title = indexcls.localname
-                self.state.registerTitle(indexname, title, self.config)
+                self.state.register_title(indexname, title, self.config)
 
         # track relations between accepted documents
         #
@@ -400,7 +400,7 @@ class ConfluenceBuilder(Builder):
             movednodes = []
             for child in toctreenode['includefiles']:
                 if child not in traversed:
-                    self.state.registerParentDocname(child, docname)
+                    self.state.register_parent_docname(child, docname)
                     traversed.append(child)
 
                     children = self.process_tree_structure(
@@ -487,8 +487,8 @@ class ConfluenceBuilder(Builder):
         parent_id = None
         if self.config.root_doc and self.config.confluence_page_hierarchy:
             if self.config.root_doc != docname:
-                parent = self.state.parentDocname(docname)
-                parent_id = self.state.uploadId(parent)
+                parent = self.state.parent_docname(docname)
+                parent_id = self.state.upload_id(parent)
         if not parent_id:
             parent_id = self.parent_id
 
@@ -505,11 +505,11 @@ class ConfluenceBuilder(Builder):
             data['labels'].extend([v for v in metadata['labels']])
 
         if conf.confluence_publish_root and is_root_doc:
-            uploaded_id = self.publisher.storePageById(title,
+            uploaded_id = self.publisher.store_page_by_id(title,
                 conf.confluence_publish_root, data)
         else:
-            uploaded_id = self.publisher.storePage(title, data, parent_id)
-        self.state.registerUploadId(docname, uploaded_id)
+            uploaded_id = self.publisher.store_page(title, data, parent_id)
+        self.state.register_upload_id(docname, uploaded_id)
 
         if self.config.root_doc == docname:
             self.root_doc_page_id = uploaded_id
@@ -536,16 +536,16 @@ class ConfluenceBuilder(Builder):
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
             elif self.config.confluence_adv_aggressive_search is True:
-                self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
+                self.legacy_pages = self.publisher.get_descendants_compat(baseid)
             else:
-                self.legacy_pages = self.publisher.getDescendants(baseid)
+                self.legacy_pages = self.publisher.get_descendants(baseid)
 
             # only populate a list of possible legacy assets when a user is
             # configured to check or push assets to the target space
             asset_override = conf.confluence_asset_override
             if asset_override is None or asset_override:
                 for legacy_page in self.legacy_pages:
-                    attachments = self.publisher.getAttachments(legacy_page)
+                    attachments = self.publisher.get_attachments(legacy_page)
                     self.legacy_assets[legacy_page] = attachments
 
         if conf.confluence_purge:
@@ -557,16 +557,16 @@ class ConfluenceBuilder(Builder):
         publisher = self.publisher
 
         title = self.state.title(docname)
-        page_id = self.state.uploadId(docname)
+        page_id = self.state.upload_id(docname)
 
         if not page_id and not conf.confluence_publish_dryrun:
             # A page identifier may not be tracked in cases where only a subset
             # of documents are published and the target page an asset will be
             # published to was not part of the request. In this case, ask the
             # Confluence instance what the target page's identifier is.
-            page_id, _ = publisher.getPage(title)
+            page_id, _ = publisher.get_page(title)
             if page_id:
-                self.state.registerUploadId(docname, page_id)
+                self.state.register_upload_id(docname, page_id)
             else:
                 self.warn('cannot publish asset since publishing '
                     'point cannot be found ({}): {}'.format(key, docname))
@@ -576,11 +576,11 @@ class ConfluenceBuilder(Builder):
 
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
-            attachment_id = publisher.storeAttachment(
+            attachment_id = publisher.store_attachment(
                 page_id, key, output, type_, hash_)
         elif conf.confluence_asset_override:
             # forced publishing of the asset
-            attachment_id = publisher.storeAttachment(
+            attachment_id = publisher.store_attachment(
                 page_id, key, output, type_, hash_, force=True)
 
         if attachment_id and conf.confluence_purge:
@@ -594,7 +594,7 @@ class ConfluenceBuilder(Builder):
             if self.config.confluence_root_homepage is True:
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
-                self.publisher.updateSpaceHome(self.root_doc_page_id)
+                self.publisher.update_space_home(self.root_doc_page_id)
                 self.info('done')
 
             if self.cloud:
@@ -619,7 +619,7 @@ class ConfluenceBuilder(Builder):
                         self.legacy_pages, 'removing legacy pages... ',
                         length=len(self.legacy_pages),
                         verbosity=self._verbose):
-                    self.publisher.removePage(legacy_page_id)
+                    self.publisher.remove_page(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
@@ -640,7 +640,7 @@ class ConfluenceBuilder(Builder):
                         verbosity=self._verbose,
                         stringify_func=to_asset_name):
 
-                    self.publisher.removeAttachment(attachment_id)
+                    self.publisher.remove_attachment(attachment_id)
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
@@ -683,7 +683,7 @@ class ConfluenceBuilder(Builder):
         if self.publish:
             self.legacy_assets = {}
             self.legacy_pages = None
-            self.parent_id = self.publisher.getBasePageId()
+            self.parent_id = self.publisher.get_base_page_id()
 
             for docname in status_iterator(
                     self.publish_docnames, 'publishing documents... ',
@@ -1079,7 +1079,7 @@ class ConfluenceBuilder(Builder):
 
                     for id_ in section_node['ids']:
                         id_ = '{}#{}'.format(docname, id_)
-                        self.state.registerTarget(id_, target)
+                        self.state.register_target(id_, target)
 
     def _top_ref_check(self, node):
         """

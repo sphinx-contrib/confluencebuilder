@@ -24,7 +24,7 @@ class ConfluenceState:
     title2doc = {}
 
     @staticmethod
-    def registerParentDocname(docname, parent_docname):
+    def register_parent_docname(docname, parent_docname):
         """
         register a parent docname for a provided docname
 
@@ -43,7 +43,7 @@ class ConfluenceState:
             'setting parent of %s to: %s' % (docname, parent_docname))
 
     @staticmethod
-    def registerTarget(refid, target):
+    def register_target(refid, target):
         """
         register a reference to a specific (anchor) target
 
@@ -59,7 +59,7 @@ class ConfluenceState:
         logger.verbose('mapping %s to target: %s' % (refid, target))
 
     @staticmethod
-    def registerTitle(docname, title, config):
+    def register_title(docname, title, config):
         """
         register the title for the provided document name
 
@@ -121,7 +121,7 @@ class ConfluenceState:
         return title
 
     @staticmethod
-    def registerToctreeDepth(docname, depth):
+    def register_toctree_depth(docname, depth):
         """
         register the toctree-depth for the provided document name
 
@@ -136,7 +136,7 @@ class ConfluenceState:
         logger.verbose('track %s toc-depth: %s' % (docname, depth))
 
     @staticmethod
-    def registerUploadId(docname, id_):
+    def register_upload_id(docname, id_):
         """
         register a page (upload) identifier for a docname
 
@@ -168,7 +168,7 @@ class ConfluenceState:
         ConfluenceState.title2doc.clear()
 
     @staticmethod
-    def parentDocname(docname):
+    def parent_docname(docname):
         """
         return the parent docname (if any) for a provided docname
 
@@ -195,7 +195,7 @@ class ConfluenceState:
         return ConfluenceState.doc2title.get(docname, default)
 
     @staticmethod
-    def toctreeDepth(docname):
+    def toctree_depth(docname):
         """
         return the toctree-depth value for a provided docname
 
@@ -204,7 +204,7 @@ class ConfluenceState:
         return ConfluenceState.doc2ttd.get(docname)
 
     @staticmethod
-    def uploadId(docname):
+    def upload_id(docname):
         """
         return the confluence (upload) page id for the provided docname
 

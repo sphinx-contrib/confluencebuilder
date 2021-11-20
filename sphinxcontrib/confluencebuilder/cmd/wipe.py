@@ -131,12 +131,12 @@ pages. Only use this action if you know what you are doing.
 
     base_page_id = None
     if args.parent:
-        base_page_id = publisher.getBasePageId()
+        base_page_id = publisher.get_base_page_id()
 
     if aggressive_search:
-        legacy_pages = publisher.getDescendantsCompat(base_page_id)
+        legacy_pages = publisher.get_descendants_compat(base_page_id)
     else:
-        legacy_pages = publisher.getDescendants(base_page_id)
+        legacy_pages = publisher.get_descendants(base_page_id)
 
     print('         URL:', server_url)
     print('       Space:', space_key)
@@ -171,7 +171,7 @@ pages. Only use this action if you know what you are doing.
     if dryrun:
         logger.info('')
     for page_id in legacy_pages:
-        publisher.removePage(page_id)
+        publisher.remove_page(page_id)
         if not dryrun:
             logger.info('.', nonl=True)
     if not dryrun:

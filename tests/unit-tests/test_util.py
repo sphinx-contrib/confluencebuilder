@@ -22,4 +22,4 @@ class TestConfluenceUtil(unittest.TestCase):
 'http://example.atlassian.net/wiki':              'http://example.atlassian.net/wiki/',
         }
         for key in data:
-            self.assertEqual(UTIL.normalizeBaseUrl(key), data[key])
+            self.assertEqual(UTIL.normalize_base_url(key), data[key])

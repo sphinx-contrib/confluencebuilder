@@ -121,12 +121,12 @@ class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
         super(ConfluencePermissionError, self).__init__('''
 ---
-Permission denied on Confluence
+Permission denied on Confluence ({desc})
 
 The configured user does not have permission to perform an action on the
 Confluence instance.
 ---
-''')
+'''.format(desc=details))
 
 
 class ConfluenceProxyPermissionError(ConfluenceError):

@@ -15,15 +15,15 @@ import unittest
 
 class TestConfluenceSphinxAlignment(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         # skip alignment tests pre-sphinx 2.1 as 'default' hints do not exist
         if parse_version(sphinx_version) < parse_version('2.1'):
             raise unittest.SkipTest('default hints not supported in sphinx')
 
-        self.config = prepare_conf()
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'common')
-        self.filenames = [
+        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.filenames = [
             'alignment',
         ]
 

@@ -27,15 +27,15 @@ class ConfluenceAsset:
     Args:
         key: the asset key
         path: the absolute path to the asset
-        type: the content type of the asset
-        hash: the hash of the asset
+        type_: the content type of the asset
+        hash_: the hash of the asset
     """
-    def __init__(self, key, path, type, hash):
+    def __init__(self, key, path, type_, hash_):
         self.docnames = set()
         self.path = path
-        self.hash = hash
+        self.hash = hash_
         self.key = key
-        self.type = type
+        self.type = type_
 
 
 class ConfluenceAssetManager:
@@ -252,15 +252,15 @@ class ConfluenceAssetManager:
         """
 
         if path not in self.path2asset:
-            hash = ConfluenceUtil.hashAsset(path)
+            hash_ = ConfluenceUtil.hash_asset(path)
             type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
         else:
-            hash = self.path2asset[path].hash
+            hash_ = self.path2asset[path].hash
             type_ = self.path2asset[path].type
 
         asset = self.path2asset.get(path, None)
         if not asset:
-            hash_exists = hash in self.hash2asset
+            hash_exists = hash_ in self.hash2asset
             if not hash_exists or standalone:
                 # no asset entry and no hash entry (or standalone); new asset
                 key = os.path.basename(path)
@@ -277,14 +277,14 @@ class ConfluenceAssetManager:
                     key = '{}_{}{}'.format(filename, idx, file_ext)
                 self.keys.add(key)
 
-                asset = ConfluenceAsset(key, path, type_, hash)
+                asset = ConfluenceAsset(key, path, type_, hash_)
                 self.assets.append(asset)
                 self.path2asset[path] = asset
                 if not hash_exists:
-                    self.hash2asset[hash] = asset
+                    self.hash2asset[hash_] = asset
             else:
                 # duplicate asset detected; build an asset alias
-                asset = self.hash2asset[hash]
+                asset = self.hash2asset[hash_]
                 self.path2asset[path] = asset
         else:
             assert(self.hash2asset[asset.hash] == asset)

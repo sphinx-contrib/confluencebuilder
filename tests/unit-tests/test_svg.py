@@ -14,10 +14,10 @@ import xml.etree.ElementTree as xml_et
 
 class TestSvg(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'svg')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'svg')
 
     def _extract_svg_size(self, fname):
         with open(fname, 'rb') as f:

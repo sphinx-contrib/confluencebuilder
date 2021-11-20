@@ -14,10 +14,10 @@ import unittest
 
 class TestConfluenceSinglepageAssets(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.config = prepare_conf()
+    def setUpClass(cls):
+        cls.config = prepare_conf()
         test_dir = os.path.dirname(os.path.realpath(__file__))
-        self.dataset = os.path.join(test_dir, 'datasets', 'shared-asset')
+        cls.dataset = os.path.join(test_dir, 'datasets', 'shared-asset')
 
     def test_storage_singlepage_asset_defaults(self):
         """validate single page assets are self-contained (storage)"""

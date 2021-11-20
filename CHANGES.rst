@@ -1,26 +1,36 @@
 development
 ===========
 
+* **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
 * ``confluence_space_name`` renamed to ``confluence_space_key``
+* brackets will be wrapped around bottom footnote entries
 * fixed issue where links to numbered section would not work
 * fixed issue where publishing could fail without a proxy set for older requests
 * fixed issue where report/wipe commands would fail in python 2.7
+* fixed regression in timeout option
 * improve dry-run reflecting new attachments to be published
 * improve indentations for line-block content
 * improve support for attached svg images with length/scaling modifiers
+* improve support for non-pixel length units for images
 * improve support for svg images without an xml declaration
-* improve support non-pixel length units for images
 * improve support when using the sphinx-gallery extension
 * improve support when using the sphinx_toolbox extension
 * improve support when using the sphinxcontrib-mermaid extension
 * improve support when using the sphinxcontrib-needs extension
 * improve support when using the sphinxcontrib-youtube extension
+* improve user feedback on ancestor page update failures (500 errors)
+* improved support for dealing with unreconciled page detections
+* introduce the jira role
+* introduce the newline directive
+* introduce the page generation notice option (notice for top of documents)
+* introduce the source link option (e.g. "Edit Source" link)
 * prevent issues with extension directives causing errors with other builders
 * remove borders on footnote tables
 * support domain indices generation/processing
 * support for leaving resolved toctrees for singleconfluence
 * support genindex generation/processing
 * support search generation
+* support strikethrough through strike role
 * support the consideration of ``confluence_parent_page`` for wipe requests
 
 1.6.0 (2021-09-26)
