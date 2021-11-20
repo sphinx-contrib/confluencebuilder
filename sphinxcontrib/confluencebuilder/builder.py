@@ -505,10 +505,10 @@ class ConfluenceBuilder(Builder):
             data['labels'].extend([v for v in metadata['labels']])
 
         if conf.confluence_publish_root and is_root_doc:
-            uploaded_id = self.publisher.storePageById(title,
+            uploaded_id = self.publisher.store_page_by_id(title,
                 conf.confluence_publish_root, data)
         else:
-            uploaded_id = self.publisher.storePage(title, data, parent_id)
+            uploaded_id = self.publisher.store_page(title, data, parent_id)
         self.state.register_upload_id(docname, uploaded_id)
 
         if self.config.root_doc == docname:
@@ -536,16 +536,16 @@ class ConfluenceBuilder(Builder):
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
             elif self.config.confluence_adv_aggressive_search is True:
-                self.legacy_pages = self.publisher.getDescendantsCompat(baseid)
+                self.legacy_pages = self.publisher.get_descendants_compat(baseid)
             else:
-                self.legacy_pages = self.publisher.getDescendants(baseid)
+                self.legacy_pages = self.publisher.get_descendants(baseid)
 
             # only populate a list of possible legacy assets when a user is
             # configured to check or push assets to the target space
             asset_override = conf.confluence_asset_override
             if asset_override is None or asset_override:
                 for legacy_page in self.legacy_pages:
-                    attachments = self.publisher.getAttachments(legacy_page)
+                    attachments = self.publisher.get_attachments(legacy_page)
                     self.legacy_assets[legacy_page] = attachments
 
         if conf.confluence_purge:
@@ -564,7 +564,7 @@ class ConfluenceBuilder(Builder):
             # of documents are published and the target page an asset will be
             # published to was not part of the request. In this case, ask the
             # Confluence instance what the target page's identifier is.
-            page_id, _ = publisher.getPage(title)
+            page_id, _ = publisher.get_page(title)
             if page_id:
                 self.state.register_upload_id(docname, page_id)
             else:
@@ -576,11 +576,11 @@ class ConfluenceBuilder(Builder):
 
         if conf.confluence_asset_override is None:
             # "automatic" management -- check if already published; if not, push
-            attachment_id = publisher.storeAttachment(
+            attachment_id = publisher.store_attachment(
                 page_id, key, output, type_, hash_)
         elif conf.confluence_asset_override:
             # forced publishing of the asset
-            attachment_id = publisher.storeAttachment(
+            attachment_id = publisher.store_attachment(
                 page_id, key, output, type_, hash_, force=True)
 
         if attachment_id and conf.confluence_purge:
@@ -594,7 +594,7 @@ class ConfluenceBuilder(Builder):
             if self.config.confluence_root_homepage is True:
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
-                self.publisher.updateSpaceHome(self.root_doc_page_id)
+                self.publisher.update_space_home(self.root_doc_page_id)
                 self.info('done')
 
             if self.cloud:
@@ -619,7 +619,7 @@ class ConfluenceBuilder(Builder):
                         self.legacy_pages, 'removing legacy pages... ',
                         length=len(self.legacy_pages),
                         verbosity=self._verbose):
-                    self.publisher.removePage(legacy_page_id)
+                    self.publisher.remove_page(legacy_page_id)
                     # remove any pending assets to remove from the page (as they
                     # are already been removed)
                     self.legacy_assets.pop(legacy_page_id, None)
@@ -640,7 +640,7 @@ class ConfluenceBuilder(Builder):
                         verbosity=self._verbose,
                         stringify_func=to_asset_name):
 
-                    self.publisher.removeAttachment(attachment_id)
+                    self.publisher.remove_attachment(attachment_id)
 
     def finish(self):
         # restore environment's get_doctree if it was temporarily replaced
@@ -683,7 +683,7 @@ class ConfluenceBuilder(Builder):
         if self.publish:
             self.legacy_assets = {}
             self.legacy_pages = None
-            self.parent_id = self.publisher.getBasePageId()
+            self.parent_id = self.publisher.get_base_page_id()
 
             for docname in status_iterator(
                     self.publish_docnames, 'publishing documents... ',
