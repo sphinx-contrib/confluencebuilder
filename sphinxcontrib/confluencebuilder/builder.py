@@ -514,6 +514,11 @@ class ConfluenceBuilder(Builder):
         if self.config.root_doc == docname:
             self.root_doc_page_id = uploaded_id
 
+            # populate ancestors to be used to pre-check ancestors assignments
+            # on new pages
+            root_ancestors = self.publisher.get_ancestors(uploaded_id)
+            self.publisher.restrict_ancestors(root_ancestors)
+
         # if purging is enabled and we have yet to populate a list of legacy
         # pages to cache, populate pages in our target scope now
         if conf.confluence_purge and self.legacy_pages is None:

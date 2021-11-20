@@ -147,11 +147,40 @@ class ConfluencePublishCheckError(ConfluenceError):
     pass
 
 
+class ConfluencePublishAncestorError(ConfluencePublishCheckError):
+    def __init__(self, page_name):
+        super(ConfluencePublishAncestorError, self).__init__('''
+---
+Ancestor publish check failed for: {name}
+
+A request has been made to publish a page as a nested child of itself.
+This is most likely a result of an existing documentation set on a
+Confluence instance where a publish attempt is trying to push new pages
+into a parent page which has an ancestor with a matching name:
+
+    {name} (original)
+        |
+         --> Configured Parent/Root
+                     |
+                      --> {name} (new update)
+
+This extension will not reorder a configured base page from its
+location. A user can either rename the page in their documentation to
+prevent the page title conflict (either in the document itself or using
+the `confluence_title_overrides` option), or rename/reorder the existing
+page on the Confluence instance.
+
+If the above does not appear to be related to the current use case,
+please inform the maintainers of this extension.
+---
+'''.format(name=page_name))
+
+
 class ConfluencePublishSelfAncestorError(ConfluencePublishCheckError):
     def __init__(self, page_name):
         super(ConfluencePublishSelfAncestorError, self).__init__('''
 ---
-Ancestor publish check failed for: {name}
+Ancestor (self) publish check failed for: {name}
 
 A request has been made to publish a page as a child of itself. This is
 most likely due to a configuration of `confluence_parent_page` with the

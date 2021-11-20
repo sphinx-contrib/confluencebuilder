@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -25,6 +26,7 @@ import time
 class ConfluencePublisher:
     def __init__(self):
         self.space_display_name = None
+        self._ancestors_cache = set()
         self._name_cache = {}
 
     def init(self, config):
@@ -121,6 +123,30 @@ class ConfluencePublisher:
 
     def disconnect(self):
         self.rest_client.close()
+
+    def get_ancestors(self, page_id):
+        """
+        generate a list of ancestors
+
+        Queries the configured Confluence instance for a set of ancestors for
+        the provided `page_id`.
+
+        Args:
+            page_id: the ancestor to search on
+
+        Returns:
+            the ancestors
+        """
+
+        ancestors = set()
+
+        _, page = self.getPageById(page_id, 'ancestors')
+
+        if 'ancestors' in page:
+            for ancestor in page['ancestors']:
+                ancestors.add(ancestor['id'])
+
+        return ancestors
 
     def getBasePageId(self):
         base_page_id = None
@@ -354,7 +380,7 @@ class ConfluencePublisher:
         })
 
         if page:
-            assert page_id == int(page['id'])
+            assert int(page_id) == int(page['id'])
             self._name_cache[page_id] = ['title']
 
         return page_id, page
@@ -723,6 +749,21 @@ class ConfluencePublisher:
                 """from the configured space."""
             )
 
+    def restrict_ancestors(self, ancestors):
+        """
+        restrict the provided ancestors from being changed
+
+        Registers the provided set of ancestors from being used when page
+        updates will move the location of a page. This is a pre-check update
+        requests so that a page cannot be flagged as a descendant of itsel
+        (where Confluence self-hosted instances may not report an ideal error
+        message).
+
+        Args:
+            ancestors: the ancestors to check against
+        """
+        self._ancestors_cache = ancestors
+
     def updateSpaceHome(self, page_id):
         if not page_id:
             return
@@ -810,6 +851,9 @@ class ConfluencePublisher:
             updatePage['version']['minorEdit'] = True
 
         if parent_id:
+            if page['id'] in self._ancestors_cache:
+                raise ConfluencePublishAncestorError(page_name)
+
             updatePage['ancestors'] = [{'id': parent_id}]
 
             if page['id'] == parent_id:
