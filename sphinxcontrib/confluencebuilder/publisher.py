@@ -429,7 +429,7 @@ class ConfluencePublisher:
 
         return page_id, page
 
-    def storeAttachment(self, page_id, name, data, mimetype, hash, force=False):
+    def storeAttachment(self, page_id, name, data, mimetype, hash_, force=False):
         """
         request to store an attachment on a provided page
 
@@ -444,7 +444,7 @@ class ConfluencePublisher:
             name: the attachment name
             data: the attachment data
             mimetype: the mime type of this attachment
-            hash: the hash of the attachment
+            hash_: the hash of the attachment
             force (optional): force publishing if exists (defaults to False)
 
         Returns:
@@ -469,7 +469,7 @@ class ConfluencePublisher:
             parts = comment.split(HASH_KEY + ':', 1)
             if len(parts) > 1:
                 tracked_hash = ''.join(parts[1].split())
-                if hash == tracked_hash:
+                if hash_ == tracked_hash:
                     logger.verbose('attachment ({}) is already '
                         'published to document with same hash'.format(name))
                     return attachment['id']
@@ -489,9 +489,9 @@ class ConfluencePublisher:
         try:
             # split hash comment into chunks to minize rendering issues with a
             # single one-world-long-hash value
-            hash = '{}:{}'.format(HASH_KEY, hash)
+            hash_ = '{}:{}'.format(HASH_KEY, hash_)
             chunked_hash = '\n'.join(
-                [hash[i:i + 16] for i in range(0, len(hash), 16)])
+                [hash_[i:i + 16] for i in range(0, len(hash_), 16)])
 
             data = {
                 'comment': chunked_hash,
@@ -698,7 +698,7 @@ class ConfluencePublisher:
 
         return page_id
 
-    def removeAttachment(self, id):
+    def removeAttachment(self, id_):
         """
         request to remove an attachment
 
@@ -706,17 +706,17 @@ class ConfluencePublisher:
         attachment.
 
         Args:
-            id: the attachment
+            id_: the attachment
         """
         if self.dryrun:
-            self._dryrun('removing attachment', id)
+            self._dryrun('removing attachment', id_)
             return
         elif self.onlynew:
-            self._onlynew('attachment removal restricted', id)
+            self._onlynew('attachment removal restricted', id_)
             return
 
         try:
-            self.rest_client.delete('content', id)
+            self.rest_client.delete('content', id_)
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to delete """
@@ -895,7 +895,7 @@ class ConfluencePublisher:
 
                 raise
 
-    def _dryrun(self, msg, id=None, misc=''):
+    def _dryrun(self, msg, id_=None, misc=''):
         """
         log a dry run mode message
 
@@ -905,15 +905,15 @@ class ConfluencePublisher:
 
         Args:
             msg: the message
-            id (optional): identifier (name mapping) associated with the message
+            id_ (optional): identifier (name mapping) associated with the message
             misc (optional): additional information to append
         """
         s = '[dryrun] '
         s += msg
-        if id and id in self._name_cache:
-            s += ' ' + self._name_cache[id]
-        if id:
-            s += ' ({})'.format(id)
+        if id_ and id_ in self._name_cache:
+            s += ' ' + self._name_cache[id_]
+        if id_:
+            s += ' ({})'.format(id_)
         if misc:
             s += ' ' + misc
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
@@ -928,14 +928,14 @@ class ConfluencePublisher:
 
         Args:
             msg: the message
-            id (optional): identifier (name mapping) associated with the message
+            id_ (optional): identifier (name mapping) associated with the message
         """
         s = '[only-new] '
         s += msg
-        if id and id in self._name_cache:
-            s += ' ' + self._name_cache[id]
-        if id:
-            s += ' ({})'.format(id)
+        if id_ and id_ in self._name_cache:
+            s += ' ' + self._name_cache[id_]
+        if id_:
+            s += ' ({})'.format(id_)
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
     def _populate_labels(self, page, labels):
