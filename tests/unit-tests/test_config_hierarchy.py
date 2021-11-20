@@ -47,20 +47,20 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
         build_sphinx(self.dataset, config=self.config, relax=True)
 
         # root toctree should not have a parent
-        root_doc = ConfluenceState.parentDocname('index')
+        root_doc = ConfluenceState.parent_docname('index')
         self.assertIsNone(root_doc)
 
         # check various documents for expected parents
-        parent_doc = ConfluenceState.parentDocname('toctree-doc1')
+        parent_doc = ConfluenceState.parent_docname('toctree-doc1')
         self.assertEqual(parent_doc, 'index')
 
-        parent_doc = ConfluenceState.parentDocname('toctree-doc2')
+        parent_doc = ConfluenceState.parent_docname('toctree-doc2')
         self.assertEqual(parent_doc, 'index')
 
-        parent_doc = ConfluenceState.parentDocname('toctree-doc3')
+        parent_doc = ConfluenceState.parent_docname('toctree-doc3')
         self.assertEqual(parent_doc, 'index')
 
-        parent_doc = ConfluenceState.parentDocname('toctree-doc2a')
+        parent_doc = ConfluenceState.parent_docname('toctree-doc2a')
         self.assertEqual(parent_doc, 'toctree-doc2')
 
     def test_storage_config_hierarchy_max_depth(self):

@@ -123,7 +123,7 @@ class ConfluenceBuilder(Builder):
         self.templates.init(self)
 
         old_url = self.config.confluence_server_url
-        new_url = ConfluenceUtil.normalizeBaseUrl(old_url)
+        new_url = ConfluenceUtil.normalize_base_url(old_url)
         if old_url != new_url:
             self.warn('normalizing confluence url from '
                 '{} to {} '.format(old_url, new_url))
@@ -281,7 +281,7 @@ class ConfluenceBuilder(Builder):
                     doctitle = ('.'.join(map(str, secnumbers[''])) +
                         self.secnumber_suffix + doctitle)
 
-                self.state.registerTitle(docname, doctitle, self.config)
+                self.state.register_title(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:
@@ -291,7 +291,7 @@ class ConfluenceBuilder(Builder):
             # use as a hint when dealing with max-depth capabilities
             toctree = first(doctree.traverse(addnodes.toctree))
             if toctree and toctree.get('maxdepth') > 0:
-                self.state.registerToctreeDepth(
+                self.state.register_toctree_depth(
                     docname, toctree.get('maxdepth'))
 
             # register title targets for references
@@ -303,10 +303,10 @@ class ConfluenceBuilder(Builder):
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
         if self.use_index and not self.state.title('genindex'):
-            self.state.registerTitle('genindex', SL('Index'), self.config)
+            self.state.register_title('genindex', SL('Index'), self.config)
 
         if self.use_search and not self.state.title('search'):
-            self.state.registerTitle('search', SL('Search'), self.config)
+            self.state.register_title('search', SL('Search'), self.config)
 
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
@@ -315,7 +315,7 @@ class ConfluenceBuilder(Builder):
 
                 indexcls, _ = indexdata
                 title = indexcls.localname
-                self.state.registerTitle(indexname, title, self.config)
+                self.state.register_title(indexname, title, self.config)
 
         # track relations between accepted documents
         #
@@ -400,7 +400,7 @@ class ConfluenceBuilder(Builder):
             movednodes = []
             for child in toctreenode['includefiles']:
                 if child not in traversed:
-                    self.state.registerParentDocname(child, docname)
+                    self.state.register_parent_docname(child, docname)
                     traversed.append(child)
 
                     children = self.process_tree_structure(
@@ -487,8 +487,8 @@ class ConfluenceBuilder(Builder):
         parent_id = None
         if self.config.root_doc and self.config.confluence_page_hierarchy:
             if self.config.root_doc != docname:
-                parent = self.state.parentDocname(docname)
-                parent_id = self.state.uploadId(parent)
+                parent = self.state.parent_docname(docname)
+                parent_id = self.state.upload_id(parent)
         if not parent_id:
             parent_id = self.parent_id
 
@@ -509,7 +509,7 @@ class ConfluenceBuilder(Builder):
                 conf.confluence_publish_root, data)
         else:
             uploaded_id = self.publisher.storePage(title, data, parent_id)
-        self.state.registerUploadId(docname, uploaded_id)
+        self.state.register_upload_id(docname, uploaded_id)
 
         if self.config.root_doc == docname:
             self.root_doc_page_id = uploaded_id
@@ -557,7 +557,7 @@ class ConfluenceBuilder(Builder):
         publisher = self.publisher
 
         title = self.state.title(docname)
-        page_id = self.state.uploadId(docname)
+        page_id = self.state.upload_id(docname)
 
         if not page_id and not conf.confluence_publish_dryrun:
             # A page identifier may not be tracked in cases where only a subset
@@ -566,7 +566,7 @@ class ConfluenceBuilder(Builder):
             # Confluence instance what the target page's identifier is.
             page_id, _ = publisher.getPage(title)
             if page_id:
-                self.state.registerUploadId(docname, page_id)
+                self.state.register_upload_id(docname, page_id)
             else:
                 self.warn('cannot publish asset since publishing '
                     'point cannot be found ({}): {}'.format(key, docname))
@@ -1079,7 +1079,7 @@ class ConfluenceBuilder(Builder):
 
                     for id_ in section_node['ids']:
                         id_ = '{}#{}'.format(docname, id_)
-                        self.state.registerTarget(id_, target)
+                        self.state.register_target(id_, target)
 
     def _top_ref_check(self, node):
         """

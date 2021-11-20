@@ -575,12 +575,12 @@ class ConfluencePublisher:
         try:
             # new page
             if not page:
-                newPage = self._buildPage(page_name, data)
+                new_page = self._buildPage(page_name, data)
 
                 # only the legacy editor is supported at this time; forced v1
                 # since Confluence Cloud appears to have an inconsistent default
                 # editor
-                newPage['metadata'] = {
+                new_page['metadata'] = {
                     'properties': {
                         'editor': {
                             'value': 'v1',
@@ -589,13 +589,13 @@ class ConfluencePublisher:
                 }
 
                 if self.can_labels:
-                    self._populate_labels(newPage, data['labels'])
+                    self._populate_labels(new_page, data['labels'])
 
                 if parent_id:
-                    newPage['ancestors'] = [{'id': parent_id}]
+                    new_page['ancestors'] = [{'id': parent_id}]
 
                 try:
-                    rsp = self.rest_client.post('content', newPage)
+                    rsp = self.rest_client.post('content', new_page)
 
                     if 'id' not in rsp:
                         api_err = ('Confluence reports a successful page ' +
@@ -831,9 +831,9 @@ class ConfluencePublisher:
         """
         last_version = int(page['version']['number'])
 
-        updatePage = self._buildPage(page_name, data)
-        updatePage['id'] = page['id']
-        updatePage['version'] = {
+        update_page = self._buildPage(page_name, data)
+        update_page['id'] = page['id']
+        update_page['version'] = {
             'number': last_version + 1,
         }
 
@@ -845,23 +845,23 @@ class ConfluencePublisher:
                         'labels', {}).get('results', {})
                 ])
 
-            self._populate_labels(updatePage, labels)
+            self._populate_labels(update_page, labels)
 
         if not self.notify:
-            updatePage['version']['minorEdit'] = True
+            update_page['version']['minorEdit'] = True
 
         if parent_id:
             if page['id'] in self._ancestors_cache:
                 raise ConfluencePublishAncestorError(page_name)
 
-            updatePage['ancestors'] = [{'id': parent_id}]
+            update_page['ancestors'] = [{'id': parent_id}]
 
             if page['id'] == parent_id:
                 raise ConfluencePublishSelfAncestorError(page_name)
 
         page_id_explicit = page['id'] + '?status=current'
         try:
-            self.rest_client.put('content', page_id_explicit, updatePage)
+            self.rest_client.put('content', page_id_explicit, update_page)
         except ConfluenceBadApiError as ex:
 
             # Handle select API failures by waiting a moment and retrying the
@@ -887,7 +887,7 @@ class ConfluencePublisher:
             time.sleep(3)
 
             try:
-                self.rest_client.put('content', page_id_explicit, updatePage)
+                self.rest_client.put('content', page_id_explicit, update_page)
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(

@@ -141,7 +141,7 @@ def report_main(args_parser):
     confluence_publish = config.get('confluence_publish')
     confluence_server_url = config.get('confluence_server_url')
     if not offline and confluence_publish and confluence_server_url:
-        base_url = ConfluenceUtil.normalizeBaseUrl(confluence_server_url)
+        base_url = ConfluenceUtil.normalize_base_url(confluence_server_url)
         info = ''
 
         session = None

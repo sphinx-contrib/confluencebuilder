@@ -27,7 +27,7 @@ class ConfluenceUtil:
     """
 
     @staticmethod
-    def hashAsset(asset):
+    def hash_asset(asset):
         """
         generate a hash of the provided asset
 
@@ -52,7 +52,7 @@ class ConfluenceUtil:
         return sha.hexdigest()
 
     @staticmethod
-    def normalizeBaseUrl(url):
+    def normalize_base_url(url):
         """
         normalize a confluence base url
 

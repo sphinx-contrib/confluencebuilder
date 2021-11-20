@@ -61,7 +61,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
         self._thead_context = []
         self.colspecs = []
-        self._tocdepth = self.state.toctreeDepth(self.docname)
+        self._tocdepth = self.state.toctree_depth(self.docname)
 
         # helpers for dealing with disabled/unsupported features
         restricted = config.confluence_adv_restricted

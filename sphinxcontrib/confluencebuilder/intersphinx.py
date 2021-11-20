@@ -54,7 +54,7 @@ def build_intersphinx(builder):
                 for name, dispname, typ, docname, raw_anchor, prio in sorted(
                         domain.get_objects()):
 
-                    page_id = builder.state.uploadId(docname)
+                    page_id = builder.state.upload_id(docname)
                     if not page_id:
                         continue
 
