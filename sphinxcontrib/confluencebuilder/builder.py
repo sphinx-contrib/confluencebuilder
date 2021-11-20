@@ -260,16 +260,6 @@ class ConfluenceBuilder(Builder):
         self.process_tree_structure(
             ordered_docnames, self.config.root_doc, traversed)
 
-        # track relations between accepted documents
-        #
-        # Prepares a relation mapping between each non-orphan documents which
-        # can be used by navigational elements.
-        prevdoc = ordered_docnames[0] if ordered_docnames else None
-        for docname in ordered_docnames[1:]:
-            self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
-            self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
-            prevdoc = docname
-
         # add orphans (if any) to the publish list
         ordered_docnames.extend(x for x in docnames if x not in traversed)
 
@@ -326,6 +316,30 @@ class ConfluenceBuilder(Builder):
                 indexcls, _ = indexdata
                 title = indexcls.localname
                 self.state.registerTitle(indexname, title, self.config)
+
+        # track relations between accepted documents
+        #
+        # Prepares a relation mapping between each non-orphan documents which
+        # can be used by navigational elements. If any documents are special
+        # pages, ignore them for consideration in the navigational bar.
+        nav_docnames = list(ordered_docnames)
+
+        if self.use_index and 'genindex' in nav_docnames:
+            nav_docnames.remove('genindex')
+
+        if self.use_search and 'search' in nav_docnames:
+            nav_docnames.remove('search')
+
+        if self.domain_indices:
+            for indexname, indexdata in self.domain_indices.items():
+                if indexname in nav_docnames:
+                    nav_docnames.remove(indexname)
+
+        prevdoc = nav_docnames[0] if nav_docnames else None
+        for docname in nav_docnames[1:]:
+            self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
+            self.nav_next[prevdoc] = self.get_relative_uri(prevdoc, docname)
+            prevdoc = docname
 
         # register labels for special documents (if needed)
         labels = self.env.domaindata['std']['labels']
