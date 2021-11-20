@@ -9,6 +9,7 @@ Documentation contents
     configuration
     builders
     directives
+    roles
     features
     tips
     changelog
