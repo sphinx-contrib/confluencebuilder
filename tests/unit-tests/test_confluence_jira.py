@@ -96,9 +96,10 @@ class TestConfluenceJira(unittest.TestCase):
             self.assertIsNotNone(jql)
             self.assertEqual(jql.text, 'project = "TEST"')
 
-            max = jira_macro.find('ac:parameter', {'ac:name': 'maximumIssues'})
-            self.assertIsNotNone(max)
-            self.assertEqual(max.text, '5')
+            max_issues = jira_macro.find(
+                'ac:parameter', {'ac:name': 'maximumIssues'})
+            self.assertIsNotNone(max_issues)
+            self.assertEqual(max_issues.text, '5')
 
             sname = jira_macro.find('ac:parameter', {'ac:name': 'server'})
             self.assertIsNotNone(sname)
