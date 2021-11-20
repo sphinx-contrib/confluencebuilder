@@ -45,6 +45,16 @@ class confluence_metadata(nodes.Element):
     """
 
 
+class confluence_newline(nodes.Element):
+    """
+    confluence newline node
+
+    A Confluence builder defined newline node which provides a convience hint
+    that a newline should be injected into a document (for users not wanted to
+    define a custom raw type).
+    """
+
+
 class confluence_page_generation_notice(nodes.TextElement):
     """
     confluence page generation notice node

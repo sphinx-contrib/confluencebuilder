@@ -1937,6 +1937,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             **{'style':
                 'clear: both; padding-top: 10px; margin-bottom: 30px'}))
 
+    def visit_confluence_newline(self, node):
+        self.body.append(self._start_tag(
+            node, 'br', suffix=self.nl, empty=True))
+
+        raise nodes.SkipNode
+
     def visit_confluence_page_generation_notice(self, node):
         attribs = {
             'style': 'color: #707070; font-size: 12px;'
