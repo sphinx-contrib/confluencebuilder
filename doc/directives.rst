@@ -71,6 +71,17 @@ Common
     See also ``confluence_global_labels``
     (:ref:`ref<confluence_global_labels>`).
 
+.. rst:directive:: confluence_newline
+
+    .. versionadded:: 1.7
+
+    The ``confluence_newline`` directive supports the injection of a newline
+    in a document where seperation may be desired between inlined elements.
+
+    .. code-block:: rst
+
+        .. confluence_newline::
+
 Jira
 ----
 
