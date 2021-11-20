@@ -123,26 +123,26 @@ def validate_configuration(builder):
             cert_files = (client_cert, None)
 
         if len(cert_files) != 2:
-            raise ConfluenceConfigurationError(
-"""confluence_client_cert is not a 2-tuple
+            raise ConfluenceConfigurationError('''\
+confluence_client_cert is not a 2-tuple
 
 The option 'confluence_client_cert' has been provided but there are too many
 values. The client certificate can either be a file/path which defines a
 certificate/key-pair, or a 2-tuple of the certificate and key.
-""")
+''')
 
         for cert in cert_files:
             if cert and not os.path.isfile(os.path.join(env.srcdir, cert)):
-                raise ConfluenceConfigurationError(
-"""confluence_ca_cert missing certificate file
+                raise ConfluenceConfigurationError('''\
+confluence_ca_cert missing certificate file
 
 The option 'confluence_client_cert' has been provided to find a client
 certificate file from a relative location, but the certificate could not be
 found. Ensure the following file exists:
 
-    %s
+    {file}
 
-""" % cert)
+'''.format(file=cert))
 
     # ##################################################################
 
@@ -157,13 +157,13 @@ found. Ensure the following file exists:
         validator.conf('confluence_default_alignment') \
                  .matching('left', 'center', 'right')
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 The option 'confluence_default_alignment' has been provided to override the
 default alignment for tables, figures, etc. Accepted values include 'left',
 'center' and 'right'.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -220,13 +220,13 @@ set to a list of domains (strings) to be included.
                  .string() \
                  .file()
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 The option 'confluence_footer_file' has been provided to find a footer template
 file from a path relative to the documentation source. Ensure the value is set
 to a proper file path.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -235,13 +235,13 @@ to a proper file path.
         validator.conf('confluence_global_labels') \
                  .strings(no_space=True)
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 The option 'confluence_global_labels' can provide a collection to string values
 to use as labels for published documentation. Each label value must be a string
 that contains no spaces.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -251,13 +251,13 @@ that contains no spaces.
                  .string() \
                  .file()
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 The option 'confluence_header_file' has been provided to find a header template
 file from a path relative to the documentation source. Ensure the value is set
 to a proper file path.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -299,12 +299,12 @@ to a proper file path.
                     break
 
         if issue:
-            raise ConfluenceConfigurationError(
-"""confluence_jira_servers is not properly formed
+            raise ConfluenceConfigurationError('''\
+confluence_jira_servers is not properly formed
 
-JIRA server definitions should be a dictionary of string keys which contain
-dictionaries with keys 'id' and 'name' which identify the JIRA instances.
-""")
+Jira server definitions should be a dictionary of string keys which contain
+dictionaries with keys 'id' and 'name' which identify the Jira instances.
+''')
 
     # ##################################################################
 
@@ -337,15 +337,15 @@ dictionaries with keys 'id' and 'name' which identify the JIRA instances.
         validator.conf('confluence_max_doc_depth') \
                  .int_()
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 When limiting the document depth permitted for a building/publishing event, the
 defined maximum document depth must be defined as a non-negative integer value.
 
 If planning to use a depth of zero, it is recommended to use the
 'singleconfluence' builder instead.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -376,13 +376,13 @@ If planning to use a depth of zero, it is recommended to use the
         validator.conf('confluence_prev_next_buttons_location') \
                  .matching('bottom', 'both', 'top')
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
 The option 'confluence_prev_next_buttons_location' has been configured to enable
 navigational buttons onto generated pages. Accepted values include 'bottom',
 'both' and 'top'.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -420,13 +420,13 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
             else:
                 validator.docnames()
         except ConfluenceConfigurationError as e:
-            raise ConfluenceConfigurationError(
-"""%s
+            raise ConfluenceConfigurationError('''\
+{msg}
 
 The value type permitted for this publish list option can either be a list of
 document names or a string pointing to a file containing documents. Document
 names are relative to the documentation's source directory.
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -492,8 +492,8 @@ names are relative to the documentation's source directory.
     # confluence_server_auth
     if config.confluence_server_auth is not None:
         if not issubclass(type(config.confluence_server_auth), AuthBase):
-            raise ConfluenceConfigurationError(
-"""confluence_server_auth is not an implementation of requests.auth.AuthBase
+            raise ConfluenceConfigurationError('''\
+confluence_server_auth is not an implementation of requests.auth.AuthBase
 
 Providing a custom authentication for Requests requires an implementation that
 inherits 'requests.auth.AuthBase'. For more information, please consult the
@@ -501,7 +501,7 @@ following:
 
     requests -- Authentication
     https://requests.readthedocs.io/en/latest/user/authentication/
-""")
+''')
 
     # ##################################################################
 
@@ -609,13 +609,13 @@ and cannot be set:
         validator.conf('confluence_timeout') \
                  .int_()
     except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError(
-"""%s
+        raise ConfluenceConfigurationError('''\
+{msg}
 
-A configured timeout should be set to a value, in seconds, before any network
+A configured timeout should be set to a duration, in seconds, before any network
 request to timeout after inactivity. This should be set to a positive integer
 value (e.g. 2).
-""" % str(e))
+'''.format(msg=e))
 
     # ##################################################################
 
@@ -633,64 +633,64 @@ value (e.g. 2).
 
     if config.confluence_publish:
         if not config.confluence_server_url:
-            raise ConfluenceConfigurationError(
-"""confluence server url not provided
+            raise ConfluenceConfigurationError('''\
+confluence server url not provided
 
 While publishing has been configured using 'confluence_publish', the Confluence
 server URL has not. Ensure 'confluence_server_url' has been set to target
 Confluence instance to be published to.
-""")
+''')
 
         if not config.confluence_space_key and not config.confluence_space_name:
-            raise ConfluenceConfigurationError(
-"""confluence space key not provided
+            raise ConfluenceConfigurationError('''\
+confluence space key not provided
 
 While publishing has been configured using 'confluence_publish', the Confluence
 space key has not. Ensure 'confluence_space_key' has been set to space's key
 which content should be published under.
-""")
+''')
 
         if (config.confluence_ask_password and not config.confluence_server_user
                 and not config.confluence_ask_user):
-            raise ConfluenceConfigurationError(
-"""confluence username not provided
+            raise ConfluenceConfigurationError('''\
+confluence username not provided
 
 A publishing password has been flagged with 'confluence_ask_password';
 however, no username has been configured. Ensure 'confluence_server_user' is
 properly set with the publisher's Confluence username or have
 'confluence_ask_user' set to provide a username.
-""")
+''')
 
         if config.confluence_server_pass:
             if not config.confluence_server_user:
-                raise ConfluenceConfigurationError(
-"""confluence username not provided
+                raise ConfluenceConfigurationError('''\
+confluence username not provided
 
 A publishing password has been configured with 'confluence_server_pass';
 however, no username has been configured. Ensure 'confluence_server_user' is
 properly set with the publisher's Confluence username.
-""")
+''')
 
         if config.confluence_parent_page_id_check:
             if not config.confluence_parent_page:
-                raise ConfluenceConfigurationError(
-"""parent page (holder) name not set
+                raise ConfluenceConfigurationError('''\
+parent page (holder) name not set
 
 When a parent page identifier check has been configured with the option
 'confluence_parent_page_id_check', no parent page name has been provided with
 the 'confluence_parent_page' option. Ensure the name of the parent page name
 is provided as well.
-""")
+''')
 
         if config.confluence_publish_root:
             if config.confluence_parent_page:
-                raise ConfluenceConfigurationError(
-"""conflicting publish point configurations
+                raise ConfluenceConfigurationError('''\
+conflicting publish point configurations
 
 When configuring for a publishing container, a user can configure for either
 'confluence_parent_page' or 'confluence_publish_root'; however, both cannot be
 configured at the same time.
-""")
+''')
 
     # ##################################################################
 
