@@ -35,6 +35,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config = prepare_conf()
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
+        cls.config['confluence_page_generation_notice'] = True
         cls.config['confluence_parent_page'] = None
         cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_publish'] = True
