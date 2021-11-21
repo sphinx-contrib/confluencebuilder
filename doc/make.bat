@@ -1,6 +1,6 @@
 @echo OFF
 setlocal
-REM Copyright 2020 Sphinx Confluence Builder Contributors (AUTHORS)
+REM Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 
 REM find python
 where /q python
@@ -21,5 +21,8 @@ if "%builder%" == "" (
 
 REM invoke build
 pushd %root_dir%
-python -m sphinx -M %builder% %~dp0 %~dp0_build -E -a
+set errorlevel=
+python -m sphinx -M %builder% %~dp0 %~dp0_build -E -a -W
 popd
+
+exit /b %errorlevel%
