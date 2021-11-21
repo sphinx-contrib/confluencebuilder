@@ -19,10 +19,12 @@ DEFAULT_TEST_KEY = 'test-holder'
 DEFAULT_TEST_SPACE = 'DEVELOP'
 DEFAULT_TEST_URL = 'https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/'
 DEFAULT_TEST_USER = 'sphinxcontrib-confluencebuilder@jdknight.me'
+DEFAULT_TEST_VERSION = 'master'
 AUTH_ENV_KEY = 'CONFLUENCE_AUTH'
 SPACE_ENV_KEY = 'CONFLUENCE_SPACE'
 TESTDESC_ENV_KEY = 'CONFLUENCE_TEST_DESC'
 TESTKEY_ENV_KEY = 'CONFLUENCE_TEST_KEY'
+TESTKEY_ENV_VERSION = 'CONFLUENCE_TEST_VERSION'
 
 
 class TestConfluenceValidation(unittest.TestCase):
@@ -41,6 +43,12 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
+        cls.config['confluence_sourcelink'] = {
+            'type': 'github',
+            'owner': 'sphinx-contrib',
+            'repo': 'confluencebuilder',
+            'container': 'tests/validation-sets/',
+        }
         cls.config['confluence_space_key'] = space_key
         cls.config['confluence_timeout'] = 10
         cls.config['imgmath_font_size'] = 14
@@ -49,6 +57,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['manpages_url'] = 'https://example.org/{path}'
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
         cls.test_key = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_KEY)
+        cls.test_version = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_VERSION)
 
         # overrides from user
         try:
@@ -66,6 +75,11 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.test_key = config_test_key
         except ImportError:
             pass
+        try:
+            from validation_test_overrides import config_test_version
+            cls.test_version = config_test_version
+        except ImportError:
+            pass
 
         # finalize
         if cls.config['confluence_space_key'].startswith('~'):
@@ -73,6 +87,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_purge'] = False
+        cls.config['confluence_sourcelink']['version'] = cls.test_version
         cls.config['rst_epilog'] = """
 .. |test_key| replace:: {}
 .. |test_desc| replace:: {}
@@ -86,7 +101,8 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(cls.datasets, 'base')
         doc_dir = prepare_dirs('validation-set-base')
 
-        config = dict(cls.config)
+        config = cls.config.clone()
+        config['confluence_sourcelink']['container'] += 'base/'
 
         # inject a navdoc from the "standard" start page
         def navdocs_transform(builder, docnames):
@@ -108,7 +124,8 @@ class TestConfluenceValidation(unittest.TestCase):
         if parse_version(sphinx_version) < parse_version('2.3.1'):
             raise unittest.SkipTest('breathe requires sphinx>=2.3.1')
 
-        config = dict(self.config)
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'extended-autodocs/'
         config['extensions'].append('breathe')
         config['extensions'].append('sphinx.ext.autodoc')
 
@@ -134,7 +151,8 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_extensions(self):
-        config = dict(self.config)
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'extensions/'
         config['extensions'].append('sphinx.ext.autodoc')
         config['extensions'].append('sphinx.ext.autosummary')
         config['extensions'].append('sphinx.ext.graphviz')
@@ -166,7 +184,8 @@ class TestConfluenceValidation(unittest.TestCase):
         sys.path.pop(0)
 
     def test_header_footer(self):
-        config = dict(self.config)
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'header-footer/'
 
         dataset = os.path.join(self.datasets, 'header-footer')
         doc_dir = prepare_dirs('validation-set-hf')
@@ -189,9 +208,10 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_hierarchy(self):
-        config = dict(self.config)
+        config = self.config.clone()
         config['confluence_max_doc_depth'] = 2
         config['confluence_page_hierarchy'] = True
+        config['confluence_sourcelink']['container'] += 'hierarchy/'
 
         # inject a navdoc from the last "standard (no macro)" page, to the
         # hierarchy example start page
@@ -211,7 +231,9 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
 
     def test_standard_default(self):
-        config = dict(self.config)
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'standard/'
+
         dataset = os.path.join(self.datasets, 'standard')
         doc_dir = prepare_dirs('validation-set-standard')
 
@@ -226,7 +248,8 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_standard_macro_restricted(self):
-        config = dict(self.config)
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'standard/'
 
         dataset = os.path.join(self.datasets, 'standard')
         doc_dir = prepare_dirs('validation-set-standard-nm')

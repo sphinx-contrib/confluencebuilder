@@ -6,6 +6,7 @@
 
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
+from copy import deepcopy
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.application import Sphinx
@@ -124,7 +125,15 @@ class MockedConfig(dict):
         self[name] = value
 
     def clone(self):
-        return MockedConfig(self)
+        cloned = MockedConfig()
+
+        for key, value in self.items():
+            if value is None or callable(value):
+                cloned[key] = value
+            else:
+                cloned[key] = deepcopy(value)
+
+        return cloned
 
 
 def enable_sphinx_info(verbosity=None):
