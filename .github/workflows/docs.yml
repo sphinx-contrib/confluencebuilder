@@ -1,0 +1,58 @@
+name: docs
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+      - '.github/workflows/docs.yml'
+      - 'docs/**'
+      - 'CHANGES.rst'
+  pull_request:
+    branches:
+    - master
+    paths:
+      - '.github/workflows/docs.yml'
+      - 'docs/**'
+      - 'CHANGES.rst'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      id: cache-pip
+      with:
+        path: ~/.cache/pip
+        key: docs-pip
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get install \
+            latexmk \
+            texlive-latex-extra \
+            texlive-latex-recommended \
+            -y
+        python -m pip install --upgrade sphinx
+
+    - name: HTML
+      run: make html
+      working-directory: doc
+
+    - name: PDF
+      run: make latexpdf
+      working-directory: doc
+
+    - name: Archive generated PDF
+      uses: actions/upload-artifact@v2
+      with:
+        name: sphinxcontrib-confluencebuilder.pdf
+        path: doc/_build/latex/sphinxconfluencebuilder.pdf
+        retention-days: 10
