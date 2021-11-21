@@ -13,6 +13,7 @@ development
 * improve support for attached svg images with length/scaling modifiers
 * improve support for non-pixel length units for images
 * improve support for svg images without an xml declaration
+* improve support when publishing page updates converted to a new editor
 * improve support when using the sphinx-gallery extension
 * improve support when using the sphinx_toolbox extension
 * improve support when using the sphinxcontrib-mermaid extension
@@ -25,6 +26,7 @@ development
 * introduce the page generation notice option (notice for top of documents)
 * introduce the source link option (e.g. "Edit Source" link)
 * prevent issues with extension directives causing errors with other builders
+* provide a configuration hook to override requests session information
 * remove borders on footnote tables
 * support domain indices generation/processing
 * support for leaving resolved toctrees for singleconfluence
