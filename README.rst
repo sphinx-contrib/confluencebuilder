@@ -28,11 +28,11 @@ Requirements
 
 * Python_ 2.7 or 3.6+
 * Requests_ 2.14.0+
-* Sphinx_ 1.8 or 3.4+
+* Sphinx_ 1.8 or 3.5+
 
 If publishing:
 
-* Confluence_ Cloud or Data Center / Server 7.1+
+* Confluence_ Cloud or Data Center / Server 7.2+
 
 Installing
 ==========

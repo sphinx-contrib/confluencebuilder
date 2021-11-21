@@ -120,6 +120,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_parent_page'] = cls.test_key
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_root'] = True
+        cls.config['confluence_root_homepage'] = False
 
     def test_extended_autodocs(self):
         if parse_version(sphinx_version) < parse_version('2.3.1'):
@@ -262,6 +263,9 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # inject a navdoc to the "standard (no macro)" page
         def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', self.test_key, None)
+            docnames.insert(0, '_validation_prev')
             builder.state.register_title(
                 '_validation_next', 'Standard (nomacro)', None)
             docnames.append('_validation_next')

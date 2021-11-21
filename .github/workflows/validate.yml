@@ -16,6 +16,9 @@ on:
       test_desc:
         description: 'Test Description'
         default: 'test state'
+      test_version:
+        description: 'Test Version'
+        default: 'master'
 
 jobs:
   build:
@@ -52,4 +55,5 @@ jobs:
         CONFLUENCE_SPACE: ${{ github.event.inputs.space }}
         CONFLUENCE_TEST_DESC: ${{ github.event.inputs.test_desc }}
         CONFLUENCE_TEST_KEY: ${{ github.event.inputs.test_key }}
+        CONFLUENCE_TEST_VERSION: ${{ github.event.inputs.test_version }}
       run: tox -e validation
