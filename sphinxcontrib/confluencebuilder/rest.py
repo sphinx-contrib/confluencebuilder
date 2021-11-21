@@ -103,6 +103,13 @@ class Rest:
         if config.confluence_server_cookies:
             session.cookies.update(config.confluence_server_cookies)
 
+        # provides users a direct hook into manipulating a built requests
+        # session, to allow full control over requests capabilities which may
+        # not be managed by this extension
+        session_override = config.confluence_request_session_override
+        if session_override:
+            session_override(session)
+
         return session
 
     def get(self, key, params):

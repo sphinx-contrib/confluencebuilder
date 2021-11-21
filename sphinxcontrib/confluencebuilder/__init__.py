@@ -159,6 +159,8 @@ def setup(app):
     app.add_config_value('confluence_publish_denylist', None, '')
     # Header(s) to use for Confluence REST interaction.
     app.add_config_value('confluence_publish_headers', None, '')
+    # Manipulate a requests instance.
+    app.add_config_value('confluence_request_session_override', None, '')
     # Authentication passthrough for Confluence REST interaction.
     app.add_config_value('confluence_server_auth', None, '')
     # Cookie(s) to use for Confluence REST interaction.
