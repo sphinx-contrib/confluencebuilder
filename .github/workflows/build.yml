@@ -85,4 +85,4 @@ jobs:
     - name: tox
       env:
         TOXENV: ${{ matrix.toxenv }}
-      run: tox 
+      run: tox
