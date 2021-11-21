@@ -75,12 +75,11 @@ class ConfluenceState:
         """
         try_max = CONFLUENCE_MAX_TITLE_LEN
         base_tail = ''
+        postfix = None
+        prefix = None
 
-        if (config.confluence_ignore_titlefix_on_index and
-                docname == config.root_doc):
-            postfix = None
-            prefix = None
-        else:
+        if config and (not config.confluence_ignore_titlefix_on_index or
+                docname != config.root_doc):
             postfix = config.confluence_publish_postfix
             prefix = config.confluence_publish_prefix
 
