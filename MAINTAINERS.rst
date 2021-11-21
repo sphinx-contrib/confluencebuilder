@@ -81,6 +81,8 @@ A release can be made with the following commands:
     running sdist
     running egg_info
     ...
+    $ gpg --detach-sign -a dist/sphinxcontrib*.gz
+    $ gpg --detach-sign -a dist/sphinxcontrib*.whl
     $ twine upload dist/*
 
 Sanity checks and cleanup
