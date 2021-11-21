@@ -36,6 +36,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_parent_page'] = None
+        cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_publish'] = True
         cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
@@ -85,12 +86,21 @@ class TestConfluenceValidation(unittest.TestCase):
         dataset = os.path.join(cls.datasets, 'base')
         doc_dir = prepare_dirs('validation-set-base')
 
+        config = dict(cls.config)
+
+        # inject a navdoc from the "standard" start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_next', 'Standard', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
         # build/publish test base page
-        build_sphinx(dataset, config=cls.config, out_dir=doc_dir)
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
         # finalize configuration for tests
         cls.config['confluence_parent_page'] = cls.test_key
-        cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_root'] = True
 
@@ -101,6 +111,15 @@ class TestConfluenceValidation(unittest.TestCase):
         config = dict(self.config)
         config['extensions'].append('breathe')
         config['extensions'].append('sphinx.ext.autodoc')
+
+        # inject a navdoc from the last header/footer page, to the
+        # extended autodocs start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'sphinx.ext.todo', None)
+            docnames.insert(0, '_validation_prev')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
 
         dataset = os.path.join(self.datasets, 'extended-autodocs')
         doc_dir = prepare_dirs('validation-set-extended-autodocs')
@@ -126,6 +145,18 @@ class TestConfluenceValidation(unittest.TestCase):
         config['todo_include_todos'] = True
         config['todo_link_only'] = True
 
+        # inject a navdoc from the last header/footer page, to the
+        # extended autodocs start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'Markdown Table', None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
+                '_validation_next', 'Extended - autodocs', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
         dataset = os.path.join(self.datasets, 'extensions')
         doc_dir = prepare_dirs('validation-set-extensions')
         sys.path.insert(0, os.path.join(dataset, 'src'))
@@ -143,6 +174,18 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
         config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
 
+        # inject a navdoc from the last "standard (no macro)" page, to the
+        # hierarchy example start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'Verification of content (nomacro)', None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
+                '_validation_next', 'Hierarchy example', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_hierarchy(self):
@@ -150,16 +193,37 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_max_doc_depth'] = 2
         config['confluence_page_hierarchy'] = True
 
+        # inject a navdoc from the last "standard (no macro)" page, to the
+        # hierarchy example start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'Header/footer example (page c)', None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
+                '_validation_next', 'Markdown', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
         dataset = os.path.join(self.datasets, 'hierarchy')
         doc_dir = prepare_dirs('validation-set-hierarchy')
 
         build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
 
     def test_standard_default(self):
+        config = dict(self.config)
         dataset = os.path.join(self.datasets, 'standard')
         doc_dir = prepare_dirs('validation-set-standard')
 
-        build_sphinx(dataset, config=self.config, out_dir=doc_dir)
+        # inject a navdoc to the "standard (no macro)" page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_next', 'Standard (nomacro)', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_standard_macro_restricted(self):
         config = dict(self.config)
@@ -177,6 +241,18 @@ class TestConfluenceValidation(unittest.TestCase):
         ]
         config['confluence_header_file'] = os.path.join(dataset, 'no-macro.tpl')
         config['confluence_publish_postfix'] = ' (nomacro)'
+
+        # inject a navdoc from the last "standard" page, to the header/footer
+        # start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'Verification of content', None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
+                '_validation_next', 'Header/footer example', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
 
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
