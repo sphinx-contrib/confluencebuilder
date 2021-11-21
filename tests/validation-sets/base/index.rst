@@ -1,7 +1,7 @@
 |test_key|
 ==========
 
-Validation set result for sphinxcontrib-confluencebuilder |test_desc|:
+Validation set result for `sphinxcontrib-confluencebuilder`_ |test_desc|:
 
 ----
 
@@ -10,3 +10,8 @@ Validation set result for sphinxcontrib-confluencebuilder |test_desc|:
     <ac:structured-macro ac:name="children">
         <ac:parameter ac:name="all">true</ac:parameter>
     </ac:structured-macro>
+
+
+.. references ------------------------------------------------------------------
+
+.. _sphinxcontrib-confluencebuilder: https://sphinxcontrib-confluencebuilder.readthedocs.io/
