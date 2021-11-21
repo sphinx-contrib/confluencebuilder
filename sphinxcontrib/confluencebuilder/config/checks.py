@@ -483,6 +483,12 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_request_session_override
+    validator.conf('confluence_request_session_override') \
+             .callable_()
+
+    # ##################################################################
+
     # confluence_secnumber_suffix
     validator.conf('confluence_secnumber_suffix') \
              .string()
