@@ -349,6 +349,12 @@ If planning to use a depth of zero, it is recommended to use the
 
     # ##################################################################
 
+    # confluence_navdocs_transform
+    validator.conf('confluence_navdocs_transform') \
+             .callable_()
+
+    # ##################################################################
+
     validator.conf('confluence_parent_page') \
              .string()
 
