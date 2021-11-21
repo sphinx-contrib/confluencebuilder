@@ -210,6 +210,28 @@ class TestConfluenceValidation(unittest.TestCase):
 
         build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
 
+    def test_markdown(self):
+        config = self.config.clone()
+        config['confluence_sourcelink']['container'] += 'markdown/'
+        config['extensions'].append('myst_parser')
+
+        dataset = os.path.join(self.datasets, 'markdown')
+        doc_dir = prepare_dirs('validation-set-markdown')
+
+        # inject a navdoc from the last "standard (no macro)" page, to the
+        # hierarchy example start page
+        def navdocs_transform(builder, docnames):
+            builder.state.register_title(
+                '_validation_prev', 'Hierarchy example (d)', None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
+                '_validation_next', 'Extensions', None)
+            docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
+
     def test_standard_default(self):
         config = dict(self.config)
         dataset = os.path.join(self.datasets, 'standard')
