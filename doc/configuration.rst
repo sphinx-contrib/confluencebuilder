@@ -298,6 +298,9 @@ Generic configuration
         not want to use hierarchy mode should explicitly configure this to
         ``False`` in their configurations.
 
+.. |confluence_prev_next_buttons_location| replace:: ``confluence_prev_next_buttons_location``
+.. _confluence_prev_next_buttons_location:
+
 .. confval:: confluence_prev_next_buttons_location
 
     .. versionadded:: 1.2
@@ -1365,6 +1368,26 @@ Advanced processing configuration
     URI. The provided function is used to perform translations for both Sphinx's
     get_relative_uri_ method. The default translation will be the combination of
     "``docname`` + |confluence_link_suffix|_".
+
+.. confval:: confluence_navdocs_transform
+
+    .. versionadded:: 1.7
+
+    A function to override the document list used for populating navigational
+    buttons generated from a |confluence_prev_next_buttons_location|_
+    configuration. This can be helpful in advanced publishing cases where a user
+    would like ignore or re-order select pages from navigation, or even
+    reference pages outside of documentation list.
+
+    .. code-block:: python
+
+        def my_navdocs_transform(builder, docnames):
+            # override and return a new docnames list
+            return docnames
+
+       confluence_navdocs_transform = my_navdocs_transform
+
+    See also |confluence_prev_next_buttons_location|_.
 
 .. |confluence_remove_title| replace:: ``confluence_remove_title``
 .. _confluence_remove_title:
