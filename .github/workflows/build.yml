@@ -4,9 +4,25 @@ on:
   push:
     branches:
     - master
+    paths:
+      - '.github/workflows/build.yml'
+      - 'sphinxcontrib/**'
+      - 'tests/**'
+      - 'requirements_dev.txt'
+      - 'setup.cfg'
+      - 'setup.py'
+      - 'tox.ini'
   pull_request:
     branches:
     - master
+    paths:
+      - '.github/workflows/build.yml'
+      - 'sphinxcontrib/**'
+      - 'tests/**'
+      - 'requirements_dev.txt'
+      - 'setup.cfg'
+      - 'setup.py'
+      - 'tox.ini'
 
 jobs:
   build:
@@ -69,4 +85,4 @@ jobs:
     - name: tox
       env:
         TOXENV: ${{ matrix.toxenv }}
-      run: tox 
+      run: tox
