@@ -335,6 +335,10 @@ class ConfluenceBuilder(Builder):
                 if indexname in nav_docnames:
                     nav_docnames.remove(indexname)
 
+        navdocs_transform = self.config.confluence_navdocs_transform
+        if navdocs_transform:
+            nav_docnames = navdocs_transform(self, nav_docnames)
+
         prevdoc = nav_docnames[0] if nav_docnames else None
         for docname in nav_docnames[1:]:
             self.nav_prev[docname] = self.get_relative_uri(docname, prevdoc)
