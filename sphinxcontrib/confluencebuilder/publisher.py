@@ -576,17 +576,6 @@ class ConfluencePublisher:
             if not page:
                 new_page = self._build_page(page_name, data)
 
-                # only the legacy editor is supported at this time; forced v1
-                # since Confluence Cloud appears to have an inconsistent default
-                # editor
-                new_page['metadata'] = {
-                    'properties': {
-                        'editor': {
-                            'value': 'v1',
-                        }
-                    }
-                }
-
                 if self.can_labels:
                     self._populate_labels(new_page, data['labels'])
 
@@ -805,6 +794,16 @@ class ConfluencePublisher:
                 'storage': {
                     'representation': 'storage',
                     'value': data['content'],
+                }
+            },
+            # only the legacy editor is supported at this time; forced v1
+            # since Confluence Cloud appears to have an inconsistent default
+            # editor
+            'metadata': {
+                'properties': {
+                    'editor': {
+                        'value': 'v1',
+                    }
                 }
             },
             'space': {
