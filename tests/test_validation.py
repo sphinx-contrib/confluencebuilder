@@ -6,7 +6,6 @@
 
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
@@ -155,15 +154,6 @@ class TestConfluenceValidation(unittest.TestCase):
         doc_dir = prepare_dirs('validation-set-hierarchy')
 
         build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
-
-    def test_nonjsonresponse(self):
-        config = dict(self.config)
-        config['confluence_server_url'] = 'https://example.com/'
-        dataset = os.path.join(self.datasets, 'base')
-        doc_dir = prepare_dirs('validation-set-nonjsonresponse')
-
-        with self.assertRaises(ConfluenceBadServerUrlError):
-            build_sphinx(dataset, config=config, out_dir=doc_dir)
 
     def test_standard_default(self):
         dataset = os.path.join(self.datasets, 'standard')
