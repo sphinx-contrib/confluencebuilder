@@ -120,6 +120,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_parent_page'] = cls.test_key
         cls.config['confluence_purge'] = True
         cls.config['confluence_purge_from_root'] = True
+        cls.config['confluence_root_homepage'] = False
 
     def test_extended_autodocs(self):
         if parse_version(sphinx_version) < parse_version('2.3.1'):
