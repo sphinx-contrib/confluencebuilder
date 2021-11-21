@@ -1,5 +1,5 @@
-development
-===========
+1.7.0 (2021-11-21)
+==================
 
 * **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
 * ``confluence_space_name`` renamed to ``confluence_space_key``
