@@ -11,7 +11,7 @@ endif
 
 .PHONY: all
 all:
-	@pushd $(BASE_DIR) >/dev/null && \
+	@cd $(BASE_DIR) >/dev/null && \
 		python -m sphinx -M $(BUILDER) $(DOC_DIR) $(DOC_DIR)_build/ -E -a -W
 
 $(eval $(BUILDER):all)
