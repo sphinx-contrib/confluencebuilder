@@ -1193,6 +1193,21 @@ Advanced publishing configuration
 
         confluence_publish_onlynew = True
 
+.. confval:: confluence_request_session_override
+
+    .. versionadded:: 1.7
+
+    A hook to manipulate a Requests_ session prepared by this extension. Allows
+    users who wish to perform advanced configuration of a session for features
+    which may not be supported by this extension.
+
+    .. code-block:: python
+
+        def my_request_session_override(session):
+            session.trust_env = False
+
+        confluence_request_session_override = my_request_session_override
+
 .. confval:: confluence_server_auth
 
     An authentication handler which can be directly provided to a REST API
