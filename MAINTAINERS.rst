@@ -81,9 +81,21 @@ A release can be made with the following commands:
     running sdist
     running egg_info
     ...
+
+    (note: validate artifacts with a local pip install)
+
     $ gpg --detach-sign -a dist/sphinxcontrib*.gz
     $ gpg --detach-sign -a dist/sphinxcontrib*.whl
+
+    (note: verify with `gpg --verify <artifact>`)
+
     $ twine upload dist/*
+
+    (note: check pip install with PyPI package)
+
+    $ git tag -s -a v<version> <hash> -m "sphinxcontrib-confluencebuilder <version>"
+    $ git verify-tag <tag>
+    $ git push origin <tag>
 
 Sanity checks and cleanup
 -------------------------
