@@ -873,6 +873,12 @@ class ConfluencePublisher:
                 # is just an instance timing/processing issue.
                 'OptimisticLockException',
 
+                # Confluence Cloud may (rarely) fail to complete a content
+                # request with an UnexpectedRollbackException exception. It is
+                # suspected that this is just a failed update event due to
+                # processing other updates.
+                'UnexpectedRollbackException',
+
                 # Confluence may report an unreconciled error -- either from a
                 # conflict with another instance updating the same page or some
                 # select backend issues processing previous updates on a page.
