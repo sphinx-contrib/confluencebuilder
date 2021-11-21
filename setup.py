@@ -63,7 +63,7 @@ if babel:
 
 setup(
     name='sphinxcontrib-confluencebuilder',
-    version='1.7.0',
+    version='1.8.0.dev0',
     url='https://github.com/sphinx-contrib/confluencebuilder',
     download_url='https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder',
     license='BSD',  # 2-clause
