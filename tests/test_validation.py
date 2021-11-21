@@ -264,6 +264,9 @@ class TestConfluenceValidation(unittest.TestCase):
         # inject a navdoc to the "standard (no macro)" page
         def navdocs_transform(builder, docnames):
             builder.state.register_title(
+                '_validation_prev', self.test_key, None)
+            docnames.insert(0, '_validation_prev')
+            builder.state.register_title(
                 '_validation_next', 'Standard (nomacro)', None)
             docnames.append('_validation_next')
             return docnames
