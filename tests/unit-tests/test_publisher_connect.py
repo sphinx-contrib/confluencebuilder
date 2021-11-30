@@ -17,13 +17,13 @@ import time
 import unittest
 
 
-class TestConfluencePublisher(unittest.TestCase):
+class TestConfluencePublisherConnect(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config = prepare_conf()
         cls.config.confluence_timeout = 1
 
-    def test_publisher_bad_response_code(self):
+    def test_publisher_connect_bad_response_code(self):
         """validate publisher can handle bad response code"""
         #
         # Verify that the initial connection event for a publisher can safely
@@ -38,7 +38,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluenceBadServerUrlError):
                 publisher.connect()
 
-    def test_publisher_handle_authentication_error(self):
+    def test_publisher_connect_handle_authentication_error(self):
         """validate publisher reports an authentication error"""
         #
         # Verify that the publisher will report a tailored error message when a
@@ -53,7 +53,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluenceAuthenticationFailedUrlError):
                 publisher.connect()
 
-    def test_publisher_handle_permission_error(self):
+    def test_publisher_connect_handle_permission_error(self):
         """validate publisher reports a permission error"""
         #
         # Verify that the publisher will report a tailored error message when a
@@ -68,7 +68,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluencePermissionError):
                 publisher.connect()
 
-    def test_publisher_handle_proxy_permission_error(self):
+    def test_publisher_connect_handle_proxy_permission_error(self):
         """validate publisher reports a proxy-permission error"""
         #
         # Verify that the publisher will report a tailored error message when a
@@ -83,7 +83,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluenceProxyPermissionError):
                 publisher.connect()
 
-    def test_publisher_invalid_json(self):
+    def test_publisher_connect_invalid_json(self):
         """validate publisher can handle non-json data"""
         #
         # Verify that the initial connection event for a publisher can safely
@@ -99,7 +99,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluenceBadServerUrlError):
                 publisher.connect()
 
-    def test_publisher_proxy(self):
+    def test_publisher_connect_proxy(self):
         """validate publisher can find a valid space"""
         #
         # Verify that a publisher can query a Confluence instance and cache the
@@ -166,7 +166,7 @@ class TestConfluencePublisher(unittest.TestCase):
             if 'http_proxy' in os.environ:
                 del os.environ['http_proxy']
 
-    def test_publisher_unsupported_json(self):
+    def test_publisher_connect_unsupported_json(self):
         """validate publisher can handle unexpected json data"""
         #
         # Verify that the initial connection event for a publisher provides a
@@ -211,7 +211,7 @@ class TestConfluencePublisher(unittest.TestCase):
             with self.assertRaises(ConfluenceBadServerUrlError):
                 publisher.connect()
 
-    def test_publisher_valid_space(self):
+    def test_publisher_connect_valid_space(self):
         """validate publisher can find a valid space"""
         #
         # Verify that a publisher can query a Confluence instance and cache the
@@ -235,7 +235,7 @@ class TestConfluencePublisher(unittest.TestCase):
 
             self.assertEqual(publisher.space_display_name, space_name)
 
-    def test_publisher_verify_timeout(self):
+    def test_publisher_connect_verify_timeout(self):
         """validate publisher timeout"""
         #
         # Verify that a non-served request from a publisher event will timeout.
