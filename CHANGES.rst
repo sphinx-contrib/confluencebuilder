@@ -1,5 +1,5 @@
-Development
-===========
+1.7.1 (2021-11-30)
+==================
 
 * fixed regression where publish-root/dryrun modes would fail with an exception
 
