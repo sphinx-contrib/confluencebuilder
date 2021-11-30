@@ -380,7 +380,7 @@ class ConfluencePublisher:
 
         if page:
             assert int(page_id) == int(page['id'])
-            self._name_cache[page_id] = ['title']
+            self._name_cache[page_id] = page['title']
 
         return page_id, page
 
