@@ -194,6 +194,24 @@ div.footer {
 div.footer a {
 }
 
+div.section:target > h1:first-of-type,
+div.section:target > h2:first-of-type,
+div.section:target > h3:first-of-type,
+div.section:target > h4:first-of-type,
+div.section:target > h5:first-of-type,
+div.section:target > h6:first-of-type {
+    background-color: #fbe54e;
+}
+
+section:target > h1:first-of-type,
+section:target > h2:first-of-type,
+section:target > h3:first-of-type,
+section:target > h4:first-of-type,
+section:target > h5:first-of-type,
+section:target > h6:first-of-type {
+    background-color: #fbe54e;
+}
+
 p {
     margin: 0.8em 0 0.5em 0;
 }
