@@ -48,14 +48,107 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         Confluence instance.
 
         Attributes:
-            unittest_get_rsp: responses to use in the handler
+            unittest_del_req: delete requests cached by handler
+            unittest_del_rsp: delete responses to use in the handler
+            unittest_get_req: get requests cached by handler
+            unittest_get_rsp: get responses to use in the handler
+            unittest_put_req: put requests cached by handler
+            unittest_put_rsp: put responses to use in the handler
         """
 
         LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
         server_socket.TCPServer.__init__(self,
             LOCAL_RANDOM_PORT, ConfluenceInstanceRequestHandler)
 
+        self.unittest_del_req = []
+        self.unittest_del_rsp = []
+        self.unittest_get_req = []
         self.unittest_get_rsp = []
+        self.unittest_put_req = []
+        self.unittest_put_rsp = []
+
+    def check_unhandled_requests(self):
+        """
+        check if there are any unhandled requests still cached
+
+        Provides a helper call to allow a unit test to check if there are any
+        handled requests that have not been pop'ed from the instance. Provides
+        an easy way to verify that no unexpected requests have been made.
+
+        Returns:
+            whether or not there are still requests cached
+        """
+
+        if self.unittest_del_req or \
+                self.unittest_get_req or \
+                self.unittest_put_req:
+            return True
+
+        return False
+
+    def pop_delete_request(self):
+        """
+        pop the cached delete request made to the mocked server
+
+        Allows a unit test to pop the next available request path/headers that
+        have been pushed into the mocked Confluence server. This allows a
+        unit test to verify desired (or undesired) request values.
+
+        Returns:
+            the next delete request; ``None`` if no request was made
+        """
+
+        try:
+            return self.unittest_del_req.pop(0)
+        except IndexError:
+            return None
+
+    def pop_get_request(self):
+        """
+        pop the cached get request made to the mocked server
+
+        Allows a unit test to pop the next available request path/headers that
+        have been pushed into the mocked Confluence server. This allows a
+        unit test to verify desired (or undesired) request values.
+
+        Returns:
+            the next get request; ``None`` if no request was made
+        """
+
+        try:
+            return self.unittest_get_req.pop(0)
+        except IndexError:
+            return None
+
+    def pop_put_request(self):
+        """
+        pop the cached put request made to the mocked server
+
+        Allows a unit test to pop the next available request path/headers that
+        have been pushed into the mocked Confluence server. This allows a
+        unit test to verify desired (or undesired) request values.
+
+        Returns:
+            the next put request; ``None`` if no request was made
+        """
+
+        try:
+            return self.unittest_put_req.pop(0)
+        except IndexError:
+            return None
+
+    def register_delete_rsp(self, code,):
+        """
+        register a delete response
+
+        Registers a response the instance should return when a DELETE request
+        is being served.
+
+        Args:
+            code: the response code
+        """
+
+        self.unittest_del_rsp.append(code)
 
     def register_get_rsp(self, code, data):
         """
@@ -68,6 +161,7 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
             code: the response code
             data: the data
         """
+
         if data:
             if isinstance(data, dict):
                 data = json.dumps(data)
@@ -75,6 +169,26 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
             data = data.encode('utf-8')
 
         self.unittest_get_rsp.append((code, data))
+
+    def register_put_rsp(self, code, data):
+        """
+        register a put response
+
+        Registers a response the instance should return when a PUT request is
+        being served.
+
+        Args:
+            code: the response code
+            data: the data
+        """
+
+        if data:
+            if isinstance(data, dict):
+                data = json.dumps(data)
+
+            data = data.encode('utf-8')
+
+        self.unittest_put_rsp.append((code, data))
 
 
 class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
@@ -87,6 +201,24 @@ class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
     default response will be a 500 error with no data.
     """
 
+    def do_DELETE(self):
+        """
+        serve a delete request
+
+        This method is called when a DELETE request is being processed by this
+        handler.
+        """
+
+        self.server.unittest_del_req.append((self.path, dict(self.headers)))
+
+        try:
+            code = self.server.unittest_del_rsp.pop(0)
+        except IndexError:
+            code = 500
+
+        self.send_response(code)
+        self.end_headers()
+
     def do_GET(self):
         """
         serve a get request
@@ -95,11 +227,33 @@ class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
         handler.
         """
 
+        self.server.unittest_get_req.append((self.path, dict(self.headers)))
+
         try:
-            code, data = self.server.unittest_get_rsp.pop()
+            code, data = self.server.unittest_get_rsp.pop(0)
         except IndexError:
             code = 500
             data = None
+
+        self.send_response(code)
+        self.end_headers()
+        if data:
+            self.wfile.write(data)
+
+    def do_PUT(self):
+        """
+        serve a put request
+
+        This method is called when a PUT request is being processed by this
+        handler.
+        """
+
+        self.server.unittest_put_req.append((self.path, dict(self.headers)))
+
+        try:
+            code, data = self.server.unittest_put_rsp.pop(0)
+        except IndexError:
+            code = 500
 
         self.send_response(code)
         self.end_headers()
