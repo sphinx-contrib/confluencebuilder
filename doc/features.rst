@@ -216,6 +216,7 @@ Type                              Notes
 `mlx.traceability`_               Limited support.
 
                                   Formatting of content may not be as expected.
+`sphinx-diagrams`_                Supported
 `sphinx-gallery`_                 Supported
 `sphinx-needs`_                   Limited support.
 
@@ -319,6 +320,7 @@ brings up another concern, feel free to bring up an issue:
 .. _rubric: https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric
 .. _sections: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
 .. _sphinx-confluence-nbsphinx-test: https://github.com/jdknight/sphinx-confluence-nbsphinx-test
+.. _sphinx-diagrams: https://pypi.org/project/sphinx-diagrams/
 .. _sphinx-gallery: https://sphinx-gallery.github.io/
 .. _sphinx-needs: https://sphinxcontrib-needs.readthedocs.io/
 .. _sphinx-toolbox: https://sphinx-toolbox.readthedocs.io/
