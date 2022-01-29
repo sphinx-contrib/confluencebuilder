@@ -1,0 +1,12 @@
+# readthedocs configuration script
+version: 2
+
+sphinx:
+  builder: dirhtml
+  configuration: doc/conf.py
+
+python:
+  install:
+    - requirements: doc/requirements.txt
+
+formats: all
