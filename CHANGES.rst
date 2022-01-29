@@ -1,3 +1,10 @@
+Development
+===========
+
+* fixed issue where jira directives/role could not be substituted
+* improve support when using the sphinx-diagrams extension
+* removed informational macro styling on figures
+
 1.7.1 (2021-11-30)
 ==================
 
