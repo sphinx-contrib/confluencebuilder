@@ -26,13 +26,13 @@ optionally publish them to a Confluence instance.
 Requirements
 ============
 
-* Python_ 2.7 or 3.6+
+* Python_ 2.7 or 3.7+
 * Requests_ 2.14.0+
-* Sphinx_ 1.8 or 3.5+
+* Sphinx_ 1.8 or 4.0+
 
 If publishing:
 
-* Confluence_ Cloud or Data Center / Server 7.2+
+* Confluence_ Cloud or Data Center / Server 7.3+
 
 Installing
 ==========
