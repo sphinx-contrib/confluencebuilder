@@ -15,6 +15,7 @@ from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
+from threading import Event
 from threading import Thread
 import inspect
 import json
@@ -334,14 +335,20 @@ def mock_confluence_instance(config=None, ignore_requests=False):
 
         # start accepting requests
         if not ignore_requests:
-            def serve_forever(daemon):
+            sync = Event()
+
+            def serve_forever(daemon, sync):
+                sync.set()
                 daemon.serve_forever()
 
-            serve_thread = Thread(target=serve_forever, args=(daemon,))
+            serve_thread = Thread(target=serve_forever, args=(daemon, sync,))
             serve_thread.start()
 
-        # yeild context for a moment to help threads to ready up
-        time.sleep(0)
+            # wait for the serving thread to be running
+            sync.wait()
+
+            # yeild context for a moment to help ensure the daemon is serving
+            time.sleep(0.1)
 
         yield daemon
 
