@@ -7,7 +7,28 @@
 from docutils import nodes
 
 
-class confluence_expand(nodes.Element):
+class ConfluenceParams(nodes.Element):
+    """
+    confluence parameter-holding node
+
+    A utility node class which helps setup tracking "parameters" entries inside
+    a Element's attribute list, which can be forwarded to parameter entries
+    for Confluence macro building.
+
+    Args:
+        rawsource: raw text from which this element was constructed
+        *children: list of child nodes
+        **attributes: dictionary of attribute to apply to the element
+
+    Attributes:
+        params: the tracked confluence parameters
+    """
+    def __init__(self, rawsource='', *children, **attributes):
+        nodes.Element.__init__(self, rawsource, *children, **attributes)
+        self.params = self.attributes.setdefault('confluence-params', {})
+
+
+class confluence_expand(nodes.Body, nodes.Element):
     """
     confluence expand node
 
@@ -16,7 +37,7 @@ class confluence_expand(nodes.Element):
     """
 
 
-class confluence_footer(nodes.General, nodes.Element):
+class confluence_footer(nodes.Decorative, nodes.Element):
     """
     confluence footer node
 
@@ -26,7 +47,7 @@ class confluence_footer(nodes.General, nodes.Element):
     """
 
 
-class confluence_header(nodes.General, nodes.Element):
+class confluence_header(nodes.Decorative, nodes.Element):
     """
     confluence header node
 
@@ -36,7 +57,7 @@ class confluence_header(nodes.General, nodes.Element):
     """
 
 
-class confluence_metadata(nodes.Element):
+class confluence_metadata(nodes.Invisible, nodes.Special, ConfluenceParams):
     """
     confluence metadata node
 
@@ -45,7 +66,7 @@ class confluence_metadata(nodes.Element):
     """
 
 
-class confluence_newline(nodes.Element):
+class confluence_newline(nodes.Structural, nodes.Element):
     """
     confluence newline node
 
@@ -65,62 +86,29 @@ class confluence_page_generation_notice(nodes.TextElement):
     """
 
 
-class confluence_source_link(nodes.Element, nodes.Structural):
+class confluence_source_link(nodes.Structural, ConfluenceParams):
     """
     confluence source link node
 
     Provides a source link node to hint at the creation of a reference which
     points to a generation document's original source document (or source
     location).
-
-    Args:
-        rawsource: raw text from which this element was constructed
-        *children: list of child nodes
-        **attributes: dictionary of attribute to apply to the element
-
-    Attributes:
-        params: dictionary of parameters to configure the node
     """
-    def __init__(self, rawsource='', *children, **attributes):
-        nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.params = {}
 
 
-class jira(nodes.Element, nodes.Structural):
+class jira(nodes.Inline, ConfluenceParams):
     """
     jira (query) node
 
     Defines a "JIRA" node to represent a Confluence JIRA macro configured to
     display a prepared JQL query.
-
-    Args:
-        rawsource: raw text from which this element was constructed
-        *children: list of child nodes
-        **attributes: dictionary of attribute to apply to the element
-
-    Attributes:
-        params: dictionary of parameters to pass into a jira macro
     """
-    def __init__(self, rawsource='', *children, **attributes):
-        nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.params = {}
 
 
-class jira_issue(nodes.Element, nodes.Structural):
+class jira_issue(nodes.Inline, ConfluenceParams):
     """
     jira (single) issue node
 
     Defines a "JIRA" node to represent a Confluence JIRA macro configured to
     display a single JIRA issue.
-
-    Args:
-        rawsource: raw text from which this element was constructed
-        *children: list of child nodes
-        **attributes: dictionary of attribute to apply to the element
-
-    Attributes:
-        params: dictionary of parameters to pass into a jira macro
     """
-    def __init__(self, rawsource='', *children, **attributes):
-        nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.params = {}
