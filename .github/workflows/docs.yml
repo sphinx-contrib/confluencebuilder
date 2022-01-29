@@ -42,6 +42,10 @@ jobs:
             -y
         python -m pip install --upgrade sphinx
 
+    - name: Install confluencebuilder
+      run: |
+        python -m pip install -e .
+
     - name: HTML
       run: make html
       working-directory: doc
