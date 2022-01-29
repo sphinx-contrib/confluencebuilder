@@ -135,7 +135,7 @@ class TestConfluenceJira(unittest.TestCase):
         # build attempt should not throw an exception/error
         build_sphinx(dataset, **opts)
 
-    def test_storage_confluence_jira_role_expected(self):
+    def test_storage_confluence_jira_role_default_expected(self):
         dataset = os.path.join(self.container, 'valid-role')
 
         out_dir = build_sphinx(dataset, config=self.config)
@@ -154,3 +154,48 @@ class TestConfluenceJira(unittest.TestCase):
             summary = macro.find('ac:parameter', {'ac:name': 'showSummary'})
             self.assertIsNotNone(summary)
             self.assertEqual(summary.text, 'false')
+
+    def test_storage_confluence_jira_substitution_expected(self):
+        dataset = os.path.join(self.container, 'valid-substitution')
+
+        out_dir = build_sphinx(dataset, config=self.config)
+
+        with parse('index', out_dir) as data:
+            jira_macros = data.find_all('ac:structured-macro',
+                {'ac:name': 'jira'})
+            self.assertIsNotNone(jira_macros)
+            self.assertEqual(len(jira_macros), 3)
+
+            # jira_issue substitution
+            jira_macro = jira_macros.pop(0)
+
+            key = jira_macro.find('ac:parameter', {'ac:name': 'key'})
+            self.assertIsNotNone(key)
+            self.assertEqual(key.text, 'TEST-1')
+
+            # jira substitution
+            jira_macro = jira_macros.pop(0)
+
+            cols = jira_macro.find('ac:parameter', {'ac:name': 'columns'})
+            self.assertIsNotNone(cols)
+            self.assertEqual(cols.text, 'key,summary,status,resolution')
+
+            count = jira_macro.find('ac:parameter', {'ac:name': 'count'})
+            self.assertIsNotNone(count)
+            self.assertEqual(count.text, 'false')
+
+            jql = jira_macro.find('ac:parameter', {'ac:name': 'jqlQuery'})
+            self.assertIsNotNone(jql)
+            self.assertEqual(jql.text, 'project = "TESTPRJ"')
+
+            max_issues = jira_macro.find(
+                'ac:parameter', {'ac:name': 'maximumIssues'})
+            self.assertIsNotNone(max_issues)
+            self.assertEqual(max_issues.text, '8')
+
+            # jira (role) substitution
+            jira_macro = jira_macros.pop(0)
+
+            key = jira_macro.find('ac:parameter', {'ac:name': 'key'})
+            self.assertIsNotNone(key)
+            self.assertEqual(key.text, 'TEST-2')
