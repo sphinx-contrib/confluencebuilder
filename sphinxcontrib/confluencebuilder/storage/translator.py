@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -1349,27 +1349,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # p
 
     def visit_figure(self, node):
-        if self.can_admonition:
-            self.body.append(self._start_ac_macro(node, 'info'))
-            self.body.append(self._build_ac_param(node, 'icon', 'false'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
-            self.context.append(self._end_ac_rich_text_body_macro(node) +
-                self._end_ac_macro(node))
-        else:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
-            self.body.append(self._start_tag(node, 'div'))
-            self.context.append(self._end_tag(node) + self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
+        self.body.append(self._start_tag(node, 'p'))
+        self.context.append(self._end_tag(node))
 
     def depart_figure(self, node):
+        self.body.append(self.context.pop())  # p
+
         # force clear from a floating confluence image if not handled in caption
         if self._figure_context:
             self._figure_context.pop()
         else:
             self.body.append('<div style="clear: both"> </div>\n')
-
-        self.body.append(self.context.pop())  # <dynamic>
 
     def visit_image(self, node):
         if 'uri' not in node or not node['uri']:
