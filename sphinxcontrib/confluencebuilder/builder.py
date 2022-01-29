@@ -771,7 +771,7 @@ class ConfluenceBuilder(Builder):
 
         for node in doctree.traverse(confluence_metadata):
             labels = metadata.setdefault('labels', [])
-            labels.extend(node['params']['labels'])
+            labels.extend(node.params['labels'])
             node.parent.remove(node)
 
     def _find_title_element(self, doctree):

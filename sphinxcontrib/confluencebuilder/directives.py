@@ -65,10 +65,9 @@ class ConfluenceMetadataDirective(Directive):
 
     def run(self):
         node = confluence_metadata()
-        params = node.setdefault('params', {})
 
         for k, v in self.options.items():
-            params[kebab_case_to_camel_case(k)] = v
+            node.params[kebab_case_to_camel_case(k)] = v
 
         return [node]
 
