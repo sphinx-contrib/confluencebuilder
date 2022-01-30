@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from bs4 import CData
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSphinxDownload(unittest.TestCase):
+class TestConfluenceSphinxDownload(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceSphinxDownload, cls).setUpClass()
+
+        cls.dataset = os.path.join(cls.datasets, 'common')
         cls.filenames = [
             'download',
         ]
 
+    @setup_builder('confluence')
     def test_storage_sphinx_download_defaults(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, filenames=self.filenames)
 
         with parse('download', out_dir) as data:
             # view-file

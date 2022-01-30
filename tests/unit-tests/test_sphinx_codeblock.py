@@ -1,36 +1,35 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from bs4 import CData
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSphinxCodeblock(unittest.TestCase):
+class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceSphinxCodeblock, cls).setUpClass()
 
+        cls.dataset = os.path.join(cls.datasets, 'common')
+
+    @setup_builder('confluence')
     def test_storage_sphinx_codeblock_caption(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['code-block-caption'])
+        out_dir = self.build(self.dataset, filenames=['code-block-caption'])
 
         with parse('code-block-caption', out_dir) as data:
             title_param = data.find('ac:parameter', {'ac:name': 'title'})
             self.assertIsNotNone(title_param)
             self.assertEqual(title_param.text, 'code caption test')
 
+    @setup_builder('confluence')
     def test_storage_sphinx_codeblock_default(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['code-block'])
+        out_dir = self.build(self.dataset, filenames=['code-block'])
 
         with parse('code-block', out_dir) as data:
             code_macros = data.find_all('ac:structured-macro')

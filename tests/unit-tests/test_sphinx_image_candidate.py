@@ -1,32 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 from tests.lib import prepare_dirs
 import mimetypes
 import os
 import shutil
 import sys
-import unittest
 
 
-class TestConfluenceSphinxImageCandidate(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
-
+class TestConfluenceSphinxImageCandidate(ConfluenceTestCase):
+    @setup_builder('confluence')
     def test_storage_sphinx_image_candidate(self):
-        config = prepare_conf()
-
-        assets_dir = os.path.join(self.test_dir, 'assets')
-        sample_img = os.path.join(assets_dir, 'test.png')
+        sample_img = os.path.join(self.assets_dir, 'test.png')
 
         for mime_type in SUPPORTED_IMAGE_TYPES:
             ext = mimetypes.guess_extension(mime_type)
@@ -60,7 +52,7 @@ class TestConfluenceSphinxImageCandidate(unittest.TestCase):
             shutil.copyfile(sample_img, dummy_img_file)
 
             # build and check
-            build_sphinx(doc_dir, config=config, out_dir=out_dir)
+            self.build(doc_dir, out_dir=out_dir)
 
             with parse('index', out_dir) as data:
                 image = data.find('ac:image')

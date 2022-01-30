@@ -1,34 +1,39 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestSdocGenindex(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.container = os.path.join(test_dir, 'datasets')
-        cls.template_dir = os.path.join(test_dir, 'templates')
+class TestSdocGenindex(ConfluenceTestCase):
+    @setup_builder('confluence')
+    def test_storage_sdoc_genindex_default_missing_confluence(self):
+        """validate genindex is not added by default (confluence)"""
 
-    def test_storage_sdoc_genindex_default_missing(self):
-        """validate genindex is not added by default (storage)"""
+        dataset = os.path.join(self.datasets, 'minimal')
 
-        dataset = os.path.join(self.container, 'minimal')
-
-        out_dir = build_sphinx(dataset, config=self.config)
+        out_dir = self.build(dataset)
 
         fname_check = os.path.join(out_dir, 'genindex.conf')
         self.assertFalse(os.path.exists(fname_check))
 
+    @setup_builder('singleconfluence')
+    def test_storage_sdoc_genindex_default_missing_singleconfluence(self):
+        """validate genindex is not added by default (singleconfluence)"""
+
+        dataset = os.path.join(self.datasets, 'minimal')
+
+        out_dir = self.build(dataset)
+
+        fname_check = os.path.join(out_dir, 'genindex.conf')
+        self.assertFalse(os.path.exists(fname_check))
+
+    @setup_builder('confluence')
     def test_storage_sdoc_genindex_explicit_disabled(self):
         """validate genindex generation can be disabled (storage)"""
         #
@@ -37,28 +42,29 @@ class TestSdocGenindex(unittest.TestCase):
         # option explicitly, the original genindex document should not be
         # touched.
 
-        dataset = os.path.join(self.container, 'sdoc', 'genindex-placeholder')
+        dataset = os.path.join(self.datasets, 'sdoc', 'genindex-placeholder')
         config = dict(self.config)
         config['confluence_use_index'] = False
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('genindex', out_dir) as data:
             placeholder = data.find('p')
             self.assertIsNotNone(placeholder)
             self.assertEqual(placeholder.text.strip(), 'placeholder')
 
+    @setup_builder('confluence')
     def test_storage_sdoc_genindex_explicit_enabled(self):
         """validate genindex generation can be enabled (storage)"""
         #
         # Ensures the extension adds a "genindex" document; even if its not in a
         # documentation set's toctree.
 
-        dataset = os.path.join(self.container, 'sdoc', 'genindex')
+        dataset = os.path.join(self.datasets, 'sdoc', 'genindex')
         config = dict(self.config)
         config['confluence_use_index'] = True
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('genindex', out_dir) as data:
             link_tags = data.find_all('ac:link')
@@ -75,22 +81,23 @@ class TestSdocGenindex(unittest.TestCase):
             self.assertIsNotNone(link_body)
             self.assertEqual(link_body.text, 'test')
 
+    @setup_builder('confluence')
     def test_storage_sdoc_genindex_header_footer(self):
         """validate genindex generation includes header/footer (storage)"""
         #
         # Ensures that when the extension adds a "genindex" document; any custom
         # defined header/footer data is also injected into the document.
 
-        dataset = os.path.join(self.container, 'sdoc', 'genindex')
-        footer_tpl = os.path.join(self.template_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.template_dir, 'sample-header.tpl')
+        dataset = os.path.join(self.datasets, 'sdoc', 'genindex')
+        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
+        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
 
         config = dict(self.config)
         config['confluence_use_index'] = True
         config['confluence_footer_file'] = footer_tpl
         config['confluence_header_file'] = header_tpl
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('genindex', out_dir) as data:
             header_data = data.find().previousSibling.strip()
@@ -99,15 +106,16 @@ class TestSdocGenindex(unittest.TestCase):
             footer_data = data.find_all(recursive=False)[-1].nextSibling.strip()
             self.assertEqual(footer_data, 'footer content')
 
+    @setup_builder('confluence')
     def test_storage_sdoc_genindex_implicit_enabled_toctree(self):
         """validate genindex generation is auto-added via toctree (storage)"""
         #
         # If a "genindex" document is found in the documentation set's toctree,
         # the document should be generated.
 
-        dataset = os.path.join(self.container, 'sdoc', 'genindex-placeholder')
+        dataset = os.path.join(self.datasets, 'sdoc', 'genindex-placeholder')
 
-        out_dir = build_sphinx(dataset, config=self.config)
+        out_dir = self.build(dataset)
 
         with parse('genindex', out_dir) as data:
             link_tags = data.find_all('ac:link')

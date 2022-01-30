@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import prepare_conf
-from tests.lib import prepare_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import prepare_sphinx_filenames
 import os
-import unittest
 
 
-class TestConfluenceMetadata(unittest.TestCase):
+class TestConfluenceMetadata(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceMetadata, cls).setUpClass()
+
+        cls.dataset = os.path.join(cls.datasets, 'common')
         cls.filenames = prepare_sphinx_filenames(cls.dataset,
             [
                 'metadata',
@@ -24,7 +23,7 @@ class TestConfluenceMetadata(unittest.TestCase):
             configs=[cls.config])
 
     def test_confluence_metadata_directive_expected(self):
-        with prepare_sphinx(self.dataset, config=self.config) as app:
+        with self.prepare(self.dataset) as app:
             app.build(filenames=self.filenames)
             builder_metadata = app.builder.metadata
 
@@ -40,12 +39,8 @@ class TestConfluenceMetadata(unittest.TestCase):
             self.assertTrue('tag-a' in labels)
             self.assertTrue('tag-c' in labels)
 
-    def test_confluence_metadata_directive_ignore(self):
-        opts = {
-            'builder': 'html',
-            'config': self.config,
-            'relax': True,
-        }
-        with prepare_sphinx(self.dataset, **opts) as app:
+    @setup_builder('html')
+    def test_html_confluence_metadata_directive_ignore(self):
+        with self.prepare(self.dataset, relax=True) as app:
             # build attempt should not throw an exception/error
             app.build(filenames=self.filenames)

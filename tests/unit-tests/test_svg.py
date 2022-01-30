@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 import xml.etree.ElementTree as xml_et
 
 
-class TestSvg(unittest.TestCase):
+class TestSvg(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'svg')
+        super(TestSvg, cls).setUpClass()
+
+        cls.dataset = os.path.join(cls.datasets, 'svg')
 
     def _extract_svg_size(self, fname):
         with open(fname, 'rb') as f:
@@ -26,8 +25,9 @@ class TestSvg(unittest.TestCase):
         svg_root = xml_et.fromstring(svg_data)
         return int(svg_root.attrib['width']), int(svg_root.attrib['height'])
 
+    @setup_builder('confluence')
     def test_storage_svgs(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
             images = data.find_all('ac:image', recursive=False)

@@ -1,28 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSinglepageToctree(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
-
+class TestConfluenceSinglepageToctree(ConfluenceTestCase):
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_toctree_default(self):
-        dataset = os.path.join(self.test_dir, 'datasets', 'toctree-default')
+        dataset = os.path.join(self.datasets, 'toctree-default')
 
-        out_dir = build_sphinx(dataset, config=self.config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
             tags = data.find_all()
@@ -80,11 +73,11 @@ class TestConfluenceSinglepageToctree(unittest.TestCase):
             self.assertEqual(content.name, 'p')
             self.assertEqual(content.text, 'content b1')
 
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_toctree_numbered(self):
-        dataset = os.path.join(self.test_dir, 'datasets', 'toctree-numbered')
+        dataset = os.path.join(self.datasets, 'toctree-numbered')
 
-        out_dir = build_sphinx(dataset, config=self.config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
             tags = data.find_all()

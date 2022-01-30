@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSphinxDomains(unittest.TestCase):
+class TestConfluenceSphinxDomains(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
+        super(TestConfluenceSphinxDomains, cls).setUpClass()
+
         cls.config['root_doc'] = 'glossary'
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        cls.dataset = os.path.join(cls.datasets, 'common')
         cls.filenames = [
             'glossary',
             'glossary-ref',
         ]
 
+    @setup_builder('confluence')
     def test_storage_sphinx_glossary_defaults(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, filenames=self.filenames)
 
         with parse('glossary', out_dir) as data:
             # glossary list
