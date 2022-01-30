@@ -1,29 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from pkg_resources import parse_version
 from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.locale import _
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSphinxDomains(unittest.TestCase):
+class TestConfluenceSphinxDomains(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceSphinxDomains, cls).setUpClass()
 
+        cls.dataset = os.path.join(cls.datasets, 'common')
+
+    @setup_builder('confluence')
     def test_storage_sphinx_domain_c(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['domains-c'])
+        out_dir = self.build(self.dataset, filenames=['domains-c'])
 
         with parse('domains-c', out_dir) as data:
             definition = data.find('dl')
@@ -47,9 +46,9 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             self.assertIsNotNone(desc)
             self.assertEqual(desc.text, '')  # no description in this example
 
+    @setup_builder('confluence')
     def test_storage_sphinx_domain_cpp(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['domains-cpp'])
+        out_dir = self.build(self.dataset, filenames=['domains-cpp'])
 
         with parse('domains-cpp', out_dir) as data:
             definition = data.find('dl')
@@ -68,9 +67,9 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             self.assertIsNotNone(desc)
             self.assertEqual(desc.text, '')  # no description in this example
 
+    @setup_builder('confluence')
     def test_storage_sphinx_domain_js(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['domains-js'])
+        out_dir = self.build(self.dataset, filenames=['domains-js'])
 
         with parse('domains-js', out_dir) as data:
             definition = data.find('dl')
@@ -117,9 +116,9 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             for tag, expected in zip(stronged, expected_stronged):
                 self.assertEqual(tag.text.strip(), expected)
 
+    @setup_builder('confluence')
     def test_storage_sphinx_domain_py(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['domains-py'])
+        out_dir = self.build(self.dataset, filenames=['domains-py'])
 
         with parse('domains-py', out_dir) as data:
             definition = data.find('dl')
@@ -137,9 +136,9 @@ class TestConfluenceSphinxDomains(unittest.TestCase):
             desc = definition.find('dd', recursive=False)
             self.assertIsNotNone(desc)
 
+    @setup_builder('confluence')
     def test_storage_sphinx_domain_rst(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['domains-rst'])
+        out_dir = self.build(self.dataset, filenames=['domains-rst'])
 
         with parse('domains-rst', out_dir) as data:
             definition = data.find('dl')

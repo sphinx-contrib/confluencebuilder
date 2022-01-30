@@ -4,22 +4,22 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceNewline(unittest.TestCase):
+class TestConfluenceNewline(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'newline')
+        super(TestConfluenceNewline, cls).setUpClass()
 
+        cls.dataset = os.path.join(cls.datasets, 'newline')
+
+    @setup_builder('confluence')
     def test_storage_confluence_newline_directive_expected(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
             # expect three tags | p, br, p

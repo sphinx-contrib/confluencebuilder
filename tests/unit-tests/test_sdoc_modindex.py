@@ -1,47 +1,52 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestSdocModindex(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.container = os.path.join(test_dir, 'datasets')
-        cls.template_dir = os.path.join(test_dir, 'templates')
-
-    def test_storage_sdoc_modindex_default_missing(self):
+class TestSdocModindex(ConfluenceTestCase):
+    @setup_builder('confluence')
+    def test_sdoc_modindex_default_missing_confluence(self):
         """validate modindex is not added by default (storage)"""
 
-        dataset = os.path.join(self.container, 'minimal')
+        dataset = os.path.join(self.datasets, 'minimal')
 
-        out_dir = build_sphinx(dataset, config=self.config)
+        out_dir = self.build(dataset)
 
         fname_check = os.path.join(out_dir, 'py-modindex.conf')
         self.assertFalse(os.path.exists(fname_check))
 
+    @setup_builder('singleconfluence')
+    def test_sdoc_modindex_default_missing_singleconfluence(self):
+        """validate modindex is not added by default (storage)"""
+
+        dataset = os.path.join(self.datasets, 'minimal')
+
+        out_dir = self.build(dataset)
+
+        fname_check = os.path.join(out_dir, 'py-modindex.conf')
+        self.assertFalse(os.path.exists(fname_check))
+
+    @setup_builder('confluence')
     def test_storage_sdoc_modindex_enabled(self):
         """validate modindex generation can be enabled (storage)"""
         #
         # Ensures the extension adds a "py-modindex" document when the domain
         # indices option is assigned to include the domain type.
 
-        dataset = os.path.join(self.container, 'sdoc', 'py-modindex')
+        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
         config = dict(self.config)
         config['confluence_domain_indices'] = [
             'py-modindex',
         ]
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('py-modindex', out_dir) as data:
             link_tags = data.find_all('ac:link')
@@ -58,17 +63,18 @@ class TestSdocModindex(unittest.TestCase):
             self.assertIsNotNone(link_body)
             self.assertEqual(link_body.text, 'Timer')
 
+    @setup_builder('confluence')
     def test_storage_sdoc_modindex_enabled_bool(self):
         """validate modindex generation can be bool-enabled (storage)"""
         #
         # Ensures the extension adds a "py-modindex" document when the domain
         # indices option is assigned to a `True` value.
 
-        dataset = os.path.join(self.container, 'sdoc', 'py-modindex')
+        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
         config = dict(self.config)
         config['confluence_domain_indices'] = True
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('py-modindex', out_dir) as data:
             link_tags = data.find_all('ac:link')
@@ -85,22 +91,23 @@ class TestSdocModindex(unittest.TestCase):
             self.assertIsNotNone(link_body)
             self.assertEqual(link_body.text, 'Timer')
 
+    @setup_builder('confluence')
     def test_storage_sdoc_modindex_header_footer(self):
         """validate modindex generation includes header/footer (storage)"""
         #
         # Ensures that when the extension adds a "modindex" document; any custom
         # defined header/footer data is also injected into the document.
 
-        dataset = os.path.join(self.container, 'sdoc', 'py-modindex')
-        footer_tpl = os.path.join(self.template_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.template_dir, 'sample-header.tpl')
+        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
+        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
+        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
 
         config = dict(self.config)
         config['confluence_domain_indices'] = True
         config['confluence_footer_file'] = footer_tpl
         config['confluence_header_file'] = header_tpl
 
-        out_dir = build_sphinx(dataset, config=config)
+        out_dir = self.build(dataset, config=config)
 
         with parse('py-modindex', out_dir) as data:
             header_data = data.find().previousSibling.strip()

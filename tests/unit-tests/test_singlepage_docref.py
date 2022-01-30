@@ -1,28 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSinglepageToctree(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
-
+class TestConfluenceSinglepageToctree(ConfluenceTestCase):
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_docref_pageref(self):
-        dataset = os.path.join(self.test_dir, 'datasets', 'singlepage-docref')
+        dataset = os.path.join(self.datasets, 'singlepage-docref')
 
-        out_dir = build_sphinx(dataset, config=self.config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
             links = data.find_all('ac:link')
@@ -37,11 +30,11 @@ class TestConfluenceSinglepageToctree(unittest.TestCase):
             self.assertTrue(link.has_attr('ac:anchor'))
             self.assertEqual(link['ac:anchor'], 'pageb2')
 
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_docref_index_no_title(self):
-        dataset = os.path.join(self.test_dir, 'datasets', 'singlepage-docref')
+        dataset = os.path.join(self.datasets, 'singlepage-docref')
 
-        out_dir = build_sphinx(dataset, config=self.config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
             links = data.find_all('a')
@@ -53,14 +46,14 @@ class TestConfluenceSinglepageToctree(unittest.TestCase):
             self.assertTrue(link.has_attr('href'))
             self.assertEqual(link['href'], '#top')
 
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_docref_index_with_title(self):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        dataset = os.path.join(self.test_dir, 'datasets', 'singlepage-docref')
+        dataset = os.path.join(self.datasets, 'singlepage-docref')
 
-        out_dir = build_sphinx(dataset, config=config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(dataset, config=config)
 
         with parse('index', out_dir) as data:
             links = data.find_all('ac:link')

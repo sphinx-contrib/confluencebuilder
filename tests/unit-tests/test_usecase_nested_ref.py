@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceUseCaseNestedRef(unittest.TestCase):
+class TestConfluenceUseCaseNestedRef(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
+        super(TestConfluenceUseCaseNestedRef, cls).setUpClass()
+
         cls.config['root_doc'] = 'nested-ref-contents'
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'use-cases')
+        cls.dataset = os.path.join(cls.datasets, 'use-cases')
         cls.filenames = [
             'nested-ref-contents',
             'nested-ref-external',
         ]
 
-    def test_usecase_nestedref(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+    @setup_builder('confluence')
+    def test_usecase_storage_nestedref(self):
+        out_dir = self.build(self.dataset, filenames=self.filenames)
 
         with parse('nested-ref-contents', out_dir) as data:
             # contents link to header (via anchor)

@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSharedAsset(unittest.TestCase):
+class TestConfluenceSharedAsset(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'shared-asset')
+        super(TestConfluenceSharedAsset, cls).setUpClass()
 
+        cls.dataset = os.path.join(cls.datasets, 'shared-asset')
+
+    @setup_builder('confluence')
     def test_storage_sharedasset_defaults(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = self.build(self.dataset)
 
         with parse('doc-a', out_dir) as data:
             image = data.find('ac:image')
@@ -49,10 +49,11 @@ class TestConfluenceSharedAsset(unittest.TestCase):
             self.assertTrue(page_ref.has_attr('ri:content-title'))
             self.assertEqual(page_ref['ri:content-title'], 'shared asset')
 
+    @setup_builder('confluence')
     def test_storage_sharedasset_force_standalone(self):
         config = dict(self.config)
         config['confluence_asset_force_standalone'] = True
-        out_dir = build_sphinx(self.dataset, config=config)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('doc-a', out_dir) as data:
             image = data.find('ac:image')
@@ -78,8 +79,9 @@ class TestConfluenceSharedAsset(unittest.TestCase):
             page_ref = attachment.find('ri:page')
             self.assertIsNone(page_ref)
 
+    @setup_builder('confluence')
     def test_storage_sharedasset_no_newline_assets(self):
-        out_dir = build_sphinx(self.dataset, config=self.config)
+        out_dir = self.build(self.dataset)
 
         # confluence (error 500) attachment newline check
         #

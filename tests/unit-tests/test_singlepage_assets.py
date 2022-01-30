@@ -1,32 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceSinglepageAssets(unittest.TestCase):
+class TestConfluenceSinglepageAssets(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'shared-asset')
+        super(TestConfluenceSinglepageAssets, cls).setUpClass()
 
+        cls.dataset = os.path.join(cls.datasets, 'shared-asset')
+
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_asset_defaults(self):
         """validate single page assets are self-contained (storage)"""
         #
         # Ensure when generating a single page that all assets on a page are
         # pointing (implicitly) to itself (i.e. no `ri:page` entry).
 
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
             images = data.find_all('ac:image')
@@ -41,6 +39,7 @@ class TestConfluenceSinglepageAssets(unittest.TestCase):
                 page_ref = attachment.find('ri:page')
                 self.assertIsNone(page_ref)
 
+    @setup_builder('singleconfluence')
     def test_storage_singlepage_asset_force_standalone(self):
         """validate single page assets are self-contained alt (storage)"""
         #
@@ -50,8 +49,7 @@ class TestConfluenceSinglepageAssets(unittest.TestCase):
 
         config = dict(self.config)
         config['confluence_asset_force_standalone'] = True
-        out_dir = build_sphinx(self.dataset, config=config,
-            builder=SingleConfluenceBuilder.name)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('index', out_dir) as data:
             images = data.find_all('ac:image')

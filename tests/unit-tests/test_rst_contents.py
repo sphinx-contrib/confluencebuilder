@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
 import re
-import unittest
 
 
-class TestConfluenceRstContents(unittest.TestCase):
+class TestConfluenceRstContents(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceRstContents, cls).setUpClass()
+
+        cls.dataset = os.path.join(cls.datasets, 'common')
 
         cls.expected_header_text = [
             'section',
@@ -27,10 +26,11 @@ class TestConfluenceRstContents(unittest.TestCase):
             'newsection',
         ]
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_backlinks_entry(self):
         expected_header_text = self.expected_header_text[:]
 
-        out_dir = build_sphinx(self.dataset, config=self.config,
+        out_dir = self.build(self.dataset,
             filenames=['contents-backlinks-entry'])
 
         with parse('contents-backlinks-entry', out_dir) as data:
@@ -51,10 +51,11 @@ class TestConfluenceRstContents(unittest.TestCase):
                 self.assertIsNotNone(link_body)
                 self.assertEqual(link_body.text, expected)
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_backlinks_none(self):
         expected_header_text = self.expected_header_text[:]
 
-        out_dir = build_sphinx(self.dataset, config=self.config,
+        out_dir = self.build(self.dataset,
             filenames=['contents-backlinks-none'])
 
         with parse('contents-backlinks-none', out_dir) as data:
@@ -65,10 +66,11 @@ class TestConfluenceRstContents(unittest.TestCase):
             for header, expected in zip(headers, expected_header_text):
                 self.assertEqual(header.text, expected)
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_backlinks_top(self):
         expected_header_text = self.expected_header_text[:]
 
-        out_dir = build_sphinx(self.dataset, config=self.config,
+        out_dir = self.build(self.dataset,
             filenames=['contents-backlinks-top'])
 
         with parse('contents-backlinks-top', out_dir) as data:
@@ -89,20 +91,21 @@ class TestConfluenceRstContents(unittest.TestCase):
                 self.assertIsNotNone(link_body)
                 self.assertEqual(link_body.text, expected)
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_caption(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['contents-caption'])
+        out_dir = self.build(self.dataset, filenames=['contents-caption'])
 
         with parse('contents-caption', out_dir) as data:
             caption = data.find(re.compile('^h[1-6]$'),
                 text='table of contents')
             self.assertIsNotNone(caption)
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_default_title(self):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        out_dir = build_sphinx(self.dataset, config=config,
+        out_dir = self.build(self.dataset, config=config,
             filenames=['contents'])
 
         with parse('contents', out_dir) as data:
@@ -118,9 +121,9 @@ class TestConfluenceRstContents(unittest.TestCase):
             self.assertIsNotNone(link_body)
             self.assertEqual(link_body.text, 'contents')
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_default_top(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['contents'])
+        out_dir = self.build(self.dataset, filenames=['contents'])
 
         with parse('contents', out_dir) as data:
             # there should be no ac-link for the contents page
@@ -134,12 +137,12 @@ class TestConfluenceRstContents(unittest.TestCase):
             self.assertEqual(root_link['href'], '#top')
             self.assertEqual(root_link.text, 'contents')
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_links(self):
         expected_header_text = self.expected_header_text[:]
         expected_header_text.remove('toc')  # skip toc header
 
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['contents'])
+        out_dir = self.build(self.dataset, filenames=['contents'])
 
         with parse('contents', out_dir) as data:
             toc = data.find('ul')
@@ -157,9 +160,9 @@ class TestConfluenceRstContents(unittest.TestCase):
                 self.assertIsNotNone(link_body)
                 self.assertEqual(link_body.text, expected)
 
+    @setup_builder('confluence')
     def test_storage_rst_contents_local(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=['contents-local'])
+        out_dir = self.build(self.dataset, filenames=['contents-local'])
 
         with parse('contents-local', out_dir) as data:
             toc = data.find('ul')

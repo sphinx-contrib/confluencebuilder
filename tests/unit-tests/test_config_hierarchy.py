@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
 import re
-import unittest
 
 
-class TestConfluenceConfigPrevNext(unittest.TestCase):
+class TestConfluenceConfigPrevNext(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
+        super(TestConfluenceConfigPrevNext, cls).setUpClass()
+
         cls.config['confluence_max_doc_depth'] = 1
         cls.config['confluence_page_hierarchy'] = True
 
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'hierarchy')
+        cls.dataset = os.path.join(cls.datasets, 'hierarchy')
 
     def test_config_hierarchy_max_depth(self):
-        out_dir = build_sphinx(self.dataset, config=self.config, relax=True)
+        out_dir = self.build(self.dataset, relax=True)
 
         index = os.path.join(out_dir, 'index.conf')
         self.assertTrue(os.path.exists(index),
@@ -44,7 +43,7 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
 
     def test_config_hierarchy_parent_registration(self):
         ConfluenceState.reset()
-        build_sphinx(self.dataset, config=self.config, relax=True)
+        self.build(self.dataset, relax=True)
 
         # root toctree should not have a parent
         root_doc = ConfluenceState.parent_docname('index')
@@ -63,8 +62,9 @@ class TestConfluenceConfigPrevNext(unittest.TestCase):
         parent_doc = ConfluenceState.parent_docname('toctree-doc2a')
         self.assertEqual(parent_doc, 'toctree-doc2')
 
+    @setup_builder('confluence')
     def test_storage_config_hierarchy_max_depth(self):
-        out_dir = build_sphinx(self.dataset, config=self.config, relax=True)
+        out_dir = self.build(self.dataset, relax=True)
 
         # ensure data is merged in when capping the depth
         doc2_expected_headers = [

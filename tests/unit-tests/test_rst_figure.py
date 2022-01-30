@@ -5,26 +5,25 @@
 """
 
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
-from tests.lib import build_sphinx
+from tests.lib.testcase import ConfluenceTestCase
+from tests.lib.testcase import setup_builder
 from tests.lib import parse
-from tests.lib import prepare_conf
 import os
-import unittest
 
 
-class TestConfluenceRstFigure(unittest.TestCase):
+class TestConfluenceRstFigure(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        super(TestConfluenceRstFigure, cls).setUpClass()
+
+        cls.dataset = os.path.join(cls.datasets, 'common')
         cls.filenames = [
             'figure',
         ]
 
+    @setup_builder('confluence')
     def test_storage_rst_figure_defaults(self):
-        out_dir = build_sphinx(self.dataset, config=self.config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, filenames=self.filenames)
 
         with parse('figure', out_dir) as data:
             figures = data.find_all('p', recursive=False)
