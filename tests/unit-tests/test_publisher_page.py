@@ -20,6 +20,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': 'Mock Space',
+                'type': 'global',
             }],
         }
 

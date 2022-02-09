@@ -110,6 +110,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': std_space_name,
+                'type': 'global',
             }],
         }
 
@@ -118,6 +119,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': proxy_space_name,
+                'type': 'global',
             }],
         }
 
@@ -223,6 +225,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': space_name,
+                'type': 'global',
             }],
         }
 
