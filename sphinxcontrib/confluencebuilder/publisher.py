@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 
 See also:
@@ -26,6 +26,7 @@ import time
 class ConfluencePublisher:
     def __init__(self):
         self.space_display_name = None
+        self.space_type = None
         self._ancestors_cache = set()
         self._name_cache = {}
 
@@ -118,8 +119,9 @@ class ConfluencePublisher:
             raise ConfluenceBadServerUrlError(server_url,
                 'server did not provide an expected response (no name)')
 
-        # track the space's display name
+        # track required space information
         self.space_display_name = result['name']
+        self.space_type = result['type']
 
     def disconnect(self):
         self.rest_client.close()
@@ -768,7 +770,8 @@ class ConfluencePublisher:
             self.rest_client.put('space', self.space_key, {
                 'key': self.space_key,
                 'name': self.space_display_name,
-                'homepage': page
+                'homepage': page,
+                'type': self.space_type,
             })
         except ConfluencePermissionError:
             raise ConfluencePermissionError(

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -20,6 +20,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': 'Mock Space',
+                'type': 'global',
             }],
         }
 

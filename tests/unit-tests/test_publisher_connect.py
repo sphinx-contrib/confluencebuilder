@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -110,6 +110,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': std_space_name,
+                'type': 'global',
             }],
         }
 
@@ -118,6 +119,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': proxy_space_name,
+                'type': 'global',
             }],
         }
 
@@ -223,6 +225,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             'size': 1,
             'results': [{
                 'name': space_name,
+                'type': 'global',
             }],
         }
 
