@@ -162,6 +162,15 @@ if 'CONFLUENCEBUILDER_LEGACY_NOCHECK' in os.environ:
 else:
     NOCHECK = 'no-check'
 
+# confluence api "retry after" header entry
+#
+# Confluence may response with a `Retry-After` when rate limiting has been
+# imposed on an API request. This entry keeps track of the header key entry
+# which reports the recommended duration till next retry.
+#
+# (see also: https://developer.atlassian.com/cloud/confluence/rate-limiting/)
+RSP_HEADER_RETRY_AFTER = 'Retry-After'
+
 # supported image types
 #
 # A list of image types (mostly) supported on a Confluence instance. This
