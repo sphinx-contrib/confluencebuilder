@@ -155,6 +155,8 @@ def setup(app):
     app.add_config_value('confluence_proxy', None, '')
     # Subset of documents which are allowed to be published.
     app.add_config_value('confluence_publish_allowlist', None, '')
+    # Duration (in seconds) to delay each API request.
+    app.add_config_value('confluence_publish_delay', None, '')
     # Subset of documents which are denied to be published.
     app.add_config_value('confluence_publish_denylist', None, '')
     # Header(s) to use for Confluence REST interaction.

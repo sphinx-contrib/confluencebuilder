@@ -235,6 +235,47 @@ class ConfigurationValidation:
 
         return self
 
+    def float_(self, positive=False):
+        """
+        checks if a configuration is a float
+
+        After an instance has been set a configuration key (via `conf`), this
+        method can be used to check if the value (if any) configured with this
+        key is a float. If not, an `ConfluenceConfigurationError` exception
+        will be thrown.
+
+        In the event that the configuration is not set (e.g. a value of `None`),
+        this method will have no effect.
+
+        Args:
+            positive (optional): whether or not the float value must be a
+                                  positive value (default: False)
+
+        Returns:
+            the validator instance
+        """
+        value = self._value()
+
+        if value is not None:
+            if isinstance(value, basestring):
+                try:
+                    value = float(value)
+                except ValueError:
+                    raise ConfluenceConfigurationError(
+                        '%s is not a float string' % self.key)
+            elif isinstance(value, int):
+                value = float(value)
+
+            if positive:
+                if not isinstance(value, float) or value <= 0:
+                    raise ConfluenceConfigurationError(
+                        '%s is not a positive float' % self.key)
+            elif not isinstance(value, float) or value < 0:
+                raise ConfluenceConfigurationError(
+                    '%s is not a non-negative float' % self.key)
+
+        return self
+
     def int_(self, positive=False):
         """
         checks if a configuration is an integer

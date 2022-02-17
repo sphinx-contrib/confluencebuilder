@@ -436,6 +436,11 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    validator.conf('confluence_publish_delay') \
+             .float_(positive=True)
+
+    # ##################################################################
+
     # confluence_publish_dryrun
     validator.conf('confluence_publish_dryrun') \
              .bool()

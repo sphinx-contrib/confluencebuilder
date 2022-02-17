@@ -277,6 +277,8 @@ class RestRateLimited(Rest):
             config: the sphinx configuration
         """
         super(RestRateLimited, self).__init__(config)
+
+        self.forced_delay = config.confluence_publish_delay
         self.last_retry = 1
         self.max_retries = 5
         self.max_retry_duration = 30
@@ -298,6 +300,10 @@ class RestRateLimited(Rest):
         return self._process(method, *args, **kwargs)
 
     def _process(self, call, *args, **kwargs):
+        # apply any user-set delay on an api request
+        if self.forced_delay:
+            time.sleep(self.forced_delay)
+
         attempt = 1
         self.last_retry = max(self.last_retry / 2, 1)
         while True:
