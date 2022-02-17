@@ -1088,6 +1088,19 @@ Advanced publishing configuration
 
     See also |confluence_publish_denylist|_.
 
+.. confval:: confluence_publish_delay
+
+    Force a delay (in seconds) for any API calls made to a Confluence instance.
+    By default, API requests will be made to a Confluence instance as soon as
+    possible (or until Confluence reports that the client should be rate
+    limiting). A user can use this option to reduce how fast this extension may
+    attempt to interact with the Confluence instance. For example, to delay each
+    API request by almost a 1/4 of a second, the following can be used:
+
+    .. code-block:: python
+
+        confluence_publish_delay = 0.25
+
 .. |confluence_publish_denylist| replace:: ``confluence_publish_denylist``
 .. _confluence_publish_denylist:
 
