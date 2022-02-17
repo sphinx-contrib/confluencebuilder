@@ -487,6 +487,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_publish_delay(self):
+        self.config['confluence_publish_delay'] = 0.3
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = 1
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = '0.7'
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = -1
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_publish_headers(self):
         self.config['confluence_publish_headers'] = {}
         self._try_config()
