@@ -50,7 +50,7 @@ class SslAdapter(HTTPAdapter):
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
 
-class Rest:
+class Rest(object):
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
