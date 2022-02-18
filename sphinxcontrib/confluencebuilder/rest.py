@@ -136,7 +136,7 @@ class Rest(object):
             raise ConfluencePermissionError("REST GET")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429 or RSP_HEADER_RETRY_AFTER in rsp.headers:
+        if rsp.status_code == 429:
             raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -170,7 +170,7 @@ class Rest(object):
             raise ConfluencePermissionError("REST POST")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429 or RSP_HEADER_RETRY_AFTER in rsp.headers:
+        if rsp.status_code == 429:
             raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -206,7 +206,7 @@ class Rest(object):
             raise ConfluencePermissionError("REST PUT")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429 or RSP_HEADER_RETRY_AFTER in rsp.headers:
+        if rsp.status_code == 429:
             raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -242,7 +242,7 @@ class Rest(object):
             raise ConfluencePermissionError("REST DELETE")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429 or RSP_HEADER_RETRY_AFTER in rsp.headers:
+        if rsp.status_code == 429:
             raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
