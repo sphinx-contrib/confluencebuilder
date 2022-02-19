@@ -155,6 +155,8 @@ def setup(app):
     app.add_config_value('confluence_proxy', None, '')
     # Subset of documents which are allowed to be published.
     app.add_config_value('confluence_publish_allowlist', None, '')
+    # Enable debugging for publish requests.
+    app.add_config_value('confluence_publish_debug', None, '')
     # Duration (in seconds) to delay each API request.
     app.add_config_value('confluence_publish_delay', None, '')
     # Subset of documents which are denied to be published.
