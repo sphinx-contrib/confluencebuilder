@@ -75,6 +75,12 @@ class Rest(object):
                 'https': config.confluence_proxy,
             }
 
+        # add pat into header if provided
+        if config.confluence_publish_token:
+            session.headers.update({
+                'Authorization': 'Bearer ' + config.confluence_publish_token,
+            })
+
         # add custom header options based off the user's configuration
         if config.confluence_publish_headers:
             session.headers.update(config.confluence_publish_headers)

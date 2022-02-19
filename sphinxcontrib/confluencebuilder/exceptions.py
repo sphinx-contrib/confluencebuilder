@@ -42,9 +42,10 @@ details for more information:
 
 
 class ConfluenceBadSpaceError(ConfluenceError):
-    def __init__(self, space_key, uname, pw_set, extras):
+    def __init__(self, space_key, uname, pw_set, token_set, extras):
         uname_value = uname if uname else '(empty)'
         pw_value = '<set>' if pw_set else '(empty)'
+        token_value = '<set>' if token_set else '(empty)'
         super(ConfluenceBadSpaceError, self).__init__('''
 ---
 Invalid Confluence URL detected
@@ -54,15 +55,16 @@ The configured Confluence space key does not appear to be valid:
     Space key: {space_key}
      Username: {uname}
      Password: {pw}
+        Token: {token}
 
 Ensure the instance is running and inspect that the configured
 Confluence URL is valid. Also ensure authentication options are properly
 set.
 
-Note: Confluence space keys are case-sensitive.
-{details}
+Note: Confluence space keys are case-sensitive.{details}
 ---
-'''.format(space_key=space_key, uname=uname_value, pw=pw_value, details=extras))
+'''.format(space_key=space_key, uname=uname_value, pw=pw_value,
+        token=token_value, details=extras))
 
 
 class ConfluenceBadServerUrlError(ConfluenceError):
@@ -124,7 +126,8 @@ class ConfluencePermissionError(ConfluenceError):
 Permission denied on Confluence ({desc})
 
 The configured user does not have permission to perform an action on the
-Confluence instance.
+Confluence instance. If the user should have access and this request is
+using a personal access token, ensure the token is not expired/revoked.
 ---
 '''.format(desc=details))
 

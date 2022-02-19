@@ -99,6 +99,42 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             with self.assertRaises(ConfluenceBadServerUrlError):
                 publisher.connect()
 
+    def test_publisher_connect_pat(self):
+        """validate publisher issues a pat-authorization header"""
+        #
+        # Verify that a publisher will issue an `Authorization` header when
+        # configure to use a personal access token.
+
+        token = 'dummy-pat-value'
+        expected_auth_value = 'Bearer {}'.format(token)
+
+        config = self.config.clone()
+        config.confluence_publish_token = token
+
+        val = {
+            'size': 1,
+            'results': [{
+                'name': 'My Space',
+                'type': 'global',
+            }],
+        }
+
+        with mock_confluence_instance(config) as daemon:
+            daemon.register_get_rsp(200, val)
+
+            publisher = ConfluencePublisher()
+            publisher.init(config)
+            publisher.connect()
+
+            first_request = daemon.pop_get_request()
+            self.assertIsNotNone(first_request)
+            _, headers = first_request
+            auth_header = headers.get('Authorization')
+            if not auth_header:
+                auth_header = headers.get('authorization')
+            self.assertIsNotNone(auth_header)
+            self.assertEqual(auth_header, expected_auth_value)
+
     def test_publisher_connect_proxy(self):
         """validate publisher can find a valid space"""
         #

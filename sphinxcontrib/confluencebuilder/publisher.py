@@ -94,7 +94,7 @@ class ConfluencePublisher:
                 space_key = detected_space['space']['key']
                 space_name = detected_space['title']
                 extra_desc = \
-                    '''\n''' \
+                    '''\n\n''' \
                     '''There appears to be a space '{0}' which has a name ''' \
                     ''''{1}'. Did you mean to use this space?\n''' \
                     '''\n''' \
@@ -103,7 +103,7 @@ class ConfluencePublisher:
 
             elif rsp['size'] > 1:
                 extra_desc = \
-                    '''\n''' \
+                    '''\n\n''' \
                     '''Multiple spaces have been detected which use the ''' \
                     '''name '{}'. The unique key of the space should be ''' \
                     '''used instead. See also:\n\n''' \
@@ -111,10 +111,13 @@ class ConfluencePublisher:
                     ''''''.format(self.space_key)
 
             pw_set = bool(self.config.confluence_server_pass)
+            token_set = bool(self.config.confluence_publish_token)
+
             raise ConfluenceBadSpaceError(
                 self.space_key,
                 self.config.confluence_server_user,
                 pw_set,
+                token_set,
                 extra_desc)
 
         # sanity check that we have any result
