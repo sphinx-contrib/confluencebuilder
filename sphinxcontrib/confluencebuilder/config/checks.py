@@ -476,6 +476,12 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_publish_token
+    validator.conf('confluence_publish_token') \
+             .string()
+
+    # ##################################################################
+
     # confluence_purge
     validator.conf('confluence_purge') \
              .bool()

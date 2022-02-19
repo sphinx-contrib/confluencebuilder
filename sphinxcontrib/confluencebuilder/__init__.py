@@ -55,6 +55,8 @@ def setup(app):
     # (configuration - essential)
     # Enablement of publishing.
     app.add_config_value('confluence_publish', None, '')
+    # PAT to authenticate to Confluence API with.
+    app.add_config_value('confluence_publish_token', None, '')
     # API key/password to login to Confluence API with.
     app.add_config_value('confluence_server_pass', None, '')
     # URL of the Confluence instance to publish to.
