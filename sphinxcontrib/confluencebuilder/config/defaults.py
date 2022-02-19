@@ -66,6 +66,7 @@ def apply_defaults(conf):
         'confluence_master_homepage',
         'confluence_page_generation_notice',
         'confluence_page_hierarchy',
+        'confluence_publish_debug',
         'confluence_publish_dryrun',
         'confluence_publish_onlynew',
         'confluence_purge',

@@ -20,6 +20,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPag
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import RestRateLimited
 import json
+import logging
 import time
 
 
@@ -34,6 +35,7 @@ class ConfluencePublisher:
         self.config = config
         self.append_labels = config.confluence_append_labels
         self.can_labels = True
+        self.debug = config.confluence_publish_debug
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
@@ -46,6 +48,13 @@ class ConfluencePublisher:
         # append labels by default
         if self.append_labels is None:
             self.append_labels = True
+
+        # if debugging, enable requests (urllib3) logging
+        if self.debug:
+            logging.basicConfig()
+            logging.getLogger().setLevel(logging.DEBUG)
+            rlog = logging.getLogger('requests.packages.urllib3')
+            rlog.setLevel(logging.DEBUG)
 
         if config.confluence_adv_restricted is not None:
             self.can_labels = 'labels' not in config.confluence_adv_restricted
