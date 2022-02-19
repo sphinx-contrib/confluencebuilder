@@ -98,6 +98,11 @@ Essential configuration
 
 .. confval:: confluence_server_user
 
+    .. note::
+
+        If using a personal access token (PAT), this option does not need to
+        set (see |confluence_publish_token|_).
+
     The username value used to authenticate with the Confluence instance. If
     using Confluence Cloud, this value will most likely be the account's E-mail
     address. If using Confluence Server, this value will most likely be the
@@ -126,6 +131,11 @@ Essential configuration
         desired, this extension provides a method for prompting for a
         password (see |confluence_ask_password|_).
 
+    .. note::
+
+        If attempting to use a personal access token (PAT), use the
+        |confluence_publish_token|_ option instead.
+
     The password value used to authenticate with the Confluence instance. If
     using Confluence Cloud, it is recommended to use an API token for the
     configured username value (see `API tokens`_):
@@ -140,6 +150,35 @@ Essential configuration
     .. code-block:: python
 
         confluence_server_pass = 'myawesomepassword'
+
+.. |confluence_publish_token| replace:: ``confluence_publish_token``
+.. _confluence_publish_token:
+
+.. confval:: confluence_publish_token
+
+    .. versionadded:: 1.8
+
+    .. caution::
+
+        It is never recommended to store a personal access tokens (PAT) into a
+        committed/shared repository holding documentation.
+
+        A documentation's configuration can modified various ways with Python
+        to pull an authentication token for a publishing event such as
+        :ref:`reading from an environment variable <tip_manage_publish_subset>`,
+        reading from a local file or acquiring a token from ``getpass``.
+
+    .. note::
+
+        If attempting to use an API token, use the |confluence_server_pass|_
+        option instead.
+
+    The personal access token value used to authenticate with the Confluence
+    instance (see `Using Personal Access Tokens`_):
+
+    .. code-block:: python
+
+        confluence_publish_token = 'AbCdEfGhIjKlMnOpQrStUvWxY/z1234567890aBc'
 
 Generic configuration
 ---------------------
@@ -1478,6 +1517,7 @@ Deprecated options
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _Sphinx configurations: https://www.sphinx-doc.org/en/master/usage/configuration.html
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+.. _Using Personal Access Tokens: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
 .. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
