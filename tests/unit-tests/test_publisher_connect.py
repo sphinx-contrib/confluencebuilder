@@ -129,8 +129,11 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             first_request = daemon.pop_get_request()
             self.assertIsNotNone(first_request)
             _, headers = first_request
-            self.assertTrue('authorization' in headers)
-            self.assertEqual(headers['authorization'], expected_auth_value)
+            auth_header = headers.get('Authorization')
+            if not auth_header:
+                auth_header = headers.get('authorization')
+            self.assertIsNotNone(auth_header)
+            self.assertEqual(auth_header, expected_auth_value)
 
     def test_publisher_connect_proxy(self):
         """validate publisher can find a valid space"""
