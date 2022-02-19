@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -161,6 +161,15 @@ if 'CONFLUENCEBUILDER_LEGACY_NOCHECK' in os.environ:
     NOCHECK = 'nocheck'
 else:
     NOCHECK = 'no-check'
+
+# confluence api "retry after" header entry
+#
+# Confluence may response with a `Retry-After` when rate limiting has been
+# imposed on an API request. This entry keeps track of the header key entry
+# which reports the recommended duration till next retry.
+#
+# (see also: https://developer.atlassian.com/cloud/confluence/rate-limiting/)
+RSP_HEADER_RETRY_AFTER = 'Retry-After'
 
 # supported image types
 #

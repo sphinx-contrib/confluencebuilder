@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -10,15 +10,21 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlErr
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceCertificateError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceRateLimited
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
+from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
 from requests.adapters import HTTPAdapter
 import json
+import math
+import random
 import requests
 import ssl
+import time
 
 
 class SslAdapter(HTTPAdapter):
@@ -44,7 +50,7 @@ class SslAdapter(HTTPAdapter):
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
 
-class Rest:
+class Rest(object):
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
@@ -130,6 +136,8 @@ class Rest:
             raise ConfluencePermissionError("REST GET")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
+        if rsp.status_code == 429:
+            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
@@ -162,6 +170,8 @@ class Rest:
             raise ConfluencePermissionError("REST POST")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
+        if rsp.status_code == 429:
+            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -196,6 +206,8 @@ class Rest:
             raise ConfluencePermissionError("REST PUT")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
+        if rsp.status_code == 429:
+            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -230,6 +242,8 @@ class Rest:
             raise ConfluencePermissionError("REST DELETE")
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
+        if rsp.status_code == 429:
+            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
@@ -248,3 +262,74 @@ class Rest:
         except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err
+
+
+class RestRateLimited(Rest):
+    def __init__(self, config):
+        """
+        a rest rate limited instance
+
+        The following is a utility class to handle the same REST API calls
+        provided by the `Rest` class, but attempt to handle rate-limited
+        retries if Confluence reports that API calls should be limited.
+
+        Args:
+            config: the sphinx configuration
+        """
+        super(RestRateLimited, self).__init__(config)
+
+        self.forced_delay = config.confluence_publish_delay
+        self.last_retry = 1
+        self.max_retries = 5
+        self.max_retry_duration = 30
+
+    def get(self, *args, **kwargs):
+        method = super(RestRateLimited, self).get
+        return self._process(method, *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        method = super(RestRateLimited, self).post
+        return self._process(method, *args, **kwargs)
+
+    def put(self, *args, **kwargs):
+        method = super(RestRateLimited, self).put
+        return self._process(method, *args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        method = super(RestRateLimited, self).delete
+        return self._process(method, *args, **kwargs)
+
+    def _process(self, call, *args, **kwargs):
+        # apply any user-set delay on an api request
+        if self.forced_delay:
+            time.sleep(self.forced_delay)
+
+        attempt = 1
+        self.last_retry = max(self.last_retry / 2, 1)
+        while True:
+            try:
+                return call(*args, **kwargs)
+            except ConfluenceRateLimited as e:
+                # if max attempts have been reached, stop any more attempts
+                if attempt > self.max_retries:
+                    raise e
+
+                # determine the amount of delay to wait again -- either from the
+                # provided delay (if any) or exponential backoff
+                if e.delay:
+                    delay = e.delay
+                else:
+                    delay = 2 * self.last_retry
+
+                # cap delay to a maximum
+                delay = min(delay, self.max_retry_duration)
+
+                # add jitter
+                delay += random.uniform(0.3, 1.3)
+
+                # wait the calculated delay before retrying again
+                logger.warn('rate-limit response detected; '
+                            'waiting {} seconds...'.format(math.ceil(delay)))
+                time.sleep(delay)
+                self.last_retry = delay
+                attempt += 1

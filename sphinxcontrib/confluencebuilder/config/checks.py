@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -433,6 +433,11 @@ The value type permitted for this publish list option can either be a list of
 document names or a string pointing to a file containing documents. Document
 names are relative to the documentation's source directory.
 '''.format(msg=e))
+
+    # ##################################################################
+
+    validator.conf('confluence_publish_delay') \
+             .float_(positive=True)
 
     # ##################################################################
 

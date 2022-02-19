@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -484,6 +484,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
     def test_config_check_publish(self):
         # stock configuration should need more than just the publish flag
         self.config['confluence_publish'] = True
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+    def test_config_check_publish_delay(self):
+        self.config['confluence_publish_delay'] = 0.3
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = 1
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = '0.7'
+        self._try_config()
+
+        self.config['confluence_publish_delay'] = -1
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -195,6 +195,23 @@ If the above does not appear to be related to the current use case,
 please inform the maintainers of this extension.
 ---
 '''.format(name=page_name))
+
+
+class ConfluenceRateLimited(ConfluenceError):
+    def __init__(self, delay=None):
+        super(ConfluenceRateLimited, self).__init__('''
+---
+Request has been rate limited
+
+The configured Confluence instance is reporting that too many requests
+are being made and has instructed to client to limit the amount of
+requests to make at this time.
+---
+''')
+        try:
+            self.delay = int(delay)
+        except (TypeError, ValueError):
+            self.delay = None
 
 
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):

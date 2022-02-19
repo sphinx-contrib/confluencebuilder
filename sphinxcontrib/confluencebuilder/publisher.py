@@ -18,7 +18,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestor
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
-from sphinxcontrib.confluencebuilder.rest import Rest
+from sphinxcontrib.confluencebuilder.rest import RestRateLimited
 import json
 import time
 
@@ -51,7 +51,7 @@ class ConfluencePublisher:
             self.can_labels = 'labels' not in config.confluence_adv_restricted
 
     def connect(self):
-        self.rest_client = Rest(self.config)
+        self.rest_client = RestRateLimited(self.config)
         server_url = self.config.confluence_server_url
 
         try:
