@@ -1090,6 +1090,8 @@ Advanced publishing configuration
 
 .. confval:: confluence_publish_delay
 
+    .. versionadded:: 1.8
+
     Force a delay (in seconds) for any API calls made to a Confluence instance.
     By default, API requests will be made to a Confluence instance as soon as
     possible (or until Confluence reports that the client should be rate
