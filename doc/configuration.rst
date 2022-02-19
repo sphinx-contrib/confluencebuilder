@@ -1088,6 +1088,19 @@ Advanced publishing configuration
 
     See also |confluence_publish_denylist|_.
 
+.. confval:: confluence_publish_debug
+
+    .. versionadded:: 1.8
+
+    A boolean value to whether or not to print debug requests made to a
+    Confluence instance. This can be helpful for users attempting to debug
+    their connection to a Confluence instance. By default, this option is
+    disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_debug = True
+
 .. confval:: confluence_publish_delay
 
     .. versionadded:: 1.8
