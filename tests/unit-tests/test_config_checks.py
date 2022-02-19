@@ -641,6 +641,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_publish_token(self):
+        self.config['confluence_publish_token'] = ''
+        self._try_config()
+
+        self.config['confluence_publish_token'] = 'dummy'
+        self._try_config()
+
     def test_config_check_secnumber_suffix(self):
         self.config['confluence_secnumber_suffix'] = ''
         self._try_config()
