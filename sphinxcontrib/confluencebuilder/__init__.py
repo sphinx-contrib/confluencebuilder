@@ -181,6 +181,8 @@ def setup(app):
     app.add_config_value('confluence_jira_servers', None, 'env')
     # Translation of a raw language to code block macro language.
     app.add_config_value('confluence_lang_transform', None, 'env')
+    # Macro configuration for Confluence-managed LaTeX content.
+    app.add_config_value('confluence_latex_macro', None, 'env')
     # Link suffix for generated files.
     app.add_config_value('confluence_link_suffix', None, 'env')
     # Translation of docname to a (partial) URI.

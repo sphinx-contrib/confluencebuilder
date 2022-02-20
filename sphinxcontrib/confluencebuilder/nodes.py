@@ -76,6 +76,24 @@ class confluence_newline(nodes.Structural, nodes.Element):
     """
 
 
+class confluence_latex_block(nodes.TextElement):
+    """
+    confluence latex block node
+
+    A Confluence builder defined LaTeX block node, used to help manage LaTeX
+    content designed for a block/section.
+    """
+
+
+class confluence_latex_inline(nodes.Inline, nodes.TextElement):
+    """
+    confluence latex inline node
+
+    A Confluence builder defined LaTeX inline node, used to help manage LaTeX
+    content designed for an inlined section of a paragraph.
+    """
+
+
 class confluence_page_generation_notice(nodes.TextElement):
     """
     confluence page generation notice node

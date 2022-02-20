@@ -40,6 +40,13 @@ def apply_defaults(conf):
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
 
+    if conf.confluence_latex_macro and \
+            not isinstance(conf.confluence_latex_macro, dict):
+        conf.confluence_latex_macro = {
+            'block-macro': conf.confluence_latex_macro,
+            'inline-macro': conf.confluence_latex_macro,
+        }
+
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True
 
