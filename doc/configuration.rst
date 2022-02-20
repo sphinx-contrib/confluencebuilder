@@ -1427,6 +1427,47 @@ Advanced processing configuration
 
        confluence_lang_transform = my_language_translation
 
+.. |confluence_latex_macro| replace:: ``confluence_latex_macro``
+.. _confluence_latex_macro:
+
+.. confval:: confluence_latex_macro
+
+    .. note::
+
+        Confluence does not provide stock support for LaTeX macros.
+
+    The name of a LaTeX macro to use when wishing to render LaTeX content on
+    a Confluence instance. Stock Confluence instances do not support LaTeX
+    content by default. However, if an instance has installed a marketplace
+    add-on that supports LaTeX, this option can be used to hint to render LaTeX
+    content (such as mathematical notation) by configuring this option.
+
+    .. code-block:: python
+
+        confluence_latex_macro = 'macro-name'
+         (or)
+        confluence_latex_macro = {
+            'block-macro': 'block-macro-name',
+            'inline-macro': 'inline-macro-name',
+            'inline-macro-param': 'inline-macro-parameter', # (optional)
+        }
+
+    The name of a LaTeX macro will vary based on which add-on is installed.
+    For a list of known macro names or steps to determine the name of a
+    supported macro, consult the
+    :ref:`macro table/instructions <guide_math_macro_names>`
+    found in the math guide.
+
+    If this option is not set, any LaTeX content processed in a document will
+    instead be converted to images using dvipng/dvisvgm (see also
+    `sphinx.ext.imgmath`_ for additional information).
+
+    See also:
+
+    - :ref:`LaTeX directives <latex-directives>`
+    - :ref:`LaTeX roles <latex-roles>`
+    - :doc:`guide-math`
+
 .. |confluence_link_suffix| replace:: ``confluence_link_suffix``
 .. _confluence_link_suffix:
 
@@ -1536,5 +1577,6 @@ Deprecated options
 .. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
+.. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
 .. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc

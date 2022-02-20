@@ -12,6 +12,7 @@ Documentation contents
     roles
     features
     tips
+    guides
     changelog
 
 Indices and tables

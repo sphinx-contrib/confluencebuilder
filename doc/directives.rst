@@ -233,6 +233,52 @@ Confluence documents.
 
     See also :ref:`Jira roles <jira-roles>`.
 
+.. _latex-directives:
+
+LaTeX
+-----
+
+.. note::
+
+    LaTeX support requires dvipng/dvisvgm to be installed on system; however,
+    if a Confluence instance supports a LaTeX macro, the
+    ``confluence_latex_macro`` (:ref:`ref<confluence_latex_macro>`) option can
+    be used instead. For more information, please read :doc:`guide-math`.
+
+The following directive can be used to help add LaTeX content into a
+Confluence page.
+
+.. rst:directive:: .. confluence_latex::
+
+    .. versionadded:: 1.8
+
+    The ``confluence_latex`` directive allows a user to add LaTeX content into
+    a document. For example:
+
+    .. code-block:: rst
+
+        .. confluence_latex::
+
+            $\mathfrak{H}$ello world!
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: align: "left", "center", or "right"
+        :type: string
+
+        The alignment to apply on the LaTeX content. By default, the value is
+        set to ``center``.
+
+        .. code-block:: rst
+
+            .. confluence_latex::
+                :align: left
+
+                $\mathfrak{H}$ello world!
+
+See also :ref:`LaTeX roles <latex-roles>`.
+
+
 .. references ------------------------------------------------------------------
 
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -39,6 +39,13 @@ def apply_defaults(conf):
 
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
+
+    if conf.confluence_latex_macro and \
+            not isinstance(conf.confluence_latex_macro, dict):
+        conf.confluence_latex_macro = {
+            'block-macro': conf.confluence_latex_macro,
+            'inline-macro': conf.confluence_latex_macro,
+        }
 
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True

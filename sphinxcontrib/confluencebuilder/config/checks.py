@@ -314,6 +314,42 @@ dictionaries with keys 'id' and 'name' which identify the Jira instances.
 
     # ##################################################################
 
+    # confluence_latex_macro
+    try:
+        validator.conf('confluence_latex_macro').string()
+    except ConfluenceConfigurationError:
+        try:
+            validator.conf('confluence_latex_macro').dict_str_str()
+
+        except ConfluenceConfigurationError:
+            raise ConfluenceConfigurationError('''\
+confluence_latex_macro is not a string or dictionary of strings
+
+The option 'confluence_latex_macro' has been provided to indicate that a
+LaTeX content should be rendered with a LaTeX macro supported on a Confluence
+instance. This value can either be set to a string of the macro to be used or
+set to a dictionary of key-value strings for advanced options.
+''')
+
+        if config.confluence_latex_macro:
+            conf_keys = config.confluence_latex_macro.keys()
+
+            required_keys = [
+                'block-macro',
+                'inline-macro',
+            ]
+
+            if not all(name in conf_keys for name in required_keys):
+                raise ConfluenceConfigurationError('''\
+missing keys in confluence_latex_macro
+
+The following keys are required:
+
+ - {}
+'''.format('\n - '.join(required_keys)))
+
+    # ##################################################################
+
     # confluence_link_suffix
     validator.conf('confluence_link_suffix') \
              .string()

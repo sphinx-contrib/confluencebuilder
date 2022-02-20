@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2019-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2019-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -73,6 +73,24 @@ class confluence_newline(nodes.Structural, nodes.Element):
     A Confluence builder defined newline node which provides a convenience hint
     that a newline should be injected into a document (for users not wanted to
     define a custom raw type).
+    """
+
+
+class confluence_latex_block(nodes.TextElement):
+    """
+    confluence latex block node
+
+    A Confluence builder defined LaTeX block node, used to help manage LaTeX
+    content designed for a block/section.
+    """
+
+
+class confluence_latex_inline(nodes.Inline, nodes.TextElement):
+    """
+    confluence latex inline node
+
+    A Confluence builder defined LaTeX inline node, used to help manage LaTeX
+    content designed for an inlined section of a paragraph.
     """
 
 

@@ -1987,6 +1987,64 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # -------------------------------------------
+    # confluence-builder -- enhancements -- latex
+    # -------------------------------------------
+
+    def _visit_confluence_latex(self, node, macro, param=None):
+        latex_content = node.rawsource
+
+        # if this block is numbered, attempt to align in on the following macro
+        if node.get('from_math') and node.get('number'):
+            if self.builder.config.math_numfig and self.builder.config.numfig:
+                figtype = 'displaymath'
+                if self.builder.name == 'singleconfluence':
+                    key = '%s/%s' % (self._docnames[-1], figtype)
+                else:
+                    key = figtype
+
+                id_ = node['ids'][0]
+                number = self.builder.fignumbers.get(key, {}).get(id_, ())
+                number = '.'.join(map(str, number))
+            else:
+                number = node['number']
+
+            self.body.append(self._start_tag(node, 'div',
+                **{'style': 'float: right'}))
+            self.body.append('({})'.format(number))
+            self.body.append(self._end_tag(node))
+
+        self.body.append(self._start_ac_macro(node, macro))
+        if param is not None:
+            latex_content = self.encode(latex_content)
+            self.body.append(self._build_ac_param(node, param, latex_content))
+        else:
+            self.body.append(self._start_ac_plain_text_body_macro(node))
+            self.body.append(self._escape_cdata(latex_content))
+            self.body.append(self._end_ac_plain_text_body_macro(node))
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
+
+    def visit_confluence_latex_block(self, node):
+        if not self.builder.config.confluence_latex_macro:
+            self.warn('ignoring node since no latex macro configured')
+            raise nodes.SkipNode
+
+        config = self.builder.config.confluence_latex_macro
+        macro = config['block-macro']
+        self._visit_confluence_latex(node, macro)
+
+    def visit_confluence_latex_inline(self, node):
+        if not self.builder.config.confluence_latex_macro:
+            self.warn('ignoring node since no latex macro configured')
+            raise nodes.SkipNode
+
+        config = self.builder.config.confluence_latex_macro
+        macro = config['inline-macro']
+        param = config.get('inline-macro-param')
+        self._visit_confluence_latex(node, macro, param=param)
+
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
     # ------------------------------------------

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -8,6 +8,8 @@ from docutils import nodes
 from os import path
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.svg import svg_initialize
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_diagrams import replace_sphinx_diagrams_nodes
@@ -220,9 +222,37 @@ def replace_math_blocks(builder, doctree):
         doctree: the doctree to replace blocks on
     """
 
+    # phase 1 -- convert math blocks into Confluence LaTeX blocks
+    for node in itertools.chain(doctree.traverse(nodes.math),
+            doctree.traverse(nodes.math_block)):
+        if not isinstance(node, nodes.math):
+            if node['nowrap']:
+                latex = node.astext()
+            else:
+                latex = wrap_displaymath(node.astext(), None, False)
+            new_node_type = confluence_latex_block
+        else:
+            latex = '$' + node.astext() + '$'
+            new_node_type = confluence_latex_inline
+
+        new_node = new_node_type(latex, latex, **node.attributes)
+        new_node['from_math'] = True
+
+        if not isinstance(node, nodes.math):
+            new_node['align'] = 'center'
+
+        node.replace_self(new_node)
+
+    # disable automatic conversion of latex blocks to images if a latex
+    # macro is configured
+    if builder.config.confluence_latex_macro:
+        return
+
     if imgmath is None:
         return
 
+    # phase 2 -- convert Confluence LaTeX blocks into image blocks
+    #
     # imgmath's render_math call expects a translator to be passed
     # in; mock a translator tied to our builder
     class MockTranslator:
@@ -230,18 +260,10 @@ def replace_math_blocks(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in itertools.chain(doctree.traverse(nodes.math),
-            doctree.traverse(nodes.math_block)):
+    for node in itertools.chain(doctree.traverse(confluence_latex_inline),
+            doctree.traverse(confluence_latex_block)):
         try:
-            if not isinstance(node, nodes.math):
-                if node['nowrap']:
-                    latex = node.astext()
-                else:
-                    latex = wrap_displaymath(node.astext(), None, False)
-            else:
-                latex = '$' + node.astext() + '$'
-
-            mf, depth = imgmath.render_math(mock_translator, latex)
+            mf, depth = imgmath.render_math(mock_translator, node.astext())
             if not mf:
                 continue
 
@@ -249,11 +271,10 @@ def replace_math_blocks(builder, doctree):
                 candidates={'?'},
                 uri=path.join(builder.outdir, mf),
                 **node.attributes)
-            new_node['from_math'] = True
-            if not isinstance(node, nodes.math):
-                new_node['align'] = 'center'
+
             if depth is not None:
                 new_node['math_depth'] = depth
+
             node.replace_self(new_node)
         except imgmath.MathExtError as exc:
             ConfluenceLogger.warn('inline latex {}: {}'.format(

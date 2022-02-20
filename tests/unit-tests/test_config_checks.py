@@ -400,6 +400,49 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_latex_macro(self):
+        self.config['confluence_latex_macro'] = 'macro-name'
+        self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'block-macro': 'block-macro-name',
+            'inline-macro': 'inline-macro-name',
+        }
+        self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'block-macro': 'block-macro-name',
+            'inline-macro': 'inline-macro-name',
+            'inline-macro-param': 'inline-macro-parameter',
+        }
+        self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'block-macro': 'block-macro-name',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'inline-macro': 'inline-macro-name',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'block-macro': 'block-macro-name',
+            'inline-macro': None,
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_latex_macro'] = {
+            'block-macro': None,
+            'inline-macro': 'inline-macro-name',
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_link_suffix(self):
         self.config['confluence_link_suffix'] = '.conf'
         self._try_config()
