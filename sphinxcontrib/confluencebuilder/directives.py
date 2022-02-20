@@ -7,6 +7,7 @@
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
+from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import jira
@@ -53,6 +54,22 @@ class ConfluenceExpandDirective(Directive):
             node['title'] = self.options['title']
 
         self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class ConfluenceLatexDirective(Directive):
+    has_content = True
+    option_spec = {
+        'align': directives.unchanged,
+    }
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_latex_block(rawsource=text, text=text)
+        node['align'] = self.options.get('align', 'center')
+
         return [node]
 
 
