@@ -22,6 +22,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
     def setUpClass(cls):
         cls.config = prepare_conf()
         cls.config.confluence_timeout = 5
+        cls.config.confluence_publish_debug = True
 
     def test_publisher_connect_bad_response_code(self):
         """validate publisher can handle bad response code"""

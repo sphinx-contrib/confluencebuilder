@@ -14,7 +14,8 @@ class TestConfluencePublisherPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config = prepare_conf()
-        cls.config.confluence_timeout = 1
+        cls.config.confluence_timeout = 5
+        cls.config.confluence_publish_debug = True
 
         cls.std_space_connect_rsp = {
             'size': 1,
