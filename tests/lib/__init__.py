@@ -16,6 +16,7 @@ from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
 from threading import Event
+from threading import Lock
 from threading import Thread
 import inspect
 import json
@@ -49,24 +50,25 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         Confluence instance.
 
         Attributes:
-            unittest_del_req: delete requests cached by handler
-            unittest_del_rsp: delete responses to use in the handler
-            unittest_get_req: get requests cached by handler
-            unittest_get_rsp: get responses to use in the handler
-            unittest_put_req: put requests cached by handler
-            unittest_put_rsp: put responses to use in the handler
+            del_req: delete requests cached by handler
+            del_rsp: delete responses to use in the handler
+            get_req: get requests cached by handler
+            get_rsp: get responses to use in the handler
+            put_req: put requests cached by handler
+            put_rsp: put responses to use in the handler
         """
 
         LOCAL_RANDOM_PORT = ('127.0.0.1', 0)
         server_socket.TCPServer.__init__(self,
             LOCAL_RANDOM_PORT, ConfluenceInstanceRequestHandler)
 
-        self.unittest_del_req = []
-        self.unittest_del_rsp = []
-        self.unittest_get_req = []
-        self.unittest_get_rsp = []
-        self.unittest_put_req = []
-        self.unittest_put_rsp = []
+        self.mtx = Lock()
+        self.del_req = []
+        self.del_rsp = []
+        self.get_req = []
+        self.get_rsp = []
+        self.put_req = []
+        self.put_rsp = []
 
     def check_unhandled_requests(self):
         """
@@ -80,10 +82,9 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
             whether or not there are still requests cached
         """
 
-        if self.unittest_del_req or \
-                self.unittest_get_req or \
-                self.unittest_put_req:
-            return True
+        with self.mtx:
+            if self.del_req or self.get_req or self.put_req:
+                return True
 
         return False
 
@@ -100,7 +101,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         """
 
         try:
-            return self.unittest_del_req.pop(0)
+            with self.mtx:
+                return self.del_req.pop(0)
         except IndexError:
             return None
 
@@ -117,7 +119,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         """
 
         try:
-            return self.unittest_get_req.pop(0)
+            with self.mtx:
+                return self.get_req.pop(0)
         except IndexError:
             return None
 
@@ -134,7 +137,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         """
 
         try:
-            return self.unittest_put_req.pop(0)
+            with self.mtx:
+                return self.put_req.pop(0)
         except IndexError:
             return None
 
@@ -149,7 +153,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
             code: the response code
         """
 
-        self.unittest_del_rsp.append(code)
+        with self.mtx:
+            self.del_rsp.append(code)
 
     def register_get_rsp(self, code, data):
         """
@@ -169,7 +174,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
 
             data = data.encode('utf-8')
 
-        self.unittest_get_rsp.append((code, data))
+        with self.mtx:
+            self.get_rsp.append((code, data))
 
     def register_put_rsp(self, code, data):
         """
@@ -189,7 +195,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
 
             data = data.encode('utf-8')
 
-        self.unittest_put_rsp.append((code, data))
+        with self.mtx:
+            self.put_rsp.append((code, data))
 
 
 class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
@@ -211,12 +218,13 @@ class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
         handler.
         """
 
-        self.server.unittest_del_req.append((self.path, dict(self.headers)))
+        with self.server.mtx:
+            self.server.del_req.append((self.path, dict(self.headers)))
 
-        try:
-            code = self.server.unittest_del_rsp.pop(0)
-        except IndexError:
-            code = 500
+            try:
+                code = self.server.del_rsp.pop(0)
+            except IndexError:
+                code = 500
 
         self.send_response(code)
         self.end_headers()
@@ -229,13 +237,14 @@ class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
         handler.
         """
 
-        self.server.unittest_get_req.append((self.path, dict(self.headers)))
+        with self.server.mtx:
+            self.server.get_req.append((self.path, dict(self.headers)))
 
-        try:
-            code, data = self.server.unittest_get_rsp.pop(0)
-        except IndexError:
-            code = 500
-            data = None
+            try:
+                code, data = self.server.get_rsp.pop(0)
+            except IndexError:
+                code = 500
+                data = None
 
         self.send_response(code)
         self.end_headers()
@@ -250,12 +259,14 @@ class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
         handler.
         """
 
-        self.server.unittest_put_req.append((self.path, dict(self.headers)))
+        with self.server.mtx:
+            self.server.put_req.append((self.path, dict(self.headers)))
 
-        try:
-            code, data = self.server.unittest_put_rsp.pop(0)
-        except IndexError:
-            code = 500
+            try:
+                code, data = self.server.put_rsp.pop(0)
+            except IndexError:
+                code = 500
+                data = None
 
         self.send_response(code)
         self.end_headers()
