@@ -5,14 +5,30 @@ Documentation contents
     :maxdepth: 1
 
     install
+
+.. toctree::
+    :maxdepth: 2
+
     tutorial
     configuration
+
+.. toctree::
+    :maxdepth: 1
+
     builders
     directives
     roles
+
+.. toctree::
+    :maxdepth: 2
+
     features
     tips
     guides
+
+.. toctree::
+    :maxdepth: 1
+
     changelog
 
 Indices and tables

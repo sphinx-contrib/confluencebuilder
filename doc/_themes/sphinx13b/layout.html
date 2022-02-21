@@ -54,7 +54,10 @@ $(window).scroll(function() {
 
 {% block rootrellink %}
     <li><a href="{{ pathto('index') }}">Home</a>&#160;|</li>
-    <li><a href="{{ pathto('contents') }}">Documentation</a> &#187;</li>
+    <li>
+        <a href="{{ pathto('contents') }}">Documentation</a>
+        <span aria-hidden="true">&#187;</span>
+    </li>
 {% endblock %}
 
 {% block header %}

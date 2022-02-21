@@ -8,3 +8,4 @@ the Confluence Builder extension in a Sphinx-enabled environment.
     :maxdepth: 1
 
     guide-math
+    guide-ci

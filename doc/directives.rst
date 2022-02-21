@@ -231,7 +231,7 @@ Confluence documents.
                 :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
                 :server-name: MyAwesomeJiraServer
 
-    See also :ref:`Jira roles <jira-roles>`.
+See also :ref:`Jira roles <jira-roles>`.
 
 .. _latex-directives:
 

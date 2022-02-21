@@ -1413,6 +1413,11 @@ Advanced processing configuration
         .. jira_issue:: TEST-151
             :server: server-1
 
+    See also:
+
+    - :ref:`Jira directives <jira-directives>`
+    - :ref:`Jira roles <jira-roles>`.
+
 .. confval:: confluence_lang_transform
 
     A function to override the translation of literal block-based directive

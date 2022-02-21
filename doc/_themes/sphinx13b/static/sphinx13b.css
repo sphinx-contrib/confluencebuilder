@@ -199,16 +199,20 @@ div.section:target > h2:first-of-type,
 div.section:target > h3:first-of-type,
 div.section:target > h4:first-of-type,
 div.section:target > h5:first-of-type,
-div.section:target > h6:first-of-type {
-    background-color: #fbe54e;
-}
-
+div.section:target > h6:first-of-type,
 section:target > h1:first-of-type,
 section:target > h2:first-of-type,
 section:target > h3:first-of-type,
 section:target > h4:first-of-type,
 section:target > h5:first-of-type,
-section:target > h6:first-of-type {
+section:target > h6:first-of-type,
+span:target + h1:first-of-type,
+span:target + h2:first-of-type,
+span:target + h3:first-of-type,
+span:target + h4:first-of-type,
+span:target + h5:first-of-type,
+span:target + h6:first-of-type,
+span:target + dl.confval > dt {
     background-color: #fbe54e;
 }
 
@@ -458,6 +462,19 @@ div.viewcode-block:target {
 
 .index-trademark p {
     margin: 0px;
+}
+
+.toctree-wrapper ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.toctree-wrapper:first-of-type {
+    margin-top: 0.8em;
+}
+
+.toctree-wrapper:last-of-type {
+    margin-bottom: 0.8em;
 }
 
 code.literal {
