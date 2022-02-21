@@ -335,8 +335,6 @@ def mock_confluence_instance(config=None, ignore_requests=False):
 
         # start accepting requests
         if not ignore_requests:
-            daemon.server_activate()
-
             sync = Event()
 
             def serve_forever(daemon, sync):
