@@ -54,4 +54,4 @@ jobs:
     - name: tox
       env:
         TOXENV: ${{ matrix.toxenv }}
-      run: while tox -e py310-sphinx44 -- test_publisher_page_store_page_id_default; do sleep 1; done
+      run: tox -- test_publisher_page_store_page_id_default
