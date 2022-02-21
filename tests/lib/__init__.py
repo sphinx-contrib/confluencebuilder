@@ -192,7 +192,8 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
         self.unittest_put_rsp.append((code, data))
 
 
-class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
+class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
+        http_server.SimpleHTTPRequestHandler):
     """
     confluence instance request handler
 
