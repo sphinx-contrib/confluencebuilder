@@ -79,35 +79,6 @@ By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
 (see ``confluence_timeout``; :ref:`ref<confluence_timeout>`).
 
-.. _tip_manage_publish_subset:
-
-.. index:: Continuous integration
-
-Publishing with a CI secret key
--------------------------------
-
-.. note::
-
-    If running in a ``tox``/``virtualenv`` setup, ensure any environment
-    variables used are configured to be passed through to the virtual
-    environment.
-
-For users performing automatic publishing through a CI system, they may wish to
-authenticate their publish event with a secret key. A common approach to
-applying a secret key is through an environment variable. For example:
-
-.. code-block:: python
-
-    import os
-
-    ...
-
-    confluence_server_pass = os.getenv('SECRET_KEY')
-
-The above will read an environment variable ``SECRET_KEY`` prepared by a CI
-script which will be set on the ``confluence_server_pass``
-(:ref:`ref<confluence_server_pass>`) configuration.
-
 .. index:: Wiping a space
 .. index:: Page removal; Wiping a space
 
