@@ -8,7 +8,7 @@ The following outlines additional `roles`_ supported by this extension.
 Jira
 ----
 
-The following roles can be used to help include Jira macros into generated
+The following role can be used to help include Jira macros into generated
 Confluence documents.
 
 .. index:: Jira; Adding a single Jira link (role)
@@ -24,7 +24,7 @@ Confluence documents.
 
         See :jira:`TEST-123` for more details.
 
-    See also :ref:`Jira directives <jira-directives>`.
+See also :ref:`Jira directives <jira-directives>`.
 
 .. _latex-roles:
 
