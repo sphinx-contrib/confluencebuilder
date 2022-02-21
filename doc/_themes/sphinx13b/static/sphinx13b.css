@@ -460,6 +460,19 @@ div.viewcode-block:target {
     margin: 0px;
 }
 
+.toctree-wrapper ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.toctree-wrapper:first-of-type {
+    margin-top: 0.8em;
+}
+
+.toctree-wrapper:last-of-type {
+    margin-bottom: 0.8em;
+}
+
 code.literal {
     border: #ccc 1px solid;
     padding: 0px 4px;
