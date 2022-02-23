@@ -759,6 +759,13 @@ configured at the same time.
 
     # ##################################################################
 
+    # confluence_disable_appending_rest_api_to_url
+    validator.conf('confluence_disable_appending_rest_api_to_url') \
+             .bool()
+
+    # ##################################################################
+
+
     # inform users of additional configuration information
     deprecated(validator)
     warnings(validator)

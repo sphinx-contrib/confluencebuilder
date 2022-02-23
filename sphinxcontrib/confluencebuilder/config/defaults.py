@@ -56,6 +56,9 @@ def apply_defaults(conf):
     if conf.confluence_sourcelink is None:
         conf.confluence_sourcelink = {}
 
+    if conf.confluence_disable_appending_rest_api_to_url is None:
+        conf.confluence_disable_appending_rest_api_to_url = False
+
     config2bool = [
         'confluence_add_secnumbers',
         'confluence_adv_aggressive_search',
@@ -83,6 +86,7 @@ def apply_defaults(conf):
         'confluence_root_homepage',
         'confluence_watch',
         'singleconfluence_toctree',
+        'confluence_disable_appending_rest_api_to_url'
     ]
     for key in config2bool:
         if getattr(conf, key) is not None:

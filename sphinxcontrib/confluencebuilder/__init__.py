@@ -211,6 +211,8 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', None, '')
     # Do not cap sections to a maximum of six (6) levels.
     app.add_config_value('confluence_adv_writer_no_section_cap', None, 'env')
+    # Disable Appending "rest/api" to api calls
+    app.add_config_value('confluence_disable_appending_rest_api_to_url', None, 'env')
 
     # (configuration - deprecated)
     # replaced by confluence_root_homepage
