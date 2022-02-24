@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from functools import wraps
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
@@ -25,6 +26,14 @@ import random
 import requests
 import ssl
 import time
+
+
+# the maximum times a request will be retried until stopping
+RATE_LIMITED_MAX_RETRIES = 5
+
+# the maximum duration (in seconds) a retry on a rate-limited request can be
+# delayed
+RATE_LIMITED_MAX_RETRY_DURATION = 30
 
 
 class SslAdapter(HTTPAdapter):
@@ -50,10 +59,101 @@ class SslAdapter(HTTPAdapter):
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
 
+def rate_limited_retries():
+    """
+    a rest rate limited "decorator"
+
+    A utility "decorator" to handle rate-limited retries if Confluence reports
+    that API calls should be limited.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            # apply any user-set delay on an api request
+            if self.config.confluence_publish_delay:
+                delay = self.config.confluence_publish_delay
+                logger.verbose('user-set api delay set; '
+                               'waiting {} seconds...'.format(math.ceil(delay)))
+                time.sleep(delay)
+
+            # if confluence asked us to wait so many seconds before a next
+            # api request, wait a moment
+            if self.next_delay:
+                delay = self.next_delay
+                logger.verbose('rate-limit header detected; '
+                               'waiting {} seconds...'.format(math.ceil(delay)))
+                time.sleep(delay)
+                self.next_delay = None
+
+            # if we have imposed some rate-limiting requests where confluence
+            # did not provide retry information, slowly decrease our tracked
+            # delay if requests are going through
+            self.last_retry = max(self.last_retry / 2, 1)
+
+            attempt = 1
+            while True:
+                try:
+                    return func(self, *args, **kwargs)
+                except ConfluenceRateLimited as e:
+                    # if max attempts have been reached, stop any more attempts
+                    if attempt > RATE_LIMITED_MAX_RETRIES:
+                        raise e
+
+                    # determine the amount of delay to wait again -- either from the
+                    # provided delay (if any) or exponential backoff
+                    if self.next_delay:
+                        delay = self.next_delay
+                        self.next_delay = None
+                    else:
+                        delay = 2 * self.last_retry
+
+                    # cap delay to a maximum
+                    delay = min(delay, RATE_LIMITED_MAX_RETRY_DURATION)
+
+                    # add jitter
+                    delay += random.uniform(0.3, 1.3)
+
+                    # wait the calculated delay before retrying again
+                    logger.warn('rate-limit response detected; '
+                                'waiting {} seconds...'.format(math.ceil(delay)))
+                    time.sleep(delay)
+                    self.last_retry = delay
+                    attempt += 1
+
+        return _wrapper
+    return _decorator
+
+
+def requests_exception_wrappers():
+    """
+    requests exception wrapping
+
+    A utility "decorator" which will wrap common Requests exceptions with this
+    extension's tailored exception types.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            try:
+                return func(self, *args, **kwargs)
+            except requests.exceptions.Timeout:
+                raise ConfluenceTimeoutError(self.url)
+            except requests.exceptions.SSLError as ex:
+                raise ConfluenceSslError(self.url, ex)
+            except requests.exceptions.ConnectionError as ex:
+                raise ConfluenceBadServerUrlError(self.url, ex)
+
+        return _wrapper
+    return _decorator
+
+
 class Rest(object):
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
+        self.config = config
+        self.last_retry = 1
+        self.next_delay = None
         self.url = config.confluence_server_url
         self.session = self._setup_session(config)
         self.timeout = config.confluence_timeout
@@ -124,26 +224,14 @@ class Rest(object):
 
         return session
 
+    @rate_limited_retries()
+    @requests_exception_wrappers()
     def get(self, key, params):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key
 
-        try:
-            rsp = self.session.get(
-                rest_url, params=params, timeout=self.timeout)
-        except requests.exceptions.Timeout:
-            raise ConfluenceTimeoutError(self.url)
-        except requests.exceptions.SSLError as ex:
-            raise ConfluenceSslError(self.url, ex)
-        except requests.exceptions.ConnectionError as ex:
-            raise ConfluenceBadServerUrlError(self.url, ex)
-        if rsp.status_code == 401:
-            raise ConfluenceAuthenticationFailedUrlError
-        if rsp.status_code == 403:
-            raise ConfluencePermissionError("REST GET")
-        if rsp.status_code == 407:
-            raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429:
-            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
+        rsp = self.session.get(rest_url, params=params, timeout=self.timeout)
+        self._handle_common_request(rsp)
+
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
@@ -159,25 +247,15 @@ class Rest(object):
 
         return json_data
 
+    @rate_limited_retries()
+    @requests_exception_wrappers()
     def post(self, key, data, files=None):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key
-        try:
-            rsp = self.session.post(
-                rest_url, json=data, files=files, timeout=self.timeout)
-        except requests.exceptions.Timeout:
-            raise ConfluenceTimeoutError(self.url)
-        except requests.exceptions.SSLError as ex:
-            raise ConfluenceSslError(self.url, ex)
-        except requests.exceptions.ConnectionError as ex:
-            raise ConfluenceBadServerUrlError(self.url, ex)
-        if rsp.status_code == 401:
-            raise ConfluenceAuthenticationFailedUrlError
-        if rsp.status_code == 403:
-            raise ConfluencePermissionError("REST POST")
-        if rsp.status_code == 407:
-            raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429:
-            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
+
+        rsp = self.session.post(
+            rest_url, json=data, files=files, timeout=self.timeout)
+        self._handle_common_request(rsp)
+
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -196,24 +274,14 @@ class Rest(object):
 
         return json_data
 
+    @rate_limited_retries()
+    @requests_exception_wrappers()
     def put(self, key, value, data):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
-        try:
-            rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
-        except requests.exceptions.Timeout:
-            raise ConfluenceTimeoutError(self.url)
-        except requests.exceptions.SSLError as ex:
-            raise ConfluenceSslError(self.url, ex)
-        except requests.exceptions.ConnectionError as ex:
-            raise ConfluenceBadServerUrlError(self.url, ex)
-        if rsp.status_code == 401:
-            raise ConfluenceAuthenticationFailedUrlError
-        if rsp.status_code == 403:
-            raise ConfluencePermissionError("REST PUT")
-        if rsp.status_code == 407:
-            raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429:
-            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
+
+        rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
+        self._handle_common_request(rsp)
+
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             if self.verbosity > 0:
@@ -232,24 +300,14 @@ class Rest(object):
 
         return json_data
 
+    @rate_limited_retries()
+    @requests_exception_wrappers()
     def delete(self, key, value):
         rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
-        try:
-            rsp = self.session.delete(rest_url, timeout=self.timeout)
-        except requests.exceptions.Timeout:
-            raise ConfluenceTimeoutError(self.url)
-        except requests.exceptions.SSLError as ex:
-            raise ConfluenceSslError(self.url, ex)
-        except requests.exceptions.ConnectionError as ex:
-            raise ConfluenceBadServerUrlError(self.url, ex)
-        if rsp.status_code == 401:
-            raise ConfluenceAuthenticationFailedUrlError
-        if rsp.status_code == 403:
-            raise ConfluencePermissionError("REST DELETE")
-        if rsp.status_code == 407:
-            raise ConfluenceProxyPermissionError
-        if rsp.status_code == 429:
-            raise ConfluenceRateLimited(rsp.headers.get(RSP_HEADER_RETRY_AFTER))
+
+        rsp = self.session.delete(rest_url, timeout=self.timeout)
+        self._handle_common_request(rsp)
+
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
@@ -269,73 +327,17 @@ class Rest(object):
             err += 'DATA: <not-or-invalid-json>'
         return err
 
+    def _handle_common_request(self, rsp):
 
-class RestRateLimited(Rest):
-    def __init__(self, config):
-        """
-        a rest rate limited instance
+        # if confluence reports a retry-after delay (to pace us), track it
+        # to delay the next request made
+        self.next_delay = rsp.headers.get(RSP_HEADER_RETRY_AFTER)
 
-        The following is a utility class to handle the same REST API calls
-        provided by the `Rest` class, but attempt to handle rate-limited
-        retries if Confluence reports that API calls should be limited.
-
-        Args:
-            config: the sphinx configuration
-        """
-        super(RestRateLimited, self).__init__(config)
-
-        self.forced_delay = config.confluence_publish_delay
-        self.last_retry = 1
-        self.max_retries = 5
-        self.max_retry_duration = 30
-
-    def get(self, *args, **kwargs):
-        method = super(RestRateLimited, self).get
-        return self._process(method, *args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        method = super(RestRateLimited, self).post
-        return self._process(method, *args, **kwargs)
-
-    def put(self, *args, **kwargs):
-        method = super(RestRateLimited, self).put
-        return self._process(method, *args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        method = super(RestRateLimited, self).delete
-        return self._process(method, *args, **kwargs)
-
-    def _process(self, call, *args, **kwargs):
-        # apply any user-set delay on an api request
-        if self.forced_delay:
-            time.sleep(self.forced_delay)
-
-        attempt = 1
-        self.last_retry = max(self.last_retry / 2, 1)
-        while True:
-            try:
-                return call(*args, **kwargs)
-            except ConfluenceRateLimited as e:
-                # if max attempts have been reached, stop any more attempts
-                if attempt > self.max_retries:
-                    raise e
-
-                # determine the amount of delay to wait again -- either from the
-                # provided delay (if any) or exponential backoff
-                if e.delay:
-                    delay = e.delay
-                else:
-                    delay = 2 * self.last_retry
-
-                # cap delay to a maximum
-                delay = min(delay, self.max_retry_duration)
-
-                # add jitter
-                delay += random.uniform(0.3, 1.3)
-
-                # wait the calculated delay before retrying again
-                logger.warn('rate-limit response detected; '
-                            'waiting {} seconds...'.format(math.ceil(delay)))
-                time.sleep(delay)
-                self.last_retry = delay
-                attempt += 1
+        if rsp.status_code == 401:
+            raise ConfluenceAuthenticationFailedUrlError
+        if rsp.status_code == 403:
+            raise ConfluencePermissionError('rest-call')
+        if rsp.status_code == 407:
+            raise ConfluenceProxyPermissionError
+        if rsp.status_code == 429:
+            raise ConfluenceRateLimited
