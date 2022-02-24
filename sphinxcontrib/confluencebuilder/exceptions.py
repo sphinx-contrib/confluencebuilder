@@ -201,7 +201,7 @@ please inform the maintainers of this extension.
 
 
 class ConfluenceRateLimited(ConfluenceError):
-    def __init__(self, delay=None):
+    def __init__(self):
         super(ConfluenceRateLimited, self).__init__('''
 ---
 Request has been rate limited
@@ -211,10 +211,6 @@ are being made and has instructed to client to limit the amount of
 requests to make at this time.
 ---
 ''')
-        try:
-            self.delay = int(delay)
-        except (TypeError, ValueError):
-            self.delay = None
 
 
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
