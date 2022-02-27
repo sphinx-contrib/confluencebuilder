@@ -433,3 +433,44 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # remove any non-space control characters that cannot be published to a
         # confluence instance
         return remove_nonspace_control_chars(text)
+
+    # ##########################################################################
+    # #                                                                        #
+    # # helpers                                                                #
+    # #                                                                        #
+    # ##########################################################################
+
+    def _fetch_alignment(self, node):
+        """
+        fetch the alignment to be used on a node
+
+        A helper used to determine the recommended alignment value to apply
+        for a given node. It will determine the alignment based off an explicit
+        alignment hint provided on a node, or default the alignment based off
+        its node type or the running configuration state.
+
+        Args:
+            node: the node
+
+        Returns:
+            the alignment to configure; may be `None`
+        """
+
+        alignment = None
+
+        if 'align' in node:
+            alignment = node['align']
+
+        # if the parent is a figure, either take the assigned alignment from the
+        # figure node; otherwise, apply the default alignment for the node
+        elif isinstance(node.parent, nodes.figure):
+            if 'align' in node.parent:
+                alignment = node.parent['align']
+
+            if not alignment or alignment == 'default':
+                alignment = self._default_alignment
+
+        if alignment:
+            alignment = self.encode(alignment)
+
+        return alignment

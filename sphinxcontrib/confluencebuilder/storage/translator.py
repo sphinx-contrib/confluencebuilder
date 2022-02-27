@@ -2484,33 +2484,3 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         data = data.replace(']]>', ']]]]><![CDATA[>')
         return ConfluenceBaseTranslator.encode(self, data)
-
-    def _fetch_alignment(self, node):
-        """
-        fetch the alignment to be used on a node
-
-        A helper used to return content that has been properly encoded and can
-        be directly placed inside a Confluence storage-format-prepared document.
-
-        Args:
-            node: the node
-
-        Returns:
-            the alignment to configure; may be `None`
-        """
-        alignment = None
-        if 'align' in node:
-            alignment = node['align']
-        # if the parent is a figure, either take the assigned alignment from the
-        # figure node; otherwise, apply the default alignment for the node
-        elif isinstance(node.parent, nodes.figure):
-            if 'align' in node.parent:
-                alignment = node.parent['align']
-
-            if not alignment or alignment == 'default':
-                alignment = self._default_alignment
-
-        if alignment:
-            alignment = self.encode(alignment)
-
-        return alignment
