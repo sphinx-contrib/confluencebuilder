@@ -125,6 +125,11 @@ def replace_graphviz_nodes(builder, doctree):
         doctree: the doctree to replace blocks on
     """
 
+    # allow users to disabled implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-graphviz' in restricted:
+        return
+
     if graphviz is None:
         return
 
@@ -174,6 +179,11 @@ def replace_inheritance_diagram(builder, doctree):
         doctree: the doctree to replace blocks on
     """
 
+    # allow users to disabled implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-inheritance_diagram' in restricted:
+        return
+
     if inheritance_diagram is None:
         return
 
@@ -221,6 +231,11 @@ def replace_math_blocks(builder, doctree):
         builder: the builder
         doctree: the doctree to replace blocks on
     """
+
+    # allow users to disabled implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-imgmath' in restricted:
+        return
 
     # phase 1 -- convert math blocks into Confluence LaTeX blocks
     for node in itertools.chain(doctree.traverse(nodes.math),
