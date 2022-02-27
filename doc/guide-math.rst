@@ -77,8 +77,8 @@ instances, hints that images are generated into SVG images (for ideal image
 scaling) and attempt to process the "depth" of an image to better align content
 alongside text.
 
-Support for LaTeX math
-----------------------
+Support for LaTeX macros for math
+---------------------------------
 
 .. note::
 

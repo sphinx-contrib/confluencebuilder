@@ -1,9 +1,14 @@
 Development
 ===========
 
+* add configuration for personal access tokens (to avoid header entry changes)
+* fixed issue where confluence cloud did not update homepage on a personal space
 * fixed issue where jira directives/role could not be substituted
 * improve support when using the sphinx-diagrams extension
+* introduce the latex directive/role
 * removed informational macro styling on figures
+* support rate limiting for publish requests
+* support users to render math through available marketplace latex macros
 
 1.7.1 (2021-11-30)
 ==================

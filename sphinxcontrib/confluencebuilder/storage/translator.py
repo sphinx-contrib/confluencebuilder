@@ -11,8 +11,6 @@ from os import path
 from sphinx import addnodes
 from sphinx.locale import _ as SL
 from sphinx.locale import admonitionlabels
-from sphinx.util.images import get_image_size
-from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
@@ -22,10 +20,8 @@ from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
-from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import convert_length
-from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import first
 import posixpath
 import sys
@@ -1361,44 +1357,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             self.body.append('<div style="clear: both"> </div>\n')
 
-    def visit_image(self, node):
-        if 'uri' not in node or not node['uri']:
-            self.verbose('skipping image with no uri')
-            raise nodes.SkipNode
-
-        uri = node['uri']
-        uri = self.encode(uri)
-        internal_img = uri.find('://') == -1 and not uri.startswith('data:')
-        is_svg = uri.startswith('data:image/svg+xml') or \
-            guess_mimetype(uri) == 'image/svg+xml'
-
+    def _visit_image(self, node, opts):
         node.__confluence_wrapped_img = False
 
-        if internal_img:
-            asset_docname = None
-            if self.builder.name == 'singleconfluence':
-                asset_docname = self.docname
-
-            image_key, hosting_docname, image_path = \
-                self.assets.fetch(node, docname=asset_docname)
-
-            # if this image has not already be processed (injected at a later
-            # stage in the sphinx process); try processing it now
-            if not image_key:
-                # if this is an svg image, additional processing may also needed
-                if is_svg:
-                    confluence_supported_svg(self.builder, node)
-
-                if not asset_docname:
-                    asset_docname = self.docname
-
-                image_key, hosting_docname, image_path = \
-                    self.assets.process_image_node(
-                        node, asset_docname, standalone=True)
-
-            if not image_key:
-                self.warn('unable to find image: ' + uri)
-                raise nodes.SkipNode
+        dochost = opts['dochost']
+        height = opts['height']
+        hu = opts['hu']
+        width = opts['width']
+        wu = opts['wu']
 
         if node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
@@ -1438,58 +1404,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             alt = self.encode(alt)
             attribs['ac:alt'] = alt
 
-        # extract height, width and scale values on this image
-        height, hu = extract_length(node.get('height'))
-        scale = node.get('scale')
-        width, wu = extract_length(node.get('width'))
-
-        # if a scale value is provided and a height/width is not set, attempt to
-        # determine the size of the image so that we can apply a scale value on
-        # the detected size values
-        if scale and not height and not width:
-            if internal_img:
-                size = get_image_size(image_path)
-                if size is None:
-                    self.warn('could not obtain image size; :scale: option is '
-                        'ignored for ' + image_path)
-                else:
-                    width = size[0]
-                    wu = 'px'
-            else:
-                self.warn('cannot not obtain image size for external image; '
-                    ':scale: option is ignored for ' + uri)
-
-        # apply scale factor to height/width fields
-        if scale:
-            if height:
-                height = int(round(float(height) * scale / 100))
-            if width:
-                width = int(round(float(width) * scale / 100))
-
-        # confluence only supports pixel sizes and percentage sizes in select
-        # cases (e.g. applying a percentage width for an attached image can
-        # result in an macro render error) -- adjust any other unit type (if
-        # possible) to an acceptable pixel/percentage length
-        if height:
-            height = convert_length(height, hu)
-            if height is None:
-                self.warn('unsupported unit type for confluence: ' + hu)
-        if width:
-            width = convert_length(width, wu)
-            if width is None:
-                self.warn('unsupported unit type for confluence: ' + wu)
-
-        # disable height/width entries for attached svgs as using these
-        # attributes can result in a "broken image" rendering; instead, we will
-        # track any desired height/width entry and inject them when publishing
-        if internal_img and is_svg and (height or width):
-            height = None
-            width = None
-
         # if this in an internal (attached image) and a percentage is applied,
         # these length cannot be applied to the ac:width/height fields or a
         # macro render error can occur; instead, wrap the image around
-        if internal_img and (hu == '%' or wu == '%'):
+        if opts['key'] and (hu == '%' or wu == '%'):
             style = 'display: inline-block;'
 
             if hu == '%':
@@ -1512,22 +1430,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if width:
             attribs['ac:width'] = width
 
-        # [sphinx-gallery] create "thumbnail" images for sphinx-gallery
-        #
-        # If a sphinx-gallery-specific class type is detected for an image,
-        # assume there is a desire for thumbnail-like images. Images are then
-        # restricted with a specific height (a pattern observed when restricting
-        # images to a smaller size with a Confluence editor). Although, if the
-        # detected image size is smaller than our target, ignore any forced size
-        # changes.
-        if height is None and width is None and internal_img and not is_svg:
-            if 'sphx-glr-multi-img' in node.get('class', []):
-                size = get_image_size(image_path)
-
-                if not size or size[1] > 250:
-                    attribs['ac:height'] = '250'
-
-        if not internal_img:
+        if not opts['key']:
             # an external or embedded image
             #
             # Note: it would be rare that embedded images will be detected at
@@ -1539,18 +1442,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #       so users might see a "broken images" block).
             self.body.append(self._start_ac_image(node, **attribs))
             self.body.append(self._start_tag(node, 'ri:url',
-                suffix=self.nl, empty=True, **{'ri:value': uri}))
+                suffix=self.nl, empty=True, **{'ri:value': node['uri']}))
             self.body.append(self._end_ac_image(node))
         else:
-            hosting_doctitle = self.state.title(
-                hosting_docname, hosting_docname)
-            hosting_doctitle = self.encode(hosting_doctitle)
+            hosted_doctitle = self.state.title(dochost, dochost)
+            hosted_doctitle = self.encode(hosted_doctitle)
 
             self.body.append(self._start_ac_image(node, **attribs))
-            self.body.append(self._start_ri_attachment(node, image_key))
-            if hosting_docname != self.docname:
+            self.body.append(self._start_ri_attachment(node, opts['key']))
+            if dochost != self.docname:
                 self.body.append(self._start_tag(node, 'ri:page', empty=True,
-                   **{'ri:content-title': hosting_doctitle}))
+                   **{'ri:content-title': hosted_doctitle}))
             self.body.append(self._end_ri_attachment(node))
             self.body.append(self._end_ac_image(node))
 
@@ -2582,33 +2484,3 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         data = data.replace(']]>', ']]]]><![CDATA[>')
         return ConfluenceBaseTranslator.encode(self, data)
-
-    def _fetch_alignment(self, node):
-        """
-        fetch the alignment to be used on a node
-
-        A helper used to return content that has been properly encoded and can
-        be directly placed inside a Confluence storage-format-prepared document.
-
-        Args:
-            node: the node
-
-        Returns:
-            the alignment to configure; may be `None`
-        """
-        alignment = None
-        if 'align' in node:
-            alignment = node['align']
-        # if the parent is a figure, either take the assigned alignment from the
-        # figure node; otherwise, apply the default alignment for the node
-        elif isinstance(node.parent, nodes.figure):
-            if 'align' in node.parent:
-                alignment = node.parent['align']
-
-            if not alignment or alignment == 'default':
-                alignment = self._default_alignment
-
-        if alignment:
-            alignment = self.encode(alignment)
-
-        return alignment

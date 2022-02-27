@@ -79,7 +79,6 @@ inspect that the configured Confluence URL is valid:
 
    {url}
 
-
 (details: {details})
 ---
 '''.format(url=server_url, details=ex))
