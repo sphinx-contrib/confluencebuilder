@@ -7,11 +7,16 @@
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
 from os import path
+from sphinx.util.images import get_image_size
+from sphinx.util.images import guess_mimetype
 from sphinx.util.osutil import SEP
 from sphinx.util.osutil import canon_path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
+from sphinxcontrib.confluencebuilder.util import convert_length
+from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import remove_nonspace_control_chars
 import io
 import sys
@@ -161,6 +166,133 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def depart_topic(self, node):
         self.depart_section(node)
         self._topic = False
+
+    # -------------
+    # images markup
+    # -------------
+
+    def visit_image(self, node):
+        if 'uri' not in node or not node['uri']:
+            self.verbose('skipping image with no uri')
+            raise nodes.SkipNode
+
+        uri = node['uri']
+        uri = self.encode(uri)
+
+        dochost = None
+        img_key = None
+        img_sz = None
+        internal_img = uri.find('://') == -1 and not uri.startswith('data:')
+        is_svg = uri.startswith('data:image/svg+xml') or \
+            guess_mimetype(uri) == 'image/svg+xml'
+
+        if internal_img:
+            asset_docname = None
+            if 'single' in self.builder.name:
+                asset_docname = self.docname
+
+            img_key, dochost, img_path = \
+                self.assets.fetch(node, docname=asset_docname)
+
+            # if this image has not already be processed (injected at a later
+            # stage in the sphinx process); try processing it now
+            if not img_key:
+                # if this is an svg image, additional processing may also needed
+                if is_svg:
+                    confluence_supported_svg(self.builder, node)
+
+                if not asset_docname:
+                    asset_docname = self.docname
+
+                img_key, dochost, img_path = \
+                    self.assets.process_image_node(
+                        node, asset_docname, standalone=True)
+
+            if not img_key:
+                self.warn('unable to find image: ' + uri)
+                raise nodes.SkipNode
+
+        # extract height, width and scale values on this image
+        height, hu = extract_length(node.get('height'))
+        scale = node.get('scale')
+        width, wu = extract_length(node.get('width'))
+
+        # if a scale value is provided and a height/width is not set, attempt to
+        # determine the size of the image so that we can apply a scale value on
+        # the detected size values
+        if scale and not height and not width:
+            if internal_img:
+                img_sz = get_image_size(img_path)
+                if img_sz is None:
+                    self.warn('could not obtain image size; :scale: option is '
+                        'ignored for ' + img_path)
+                else:
+                    width = img_sz[0]
+                    wu = 'px'
+            else:
+                self.warn('cannot not obtain image size for external image; '
+                    ':scale: option is ignored for ' + node['uri'])
+
+        # apply scale factor to height/width fields
+        if scale:
+            if height:
+                height = int(round(float(height) * scale / 100))
+            if width:
+                width = int(round(float(width) * scale / 100))
+
+        # confluence only supports pixel sizes and percentage sizes in select
+        # cases (e.g. applying a percentage width for an attached image can
+        # result in an macro render error) -- adjust any other unit type (if
+        # possible) to an acceptable pixel/percentage length
+        if height:
+            height = convert_length(height, hu)
+            if height is None:
+                self.warn('unsupported unit type for confluence: ' + hu)
+        if width:
+            width = convert_length(width, wu)
+            if width is None:
+                self.warn('unsupported unit type for confluence: ' + wu)
+
+        # disable height/width entries for attached svgs as using these
+        # attributes can result in a "broken image" rendering; instead, we will
+        # track any desired height/width entry and inject them when publishing
+        if internal_img and is_svg and (height or width):
+            height = None
+            hu = None
+            width = None
+            wu = None
+
+        # [sphinx-gallery] create "thumbnail" images for sphinx-gallery
+        #
+        # If a sphinx-gallery-specific class type is detected for an image,
+        # assume there is a desire for thumbnail-like images. Images are then
+        # restricted with a specific height (a pattern observed when restricting
+        # images to a smaller size with a Confluence editor). Although, if the
+        # detected image size is smaller than our target, ignore any forced size
+        # changes.
+        if height is None and width is None and internal_img and not is_svg:
+            if 'sphx-glr-multi-img' in node.get('class', []):
+                if not img_sz:
+                    img_sz = get_image_size(img_path)
+
+                if not img_sz or img_sz[1] > 250:
+                    height = '250'
+                    hu = 'px'
+
+        # forward image options
+        opts = {}
+        opts['dochost'] = dochost
+        opts['height'] = height
+        opts['hu'] = hu
+        opts['key'] = img_key
+        opts['width'] = width
+        opts['wu'] = wu
+
+        self._visit_image(node, opts)
+
+    def _visit_image(self, node, opts):
+        # ignore unless overwritten by derived translator
+        raise nodes.SkipNode
 
     # ------------------
     # sphinx -- glossary
