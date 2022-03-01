@@ -173,6 +173,12 @@ default alignment for tables, figures, etc. Accepted values include 'left',
 
     # ##################################################################
 
+    # confluence_disable_api_endpoint_url
+    validator.conf('confluence_disable_api_endpoint_url') \
+        .bool()
+
+    # ##################################################################
+
     # confluence_disable_notifications
     validator.conf('confluence_disable_notifications') \
              .bool()
@@ -758,13 +764,6 @@ configured at the same time.
              .bool()
 
     # ##################################################################
-
-    # confluence_disable_api_endpoint_url
-    validator.conf('confluence_disable_api_endpoint_url') \
-             .bool()
-
-    # ##################################################################
-
 
     # inform users of additional configuration information
     deprecated(validator)

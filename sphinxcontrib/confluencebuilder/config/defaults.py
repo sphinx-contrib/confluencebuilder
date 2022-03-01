@@ -70,6 +70,7 @@ def apply_defaults(conf):
         'confluence_ask_user',
         'confluence_asset_force_standalone',
         'confluence_disable_autogen_title',
+        'confluence_disable_api_endpoint_url',
         'confluence_disable_notifications',
         'confluence_disable_ssl_validation',
         'confluence_ignore_titlefix_on_index',
@@ -86,7 +87,6 @@ def apply_defaults(conf):
         'confluence_root_homepage',
         'confluence_watch',
         'singleconfluence_toctree',
-        'confluence_disable_api_endpoint_url'
     ]
     for key in config2bool:
         if getattr(conf, key) is not None:

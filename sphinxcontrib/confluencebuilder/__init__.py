@@ -149,6 +149,8 @@ def setup(app):
     app.add_config_value('confluence_client_cert', None, '')
     # Password for client certificate to use for publishing
     app.add_config_value('confluence_client_cert_pass', None, '')
+    # Disable appending "rest/api" to API calls.
+    app.add_config_value('confluence_disable_api_endpoint_url', None, 'env')
     # Disable SSL validation with Confluence server.
     app.add_config_value('confluence_disable_ssl_validation', None, '')
     # Ignore adding a titlefix on the index document.
@@ -211,8 +213,6 @@ def setup(app):
     app.add_config_value('confluence_adv_trace_data', None, '')
     # Do not cap sections to a maximum of six (6) levels.
     app.add_config_value('confluence_adv_writer_no_section_cap', None, 'env')
-    # Disable Appending "rest/api" to api calls
-    app.add_config_value('confluence_disable_api_endpoint_url', None, 'env')
 
     # (configuration - deprecated)
     # replaced by confluence_root_homepage
