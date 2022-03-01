@@ -158,7 +158,7 @@ class Rest(object):
         self.session = self._setup_session(config)
         self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
-        self.url_append = '' if config.confluence_disable_appending_rest_api_to_url else API_REST_BIND_PATH
+        self.url_append = '' if config.confluence_disable_api_endpoint_url else API_REST_BIND_PATH
 
     def __del__(self):
         self.session.close()
