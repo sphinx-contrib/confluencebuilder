@@ -1101,10 +1101,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
 
     def visit_target(self, node):
-        if not self.can_anchor:
-            raise nodes.SkipNode
-
         if 'refid' in node:
+            if not self.can_anchor:
+                raise nodes.SkipNode
+
             anchor = ''.join(node['refid'].split())
 
             # only build an anchor if required (e.g. is a reference label
@@ -1116,10 +1116,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._build_ac_param(node, '', anchor))
                 self.body.append(self._end_ac_macro(node))
         elif 'ids' in node and 'refuri' not in node:
-            for id_ in node['ids']:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node))
+            if self.can_anchor:
+                for id_ in node['ids']:
+                    self.body.append(self._start_ac_macro(node, 'anchor'))
+                    self.body.append(self._build_ac_param(node, '', id_))
+                    self.body.append(self._end_ac_macro(node))
+
+            self.body.append(self.encode(node.astext()))
 
         raise nodes.SkipNode
 
