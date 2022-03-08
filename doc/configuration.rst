@@ -1323,6 +1323,14 @@ Advanced publishing configuration
             'U_ID': '<username>',
         }
 
+.. confval:: confluence_version_comment
+
+    A string value to be added as a comment to Confluence's version history.
+
+    .. code-block:: python
+
+        confluence_version_comment = 'Automatically generated.'
+
 Advanced processing configuration
 ---------------------------------
 
