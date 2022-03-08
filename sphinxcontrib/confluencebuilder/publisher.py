@@ -848,6 +848,7 @@ class ConfluencePublisher:
         update_page['id'] = page['id']
         update_page['version'] = {
             'number': last_version + 1,
+            'message': self.config.confluence_version_comment,
         }
 
         if self.can_labels:
