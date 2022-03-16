@@ -684,6 +684,12 @@ value (e.g. 2).
 
     # ##################################################################
 
+    # confluence_version_comment
+    validator.conf('confluence_version_comment') \
+             .string()
+
+    # ##################################################################
+
     # confluence_watch
     validator.conf('confluence_watch') \
              .bool()

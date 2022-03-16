@@ -897,3 +897,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_timeout'] = -1
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
+
+    def test_config_check_confluence_version_comment(self):
+        self.config['confluence_version_comment'] = ''
+        self._try_config()
+
+        self.config['confluence_version_comment'] = 'dummy'
+        self._try_config()

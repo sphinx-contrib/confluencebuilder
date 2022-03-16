@@ -173,6 +173,8 @@ def setup(app):
     app.add_config_value('confluence_server_auth', None, '')
     # Cookie(s) to use for Confluence REST interaction.
     app.add_config_value('confluence_server_cookies', None, '')
+    # Comment added to confluence version history.
+    app.add_config_value('confluence_version_comment', None, '')
 
     # (configuration - advanced processing)
     # Filename suffix for generated files.
