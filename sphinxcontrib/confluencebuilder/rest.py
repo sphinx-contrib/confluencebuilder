@@ -5,6 +5,8 @@
 """
 
 from functools import wraps
+from email.utils import mktime_tz
+from email.utils import parsedate_tz
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
@@ -158,6 +160,7 @@ class Rest(object):
         self.session = self._setup_session(config)
         self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
+        self._reported_large_delay = False
 
     def __del__(self):
         self.session.close()
@@ -329,9 +332,33 @@ class Rest(object):
 
     def _handle_common_request(self, rsp):
 
-        # if confluence reports a retry-after delay (to pace us), track it
-        # to delay the next request made
-        self.next_delay = rsp.headers.get(RSP_HEADER_RETRY_AFTER)
+        # if confluence or a proxy reports a retry-after delay (to pace us),
+        # track it to delay the next request made
+        # (https://datatracker.ietf.org/doc/html/rfc2616.html#section-14.37)
+        raw_delay = rsp.headers.get(RSP_HEADER_RETRY_AFTER)
+        if raw_delay:
+            delay = None
+            try:
+                # attempt to parse a seconds value from the header
+                delay = int(raw_delay)
+            except ValueError:
+                # if seconds are not provided, attempt to parse
+                parsed_dtz = parsedate_tz(raw_delay)
+                if parsed_dtz:
+                    target_datetime = mktime_tz(parsed_dtz)
+                    delay = target_datetime - time.time()
+
+            if delay > 0:
+                self.next_delay = delay
+
+                # if this delay is over a minute, provide a notice to a client
+                # that requests are being delayed -- but we'll only notify a
+                # user once
+                if delay >= 60 and not self._reported_large_delay:
+                    logger.warn('(warning) site has reported a long '
+                                'rate-limit delay ({} seconds)'.format(
+                                math.ceil(delay)))
+                    self._reported_large_delay = True
 
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
