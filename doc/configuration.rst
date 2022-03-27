@@ -1325,6 +1325,8 @@ Advanced publishing configuration
 
 .. confval:: confluence_version_comment
 
+    .. versionadded:: 1.8
+
     A string value to be added as a comment to Confluence's version history.
 
     .. code-block:: python
@@ -1444,6 +1446,8 @@ Advanced processing configuration
 .. _confluence_latex_macro:
 
 .. confval:: confluence_latex_macro
+
+    .. versionadded:: 1.8
 
     .. note::
 
