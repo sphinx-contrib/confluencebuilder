@@ -383,10 +383,13 @@ def mock_getpass(mock):
 
     try:
         original = util.getpass2
-        util.getpass2 = _
-        yield
+        try:
+            util.getpass2 = _
+            yield
+        finally:
+            util.getpass2 = original
     finally:
-        util.getpass2 = original
+        pass
 
 
 @contextmanager
@@ -397,10 +400,13 @@ def mock_input(mock):
 
     try:
         original = compat.compat_input
-        compat.compat_input = _
-        yield
+        try:
+            compat.compat_input = _
+            yield
+        finally:
+            compat.compat_input = original
     finally:
-        compat.compat_input = original
+        pass
 
 
 @contextmanager
