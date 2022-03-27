@@ -8,6 +8,7 @@ from distutils.command.clean import clean
 from distutils import dir_util
 from setuptools import find_packages
 from setuptools import setup
+import io
 import os
 
 try:
@@ -15,7 +16,8 @@ try:
 except ImportError:
     babel = None
 
-with open('README.rst', 'r') as readme_rst:
+
+with io.open('README.rst', 'r', encoding='utf-8') as readme_rst:
     long_desc = readme_rst.read()
 
 
