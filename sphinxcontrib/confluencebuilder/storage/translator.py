@@ -202,7 +202,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # attribute; if set, attempt to apply the style
         if isinstance(node.parent, nodes.entry):
             for class_ in node.parent.get('classes', []):
-                if class_.startswith('text-align:'):
+                if 'text-center' == class_:
+                    attribs['style'] = 'text-align: center;'
+                elif 'text-right' == class_:
+                    attribs['style'] = 'text-align: right;'
+                # (legacy)
+                elif class_.startswith('text-align:'):
                     attribs['style'] = self.encode(class_)
                     break
 
