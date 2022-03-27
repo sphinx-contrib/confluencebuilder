@@ -3,7 +3,7 @@
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
 try:
-    unicode
+    unicode  # pylint: disable=E0601
 except NameError:
     unicode = str
 

@@ -44,7 +44,7 @@ from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 
 try:
-    basestring
+    basestring  # pylint: disable=E0601
 except NameError:
     basestring = str
 
