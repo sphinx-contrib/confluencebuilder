@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -8,6 +8,7 @@ from distutils.command.clean import clean
 from distutils import dir_util
 from setuptools import find_packages
 from setuptools import setup
+import io
 import os
 
 try:
@@ -15,7 +16,8 @@ try:
 except ImportError:
     babel = None
 
-with open('README.rst', 'r') as readme_rst:
+
+with io.open('README.rst', 'r', encoding='utf-8') as readme_rst:
     long_desc = readme_rst.read()
 
 
@@ -43,6 +45,7 @@ Markup documents and publish to Confluence instances.\
 
 requires = [
     'docutils<0.18;python_version<"3.0"',  # legacy docutils for older sphinx
+    'jinja2<=3.0.3;python_version<"3.0"',  # legacy jinja2 for older sphinx
     'requests>=2.14.0',
     'sphinx>=1.8',
 ]

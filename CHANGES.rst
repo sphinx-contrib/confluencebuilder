@@ -1,13 +1,19 @@
 Development
 ===========
 
+* **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
+* **(note)** (advanced mode) macro disabling is deprecated
 * add configuration for personal access tokens (to avoid header entry changes)
 * fixed issue where confluence cloud did not update homepage on a personal space
+* fixed issue where inline internal targets would create an empty link label
 * fixed issue where jira directives/role could not be substituted
+* improve formatting when processing autodoc content (containers)
 * improve support when using the sphinx-diagrams extension
+* improve table-alignment for markdown
 * introduce the latex directive/role
 * removed informational macro styling on figures
 * support rate limiting for publish requests
+* support setting the comment field in page update events
 * support users to render math through available marketplace latex macros
 
 1.7.1 (2021-11-30)
