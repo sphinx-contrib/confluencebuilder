@@ -1,5 +1,5 @@
-Development
-===========
+1.8.0 (2022-03-27)
+==================
 
 * **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
 * **(note)** (advanced mode) macro disabling is deprecated
