@@ -2051,6 +2051,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_acronym(self, node):
         self.body.append(self.context.pop())  # acronym
 
+    def visit_container(self, node):
+        self.body.append(self._start_tag(node, 'div'))
+        self.context.append(self._end_tag(node))
+
+    def depart_container(self, node):
+        self.body.append(self.context.pop())  # div
+
     def depart_line(self, node):
         next_sibling = first(node.traverse(
             include_self=False, descend=False, siblings=True))
