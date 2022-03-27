@@ -43,6 +43,7 @@ Markup documents and publish to Confluence instances.\
 
 requires = [
     'docutils<0.18;python_version<"3.0"',  # legacy docutils for older sphinx
+    'jinja2<=3.0.3;python_version<"3.0"',  # legacy jinja2 for older sphinx
     'requests>=2.14.0',
     'sphinx>=1.8',
 ]
