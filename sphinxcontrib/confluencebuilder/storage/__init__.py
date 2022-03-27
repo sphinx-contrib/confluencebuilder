@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+"""
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
 try:
-    unicode
+    unicode  # pylint: disable=E0601
 except NameError:
     unicode = str
 

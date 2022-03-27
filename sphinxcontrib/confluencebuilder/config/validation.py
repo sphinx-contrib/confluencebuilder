@@ -10,7 +10,7 @@ from sphinxcontrib.confluencebuilder.util import str2bool
 import os
 
 try:
-    basestring
+    basestring  # pylint: disable=E0601
 except NameError:
     basestring = str
 

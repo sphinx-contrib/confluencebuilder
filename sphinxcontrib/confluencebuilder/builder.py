@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -44,7 +44,7 @@ from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 
 try:
-    basestring
+    basestring  # pylint: disable=E0601
 except NameError:
     basestring = str
 
