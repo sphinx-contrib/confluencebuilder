@@ -1,3 +1,8 @@
+Development
+===========
+
+* fixed issue where external references with ampersands would fail to publish
+
 1.8.0 (2022-03-27)
 ==================
 
