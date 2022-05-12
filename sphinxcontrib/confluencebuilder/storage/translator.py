@@ -1448,9 +1448,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #       entity (although, currently, some (if not all) Confluence
             #       versions do not consider embedded images as valid URI values
             #       so users might see a "broken images" block).
+            uri = self.encode(node['uri'])
             self.body.append(self._start_ac_image(node, **attribs))
             self.body.append(self._start_tag(node, 'ri:url',
-                suffix=self.nl, empty=True, **{'ri:value': node['uri']}))
+                suffix=self.nl, empty=True, **{'ri:value': uri}))
             self.body.append(self._end_ac_image(node))
         else:
             hosted_doctitle = self.state.title(dochost, dochost)
@@ -2010,7 +2011,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['style'] = 'text-align: {};'.format(alignment)
 
         ri_url = self._start_tag(
-            node, 'ri:url', empty=True, **{'ri:value': uri})
+            node, 'ri:url', empty=True, **{'ri:value': self.encode(uri)})
 
         self.body.append(self._start_tag(node, 'div', **attribs))
         self.body.append(self._start_ac_macro(node, 'widget'))
