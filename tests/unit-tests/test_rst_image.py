@@ -26,10 +26,10 @@ class TestConfluenceRstImage(ConfluenceTestCase):
 
         with parse('image', out_dir) as data:
             images = data.find_all('ac:image', recursive=False)
-            self.assertEqual(len(images), 6)
+            self.assertEqual(len(images), 7)
 
             # ##########################################################
-            # basic image
+            # external image
             # ##########################################################
             image = images.pop(0)
 
@@ -37,6 +37,19 @@ class TestConfluenceRstImage(ConfluenceTestCase):
             self.assertTrue(url.has_attr('ri:value'))
             self.assertEqual(url['ri:value'],
                 'https://www.example.com/image.png')
+            self.assertFalse(image.has_attr('ac:align'))
+
+            # ##########################################################
+            # external image with options
+            # ##########################################################
+            image = images.pop(0)
+
+            url = image.find('ri:url')
+            raw_url = str(url)
+            self.assertTrue(url.has_attr('ri:value'))
+            self.assertEqual(url['ri:value'],
+                'https://www.example.org/image.png?a=1&b=2')
+            self.assertIn('?a=1&amp;b=2', raw_url)
             self.assertFalse(image.has_attr('ac:align'))
 
             # ##########################################################
