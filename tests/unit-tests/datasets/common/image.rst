@@ -9,6 +9,10 @@ image
 
 .. image:: https://www.example.com/image.png
 
+.. external image with options
+
+.. image:: https://www.example.org/image.png?a=1&b=2
+
 .. internal image using a series of attributes
 
 .. image:: ../../assets/image01.png
