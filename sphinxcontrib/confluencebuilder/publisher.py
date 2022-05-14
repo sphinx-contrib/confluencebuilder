@@ -734,7 +734,16 @@ class ConfluencePublisher:
             return
 
         try:
-            self.rest_client.delete('content', page_id)
+            try:
+                self.rest_client.delete('content', page_id)
+            except ConfluenceBadApiError as ex:
+                if str(ex).find('Transaction rolled back') == -1:
+                    raise
+                logger.warn('delete failed; retrying...')
+                time.sleep(3)
+
+                self.rest_client.delete('content', page_id)
+
         except ConfluenceBadApiError as ex:
             # Check if Confluence reports that this content does not exist. If
             # so, we want to suppress the API error. This is most likely a
