@@ -34,7 +34,6 @@ class ConfluencePublisher:
     def init(self, config):
         self.config = config
         self.append_labels = config.confluence_append_labels
-        self.can_labels = True
         self.debug = config.confluence_publish_debug
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
@@ -55,9 +54,6 @@ class ConfluencePublisher:
             logging.getLogger().setLevel(logging.DEBUG)
             rlog = logging.getLogger('requests.packages.urllib3')
             rlog.setLevel(logging.DEBUG)
-
-        if config.confluence_adv_restricted is not None:
-            self.can_labels = 'labels' not in config.confluence_adv_restricted
 
     def connect(self):
         self.rest_client = Rest(self.config)
@@ -576,7 +572,7 @@ class ConfluencePublisher:
                 return page['id']
 
         expand = 'version'
-        if self.can_labels and self.append_labels:
+        if self.append_labels:
             expand += ',metadata.labels'
 
         _, page = self.get_page(page_name, expand=expand)
@@ -589,9 +585,7 @@ class ConfluencePublisher:
             # new page
             if not page:
                 new_page = self._build_page(page_name, data)
-
-                if self.can_labels:
-                    self._populate_labels(new_page, data['labels'])
+                self._populate_labels(new_page, data['labels'])
 
                 if parent_id:
                     new_page['ancestors'] = [{'id': parent_id}]
@@ -677,7 +671,7 @@ class ConfluencePublisher:
                 return page_id
 
         expand = 'version'
-        if self.can_labels and self.append_labels:
+        if self.append_labels:
             expand += ',metadata.labels'
 
         try:
@@ -860,15 +854,14 @@ class ConfluencePublisher:
             'message': self.config.confluence_version_comment,
         }
 
-        if self.can_labels:
-            labels = list(data['labels'])
-            if self.append_labels:
-                labels.extend([lbl.get('name')
-                    for lbl in page.get('metadata', {}).get(
-                        'labels', {}).get('results', {})
-                ])
+        labels = list(data['labels'])
+        if self.append_labels:
+            labels.extend([lbl.get('name')
+                for lbl in page.get('metadata', {}).get(
+                    'labels', {}).get('results', {})
+            ])
 
-            self._populate_labels(update_page, labels)
+        self._populate_labels(update_page, labels)
 
         if not self.notify:
             update_page['version']['minorEdit'] = True

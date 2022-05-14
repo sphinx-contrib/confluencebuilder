@@ -60,18 +60,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._tocdepth = self.state.toctree_depth(self.docname)
 
         # helpers for dealing with disabled/unsupported features
-        restricted = config.confluence_adv_restricted
-        self.can_admonition = 'info' not in restricted
-        self.can_anchor = 'anchor' not in restricted
-        self.can_children = 'children' not in restricted
-        self.can_code = 'code' not in restricted
-        self.can_expand = 'expand' not in restricted
-        self.can_jira = 'jira' not in restricted
-        self.can_viewfile = 'viewfile' not in restricted
-
         if (config.confluence_page_hierarchy
-                and config.confluence_adv_hierarchy_child_macro
-                and self.can_children):
+                and config.confluence_adv_hierarchy_child_macro):
             self.apply_hierarchy_children_macro = True
         else:
             self.apply_hierarchy_children_macro = False
@@ -149,7 +139,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # target registered for a given document (since it's titleless), build
         # an anchor point with the name matching the title (which allows the
         # fallback link to jump to the desired point in a document).
-        if self.builder.name == 'singleconfluence' and self.can_anchor:
+        if self.builder.name == 'singleconfluence':
             doc_anchorname = '%s/' % node['docname']
             doc_target = self.state.target(doc_anchorname)
             if not doc_target:
@@ -168,8 +158,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # if title points to a section and does not already contain a
             # reference, create a link to it
-            if ('refid' in node and not node.next_node(nodes.reference) and
-                    self.can_anchor):
+            if 'refid' in node and not node.next_node(nodes.reference):
                 anchor_value = ''.join(node['refid'].split())
                 self.body.append(self._start_ac_link(node, anchor_value))
                 self.context.append(self._end_ac_link(node))
@@ -185,8 +174,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
-            if ('refid' in node and not node.next_node(nodes.reference) and
-                    self.can_anchor):
+            if 'refid' in node and not node.next_node(nodes.reference):
                 self.body.append(self.context.pop())  # ac_link_body
                 self.body.append(self.context.pop())  # end_ac_link
 
@@ -407,7 +395,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if self._has_term:
             self.body.append(self.context.pop())  # dt
 
-        if 'ids' in node and self.can_anchor:
+        if 'ids' in node:
             for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
@@ -608,28 +596,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             except KeyError:
                 pass
 
-        if self.can_code:
-            self.body.append(self._start_ac_macro(node, 'code'))
-            self.body.append(self._build_ac_param(node, 'language', lang))
-            self.body.append(self._build_ac_param(node, 'linenumbers', num))
-            if firstline is not None and firstline > 1:
-                self.body.append(
-                    self._build_ac_param(node, 'firstline', str(firstline))
-                )
-            if title:
-                self.body.append(self._build_ac_param(node, 'title', title))
-            self.body.append(self._start_ac_plain_text_body_macro(node))
-            self.body.append(self._escape_cdata(data))
-            self.body.append(self._end_ac_plain_text_body_macro(node))
-            self.body.append(self._end_ac_macro(node))
-        else:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
-            self.body.append(self._start_tag(node, 'pre'))
-            self.body.append(self.encode(data))
-            self.body.append(self._end_tag(node))
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
+        self.body.append(self._start_ac_macro(node, 'code'))
+        self.body.append(self._build_ac_param(node, 'language', lang))
+        self.body.append(self._build_ac_param(node, 'linenumbers', num))
+        if firstline is not None and firstline > 1:
+            self.body.append(
+                self._build_ac_param(node, 'firstline', str(firstline))
+            )
+        if title:
+            self.body.append(self._build_ac_param(node, 'title', title))
+        self.body.append(self._start_ac_plain_text_body_macro(node))
+        self.body.append(self._escape_cdata(data))
+        self.body.append(self._end_ac_plain_text_body_macro(node))
+        self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -649,22 +628,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_doctest_block(self, node):
         data = self.nl.join(node.astext().splitlines())
 
-        if self.can_code:
-            self.body.append(self._start_ac_macro(node, 'code'))
-            self.body.append(self._build_ac_param(
-                node, 'language', 'python'))  # python-specific
-            self.body.append(self._start_ac_plain_text_body_macro(node))
-            self.body.append(self._escape_cdata(data))
-            self.body.append(self._end_ac_plain_text_body_macro(node))
-            self.body.append(self._end_ac_macro(node))
-        else:
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
-            self.body.append(self._start_tag(node, 'pre'))
-            self.body.append(self.encode(data))
-            self.body.append(self._end_tag(node))
-            self.body.append(self._start_tag(
-                node, 'hr', suffix=self.nl, empty=True))
+        self.body.append(self._start_ac_macro(node, 'code'))
+        self.body.append(self._build_ac_param(
+            node, 'language', 'python'))  # python-specific
+        self.body.append(self._start_ac_plain_text_body_macro(node))
+        self.body.append(self._escape_cdata(data))
+        self.body.append(self._end_ac_plain_text_body_macro(node))
+        self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -739,19 +709,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------
 
     def _visit_admonition(self, node, atype, title=None, logo=True):
-        if self.can_admonition:
-            self.body.append(self._start_ac_macro(node, atype))
-            if title:
-                self.body.append(self._build_ac_param(node, 'title', title))
-            if not logo:
-                self.body.append(
-                    self._build_ac_param(node, 'icon', 'false'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
-            self.context.append(self._end_ac_rich_text_body_macro(node) +
-                self._end_ac_macro(node))
-        else:
-            self.body.append(self._start_tag(node, 'blockquote'))
-            self.context.append(self._end_tag(node))
+        self.body.append(self._start_ac_macro(node, atype))
+        if title:
+            self.body.append(self._build_ac_param(node, 'title', title))
+        if not logo:
+            self.body.append(
+                self._build_ac_param(node, 'icon', 'false'))
+        self.body.append(self._start_ac_rich_text_body_macro(node))
+        self.context.append(self._end_ac_rich_text_body_macro(node) +
+            self._end_ac_macro(node))
 
     def _depart_admonition(self, node):
         self.body.append(self.context.pop())  # macro (or blockquote)
@@ -769,7 +735,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not self.todo_include_todos:
             raise nodes.SkipNode
 
-        if 'ids' in node and node['ids'] and self.can_anchor:
+        if 'ids' in node and node['ids']:
             self.body.append(self._start_ac_macro(node, 'anchor'))
             self.body.append(self._build_ac_param(node, '', node['ids'][0]))
             self.body.append(self._end_ac_macro(node))
@@ -1013,16 +979,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if target:
             anchor_value = target
             anchor_value = self.encode(anchor_value)
-        elif not self.can_anchor:
-            anchor_value = None
         else:
             anchor_value = raw_anchor
 
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
 
-        if (self.can_anchor and anchor_value and (is_citation or self._topic)
-                and 'ids' in node):
+        if anchor_value and (is_citation or self._topic) and 'ids' in node:
             for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
@@ -1057,8 +1020,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._reference_context.append(self._end_tag(node, suffix=''))
             return
 
-        anchor_value = intern_uri_anchor_value(
-            self.builder.config, docname, node['refuri'])
+        anchor_value = intern_uri_anchor_value(docname, node['refuri'])
 
         navnode = getattr(node, '_navnode', False)
 
@@ -1107,9 +1069,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_target(self, node):
         if 'refid' in node:
-            if not self.can_anchor:
-                raise nodes.SkipNode
-
             anchor = ''.join(node['refid'].split())
 
             # only build an anchor if required (e.g. is a reference label
@@ -1121,11 +1080,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._build_ac_param(node, '', anchor))
                 self.body.append(self._end_ac_macro(node))
         elif 'ids' in node and 'refuri' not in node:
-            if self.can_anchor:
-                for id_ in node['ids']:
-                    self.body.append(self._start_ac_macro(node, 'anchor'))
-                    self.body.append(self._build_ac_param(node, '', id_))
-                    self.body.append(self._end_ac_macro(node))
+            for id_ in node['ids']:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_param(node, '', id_))
+                self.body.append(self._end_ac_macro(node))
 
             self.body.append(self.encode(node.astext()))
 
@@ -1158,14 +1116,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             **{'style': 'border: none'}))
 
         # footnote anchor
-        if self.can_anchor:
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-            self.body.append(self._end_ac_macro(node))
+        self.body.append(self._start_ac_macro(node, 'anchor'))
+        self.body.append(self._build_ac_param(node, '', node['ids'][0]))
+        self.body.append(self._end_ac_macro(node))
 
         # footnote label and back reference(s)
-        if (not self.can_anchor
-                or 'backrefs' not in node or not node['backrefs']):
+        if 'backrefs' not in node or not node['backrefs']:
             label_text = self.encode(label_text)
             self.body.append(label_text)
         elif len(node['backrefs']) > 1:
@@ -1214,12 +1170,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_footnote_reference(self, node):
         text = "[{}]".format(node.astext())
-
-        if not self.can_anchor:
-            self.body.append(self._start_tag(node, 'sup'))
-            self.body.append(self.encode(text))
-            self.body.append(self._end_tag(node, suffix=''))  # sup
-            raise nodes.SkipNode
 
         # build an anchor for back reference
         self.body.append(self._start_ac_macro(node, 'anchor'))
@@ -1327,14 +1277,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_caption(self, node):
         # if a caption for a literal block, pass the caption data to it can be
         # rendered in the macro's title field
-        if self.can_code:
-            next_sibling = first(node.traverse(
-                include_self=False, descend=False, siblings=True))
-            if isinstance(next_sibling, nodes.literal_block):
-                # anything that is not a parsed literals
-                if node.rawsource == node.astext() or 'source' in node:
-                    next_sibling['scb-caption'] = node.astext()
-                    raise nodes.SkipNode
+        next_sibling = first(node.traverse(
+            include_self=False, descend=False, siblings=True))
+        if isinstance(next_sibling, nodes.literal_block):
+            # anything that is not a parsed literals
+            if node.rawsource == node.astext() or 'source' in node:
+                next_sibling['scb-caption'] = node.astext()
+                raise nodes.SkipNode
 
         attribs = {}
         attribs['style'] = 'clear: both;'
@@ -1525,8 +1474,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # If the view-file macro is permitted along with it not being an
             # explicitly referenced asset.
-            if self.can_viewfile and ('refexplicit' not in node or
-                    not node['refexplicit']):
+            if 'refexplicit' not in node or not node['refexplicit']:
                 # a 'view-file' macro takes an attachment tag as a body; build
                 # the tags in an interim list
                 attachment = []
@@ -1677,7 +1625,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # dt
 
     def visit_desc_signature_line(self, node):
-        if self._desc_sig_ids and self.can_anchor:
+        if self._desc_sig_ids:
             for id_ in self._desc_sig_ids:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
@@ -1807,9 +1755,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------------------
 
     def visit_confluence_expand(self, node):
-        if not self.can_expand:
-            raise nodes.SkipNode
-
         self.body.append(self._start_ac_macro(node, 'expand'))
         if 'title' in node:
             self.body.append(
@@ -1961,9 +1906,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ------------------------------------------
 
     def _visit_jira_node(self, node):
-        if not self.can_jira:
-            raise nodes.SkipNode
-
         self.body.append(self._start_ac_macro(node, 'jira'))
         for k, v in sorted(node.params.items()):
             self.body.append(self._build_ac_param(node, k, str(v)))

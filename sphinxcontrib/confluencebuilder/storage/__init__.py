@@ -42,7 +42,7 @@ def encode_storage_format(data):
     return data
 
 
-def intern_uri_anchor_value(config, docname, refuri):
+def intern_uri_anchor_value(docname, refuri):
     """
     determine the anchor value for an internal uri point
 
@@ -53,7 +53,6 @@ def intern_uri_anchor_value(config, docname, refuri):
     will be provided. If not, the parsed/raw anchor value will be returned.
 
     Args:
-        config: the active configuration
         docname: the docname of the page to link to
         refuri: the uri
 
@@ -71,10 +70,9 @@ def intern_uri_anchor_value(config, docname, refuri):
         target = ConfluenceState.target(target_name)
         if target:
             anchor_value = target
-        elif 'anchor' not in config.confluence_adv_restricted:
+        else:
             anchor_value = anchor
 
-        if anchor_value:
-            anchor_value = encode_storage_format(anchor_value)
+        anchor_value = encode_storage_format(anchor_value)
 
     return anchor_value
