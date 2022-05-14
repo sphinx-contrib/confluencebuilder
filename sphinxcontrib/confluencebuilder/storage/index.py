@@ -120,6 +120,6 @@ def process_doclink(config, refuri):
 
     docname = posixpath.normpath(os.path.splitext(refuri.split('#')[0])[0])
     doctitle = ConfluenceState.title(docname)
-    anchor_value = intern_uri_anchor_value(config, docname, refuri)
+    anchor_value = intern_uri_anchor_value(docname, refuri)
 
     return doctitle, anchor_value
