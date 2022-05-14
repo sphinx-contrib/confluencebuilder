@@ -368,8 +368,8 @@ def mock_confluence_instance(config=None, ignore_requests=False):
         if serve_thread:
             daemon.shutdown()
             serve_thread.join()
-        else:
-            daemon.socket.close()
+
+        daemon.server_close()
 
 
 @contextmanager
