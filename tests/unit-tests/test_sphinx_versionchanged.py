@@ -15,16 +15,13 @@ class TestConfluenceSphinxVersionChanged(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxVersionChanged, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'versionchanged',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'versionchanged')
 
     @setup_builder('confluence')
     def test_storage_sphinx_versionchanged_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('versionchanged', out_dir) as data:
+        with parse('index', out_dir) as data:
             note_macro = data.find('ac:structured-macro', {'ac:name': 'note'})
             self.assertIsNotNone(note_macro)
 

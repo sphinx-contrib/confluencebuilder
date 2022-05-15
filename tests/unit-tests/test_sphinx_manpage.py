@@ -15,20 +15,16 @@ class TestConfluenceSphinxManpage(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxManpage, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'manpage',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'manpage')
 
     @setup_builder('confluence')
     def test_storage_sphinx_manpage_config(self):
         config = dict(self.config)
         config['manpages_url'] = 'https://manpages.example.com/{path}'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('manpage', out_dir) as data:
+        with parse('index', out_dir) as data:
             em = data.find('em')
             self.assertIsNotNone(em)
 
@@ -40,9 +36,9 @@ class TestConfluenceSphinxManpage(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_manpage_noconfig(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('manpage', out_dir) as data:
+        with parse('index', out_dir) as data:
             em = data.find('em')
             self.assertIsNotNone(em)
             self.assertEqual(em.text, 'ls(1)')

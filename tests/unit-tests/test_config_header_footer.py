@@ -15,10 +15,7 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceConfigHeaderFooter, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'header-footer',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'header-footer')
 
     @setup_builder('confluence')
     def test_storage_config_headerfooter_absolute(self):
@@ -28,10 +25,9 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
         config['confluence_footer_file'] = footer_tpl
         config['confluence_header_file'] = header_tpl
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('header-footer', out_dir) as data:
+        with parse('index', out_dir) as data:
             body = data.find('p')
             self.assertIsNotNone(body)
             self.assertEqual(body.text, 'body content')
@@ -48,10 +44,9 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
         config['confluence_footer_file'] = '../../templates/sample-footer.tpl'
         config['confluence_header_file'] = '../../templates/sample-header.tpl'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('header-footer', out_dir) as data:
+        with parse('index', out_dir) as data:
             body = data.find('p')
             self.assertIsNotNone(body)
             self.assertEqual(body.text, 'body content')

@@ -16,7 +16,7 @@ class TestConfluenceRstLiteral(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstLiteral, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'literal')
 
     @setup_builder('confluence')
     def test_storage_rst_literal_blocks(self):

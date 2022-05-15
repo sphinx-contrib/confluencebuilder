@@ -16,15 +16,11 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         super(TestConfluenceConfigTitlefix, cls).setUpClass()
 
         cls.config['root_doc'] = 'titlefix'
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'titlefix',
-            'titlefix-child',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'titlefix')
 
     @setup_builder('confluence')
     def test_storage_config_titlefix_none(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
         with parse('titlefix', out_dir) as data:
             page_ref = data.find('ri:page')
@@ -42,8 +38,7 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('titlefix', out_dir) as data:
             page_ref = data.find('ri:page')
@@ -61,8 +56,7 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('titlefix', out_dir) as data:
             page_ref = data.find('ri:page')
@@ -81,8 +75,7 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         config['confluence_publish_prefix'] = 'myprefix-'
         config['confluence_publish_postfix'] = '-mypostfix'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('titlefix', out_dir) as data:
             page_ref = data.find('ri:page')
@@ -103,8 +96,7 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         config['confluence_publish_postfix'] = '-mypostfix'
         config['confluence_publish_prefix'] = 'myprefix-'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
         with parse('titlefix', out_dir) as data:
             page_ref = data.find('ri:page')

@@ -15,16 +15,13 @@ class TestConfluenceRstOptionLists(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstOptionLists, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'option-lists',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'option-lists')
 
     @setup_builder('confluence')
     def test_storage_rst_option_lists(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('option-lists', out_dir) as data:
+        with parse('index', out_dir) as data:
             options_table = data.find('table')
             self.assertIsNotNone(options_table)
 

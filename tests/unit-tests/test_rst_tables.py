@@ -15,16 +15,13 @@ class TestConfluenceRstTables(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstTables, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'tables',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'tables')
 
     @setup_builder('confluence')
     def test_storage_rst_tables_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('tables', out_dir) as data:
+        with parse('index', out_dir) as data:
             tables = data.find_all('table', recursive=False)
             self.assertEqual(len(tables), 3)
 

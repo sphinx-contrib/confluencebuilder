@@ -16,7 +16,7 @@ class TestConfluenceRstContents(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstContents, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'contents')
 
         cls.expected_header_text = [
             'section',

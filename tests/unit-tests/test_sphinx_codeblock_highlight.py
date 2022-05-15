@@ -18,7 +18,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxCodeblockHighlight, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = os.path.join(cls.datasets, 'code-block')
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_default(self):

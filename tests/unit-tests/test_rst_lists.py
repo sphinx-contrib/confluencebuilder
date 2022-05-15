@@ -15,16 +15,13 @@ class TestConfluenceRstLists(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstLists, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'lists',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'lists')
 
     @setup_builder('confluence')
     def test_storage_rst_lists(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('lists', out_dir) as data:
+        with parse('index', out_dir) as data:
             root_tags = data.find_all(recursive=False)
             self.assertEqual(len(root_tags), 3)
 

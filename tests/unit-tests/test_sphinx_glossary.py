@@ -16,15 +16,11 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
         super(TestConfluenceSphinxDomains, cls).setUpClass()
 
         cls.config['root_doc'] = 'glossary'
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'glossary',
-            'glossary-ref',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'glossary')
 
     @setup_builder('confluence')
     def test_storage_sphinx_glossary_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
         with parse('glossary', out_dir) as data:
             # glossary list

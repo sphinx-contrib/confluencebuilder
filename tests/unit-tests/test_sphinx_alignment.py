@@ -22,20 +22,16 @@ class TestConfluenceSphinxAlignment(ConfluenceTestCase):
         if parse_version(sphinx_version) < parse_version('2.1'):
             raise unittest.SkipTest('default hints not supported in sphinx')
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'alignment',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'alignment')
 
     @setup_builder('confluence')
     def test_storage_sphinx_alignment_center(self):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'center'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('alignment', out_dir) as data:
+        with parse('index', out_dir) as data:
             image = data.find('ac:image')
             self.assertIsNotNone(image)
             self.assertTrue(image.has_attr('ac:align'))
@@ -43,9 +39,9 @@ class TestConfluenceSphinxAlignment(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_alignment_default(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('alignment', out_dir) as data:
+        with parse('index', out_dir) as data:
             image = data.find('ac:image')
             self.assertIsNotNone(image)
             self.assertTrue(image.has_attr('ac:align'))
@@ -56,10 +52,9 @@ class TestConfluenceSphinxAlignment(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'left'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('alignment', out_dir) as data:
+        with parse('index', out_dir) as data:
             image = data.find('ac:image')
             self.assertIsNotNone(image)
             self.assertTrue(image.has_attr('ac:align'))
@@ -70,10 +65,9 @@ class TestConfluenceSphinxAlignment(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_default_alignment'] = 'right'
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('alignment', out_dir) as data:
+        with parse('index', out_dir) as data:
             image = data.find('ac:image')
             self.assertIsNotNone(image)
             self.assertTrue(image.has_attr('ac:align'))

@@ -15,16 +15,13 @@ class TestConfluenceRstImage(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstImage, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'image',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'image')
 
     @setup_builder('confluence')
     def test_storage_rst_image_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('image', out_dir) as data:
+        with parse('index', out_dir) as data:
             images = data.find_all('ac:image', recursive=False)
             self.assertEqual(len(images), 7)
 

@@ -18,7 +18,7 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxDomains, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = os.path.join(cls.datasets, 'domains')
 
     @setup_builder('confluence')
     def test_storage_sphinx_domain_c(self):

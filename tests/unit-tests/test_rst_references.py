@@ -16,15 +16,11 @@ class TestConfluenceRstReferences(ConfluenceTestCase):
         super(TestConfluenceRstReferences, cls).setUpClass()
 
         cls.config['root_doc'] = 'references'
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'references',
-            'references-ref',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'references')
 
     @setup_builder('confluence')
     def test_storage_rst_references(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
         with parse('references', out_dir) as data:
             a_tags = data.find_all('a')
