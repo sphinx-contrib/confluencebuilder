@@ -56,12 +56,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_adv_hierarchy_child_macro
-    validator.conf('confluence_adv_hierarchy_child_macro') \
-             .bool()
-
-    # ##################################################################
-
     # confluence_adv_permit_raw_html
     validator.conf('confluence_adv_permit_raw_html') \
              .bool()

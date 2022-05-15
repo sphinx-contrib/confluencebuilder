@@ -59,13 +59,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
 
-        # helpers for dealing with disabled/unsupported features
-        if (config.confluence_page_hierarchy
-                and config.confluence_adv_hierarchy_child_macro):
-            self.apply_hierarchy_children_macro = True
-        else:
-            self.apply_hierarchy_children_macro = False
-
     def encode(self, text):
         text = encode_storage_format(text)
         return ConfluenceBaseTranslator.encode(self, text)
@@ -1577,21 +1570,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------
 
     def visit_compound(self, node):
-        # If this has not been a manipulated toctree (refer to hierarchy mode
-        # and see builder's process_tree_structure) and the invoker wishes to
-        # use Confluence children macro instead, swap out of the toctree for the
-        # macro.
-        if 'toctree-wrapper' in node['classes']:
-            if self.apply_hierarchy_children_macro:
-                self.body.append(self._start_ac_macro(node, 'children'))
-                if self._tocdepth:
-                    self.body.append(self._build_ac_param(
-                        node, 'depth', str(self._tocdepth)))
-                else:
-                    self.body.append(self._build_ac_param(
-                        node, 'all', 'true'))
-                self.body.append(self._end_ac_macro(node))
-                raise nodes.SkipNode
+        pass
 
     def depart_compound(self, node):
         pass

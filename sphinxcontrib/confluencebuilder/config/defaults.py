@@ -59,7 +59,6 @@ def apply_defaults(conf):
     config2bool = [
         'confluence_add_secnumbers',
         'confluence_adv_aggressive_search',
-        'confluence_adv_hierarchy_child_macro',
         'confluence_adv_permit_raw_html',
         'confluence_adv_trace_data',
         'confluence_adv_writer_no_section_cap',

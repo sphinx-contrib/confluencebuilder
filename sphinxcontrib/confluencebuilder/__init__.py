@@ -199,8 +199,6 @@ def setup(app):
     # (configuration - undocumented)
     # Enablement for aggressive descendents search (for purge).
     app.add_config_value('confluence_adv_aggressive_search', None, '')
-    # Enablement of the children macro for hierarchy mode.
-    app.add_config_value('confluence_adv_hierarchy_child_macro', None, 'env')
     # List of node types to ignore if no translator support exists.
     app.add_config_value('confluence_adv_ignore_nodes', None, '')
     # Unknown node handler dictionary for advanced integrations.
