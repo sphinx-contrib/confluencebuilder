@@ -15,16 +15,13 @@ class TestConfluenceRstBibliographic(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstBibliographic, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'bibliographic',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'bibliographic')
 
     @setup_builder('confluence')
     def test_storage_rst_bibliographic_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('bibliographic', out_dir) as data:
+        with parse('index', out_dir) as data:
             biblio_table = data.find('table')
             self.assertIsNotNone(biblio_table)
 

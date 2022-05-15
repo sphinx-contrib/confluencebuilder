@@ -16,16 +16,13 @@ class TestConfluenceSphinxDownload(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxDownload, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'download',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'download')
 
     @setup_builder('confluence')
     def test_storage_sphinx_download_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('download', out_dir) as data:
+        with parse('index', out_dir) as data:
             # view-file
             view_file_macro = data.find('ac:structured-macro',
                 {'ac:name': 'view-file'})

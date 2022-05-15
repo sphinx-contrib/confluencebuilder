@@ -15,16 +15,13 @@ class TestConfluenceRstMarkup(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstMarkup, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'markup',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'markup')
 
     @setup_builder('confluence')
     def test_storage_rst_markup(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('markup', out_dir) as data:
+        with parse('index', out_dir) as data:
             emphasis = data.find('em', text='emphasis')
             self.assertIsNotNone(emphasis)
 

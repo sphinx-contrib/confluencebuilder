@@ -15,16 +15,13 @@ class TestConfluenceSphinxDeprecated(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxDeprecated, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'deprecated',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'deprecated')
 
     @setup_builder('confluence')
     def test_storage_sphinx_deprecated_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('deprecated', out_dir) as data:
+        with parse('index', out_dir) as data:
             note_macro = data.find('ac:structured-macro', {'ac:name': 'note'})
             self.assertIsNotNone(note_macro)
 

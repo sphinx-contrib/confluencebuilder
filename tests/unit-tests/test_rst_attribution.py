@@ -15,16 +15,13 @@ class TestConfluenceRstAttribution(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstAttribution, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'attribution',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'attribution')
 
     @setup_builder('confluence')
     def test_storage_rst_attribution(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('attribution', out_dir) as data:
+        with parse('index', out_dir) as data:
             quote = data.find('blockquote')
             self.assertIsNotNone(quote)
 

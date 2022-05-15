@@ -15,16 +15,13 @@ class TestConfluenceRstAdmonitions(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstAdmonitions, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'admonitions',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'admonitions')
 
     @setup_builder('confluence')
     def test_storage_rst_admonitions(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('admonitions', out_dir) as data:
+        with parse('index', out_dir) as data:
             self._verify_storage_tags(data, 'attention', 'note')
             self._verify_storage_tags(data, 'caution', 'note')
             self._verify_storage_tags(data, 'danger', 'warning')

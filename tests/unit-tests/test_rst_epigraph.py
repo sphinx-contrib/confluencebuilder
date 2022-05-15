@@ -15,16 +15,13 @@ class TestConfluenceRstEpigraph(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstEpigraph, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'epigraph',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'epigraph')
 
     @setup_builder('confluence')
     def test_storage_rst_epigraph(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('epigraph', out_dir) as data:
+        with parse('index', out_dir) as data:
             quote = data.find('blockquote')
             self.assertIsNotNone(quote)
 

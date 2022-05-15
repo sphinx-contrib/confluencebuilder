@@ -15,16 +15,13 @@ class TestConfluenceRstHeadings(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstHeadings, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'headings',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'headings')
 
     @setup_builder('confluence')
     def test_storage_rst_headings_default(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('headings', out_dir) as data:
+        with parse('index', out_dir) as data:
             header_lvl1 = data.find('h1')
             self.assertIsNone(header_lvl1)
 
@@ -55,10 +52,9 @@ class TestConfluenceRstHeadings(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        out_dir = self.build(self.dataset, config=config,
-            filenames=self.filenames)
+        out_dir = self.build(self.dataset, config=config)
 
-        with parse('headings', out_dir) as data:
+        with parse('index', out_dir) as data:
             header_lvl1 = data.find('h1')
             self.assertIsNotNone(header_lvl1)
             self.assertEqual(header_lvl1.text, 'header 1')

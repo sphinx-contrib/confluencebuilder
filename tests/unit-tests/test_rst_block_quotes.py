@@ -15,18 +15,15 @@ class TestConfluenceRstBlockQuotes(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstBlockQuotes, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'block-quotes',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'block-quotes')
 
     @setup_builder('confluence')
     def test_storage_rst_block_quotes(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
         css_margin_indent = 'margin-left: 30px'
 
-        with parse('block-quotes', out_dir) as data:
+        with parse('index', out_dir) as data:
             div_tags = data.find_all('div')
 
             # ensure each div element in this example is indented

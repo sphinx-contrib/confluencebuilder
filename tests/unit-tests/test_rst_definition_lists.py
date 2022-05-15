@@ -15,16 +15,13 @@ class TestConfluenceRstDefinitionLists(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstDefinitionLists, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'definition-lists',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'definition-lists')
 
     @setup_builder('confluence')
     def test_storage_rst_definition_lists(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('definition-lists', out_dir) as data:
+        with parse('index', out_dir) as data:
             def_list = data.find('dl')
             self.assertIsNotNone(def_list)
 

@@ -15,16 +15,13 @@ class TestConfluenceSphinxProductionList(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceSphinxProductionList, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'production-list',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'production-list')
 
     @setup_builder('confluence')
     def test_storage_sphinx_productionlist_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('production-list', out_dir) as data:
+        with parse('index', out_dir) as data:
             container = data.find('pre')
             self.assertIsNotNone(container)
             self.assertTrue(container.text.strip())

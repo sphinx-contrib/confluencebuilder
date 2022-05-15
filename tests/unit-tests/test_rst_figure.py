@@ -16,16 +16,13 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstFigure, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'figure',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'figure')
 
     @setup_builder('confluence')
     def test_storage_rst_figure_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('figure', out_dir) as data:
+        with parse('index', out_dir) as data:
             figures = data.find_all('p', recursive=False)
             self.assertEqual(len(figures), 5)
 

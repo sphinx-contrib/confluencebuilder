@@ -15,16 +15,13 @@ class TestConfluenceRstParsedLiteral(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstParsedLiteral, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'parsed-literal',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'parsed-literal')
 
     @setup_builder('confluence')
     def test_storage_rst_parsedliteral_defaults(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('parsed-literal', out_dir) as data:
+        with parse('index', out_dir) as data:
             container_block = data.find('pre')
             self.assertIsNotNone(container_block)
 

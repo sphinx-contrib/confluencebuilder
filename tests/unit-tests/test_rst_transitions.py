@@ -15,15 +15,12 @@ class TestConfluenceRstTransitions(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstTransitions, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'transitions',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'transitions')
 
     @setup_builder('confluence')
     def test_storage_rst_transitions_default(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('transitions', out_dir) as data:
+        with parse('index', out_dir) as data:
             hr = data.find('hr')
             self.assertIsNotNone(hr)

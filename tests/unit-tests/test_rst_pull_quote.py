@@ -15,16 +15,13 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceConfigHeaderFooter, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
-        cls.filenames = [
-            'pull-quote',
-        ]
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'pull-quote')
 
     @setup_builder('confluence')
     def test_storage_rst_pull_quote(self):
-        out_dir = self.build(self.dataset, filenames=self.filenames)
+        out_dir = self.build(self.dataset)
 
-        with parse('pull-quote', out_dir) as data:
+        with parse('index', out_dir) as data:
             quote = data.find('blockquote')
             self.assertIsNotNone(quote)
 

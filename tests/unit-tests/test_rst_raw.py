@@ -15,13 +15,13 @@ class TestConfluenceRstRaw(ConfluenceTestCase):
     def setUpClass(cls):
         super(TestConfluenceRstRaw, cls).setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = os.path.join(cls.datasets, 'rst', 'raw-storage')
 
     @setup_builder('confluence')
     def test_storage_rst_raw_default(self):
-        out_dir = self.build(self.dataset, filenames=['raw-storage'])
+        out_dir = self.build(self.dataset)
 
-        with parse('raw-storage', out_dir) as data:
+        with parse('index', out_dir) as data:
             strong = data.find('strong')
             self.assertIsNotNone(strong)
             self.assertEqual(strong.text, 'raw content')
