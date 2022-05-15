@@ -25,30 +25,6 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
             self.assertEqual(caption.text, 'toctree caption')
 
     @setup_builder('confluence')
-    def test_storage_sphinx_toctree_child_macro(self):
-        dataset = os.path.join(self.datasets, 'toctree-default')
-
-        config = dict(self.config)
-        config['confluence_adv_hierarchy_child_macro'] = True
-        config['confluence_page_hierarchy'] = True
-
-        # relax due to this test (confluence_adv_hierarchy_child_macro) being
-        # deprecated
-        out_dir = self.build(dataset, config=config, relax=True)
-
-        with parse('index', out_dir) as data:
-            macro = data.find('ac:structured-macro', recursive=False)
-            self.assertIsNotNone(macro)
-            self.assertTrue(macro.has_attr('ac:name'))
-            self.assertEqual(macro['ac:name'], 'children')
-
-            all_param = macro.find('ac:parameter', recursive=False)
-            self.assertIsNotNone(all_param)
-            self.assertTrue(all_param.has_attr('ac:name'))
-            self.assertEqual(all_param['ac:name'], 'all')
-            self.assertEqual(all_param.text, 'true')
-
-    @setup_builder('confluence')
     def test_storage_sphinx_toctree_default(self):
         dataset = os.path.join(self.datasets, 'toctree-default')
 
