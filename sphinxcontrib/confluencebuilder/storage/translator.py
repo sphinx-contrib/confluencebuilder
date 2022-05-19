@@ -1274,7 +1274,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             include_self=False, descend=False, siblings=True))
         if isinstance(next_sibling, nodes.literal_block):
             # anything that is not a parsed literals
-            if node.rawsource == node.astext() or 'source' in node:
+            if next_sibling.rawsource == next_sibling.astext() or \
+                    'source' in next_sibling:
                 next_sibling['scb-caption'] = node.astext()
                 raise nodes.SkipNode
 
