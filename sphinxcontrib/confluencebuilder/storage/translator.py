@@ -1274,7 +1274,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             include_self=False, descend=False, siblings=True))
         if isinstance(next_sibling, nodes.literal_block):
             # anything that is not a parsed literals
-            if node.rawsource == node.astext() or 'source' in node:
+            if next_sibling.rawsource == next_sibling.astext() or \
+                    'source' in next_sibling:
                 next_sibling['scb-caption'] = node.astext()
                 raise nodes.SkipNode
 
@@ -1938,9 +1939,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._start_ac_macro(node, 'widget'))
         self.body.append(self._build_ac_param(node, 'url', ri_url))
         if height:
-            self.body.append(self._build_ac_param(node, 'height', height))
+            self.body.append(self._build_ac_param(node, 'height', str(height)))
         if width:
-            self.body.append(self._build_ac_param(node, 'width', width))
+            self.body.append(self._build_ac_param(node, 'width', str(width)))
         self.body.append(self._end_ac_macro(node))
         self.body.append(self._end_tag(node))
 
@@ -2128,7 +2129,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             the content
         """
         return (self._start_tag(node, 'ac:parameter', **{'ac:name': name}) +
-            str(value) + self._end_tag(node))
+            value + self._end_tag(node))
 
     def _start_ac_image(self, node, **kwargs):
         """

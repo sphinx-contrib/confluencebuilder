@@ -23,7 +23,11 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
         out_dir = self.build(self.dataset, filenames=['code-block-caption'])
 
         with parse('code-block-caption', out_dir) as data:
-            title_param = data.find('ac:parameter', {'ac:name': 'title'})
+            title_params = data.find_all('ac:parameter', {'ac:name': 'title'})
+            self.assertIsNotNone(title_params)
+            self.assertEqual(len(title_params), 2)
+
+            title_param = title_params.pop(0)
             self.assertIsNotNone(title_param)
             self.assertEqual(title_param.text, 'code caption test')
 
