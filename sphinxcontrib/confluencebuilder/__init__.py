@@ -21,6 +21,7 @@ from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.roles import ConfluenceLatexRole
+from sphinxcontrib.confluencebuilder.roles import ConfluenceMentionRole
 from sphinxcontrib.confluencebuilder.roles import JiraRole
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 
@@ -191,6 +192,8 @@ def setup(app):
     app.add_config_value('confluence_link_suffix', None, 'env')
     # Translation of docname to a (partial) URI.
     app.add_config_value('confluence_link_transform', None, 'env')
+    # Mappings for documentation mentions to Confluence keys.
+    app.add_config_value('confluence_mentions', None, 'env')
     # Inject navigational hints into the documentation.
     app.add_config_value('confluence_navdocs_transform', None, '')
     # Remove a detected title from generated documents.
@@ -268,6 +271,7 @@ def confluence_builder_inited(app):
 
     # register roles
     app.add_role('confluence_latex', ConfluenceLatexRole)
+    app.add_role('confluence_mention', ConfluenceMentionRole)
     app.add_role('jira', JiraRole)
 
     # inject compatible autosummary nodes if the extension is available/loaded

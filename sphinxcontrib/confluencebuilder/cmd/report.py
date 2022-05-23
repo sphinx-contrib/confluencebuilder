@@ -217,6 +217,7 @@ def report_main(args_parser):
         sensitive_config('confluence_client_cert')
         sensitive_config('confluence_global_labels')
         sensitive_config('confluence_jira_servers')
+        sensitive_config('confluence_mentions')
         sensitive_config('confluence_parent_page')
         sensitive_config('confluence_parent_page_id_check')
         sensitive_config('confluence_proxy')
