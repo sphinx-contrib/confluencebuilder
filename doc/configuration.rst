@@ -1509,6 +1509,43 @@ Advanced processing configuration
     get_relative_uri_ method. The default translation will be the combination of
     "``docname`` + |confluence_link_suffix|_".
 
+.. index:: Mentions
+
+.. _confluence_mentions:
+
+.. confval:: confluence_mentions
+
+    .. versionadded:: 1.9
+
+    Provides a dictionary of key-to-value mappings which can be used with
+    ``confluence_mention`` roles. When defining mentions, documents can
+    reference a user's account identifier, user key or username (depending
+    on the Confluence instance being published to). This configuration can
+    be used to swap the value mentioned in a document with a value specified
+    in configuration. For example, with the following configuration:
+
+    .. code-block:: python
+
+        confluence_mentions = {
+            'myuser':  '3c5369:fa8b5c24-17f8-4340-b73e-50d383307c59',
+        }
+
+    With a document such as follows:
+
+    .. code-block:: rst
+
+        For more information, contact :confluence_mention:`myuser`:
+
+    The value ``myuser`` will be replaced with the configured account
+    identifier. This can be useful for when trying to manage multiple
+    user's account identifiers when targeting a Confluence Cloud instance,
+    as well as providing a quick-way to swap a generic contact role which
+    may change over time.
+
+    See also:
+
+    - :ref:`Mention roles <mention-roles>`
+
 .. confval:: confluence_navdocs_transform
 
     .. versionadded:: 1.7

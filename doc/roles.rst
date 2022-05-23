@@ -54,7 +54,48 @@ Confluence documents.
 
 See also :ref:`LaTeX directives <latex-directives>`.
 
+.. _mention-roles:
+
+Mentions
+--------
+
+The following role can be used to help include `Confluence mentions`_ into
+generated Confluence documents.
+
+.. rst:role:: confluence_mention
+
+    .. versionadded:: 1.9
+
+    .. warning::
+
+        Confluence Cloud mentions should always use account identifiers; where
+        Confluence Server mentions should use either usernames or user keys.
+        Attempting to use Confluence Cloud account identifiers when
+        publishing to a Confluence server will most likely result in an
+        "Unsupported Confluence API call" error (500).
+
+    The ``confluence_mention`` role allows a user to build inlined mentions.
+    For Confluence Cloud instances, a mention to a specific user's account
+    identifier would be defined as follows:
+
+    .. code-block:: rst
+
+        See :confluence_mention:`3c5369:fa8b5c24-17f8-4340-b73e-50d383307c59`.
+
+    For Confluence Server instances, a mention to a specific user can either
+    be set to the username value, or a user's key value:
+
+    .. code-block:: rst
+
+        For more information, contact :confluence_mention:`myuser`.
+         (or)
+        Contact :confluence_mention:`b9aaf35e80441f415c3a3d3c53695d0e` for help.
+
+    A user mapping table can also be configured using the
+    ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
+
 
 .. references ------------------------------------------------------------------
 
+.. _Confluence mentions: https://support.atlassian.com/confluence-cloud/docs/mention-a-person-or-team/
 .. _roles: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html
