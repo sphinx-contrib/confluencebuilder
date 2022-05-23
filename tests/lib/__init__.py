@@ -41,7 +41,8 @@ except ImportError:
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
 
 
-class ConfluenceInstanceServer(server_socket.TCPServer):
+class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
+        server_socket.TCPServer):
 
     def __init__(self):
         """
@@ -200,8 +201,7 @@ class ConfluenceInstanceServer(server_socket.TCPServer):
             self.put_rsp.append((code, data))
 
 
-class ConfluenceInstanceRequestHandler(server_socket.ThreadingMixIn,
-        http_server.SimpleHTTPRequestHandler):
+class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
     """
     confluence instance request handler
 
