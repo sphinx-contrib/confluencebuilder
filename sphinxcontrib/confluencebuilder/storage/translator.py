@@ -1881,6 +1881,33 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         param = config.get('inline-macro-param')
         self._visit_confluence_latex(node, macro, param=param)
 
+    # ----------------------------------------------
+    # confluence-builder -- enhancements -- mentions
+    # ----------------------------------------------
+
+    def visit_confluence_mention_inline(self, node):
+        mappings = self.builder.config.confluence_mentions
+        raw_identifier = node.rawsource
+
+        identifier = mappings.get(raw_identifier, raw_identifier)
+
+        # Confluence Cloud account identifier?
+        if ':' in identifier:
+            key = 'account-id'
+        # Confluence server 32-sized user-key hash? (assumed)
+        elif len(identifier) == 32:
+            key = 'userkey'
+        else:
+            key = 'username'
+
+        self.body.append(self._start_ac_link(node))
+        self.body.append(self._start_tag(node, 'ri:user',
+            suffix=self.nl, empty=True,
+            **{'ri:' + key: self.encode(identifier)}))
+        self.body.append(self._end_ac_link(node))
+
+        raise nodes.SkipNode
+
     # ------------------------------------------
     # confluence-builder -- enhancements -- jira
     # ------------------------------------------

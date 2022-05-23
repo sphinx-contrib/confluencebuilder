@@ -483,6 +483,33 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(SphinxWarning):
             self._try_config(edefs=defines)
 
+    def test_config_check_mentions(self):
+        self.config['confluence_mentions'] = {}
+        self._try_config()
+
+        self.config['confluence_mentions'] = {
+            'key1': 'myuser',
+            'key2': 'b9aaf35e80441f415c3a3d3c53695d0e',
+            'key3': '3c5369:fa8b5c24-17f8-4340-b73e-50d383307c59',
+        }
+        self._try_config()
+
+        self.config['confluence_mentions'] = 'some-value'
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_mentions'] = {
+            'key': None,
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_mentions'] = {
+            'key': 123,
+        }
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_parent_page(self):
         self.config['confluence_parent_page'] = 'dummy'
         self._try_config()

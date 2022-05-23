@@ -356,6 +356,12 @@ The following keys are required:
 
     # ##################################################################
 
+    # confluence_mentions
+    validator.conf('confluence_mentions') \
+             .dict_str_str()
+
+    # ##################################################################
+
     # confluence_root_homepage
     validator.conf('confluence_root_homepage') \
              .bool()

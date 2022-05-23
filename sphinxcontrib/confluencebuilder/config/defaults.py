@@ -47,6 +47,9 @@ def apply_defaults(conf):
             'inline-macro': conf.confluence_latex_macro,
         }
 
+    if conf.confluence_mentions is None:
+        conf.confluence_mentions = {}
+
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True
 
