@@ -1426,7 +1426,7 @@ Advanced processing configuration
     See also:
 
     - :ref:`Jira directives <jira-directives>`
-    - :ref:`Jira roles <jira-roles>`.
+    - :ref:`Jira roles <jira-roles>`
 
 .. confval:: confluence_lang_transform
 
