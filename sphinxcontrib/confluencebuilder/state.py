@@ -107,9 +107,8 @@ class ConfluenceState:
                         ConfluenceState.title2doc[title.lower()], docname))
 
             tail = ' ({}){}'.format(offset, base_tail)
-            try_max = CONFLUENCE_MAX_TITLE_LEN + len(tail)
-            if len(base_title) > try_max:
-                base_title = base_title[0:try_max]
+            if len(base_title) + len(tail) > try_max:
+                base_title = base_title[0:(try_max - len(tail))]
 
             title = base_title + tail
             offset += 1
