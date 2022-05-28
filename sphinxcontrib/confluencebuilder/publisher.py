@@ -148,6 +148,7 @@ class ConfluencePublisher:
             the ancestors
         """
 
+        assert page_id
         ancestors = set()
 
         _, page = self.get_page_by_id(page_id, 'ancestors')
