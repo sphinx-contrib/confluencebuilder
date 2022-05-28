@@ -3,6 +3,7 @@ Roles
 
 The following outlines additional `roles`_ supported by this extension.
 
+.. index:: Macros; Jira Macro
 .. _jira-roles:
 
 Jira
@@ -26,6 +27,7 @@ Confluence documents.
 
 See also :ref:`Jira directives <jira-directives>`.
 
+.. index:: Macros; LaTeX Macro
 .. _latex-roles:
 
 LaTeX
@@ -54,6 +56,7 @@ Confluence documents.
 
 See also :ref:`LaTeX directives <latex-directives>`.
 
+.. index:: Macros; Mentions Macro
 .. _mention-roles:
 
 Mentions
