@@ -18,6 +18,8 @@ used to restrict these directives to supported builders by using the
 Common
 ------
 
+.. index:: Macros; Expand Macro
+
 .. rst:directive:: confluence_expand
 
     .. versionadded:: 1.3
@@ -83,6 +85,7 @@ Common
         .. confluence_newline::
 
 
+.. index:: Macros; Jira Macro
 .. _jira-directives:
 
 Jira
@@ -233,6 +236,7 @@ Confluence documents.
 
 See also :ref:`Jira roles <jira-roles>`.
 
+.. index:: Macros; LaTeX Macro
 .. _latex-directives:
 
 LaTeX

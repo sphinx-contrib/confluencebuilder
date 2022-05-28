@@ -3,6 +3,7 @@ Roles
 
 The following outlines additional `roles`_ supported by this extension.
 
+.. index:: Macros; Jira Macro
 .. _jira-roles:
 
 Jira
@@ -26,6 +27,7 @@ Confluence documents.
 
 See also :ref:`Jira directives <jira-directives>`.
 
+.. index:: Macros; LaTeX Macro
 .. _latex-roles:
 
 LaTeX
@@ -54,6 +56,7 @@ Confluence documents.
 
 See also :ref:`LaTeX directives <latex-directives>`.
 
+.. index:: Macros; Mentions Macro
 .. _mention-roles:
 
 Mentions
@@ -94,8 +97,43 @@ generated Confluence documents.
     A user mapping table can also be configured using the
     ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
 
+.. index:: Macros; Status Macro
+
+Status Macro
+------------
+
+The following role can be used to help include `Confluence status macro`_ into
+generated Confluence documents.
+
+.. rst:role:: confluence_status
+
+    .. versionadded:: 1.9
+
+    The ``confluence_status`` role allows a user to build inlined status
+    macros. For example:
+
+    .. code-block:: rst
+
+        :confluence_status:`My Status`
+
+    The color of a status macro can be configured to a value supported by
+    Confluence's status macro. For example, to adjust the status value to
+    a yellow color, the following can be used:
+
+    .. code-block:: rst
+
+        :confluence_status:`WARNING <yellow>`
+
+    To tweak the style of a status macro to an outlined variant, adjust the
+    color enclosure to square brackets:
+
+    .. code-block:: rst
+
+        :confluence_status:`PASSED <green>`
+
 
 .. references ------------------------------------------------------------------
 
 .. _Confluence mentions: https://support.atlassian.com/confluence-cloud/docs/mention-a-person-or-team/
+.. _Confluence status macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-status-macro/
 .. _roles: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html

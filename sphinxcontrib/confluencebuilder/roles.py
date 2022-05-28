@@ -10,6 +10,7 @@ See also docutils roles:
 
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_mention_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_status_inline
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 
 
@@ -59,6 +60,54 @@ def ConfluenceMentionRole(name, rawtext, text, lineno, inliner, options=None, co
     """
 
     node = confluence_mention_inline(rawsource=text, text=text)
+
+    return [node], []
+
+
+def ConfluenceStatusRole(name, rawtext, text, lineno, inliner, options=None, content=None):
+    """
+    a confluence status role
+
+    Defines an inline Confluence status role where users can inject inlined
+    status macros.
+
+    Args:
+        name: local name of the interpreted text role
+        rawtext: the entire interpreted text construct
+        text: the interpreted text content
+        lineno: the line number where the interpreted text beings
+        inliner: inliner object that called the role function
+        options: dictionary of directive options for customization
+        content: list of strings, the directive content for customization
+
+    Returns:
+        returns a tuple include a list of nodes and a list of system messages
+    """
+
+    color = ''
+    outlined = False
+
+    try:
+        leading_txt, opts = text.rsplit(' ', 1)
+
+        parse_opts = False
+        if opts.startswith('<') and opts.endswith('>'):
+            parse_opts = True
+        elif opts.startswith('[') and opts.endswith(']'):
+            parse_opts = True
+            outlined = True
+
+        if parse_opts:
+            text = leading_txt
+            color = opts[1:-1]
+    except ValueError:
+        pass
+
+    node = confluence_status_inline(rawsource=text, text=text)
+    node.params['color'] = color
+    node.params['title'] = text
+    if outlined:
+        node.params['subtle'] = 'true'
 
     return [node], []
 

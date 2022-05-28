@@ -1923,6 +1923,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     visit_jira = _visit_jira_node
     visit_jira_issue = _visit_jira_node
 
+    # --------------------------------------------
+    # confluence-builder -- enhancements -- status
+    # --------------------------------------------
+
+    def visit_confluence_status_inline(self, node):
+        self.body.append(self._start_ac_macro(node, 'status'))
+        for k, v in sorted(node.params.items()):
+            self.body.append(self._build_ac_param(node, k, str(v)))
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
+
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-toolbox
     # ---------------------------------------------------
