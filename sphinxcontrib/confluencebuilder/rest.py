@@ -153,6 +153,7 @@ class Rest(object):
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
+        self.bind_path = API_REST_BIND_PATH
         self.config = config
         self.last_retry = 1
         self.next_delay = None
@@ -161,6 +162,9 @@ class Rest(object):
         self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
         self._reported_large_delay = False
+
+        if config.confluence_publish_disable_api_prefix:
+            self.bind_path = ''
 
     def __del__(self):
         self.session.close()
@@ -230,7 +234,7 @@ class Rest(object):
     @rate_limited_retries()
     @requests_exception_wrappers()
     def get(self, key, params):
-        rest_url = self.url + API_REST_BIND_PATH + '/' + key
+        rest_url = self.url + self.bind_path + '/' + key
 
         rsp = self.session.get(rest_url, params=params, timeout=self.timeout)
         self._handle_common_request(rsp)
@@ -253,7 +257,7 @@ class Rest(object):
     @rate_limited_retries()
     @requests_exception_wrappers()
     def post(self, key, data, files=None):
-        rest_url = self.url + API_REST_BIND_PATH + '/' + key
+        rest_url = self.url + self.bind_path + '/' + key
 
         rsp = self.session.post(
             rest_url, json=data, files=files, timeout=self.timeout)
@@ -280,7 +284,7 @@ class Rest(object):
     @rate_limited_retries()
     @requests_exception_wrappers()
     def put(self, key, value, data):
-        rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
 
         rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
         self._handle_common_request(rsp)
@@ -306,7 +310,7 @@ class Rest(object):
     @rate_limited_retries()
     @requests_exception_wrappers()
     def delete(self, key, value):
-        rest_url = self.url + API_REST_BIND_PATH + '/' + key + '/' + str(value)
+        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
 
         rsp = self.session.delete(rest_url, timeout=self.timeout)
         self._handle_common_request(rsp)
@@ -322,7 +326,7 @@ class Rest(object):
         err = ""
         err += "REQ: {0}\n".format(rsp.request.method)
         err += "RSP: " + str(rsp.status_code) + "\n"
-        err += "URL: " + self.url + API_REST_BIND_PATH + "\n"
+        err += "URL: " + self.url + self.bind_path + "\n"
         err += "API: " + key + "\n"
         try:
             err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
