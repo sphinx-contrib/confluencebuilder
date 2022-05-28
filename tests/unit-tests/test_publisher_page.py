@@ -7,16 +7,14 @@
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
-from tests.lib import prepare_conf
+from tests.lib import prepare_conf_publisher
 import unittest
 
 
 class TestConfluencePublisherPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.config.confluence_publish_debug = True
-        cls.config.confluence_timeout = 5
+        cls.config = prepare_conf_publisher()
 
         cls.std_space_connect_rsp = {
             'size': 1,

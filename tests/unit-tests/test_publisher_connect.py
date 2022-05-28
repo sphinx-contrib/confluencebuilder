@@ -12,7 +12,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
-from tests.lib import prepare_conf
+from tests.lib import prepare_conf_publisher
 import os
 import time
 import unittest
@@ -21,9 +21,7 @@ import unittest
 class TestConfluencePublisherConnect(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.config.confluence_publish_debug = True
-        cls.config.confluence_timeout = 5
+        cls.config = prepare_conf_publisher()
 
     def test_publisher_connect_bad_response_code(self):
         """validate publisher can handle bad response code"""

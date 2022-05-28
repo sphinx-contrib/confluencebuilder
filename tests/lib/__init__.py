@@ -489,6 +489,30 @@ def prepare_conf():
     return config
 
 
+def prepare_conf_publisher():
+    """
+    prepare minimal sphinx configuration for sphinx application (publisher)
+
+    Prepares a minimum number of required configuration values into a
+    dictionary for unit tests to extend. This dictionary can be passed into
+    a Sphinx application instance. This call focuses on configuration options
+    for publisher-specific tests.
+
+    Returns:
+        the configuration
+    """
+
+    config = prepare_conf()
+
+    # always enable debug prints from urllib
+    config.confluence_publish_debug = True
+
+    # define a timeout to ensure publishing tests do not block
+    config.confluence_timeout = 5
+
+    return config
+
+
 def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
     return the output directory base for all unit tests
