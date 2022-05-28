@@ -1208,6 +1208,17 @@ Advanced publishing configuration
 
     See also |confluence_publish_allowlist|_.
 
+.. confval:: confluence_publish_disable_api_prefix
+
+    A boolean value which explicitly disables the use of the ``rest/api`` in
+    the Confluence publish URL. This can be useful for environments where the
+    API endpoint for a Confluence instance is proxied through a non-standard
+    location. By default, API prefixes are enabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_disable_api_prefix = True
+
 .. |confluence_publish_dryrun| replace:: ``confluence_publish_dryrun``
 .. _confluence_publish_dryrun:
 

@@ -168,6 +168,8 @@ def setup(app):
     app.add_config_value('confluence_publish_delay', None, '')
     # Subset of documents which are denied to be published.
     app.add_config_value('confluence_publish_denylist', None, '')
+    # Disable adding `rest/api` to REST requests.
+    app.add_config_value('confluence_publish_disable_api_prefix', None, '')
     # Header(s) to use for Confluence REST interaction.
     app.add_config_value('confluence_publish_headers', None, '')
     # Manipulate a requests instance.
