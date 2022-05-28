@@ -269,6 +269,9 @@ class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
                 code = 500
                 data = None
 
+        length = int(self.headers.get('content-length'))
+        self.rfile.read(length)
+
         self.send_response(code)
         self.end_headers()
         if data:
