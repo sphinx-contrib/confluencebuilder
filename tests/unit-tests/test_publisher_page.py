@@ -5,17 +5,16 @@
 """
 
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
-from tests.lib import prepare_conf
+from tests.lib import prepare_conf_publisher
 import unittest
 
 
 class TestConfluencePublisherPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.config = prepare_conf()
-        cls.config.confluence_publish_debug = True
-        cls.config.confluence_timeout = 5
+        cls.config = prepare_conf_publisher()
 
         cls.std_space_connect_rsp = {
             'size': 1,
@@ -35,10 +34,10 @@ class TestConfluencePublisherPage(unittest.TestCase):
         config = self.config.clone()
         config.confluence_watch = True
 
-        with mock_confluence_instance(config) as daemon:
+        with mock_confluence_instance(config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, self.std_space_connect_rsp)
 
-            publisher = ConfluencePublisher()
             publisher.init(config)
             publisher.connect()
 
@@ -95,10 +94,10 @@ class TestConfluencePublisherPage(unittest.TestCase):
         # identifier value. By default, the update request will ensure
         # the user configures to not watch the page.
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, self.std_space_connect_rsp)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
             publisher.connect()
 
@@ -167,10 +166,10 @@ class TestConfluencePublisherPage(unittest.TestCase):
         config = self.config.clone()
         config.confluence_publish_dryrun = True
 
-        with mock_confluence_instance(config) as daemon:
+        with mock_confluence_instance(config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, self.std_space_connect_rsp)
 
-            publisher = ConfluencePublisher()
             publisher.init(config)
             publisher.connect()
 

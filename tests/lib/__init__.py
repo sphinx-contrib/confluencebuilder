@@ -269,6 +269,9 @@ class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
                 code = 500
                 data = None
 
+        length = int(self.headers.get('content-length'))
+        self.rfile.read(length)
+
         self.send_response(code)
         self.end_headers()
         if data:
@@ -302,6 +305,29 @@ class MockedConfig(dict):
                 cloned[key] = deepcopy(value)
 
         return cloned
+
+
+@contextmanager
+def autocleanup_publisher(ptype):
+    """
+    creates a confluence publisher that cleanups after a context
+
+    The following create a provided publisher instance and yeild it to the
+    running context. The publisher can be used to connect to an instance
+    and perform other capabilities provided by the class. When the context
+    is left, the publisher will be cleaned up to ensure any pending
+    session state can been disconnected.
+
+    Yields:
+        the publisher
+    """
+
+    try:
+        publisher = ptype()
+        yield publisher
+
+    finally:
+        publisher.disconnect()
 
 
 def enable_sphinx_info(verbosity=None):
@@ -459,6 +485,30 @@ def prepare_conf():
     # support pre-Sphinx v2.0 installations which default to 'contents'
     if parse_version(sphinx_version) < parse_version('2.0'):
         config['master_doc'] = 'index'
+
+    return config
+
+
+def prepare_conf_publisher():
+    """
+    prepare minimal sphinx configuration for sphinx application (publisher)
+
+    Prepares a minimum number of required configuration values into a
+    dictionary for unit tests to extend. This dictionary can be passed into
+    a Sphinx application instance. This call focuses on configuration options
+    for publisher-specific tests.
+
+    Returns:
+        the configuration
+    """
+
+    config = prepare_conf()
+
+    # always enable debug prints from urllib
+    config.confluence_publish_debug = True
+
+    # define a timeout to ensure publishing tests do not block
+    config.confluence_timeout = 5
 
     return config
 
