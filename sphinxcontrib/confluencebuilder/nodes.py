@@ -132,6 +132,15 @@ class confluence_source_link(nodes.Structural, ConfluenceParams):
     """
 
 
+class confluence_toc(nodes.Structural, ConfluenceParams):
+    """
+    confluence toc node
+
+    Provides a Confluence's TOC macro; an alternative to Sphinx's TOC and
+    reStructuredText's contents directive.
+    """
+
+
 class jira(nodes.Inline, ConfluenceParams):
     """
     jira (query) node

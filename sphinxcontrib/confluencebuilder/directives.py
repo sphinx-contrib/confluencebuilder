@@ -10,6 +10,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
+from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from uuid import UUID
@@ -94,6 +95,32 @@ class ConfluenceNewline(Directive):
 
     def run(self):
         node = confluence_newline()
+
+        return [node]
+
+
+class ConfluenceToc(Directive):
+    has_content = False
+    option_spec = {
+        'absolute-url': lambda x: directives.choice(x, ('true', 'false')),
+        'exclude': directives.unchanged,
+        'include': directives.unchanged,
+        'indent': directives.unchanged,
+        'max-level': directives.positive_int,
+        'min-level': directives.positive_int,
+        'outline': lambda x: directives.choice(x, ('true', 'false')),
+        'printable': lambda x: directives.choice(x, ('true', 'false')),
+        'separator': directives.unchanged,
+        'style': directives.unchanged,
+        'type': lambda x: directives.choice(x, ('flat', 'list')),
+    }
+    final_argument_whitespace = True
+
+    def run(self):
+        node = confluence_toc()
+
+        for k, v in self.options.items():
+            node.params[kebab_case_to_camel_case(k)] = v
 
         return [node]
 
