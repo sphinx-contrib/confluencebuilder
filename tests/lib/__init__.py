@@ -307,6 +307,29 @@ class MockedConfig(dict):
         return cloned
 
 
+@contextmanager
+def autocleanup_publisher(ptype):
+    """
+    creates a confluence publisher that cleanups after a context
+
+    The following create a provided publisher instance and yeild it to the
+    running context. The publisher can be used to connect to an instance
+    and perform other capabilities provided by the class. When the context
+    is left, the publisher will be cleaned up to ensure any pending
+    session state can been disconnected.
+
+    Yields:
+        the publisher
+    """
+
+    try:
+        publisher = ptype()
+        yield publisher
+
+    finally:
+        publisher.disconnect()
+
+
 def enable_sphinx_info(verbosity=None):
     """
     enable verbosity for features handled by this utility class

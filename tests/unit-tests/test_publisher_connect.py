@@ -10,6 +10,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
+from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
 from tests.lib import prepare_conf
 import os
@@ -30,10 +31,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that the initial connection event for a publisher can safely
         # handle a 500 server error on a connection.
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(500, None)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
 
             with self.assertRaises(ConfluenceBadServerUrlError):
@@ -45,10 +46,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that the publisher will report a tailored error message when a
         # Confluence instance reports an authentication issue.
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(401, None)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
 
             with self.assertRaises(ConfluenceAuthenticationFailedUrlError):
@@ -60,10 +61,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that the publisher will report a tailored error message when a
         # Confluence instance reports a Confluence-specific permission issue.
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(403, None)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
 
             with self.assertRaises(ConfluencePermissionError):
@@ -75,10 +76,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that the publisher will report a tailored error message when a
         # configured proxy reports a permission issue.
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(407, None)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
 
             with self.assertRaises(ConfluenceProxyPermissionError):
@@ -91,10 +92,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # handle non-JSON data returned from a configured instance (either a
         # non-Confluence instance or a proxy response).
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, 'Welcome to my website.')
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
 
             with self.assertRaises(ConfluenceBadServerUrlError):
@@ -120,10 +121,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             }],
         }
 
-        with mock_confluence_instance(config) as daemon:
+        with mock_confluence_instance(config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, val)
 
-            publisher = ConfluencePublisher()
             publisher.init(config)
             publisher.connect()
 
@@ -171,9 +172,9 @@ class TestConfluencePublisherConnect(unittest.TestCase):
                 default_daemon.register_get_rsp(200, std_rsp)
                 proxy_daemon.register_get_rsp(200, proxy_rsp)
 
-                publisher = ConfluencePublisher()
-                publisher.init(self.config)
-                publisher.connect()
+                with autocleanup_publisher(ConfluencePublisher) as publisher:
+                    publisher.init(self.config)
+                    publisher.connect()
 
                 self.assertEqual(publisher.space_display_name, std_space_name)
 
@@ -184,9 +185,9 @@ class TestConfluencePublisherConnect(unittest.TestCase):
                 default_daemon.register_get_rsp(200, std_rsp)
                 proxy_daemon.register_get_rsp(200, proxy_rsp)
 
-                publisher = ConfluencePublisher()
-                publisher.init(config)
-                publisher.connect()
+                with autocleanup_publisher(ConfluencePublisher) as publisher:
+                    publisher.init(config)
+                    publisher.connect()
 
                 self.assertEqual(publisher.space_display_name, proxy_space_name)
 
@@ -196,9 +197,9 @@ class TestConfluencePublisherConnect(unittest.TestCase):
                 default_daemon.register_get_rsp(200, std_rsp)
                 proxy_daemon.register_get_rsp(200, proxy_rsp)
 
-                publisher = ConfluencePublisher()
-                publisher.init(self.config)
-                publisher.connect()
+                with autocleanup_publisher(ConfluencePublisher) as publisher:
+                    publisher.init(self.config)
+                    publisher.connect()
 
                 self.assertEqual(publisher.space_display_name, proxy_space_name)
         finally:
@@ -214,8 +215,8 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # non-Confluence instance, but the server provides JSON data in its
         # response.
 
-        with mock_confluence_instance(self.config) as daemon:
-            publisher = ConfluencePublisher()
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             publisher.init(self.config)
 
             # random json data
@@ -266,10 +267,10 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             }],
         }
 
-        with mock_confluence_instance(self.config) as daemon:
+        with mock_confluence_instance(self.config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, val)
 
-            publisher = ConfluencePublisher()
             publisher.init(self.config)
             publisher.connect()
 
@@ -280,8 +281,8 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         #
         # Verify that a non-served request from a publisher event will timeout.
 
-        with mock_confluence_instance(self.config, ignore_requests=True):
-            publisher = ConfluencePublisher()
+        with mock_confluence_instance(self.config, ignore_requests=True), \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
             publisher.init(self.config)
 
             start = time.time()
