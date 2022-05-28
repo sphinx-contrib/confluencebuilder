@@ -103,6 +103,15 @@ class confluence_mention_inline(nodes.Inline, nodes.TextElement):
     """
 
 
+class confluence_status_inline(nodes.Inline, ConfluenceParams):
+    """
+    confluence status inline node
+
+    A Confluence builder defined status inline node, used to help add
+    Confluence status macros for an inlined section of a paragraph.
+    """
+
+
 class confluence_page_generation_notice(nodes.TextElement):
     """
     confluence page generation notice node
