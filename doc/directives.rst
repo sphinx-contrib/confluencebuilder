@@ -84,6 +84,133 @@ Common
 
         .. confluence_newline::
 
+.. rst:directive:: confluence_toc
+
+    .. versionadded:: 1.9
+
+    The ``confluence_toc`` directive allows a user to define a Confluence
+    `Table of Contents Macro`_. Users are typically recommended to use
+    `reStructuredText's Table of Contents`_ directive when generating local
+    table of contents; and Confluence's Table of Contents macro is typically
+    not a replacement of `Sphinx's toctree directive`_. However, if a user
+    wishes to take advantage of Confluence's TOC-specific macro capabilities,
+    the following can be used:
+
+    .. code-block:: rst
+
+        .. confluence_toc::
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: absolute-url: flag
+        :type: boolean
+
+        Whether the macro should generate full URLs for TOC entry links.
+        Valid values are ``true`` or ``false`` (default).
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :absolute-url: true
+
+    .. rst:directive:option:: exclude: value
+        :type: string
+
+        Filter heading to exclude entries matching the provided value. The
+        value should support a regular expressions string.
+
+    .. rst:directive:option:: include: value
+        :type: string
+
+        Filter heading to include entries matching the provided value. The
+        value should support a regular expressions string.
+
+    .. rst:directive:option:: indent: value
+        :type: string
+
+        The indent to apply for header entries.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :indent: 15px
+
+    .. rst:directive:option:: max-level: count
+        :type: number
+
+        Defines the lowest heading level to include in the table of contents.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :max-level: 10
+
+    .. rst:directive:option:: min-level: count
+        :type: number
+
+        Defines the highest heading level to include in the table of contents.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :min-level: 1
+
+    .. rst:directive:option:: outline: flag
+        :type: boolean
+
+        Whether the macro should include outline numbering for entries.
+        Valid values are ``true`` or ``false`` (default).
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :outline: true
+
+    .. rst:directive:option:: printable: flag
+        :type: boolean
+
+        Whether the macro should render when a user prints a Confluence page.
+        Valid values are ``true`` (default) or ``false``.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :printable: true
+
+    .. rst:directive:option:: separator: separator style type of the toc
+        :type: brackets, braces, parens, <user-defined>
+
+        When the ``type`` option is configured to ``flat``, this option can
+        configure the separator type applied between header entries. By
+        default, the separator type is set to ``brackets``.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :separator: braces
+
+    .. rst:directive:option:: style: list style type of the toc
+        :type: default, none, disc, circle, square, decimal, lower-alpha,
+               lower-roman, upper-roman
+
+        Configures how the table of contents will be style its list type. By
+        default, the style type is set to ``default``.
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :style: square
+
+    .. rst:directive:option:: type: outline type of the toc
+        :type: flat or list
+
+        Configures how the table of contents will be style its structure.
+        Valid values are ``flat`` or ``list`` (default).
+
+        .. code-block:: rst
+
+            .. confluence_toc::
+                :type: flat
 
 .. index:: Macros; Jira Macro
 .. _jira-directives:
@@ -286,5 +413,8 @@ See also :ref:`LaTeX roles <latex-roles>`.
 .. references ------------------------------------------------------------------
 
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
+.. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
+.. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html
+.. _reStructuredText's Table of Contents: https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents
 .. _only: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-only
