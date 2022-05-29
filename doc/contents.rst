@@ -25,6 +25,7 @@ Documentation contents
     features
     tips
     guides
+    advanced
 
 .. toctree::
     :maxdepth: 1
