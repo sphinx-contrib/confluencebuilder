@@ -96,7 +96,7 @@ class confluence_latex_inline(nodes.Inline, nodes.TextElement):
 
 class confluence_mention_inline(nodes.Inline, nodes.TextElement):
     """
-    confluence latex inline node
+    confluence mention inline node
 
     A Confluence builder defined mention inline node, used to help add
     Confluence @mentions for an inlined section of a paragraph.

@@ -2,6 +2,8 @@ Development
 ===========
 
 * fixed issue where external references with ampersands would fail to publish
+* fixed issue where title length limits were not properly enforced
+* support the ability to disable injecting ``rest/api`` in api endpoint url
 
 1.8.0 (2022-03-27)
 ==================

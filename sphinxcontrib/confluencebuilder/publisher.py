@@ -74,6 +74,19 @@ class ConfluencePublisher:
 
         # handle if the provided space key was not found
         if rsp['size'] == 0:
+            if self.debug:
+                logger.info('''could not find the configured space
+
+(notice to debugging user)
+Either the space does not exist, or the user does not have permission to see
+the space. Another space search will be performed to sanity check the
+configuration to see if a similar space key exists, which can hint to a user
+that the space key may be misconfigured. If the following search request
+results in an access restriction, it is most likely that the authentication
+options are not properly configured, even if the previous search request
+reported a success (which can be permitted for anonymous users).
+''')
+
             extra_desc = ''
 
             # If the space key was not found, attempt to search for the space
