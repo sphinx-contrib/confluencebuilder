@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib import MockedConfig
@@ -16,7 +17,8 @@ class TestTitles(unittest.TestCase):
         self.config = MockedConfig()
 
     def _register_title(self, title):
-        return ConfluenceState.register_title('mock', title, self.config)
+        with skip_warningiserror():
+            return ConfluenceState.register_title('mock', title, self.config)
 
     def test_titles_maximum_checks_default(self):
         t0 = self._register_title('S' * (CONFLUENCE_MAX_TITLE_LEN - 1))
