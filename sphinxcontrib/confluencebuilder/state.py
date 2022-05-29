@@ -88,12 +88,13 @@ class ConfluenceState:
 
         if postfix:
             base_tail += postfix
-            try_max += len(postfix)
 
-        if len(title) > try_max:
-            title = title[0:try_max]
-            logger.warn('document title has been trimmed due to '
-                'length: %s' % docname)
+        if len(title) + len(base_tail) > try_max:
+            warning = 'document title has been trimmed due to length: %s' % title
+            if len(base_tail) > 0:
+                warning += '; With postfix: %s' % base_tail
+            logger.warn(warning)
+            title = title[0:try_max - len(base_tail)]
 
         base_title = title
         title += base_tail
@@ -107,9 +108,8 @@ class ConfluenceState:
                         ConfluenceState.title2doc[title.lower()], docname))
 
             tail = ' ({}){}'.format(offset, base_tail)
-            try_max = CONFLUENCE_MAX_TITLE_LEN + len(tail)
-            if len(base_title) > try_max:
-                base_title = base_title[0:try_max]
+            if len(base_title) + len(tail) > try_max:
+                base_title = base_title[0:(try_max - len(tail))]
 
             title = base_title + tail
             offset += 1
