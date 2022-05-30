@@ -114,14 +114,6 @@ class ConfluenceBuilder(Builder):
         if self.config.confluence_publish:
             process_ask_configs(self.config)
 
-        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
-        self.writer = ConfluenceWriter(self)
-        self.config.sphinx_verbosity = self._verbose
-        self.publisher.init(self.config)
-
-        self.create_template_bridge()
-        self.templates.init(self)
-
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalize_base_url(old_url)
         if old_url != new_url:
@@ -132,6 +124,14 @@ class ConfluenceBuilder(Builder):
         # detect if Confluence Cloud if using the Atlassian domain
         if new_url:
             self.cloud = new_url.endswith('.atlassian.net/wiki/')
+
+        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
+        self.writer = ConfluenceWriter(self)
+        self.config.sphinx_verbosity = self._verbose
+        self.publisher.init(self.config, self.cloud)
+
+        self.create_template_bridge()
+        self.templates.init(self)
 
         if self.config.confluence_file_suffix is not None:
             self.file_suffix = self.config.confluence_file_suffix
