@@ -48,7 +48,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             builder = ConfluenceBuilder(app)
 
             class MockedPublisher:
-                def init(self, config):
+                def init(self, config, cloud=None):
                     pass
 
                 def connect(self):

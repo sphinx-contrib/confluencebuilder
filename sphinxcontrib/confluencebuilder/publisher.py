@@ -26,12 +26,14 @@ import time
 
 class ConfluencePublisher:
     def __init__(self):
+        self.cloud = None
         self.space_display_name = None
         self.space_type = None
         self._ancestors_cache = set()
         self._name_cache = {}
 
-    def init(self, config):
+    def init(self, config, cloud=None):
+        self.cloud = cloud
         self.config = config
         self.append_labels = config.confluence_append_labels
         self.debug = config.confluence_publish_debug
@@ -619,6 +621,14 @@ reported a success (which can be permitted for anonymous users).
                         raise ConfluenceBadApiError(-1, api_err)
 
                     uploaded_page_id = rsp['id']
+
+                    # if we have labels and this is a non-cloud instance,
+                    # initial labels need to be applied in their own request
+                    labels = new_page['metadata']['labels']
+                    if not self.cloud and labels:
+                        url = 'content/{}/label'.format(uploaded_page_id)
+                        self.rest_client.post(url, labels)
+
                 except ConfluenceBadApiError as ex:
                     # Check if Confluence reports that the new page request
                     # fails, indicating it already exists. This is usually
