@@ -68,7 +68,7 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             self.assertTrue(req_path.startswith(expected_request))
 
             # verify that no other request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
 
     def test_publisher_page_base_id_parent_name(self):
         """validate publisher will search for parent page by name"""
@@ -120,7 +120,7 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             self.assertTrue(expected_opt in expected_opt)
 
             # verify that no other request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
 
     def test_publisher_page_base_id_parent_none(self):
         """validate publisher will search for parent page by name"""
@@ -156,4 +156,4 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             self.assertIsNone(base_id)
 
             # verify that no other request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
