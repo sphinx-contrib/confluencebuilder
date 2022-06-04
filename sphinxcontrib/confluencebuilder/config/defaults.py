@@ -102,6 +102,14 @@ def apply_defaults(conf):
             if not isinstance(getattr(conf, key), int) and conf[key]:
                 conf[key] = int(conf[key])
 
+    # if the parent page is an integer value in a string type, cast it to an
+    # integer; otherwise, assume it is a page name (string)
+    if conf.confluence_parent_page:
+        try:
+            conf.confluence_parent_page = int(conf.confluence_parent_page)
+        except ValueError:
+            pass
+
     # if running an older version of Sphinx which does not define `root_doc`,
     # copy it over now from the legacy configuration
     if 'root_doc' not in conf:

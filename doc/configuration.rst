@@ -541,15 +541,22 @@ Publishing configuration
 
     The root page found inside the configured space (|confluence_space_key|_)
     where published pages will be a descendant of. The parent page value is used
-    to match with the title of an existing page. If this option is not provided,
-    new pages will be published to the root of the configured space. If the
-    parent page cannot be found, the publish attempt will stop with an error
-    message. For example, the following will publish documentation under the
-    ``MyAwesomeDocs`` page:
+    to match either the title or page identifier of an existing page. If this
+    option is not provided, new pages will be published to the root of the
+    configured space. If the parent page cannot be found, the publish attempt
+    will stop with an error message. For example, the following will publish
+    documentation under the ``MyAwesomeDocs`` page:
 
     .. code-block:: python
 
         confluence_parent_page = 'MyAwesomeDocs'
+
+    Users wishing to publish against a parent page's identifier value can do
+    so by using an integer value instead. For example:
+
+    .. code-block:: python
+
+        confluence_parent_page = 123456
 
     If a parent page is not set, consider using the
     |confluence_root_homepage|_ option as well. Note that the page's name can
@@ -1050,19 +1057,6 @@ Advanced publishing configuration
 
     - |confluence_publish_postfix|_
     - |confluence_publish_prefix|_
-
-.. confval:: confluence_parent_page_id_check
-
-    The page identifier check for |confluence_parent_page|_. By providing an
-    identifier of the parent page, both the parent page's name and identifier
-    must match before this extension will publish any content to a Confluence
-    instance. This serves as a sanity-check configuration for the cautious.
-
-    .. code-block:: python
-
-        confluence_parent_page_id_check = 123456
-
-    See also |confluence_parent_page|_.
 
 .. confval:: confluence_proxy
 
@@ -1606,6 +1600,24 @@ Deprecated options
     .. versionchanged:: 1.6
 
     This option has been renamed to |confluence_root_homepage|_.
+
+.. confval:: confluence_parent_page_id_check
+
+    .. versionchanged:: 1.9
+
+        The |confluence_parent_page|_ option now accepts both a page name and
+        identifier.
+
+    The page identifier check for |confluence_parent_page|_. By providing an
+    identifier of the parent page, both the parent page's name and identifier
+    must match before this extension will publish any content to a Confluence
+    instance. This serves as a sanity-check configuration for the cautious.
+
+    .. code-block:: python
+
+        confluence_parent_page_id_check = 123456
+
+    See also |confluence_parent_page|_.
 
 .. confval:: confluence_publish_subset
 

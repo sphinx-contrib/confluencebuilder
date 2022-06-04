@@ -391,8 +391,14 @@ If planning to use a depth of zero, it is recommended to use the
 
     # ##################################################################
 
-    validator.conf('confluence_parent_page') \
-             .string()
+    try:
+        validator.conf('confluence_parent_page').string()
+    except ConfluenceConfigurationError:
+        try:
+            validator.conf('confluence_parent_page').int_(positive=True)
+        except ConfluenceConfigurationError:
+            raise ConfluenceConfigurationError('''\
+confluence_parent_page is not a string or a positive integer''')
 
     # ##################################################################
 
