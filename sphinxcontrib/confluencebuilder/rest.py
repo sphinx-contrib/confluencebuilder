@@ -206,7 +206,7 @@ class Rest(object):
 
         # mount custom ssl adapter to support various secure-session options
         adapter = SslAdapter(config)
-        session.mount(self.url, adapter)
+        session.mount('https://', adapter)
 
         if config.confluence_server_auth:
             session.auth = config.confluence_server_auth
