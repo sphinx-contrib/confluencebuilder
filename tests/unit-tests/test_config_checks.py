@@ -514,6 +514,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_parent_page'] = 'dummy'
         self._try_config()
 
+        self.config['confluence_parent_page'] = '123456'
+        self._try_config()
+
+        self.config['confluence_parent_page'] = 456789
+        self._try_config()
+
+        self.config['confluence_parent_page'] = 0
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_parent_page'] = -123456
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_parent_page_id_check(self):
         # enable publishing enabled checks
         self._prepare_valid_publish()
@@ -524,10 +538,12 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
         self.config['confluence_parent_page'] = 'dummy'
-        self._try_config()
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
 
         self.config['confluence_parent_page_id_check'] = '123456'
-        self._try_config()
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
 
         self.config['confluence_parent_page_id_check'] = 0
         with self.assertRaises(ConfluenceConfigurationError):
