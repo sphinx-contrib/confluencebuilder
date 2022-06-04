@@ -7,6 +7,7 @@
 from hashlib import sha256
 from sphinx.util.images import guess_mimetype
 from sphinx.util.osutil import ensuredir
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
@@ -200,6 +201,9 @@ def confluence_supported_svg(builder, node):
 
     # write the new svg file (if needed)
     if not os.path.isfile(outfn):
+        logger.verbose('generating compatible svg of: %s' % uri)
+        logger.verbose('generating compatible svg to: %s' % outfn)
+
         ensuredir(os.path.dirname(outfn))
         try:
             with open(outfn, 'wb') as f:

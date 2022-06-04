@@ -8,6 +8,7 @@ from docutils import nodes
 from sphinx import addnodes
 from sphinx.util.osutil import canon_path
 from sphinx.util.images import guess_mimetype
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
@@ -200,6 +201,7 @@ class ConfluenceAssetManager:
 
         target = node['reftarget']
         if target.find('://') == -1:
+            logger.verbose('process file node: %s' % target)
             path = self._interpret_asset_path(node)
             if path:
                 return self._handle_entry(path, docname, standalone)
@@ -225,6 +227,7 @@ class ConfluenceAssetManager:
 
         uri = str(node['uri'])
         if not uri.startswith('data:') and uri.find('://') == -1:
+            logger.verbose('process image node: %s' % uri)
             path = self._interpret_asset_path(node)
             if path:
                 return self._handle_entry(path, docname, standalone)
@@ -319,7 +322,12 @@ class ConfluenceAssetManager:
             docdir = os.path.dirname(node['refdoc'])
             path = os.path.join(docdir, node['reftarget'])
 
-        return find_env_abspath(self.env, self.outdir, path)
+        abspath = find_env_abspath(self.env, self.outdir, path)
+
+        if not abspath:
+            logger.verbose('failed to find path: %s' % path)
+
+        return abspath
 
 
 class ConfluenceSupportedImages:
