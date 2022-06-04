@@ -539,6 +539,8 @@ Publishing configuration
 
         This option cannot be used with |confluence_publish_root|_.
 
+    .. versionchanged:: 1.9 Support added for accepting a page identifier.
+
     The root page found inside the configured space (|confluence_space_key|_)
     where published pages will be a descendant of. The parent page value is used
     to match either the title or page identifier of an existing page. If this
