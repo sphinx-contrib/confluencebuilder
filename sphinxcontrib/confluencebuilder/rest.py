@@ -39,22 +39,27 @@ RATE_LIMITED_MAX_RETRY_DURATION = 30
 
 
 class SslAdapter(HTTPAdapter):
-    def __init__(self, cert, password=None, disable_validation=False,
-                 *args, **kwargs):
-        self._certfile, self._keyfile = cert
-        self._password = password
-        self._disable_validation = disable_validation
+    def __init__(self, config, *args, **kwargs):
+        self._config = config
         super(SslAdapter, self).__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
-        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        try:
-            context.load_cert_chain(certfile=self._certfile,
-                                    keyfile=self._keyfile,
-                                    password=self._password)
-        except ssl.SSLError as ex:
-            raise ConfluenceCertificateError(ex)
-        if self._disable_validation:
+        context = ssl.create_default_context()
+
+        # if a custom certificate is provided, load it into this session's
+        # SSL context
+        if self._config.confluence_client_cert:
+            try:
+                cf, kf = self._config.confluence_client_cert
+                pw = self._config.confluence_client_cert_pass
+                context.load_cert_chain(certfile=cf, keyfile=kf, password=pw)
+            except ssl.SSLError as ex:
+                raise ConfluenceCertificateError(ex)
+        # otherwise, load default certificates on the system
+        else:
+            context.load_default_certs()
+
+        if self._config.confluence_disable_ssl_validation:
             context.check_hostname = False
 
         kwargs['ssl_context'] = context
@@ -199,17 +204,9 @@ class Rest(object):
         else:
             session.verify = True
 
-        # In order to support encrypted certificates, we need to
-        # use the Adapter pattern that requests uses. If requests
-        # ever adds native support for encrypted keys then we can
-        # remove the SSLAdapter and just use the native API.
-        # see: https://github.com/requests/requests/issues/2519 for more
-        # information.
-        if config.confluence_client_cert:
-            adapter = SslAdapter(config.confluence_client_cert,
-                                 config.confluence_client_cert_pass,
-                                 config.confluence_disable_ssl_validation)
-            session.mount(self.url, adapter)
+        # mount custom ssl adapter to support various secure-session options
+        adapter = SslAdapter(config)
+        session.mount('https://', adapter)
 
         if config.confluence_server_auth:
             session.auth = config.confluence_server_auth
