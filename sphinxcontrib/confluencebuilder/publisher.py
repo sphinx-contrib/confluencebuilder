@@ -41,7 +41,7 @@ class ConfluencePublisher:
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
         self.parent_id = config.confluence_parent_page_id_check
-        self.parent_name = config.confluence_parent_page
+        self.parent_ref = config.confluence_parent_page
         self.server_url = config.confluence_server_url
         self.space_key = config.confluence_space_key
         self.watch = config.confluence_watch
@@ -177,24 +177,33 @@ reported a success (which can be permitted for anonymous users).
     def get_base_page_id(self):
         base_page_id = None
 
-        if not self.parent_name:
+        if not self.parent_ref:
+            return base_page_id
+
+        if isinstance(self.parent_ref, int):
+            base_page_id, page = self.get_page_by_id(self.parent_ref)
+
+            if not page:
+                raise ConfluenceConfigurationError(
+                    '''Configured parent page identifier does not exist.''')
+
             return base_page_id
 
         rsp = self.rest_client.get('content', {
             'type': 'page',
             'spaceKey': self.space_key,
-            'title': self.parent_name,
+            'title': self.parent_ref,
             'status': 'current'
         })
         if rsp['size'] == 0:
-            raise ConfluenceConfigurationError("""Configured parent """
-                """page name do not exist.""")
+            raise ConfluenceConfigurationError(
+                '''Configured parent page name does not exist.''')
         page = rsp['results'][0]
         if self.parent_id and page['id'] != str(self.parent_id):
             raise ConfluenceConfigurationError("""Configured parent """
                 """page ID and name do not match.""")
         base_page_id = page['id']
-        self._name_cache[base_page_id] = self.parent_name
+        self._name_cache[base_page_id] = self.parent_ref
 
         if not base_page_id and self.parent_id:
             raise ConfluenceConfigurationError("""Unable to find the """

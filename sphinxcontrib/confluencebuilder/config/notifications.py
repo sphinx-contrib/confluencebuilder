@@ -15,6 +15,8 @@ DEPRECATED_CONFIGS = {
         'to be removed in a future version',
     'confluence_master_homepage':
         'use "confluence_root_homepage" instead',
+    'confluence_parent_page_id_check':
+        '"confluence_parent_page" now accepts a page id',
     'confluence_publish_subset':
         'use "confluence_publish_allowlist" instead',
     'confluence_purge_from_master':

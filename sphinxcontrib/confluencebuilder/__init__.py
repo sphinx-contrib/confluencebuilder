@@ -114,7 +114,7 @@ def setup(app):
     app.add_config_value('confluence_global_labels', None, '')
     # Enablement of configuring root as space's homepage.
     app.add_config_value('confluence_root_homepage', None, '')
-    # Parent page's name to publish documents under.
+    # Parent page's name or identifier to publish documents under.
     app.add_config_value('confluence_parent_page', None, '')
     # Perform a dry run of publishing to inspect what publishing will do.
     app.add_config_value('confluence_publish_dryrun', None, '')

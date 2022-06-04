@@ -81,7 +81,7 @@ To use this action, the argument '--danger' must be set.
                 dryrun = app.config.confluence_publish_dryrun
                 server_url = app.config.confluence_server_url
                 space_key = app.config.confluence_space_key
-                parent_name = app.config.confluence_parent_page
+                parent_ref = app.config.confluence_parent_page
 
                 # initialize the publisher (if permitted)
                 if app.config.confluence_publish:
@@ -103,7 +103,7 @@ To use this action, the argument '--danger' must be set.
         logger.error('publishing not configured in sphinx configuration')
         return 1
 
-    if args.parent and not parent_name:
+    if args.parent and not parent_ref:
         logger.error('parent option provided but no parent page is configured')
         return 1
 
@@ -141,7 +141,7 @@ pages. Only use this action if you know what you are doing.
     print('         URL:', server_url)
     print('       Space:', space_key)
     if base_page_id:
-        logger.note('       Pages: Child pages of ' + parent_name)
+        logger.note('       Pages: Child pages of ' + parent_ref)
     else:
         logger.note('       Pages: All Pages')
     print(' Total pages:', len(legacy_pages))
