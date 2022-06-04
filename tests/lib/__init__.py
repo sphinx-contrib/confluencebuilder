@@ -80,15 +80,22 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         handled requests that have not been pop'ed from the instance. Provides
         an easy way to verify that no unexpected requests have been made.
 
-        Returns:
-            whether or not there are still requests cached
+        Raises:
+            ``Exception`` is raised if any unhandled requests are detected
         """
 
         with self.mtx:
             if self.del_req or self.get_req or self.put_req:
-                return True
+                raise Exception('''unhandled requests detected
 
-        return False
+(get requests)
+{}
+
+(put requests)
+{}
+
+(del requests)
+{}'''.format(self.get_req, self.put_req, self.del_req))
 
     def pop_delete_request(self):
         """

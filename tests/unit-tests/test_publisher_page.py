@@ -85,7 +85,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(update_req)
 
             # verify that no other request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
 
     def test_publisher_page_store_page_id_default(self):
         """validate publisher will store a page by id (default)"""
@@ -155,7 +155,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertEqual(req_path, ereq)
 
             # verify that no other request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
 
     def test_publisher_page_store_page_id_dryrun(self):
         """validate publisher suppress store a page by id with dryrun"""
@@ -201,4 +201,4 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertTrue(req_path.startswith(expected_request))
 
             # verify that no update request was made
-            self.assertFalse(daemon.check_unhandled_requests())
+            daemon.check_unhandled_requests()
