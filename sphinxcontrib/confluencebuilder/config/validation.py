@@ -341,6 +341,31 @@ class ConfigurationValidation:
 
         return self
 
+    def path(self):
+        """
+        checks if a configuration is a valid path
+
+        After an instance has been set a configuration key (via `conf`), this
+        method can be used to check if the value (if any) configured with this
+        key is a valid path. If not, an `ConfluenceConfigurationError` exception
+        will be thrown.
+
+        In the event that the configuration is not set (e.g. a value of `None`),
+        this method will have no effect.
+
+        Returns:
+            the validator instance
+        """
+        value = self._value()
+
+        if value is not None:
+            if not isinstance(value, basestring) or not os.path.exists(
+                    os.path.join(self.env.srcdir, value)):
+                raise ConfluenceConfigurationError(
+                    '%s is not a file' % self.key)
+
+        return self
+
     def string(self):
         """
         checks if a configuration is a string
