@@ -189,10 +189,14 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_ca_cert(self):
-        valid_cert = self.dummy_exists
+        valid_cert_dir = self.test_dir
+        valid_cert_file = self.dummy_exists
         missing_cert = self.dummy_missing
 
-        self.config['confluence_ca_cert'] = valid_cert
+        self.config['confluence_ca_cert'] = valid_cert_dir
+        self._try_config()
+
+        self.config['confluence_ca_cert'] = valid_cert_file
         self._try_config()
 
         self.config['confluence_ca_cert'] = missing_cert
