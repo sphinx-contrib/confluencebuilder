@@ -80,8 +80,12 @@ def setup(app):
     app.add_config_value('confluence_domain_indices', None, '')
     # File to get page header information from.
     app.add_config_value('confluence_header_file', None, 'env')
+    # Dictionary to pass to header when rendering template
+    app.add_config_value('confluence_header_data', None, 'env')
     # File to get page footer information from.
     app.add_config_value('confluence_footer_file', None, 'env')
+    # Dictionary to pass to footer when rendering template.
+    app.add_config_value('confluence_footer_data', None, 'env')
     # Enablement of a generated search documents
     app.add_config_value('confluence_include_search', None, '')
     # Enablement of the maximum document depth (before inlining).

@@ -91,25 +91,47 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
+            header_template_data = ''
             header_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
                 with io.open(header_file, encoding='utf-8') as file:
-                    self.body_final += file.read() + self.nl
+                    header_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(header_file, err))
+
+            # if no data is supplied, the file is plain text
+            if self.builder.config.confluence_header_data is None:
+                header = header_template_data
+            else:
+                header = self.builder.templates.render_string(
+                    header_template_data,
+                    self.builder.config.confluence_header_data)
+
+            self.body_final += header + self.nl
 
         self.body_final += ''.join(self.body)
 
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
+            footer_template_data = ''
             footer_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
                 with io.open(footer_file, encoding='utf-8') as file:
-                    self.body_final += file.read() + self.nl
+                    footer_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(footer_file, err))
+
+            # if no data is supplied, the file is plain text
+            if self.builder.config.confluence_footer_data is None:
+                footer = footer_template_data
+            else:
+                footer = self.builder.templates.render_string(
+                    footer_template_data,
+                    self.builder.config.confluence_footer_data)
+
+            self.body_final += footer + self.nl
 
     def visit_Text(self, node):
         text = node.astext()
