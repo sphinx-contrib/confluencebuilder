@@ -876,31 +876,49 @@ class ConfluenceBuilder(Builder):
         if docname not in self.publish_docnames:
             self.publish_docnames.append(docname)
 
-        # cache header data (if any)
+        # render and cache header data (if any)
         if self._cached_header_data is None:
             self._cached_header_data = ''
+            header_template_data = ''
 
             if self.config.confluence_header_file is not None:
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_header_file)
                 try:
                     with io.open(fname, encoding='utf-8') as file:
-                        self._cached_header_data = file.read() + '\n'
+                        header_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
                     self.warn('error reading file {}: {}'.format(fname, err))
 
-        # cache footer data (if any)
+                # if no data is supplied, the file is plain text
+                if self.config.confluence_header_data is None:
+                    self._cached_header_data = header_template_data
+                else:
+                    self._cached_header_data = self.templates.render_string(
+                        header_template_data,
+                        self.config.confluence_header_data)
+
+        # render and cache footer data (if any)
         if self._cached_footer_data is None:
             self._cached_footer_data = ''
+            footer_template_data = ''
 
             if self.config.confluence_footer_file is not None:
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_footer_file)
                 try:
                     with io.open(fname, encoding='utf-8') as file:
-                        self._cached_footer_data = file.read() + '\n'
+                        footer_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
                     self.warn('error reading file {}: {}'.format(fname, err))
+
+                # if no data is supplied, the file is plain text
+                if self.config.confluence_footer_data is None:
+                    self._cached_footer_data = footer_template_data
+                else:
+                    self._cached_header_data = self.templates.render_string(
+                        footer_template_data,
+                        self.config.confluence_footer_data)
 
         # generate/replace the document in the output directory
         fname = path.join(self.outdir, docname + self.file_suffix)
