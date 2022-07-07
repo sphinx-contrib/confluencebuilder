@@ -3,7 +3,9 @@
 :copyright: Copyright 2017-2021 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
-
+import os
+import hashlib
+import base64
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
@@ -59,7 +61,7 @@ class ConfluenceState:
         logger.verbose('mapping %s to target: %s' % (refid, target))
 
     @staticmethod
-    def register_title(docname, title, config):
+    def register_title(docname, title, config, doc_source_path=None):
         """
         register the title for the provided document name
 
@@ -80,8 +82,14 @@ class ConfluenceState:
 
         if config and (not config.confluence_ignore_titlefix_on_index or
                 docname != config.root_doc):
-            postfix = config.confluence_publish_postfix
             prefix = config.confluence_publish_prefix
+
+            if config.confluence_title_hash_root_path:
+                hash = ConfluenceState._create_title_hash(docname=docname, doc_source_path=doc_source_path, config=config)
+                if hash:
+                    postfix = ' -' + hash
+            else:
+                postfix = config.confluence_publish_postfix
 
         if prefix:
             title = prefix + title
@@ -118,6 +126,20 @@ class ConfluenceState:
         ConfluenceState.title2doc[title.lower()] = docname
         logger.verbose('mapping %s to title: %s' % (docname, title))
         return title
+
+    @staticmethod
+    def _create_title_hash(docname, doc_source_path, config):
+        if doc_source_path.startswith(config.confluence_title_hash_root_path):
+            relative_path = os.path.relpath(doc_source_path, start=config.confluence_title_hash_root_path)
+            hash=base64.urlsafe_b64encode(hashlib.md5(relative_path.encode()).digest()).decode().rstrip('==')[:10]
+            return hash
+        else:
+            logger.warn("Source path '{doc_source_path}' does not start with defined confluence_title_hash_root_path "
+                        "'{confluence_title_hash_root_path}', no hash created".format(
+                            doc_source_path=doc_source_path,
+                            confluence_title_hash_root_path=config.confluence_title_hash_root_path,
+                        ))
+            return None
 
     @staticmethod
     def register_toctree_depth(docname, depth):

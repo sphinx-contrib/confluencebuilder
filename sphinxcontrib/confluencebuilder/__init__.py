@@ -141,6 +141,9 @@ def setup(app):
     # Whether or not new content should be watched.
     app.add_config_value('confluence_watch', None, '')
 
+    app.add_config_value('confluence_title_hash_root_path', None, 'env')
+
+
     # (configuration - advanced publishing)
     # Register additional mime types to be selected for image candidates.
     app.add_config_value('confluence_additional_mime_types', None, 'env')

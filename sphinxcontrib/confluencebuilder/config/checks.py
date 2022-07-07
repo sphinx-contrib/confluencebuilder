@@ -554,6 +554,13 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_title_hash_root_path
+    validator.conf('confluence_title_hash_root_path') \
+             .string()
+
+    # ##################################################################
+
+
     # confluence_server_auth
     if config.confluence_server_auth is not None:
         if not issubclass(type(config.confluence_server_auth), AuthBase):
