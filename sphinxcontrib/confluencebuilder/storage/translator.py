@@ -2129,6 +2129,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_confluence_expand(self, node):
         self.body.append(self.context.pop())  # macro
 
+    def visit_confluence_excerpt(self, node):
+        self.body.append(self._start_ac_macro(node, 'excerpt'))
+        if 'name' in node:
+            self.body.append(
+                self._build_ac_param(node, 'name', node['name']))
+        self.body.append(
+            self._build_ac_param(node, 'atlassian-macro-output-type', "INLINE"))
+        self.body.append(self._start_ac_rich_text_body_macro(node))
+        self.context.append(self._end_ac_rich_text_body_macro(node) +
+            self._end_ac_macro(node))
+
+    def depart_confluence_excerpt(self, node):
+        self.body.append(self.context.pop())  # macro
+
     def visit_confluence_footer(self, node):
         if self.v2:
             self.body.append(self._start_tag(

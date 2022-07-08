@@ -7,6 +7,7 @@
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
+from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
@@ -53,6 +54,23 @@ class ConfluenceExpandDirective(Directive):
         node = confluence_expand(rawsource=text)
         if 'title' in self.options:
             node['title'] = self.options['title']
+
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+class ConfluenceExcerptDirective(Directive):
+    has_content = True
+    option_spec = {
+        'name': directives.unchanged,
+    }
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_excerpt(rawsource=text)
+        if 'name' in self.options:
+            node['name'] = self.options['name']
 
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]

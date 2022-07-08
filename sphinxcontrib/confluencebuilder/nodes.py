@@ -45,6 +45,14 @@ class confluence_expand(nodes.Body, nodes.Element):
     using Confluence's expand macro.
     """
 
+class confluence_excerpt(nodes.Body, nodes.Element):
+    """
+    confluence excerpt node
+
+    A Confluence builder defined excerpt node serves as a hint to wrap content
+    using Confluence's excerpt macro.
+    """
+
 
 class confluence_footer(nodes.Decorative, nodes.Element):
     """
