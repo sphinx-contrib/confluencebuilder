@@ -4,6 +4,10 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+import os
+import hashlib
+import base64
+
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
@@ -59,7 +63,7 @@ class ConfluenceState:
         logger.verbose('mapping %s to target: %s' % (refid, target))
 
     @staticmethod
-    def register_title(docname, title, config):
+    def register_title(docname, title, config, doc_source_path=None, src_dir=None):
         """
         register the title for the provided document name
 
@@ -80,8 +84,14 @@ class ConfluenceState:
 
         if config and (not config.confluence_ignore_titlefix_on_index or
                 docname != config.root_doc):
-            postfix = config.confluence_publish_postfix
             prefix = config.confluence_publish_prefix
+
+            postfix = config.confluence_publish_postfix
+            if postfix=='&unique_hash':
+                hash = ConfluenceState._create_title_hash(
+                    docname=docname, doc_source_path=doc_source_path, src_dir=src_dir,
+                    config=config)
+                postfix = ' -' + hash
 
         if prefix:
             title = prefix + title
@@ -210,3 +220,20 @@ class ConfluenceState:
         See `registerUploadId` for more information.
         """
         return ConfluenceState.doc2uploadId.get(docname)
+
+    @staticmethod
+    def _create_title_hash(docname, doc_source_path, src_dir, config):
+        """
+        Create a unique(ish) hash for the given source file to avoid collisions
+        when pushing pages to confluence. The hash doesn't have to be totally unique
+        throughout the space since we just need the hash + title to be unique. Therefore
+        slimming the hash down a bit to make it cleaner looking in conflence
+        """
+        root_path = ''
+        if config.confluence_parent_page:
+            root_path = config.confluence_parent_page
+        elif config.confluence_publish_root:
+            root_path = str(config.confluence_publish_root)
+        unique_path = os.path.join(root_path, os.path.relpath(doc_source_path, start=src_dir))
+        hash = hashlib.md5(unique_path.encode()).hexdigest()[:10]
+        return hash
