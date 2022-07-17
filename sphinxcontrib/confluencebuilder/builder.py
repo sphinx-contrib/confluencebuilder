@@ -23,6 +23,7 @@ from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
+from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_footer
@@ -91,6 +92,7 @@ class ConfluenceBuilder(Builder):
         self.state.reset()
 
     def init(self):
+        apply_env_overrides(self)
         validate_configuration(self)
         apply_defaults(self)
         config = self.config
