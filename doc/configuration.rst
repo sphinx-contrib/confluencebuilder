@@ -112,6 +112,12 @@ Essential configuration
         If using a personal access token (PAT), this option does not need to
         set (see |confluence_publish_token|_).
 
+    .. note::
+
+        If trying to use netrc authentication, support is provided by the
+        Requests_ library [#netrc]_. A user can default to using a configured
+        netrc file by not setting a value for ``confluence_server_user``.
+
     The username value used to authenticate with the Confluence instance. If
     using Confluence Cloud, this value will most likely be the account's E-mail
     address. If using Confluence Server, this value will most likely be the
@@ -1681,6 +1687,11 @@ Deprecated options
     .. versionchanged:: 1.7
 
     This option has been renamed to |confluence_space_key|_.
+
+
+.. footnotes -------------------------------------------------------------------
+
+.. [#netrc] https://requests.readthedocs.io/en/latest/user/authentication/#netrc-authentication
 
 .. references ------------------------------------------------------------------
 
