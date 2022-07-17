@@ -252,6 +252,9 @@ Generic configuration
     - |confluence_footer_file|_ 
     - |confluence_header_data|_
 
+.. |confluence_header_data| replace:: ``confluence_header_data``
+.. _confluence_header_data:
+
 .. confval:: confluence_header_data
 
     .. versionadded:: 1.9
@@ -281,6 +284,9 @@ Generic configuration
     
     - |confluence_header_file|_ 
     - |confluence_footer_data|_
+
+.. |confluence_footer_data| replace:: ``confluence_footer_data``
+.. _confluence_footer_data:
 
 .. confval:: confluence_footer_data
 
