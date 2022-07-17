@@ -21,6 +21,15 @@ All configurations introduced by this extension are listed below. This
 extension may take advantage of a subset of `Sphinx configurations`_ as well
 when preparing documents.
 
+.. versionadded:: 1.9
+
+    All options provided by this extension may be set from the running
+    environment. For example, if ``confluence_publish`` is not explicitly set
+    inside ``conf.py`` or provided via `Sphinx's command line`_, this extension
+    may check the ``CONFLUENCE_PUBLISH`` environment option as a fallback. Note
+    that this only applies options provided below and will not work for other
+    configuration options provided by Sphinx or other Sphinx extensions.
+
 .. only:: latex
 
     .. contents::
@@ -1677,6 +1686,7 @@ Deprecated options
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
 .. _Sphinx configurations: https://www.sphinx-doc.org/en/master/usage/configuration.html
+.. _Sphinx's command line: https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _Using Personal Access Tokens: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
