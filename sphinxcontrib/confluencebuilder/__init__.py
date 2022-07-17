@@ -8,6 +8,7 @@ from os import path
 from sphinx.util import docutils
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
+from sphinxcontrib.confluencebuilder.config.manager import ConfigManager
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLatexDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
@@ -44,6 +45,7 @@ __version__ = '1.9.0.dev0'
 
 def setup(app):
     ConfluenceLogger.initialize()
+    cm = app.config_manager_ = ConfigManager(app)
 
     app.require_sphinx('1.8')
     app.add_builder(ConfluenceBuilder)
@@ -59,179 +61,179 @@ def setup(app):
 
     # (configuration - essential)
     # Enablement of publishing.
-    app.add_config_value('confluence_publish', None, '')
+    cm.add_conf_bool('confluence_publish')
     # PAT to authenticate to Confluence API with.
-    app.add_config_value('confluence_publish_token', None, '')
+    cm.add_conf('confluence_publish_token')
     # API key/password to login to Confluence API with.
-    app.add_config_value('confluence_server_pass', None, '')
+    cm.add_conf('confluence_server_pass')
     # URL of the Confluence instance to publish to.
-    app.add_config_value('confluence_server_url', None, '')
+    cm.add_conf('confluence_server_url')
     # Username to login to Confluence API with.
-    app.add_config_value('confluence_server_user', None, '')
+    cm.add_conf('confluence_server_user')
     # Confluence Space to publish to.
-    app.add_config_value('confluence_space_key', None, '')
+    cm.add_conf('confluence_space_key')
 
     # (configuration - generic)
     # Add page and section numbers if doctree has :numbered: option
-    app.add_config_value('confluence_add_secnumbers', None, 'env')
+    cm.add_conf_bool('confluence_add_secnumbers', 'env')
     # Default alignment for tables, figures, etc.
-    app.add_config_value('confluence_default_alignment', None, 'env')
+    cm.add_conf('confluence_default_alignment', 'env')
     # Enablement of a generated domain index documents
-    app.add_config_value('confluence_domain_indices', None, '')
+    cm.add_conf('confluence_domain_indices')
     # File to get page header information from.
-    app.add_config_value('confluence_header_file', None, 'env')
+    cm.add_conf('confluence_header_file', 'env')
     # Dictionary to pass to header when rendering template
-    app.add_config_value('confluence_header_data', None, 'env')
+    cm.add_conf('confluence_header_data', 'env')
     # File to get page footer information from.
-    app.add_config_value('confluence_footer_file', None, 'env')
+    cm.add_conf('confluence_footer_file', 'env')
     # Dictionary to pass to footer when rendering template.
-    app.add_config_value('confluence_footer_data', None, 'env')
+    cm.add_conf('confluence_footer_data', 'env')
     # Enablement of a generated search documents
-    app.add_config_value('confluence_include_search', None, '')
+    cm.add_conf_bool('confluence_include_search')
     # Enablement of the maximum document depth (before inlining).
-    app.add_config_value('confluence_max_doc_depth', None, 'env')
+    cm.add_conf_int('confluence_max_doc_depth', 'env')
     # Enablement of a "page generated" notice.
-    app.add_config_value('confluence_page_generation_notice', None, 'env')
+    cm.add_conf_bool('confluence_page_generation_notice', 'env')
     # Enablement of publishing pages into a hierarchy from a root toctree.
-    app.add_config_value('confluence_page_hierarchy', None, False)
+    cm.add_conf_bool('confluence_page_hierarchy')
     # Show previous/next buttons (bottom, top, both, None).
-    app.add_config_value('confluence_prev_next_buttons_location', None, 'env')
+    cm.add_conf('confluence_prev_next_buttons_location', 'env')
     # Suffix to put after section numbers, before section name
-    app.add_config_value('confluence_secnumber_suffix', None, 'env')
+    cm.add_conf('confluence_secnumber_suffix', 'env')
     # Enablement of a "Edit/Show Source" reference on each document
-    app.add_config_value('confluence_sourcelink', None, 'env')
+    cm.add_conf('confluence_sourcelink', 'env')
     # Enablement of a generated index document
-    app.add_config_value('confluence_use_index', None, '')
+    cm.add_conf_bool('confluence_use_index')
     # Enablement for toctrees for singleconfluence documents.
-    app.add_config_value('singleconfluence_toctree', None, 'singleconfluence')
+    cm.add_conf_bool('singleconfluence_toctree', 'singleconfluence')
 
     # (configuration - publishing)
     # Request for publish password to come from interactive session.
-    app.add_config_value('confluence_ask_password', None, '')
+    cm.add_conf_bool('confluence_ask_password')
     # Request for publish username to come from interactive session.
-    app.add_config_value('confluence_ask_user', None, '')
+    cm.add_conf_bool('confluence_ask_user')
     # Explicitly prevent auto-generation of titles for titleless documents.
-    app.add_config_value('confluence_disable_autogen_title', None, '')
+    cm.add_conf_bool('confluence_disable_autogen_title')
     # Explicitly prevent page notifications on update.
-    app.add_config_value('confluence_disable_notifications', None, '')
+    cm.add_conf_bool('confluence_disable_notifications')
     # Define a series of labels to apply to all published pages.
-    app.add_config_value('confluence_global_labels', None, '')
+    cm.add_conf('confluence_global_labels')
     # Enablement of configuring root as space's homepage.
-    app.add_config_value('confluence_root_homepage', None, '')
+    cm.add_conf_bool('confluence_root_homepage')
     # Parent page's name or identifier to publish documents under.
-    app.add_config_value('confluence_parent_page', None, '')
+    cm.add_conf('confluence_parent_page')
     # Perform a dry run of publishing to inspect what publishing will do.
-    app.add_config_value('confluence_publish_dryrun', None, '')
+    cm.add_conf_bool('confluence_publish_dryrun')
     # Publish only new content (no page updates, etc.).
-    app.add_config_value('confluence_publish_onlynew', None, '')
+    cm.add_conf_bool('confluence_publish_onlynew')
     # Postfix to apply to title of published pages.
-    app.add_config_value('confluence_publish_postfix', None, 'env')
+    cm.add_conf('confluence_publish_postfix', 'env')
     # Prefix to apply to published pages.
-    app.add_config_value('confluence_publish_prefix', None, 'env')
+    cm.add_conf('confluence_publish_prefix', 'env')
     # Root page's identifier to publish documents into.
-    app.add_config_value('confluence_publish_root', None, '')
+    cm.add_conf_int('confluence_publish_root')
     # Enablement of purging legacy child pages from a parent page.
-    app.add_config_value('confluence_purge', None, '')
+    cm.add_conf_bool('confluence_purge')
     # Enablement of purging legacy child pages from a root page.
-    app.add_config_value('confluence_purge_from_root', None, '')
+    cm.add_conf_bool('confluence_purge_from_root')
     # docname-2-title dictionary for title overrides.
-    app.add_config_value('confluence_title_overrides', None, 'env')
+    cm.add_conf('confluence_title_overrides', 'env')
     # Timeout for network-related calls (publishing).
-    app.add_config_value('confluence_timeout', None, '')
+    cm.add_conf_int('confluence_timeout')
     # Whether or not new content should be watched.
-    app.add_config_value('confluence_watch', None, '')
+    cm.add_conf_bool('confluence_watch')
 
     # (configuration - advanced publishing)
     # Register additional mime types to be selected for image candidates.
-    app.add_config_value('confluence_additional_mime_types', None, 'env')
+    cm.add_conf('confluence_additional_mime_types', 'env')
     # Whether or not labels will be appended instead of overwriting them.
-    app.add_config_value('confluence_append_labels', None, '')
+    cm.add_conf_bool('confluence_append_labels')
     # Forcing all assets to be standalone.
-    app.add_config_value('confluence_asset_force_standalone', None, 'env')
+    cm.add_conf_bool('confluence_asset_force_standalone', 'env')
     # Tri-state asset handling (auto, force push or disable).
-    app.add_config_value('confluence_asset_override', None, '')
+    cm.add_conf_bool('confluence_asset_override')
     # File/path to Certificate Authority
-    app.add_config_value('confluence_ca_cert', None, '')
+    cm.add_conf('confluence_ca_cert')
     # Path to client certificate to use for publishing
-    app.add_config_value('confluence_client_cert', None, '')
+    cm.add_conf('confluence_client_cert')
     # Password for client certificate to use for publishing
-    app.add_config_value('confluence_client_cert_pass', None, '')
+    cm.add_conf('confluence_client_cert_pass')
     # Disable SSL validation with Confluence server.
-    app.add_config_value('confluence_disable_ssl_validation', None, '')
+    cm.add_conf_bool('confluence_disable_ssl_validation')
     # Ignore adding a titlefix on the index document.
-    app.add_config_value('confluence_ignore_titlefix_on_index', None, 'env')
+    cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'env')
     # Parent page's identifier to publish documents under.
-    app.add_config_value('confluence_parent_page_id_check', None, '')
+    cm.add_conf_int('confluence_parent_page_id_check')
     # Proxy server needed to communicate with Confluence server.
-    app.add_config_value('confluence_proxy', None, '')
+    cm.add_conf('confluence_proxy')
     # Subset of documents which are allowed to be published.
-    app.add_config_value('confluence_publish_allowlist', None, '')
+    cm.add_conf('confluence_publish_allowlist')
     # Enable debugging for publish requests.
-    app.add_config_value('confluence_publish_debug', None, '')
+    cm.add_conf_bool('confluence_publish_debug')
     # Duration (in seconds) to delay each API request.
-    app.add_config_value('confluence_publish_delay', None, '')
+    cm.add_conf('confluence_publish_delay')
     # Subset of documents which are denied to be published.
-    app.add_config_value('confluence_publish_denylist', None, '')
+    cm.add_conf('confluence_publish_denylist')
     # Disable adding `rest/api` to REST requests.
-    app.add_config_value('confluence_publish_disable_api_prefix', None, '')
+    cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # Header(s) to use for Confluence REST interaction.
-    app.add_config_value('confluence_publish_headers', None, '')
+    cm.add_conf('confluence_publish_headers')
     # Manipulate a requests instance.
-    app.add_config_value('confluence_request_session_override', None, '')
+    cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.
-    app.add_config_value('confluence_server_auth', None, '')
+    cm.add_conf('confluence_server_auth')
     # Cookie(s) to use for Confluence REST interaction.
-    app.add_config_value('confluence_server_cookies', None, '')
+    cm.add_conf('confluence_server_cookies')
     # Comment added to confluence version history.
-    app.add_config_value('confluence_version_comment', None, '')
+    cm.add_conf('confluence_version_comment')
 
     # (configuration - advanced processing)
     # Filename suffix for generated files.
-    app.add_config_value('confluence_file_suffix', None, 'env')
+    cm.add_conf('confluence_file_suffix', 'env')
     # Translation of docname to a filename.
-    app.add_config_value('confluence_file_transform', None, 'env')
+    cm.add_conf('confluence_file_transform', 'env')
     # Configuration for named JIRA Servers
-    app.add_config_value('confluence_jira_servers', None, 'env')
+    cm.add_conf('confluence_jira_servers', 'env')
     # Translation of a raw language to code block macro language.
-    app.add_config_value('confluence_lang_transform', None, 'env')
+    cm.add_conf('confluence_lang_transform', 'env')
     # Macro configuration for Confluence-managed LaTeX content.
-    app.add_config_value('confluence_latex_macro', None, 'env')
+    cm.add_conf('confluence_latex_macro', 'env')
     # Link suffix for generated files.
-    app.add_config_value('confluence_link_suffix', None, 'env')
+    cm.add_conf('confluence_link_suffix', 'env')
     # Translation of docname to a (partial) URI.
-    app.add_config_value('confluence_link_transform', None, 'env')
+    cm.add_conf('confluence_link_transform', 'env')
     # Mappings for documentation mentions to Confluence keys.
-    app.add_config_value('confluence_mentions', None, 'env')
+    cm.add_conf('confluence_mentions', 'env')
     # Inject navigational hints into the documentation.
-    app.add_config_value('confluence_navdocs_transform', None, '')
+    cm.add_conf('confluence_navdocs_transform')
     # Remove a detected title from generated documents.
-    app.add_config_value('confluence_remove_title', None, 'env')
+    cm.add_conf_bool('confluence_remove_title', 'env')
 
     # (configuration - undocumented)
     # Enablement for aggressive descendents search (for purge).
-    app.add_config_value('confluence_adv_aggressive_search', None, '')
+    cm.add_conf_bool('confluence_adv_aggressive_search')
     # List of node types to ignore if no translator support exists.
-    app.add_config_value('confluence_adv_ignore_nodes', None, '')
+    cm.add_conf('confluence_adv_ignore_nodes')
     # Unknown node handler dictionary for advanced integrations.
-    app.add_config_value('confluence_adv_node_handler', None, '')
+    cm.add_conf('confluence_adv_node_handler')
     # Enablement of permitting raw html blocks to be used in storage format.
-    app.add_config_value('confluence_adv_permit_raw_html', None, 'env')
+    cm.add_conf_bool('confluence_adv_permit_raw_html', 'env')
     # List of optional features/macros/etc. restricted for use.
-    app.add_config_value('confluence_adv_restricted', None, 'env')
+    cm.add_conf('confluence_adv_restricted', 'env')
     # Enablement of tracing processed data.
-    app.add_config_value('confluence_adv_trace_data', None, '')
+    cm.add_conf_bool('confluence_adv_trace_data')
     # Do not cap sections to a maximum of six (6) levels.
-    app.add_config_value('confluence_adv_writer_no_section_cap', None, 'env')
+    cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'env')
 
     # (configuration - deprecated)
     # replaced by confluence_root_homepage
-    app.add_config_value('confluence_master_homepage', None, '')
+    cm.add_conf('confluence_master_homepage')
     # replaced by confluence_publish_allowlist
-    app.add_config_value('confluence_publish_subset', None, '')
+    cm.add_conf('confluence_publish_subset')
     # replaced by confluence_purge_from_root
-    app.add_config_value('confluence_purge_from_master', None, '')
+    cm.add_conf_bool('confluence_purge_from_master')
     # replaced by confluence_space_key
-    app.add_config_value('confluence_space_name', None, '')
+    cm.add_conf('confluence_space_name')
 
     # ##########################################################################
 

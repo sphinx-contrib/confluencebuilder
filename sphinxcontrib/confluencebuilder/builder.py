@@ -92,7 +92,7 @@ class ConfluenceBuilder(Builder):
 
     def init(self):
         validate_configuration(self)
-        apply_defaults(self.config)
+        apply_defaults(self)
         config = self.config
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
