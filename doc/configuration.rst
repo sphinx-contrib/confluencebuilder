@@ -257,9 +257,12 @@ Generic configuration
         confluence_header_file = 'assets/header.tpl'
 
     See also:
-    
-    - |confluence_footer_file|_ 
+
+    - |confluence_footer_file|_
     - |confluence_header_data|_
+
+.. |confluence_header_data| replace:: ``confluence_header_data``
+.. _confluence_header_data:
 
 .. confval:: confluence_header_data
 
@@ -287,14 +290,17 @@ Generic configuration
         confluence_footer_file = 'assets/footer.tpl'
 
     See also:
-    
-    - |confluence_header_file|_ 
+
+    - |confluence_header_file|_
     - |confluence_footer_data|_
+
+.. |confluence_footer_data| replace:: ``confluence_footer_data``
+.. _confluence_footer_data:
 
 .. confval:: confluence_footer_data
 
     .. versionadded:: 1.9
-    
+
     Takes an optional dictionary. If this value is set then
     ``confluence_footer_file`` is interpreted as a jinja2 template with these
     values passed in. If this value is not set then ``confluence_footer_file``
