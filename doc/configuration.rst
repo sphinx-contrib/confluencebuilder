@@ -1286,6 +1286,21 @@ Advanced publishing configuration
     See also
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
+.. confval:: confluence_publish_intersphinx
+
+    .. versionadded:: 1.9
+
+    A publish event will upload a generated intersphinx's inventory
+    (`object.inv`) as an attachment to the configured root_doc_. Inventory
+    files are typically small and should not cause issues for most users.
+    However, if a user desired to not publish an inventory for their
+    documentation, this option can be configured to ``False``. By default,
+    inventories are published with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_intersphinx = True
+
 .. confval:: confluence_publish_headers
 
     .. versionadded:: 1.5
