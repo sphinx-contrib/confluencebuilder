@@ -268,7 +268,7 @@ Type                              Notes
 Other
 -----
 
-If a feature and/or extension is not listed above, is not working as expected or
+If a feature or extension is not listed above, is not working as expected or
 brings up another concern, feel free to bring up an issue:
 
     | Atlassian Confluence Builder for Confluence - Issues
