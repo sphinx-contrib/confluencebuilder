@@ -3,6 +3,28 @@ Roles
 
 The following outlines additional `roles`_ supported by this extension.
 
+.. index:: Macros; Emoticon Macro (role)
+.. index:: Emoticon Macro
+
+Emoticon Macro
+--------------
+
+The following role can be used to help include Confluence emoticon macro into
+generated Confluence documents.
+
+.. rst:role:: confluence_emoticon
+
+    .. versionadded:: 1.9
+
+    The ``confluence_emoticon`` role allows a user to build inlined emoticon
+    macros. For example:
+
+    .. code-block:: rst
+
+        :confluence_emoticon:`tick`: This is done.
+
+        :confluence_emoticon:`cross`: This is incomplete.
+
 .. index:: Macros; Jira Macro
 .. _jira-roles:
 

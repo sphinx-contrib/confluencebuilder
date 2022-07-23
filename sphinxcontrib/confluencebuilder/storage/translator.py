@@ -1823,6 +1823,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # ----------------------------------------------
+    # confluence-builder -- enhancements -- emoticon
+    # ----------------------------------------------
+
+    def visit_confluence_emoticon_inline(self, node):
+        self.body.append(self._start_tag(node, 'ac:emoticon', empty=True,
+            **{'ac:name': self.encode(node.rawsource)}))
+
+        raise nodes.SkipNode
+
     # -------------------------------------------
     # confluence-builder -- enhancements -- latex
     # -------------------------------------------

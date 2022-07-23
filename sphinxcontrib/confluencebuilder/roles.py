@@ -8,10 +8,36 @@ See also docutils roles:
     https://docutils.sourceforge.io/docs/howto/rst-roles.html#define-the-role-function
 """
 
+from sphinxcontrib.confluencebuilder.nodes import confluence_emoticon_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_mention_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_status_inline
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
+
+
+def ConfluenceEmoticonRole(name, rawtext, text, lineno, inliner, options=None, content=None):
+    """
+    a confluence emoticon role
+
+    Defines an inline Confluence emoticon role where users can inject inlined
+    emoticon macros.
+
+    Args:
+        name: local name of the interpreted text role
+        rawtext: the entire interpreted text construct
+        text: the interpreted text content
+        lineno: the line number where the interpreted text beings
+        inliner: inliner object that called the role function
+        options: dictionary of directive options for customization
+        content: list of strings, the directive content for customization
+
+    Returns:
+        returns a tuple include a list of nodes and a list of system messages
+    """
+
+    node = confluence_emoticon_inline(rawsource=text, text=text)
+
+    return [node], []
 
 
 def ConfluenceLatexRole(name, rawtext, text, lineno, inliner, options=None, content=None):
