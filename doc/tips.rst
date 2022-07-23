@@ -70,8 +70,6 @@ content can use the ``confluence_publish_prefix``
 See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
 :ref:`title overrides capability <confluence_title_overrides>`.
 
-.. index:: Math (recommended options)
-
 Setting a publishing timeout
 ----------------------------
 

@@ -1,3 +1,5 @@
+.. index:: Math; Math support
+
 Math support
 ============
 
@@ -35,6 +37,8 @@ The former case will generate math content in an inlined fashion, where the
 latter will generate a math block. Math defined in this way is supported on
 Sphinx's standard builders with the help of other Sphinx-provided math
 extensions.
+
+.. index:: Math; Recommended options
 
 Recommended options for math
 ----------------------------
@@ -76,6 +80,8 @@ This configures the generated font size commonly observed on Confluence
 instances, hints that images are generated into SVG images (for ideal image
 scaling) and attempt to process the "depth" of an image to better align content
 alongside text.
+
+.. index:: Math; LaTeX macros
 
 Support for LaTeX macros for math
 ---------------------------------

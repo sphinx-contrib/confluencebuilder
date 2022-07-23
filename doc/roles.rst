@@ -25,7 +25,7 @@ generated Confluence documents.
 
         :confluence_emoticon:`cross`: This is incomplete.
 
-.. index:: Macros; Jira Macro
+.. index:: Macros; Jira Macro (role)
 .. _jira-roles:
 
 Jira
@@ -49,7 +49,8 @@ Confluence documents.
 
 See also :ref:`Jira directives <jira-directives>`.
 
-.. index:: Macros; LaTeX Macro
+.. index:: Macros; LaTeX Macro (role)
+.. index:: LaTeX Macro; Adding inlined LaTeX (role)
 .. _latex-roles:
 
 LaTeX
@@ -78,7 +79,8 @@ Confluence documents.
 
 See also :ref:`LaTeX directives <latex-directives>`.
 
-.. index:: Macros; Mentions Macro
+.. index:: Macros; Mentions Macro (role)
+.. index:: Mentions; Macro (role)
 .. _mention-roles:
 
 Mentions
@@ -119,7 +121,8 @@ generated Confluence documents.
     A user mapping table can also be configured using the
     ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
 
-.. index:: Macros; Status Macro
+.. index:: Macros; Status Macro (role)
+.. index:: Status Macro
 
 Status Macro
 ------------
