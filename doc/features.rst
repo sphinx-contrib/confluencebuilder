@@ -149,9 +149,10 @@ Type                              Notes
                                   extension will generate an ``objects.inv``
                                   inventory file which can be used by other
                                   documentation sets. At this time, only
-                                  document names and standard references are
-                                  supported. A generated inventory file is not
-                                  published to a Confluence instance.
+                                  document names and standard references have
+                                  been tested. If a type of reference does not
+                                  work or yields unexpected results, please
+                                  report the issue with an example.
 `sphinx.ext.jsmath`_              Unsupported.
 
                                   Confluence does not support the injection of
