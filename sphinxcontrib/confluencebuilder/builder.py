@@ -43,6 +43,7 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
+import os
 
 try:
     basestring  # pylint: disable=E0601
@@ -709,6 +710,18 @@ class ConfluenceBuilder(Builder):
                 except (IOError, OSError) as err:
                     self.warn('error reading file %s: %s' % (docfile, err))
 
+            self.info('building intersphinx... ', nonl=(not self._verbose))
+            build_intersphinx(self)
+            self.info('done')
+
+            if self.config.confluence_publish_intersphinx:
+                inv = path.join(self.outdir, 'objects.inv')
+                if os.path.exists(inv):
+                    self.verbose('registering intersphinx database attachment')
+                    self.assets.add(inv, self.config.root_doc)
+                else:
+                    self.verbose('no generated intersphinx database detected')
+
             def to_asset_name(asset):
                 return asset[0]
 
@@ -730,10 +743,6 @@ class ConfluenceBuilder(Builder):
 
             self.publish_purge()
             self.publish_finalize()
-
-            self.info('building intersphinx... ', nonl=(not self._verbose))
-            build_intersphinx(self)
-            self.info('done')
 
     def cleanup(self):
         if self.publish:
