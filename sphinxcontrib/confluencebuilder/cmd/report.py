@@ -98,11 +98,15 @@ def report_main(args_parser):
                 # apply environment-based configuration changes
                 apply_env_overrides(app.builder)
 
+                # if the configuration is enabled for publishing, check if
+                # we need to ask for authentication information (to perform
+                # the connection sanity checks)
                 if app.config.confluence_publish:
                     try:
                         process_ask_configs(app.config)
                     except ConfluenceConfigurationError:
                         offline = True
+
                 # extract configuration information
                 cm = app.config_manager_
                 for k, v in app.config.values.items():
