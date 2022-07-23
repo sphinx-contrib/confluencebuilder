@@ -9,7 +9,7 @@ The following outlines additional `roles`_ supported by this extension.
 Emoticon Macro
 --------------
 
-The following role can be used to help include Confluence emoticon macro into
+The following role can be used to help include Confluence emoticon macros into
 generated Confluence documents.
 
 .. rst:role:: confluence_emoticon
