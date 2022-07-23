@@ -22,6 +22,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.roles import ConfluenceEmoticonRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceLatexRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceMentionRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStatusRole
@@ -281,6 +282,7 @@ def confluence_builder_inited(app):
     app.add_directive('jira_issue', JiraIssueDirective)
 
     # register roles
+    app.add_role('confluence_emoticon', ConfluenceEmoticonRole)
     app.add_role('confluence_latex', ConfluenceLatexRole)
     app.add_role('confluence_mention', ConfluenceMentionRole)
     app.add_role('confluence_status', ConfluenceStatusRole)

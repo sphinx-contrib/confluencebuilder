@@ -28,6 +28,15 @@ class ConfluenceParams(nodes.Element):
         self.params = self.attributes.setdefault('confluence-params', {})
 
 
+class confluence_emoticon_inline(nodes.Inline, nodes.TextElement):
+    """
+    confluence emoticon inline node
+
+    A Confluence builder defined emoticon inline node, used to help manage
+    emoticon content designed for an inlined section of a paragraph.
+    """
+
+
 class confluence_expand(nodes.Body, nodes.Element):
     """
     confluence expand node
