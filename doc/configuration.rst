@@ -1565,7 +1565,7 @@ Advanced processing configuration
     get_relative_uri_ method. The default translation will be the combination of
     "``docname`` + |confluence_link_suffix|_".
 
-.. index:: Mentions
+.. index:: Mentions; Configuration
 
 .. _confluence_mentions:
 

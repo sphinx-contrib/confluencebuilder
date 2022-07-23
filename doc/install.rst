@@ -26,9 +26,9 @@ To verify the package has been installed, the following command can be used:
 
     <hr />
 
-For new users, following provides a series of steps to assist in preparing a new
-environment to use this package. For users wishing to use virtualenv, please
-consult the instructions in :doc:`install-virtualenv`.
+For new users, the following provides a series of steps to assist in preparing
+a new environment to use this package. For users wishing to use virtualenv,
+please see the instructions in :doc:`install-virtualenv`.
 
 .. note::
 

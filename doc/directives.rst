@@ -18,7 +18,8 @@ used to restrict these directives to supported builders by using the
 Common
 ------
 
-.. index:: Macros; Expand Macro
+.. index:: Macros; Expand Macro (directive)
+.. index:: Expand Macro
 
 .. rst:directive:: confluence_expand
 
@@ -212,7 +213,7 @@ Common
             .. confluence_toc::
                 :type: flat
 
-.. index:: Macros; Jira Macro
+.. index:: Macros; Jira Macro (directive)
 .. _jira-directives:
 
 Jira
@@ -363,7 +364,8 @@ Confluence documents.
 
 See also :ref:`Jira roles <jira-roles>`.
 
-.. index:: Macros; LaTeX Macro
+.. index:: Macros; LaTeX Macro (directive)
+.. index:: LaTeX Macro; Adding a LaTeX block (directive)
 .. _latex-directives:
 
 LaTeX
