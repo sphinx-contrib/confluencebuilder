@@ -1295,7 +1295,7 @@ Advanced publishing configuration
     files are typically small and should not cause issues for most users.
     However, if a user desired to not publish an inventory for their
     documentation, this option can be configured to ``False``. By default,
-    inventories are published with a value of ``False``.
+    inventories are published with a value of ``True``.
 
     .. code-block:: python
 
