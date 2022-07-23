@@ -12,6 +12,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
+from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
@@ -94,12 +95,20 @@ def report_main(args_parser):
                     status=sys.stdout,   # sphinx status output
                     warning=sys.stderr)  # sphinx warning output
 
+                # apply environment-based configuration changes
+                apply_env_overrides(app.builder)
+
+                # if the configuration is enabled for publishing, check if
+                # we need to ask for authentication information (to perform
+                # the connection sanity checks)
                 if app.config.confluence_publish:
                     try:
                         process_ask_configs(app.config)
                     except ConfluenceConfigurationError:
                         offline = True
+
                 # extract configuration information
+                cm = app.config_manager_  # pylint: disable=no-member
                 for k, v in app.config.values.items():
                     raw = getattr(app.config, k)
                     if raw is None:
@@ -110,11 +119,7 @@ def report_main(args_parser):
                     else:
                         value = raw
 
-                    prefixes = (
-                        'confluence_',
-                        'singleconfluence_',
-                    )
-                    if not args.full_config and not k.startswith(prefixes):
+                    if not args.full_config and k not in cm.options:
                         continue
 
                     # always extract some known builder configurations
