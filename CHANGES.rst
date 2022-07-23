@@ -1,16 +1,20 @@
 Development
 ===========
 
+* allow ``confluence_ca_cert`` to accept a ca-bundle path
 * fixed issue where code blocks may not properly render captions
 * fixed issue where dry-runs may fail with a non-existent root page
 * fixed issue where external references with ampersands would fail to publish
 * fixed issue where labels are missing on first-publish on confluence server
 * fixed issue where title length limits were not properly enforced
 * improve support for loading local windows ca/root certificates for requests
+* introduce the confluence emoticon (macro) role
 * introduce the confluence status (macro) role
 * introduce the confluence toc (macro) directive
 * introduce the confluence user mention (macro) role
 * support ``confluence_parent_page`` to accept a page identifier
+* support configuring configuration options from environment
+* support jinja2 templating on header/footer templates
 * support the ability to disable injecting ``rest/api`` in api endpoint url
 
 1.8.0 (2022-03-27)
