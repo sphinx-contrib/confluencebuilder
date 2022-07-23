@@ -12,6 +12,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
+from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
@@ -93,6 +94,9 @@ def report_main(args_parser):
                     builder,             # builder to execute
                     status=sys.stdout,   # sphinx status output
                     warning=sys.stderr)  # sphinx warning output
+
+                # apply environment-based configuration changes
+                apply_env_overrides(app.builder)
 
                 if app.config.confluence_publish:
                     try:
