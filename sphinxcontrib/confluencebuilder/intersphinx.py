@@ -50,38 +50,37 @@ def build_intersphinx(builder):
         compressor = zlib.compressobj(9)
 
         for domainname, domain in sorted(builder.env.domains.items()):
-            if domainname == 'std':
-                for name, dispname, typ, docname, raw_anchor, prio in sorted(
-                        domain.get_objects()):
+            for name, dispname, typ, docname, raw_anchor, prio in sorted(
+                    domain.get_objects()):
 
-                    page_id = builder.state.upload_id(docname)
-                    if not page_id:
-                        continue
+                page_id = builder.state.upload_id(docname)
+                if not page_id:
+                    continue
 
-                    target_name = '{}#{}'.format(docname, raw_anchor)
-                    target = builder.state.target(target_name)
+                target_name = '{}#{}'.format(docname, raw_anchor)
+                target = builder.state.target(target_name)
 
-                    if raw_anchor and target:
-                        title = builder.state.title(docname)
-                        anchor = 'id-' + title + '-' + target
-                        anchor = anchor.replace(' ', '')
+                if raw_anchor and target:
+                    title = builder.state.title(docname)
+                    anchor = 'id-' + title + '-' + target
+                    anchor = anchor.replace(' ', '')
 
-                        # confluence will convert quotes to right-quotes for
-                        # anchor values; replace and encode the anchor value
-                        anchor = anchor.replace('"', '”')
-                        anchor = anchor.replace("'", '’')
-                        anchor = requests.utils.quote(anchor.encode('utf-8'))
-                    else:
-                        anchor = ''
+                    # confluence will convert quotes to right-quotes for
+                    # anchor values; replace and encode the anchor value
+                    anchor = anchor.replace('"', '”')
+                    anchor = anchor.replace("'", '’')
+                    anchor = requests.utils.quote(anchor.encode('utf-8'))
+                else:
+                    anchor = ''
 
-                    uri = pages_part.format(page_id)
-                    if anchor:
-                        uri += '#' + anchor
-                    if dispname == name:
-                        dispname = '-'
-                    entry = ('%s %s:%s %s %s %s\n' %
-                             (name, domainname, typ, prio, uri, dispname))
-                    logger.verbose('(intersphinx) ' + entry.strip())
-                    f.write(compressor.compress(entry.encode('utf-8')))
+                uri = pages_part.format(page_id)
+                if anchor:
+                    uri += '#' + anchor
+                if dispname == name:
+                    dispname = '-'
+                entry = ('%s %s:%s %s %s %s\n' %
+                         (name, domainname, typ, prio, uri, dispname))
+                logger.verbose('(intersphinx) ' + entry.strip())
+                f.write(compressor.compress(entry.encode('utf-8')))
 
         f.write(compressor.flush())
