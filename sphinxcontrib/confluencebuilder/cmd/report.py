@@ -108,7 +108,7 @@ def report_main(args_parser):
                         offline = True
 
                 # extract configuration information
-                cm = app.config_manager_
+                cm = app.config_manager_  # pylint: disable=no-member
                 for k, v in app.config.values.items():
                     raw = getattr(app.config, k)
                     if raw is None:
