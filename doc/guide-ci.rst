@@ -11,6 +11,15 @@ Publishing with CI
     variables used are configured to be passed through to the virtual
     environment.
 
+.. tip::
+
+    As of v1.9, this extension can automatically accept configuration options
+    from the environment that have not been explicitly set in ``conf.py`` or
+    provided by the command line. For example, to configure for
+    authentication using a personal access token using the environment, do
+    not add ``confluence_publish_token`` into ``conf.py`` and ensure the
+    ``CONFLUENCE_PUBLISH_TOKEN`` environment variable is set.
+
 For users performing automatic publishing through a CI system, they may wish to
 authenticate their publish event with a secret key. A common approach to
 applying a secret key is through an environment variable. For example, if
