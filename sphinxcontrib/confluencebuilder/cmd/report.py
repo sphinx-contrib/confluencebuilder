@@ -104,6 +104,7 @@ def report_main(args_parser):
                     except ConfluenceConfigurationError:
                         offline = True
                 # extract configuration information
+                cm = app.config_manager_
                 for k, v in app.config.values.items():
                     raw = getattr(app.config, k)
                     if raw is None:
@@ -114,11 +115,7 @@ def report_main(args_parser):
                     else:
                         value = raw
 
-                    prefixes = (
-                        'confluence_',
-                        'singleconfluence_',
-                    )
-                    if not args.full_config and not k.startswith(prefixes):
+                    if not args.full_config and k not in cm.options:
                         continue
 
                     # always extract some known builder configurations
