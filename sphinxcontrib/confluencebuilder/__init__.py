@@ -179,6 +179,8 @@ def setup(app):
     cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # Header(s) to use for Confluence REST interaction.
     cm.add_conf('confluence_publish_headers')
+    # Whether to publish a generated intersphinx database to the root document
+    cm.add_conf_bool('confluence_publish_intersphinx')
     # Manipulate a requests instance.
     cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.

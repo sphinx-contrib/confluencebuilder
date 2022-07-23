@@ -68,6 +68,26 @@ class ConfluenceAssetManager:
         self.path2asset = {}
         self.root_doc = config.root_doc
 
+    def add(self, path, docname):
+        """
+        add a custom attachment
+
+        This method can be used to register a custom attachment to be added to
+        a provided page. This call is for special cases when registering a
+        file to upload outside a document's actual content (e.g. an
+        intersphinx database).
+
+        Args:
+            path: the path of the fiel
+            docname: the document's name to attach to
+
+        Returns:
+            the key, document name and path
+        """
+        logger.verbose('adding manual attachment: %s' % path)
+        abspath = find_env_abspath(self.env, self.outdir, path)
+        return self._handle_entry(abspath, docname, True)
+
     def build(self):
         """
         build a list of all assets tracked by the manager
