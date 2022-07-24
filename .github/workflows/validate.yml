@@ -1,4 +1,4 @@
-name: validate
+name: Publish Check
 
 on:
   workflow_dispatch:
