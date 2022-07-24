@@ -1,4 +1,6 @@
-name: docs
+# Action which validates the ability to build this extension's documentation.
+
+name: Documentation
 
 on:
   push:
