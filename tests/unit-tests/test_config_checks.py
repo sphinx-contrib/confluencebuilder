@@ -6,6 +6,7 @@
 
 from requests.auth import AuthBase
 from requests.auth import HTTPDigestAuth
+from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
@@ -45,7 +46,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         dataset = dataset if dataset else self.dataset
 
         with prepare_sphinx(dataset, config=config, extra_config=edefs) as app:
-            builder = ConfluenceBuilder(app)
+            env = BuildEnvironment(app)
+            builder = ConfluenceBuilder(app, env)
 
             class MockedPublisher:
                 def init(self, config, cloud=None):
