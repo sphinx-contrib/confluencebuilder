@@ -1,3 +1,6 @@
+# Action which validates the ability to build this extension against multiple
+# versions of Sphinx using various Python interpreters.
+
 name: Build
 
 on:

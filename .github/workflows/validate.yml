@@ -1,3 +1,9 @@
+# Provides a manual action allowing maintainers to trigger a validation
+# run which will publish results to Confluence Cloud.
+#
+#  sphinxcontrib-confluencebuilder -- Development Space
+#  https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/DEVELOP
+
 name: Publish Check
 
 on:
