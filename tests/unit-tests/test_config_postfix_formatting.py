@@ -45,6 +45,7 @@ class TestCreateDocnameUniqueHash(ConfluenceTestCase):
             docname=test_docname, config=self.config)
         self.assertEqual(hash, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
 
+
 class TestFormatPostfix(ConfluenceTestCase):
     def setUp(self):
         self.test_hash = 'test_hash_abc_def'
@@ -72,7 +73,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         config = self.config
         confluence_publish_prefix = '- Great Postfix'
         postfix = ConfluenceState._format_postfix(
-            postfix=confluence_publish_prefix, docname=test_docname, 
+            postfix=confluence_publish_prefix, docname=test_docname,
             config=config)
         self.assertEqual(postfix, confluence_publish_prefix)
 

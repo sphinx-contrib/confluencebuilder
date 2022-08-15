@@ -11,7 +11,8 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
 
-postfix_string_replacement = re.compile('.*\{.+\}.*')
+postfix_string_replacement = re.compile('.*{.+}.*')
+
 
 class ConfluenceState:
     """
@@ -224,14 +225,14 @@ class ConfluenceState:
     def _format_postfix(postfix, docname, config):
         """
         Format a postfix that may have placeholders.
-        All placeholders used must be supported otherwise an erro is raised
+        All placeholders used must be supported otherwise an error is raised
         """
         if postfix and postfix_string_replacement.match(postfix):
             try:
                 return postfix.format(
                     hash=ConfluenceState._create_docname_unique_hash(docname, config)
                 )
-            except KeyError as e:
+            except KeyError:
                 raise ConfluenceConfigurationError(
                     "Configured confluence_publish_prefix '{postfix}' has an "
                     "unknown template replacement.".format(postfix=postfix))
