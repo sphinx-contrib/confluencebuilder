@@ -616,11 +616,14 @@ Publishing configuration
 
        confluence_publish_postfix = '-postfix'
 
-    Dynamic postfixes are an option as well to allow for pages with the same title
-    to be pushed to the same space without needing to add a manual index to the title
-    with the use of '&unique_hash' as the postfix value. This hash value is calculated
-    using the relative path to the file and specified
-    confluence_publish_root/confluence_parent_page.
+    Postfixes can use variable placeholders. These placeholders are filled using the
+    format method so all formatting types can be used.
+
+    The currently supported placeholders
+
+    * {hash} - Create a reproduceable hash given the title and directory location of the file.
+               Using this placeholder is an option for allowing pages with the same title to be
+               pushed to the same space without needing to manually add an index to the title
 
     Note, pages with the same title must have different parent pages.
 

@@ -281,9 +281,7 @@ class ConfluenceBuilder(Builder):
                     doctitle = ('.'.join(map(str, secnumbers[''])) +
                         self.secnumber_suffix + doctitle)
 
-                self.state.register_title(
-                    docname, doctitle, self.config, doc_source_path=doctree.attributes['source'],
-                    src_dir=self.env.srcdir)
+                self.state.register_title(docname, doctitle, self.config)
 
                 # only publish documents that sphinx asked to prepare
                 if docname in docnames:

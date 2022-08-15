@@ -1,6 +1,0 @@
-:orphan:
-
-readme
-======
-
-Inner readme

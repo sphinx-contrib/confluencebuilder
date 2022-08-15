@@ -4,13 +4,14 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-import os
 import hashlib
-import base64
-
+import re
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
+
+postfix_string_replacement = re.compile('.*\{.+\}.*')
 
 class ConfluenceState:
     """
@@ -63,7 +64,7 @@ class ConfluenceState:
         logger.verbose('mapping %s to target: %s' % (refid, target))
 
     @staticmethod
-    def register_title(docname, title, config, doc_source_path=None, src_dir=None):
+    def register_title(docname, title, config):
         """
         register the title for the provided document name
 
@@ -86,12 +87,10 @@ class ConfluenceState:
                 docname != config.root_doc):
             prefix = config.confluence_publish_prefix
 
-            postfix = config.confluence_publish_postfix
-            if postfix=='&unique_hash':
-                hash = ConfluenceState._create_title_hash(
-                    docname=docname, doc_source_path=doc_source_path, src_dir=src_dir,
-                    config=config)
-                postfix = ' -' + hash
+            postfix = ConfluenceState._format_postfix(
+                postfix=config.confluence_publish_postfix, docname=docname,
+                config=config
+            )
 
         if prefix:
             title = prefix + title
@@ -222,18 +221,30 @@ class ConfluenceState:
         return ConfluenceState.doc2uploadId.get(docname)
 
     @staticmethod
-    def _create_title_hash(docname, doc_source_path, src_dir, config):
+    def _format_postfix(postfix, docname, config):
+        """
+        Format a postfix that may have placeholders.
+        All placeholders used must be supported otherwise an erro is raised
+        """
+        if postfix and postfix_string_replacement.match(postfix):
+            try:
+                return postfix.format(
+                    hash=ConfluenceState._create_docname_unique_hash(docname, config)
+                )
+            except KeyError as e:
+                raise ConfluenceConfigurationError(
+                    "Configured confluence_publish_prefix '{postfix}' has an "
+                    "unknown template replacement.".format(postfix=postfix))
+        return postfix
+
+    @staticmethod
+    def _create_docname_unique_hash(docname, config):
         """
         Create a unique(ish) hash for the given source file to avoid collisions
-        when pushing pages to confluence. The hash doesn't have to be totally unique
-        throughout the space since we just need the hash + title to be unique. Therefore
-        slimming the hash down a bit to make it cleaner looking in conflence
+        when pushing pages to confluence.
         """
-        root_path = ''
-        if config.confluence_parent_page:
-            root_path = config.confluence_parent_page
-        elif config.confluence_publish_root:
-            root_path = str(config.confluence_publish_root)
-        unique_path = os.path.join(root_path, os.path.relpath(doc_source_path, start=src_dir))
-        hash = hashlib.md5(unique_path.encode()).hexdigest()[:10]
-        return hash
+        prehash = docname
+        prehash += str(config.project)
+        prehash += str(config.confluence_parent_page)
+        prehash += str(config.confluence_publish_root)
+        return hashlib.sha1(prehash.encode()).hexdigest()
