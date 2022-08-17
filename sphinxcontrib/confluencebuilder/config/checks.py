@@ -56,6 +56,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_adv_bulk_archiving
+    validator.conf('confluence_adv_bulk_archiving') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_adv_permit_raw_html
     validator.conf('confluence_adv_permit_raw_html') \
              .bool()
@@ -106,6 +112,24 @@ def validate_configuration(builder):
 
     validator.conf('confluence_ca_cert') \
              .path()
+
+    # ##################################################################
+
+    # confluence_cleanup_archive
+    validator.conf('confluence_cleanup_archive') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_cleanup_from_root
+    validator.conf('confluence_cleanup_from_root') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_cleanup_purge
+    validator.conf('confluence_cleanup_purge') \
+             .bool()
 
     # ##################################################################
 
@@ -524,18 +548,6 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
-    # confluence_purge
-    validator.conf('confluence_purge') \
-             .bool()
-
-    # ##################################################################
-
-    # confluence_purge_from_root
-    validator.conf('confluence_purge_from_root') \
-             .bool()
-
-    # ##################################################################
-
     # confluence_remove_title
     validator.conf('confluence_remove_title') \
              .bool()
@@ -761,6 +773,16 @@ conflicting publish point configurations
 When configuring for a publishing container, a user can configure for either
 'confluence_parent_page' or 'confluence_publish_root'; however, both cannot be
 configured at the same time.
+''')
+
+        if config.confluence_cleanup_purge:
+            if config.confluence_cleanup_archive:
+                raise ConfluenceConfigurationError('''\
+conflicting cleanup configurations
+
+When configuring for cleanup of legacy pages, a user can configure for either
+'confluence_cleanup_archive' or 'confluence_publish_root'; however, both
+cannot be configured at the same time.
 ''')
 
     # ##################################################################

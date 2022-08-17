@@ -149,6 +149,69 @@ reported a success (which can be permitted for anonymous users).
     def disconnect(self):
         self.rest_client.close()
 
+    def archive_page(self, page_id):
+        if self.dryrun:
+            self._dryrun('archive page', page_id)
+            return
+        elif self.onlynew:
+            self._onlynew('page archive restricted', page_id)
+            return
+
+        try:
+            data = {
+                'pages': [{'id': page_id}],
+            }
+
+            rsp = self.rest_client.post('content/archive', data)
+            longtask_id = rsp['id']
+
+            # wait for the archiving of the page to complete
+            MAX_WAIT_FOR_PAGE_ARCHIVE = 4  # ~2 seconds
+            attempt = 1
+            while attempt <= MAX_WAIT_FOR_PAGE_ARCHIVE:
+                time.sleep(0.5)
+
+                rsp = self.rest_client.get('longtask/{}'.format(longtask_id))
+                if rsp['finished']:
+                    break
+
+                attempt += 1
+                if attempt > MAX_WAIT_FOR_PAGE_ARCHIVE:
+                    raise ConfluenceBadApiError(
+                        -1, 'timeout waiting for archive completion')
+        except ConfluencePermissionError:
+            raise ConfluencePermissionError(
+                """Publish user does not have permission to archive """
+                """from the configured space."""
+            )
+
+    def archive_pages(self, page_ids):
+        if self.dryrun:
+            self._dryrun('archiving pages', ', '.join(page_ids))
+            return
+        elif self.onlynew:
+            self._onlynew('page archiving restricted', ', '.join(page_ids))
+            return
+
+        try:
+            data = {
+                'pages': [],
+            }
+
+            for page_id in page_ids:
+                data['pages'].append({'id': page_id})
+
+            # Note, multi-page archive can result in Confluence reporting the
+            # following message:
+            #  Cannot use bulk archive feature for non premium edition
+            self.rest_client.post('content/archive', data)
+
+        except ConfluencePermissionError:
+            raise ConfluencePermissionError(
+                """Publish user does not have permission to archive """
+                """from the configured space."""
+            )
+
     def get_ancestors(self, page_id):
         """
         generate a list of ancestors

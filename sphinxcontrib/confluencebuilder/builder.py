@@ -109,6 +109,8 @@ class ConfluenceBuilder(Builder):
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
+        self.post_cleanup = config.confluence_cleanup_purge or \
+            config.confluence_cleanup_archive
 
         if self.name != 'singleconfluence':
             self.use_index = config.confluence_use_index
@@ -538,10 +540,10 @@ class ConfluenceBuilder(Builder):
 
         # if purging is enabled and we have yet to populate a list of legacy
         # pages to cache, populate pages in our target scope now
-        if conf.confluence_purge and self.legacy_pages is None:
+        if self.post_cleanup and self.legacy_pages is None:
             if conf.confluence_publish_root:
                 baseid = conf.confluence_publish_root
-            elif conf.confluence_purge_from_root and self.root_doc_page_id:
+            elif conf.confluence_cleanup_from_root and self.root_doc_page_id:
                 baseid = self.root_doc_page_id
             else:
                 baseid = self.parent_id
@@ -549,7 +551,7 @@ class ConfluenceBuilder(Builder):
             # if no base identifier and dry running, ignore legacy page
             # searching as there is no initial root document to reference
             # against
-            if (conf.confluence_purge_from_root and
+            if (conf.confluence_cleanup_from_root and
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
             elif self.config.confluence_adv_aggressive_search is True:
@@ -565,7 +567,7 @@ class ConfluenceBuilder(Builder):
                     attachments = self.publisher.get_attachments(legacy_page)
                     self.legacy_assets[legacy_page] = attachments
 
-        if conf.confluence_purge:
+        if self.post_cleanup:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
 
@@ -600,7 +602,7 @@ class ConfluenceBuilder(Builder):
             attachment_id = publisher.store_attachment(
                 page_id, key, output, type_, hash_, force=True)
 
-        if attachment_id and conf.confluence_purge:
+        if attachment_id and self.post_cleanup:
             if page_id in self.legacy_assets:
                 legacy_asset_info = self.legacy_assets[page_id]
                 if attachment_id in legacy_asset_info:
@@ -624,10 +626,29 @@ class ConfluenceBuilder(Builder):
                 self.config.confluence_space_key,
                 self.root_doc_page_id))
 
-    def publish_purge(self):
-        if self.config.confluence_purge:
+    def publish_cleanup(self):
+        # check if archive cleanup is enabled
+        if self.config.confluence_cleanup_archive:
             if self.publish_allowlist or self.publish_denylist:
-                self.warn('confluence_purge disabled due to '
+                self.warn('confluence_cleanup_archive disabled due to '
+                    'confluence_publish_allowlist/confluence_publish_denylist')
+                return
+
+            if self.legacy_pages:
+                if self.config.confluence_adv_bulk_archiving:
+                    print('archiving legacy pages...')
+                    self.publisher.archive_pages(self.legacy_pages)
+                else:
+                    for legacy_page_id in status_iterator(
+                            self.legacy_pages, 'archiving legacy pages... ',
+                            length=len(self.legacy_pages),
+                            verbosity=self._verbose):
+                        self.publisher.archive_page(legacy_page_id)
+
+        # check if purging is enabled
+        if self.config.confluence_cleanup_purge:
+            if self.publish_allowlist or self.publish_denylist:
+                self.warn('confluence_cleanup_purge disabled due to '
                     'confluence_publish_allowlist/confluence_publish_denylist')
                 return
 
@@ -750,7 +771,7 @@ class ConfluenceBuilder(Builder):
                 except (IOError, OSError) as err:
                     self.warn('error reading asset %s: %s' % (key, err))
 
-            self.publish_purge()
+            self.publish_cleanup()
             self.publish_finalize()
 
     def cleanup(self):

@@ -22,15 +22,16 @@ def handle_config_inited(app, config):
         config: the configuration
     """
 
-    def handle_legacy(new, orig):
+    def legacy(new, orig):
         if getattr(config, new) is None and getattr(config, orig) is not None:
             config[new] = config[orig]
 
     # copy over deprecated configuration names to new names (if any)
-    handle_legacy('confluence_publish_allowlist', 'confluence_publish_subset')
-    handle_legacy('confluence_purge_from_root', 'confluence_purge_from_master')
-    handle_legacy('confluence_root_homepage', 'confluence_master_homepage')
-    handle_legacy('confluence_space_key', 'confluence_space_name')
+    legacy('confluence_publish_allowlist', 'confluence_publish_subset')
+    legacy('confluence_cleanup_from_root', 'confluence_purge_from_master')
+    legacy('confluence_cleanup_from_root', 'confluence_purge_from_root')
+    legacy('confluence_root_homepage', 'confluence_master_homepage')
+    legacy('confluence_space_key', 'confluence_space_name')
 
 
 def process_ask_configs(config):
