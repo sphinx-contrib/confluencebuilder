@@ -87,7 +87,8 @@ class TestConfluenceValidation(unittest.TestCase):
             cls.config['confluence_root_homepage'] = False
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
-        cls.config['confluence_purge'] = False
+        cls.config['confluence_cleanup_archive'] = False
+        cls.config['confluence_cleanup_purge'] = False
         cls.config['confluence_sourcelink']['version'] = cls.test_version
         cls.config['rst_epilog'] = """
 .. |test_key| replace:: {}
@@ -118,8 +119,8 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # finalize configuration for tests
         cls.config['confluence_parent_page'] = cls.test_key
-        cls.config['confluence_purge'] = True
-        cls.config['confluence_purge_from_root'] = True
+        cls.config['confluence_cleanup_purge'] = True
+        cls.config['confluence_cleanup_from_root'] = True
         cls.config['confluence_root_homepage'] = False
 
     def test_extended_autodocs(self):
