@@ -11,7 +11,12 @@ from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib import parse
 from tests.lib.testcase import setup_builder
-from unittest.mock import patch
+# python2.7 is still supported so unittest will not contain mock so we must
+# catch the import error and import it from the installed module instead
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 
 class TestCreateDocnameUniqueHash(ConfluenceTestCase):

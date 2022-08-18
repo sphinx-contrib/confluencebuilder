@@ -619,15 +619,12 @@ Publishing configuration
     Postfixes can include placeholders. These placeholders are filled using the
     format method so formatting types can be used.
 
-    Currently supported placeholders
+    Supported placeholders
 
-    * {hash} - Create a reproduceable hash given the title and location based 
-               from the project root. Using this placeholder provides an option
-               for allowing pages with the same title to be pushed to the same 
-               confluence space without needing to manually add an index 
-               to the title
-
-    Note, pages with the same title must have different parent pages.
+    * ``{hash}`` - Create a reproduceable hash given the title and location
+      based from the project root. Using this placeholder provides an option
+      for allowing pages with the same title to be pushed to the same
+      Confluence space without needing to manually add an index to the title
 
     By default, no postfix is used. See also:
 

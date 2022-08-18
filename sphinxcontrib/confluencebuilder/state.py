@@ -5,13 +5,9 @@
 """
 
 import hashlib
-import re
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
-
-
-postfix_string_replacement = re.compile('.*{.+}.*')
 
 
 class ConfluenceState:
@@ -227,10 +223,10 @@ class ConfluenceState:
         Format a postfix that may have placeholders.
         All placeholders used must be supported otherwise an error is raised
         """
-        if postfix and postfix_string_replacement.match(postfix):
+        if postfix:
             try:
                 return postfix.format(
-                    hash=ConfluenceState._create_docname_unique_hash(docname, config)
+                    hash=ConfluenceState._create_docname_unique_hash(docname, config),
                 )
             except KeyError:
                 raise ConfluenceConfigurationError(
