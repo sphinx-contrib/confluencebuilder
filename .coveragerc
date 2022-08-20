@@ -1,0 +1,13 @@
+[coverage:run]
+parallel = 1
+
+[coverage:report]
+ignore_errors = 1
+omit =
+    # ignore publishing related implementation
+    sphinxcontrib/confluencebuilder/publisher.py
+    sphinxcontrib/confluencebuilder/rest.py
+    # ignore mainlines
+    *__main__.py*
+show_missing = 1
+skip_covered = 1

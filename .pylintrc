@@ -1,0 +1,5 @@
+[pylint]
+disable =
+    C,
+    R,
+    W,
