@@ -1,81 +1,85 @@
 Development
 ===========
 
-* allow ``confluence_ca_cert`` to accept a ca-bundle path
-* fixed issue where code blocks may not properly render captions
-* fixed issue where dry-runs may fail with a non-existent root page
-* fixed issue where external references with ampersands would fail to publish
-* fixed issue where labels are missing on first-publish on confluence server
-* fixed issue where title length limits were not properly enforced
-* improve support for loading local windows ca/root certificates for requests
-* introduce the confluence emoticon (macro) role
-* introduce the confluence status (macro) role
-* introduce the confluence toc (macro) directive
-* introduce the confluence user mention (macro) role
-* support ``confluence_parent_page`` to accept a page identifier
-* support configuring configuration options from environment
-* support jinja2 templating on header/footer templates
-* support the ability to disable injecting ``rest/api`` in api endpoint url
+* Allow ``confluence_ca_cert`` to accept a CA-bundle path
+* Default publish Intersphinx databases to root documents
+* Fixed issue where code blocks may not properly render captions
+* Fixed issue where dry-runs may fail with a non-existent root page
+* Fixed issue where external references with ampersands would fail to publish
+* Fixed issue where labels are missing on first-publish on Confluence server
+* Fixed issue where title length limits were not properly enforced
+* Improve support for loading local windows CA/root certificates for requests
+* Introduce the Confluence emoticon (macro) role
+* Introduce the Confluence status (macro) role
+* Introduce the Confluence toc (macro) directive
+* Introduce the Confluence user mention (macro) role
+* Relax domain restrictions for Intersphinx generation
+* Support ``confluence_parent_page`` to accept a page identifier
+* Support archiving legacy pages (alternative to purging)
+* Support configuring configuration options from environment
+* Support document-specific reproducible hash injection in a postfix
+* Support jinja2 templating on header/footer templates
+* Support the ability to disable injecting ``rest/api`` in API endpoint url
 
 1.8.0 (2022-03-27)
 ==================
 
 * **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
-* **(note)** (advanced mode) macro disabling is deprecated
-* add configuration for personal access tokens (to avoid header entry changes)
-* fixed issue where confluence cloud did not update homepage on a personal space
-* fixed issue where inline internal targets would create an empty link label
-* fixed issue where jira directives/role could not be substituted
-* improve formatting when processing autodoc content (containers)
-* improve support when using the sphinx-diagrams extension
-* improve table-alignment for markdown
-* introduce the latex directive/role
+* **(note)** (advanced mode) Macro disabling is deprecated
+* Add configuration for personal access tokens (to avoid header entry changes)
+* Fixed issue where Confluence cloud did not update homepage on a personal space
+* Fixed issue where inline internal targets would create an empty link label
+* Fixed issue where Jira directives/role could not be substituted
+* Improve formatting when processing autodoc content (containers)
+* Improve support when using the sphinx-diagrams extension
+* Improve table-alignment for markdown
+* Introduce the latex directive/role
 * removed informational macro styling on figures
-* support rate limiting for publish requests
-* support setting the comment field in page update events
-* support users to render math through available marketplace latex macros
+* Support rate limiting for publish requests
+* Support setting the comment field in page update events
+* Support users to render math through available marketplace latex macros
 
 1.7.1 (2021-11-30)
 ==================
 
-* fixed regression where publish-root/dryrun modes would fail with an exception
+* Fixed regression where publish-root/dryrun modes would fail with an exception
 
 1.7.0 (2021-11-21)
 ==================
 
 * **(note)** ``confluence_max_doc_depth`` support is deprecated (reminder)
 * ``confluence_space_name`` renamed to ``confluence_space_key``
-* brackets will be wrapped around bottom footnote entries
-* fixed issue where links to numbered section would not work
-* fixed issue where publishing could fail without a proxy set for older requests
-* fixed issue where report/wipe commands would fail in python 2.7
-* fixed regression in timeout option
-* improve dry-run reflecting new attachments to be published
-* improve indentations for line-block content
-* improve support for attached svg images with length/scaling modifiers
-* improve support for non-pixel length units for images
-* improve support for svg images without an xml declaration
-* improve support when publishing page updates converted to a new editor
-* improve support when using the sphinx-gallery extension
-* improve support when using the sphinx_toolbox extension
-* improve support when using the sphinxcontrib-mermaid extension
-* improve support when using the sphinxcontrib-needs extension
-* improve support when using the sphinxcontrib-youtube extension
-* improve user feedback on ancestor page update failures (500 errors)
-* improved support for dealing with unreconciled page detections
-* introduce the jira role
-* introduce the newline directive
-* introduce the page generation notice option (notice for top of documents)
-* introduce the source link option (e.g. "Edit Source" link)
-* prevent issues with extension directives causing errors with other builders
-* provide a configuration hook to override requests session information
-* remove borders on footnote tables
-* support domain indices generation/processing
-* support for leaving resolved toctrees for singleconfluence
-* support genindex generation/processing
-* support search generation
-* support strikethrough through strike role
-* support the consideration of ``confluence_parent_page`` for wipe requests
+* Brackets will be wrapped around bottom footnote entries
+* Fixed issue where links to numbered section would not work
+* Fixed issue where publishing could fail without a proxy set for older requests
+* Fixed issue where report/wipe commands would fail in Python 2.7
+* Fixed regression in timeout option
+* Improve dry-run reflecting new attachments to be published
+* Improve indentations for line-block content
+* Improve support for attached SVG images with length/scaling modifiers
+* Improve support for non-pixel length units for images
+* Improve support for SVG images without an XML declaration
+* Improve support when publishing page updates converted to a new editor
+* Improve support when using the sphinx-gallery extension
+* Improve support when using the sphinx_toolbox extension
+* Improve support when using the sphinxcontrib-mermaid extension
+* Improve support when using the sphinxcontrib-needs extension
+* Improve support when using the sphinxcontrib-youtube extension
+* Improve user feedback on ancestor page update failures (500 errors)
+* Improved support for dealing with unreconciled page detections
+* Introduce the Jira role
+* Introduce the newline directive
+* Introduce the page generation notice option (notice for top of documents)
+* Introduce the source link option (e.g. "Edit Source" link)
+* Prevent issues with extension directives causing errors with other builders
+* Provide a configuration hook to override requests session information
+* Remove borders on footnote tables
+* Support domain indices generation/processing
+* Support for leaving resolved toctrees for singleconfluence
+* Support genindex generation/processing
+* Support search generation
+* Support strikethrough through strike role
+* Support the consideration of ``confluence_parent_page`` for wipe requests
 
 1.6.0 (2021-09-26)
 ==================
@@ -83,248 +87,248 @@ Development
 * **(note)** ``confluence_max_doc_depth`` support is deprecated
 * ``confluence_master_homepage`` renamed to ``confluence_root_homepage``
 * ``confluence_purge_from_master`` renamed to ``confluence_purge_from_root``
-* always publish without xsrf checks (minimize confluence instance logging)
-* always strip control characters from content
-* ensure publish events use legacy editor
-* fixed issue where ``sphinx.ext.imgmath`` was forced for non-confluence builds
-* fixed issue where rubrics were built as headers and not titled paragraphs
-* handle extensions providing unicode attributes (e.g. ``sphinxcontrib.drawio``)
-* improve formatting when processing markdown content
-* prevent exceptions where third-party extensions provide invalid image uris
-* support rendering explicit newline entries
+* Always publish without XSRF checks (minimize Confluence instance logging)
+* Always strip control characters from content
+* Ensure publish events use legacy editor
+* Fixed issue where ``sphinx.ext.imgmath`` was forced for non-Confluence builds
+* Fixed issue where rubrics were built as headers and not titled paragraphs
+* Handle extensions providing Unicode attributes (e.g. ``sphinxcontrib.drawio``)
+* Improve formatting when processing markdown content
+* Prevent exceptions where third-party extensions provide invalid image uris
+* Support rendering explicit newline entries
 
 1.5.0 (2021-05-25)
 ==================
 
-* fixed issue where this extension conflicts with docutils's translator attribs
-* fixed issue with ``:doc:<>`` references when using singlebuilder
-* fixed issue with alignment changes in newer sphinx
-* fixed issue with caption/title changes in newer docutils/sphinx
-* fixed issue with singlebuilder processing assets
-* fixed issue with table width hints using pixels instead of percentages
-* improvements for getpass handling in msystem-environments
-* support an explicit root page publishing option
-* support custom headers for rest calls
+* Fixed issue where this extension conflicts with docutils's translator attribs
+* Fixed issue with ``:doc:<>`` references when using singlebuilder
+* Fixed issue with alignment changes in newer Sphinx
+* Fixed issue with caption/title changes in newer docutils/Sphinx
+* Fixed issue with singlebuilder processing assets
+* Fixed issue with table width hints using pixels instead of percentages
+* Improvements for getpass handling in msystem-environments
+* Support an explicit root page publishing option
+* Support custom headers for REST calls
 
 1.4.0 (2021-01-17)
 ==================
 
-* fixed issue where a meta node directive would fail the writer stage
-* fixed issue where intersphinx would fail in python 2.7
-* fixed issue where not all math directive content would be accepted
-* fixed/improved handling of configuration options from command line
-* support for math visual depth adjustments (line alignment)
-* support for numerical figures and references to these figures
-* support late image/download processing (for third-party extensions)
+* Fixed issue where a meta node directive would fail the writer stage
+* Fixed issue where intersphinx would fail in Python 2.7
+* Fixed issue where not all math directive content would be accepted
+* Fixed/improved handling of configuration options from command line
+* Support for math visual depth adjustments (line alignment)
+* Support for numerical figures and references to these figures
+* Support late image/download processing (for third-party extensions)
 
 1.3.0 (2020-12-31)
 ==================
 
-* **(note)** support for sphinx v1.[6-7] has been dropped
-* **(note)** support for xml-rpc has been dropped
-* conflicting titles will be automatically adjusted to prevent publishing issues
-* enable page-specific title overrides via confluence_title_overrides
-* ensure configured title postfix is not trimmed in long titles
-* extend language mappings for supported storage format language types
-* fixed a series of scenarios where titles/missing images will fail a build
-* fixed indentation to consistent offset for newer confluence instances
-* fixed issue when building heading which reference another document
-* fixed issue when processing a download role with a url
-* fixed issue where an anchor target may not generate a proper link
-* fixed issue where ask options would fail in python 2.7
-* fixed issue where ask options would prompt when not publishing
-* fixed issue where autosummary registration may fail
-* fixed issue where default alignment did not apply to a figure's legend
-* fixed issue where empty pages could not be published
-* fixed issue where links to headers which contain a link would fail
-* fixed issue where literal-marked includes would fail to publish
-* fixed issue where registering this extension caused issues with other builders
-* fixed issue where todo entries would render when disabled in configuration
-* fixed issue with previous-next links not generated for nested pages
-* improved built references by including title (alt) data if set
-* improved code macros rendering a title value when a caption is set
-* improved emphasis handling for autodocs content
-* improved figure/section numbering
-* improved handling unknown code languages to none-styled (instead of python)
-* improved previous-next button visualization
-* improved publishing when dealing with changing page title casing
-* introduce the expand directive
-* introduce the report command line feature
-* introduce the wipe command line feature
-* promote ``confluence_storage`` over ``confluence`` for raw type
-* support ``:stub-columns:`` option in a list-table directive
-* support disabling titlefix on an index page
-* support for assigning confluence labels for pages
-* support for both allow and deny lists for published documents
-* support for centered directive
-* support for graphviz extension
-* support for hlist directive
-* support for inheritance-diagram extension
-* support image candidate detection of extra image types for custom instances
-* support publish dry runs
-* support single-page builder
-* support the ``:backlinks:`` option for contents directive
-* support the generation of an inventory file (for intersphinx)
-* support users overriding default alignment
-* support users to force standalone hosting of shared assets
-* support width hints for tables
+* **(note)** Support for Sphinx v1.[6-7] has been dropped
+* **(note)** Support for XML-RPC has been dropped
+* Conflicting titles will be automatically adjusted to prevent publishing issues
+* Enable page-specific title overrides via confluence_title_overrides
+* Ensure configured title postfix is not trimmed in long titles
+* Extend language mappings for supported storage format language types
+* Fixed a series of scenarios where titles/missing images will fail a build
+* Fixed indentation to consistent offset for newer Confluence instances
+* Fixed issue when building heading which reference another document
+* Fixed issue when processing a download role with a url
+* Fixed issue where an anchor target may not generate a proper link
+* Fixed issue where ask options would fail in Python 2.7
+* Fixed issue where ask options would prompt when not publishing
+* Fixed issue where autosummary registration may fail
+* Fixed issue where default alignment did not apply to a figure's legend
+* Fixed issue where empty pages could not be published
+* Fixed issue where links to headers which contain a link would fail
+* Fixed issue where literal-marked includes would fail to publish
+* Fixed issue where registering this extension caused issues with other builders
+* Fixed issue where todo entries would render when disabled in configuration
+* Fixed issue with previous-next links not generated for nested pages
+* Improved built references by including title (alt) data if set
+* Improved code macros rendering a title value when a caption is set
+* Improved emphasis handling for autodocs content
+* Improved figure/section numbering
+* Improved handling unknown code languages to none-styled (instead of Python)
+* Improved previous-next button visualization
+* Improved publishing when dealing with changing page title casing
+* Introduce the expand directive
+* Introduce the report command line feature
+* Introduce the wipe command line feature
+* Promote ``confluence_storage`` over ``confluence`` for raw type
+* Support ``:stub-columns:`` option in a list-table directive
+* Support disabling titlefix on an index page
+* Support for assigning Confluence labels for pages
+* Support for both allow and deny lists for published documents
+* Support for centered directive
+* Support for graphviz extension
+* Support for hlist directive
+* Support for inheritance-diagram extension
+* Support image candidate detection of extra image types for custom instances
+* Support publish dry runs
+* Support single-page builder
+* Support the ``:backlinks:`` option for contents directive
+* Support the generation of an inventory file (for intersphinx)
+* Support users overriding default alignment
+* Support users to force standalone hosting of shared assets
+* Support width hints for tables
 
 1.2.0 (2020-01-03)
 ==================
 
-* **(note)** sphinx v1.[6-7] support for this extension is deprecated
-* **(note)** xml-rpc support for this extension is deprecated
-* fixed issue when using hierarchy on sphinx 2.1+ (new citations domain)
-* fixed issue with document names with path separators for windows users
-* fixed issue with multi-line description signatures (e.g. c++ autodocs)
-* fixed issue with processing hidden toctrees
-* fixed issue with unicode paths with ``confluence_publish_subset`` and python
+* **(note)** Sphinx v1.[6-7] support for this extension is deprecated
+* **(note)** XML-RPC support for this extension is deprecated
+* Fixed issue when using hierarchy on Sphinx 2.1+ (new citations domain)
+* Fixed issue with document names with path separators for windows users
+* Fixed issue with multi-line description signatures (e.g. C++ autodocs)
+* Fixed issue with processing hidden toctrees
+* Fixed issue with Unicode paths with ``confluence_publish_subset`` and Python
   2.7
-* improved formatting for option list arguments
-* improved handling and feedback when configured with incorrect publish instance
-* improved name management for published assets
-* improved reference linking for sphinx domains capability (meth, attr, etc.)
-* introduce a series of jira directives
-* support ``firstline`` parameter in the code block macro
-* support base admonition directive
-* support confluence 7 series newline management
-* support default alignment in sphinx 2.1+
-* support document postfixes
-* support for generated image assets (asterisk marked)
-* support passthrough authentication handlers for rest calls
-* support previous/next navigation
-* support prompting for publish username
-* support ``sphinx.ext.autosummary`` extension
-* support ``sphinx.ext.todo`` extension
-* support the math directive
-* support toctree's numbered option
-* support users injecting cookie data (for authentication) into rest calls
+* Improved formatting for option list arguments
+* Improved handling and feedback when configured with incorrect publish instance
+* Improved name management for published assets
+* Improved reference linking for Sphinx domains capability (meth, attr, etc.)
+* Introduce a series of Jira directives
+* Support ``firstline`` parameter in the code block macro
+* Support base admonition directive
+* Support Confluence 7 series newline management
+* Support default alignment in Sphinx 2.1+
+* Support document postfixes
+* Support for generated image assets (asterisk marked)
+* Support passthrough authentication handlers for REST calls
+* Support previous/next navigation
+* Support prompting for publish username
+* Support ``sphinx.ext.autosummary`` extension
+* Support ``sphinx.ext.todo`` extension
+* Support the math directive
+* Support toctree's numbered option
+* Support users injecting cookie data (for authentication) into REST calls
 
 1.1.0 (2019-03-16)
 ==================
 
-* repackaged release (see `sphinx-contrib/confluencebuilder#192`_)
+* Repackaged release (see `sphinx-contrib/confluencebuilder#192`_)
 
 1.0.0 (2019-03-14)
 ==================
 
-* all confluence-based macros can be restricted by the user
-* block quotes with attribution are styled with confluence quotes
-* citations/footnotes now have back references
-* enumerated lists now support various styling types
-* fixed issue with enumerated lists breaking build on older sphinx versions
-* fixed issue with relative-provided header/footer assets
-* fixed issues where table-of-contents may generate broken links
-* improve support with interaction with other extensions
-* improved paragraph indentation
-* initial autodoc support
-* nested tables and spanning cells are now supported
-* provide option for a caller to request a password for publishing documents
-* storage format support (two-pass publishing no longer needed)
-* support for sass/yaml language types
-* support parsed literal content
-* support publishing subset of documents
-* support the download directive
-* support the image/figure directives
-* support the manpage role
+* All Confluence-based macros can be restricted by the user
+* Block quotes with attribution are styled with Confluence quotes
+* Citations/footnotes now have back references
+* Enumerated lists now support various styling types
+* Fixed issue with enumerated lists breaking build on older Sphinx versions
+* Fixed issue with relative-provided header/footer assets
+* Fixed issues where table-of-contents may generate broken links
+* Improve support with interaction with other extensions
+* Improved paragraph indentation
+* Initial autodoc support
+* Nested tables and spanning cells are now supported
+* Provide option for a caller to request a password for publishing documents
+* Storage format support (two-pass publishing no longer needed)
+* Support for sass/yaml language types
+* Support parsed literal content
+* Support publishing subset of documents
+* Support the download directive
+* Support the image/figure directives
+* Support the manpage role
 
 0.9.0 (2018-06-02)
 ==================
 
-* fixed a series of content escaping issues
-* fixed an issue when purging content would remove just-published pages
-* fixed detailed configuration errors from being hidden
-* improve proxy support for xml-rpc on various python versions
-* improve support for various confluence url configurations
-* improve support in handling literal block languages
-* support automatic title generation for documents (if missing)
-* support ``:linenothreshold:`` option for highlight directive
-* support maximum page depth (nesting documents)
-* support the raw directive
-* support two-way ssl connections
+* Fixed a series of content escaping issues
+* Fixed an issue when purging content would remove just-published pages
+* Fixed detailed configuration errors from being hidden
+* Improve proxy support for XML-RPC on various Python versions
+* Improve support for various Confluence URL configurations
+* Improve support in handling literal block languages
+* Support automatic title generation for documents (if missing)
+* Support ``:linenothreshold:`` option for highlight directive
+* Support maximum page depth (nesting documents)
+* Support the raw directive
+* Support two-way SSL connections
 
 0.8.0 (2017-12-05)
 ==================
 
-* fix case where first-publish with ``confluence_master_homepage`` fails to
+* Fix case where first-publish with ``confluence_master_homepage`` fails to
   configure the space's homepage
-* support page hierarchy
-* improve pypi cover notes
+* Support page hierarchy
+* Improve PyPI cover notes
 
 0.7.0 (2017-11-30)
 ==================
 
-* cap headers/sections to six levels for improved visualization
-* fixed rest publishing for encoding issues and python 3.x (< 3.6) issues
-* improve markup for:
+* Cap headers/sections to six levels for improved visualization
+* Fixed REST publishing for encoding issues and Python 3.x (< 3.6) issues
+* Improve markup for:
 
-  * body element lists
-  * citations
-  * definitions
-  * footnotes
-  * inline literals
-  * literal block (code)
-  * rubric
-  * seealso
-  * table
-  * versionmodified
+  * Body element lists
+  * Citations
+  * Definitions
+  * Footnotes
+  * Inline literals
+  * Literal block (code)
+  * Rubric
+  * Seealso
+  * Table
+  * Versionmodified
 
-* re-work generated document references/targets (reference to section names)
-* sanitize output to prevent confluence errors for certain characters
-* support indentations markup
-* support ``master_doc`` option to configure space's homepage
-* support removing document titles from page outputs
-* support silent page updates
+* Re-work generated document references/targets (reference to section names)
+* Sanitize output to prevent Confluence errors for certain characters
+* Support indentations markup
+* Support ``master_doc`` option to configure space's homepage
+* Support removing document titles from page outputs
+* Support silent page updates
 
 0.6.0 (2017-04-23)
 ==================
 
-* cleanup module's structure, versions and other minor files
-* drop ``confluence`` pypi package (embedded xml-rpc support added)
-* improve hyperlink and cross-referencing arbitrary locations/documents support
-* improve proxy support
-* re-support python 3.x series
-* support anonymous publishing
-* support rest api
+* Cleanup module's structure, versions and other minor files
+* Drop ``confluence`` PyPI package (embedded XML-RPC support added)
+* Improve hyperlink and cross-referencing arbitrary locations/documents support
+* Improve proxy support
+* Re-support Python 3.x series
+* Support anonymous publishing
+* Support REST API
 
 0.5.0 (2017-03-31)
 ==================
 
-* (note) known issues with python 3.3, 3.4, 3.5 or 3.6 (see
+* (note) Known issues with Python 3.3, 3.4, 3.5 or 3.6 (see
   `sphinx-contrib/confluencebuilder#10`_)
-* header/footer support
-* purging support
-* use macros for admonitions
+* Header/footer support
+* Purging support
+* Use macros for admonitions
 
 0.4.0 (2017-02-21)
 ==================
 
-* move from ``Confluence`` pypi package to a ``confluence`` pypi package
-  (required for publishing to pypi; see `pycontribs/confluence`_)
+* Move from ``Confluence`` PyPI package to a ``confluence`` PyPI package
+  (required for publishing to PyPI; see `pycontribs/confluence`_)
 
 0.3.0 (2017-01-22)
 ==================
 
-* adding travis ci, tox and initial unit testing
-* module now depends on ``future``
-* providing initial support for python 3
+* Adding Travis CI, tox and initial unit testing
+* Module now depends on ``future``
+* Providing initial support for Python 3
 
 0.2.0 (2016-07-13)
 ==================
 
-* moved configuration to the sphinx config
+* Moved configuration to the Sphinx config
 
 0.1.1 (2016-07-12)
 ==================
 
-* added table support
-* fixed internal links
+* Added table support
+* Fixed internal links
 
 0.1.0 (2016-07-12)
 ==================
 
-* added lists, bullets, formatted text
-* added headings and titles
+* Added lists, bullets, formatted text
+* Added headings and titles
 
 .. _pycontribs/confluence: https://github.com/pycontribs/confluence
 .. _sphinx-contrib/confluencebuilder#10: https://github.com/sphinx-contrib/confluencebuilder/pull/10
