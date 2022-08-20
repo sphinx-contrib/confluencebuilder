@@ -79,6 +79,10 @@ A release can be made with the following commands:
     running egg_info
     ...
 
+    (note: verify packages can be published)
+
+    $ twine check dist/*
+
     (note: validate artifacts with a local pip install)
 
     $ gpg --detach-sign -a dist/sphinxcontrib*.gz
