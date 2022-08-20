@@ -74,10 +74,7 @@ A release can be made with the following commands:
 
 .. code-block:: shell-session
 
-    $ python setup.py clean --all
-    running clean
-    ...
-    $ python setup.py sdist bdist_wheel
+    $ python -m build
     running sdist
     running egg_info
     ...
