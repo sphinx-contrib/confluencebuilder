@@ -230,7 +230,7 @@ class Rest(object):
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def get(self, key, params):
+    def get(self, key, params=None):
         rest_url = self.url + self.bind_path + '/' + key
 
         rsp = self.session.get(rest_url, params=params, timeout=self.timeout)

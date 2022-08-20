@@ -523,6 +523,128 @@ Publishing configuration
     - |confluence_remove_title|_
     - |confluence_title_overrides|_
 
+.. index:: Page removal; Automatically archiving pages
+
+.. |confluence_cleanup_archive| replace:: ``confluence_cleanup_archive``
+.. _confluence_cleanup_archive:
+
+.. confval:: confluence_cleanup_archive
+
+    .. warning::
+
+       Publishing individual/subset of documents with this option may lead to
+       unexpected results.
+
+    .. note::
+
+        This option cannot be used with |confluence_cleanup_purge|_.
+
+    .. warning::
+
+        Only Confluence Cloud identifies support for an archiving API.
+        Attempting to Confluence server with this feature will most
+        likely result in an "Unsupported Confluence API call" error (500).
+
+    .. attention::
+
+        Confluence's archiving API is marked as experimental at the time
+        of writing. This feature may experience issues over time until the
+        API is flagged as stable (if ever).
+
+    A boolean value to whether to archive legacy pages detected in a space or
+    parent page. By default, this value is set to ``False`` to indicate that no
+    pages will be archived. If this configuration is set to ``True``, detected
+    pages in Confluence that do not match the set of published documents will be
+    automatically archived. If the option |confluence_parent_page|_ is set, only
+    pages which are a descendant of the configured parent page can be removed;
+    otherwise, all flagged pages in the configured space could be archived.
+
+    .. code-block:: python
+
+        confluence_cleanup_archive = False
+
+    While this capability is useful for updating a series of pages, it may lead
+    to unexpected results when attempting to publish a single-page update. The
+    archive operation will archive all pages that are not publish in the
+    request. For example, if an original request publishes ten documents and
+    archives excess documents, a following publish attempt with only one of
+    the documents will archive the other nine pages.
+
+    See also:
+
+    - |confluence_cleanup_from_root|_
+    - |confluence_cleanup_purge|_
+    - |confluence_publish_dryrun|_
+
+.. |confluence_cleanup_from_root| replace:: ``confluence_cleanup_from_root``
+.. _confluence_cleanup_from_root:
+
+.. confval:: confluence_cleanup_from_root
+
+    .. versionadded:: 1.9
+
+    A boolean value to which indicates that any cleanup attempt should be done
+    from the root of a published root_doc_ page (instead of a configured parent
+    page; i.e. |confluence_parent_page|_). In specific publishing scenarios, a
+    user may wish to publish multiple documentation sets based off a single
+    parent/container page. To prevent any cleanup between multiple documentation
+    sets, this option can be set to ``True``. When generating legacy pages to be
+    removed, this extension will only attempt to populate legacy pages based off
+    the children of the root_doc_ page. This option requires either
+    |confluence_cleanup_archive|_ or |confluence_cleanup_purge|_ to be set
+    to ``True`` before taking effect. If |confluence_publish_root|_ is
+    set, this option is implicitly enabled.
+
+    .. code-block:: python
+
+        confluence_cleanup_from_root = False
+
+    See also:
+
+    - |confluence_cleanup_archive|_
+    - |confluence_cleanup_purge|_
+
+.. index:: Page removal; Automatically purging pages
+
+.. |confluence_cleanup_purge| replace:: ``confluence_cleanup_purge``
+.. _confluence_cleanup_purge:
+
+.. confval:: confluence_cleanup_purge
+
+    .. warning::
+
+       Publishing individual/subset of documents with this option may lead to
+       unexpected results.
+
+    .. note::
+
+        This option cannot be used with |confluence_cleanup_archive|_.
+
+    A boolean value to whether or not purge legacy pages detected in a space or
+    parent page. By default, this value is set to ``False`` to indicate that no
+    pages will be removed. If this configuration is set to ``True``, detected
+    pages in Confluence that do not match the set of published documents will be
+    automatically removed. If the option |confluence_parent_page|_ is set, only
+    pages which are a descendant of the configured parent page can be removed;
+    otherwise, all flagged pages in the configured space could be removed.
+
+    .. code-block:: python
+
+        confluence_cleanup_purge = False
+
+    While this capability is useful for updating a series of pages, it may lead
+    to unexpected results when attempting to publish a single-page update. The
+    purge operation will remove all pages that are not publish in the request.
+    For example, if an original request publishes ten documents and purges
+    excess documents, a following publish attempt with only one of the documents
+    will purge the other nine pages.
+
+    See also:
+
+    - |confluence_cleanup_archive|_
+    - |confluence_cleanup_from_root|_
+    - |confluence_publish_dryrun|_
+
 .. |confluence_disable_notifications| replace:: ``confluence_disable_notifications``
 .. _confluence_disable_notifications:
 
@@ -700,66 +822,6 @@ Publishing configuration
        confluence_publish_root = 123456
 
     See also |confluence_parent_page|_.
-
-.. index:: Page removal; Automatically purging pages
-
-.. |confluence_purge| replace:: ``confluence_purge``
-.. _confluence_purge:
-
-.. confval:: confluence_purge
-
-    .. warning::
-
-       Publishing individual/subset of documents with this option may lead to
-       unexpected results.
-
-    A boolean value to whether or not purge legacy pages detected in a space or
-    parent page. By default, this value is set to ``False`` to indicate that no
-    pages will be removed. If this configuration is set to ``True``, detected
-    pages in Confluence that do not match the set of published documents will be
-    automatically removed. If the option |confluence_parent_page|_ is set, only
-    pages which are a descendant of the configured parent page can be removed;
-    otherwise, all flagged pages in the configured space could be removed.
-
-    .. code-block:: python
-
-        confluence_purge = False
-
-    While this capability is useful for updating a series of pages, it may lead
-    to unexpected results when attempting to publish a single-page update. The
-    purge operation will remove all pages that are not publish in the request.
-    For example, if an original request publishes ten documents and purges
-    excess documents, a following publish attempt with only one of the documents
-    will purge the other nine pages.
-
-    See also:
-
-    - |confluence_publish_dryrun|_
-    - |confluence_purge_from_root|_
-
-.. |confluence_purge_from_root| replace:: ``confluence_purge_from_root``
-.. _confluence_purge_from_root:
-
-.. confval:: confluence_purge_from_root
-
-    .. versionadded:: 1.6
-
-    A boolean value to which indicates that any purging attempt should be done
-    from the root of a published root_doc_ page (instead of a configured parent
-    page; i.e. |confluence_parent_page|_). In specific publishing scenarios, a
-    user may wish to publish multiple documentation sets based off a single
-    parent/container page. To prevent any purging between multiple documentation
-    sets, this option can be set to ``True``. When generating legacy pages to be
-    removed, this extension will only attempt to populate legacy pages based off
-    the children of the root_doc_ page. This option requires |confluence_purge|_
-    to be set to ``True`` before taking effect. If |confluence_publish_root|_ is
-    set, this option is implicitly enabled.
-
-    .. code-block:: python
-
-        confluence_purge_from_root = False
-
-    See also |confluence_purge|_.
 
 .. confval:: confluence_sourcelink
 
@@ -1138,7 +1200,8 @@ Advanced publishing configuration
 
     .. note::
 
-        Using this option will disable the |confluence_purge|_ option.
+        Using this option will disable the |confluence_cleanup_archive|_
+        and |confluence_cleanup_purge|_ options.
 
     Defines a list of documents to be published to a Confluence instance. When a
     user invokes sphinx-build_, a user has the ability to process all documents
@@ -1219,7 +1282,8 @@ Advanced publishing configuration
 
     .. note::
 
-        Using this option will disable the |confluence_purge|_ option.
+        Using this option will disable the |confluence_cleanup_archive|_
+        and |confluence_cleanup_purge|_ options.
 
     Defines a list of documents to not be published to a Confluence instance.
     When a user invokes sphinx-build_, a user has the ability to process all
@@ -1705,7 +1769,14 @@ Deprecated options
 
     .. versionchanged:: 1.6
 
-    This option has been renamed to |confluence_purge_from_root|_.
+    This option has been renamed to ``confluence_purge_from_root``, and has
+    since been replaced with |confluence_cleanup_from_root|_.
+
+.. confval:: confluence_purge_from_root
+
+    .. versionchanged:: 1.9
+
+    This option has been renamed to |confluence_cleanup_from_root|_.
 
 .. confval:: confluence_space_name
 

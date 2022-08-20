@@ -113,6 +113,12 @@ def setup(app):
     cm.add_conf_bool('confluence_ask_password')
     # Request for publish username to come from interactive session.
     cm.add_conf_bool('confluence_ask_user')
+    # Enablement of archiving legacy child pages.
+    cm.add_conf_bool('confluence_cleanup_archive')
+    # Enablement of cleaning legacy child pages from a root page.
+    cm.add_conf_bool('confluence_cleanup_from_root')
+    # Enablement of purging legacy child pages.
+    cm.add_conf_bool('confluence_cleanup_purge')
     # Explicitly prevent auto-generation of titles for titleless documents.
     cm.add_conf_bool('confluence_disable_autogen_title')
     # Explicitly prevent page notifications on update.
@@ -133,10 +139,6 @@ def setup(app):
     cm.add_conf('confluence_publish_prefix', 'env')
     # Root page's identifier to publish documents into.
     cm.add_conf_int('confluence_publish_root')
-    # Enablement of purging legacy child pages from a parent page.
-    cm.add_conf_bool('confluence_purge')
-    # Enablement of purging legacy child pages from a root page.
-    cm.add_conf_bool('confluence_purge_from_root')
     # docname-2-title dictionary for title overrides.
     cm.add_conf('confluence_title_overrides', 'env')
     # Timeout for network-related calls (publishing).
@@ -213,8 +215,10 @@ def setup(app):
     cm.add_conf_bool('confluence_remove_title', 'env')
 
     # (configuration - undocumented)
-    # Enablement for aggressive descendents search (for purge).
+    # Enablement for aggressive descendents search (for cleanup).
     cm.add_conf_bool('confluence_adv_aggressive_search')
+    # Enablement for bulk archiving of packages (for premium environments).
+    cm.add_conf_bool('confluence_adv_bulk_archiving')
     # List of node types to ignore if no translator support exists.
     cm.add_conf('confluence_adv_ignore_nodes')
     # Unknown node handler dictionary for advanced integrations.
@@ -235,6 +239,8 @@ def setup(app):
     cm.add_conf('confluence_publish_subset')
     # replaced by confluence_purge_from_root
     cm.add_conf_bool('confluence_purge_from_master')
+    # replaced by confluence_cleanup_from_root
+    cm.add_conf_bool('confluence_purge_from_root')
     # replaced by confluence_space_key
     cm.add_conf('confluence_space_name')
 
