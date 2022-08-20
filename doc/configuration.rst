@@ -896,7 +896,7 @@ Publishing configuration
             'owner': 'sphinx-contrib',
             'repo': 'confluencebuilder',
             'container': 'doc/',
-            'version': 'master',
+            'version': 'main',
             'view': 'edit',
         }
 
