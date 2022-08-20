@@ -5,14 +5,14 @@ name: Documentation
 on:
   push:
     branches:
-    - master
+    - main
     paths:
       - '.github/workflows/docs.yml'
       - 'doc/**'
       - 'CHANGES.rst'
   pull_request:
     branches:
-    - master
+    - main
     paths:
       - '.github/workflows/docs.yml'
       - 'doc/**'
