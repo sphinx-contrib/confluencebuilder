@@ -65,6 +65,14 @@ class SslAdapter(HTTPAdapter):
         kwargs['ssl_context'] = context
         return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
 
+    def cert_verify(self, conn, url, verify, *args, **kwargs):
+        super(SslAdapter, self).cert_verify(conn, url, verify, *args, **kwargs)
+
+        # prevent requests from injected an embedded certificates to instead
+        # rely on the default certificate stores loaded by the context
+        if verify is True and not self._config.confluence_adv_embedded_certs:
+            conn.ca_certs = None
+
 
 def rate_limited_retries():
     """

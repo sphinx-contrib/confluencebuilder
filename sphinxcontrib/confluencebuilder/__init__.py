@@ -219,6 +219,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_aggressive_search')
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
+    # Flag to permit the use of embedded certificates from requests.
+    cm.add_conf_bool('confluence_adv_embedded_certs')
     # List of node types to ignore if no translator support exists.
     cm.add_conf('confluence_adv_ignore_nodes')
     # Unknown node handler dictionary for advanced integrations.
