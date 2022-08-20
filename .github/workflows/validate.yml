@@ -24,7 +24,7 @@ on:
         default: 'test state'
       test_version:
         description: 'Test Version'
-        default: 'master'
+        default: 'main'
 
 jobs:
   build:
