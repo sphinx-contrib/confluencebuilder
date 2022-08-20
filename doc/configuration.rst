@@ -637,6 +637,16 @@ Publishing configuration
 
        confluence_publish_postfix = '-postfix'
 
+    Postfixes can include placeholders. These placeholders are filled using the
+    format method so formatting types can be used.
+
+    Supported placeholders
+
+    * ``{hash}`` - Create a reproduceable hash given the title and location
+      based from the project root. Using this placeholder provides an option
+      for allowing pages with the same title to be pushed to the same
+      Confluence space without needing to manually add an index to the title
+
     By default, no postfix is used. See also:
 
     - |confluence_ignore_titlefix_on_index|_

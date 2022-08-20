@@ -310,7 +310,7 @@ class ConfluenceAssetManager:
                 asset = self.hash2asset[hash_]
                 self.path2asset[path] = asset
         else:
-            assert(self.hash2asset[asset.hash] == asset)
+            assert (self.hash2asset[asset.hash] == asset)
 
         # track (if not already) that this document uses this asset
         asset.docnames.add(docname)

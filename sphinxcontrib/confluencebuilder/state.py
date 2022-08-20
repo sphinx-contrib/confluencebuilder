@@ -4,6 +4,8 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+import hashlib
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
@@ -80,8 +82,12 @@ class ConfluenceState:
 
         if config and (not config.confluence_ignore_titlefix_on_index or
                 docname != config.root_doc):
-            postfix = config.confluence_publish_postfix
             prefix = config.confluence_publish_prefix
+
+            postfix = ConfluenceState._format_postfix(
+                postfix=config.confluence_publish_postfix, docname=docname,
+                config=config
+            )
 
         if prefix:
             title = prefix + title
@@ -210,3 +216,32 @@ class ConfluenceState:
         See `registerUploadId` for more information.
         """
         return ConfluenceState.doc2uploadId.get(docname)
+
+    @staticmethod
+    def _format_postfix(postfix, docname, config):
+        """
+        Format a postfix that may have placeholders.
+        All placeholders used must be supported otherwise an error is raised
+        """
+        if postfix:
+            try:
+                return postfix.format(
+                    hash=ConfluenceState._create_docname_unique_hash(docname, config),
+                )
+            except KeyError:
+                raise ConfluenceConfigurationError(
+                    "Configured confluence_publish_prefix '{postfix}' has an "
+                    "unknown template replacement.".format(postfix=postfix))
+        return postfix
+
+    @staticmethod
+    def _create_docname_unique_hash(docname, config):
+        """
+        Create a unique(ish) hash for the given source file to avoid collisions
+        when pushing pages to confluence.
+        """
+        prehash = docname
+        prehash += str(config.project)
+        prehash += str(config.confluence_parent_page)
+        prehash += str(config.confluence_publish_root)
+        return hashlib.sha1(prehash.encode()).hexdigest()

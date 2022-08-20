@@ -1,2 +1,3 @@
 beautifulsoup4
 requests>=2.14.0
+mock;python_version<"3.3"
