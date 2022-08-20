@@ -126,4 +126,4 @@ reference, ensure the following post-release tasks are performed:
       config_version = '<tag>'
 
 .. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
-.. _CONTRIBUTING.rst: https://github.com/sphinx-contrib/confluencebuilder/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING.rst: https://github.com/sphinx-contrib/confluencebuilder/blob/main/CONTRIBUTING.rst
