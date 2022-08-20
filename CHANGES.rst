@@ -2,6 +2,7 @@ Development
 ===========
 
 * Allow ``confluence_ca_cert`` to accept a CA-bundle path
+* Default publish Intersphinx databases to root documents
 * Fixed issue where code blocks may not properly render captions
 * Fixed issue where dry-runs may fail with a non-existent root page
 * Fixed issue where external references with ampersands would fail to publish
@@ -12,8 +13,11 @@ Development
 * Introduce the Confluence status (macro) role
 * Introduce the Confluence toc (macro) directive
 * Introduce the Confluence user mention (macro) role
+* Relax domain restrictions for Intersphinx generation
 * Support ``confluence_parent_page`` to accept a page identifier
+* Support archiving legacy pages (alternative to purging)
 * Support configuring configuration options from environment
+* Support document-specific reproducible hash injection in a postfix
 * Support jinja2 templating on header/footer templates
 * Support the ability to disable injecting ``rest/api`` in API endpoint url
 
