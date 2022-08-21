@@ -66,7 +66,7 @@ following steps are performed:
 - Ensure version values in the implementation are incremented and tagged
   appropriately. The tagged commit should have a "clean" version string.
 - Ensure the release tag is signed.
-- After invoking ``bdist_wheel``, ensure a universal wheel has been created
+- After invoking a build, ensure a universal wheel has been created
   (i.e. inspect that the generated package inside ``dist/``  properly reflects
   ``py2.py3`` support).
 
@@ -75,8 +75,7 @@ A release can be made with the following commands:
 .. code-block:: shell-session
 
     $ python -m build
-    running sdist
-    running egg_info
+    * Creating virtualenv isolated environment...
     ...
 
     (note: verify packages can be published)

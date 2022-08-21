@@ -4,12 +4,16 @@ Advanced
 Publishing permissions
 ----------------------
 
-An account used for authentication requires the following permissions_ when
-attempting to publish to a configured space:
+An account used for authentication will have the best experience with the
+following permissions_ when attempting to publish to a configured space:
 
 - Space -- View
 - Page -- Add, Delete
 - Attachments -- Add, Delete
+
+Delete permissions are only required for environments using the
+``confluence_cleanup_purge`` (:ref:`ref<confluence_cleanup_purge>`)
+capabilitity.
 
 For environments using an OAuth connector, the following scopes are required:
 
@@ -24,4 +28,4 @@ For environments using an OAuth connector, the following scopes are required:
 
 .. references ------------------------------------------------------------------
 
-.. _Permissions: https://confluence.atlassian.com/x/_AozKw
+.. _Permissions: https://support.atlassian.com/confluence-cloud/docs/what-are-confluence-cloud-permissions-and-restrictions/

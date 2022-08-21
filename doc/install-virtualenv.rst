@@ -125,4 +125,4 @@ following:
 
 .. _Python: https://www.python.org/
 .. _pip: https://pip.pypa.io/
-.. _virtualenv: https://virtualenv.pypa.io/en/stable/
+.. _virtualenv: https://virtualenv.pypa.io/
