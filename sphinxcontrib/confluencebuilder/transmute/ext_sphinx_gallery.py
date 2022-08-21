@@ -5,6 +5,7 @@
 """
 
 from docutils import nodes
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 
 # ##############################################################################
 # disable import/except warnings for third-party modules
@@ -42,7 +43,7 @@ def replace_sphinx_gallery_nodes(builder, doctree):
     if not sphinx_gallery:
         return
 
-    for node in doctree.traverse(sphinx_gallery_imgsgnode):
+    for node in findall(doctree, sphinx_gallery_imgsgnode):
         new_node = nodes.image(candidates={'?'}, **node.attributes)
         if 'align' in node:
             new_node['align'] = node['align']

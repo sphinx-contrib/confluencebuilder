@@ -21,6 +21,7 @@ from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
@@ -303,7 +304,7 @@ class ConfluenceBuilder(Builder):
 
             # track the toctree depth for a document, which a translator can
             # use as a hint when dealing with max-depth capabilities
-            toctree = first(doctree.traverse(addnodes.toctree))
+            toctree = first(findall(doctree, addnodes.toctree))
             if toctree and toctree.get('maxdepth') > 0:
                 self.state.register_toctree_depth(
                     docname, toctree.get('maxdepth'))
@@ -408,7 +409,7 @@ class ConfluenceBuilder(Builder):
 
         modified = False
         doctree = self.env.get_doctree(docname)
-        for toctreenode in doctree.traverse(addnodes.toctree):
+        for toctreenode in findall(doctree, addnodes.toctree):
             if not omit and max_depth is not None:
                 if (toctreenode['maxdepth'] == -1 or
                         depth + toctreenode['maxdepth'] > max_depth):
@@ -467,7 +468,7 @@ class ConfluenceBuilder(Builder):
                     ids.extend(parent['ids'])
 
                 if ids:
-                    for node in doctree.traverse(nodes.reference):
+                    for node in findall(doctree, nodes.reference):
                         if 'refid' in node and node['refid']:
                             top_ref = node['refid'] in ids
 
@@ -811,7 +812,7 @@ class ConfluenceBuilder(Builder):
         """
         metadata = self.metadata.setdefault(docname, {})
 
-        for node in doctree.traverse(confluence_metadata):
+        for node in findall(doctree, confluence_metadata):
             labels = metadata.setdefault('labels', [])
             labels.extend(node.params['labels'])
             node.parent.remove(node)
@@ -1120,7 +1121,7 @@ class ConfluenceBuilder(Builder):
         doc_used_names = {}
         secnumbers = self.env.toc_secnumbers.get(docname, {})
 
-        for node in doctree.traverse(nodes.title):
+        for node in findall(doctree, nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
                 if 'ids' in section_node:

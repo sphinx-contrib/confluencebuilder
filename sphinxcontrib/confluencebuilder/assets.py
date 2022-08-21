@@ -8,6 +8,7 @@ from docutils import nodes
 from sphinx import addnodes
 from sphinx.util.osutil import canon_path
 from sphinx.util.images import guess_mimetype
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
@@ -194,11 +195,11 @@ class ConfluenceAssetManager:
             docname: the document's name
             standalone (optional): ignore hash mappings (defaults to False)
         """
-        image_nodes = doctree.traverse(nodes.image)
+        image_nodes = findall(doctree, nodes.image)
         for node in image_nodes:
             self.process_image_node(node, docname, standalone)
 
-        file_nodes = doctree.traverse(addnodes.download_reference)
+        file_nodes = findall(doctree, addnodes.download_reference)
         for node in file_nodes:
             self.process_file_node(node, docname, standalone)
 

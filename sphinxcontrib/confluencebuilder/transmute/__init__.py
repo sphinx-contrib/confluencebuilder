@@ -7,6 +7,7 @@
 from docutils import nodes
 from os import path
 from sphinx.util.math import wrap_displaymath
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
@@ -102,7 +103,7 @@ def prepare_svgs(builder, doctree):
 
     svg_initialize()
 
-    for node in doctree.traverse(nodes.image):
+    for node in findall(doctree, nodes.image):
         confluence_supported_svg(builder, node)
 
 
@@ -140,7 +141,7 @@ def replace_graphviz_nodes(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in doctree.traverse(graphviz):
+    for node in findall(doctree, graphviz):
         try:
             _, out_filename = render_dot(mock_translator, node['code'],
                 node['options'], builder.graphviz_output_format, 'graphviz')
@@ -194,7 +195,7 @@ def replace_inheritance_diagram(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in doctree.traverse(inheritance_diagram.inheritance_diagram):
+    for node in findall(doctree, inheritance_diagram.inheritance_diagram):
         graph = node['graph']
 
         graph_hash = inheritance_diagram.get_graph_hash(node)
@@ -238,8 +239,8 @@ def replace_math_blocks(builder, doctree):
         return
 
     # phase 1 -- convert math blocks into Confluence LaTeX blocks
-    for node in itertools.chain(doctree.traverse(nodes.math),
-            doctree.traverse(nodes.math_block)):
+    for node in itertools.chain(findall(doctree, nodes.math),
+            findall(doctree, nodes.math_block)):
         if not isinstance(node, nodes.math):
             if node['nowrap']:
                 latex = node.astext()
@@ -275,8 +276,8 @@ def replace_math_blocks(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in itertools.chain(doctree.traverse(confluence_latex_inline),
-            doctree.traverse(confluence_latex_block)):
+    for node in itertools.chain(findall(doctree, confluence_latex_inline),
+            findall(doctree, confluence_latex_block)):
         try:
             mf, depth = imgmath.render_math(mock_translator, node.astext())
             if not mf:

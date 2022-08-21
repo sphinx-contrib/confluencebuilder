@@ -5,6 +5,7 @@
 """
 
 from docutils import nodes
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 # ##############################################################################
@@ -52,7 +53,7 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in doctree.traverse(mermaid):
+    for node in findall(doctree, mermaid):
         try:
             format_ = builder.config.mermaid_output_format
             if format_ == 'raw':

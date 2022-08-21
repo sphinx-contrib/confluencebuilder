@@ -8,6 +8,7 @@
 from docutils import nodes
 from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.compat import progress_message
 from sphinxcontrib.confluencebuilder.locale import C
@@ -130,7 +131,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         """
         root_docuri = self.config.root_doc + self.file_suffix
 
-        for refnode in doctree.traverse(nodes.reference):
+        for refnode in findall(doctree, nodes.reference):
             if 'refuri' not in refnode:
                 continue
 
@@ -208,7 +209,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         if title_node:
             root_section = title_node.parent
 
-        for node in doctree.traverse(nodes.title):
+        for node in findall(doctree, nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
                 if 'ids' in section_node:
