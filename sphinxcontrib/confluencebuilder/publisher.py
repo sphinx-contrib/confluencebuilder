@@ -8,6 +8,7 @@ See also:
     https://docs.atlassian.com/confluence/REST/latest/
 """
 
+from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
@@ -829,7 +830,9 @@ reported a success (which can be permitted for anonymous users).
             except ConfluenceBadApiError as ex:
                 if str(ex).find('Transaction rolled back') == -1:
                     raise
-                logger.warn('delete failed; retrying...')
+
+                with skip_warningiserror():
+                    logger.warn('delete failed; retrying...')
                 time.sleep(3)
 
                 self.rest_client.delete('content', page_id)
@@ -1001,7 +1004,8 @@ reported a success (which can be permitted for anonymous users).
             if not any(x in str(ex) for x in retry_errors):
                 raise
 
-            logger.warn('remote page updated failed; retrying...')
+            with skip_warningiserror():
+                logger.warn('remote page updated failed; retrying...')
             time.sleep(3)
 
             try:
