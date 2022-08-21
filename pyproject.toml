@@ -6,10 +6,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'sphinxcontrib-confluencebuilder'
-description = '''\
-Sphinx extension to output Atlassian Confluence Storage \
-Markup documents and publish to Confluence instances.\
-'''
+description = 'Sphinx extension to build Atlassian Confluence Storage Markup'
 authors = [
     {name = 'Anthony Shaw', email = 'anthonyshaw@apache.org'},
 ]
@@ -38,12 +35,6 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Topic :: Documentation',
     'Topic :: Utilities',
-]
-dependencies = [
-    'docutils<0.18;python_version<"3.0"', # legacy docutils for older sphinx
-    'jinja2<=3.0.3;python_version<"3.0"', # legacy jinja2 for older sphinx
-    'requests>=2.14.0',
-    'sphinx>=1.8',
 ]
 dynamic = [
     'entry-points',
