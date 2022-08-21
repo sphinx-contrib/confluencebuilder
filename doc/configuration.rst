@@ -530,6 +530,8 @@ Publishing configuration
 
 .. confval:: confluence_cleanup_archive
 
+    .. versionadded:: 1.9
+
     .. warning::
 
        Publishing individual/subset of documents with this option may lead to
@@ -610,6 +612,8 @@ Publishing configuration
 .. _confluence_cleanup_purge:
 
 .. confval:: confluence_cleanup_purge
+
+    .. versionadded:: 1.9
 
     .. warning::
 
@@ -743,6 +747,7 @@ Publishing configuration
 .. confval:: confluence_publish_postfix
 
     .. versionadded:: 1.2
+    .. versionchanged:: 1.9 Support for the ``{hash}`` placeholder.
 
     If set, a postfix value is added to the title of all published documents. In
     Confluence, page names need to be unique for a space. A postfix can be set
@@ -760,14 +765,18 @@ Publishing configuration
        confluence_publish_postfix = '-postfix'
 
     Postfixes can include placeholders. These placeholders are filled using the
-    format method so formatting types can be used.
+    format method so formatting types can be used. For example:
 
-    Supported placeholders
+    .. code-block:: python
 
-    * ``{hash}`` - Create a reproduceable hash given the title and location
+       confluence_publish_postfix = ' ({hash:.5})'
+
+    Supported placeholders:
+
+    * ``{hash}`` - Create a reproducible hash given the title and location
       based from the project root. Using this placeholder provides an option
       for allowing pages with the same title to be pushed to the same
-      Confluence space without needing to manually add an index to the title
+      Confluence space without needing to manually add an index to the title.
 
     By default, no postfix is used. See also:
 

@@ -1,6 +1,7 @@
 Development
 ===========
 
+* **(note)** Final release supporting Python 2.7.
 * Allow ``confluence_ca_cert`` to accept a CA-bundle path
 * Default publish Intersphinx databases to root documents
 * Fixed issue where code blocks may not properly render captions
