@@ -1,3 +1,5 @@
 include .coveragerc
 include .flake8
 include .pylintrc
+recursive-include sphinxcontrib/confluencebuilder/locale *.pot *.po *.mo
+recursive-include sphinxcontrib/confluencebuilder/storage/templates *
