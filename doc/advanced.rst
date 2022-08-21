@@ -28,4 +28,4 @@ For environments using an OAuth connector, the following scopes are required:
 
 .. references ------------------------------------------------------------------
 
-.. _Permissions: https://confluence.atlassian.com/x/_AozKw
+.. _Permissions: https://support.atlassian.com/confluence-cloud/docs/what-are-confluence-cloud-permissions-and-restrictions/
