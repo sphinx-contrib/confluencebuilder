@@ -6,10 +6,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'sphinxcontrib-confluencebuilder'
-description = '''\
-Sphinx extension to output Atlassian Confluence Storage \
-Markup documents and publish to Confluence instances.\
-'''
+description = 'Sphinx extension to build Atlassian Confluence Storage Markup'
 authors = [
     {name = 'Anthony Shaw', email = 'anthonyshaw@apache.org'},
 ]
