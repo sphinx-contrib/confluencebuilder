@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
 from __future__ import absolute_import
+from docutils import __version_info__ as docutils_version_info
 from docutils import nodes
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
@@ -39,6 +40,14 @@ except ImportError:
                 logger.info(__('done'))
 
 
+# use docutil's findall call over traverse (obsolete)
+def docutils_findall(doctree, *args, **kwargs):
+    if docutils_version_info >= (0, 18, 1):
+        return doctree.findall(*args, **kwargs)
+    else:
+        return doctree.traverse(*args, **kwargs)
+
+
 # use sphinx's inline_all_toctrees which supports the `replace` argument;
 # otherwise, use this local variant instead
 def inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
@@ -55,7 +64,7 @@ def inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
 def _inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
                         traversed, replace):
     tree = cast(nodes.document, tree.deepcopy())
-    for toctreenode in list(tree.traverse(addnodes.toctree)):
+    for toctreenode in list(docutils_findall(tree, addnodes.toctree)):
         newnodes = []
         includefiles = map(str, toctreenode['includefiles'])
         for includefile in includefiles:
@@ -75,7 +84,7 @@ def _inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
                 else:
                     sof = addnodes.start_of_file(docname=includefile)
                     sof.children = subtree.children
-                    for sectionnode in sof.traverse(nodes.section):
+                    for sectionnode in docutils_findall(sof, nodes.section):
                         if 'docname' not in sectionnode:
                             sectionnode['docname'] = includefile
                     newnodes.append(sof)

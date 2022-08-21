@@ -11,6 +11,7 @@ from os import path
 from sphinx import addnodes
 from sphinx.locale import _ as SL
 from sphinx.locale import admonitionlabels
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
@@ -636,7 +637,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------
 
     def visit_block_quote(self, node):
-        if node.traverse(nodes.attribution):
+        if first(findall(node, nodes.attribution)):
             self.body.append(self._start_tag(node, 'blockquote'))
             self.context.append(self._end_tag(node))
         else:
@@ -677,7 +678,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # for now.
             firstchild_margin = True
 
-            next_child = first(node.traverse(include_self=False))
+            next_child = first(findall(node, include_self=False))
             if isinstance(next_child, nodes.block_quote):
                 firstchild_margin = False
 
@@ -739,7 +740,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._visit_admonition(node, 'warning')
 
     def visit_admonition(self, node):
-        title_node = first(node.traverse(nodes.title))
+        title_node = first(findall(node, nodes.title))
         if title_node:
             title = title_node.astext()
             self._visit_admonition(node, 'info', title, logo=False)
@@ -773,7 +774,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ------
 
     def visit_table(self, node):
-        title_node = first(node.traverse(nodes.title))
+        title_node = first(findall(node, nodes.title))
         if title_node:
             self.body.append(self._start_tag(node, 'p'))
             self.body.append(self._start_tag(node, 'strong'))
@@ -824,7 +825,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if apply_colwidths:
             has_colspec = False
-            for colspec in node.traverse(nodes.colspec):
+            for colspec in findall(node, nodes.colspec):
                 if not has_colspec:
                     self.body.append(self._start_tag(node, 'colgroup'))
                     has_colspec = True
@@ -1154,7 +1155,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # tr
 
         # if next entry is not another footnote or citation, close off the table
-        next_sibling = first(node.traverse(
+        next_sibling = first(findall(node,
             include_self=False, descend=False, siblings=True))
         if not isinstance(next_sibling, (nodes.citation, nodes.footnote)):
             self.body.append(self.context.pop())  # tbody
@@ -1270,7 +1271,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_caption(self, node):
         # if a caption for a literal block, pass the caption data to it can be
         # rendered in the macro's title field
-        next_sibling = first(node.traverse(
+        next_sibling = first(findall(node,
             include_self=False, descend=False, siblings=True))
         if isinstance(next_sibling, nodes.literal_block):
             # anything that is not a parsed literals
@@ -2048,7 +2049,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # div
 
     def depart_line(self, node):
-        next_sibling = first(node.traverse(
+        next_sibling = first(findall(node,
             include_self=False, descend=False, siblings=True))
         if isinstance(next_sibling, nodes.line):
             self.body.append('<br />')

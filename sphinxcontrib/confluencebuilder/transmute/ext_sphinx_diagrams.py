@@ -5,6 +5,7 @@
 """
 
 from docutils import nodes
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 
 # ##############################################################################
@@ -52,7 +53,7 @@ def replace_sphinx_diagrams_nodes(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in doctree.traverse(sphinx_diagrams_diagrams):
+    for node in findall(doctree, sphinx_diagrams_diagrams):
         try:
             fname, _ = sphinx_diagrams_render(mock_translator,
                 node['code'], node['options'], 'diagrams')

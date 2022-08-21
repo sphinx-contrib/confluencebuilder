@@ -7,6 +7,7 @@
 from docutils import nodes
 from os import path
 from sphinx import addnodes
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.util import first
 
@@ -68,7 +69,7 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
         return
 
     if sphinx_toolbox_assets:
-        for node in doctree.traverse(sphinx_toolbox_AssetNode):
+        for node in findall(doctree, sphinx_toolbox_AssetNode):
             # mock a docname based off the configured sphinx_toolbox's asset
             # directory; which the processing of a download_reference will
             # strip and use the asset directory has the container folder to find
@@ -84,7 +85,7 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
             node.replace_self(new_node)
 
     if sphinx_toolbox_collapse:
-        for node in doctree.traverse(sphinx_toolbox_CollapseNode):
+        for node in findall(doctree, sphinx_toolbox_CollapseNode):
             new_node = confluence_expand(node.rawsource, title=node.label,
                 *node.children, **node.attributes)
             node.replace_self(new_node)
@@ -94,8 +95,8 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
         #  cause an exception while docutils is processing a doctree
         while True:
             node = first(itertools.chain(
-                doctree.traverse(sphinx_toolbox_IssueNode),
-                doctree.traverse(sphinx_toolbox_IssueNodeWithName)))
+                findall(doctree, sphinx_toolbox_IssueNode),
+                findall(doctree, sphinx_toolbox_IssueNodeWithName)))
             if not node:
                 break
 
@@ -108,6 +109,6 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
             node.replace_self(new_node)
 
     if sphinx_toolbox_github_repos_and_users:
-        for node in doctree.traverse(sphinx_toolbox_GitHubObjectLinkNode):
+        for node in findall(doctree, sphinx_toolbox_GitHubObjectLinkNode):
             new_node = nodes.reference(node.name, node.name, refuri=node.url)
             node.replace_self(new_node)
