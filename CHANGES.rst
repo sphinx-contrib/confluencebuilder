@@ -1,5 +1,5 @@
-Development
-===========
+1.9.0 (2022-08-21)
+==================
 
 * **(note)** Final release supporting Python 2.7.
 * Allow ``confluence_ca_cert`` to accept a CA-bundle path
