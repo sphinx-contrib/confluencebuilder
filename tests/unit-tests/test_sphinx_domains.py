@@ -4,8 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.locale import _
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
@@ -36,10 +34,8 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
             self.assertIsNotNone(stronged_term)
             self.assertEqual(stronged_term.text, 'my_func')
 
-            # ignore pre-v3.0 as it embeds asterisk in variable
-            if parse_version(sphinx_version) >= parse_version('3.0'):
-                param_context = term.find('em', text='context')
-                self.assertIsNotNone(param_context)
+            param_context = term.find('em', text='context')
+            self.assertIsNotNone(param_context)
 
             # description
             desc = definition.find('dd', recursive=False)
@@ -99,12 +95,6 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
                 'param2',
                 _('Throws') + ':',
             ]
-
-            # in sphinx v4.1+, exception are no longer strong styled
-            if parse_version(sphinx_version) < parse_version('4.1'):
-                expected_stronged.extend([
-                    'SomeError',
-                ])
 
             expected_stronged.extend([
                 _('Returns') + ':',

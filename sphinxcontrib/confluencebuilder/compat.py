@@ -10,28 +10,9 @@ from docutils import nodes
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
 from sphinx.locale import __
-from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 from sphinx.util.nodes import inline_all_toctrees as sphinx_inline_all_toctrees
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
-
-
-# load sphinx's progress_message or use a compatible instance
-try:
-    from sphinx.util import progress_message  # pylint: disable=W0611
-except ImportError:
-    class progress_message:
-        def __init__(self, msg):
-            self.msg = msg
-
-        def __enter__(self):
-            logger.info(bold(self.msg + '... '), nonl=True)
-
-        def __exit__(self, type_, value, traceback):
-            if type_:
-                logger.info(__('failed'))
-            else:
-                logger.info(__('done'))
 
 
 # use docutil's findall call over traverse (obsolete)

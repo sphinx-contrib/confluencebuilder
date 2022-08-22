@@ -330,9 +330,7 @@ def confluence_builder_inited(app):
     #
     # If 'sphinx.ext.imgmath' is not already explicitly loaded, bind it into the
     # setup process to a configurer can use the same configuration options
-    # outlined in the sphinx.ext.imgmath in this extension. This applies for
-    # Sphinx 1.8 and higher which math support is embedded; for older versions,
-    # users will need to explicitly load 'sphinx.ext.mathbase'.
+    # outlined in the sphinx.ext.imgmath in this extension.
     if imgmath is not None:
         if 'sphinx.ext.imgmath' not in app.config.extensions:
             imgmath.setup(app)

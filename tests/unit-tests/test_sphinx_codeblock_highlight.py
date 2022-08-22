@@ -4,13 +4,10 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib import parse
 import os
-import unittest
 
 
 class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
@@ -40,11 +37,6 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_linenothreshold(self):
-        # skip code-block tests in Sphinx v1.8.x due to regression
-        #  https://github.com/sphinx-contrib/confluencebuilder/issues/148
-        if parse_version(sphinx_version) < parse_version('2.0'):
-            raise unittest.SkipTest('not supported in sphinx-1.8.x')
-
         out_dir = self.build(self.dataset,
             filenames=['code-block-linenothreshold'])
 
