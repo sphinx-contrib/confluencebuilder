@@ -13,28 +13,20 @@ from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
 from threading import Event
 from threading import Lock
 from threading import Thread
+import builtins
+import http.server as http_server
 import inspect
 import io
 import json
 import os
 import shutil
+import socketserver as server_socket
 import sys
 import time
-
-try:
-    import http.server as http_server
-except ImportError:
-    import SimpleHTTPServer as http_server
-
-try:
-    import socketserver as server_socket
-except ImportError:
-    import SocketServer as server_socket
 
 
 # full extension name
@@ -433,12 +425,12 @@ def mock_input(mock):
         return mock
 
     try:
-        original = compat.compat_input
+        original = builtins.input
         try:
-            compat.compat_input = _
+            builtins.input = _
             yield
         finally:
-            compat.compat_input = original
+            builtins.input = original
     finally:
         pass
 

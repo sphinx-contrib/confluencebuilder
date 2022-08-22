@@ -11,11 +11,6 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationEr
 from requests.auth import AuthBase
 import os
 
-try:
-    basestring  # pylint: disable=E0601
-except NameError:
-    basestring = str
-
 
 def validate_configuration(builder):
     """
@@ -300,7 +295,7 @@ to a proper file path.
             issue = True
         else:
             for name, info in jira_servers.items():
-                if not isinstance(name, basestring):
+                if not isinstance(name, str):
                     issue = True
                     break
 
@@ -311,8 +306,8 @@ to a proper file path.
                 jira_id = info.get('id')
                 jira_name = info.get('name')
 
-                if not (isinstance(jira_id, basestring) and
-                        isinstance(jira_name, basestring)):
+                if not (isinstance(jira_id, str) and
+                        isinstance(jira_name, str)):
                     issue = True
                     break
 
@@ -478,7 +473,7 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
 
         # if provided via command line, treat as a list
         def conf_translate(value):
-            if option in config['overrides'] and isinstance(value, basestring):
+            if option in config['overrides'] and isinstance(value, str):
                 value = value.split(',')
             return value
         value = conf_translate(value)
@@ -487,7 +482,7 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
             validator.conf(option, conf_translate) \
                      .string_or_strings()
 
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 validator.docnames_from_file()
             else:
                 validator.docnames()

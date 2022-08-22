@@ -5,7 +5,6 @@
 """
 
 from contextlib import contextmanager
-from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
@@ -282,8 +281,7 @@ def getpass2(prompt='Password: '):
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
         subprocess.check_call(['stty', '-echo'])
         try:
-            input_ = compat.compat_input
-            value = input_(prompt)
+            value = input(prompt)
         finally:
             subprocess.check_call(['stty', 'echo'])
         print('')

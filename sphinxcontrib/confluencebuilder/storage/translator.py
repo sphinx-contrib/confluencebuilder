@@ -5,7 +5,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import unicode_literals
 from docutils import nodes
 from os import path
 from sphinx import addnodes

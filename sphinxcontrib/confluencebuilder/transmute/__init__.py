@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_diagrams import replac
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_gallery import replace_sphinx_gallery_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_toolbox import replace_sphinx_toolbox_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinxcontrib_mermaid import replace_sphinxcontrib_mermaid_nodes
+import itertools
 
 # load graphviz extension if available to handle node pre-processing
 try:
@@ -29,7 +30,6 @@ except ImportError:
 # load imgmath extension if available to handle math node pre-processing
 try:
     from sphinx.ext import imgmath
-    import itertools
 except ImportError:
     imgmath = None
 

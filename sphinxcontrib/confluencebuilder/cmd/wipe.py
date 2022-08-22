@@ -4,11 +4,9 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import print_function
 from sphinx.application import Sphinx
 from sphinx.locale import __
 from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder.compat import compat_input
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
@@ -202,7 +200,7 @@ def ask_question(question, default='no'):
         prompt = ' [y/N] '
 
     while True:
-        rsp = compat_input(question + prompt).strip().lower()
+        rsp = input(question + prompt).strip().lower()
         if default is not None and rsp == '':
             return default == 'yes'
         elif rsp in ('y', 'yes'):

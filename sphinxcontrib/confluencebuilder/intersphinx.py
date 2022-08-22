@@ -5,7 +5,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import unicode_literals
 from os import path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import re

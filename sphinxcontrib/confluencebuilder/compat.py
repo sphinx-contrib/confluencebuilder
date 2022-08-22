@@ -5,7 +5,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import absolute_import
 from docutils import __version_info__ as docutils_version_info
 from docutils import nodes
 from sphinx import addnodes
@@ -16,11 +15,6 @@ from sphinx.util.nodes import inline_all_toctrees as sphinx_inline_all_toctrees
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
 
-# input support with all supported python interpreters
-try:
-    compat_input = raw_input
-except NameError:
-    compat_input = input  # pylint: disable=W0127
 
 # load sphinx's progress_message or use a compatible instance
 try:

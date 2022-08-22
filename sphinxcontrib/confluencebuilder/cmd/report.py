@@ -4,7 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import print_function
 from collections import OrderedDict
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
@@ -19,16 +18,13 @@ from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import temp_dir
+from urllib.parse import urlparse
 from xml.etree import ElementTree
 import os
 import platform
 import sys
 import traceback
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
 
 #: rest point to fetch instance manifest state
 MANIFEST_PATH = 'rest/applinks/1.0/manifest'
