@@ -5,6 +5,7 @@
 """
 
 from collections import OrderedDict
+from docutils import __version__ as docutils_version
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
 from sphinx.application import Sphinx
@@ -273,6 +274,7 @@ def report_main(args_parser):
     print(' platform:', single_line_version(platform.platform()))
     print('   python:', single_line_version(sys.version))
     print('   sphinx:', single_line_version(sphinx_version))
+    print(' docutils:', single_line_version(docutils_version))
     print(' requests:', single_line_version(requests_version))
     print('  builder:', single_line_version(scb_version))
 
