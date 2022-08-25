@@ -139,7 +139,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 doc_id = node['docname']
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', doc_id))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
 
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
@@ -392,7 +392,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
 
         self.body.append(self._start_tag(node, 'dt'))
         self.context.append(self._end_tag(node))
@@ -731,7 +731,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if 'ids' in node and node['ids']:
             self.body.append(self._start_ac_macro(node, 'anchor'))
             self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-            self.body.append(self._end_ac_macro(node))
+            self.body.append(self._end_ac_macro(node, suffix=''))
 
         self._visit_admonition(node, 'info', title=SL('Todo'))
 
@@ -982,7 +982,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
 
         if is_citation:
             self.body.append(self._start_tag(node, 'sup'))
@@ -1071,12 +1071,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if not target:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', anchor))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
         elif 'ids' in node and 'refuri' not in node:
             for id_ in node['ids']:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
 
             self.body.append(self.encode(node.astext()))
 
@@ -1111,7 +1111,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # footnote anchor
         self.body.append(self._start_ac_macro(node, 'anchor'))
         self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self._end_ac_macro(node, suffix=''))
 
         # footnote label and back reference(s)
         if 'backrefs' not in node or not node['backrefs']:
@@ -1167,7 +1167,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # build an anchor for back reference
         self.body.append(self._start_ac_macro(node, 'anchor'))
         self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self._end_ac_macro(node, suffix=''))
 
         # link to anchor
         target_anchor = ''.join(node['refid'].split())
@@ -1609,7 +1609,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for id_ in self._desc_sig_ids:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
                 self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self._end_ac_macro(node, suffix=''))
 
         if self._desc_sig_ids is None:
             self.body.append(self._start_tag(
@@ -2282,7 +2282,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self._start_tag(node, 'ac:structured-macro',
             suffix=self.nl, empty=empty, **{'ac:name': type_})
 
-    def _end_ac_macro(self, node):
+    def _end_ac_macro(self, node, suffix=None):
         """
         generates confluence macro end tag content for a node
 
@@ -2293,11 +2293,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         Args:
             node: the node processing the macro
+            suffix (optional): the suffix to add (defaults to newline)
 
         Returns:
             the content
         """
-        return self._end_tag(node)
+        return self._end_tag(node, suffix=suffix)
 
     def _start_ac_link_body(self, node):
         """
