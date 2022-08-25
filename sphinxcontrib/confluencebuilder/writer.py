@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
 from docutils import writers
 
 

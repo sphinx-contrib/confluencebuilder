@@ -4,8 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
@@ -124,9 +122,6 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_root_homepage'] = False
 
     def test_extended_autodocs(self):
-        if parse_version(sphinx_version) < parse_version('2.3.1'):
-            raise unittest.SkipTest('breathe requires sphinx>=2.3.1')
-
         config = self.config.clone()
         config['confluence_sourcelink']['container'] += 'extended-autodocs/'
         config['extensions'].append('breathe')

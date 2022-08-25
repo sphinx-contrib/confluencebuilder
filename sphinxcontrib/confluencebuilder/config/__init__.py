@@ -4,7 +4,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 import sys
@@ -56,8 +55,7 @@ def process_ask_configs(config):
         if default_user:
             u_str = ' [{}]'.format(default_user)
 
-        input_ = compat.compat_input
-        target_user = input_(' User{}: '.format(u_str)) or default_user
+        target_user = input(' User{}: '.format(u_str)) or default_user
         if not target_user:
             raise ConfluenceConfigurationError('no user provided')
 

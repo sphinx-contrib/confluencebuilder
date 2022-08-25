@@ -7,34 +7,24 @@
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
 from copy import deepcopy
-from pkg_resources import parse_version
-from sphinx.__init__ import __version__ as sphinx_version
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
-from sphinxcontrib.confluencebuilder import compat
 from sphinxcontrib.confluencebuilder import util
 from threading import Event
 from threading import Lock
 from threading import Thread
+import builtins
+import http.server as http_server
 import inspect
 import io
 import json
 import os
 import shutil
+import socketserver as server_socket
 import sys
 import time
-
-try:
-    import http.server as http_server
-except ImportError:
-    import SimpleHTTPServer as http_server
-
-try:
-    import socketserver as server_socket
-except ImportError:
-    import SocketServer as server_socket
 
 
 # full extension name
@@ -433,12 +423,12 @@ def mock_input(mock):
         return mock
 
     try:
-        original = compat.compat_input
+        original = builtins.input
         try:
-            compat.compat_input = _
+            builtins.input = _
             yield
         finally:
-            compat.compat_input = original
+            builtins.input = original
     finally:
         pass
 
@@ -488,10 +478,6 @@ def prepare_conf():
         'sphinx.ext.imgmath',
     ]
     config['confluence_publish'] = False
-
-    # support pre-Sphinx v2.0 installations which default to 'contents'
-    if parse_version(sphinx_version) < parse_version('2.0'):
-        config['master_doc'] = 'index'
 
     return config
 
@@ -606,13 +592,6 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         out_dir = prepare_dirs(f_back_count=3)
 
     doctrees_dir = os.path.join(out_dir, '.doctrees')
-
-    # support pre-Sphinx v4.0 installations which do not have `root_doc` by
-    # swapping to the obsolete configuration name
-    if parse_version(sphinx_version) < parse_version('4.0'):
-        if 'root_doc' in conf:
-            conf['master_doc'] = conf['root_doc']
-            del conf['root_doc']
 
     with docutils_namespace():
         app = Sphinx(

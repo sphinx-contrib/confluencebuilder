@@ -84,8 +84,3 @@ def apply_defaults(builder):
             conf.confluence_parent_page = int(conf.confluence_parent_page)
         except ValueError:
             pass
-
-    # if running an older version of Sphinx which does not define `root_doc`,
-    # copy it over now from the legacy configuration
-    if 'root_doc' not in conf:
-        conf.root_doc = conf.master_doc

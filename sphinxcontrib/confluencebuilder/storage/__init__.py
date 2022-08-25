@@ -6,11 +6,6 @@
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 
-try:
-    unicode  # pylint: disable=E0601
-except NameError:
-    unicode = str
-
 
 def encode_storage_format(data):
     """
@@ -34,7 +29,7 @@ def encode_storage_format(data):
     }
 
     # first pass needs to handle ampersand
-    data = unicode(data).replace('&', '&amp;')
+    data = str(data).replace('&', '&amp;')
 
     for find, encoded in STORAGE_FORMAT_REPLACEMENTS:
         data = data.replace(find, encoded)

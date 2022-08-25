@@ -5,9 +5,6 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
 from collections import defaultdict
 from docutils import nodes
 from docutils.io import StringOutput
@@ -46,11 +43,6 @@ from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 import os
-
-try:
-    basestring  # pylint: disable=E0601
-except NameError:
-    basestring = str
 
 
 class ConfluenceBuilder(Builder):
@@ -189,10 +181,10 @@ class ConfluenceBuilder(Builder):
                 return None
 
             # if provided via command line, treat as a list
-            if option in config['overrides'] and isinstance(value, basestring):
+            if option in config['overrides'] and isinstance(value, str):
                 value = value.split(',')
 
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 files = extract_strings_from_file(value)
             else:
                 files = value

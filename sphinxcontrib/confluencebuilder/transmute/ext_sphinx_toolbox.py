@@ -10,11 +10,8 @@ from sphinx import addnodes
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.util import first
+import itertools
 
-try:
-    import itertools
-except ImportError:
-    pass
 
 # ##############################################################################
 # disable import/except warnings for third-party modules
