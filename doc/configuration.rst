@@ -15,7 +15,6 @@ Confluence generation and publishing:
     confluence_server_url = 'https://intranet-wiki.example.com/'
     confluence_server_user = 'myawesomeuser'
     confluence_ask_password = True
-    confluence_page_hierarchy = True
 
 All configurations introduced by this extension are listed below. This
 extension may take advantage of a subset of `Sphinx configurations`_ as well
@@ -398,12 +397,14 @@ Generic configuration
 
 .. confval:: confluence_page_hierarchy
 
+    .. versionchanged:: 2.0 Option is enabled by default.
+
     A boolean value to whether or not nest pages in a hierarchical ordered. The
     root of all pages is typically the configured root_doc_. If a root_doc_
     instance contains a toctree_, listed documents will become child pages of
     the root_doc_. This cycle continues for child pages with their own
-    toctree_ markups. By default, hierarchy mode is disabled with a value of
-    ``False``.
+    toctree_ markups. By default, hierarchy mode is enabled with a value of
+    ``True``.
 
     .. code-block:: python
 
@@ -413,12 +414,6 @@ Generic configuration
     and other published pages that are not defined in the complete toctree_,
     these documents will still be published and uploaded to either the
     configured |confluence_parent_page|_ or in the root of the space.
-
-    .. important::
-
-        This feature will default to ``True`` in a v2.0 release. Users who do
-        not want to use hierarchy mode should explicitly configure this to
-        ``False`` in their configurations.
 
 .. |confluence_prev_next_buttons_location| replace:: ``confluence_prev_next_buttons_location``
 .. _confluence_prev_next_buttons_location:
