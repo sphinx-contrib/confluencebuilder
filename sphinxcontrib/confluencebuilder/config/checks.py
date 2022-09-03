@@ -267,6 +267,12 @@ to a proper file path.
 
     # ##################################################################
 
+    # confluence_full_width
+    validator.conf('confluence_full_width') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_global_labels
     try:
         validator.conf('confluence_global_labels') \

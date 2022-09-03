@@ -165,6 +165,8 @@ def setup(app):
     cm.add_conf('confluence_client_cert_pass')
     # Disable SSL validation with Confluence server.
     cm.add_conf_bool('confluence_disable_ssl_validation')
+    # Whether to utilize the full width of a Confluence page (v2 only).
+    cm.add_conf_bool('confluence_full_width')
     # Ignore adding a titlefix on the index document.
     cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'env')
     # Parent page's identifier to publish documents under.

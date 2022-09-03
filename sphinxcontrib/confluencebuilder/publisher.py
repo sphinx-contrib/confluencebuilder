@@ -930,6 +930,18 @@ reported a success (which can be permitted for anonymous users).
                 },
             }
 
+        if self.config.confluence_full_width is not None:
+            if self.config.confluence_full_width:
+                content_appearance = 'full-width'
+            else:
+                content_appearance = 'default'
+
+            page['metadata']['properties'] = {
+                'content-appearance-published': {
+                    'value': content_appearance,
+                },
+            }
+
         return page
 
     def _update_page(self, page, page_name, data, parent_id=None):
