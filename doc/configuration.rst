@@ -248,6 +248,40 @@ Generic configuration
             'py-modindex',
         ]
 
+.. |confluence_editor| replace:: ``confluence_editor``
+.. _confluence_editor:
+
+.. confval:: confluence_editor
+
+    .. versionadded:: 2.0
+
+    .. note::
+
+        - Confluence's ``v1`` editor provides a larger support for Sphinx
+          features than the newer editor. Users can compare the difference
+          in editors by inspecting the `online demo`_.
+        - Using the ``v2`` editor with Confluence server may yield unexpected
+          results.
+
+    A string value to indicate which `Confluence editor`_ to target. The
+    following editor values are supported:
+
+    - ``v1``: Use Confluence's older editor (default).
+    - ``v2``: Use Confluence's newer editor (fabric).
+
+    A user can choose which version of the editor to build and published
+    documentation with. This extension may adjust how content is generated
+    based on which editor is selected. Not all Confluence editors are
+    equal -- some features supported in one editor may not be supported in
+    another. For example, if documentation relies indenting bullet lists,
+    content may only be properly rendered with the ``v1`` editor; where if
+    users want to new styled Confluence admonitions (warnings, notes, etc.),
+    these are only available in the ``v2`` editor.
+
+    .. code-block:: python
+
+        confluence_editor = 'v1'
+
 .. |confluence_header_file| replace:: ``confluence_header_file``
 .. _confluence_header_file:
 
@@ -667,6 +701,28 @@ Publishing configuration
     removed, depending on how other users may be watching a space.
 
     See also |confluence_watch|_.
+
+.. confval:: confluence_full_width
+
+    .. versionadded:: 2.0
+
+    .. note::
+
+        This option is only supported using the ``v2``
+        :ref:`editor <confluence_editor>`.
+
+    A boolean value to whether to publish pages using the full width of a page.
+    By default, page widths will use their default/existing page widths with
+    a value of ``None``. Specifying this option to ``True`` will ensure any
+    new/updated page will attempt to use the full width of a page; likewise,
+    specifying this option to ``False`` will ensure any new/updated page will
+    attempt to use a smaller width.
+
+    .. code-block:: python
+
+        confluence_full_width = True
+
+    See also |confluence_editor|_.
 
 .. |confluence_global_labels| replace:: ``confluence_global_labels``
 .. _confluence_global_labels:
@@ -1801,6 +1857,7 @@ Deprecated options
 .. references ------------------------------------------------------------------
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
+.. _Confluence editor: https://support.atlassian.com/confluence-cloud/docs/confluence-cloud-editor-roadmap/
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
@@ -1814,6 +1871,7 @@ Deprecated options
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
 .. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+.. _online demo: https://sphinxcontrib-confluencebuilder.atlassian.net/
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 .. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath

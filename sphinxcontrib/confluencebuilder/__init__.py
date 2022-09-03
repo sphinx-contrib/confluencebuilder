@@ -81,6 +81,8 @@ def setup(app):
     cm.add_conf('confluence_default_alignment', 'env')
     # Enablement of a generated domain index documents
     cm.add_conf('confluence_domain_indices')
+    # Confluence editor to target for publication.
+    cm.add_conf('confluence_editor', 'env')
     # File to get page header information from.
     cm.add_conf('confluence_header_file', 'env')
     # Dictionary to pass to header when rendering template
@@ -163,6 +165,8 @@ def setup(app):
     cm.add_conf('confluence_client_cert_pass')
     # Disable SSL validation with Confluence server.
     cm.add_conf_bool('confluence_disable_ssl_validation')
+    # Whether to utilize the full width of a Confluence page (v2 only).
+    cm.add_conf_bool('confluence_full_width')
     # Ignore adding a titlefix on the index document.
     cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'env')
     # Parent page's identifier to publish documents under.
@@ -225,6 +229,8 @@ def setup(app):
     cm.add_conf('confluence_adv_ignore_nodes')
     # Unknown node handler dictionary for advanced integrations.
     cm.add_conf('confluence_adv_node_handler')
+    # Permit any string value to be provided as the editor.
+    cm.add_conf('confluence_adv_permit_editor', 'env')
     # Enablement of permitting raw html blocks to be used in storage format.
     cm.add_conf_bool('confluence_adv_permit_raw_html', 'env')
     # List of optional features/macros/etc. restricted for use.

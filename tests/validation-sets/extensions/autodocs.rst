@@ -37,6 +37,7 @@ The autofunction_ directive:
 
 .. autofunction:: my_custom_function
 
+
 .. references ------------------------------------------------------------------
 
 .. _autoclass: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#directive-autoclass

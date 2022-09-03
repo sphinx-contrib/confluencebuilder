@@ -16,6 +16,7 @@ An example of an inheritance diagram is as follows:
 .. inheritance-diagram:: sphinx.ext.inheritance_diagram.InheritanceDiagram
     :parts: 1
 
+
 .. references ------------------------------------------------------------------
 
 .. _inheritance_diagram: https://www.sphinx-doc.org/en/master/usage/extensions/inheritance.html

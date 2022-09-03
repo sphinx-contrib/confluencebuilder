@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -46,7 +46,12 @@ def generate_storage_format_domainindex(builder, docname, f):
                     docname=doctitle, anchor=anchor_value)
 
     # fetch raw template data
-    domainindex_template = os.path.join('templates', 'domainindex.html')
+    if builder.config.confluence_editor:
+        domainindex_fname = 'domainindex_v2.html'
+    else:
+        domainindex_fname = 'domainindex.html'
+
+    domainindex_template = os.path.join('templates', domainindex_fname)
     template_data = pkgutil.get_data(__name__, domainindex_template)
 
     # process the template with the generated index
@@ -89,7 +94,12 @@ def generate_storage_format_genindex(builder, docname, f):
                         ismain, process_doclink(builder.config, link))
 
     # fetch raw template data
-    genindex_template = os.path.join('templates', 'genindex.html')
+    if builder.config.confluence_editor:
+        genindex_fname = 'genindex_v2.html'
+    else:
+        genindex_fname = 'genindex.html'
+
+    genindex_template = os.path.join('templates', genindex_fname)
     template_data = pkgutil.get_data(__name__, genindex_template)
 
     # process the template with the generated index

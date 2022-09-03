@@ -4,6 +4,7 @@
 :license: BSD-2-Clause (LICENSE)
 """
 
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
@@ -33,6 +34,7 @@ class TestConfluenceValidation(unittest.TestCase):
         # build configuration
         space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
+        cls.config['extensions'].append('sphinx.ext.ifconfig')
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_page_generation_notice'] = True
@@ -86,7 +88,6 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_publish_prefix'] = ''
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_cleanup_archive'] = False
-        cls.config['confluence_cleanup_purge'] = False
         cls.config['confluence_sourcelink']['version'] = cls.test_version
         cls.config['rst_epilog'] = """
 .. |test_key| replace:: {}
@@ -106,50 +107,162 @@ class TestConfluenceValidation(unittest.TestCase):
 
         # inject a navdoc from the "standard" start page
         def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_next', 'Standard', None)
-            docnames.append('_validation_next')
+            docnames = [
+                'index',
+                'editor_v1',
+                '_entry_v1_next',
+                '_entry_v2_prev',
+                'editor_v2',
+                '_entry_v2_next',
+            ]
+            builder.state.register_title('_entry_v1_next',
+                'reStructuredText', None)
+            builder.state.register_title('_entry_v2_prev',
+                'sphinx.ext.todo', None)
+            builder.state.register_title('_entry_v2_next',
+                'reStructuredText (Fabric)', None)
             return docnames
         config['confluence_navdocs_transform'] = navdocs_transform
 
         # build/publish test base page
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
+        # track root pages for editors to publish content into
+        cls.editor_root = {
+            'v1': ConfluenceState.upload_id('editor_v1'),
+            'v2': ConfluenceState.upload_id('editor_v2'),
+        }
+
         # finalize configuration for tests
-        cls.config['confluence_parent_page'] = cls.test_key
         cls.config['confluence_cleanup_purge'] = True
         cls.config['confluence_cleanup_from_root'] = True
         cls.config['confluence_root_homepage'] = False
 
-    def test_extended_autodocs(self):
-        config = self.config.clone()
-        config['confluence_sourcelink']['container'] += 'extended-autodocs/'
-        config['extensions'].append('breathe')
-        config['extensions'].append('sphinx.ext.autodoc')
+    def _prepare_editor(self, editor):
+        display_name = ' (Fabric)' if editor == 'v2' else None
 
-        # inject a navdoc from the last header/footer page, to the
-        # extended autodocs start page
+        config = self.config.clone()
+        config['confluence_editor'] = editor
+        config['confluence_parent_page'] = self.editor_root[editor]
+        config['confluence_publish_postfix'] = display_name
+
+        # always force png since svgs do not look nice in v2
+        if editor == 'v2':
+            config['imgmath_image_format'] = 'png'
+
+        return config
+
+    def test_110_restructuredtext_v1(self):
+        self._test_restructuredtext('v1')
+
+    def test_120_sphinx_v1(self):
+        self._test_sphinx('v1')
+
+    def test_130_markdown(self):
+        self._test_markdown('v1')
+
+    def test_140_extensions(self):
+        self._test_extensions('v1')
+
+    def test_210_restructuredtext_v2(self):
+        self._test_restructuredtext('v2')
+
+    def test_220_sphinx_v2(self):
+        self._test_sphinx('v2')
+
+    def test_230_markdown(self):
+        self._test_markdown('v2')
+
+    def test_240_extensions(self):
+        self._test_extensions('v2')
+
+    def _test_restructuredtext(self, editor):
+        config = self._prepare_editor(editor)
+        config['confluence_sourcelink']['container'] += 'restructuredtext/'
+
+        dataset = os.path.join(self.datasets, 'restructuredtext')
+        doc_dir = prepare_dirs('validation-set-restructuredtext-' + editor)
+
+        # inject a navdoc to the header/footer start page
         def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', 'sphinx.ext.todo', None)
-            docnames.insert(0, '_validation_prev')
+            if editor == 'v2':
+                builder.state.register_title(
+                    '_validation_prev', 'Fabric editor', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Sphinx (Fabric)', None)
+                docnames.append('_validation_next')
+            else:
+                builder.state.register_title(
+                    '_validation_prev', 'Default editor', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Sphinx', None)
+                docnames.append('_validation_next')
             return docnames
         config['confluence_navdocs_transform'] = navdocs_transform
 
-        dataset = os.path.join(self.datasets, 'extended-autodocs')
-        doc_dir = prepare_dirs('validation-set-extended-autodocs')
-        xml_dir = os.path.join(dataset, 'xml')
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
-        config['breathe_projects'] = {}
-        for name in os.listdir(xml_dir):
-            sample_dir = os.path.join(xml_dir, name)
-            if os.path.isdir(sample_dir):
-                config['breathe_projects'][name] = sample_dir
+    def _test_sphinx(self, editor):
+        config = self._prepare_editor(editor)
+        config['confluence_sourcelink']['container'] += 'sphinx/'
+
+        dataset = os.path.join(self.datasets, 'sphinx')
+        doc_dir = prepare_dirs('validation-set-sphinx-' + editor)
+
+        # inject a navdoc to the header/footer start page
+        def navdocs_transform(builder, docnames):
+            if editor == 'v2':
+                builder.state.register_title(
+                    '_validation_prev', 'Transition (Fabric)', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Markdown (Fabric)', None)
+                docnames.append('_validation_next')
+            else:
+                builder.state.register_title(
+                    '_validation_prev', 'Transition', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Markdown', None)
+                docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
 
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
-    def test_extensions(self):
-        config = self.config.clone()
+    def _test_markdown(self, editor):
+        config = self._prepare_editor(editor)
+        config['confluence_sourcelink']['container'] += 'markdown/'
+        config['extensions'].append('myst_parser')
+
+        dataset = os.path.join(self.datasets, 'markdown')
+        doc_dir = prepare_dirs('validation-set-markdown-' + editor)
+
+        # inject a navdoc to the header/footer start page
+        def navdocs_transform(builder, docnames):
+            if editor == 'v2':
+                builder.state.register_title(
+                    '_validation_prev', 'Version changed (Fabric)', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Extensions (Fabric)', None)
+                docnames.append('_validation_next')
+            else:
+                builder.state.register_title(
+                    '_validation_prev', 'Version changed', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Extensions', None)
+                docnames.append('_validation_next')
+            return docnames
+        config['confluence_navdocs_transform'] = navdocs_transform
+
+        build_sphinx(dataset, config=config, out_dir=doc_dir)
+
+    def _test_extensions(self, editor):
+        config = self._prepare_editor(editor)
         config['confluence_sourcelink']['container'] += 'extensions/'
         config['extensions'].append('sphinx.ext.autodoc')
         config['extensions'].append('sphinx.ext.autosummary')
@@ -157,19 +270,31 @@ class TestConfluenceValidation(unittest.TestCase):
         config['extensions'].append('sphinx.ext.ifconfig')
         config['extensions'].append('sphinx.ext.inheritance_diagram')
         config['extensions'].append('sphinx.ext.todo')
-        config['graphviz_output_format'] = 'svg'
         config['todo_include_todos'] = True
         config['todo_link_only'] = True
 
-        # inject a navdoc from the last header/footer page, to the
-        # extended autodocs start page
+        # always force png since svgs do not look nice in v2
+        if editor == 'v2':
+            config['imgmath_image_format'] = 'png'
+        else:
+            config['graphviz_output_format'] = 'svg'
+
+        dataset = os.path.join(self.datasets, 'extensions')
+        doc_dir = prepare_dirs('validation-set-extensions-' + editor)
+
+        # inject a navdoc to the header/footer start page
         def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', 'Markdown Table', None)
-            docnames.insert(0, '_validation_prev')
-            builder.state.register_title(
-                '_validation_next', 'Extended - autodocs', None)
-            docnames.append('_validation_next')
+            if editor == 'v2':
+                builder.state.register_title(
+                    '_validation_prev', 'Markdown Table (Fabric)', None)
+                docnames.insert(0, '_validation_prev')
+            else:
+                builder.state.register_title(
+                    '_validation_prev', 'Markdown Table', None)
+                docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Fabric editor', None)
+                docnames.append('_validation_next')
             return docnames
         config['confluence_navdocs_transform'] = navdocs_transform
 
@@ -180,95 +305,6 @@ class TestConfluenceValidation(unittest.TestCase):
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 
         sys.path.pop(0)
-
-    def test_header_footer(self):
-        config = self.config.clone()
-        config['confluence_sourcelink']['container'] += 'header-footer/'
-
-        dataset = os.path.join(self.datasets, 'header-footer')
-        doc_dir = prepare_dirs('validation-set-hf')
-
-        config['confluence_header_file'] = os.path.join(dataset, 'header.tpl')
-        config['confluence_footer_file'] = os.path.join(dataset, 'footer.tpl')
-
-        # inject a navdoc from the last "standard" page, to the
-        # hierarchy example start page
-        def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', 'Verification of content', None)
-            docnames.insert(0, '_validation_prev')
-            builder.state.register_title(
-                '_validation_next', 'Hierarchy example', None)
-            docnames.append('_validation_next')
-            return docnames
-        config['confluence_navdocs_transform'] = navdocs_transform
-
-        build_sphinx(dataset, config=config, out_dir=doc_dir)
-
-    def test_hierarchy(self):
-        config = self.config.clone()
-        config['confluence_max_doc_depth'] = 2
-        config['confluence_page_hierarchy'] = True
-        config['confluence_sourcelink']['container'] += 'hierarchy/'
-
-        # inject a navdoc from the last "Header/footer" page, to the
-        # markdown start page
-        def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', 'Header/footer example (page c)', None)
-            docnames.insert(0, '_validation_prev')
-            builder.state.register_title(
-                '_validation_next', 'Markdown', None)
-            docnames.append('_validation_next')
-            return docnames
-        config['confluence_navdocs_transform'] = navdocs_transform
-
-        dataset = os.path.join(self.datasets, 'hierarchy')
-        doc_dir = prepare_dirs('validation-set-hierarchy')
-
-        build_sphinx(dataset, config=config, out_dir=doc_dir, relax=True)
-
-    def test_markdown(self):
-        config = self.config.clone()
-        config['confluence_sourcelink']['container'] += 'markdown/'
-        config['extensions'].append('myst_parser')
-
-        dataset = os.path.join(self.datasets, 'markdown')
-        doc_dir = prepare_dirs('validation-set-markdown')
-
-        # inject a navdoc from the last hierarchy example page, to the
-        # extensions start page
-        def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', 'Hierarchy example (d)', None)
-            docnames.insert(0, '_validation_prev')
-            builder.state.register_title(
-                '_validation_next', 'Extensions', None)
-            docnames.append('_validation_next')
-            return docnames
-        config['confluence_navdocs_transform'] = navdocs_transform
-
-        build_sphinx(dataset, config=config, out_dir=doc_dir)
-
-    def test_standard_default(self):
-        config = self.config.clone()
-        config['confluence_sourcelink']['container'] += 'standard/'
-
-        dataset = os.path.join(self.datasets, 'standard')
-        doc_dir = prepare_dirs('validation-set-standard')
-
-        # inject a navdoc to the header/footer start page
-        def navdocs_transform(builder, docnames):
-            builder.state.register_title(
-                '_validation_prev', self.test_key, None)
-            docnames.insert(0, '_validation_prev')
-            builder.state.register_title(
-                '_validation_next', 'Header/footer example', None)
-            docnames.append('_validation_next')
-            return docnames
-        config['confluence_navdocs_transform'] = navdocs_transform
-
-        build_sphinx(dataset, config=config, out_dir=doc_dir)
 
 
 if __name__ == '__main__':

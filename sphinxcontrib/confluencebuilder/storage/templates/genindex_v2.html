@@ -1,0 +1,73 @@
+{#
+Template for a storage-format genindex document.
+
+:copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:license: BSD-2-Clause (LICENSE)
+#}
+
+{% macro indexentry(name, links) %}
+    {%- if links -%}
+        {%- set ismain = links[0][0] -%}
+        {%- set docname, anchor = links[0][1] -%}
+        {%- if ismain %}<strong>{% endif -%}
+        <ac:link{% if anchor %} ac:anchor="{{ anchor }}"{% endif %}>
+            <ri:page ri:content-title="{{ docname }}" />
+            <ac:link-body>{{ name|e }}</ac:link-body>
+        </ac:link>
+        {%- if ismain %}</strong>{% endif -%}
+
+        {%- for ismain, link in links[1:] -%}
+            ,
+            {% set docname, anchor = link -%}
+            {%- if ismain %}<strong>{% endif -%}
+            <ac:link{% if anchor %} ac:anchor="{{ anchor }}"{% endif %}>
+                <ri:page ri:content-title="{{ docname }}" />
+                <ac:link-body>[{{ loop.index }}]</ac:link-body>
+            </ac:link>
+            {%- if ismain %}</strong>{% endif -%}
+        {%- endfor %}
+    {%- else -%}
+        {{- name|e -}}
+    {%- endif %}
+{% endmacro %}
+
+{%- if pagegen_notice -%}
+    <div style="color: #707070; font-size: 12px;">
+        {{ L('This page has been automatically generated.') }}
+    </div>
+
+    <hr style="clear: both; padding-top: 10px" />
+{%- else -%}
+    <hr />
+{%- endif -%}
+
+<p style="text-align: center">
+    {%- for key, _ in index -%}
+    <ac:link ac:anchor="{{ key }}">
+        <ac:link-body><strong>{{ key }}</strong></ac:link-body>
+    </ac:link>
+    {%- if not loop.last %} | {% endif %}
+    {%- endfor %}
+</p>
+<hr />
+
+{%- for key, entries in index %}
+<h1><ac:structured-macro ac:name="anchor" >
+    <ac:parameter ac:name="">{{ key }}</ac:parameter>
+    </ac:structured-macro>{{ key }}</h1>
+
+{%- for name, (links, subitems, _) in entries -%}
+    <p style="margin-left: 30px;">
+        {{- indexentry(name, links) -}}
+    </p>
+    {%- if subitems %}
+        {%- for subname, sublinks in subitems -%}
+            <p style="margin-top: 0; margin-left: 60px;">
+                {{- indexentry(subname, sublinks) -}}
+            </p>
+        {%- endfor %}
+    {%- endif -%}
+{%- endfor %}
+
+{% endfor %}

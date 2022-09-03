@@ -279,6 +279,28 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_editor(self):
+        self.config['confluence_editor'] = None
+        self._try_config()
+
+        self.config['confluence_editor'] = 'v1'
+        self._try_config()
+
+        self.config['confluence_editor'] = 'v2'
+        self._try_config()
+
+        self.config['confluence_editor'] = 2
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_editor'] = 'some-value'
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_adv_permit_editor'] = True
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
     def test_config_check_emptyconfig(self):
         # default state of this extension with a builder should be a valid
         # configuration state; documentation should be generated (with no

@@ -301,8 +301,12 @@ class ConfluenceBuilder(Builder):
                 self.state.register_toctree_depth(
                     docname, toctree.get('maxdepth'))
 
-            # register title targets for references
-            self._register_doctree_title_targets(docname, doctree)
+            # register title targets for references; however, not for v2
+            # editor since internal page links do not support linking
+            # directly to headers, so we will need to still generate anchors
+            # for these headers
+            if self.config.confluence_editor != 'v2':
+                self._register_doctree_title_targets(docname, doctree)
 
             # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
@@ -998,6 +1002,13 @@ class ConfluenceBuilder(Builder):
 
         prev_next_loc = self.config.confluence_prev_next_buttons_location
 
+        # add page generation notice (first; if v2)
+        if self.config.confluence_editor == 'v2':
+            if self.config.confluence_page_generation_notice:
+                pgn_node = confluence_page_generation_notice()
+                header_node.append(pgn_node)
+                add_header_node = True
+
         # add source link
         if self.config.confluence_sourcelink:
             default_host = ''
@@ -1035,11 +1046,12 @@ class ConfluenceBuilder(Builder):
             header_node.append(es_node)
             add_header_node = True
 
-        # add page generation notice
-        if self.config.confluence_page_generation_notice:
-            pgn_node = confluence_page_generation_notice()
-            header_node.append(pgn_node)
-            add_header_node = True
+        # add page generation notice (second; if not v2)
+        if self.config.confluence_editor != 'v2':
+            if self.config.confluence_page_generation_notice:
+                pgn_node = confluence_page_generation_notice()
+                header_node.append(pgn_node)
+                add_header_node = True
 
         # add header next/previous
         if prev_next_loc in ('top', 'both'):
