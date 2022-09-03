@@ -43,6 +43,7 @@ Single directed graphs are supported as well:
 
     "bar" -> "baz" -> "quux";
 
+
 .. references ------------------------------------------------------------------
 
 .. _graphviz: https://www.sphinx-doc.org/en/master/usage/extensions/graphviz.html

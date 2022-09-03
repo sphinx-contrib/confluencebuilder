@@ -29,13 +29,10 @@ The following shows an example of todo entries:
 
     This is a second message.
 
-.. raw:: confluence_storage
-
-    <div style="height: 50px">&nbsp;</div>
-
 This extension also supports compiling a list of entries as follows:
 
 .. todolist::
+
 
 .. references ------------------------------------------------------------------
 

@@ -23,6 +23,7 @@ An example of an external module docstring:
     environment.BuildEnvironment
     util.relative_uri
 
+
 .. references ------------------------------------------------------------------
 
 .. _autosummary: https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html

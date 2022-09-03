@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+DOC_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)"
+BASE_DIR=$(dirname $DOC_DIR)
+
+builder=
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -*)
+        shift
+        ;;
+    *)
+        [[ -z "$builder" ]] && builder=$1
+        shift
+        ;;
+    esac
+done
+[[ -z "$builder" ]] && builder=html
+
+cd $BASE_DIR
+exec python -m sphinx -M $builder $DOC_DIR $DOC_DIR/_build/ -E -a -W
