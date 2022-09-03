@@ -12,7 +12,6 @@ from os import path
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
-from sphinx.errors import ExtensionError
 from sphinx.locale import _ as SL
 from sphinx.util import status_iterator
 from sphinx.util.osutil import ensuredir
@@ -259,11 +258,9 @@ class ConfluenceBuilder(Builder):
         self._original_get_doctree = self.env.get_doctree
         self.env.get_doctree = self._get_doctree
 
-        # process the document structure of the root document, allowing:
-        #  - populating a publish order to ensure parent pages are created first
-        #     (when using hierarchy mode)
-        #  - squash pages which exceed maximum depth (if configured with a max
-        #     depth value)
+        # process the document structure of the root document, populating a
+        # publish order to ensure parent pages are created first (when using
+        # hierarchy mode)
         self.process_tree_structure(
             ordered_docnames, self.config.root_doc, traversed)
 
@@ -393,48 +390,17 @@ class ConfluenceBuilder(Builder):
         # for every doctree, pick the best image candidate
         self.post_process_images(doctree)
 
-    def process_tree_structure(self, ordered, docname, traversed, depth=0):
-        omit = False
-        max_depth = self.config.confluence_max_doc_depth
-        if max_depth is not None and depth > max_depth:
-            omit = True
-            self.omitted_docnames.append(docname)
+    def process_tree_structure(self, ordered, docname, traversed):
+        ordered.append(docname)
 
-        if not omit:
-            ordered.append(docname)
-
-        modified = False
         doctree = self.env.get_doctree(docname)
         for toctreenode in findall(doctree, addnodes.toctree):
-            if not omit and max_depth is not None:
-                if (toctreenode['maxdepth'] == -1 or
-                        depth + toctreenode['maxdepth'] > max_depth):
-                    new_depth = max_depth - depth
-                    assert new_depth >= 0
-                    toctreenode['maxdepth'] = new_depth
-            movednodes = []
             for child in toctreenode['includefiles']:
                 if child not in traversed:
                     self.state.register_parent_docname(child, docname)
                     traversed.append(child)
 
-                    children = self.process_tree_structure(
-                        ordered, child, traversed, depth + 1)
-                    if children:
-                        movednodes.append(children)
-                        self._fix_std_labels(child, docname)
-
-            if movednodes:
-                modified = True
-                toctreenode.replace_self(movednodes)
-                toctreenode.parent['classes'].remove('toctree-wrapper')
-
-        if omit:
-            container = addnodes.start_of_file(docname=docname)
-            container.children = doctree.children
-            return container
-        elif modified:
-            self.env.resolve_references(doctree, docname, self)
+                    self.process_tree_structure(ordered, child, traversed)
 
     def write_doc(self, docname, doctree):
         if docname in self.omitted_docnames:
@@ -833,69 +799,6 @@ class ConfluenceBuilder(Builder):
 
         return None
 
-    def _fix_std_labels(self, olddocname, newdocname):
-        """
-        fix standard domain labels for squashed documents
-
-        When Sphinx resolves references for a doctree ('resolve_references'),
-        the standard domain's internal labels are used to map references to
-        target documents. To support document squashing (aka. max depth pages),
-        this utility method helps override a document's tuple labels so that any
-        squashed page's labels can be moved into a parent document's label set.
-        """
-        # see also: sphinx/domains/std.py
-        std_domain = self.env.get_domain('std')
-        try:
-            citation_domain = self.env.get_domain('citation')
-        except ExtensionError:
-            citation_domain = None
-
-        if 'anonlabels' in std_domain.data:
-            anonlabels = std_domain.data['anonlabels']
-            for key, (fn, _l) in list(anonlabels.items()):
-                if fn == olddocname:
-                    data = anonlabels[key]
-                    anonlabels[key] = newdocname, data[1]
-
-        citations = None
-        if 'citations' in std_domain.data:  # Sphinx <2.1
-            citations = std_domain.data['citations']
-        elif citation_domain:  # Sphinx >=2.1
-            citations = citation_domain.citations
-        if citations:
-            for key, (fn, _l, _) in list(citations.items()):
-                if fn == olddocname:
-                    data = citations[key]
-                    citations[key] = newdocname, data[1], data[2]
-
-        if 'citation_refs' in std_domain.data:  # Sphinx <2.0
-            citation_refs = std_domain.data['citation_refs']
-            for key, _ in list(citation_refs.items()):
-                if fn == olddocname:
-                    data = citation_refs[key]
-                    citation_refs[key] = newdocname
-
-        if 'labels' in std_domain.data:
-            labels = std_domain.data['labels']
-            for key, (fn, _l, _l) in list(labels.items()):
-                if fn == olddocname:
-                    data = labels[key]
-                    labels[key] = newdocname, data[1], data[2]
-
-        if 'objects' in std_domain.data:
-            objects = std_domain.data['objects']
-            for key, (fn, _l) in list(objects.items()):
-                if fn == olddocname:
-                    data = objects[key]
-                    objects[key] = newdocname, data[1]
-
-        if 'progoptions' in std_domain.data:
-            progoptions = std_domain.data['progoptions']
-            for key, (fn, _l) in list(progoptions.items()):
-                if fn == olddocname:
-                    data = progoptions[key]
-                    progoptions[key] = newdocname, data[1]
-
     def _generate_special_document(self, docname, generator):
         """
         generate a special document
@@ -972,12 +875,12 @@ class ConfluenceBuilder(Builder):
         """
         override 'get_doctree' method
 
-        To support document squashing (aka. max depth pages), doctree's may be
-        loaded and manipulated before the writing stage. Normally, the writing
-        stage will load target doctree's from their source so there is no way to
-        pre-load and pass a document's doctree into the writing stage. To
-        overcome this, this extension hooks into the environment's 'get_doctree'
-        method and caches loaded document's doctree's into a map.
+        To support document editing, doctree's may be loaded and manipulated
+        before the writing stage. Normally, the writing stage will load target
+        doctree's from their source so there is no way to pre-load and pass a
+        document's doctree into the writing stage. To overcome this, this
+        extension hooks into the environment's 'get_doctree' method and
+        caches loaded document's doctree's into a map.
         """
         if docname not in self.cache_doctrees:
             self.cache_doctrees[docname] = self._original_get_doctree(docname)

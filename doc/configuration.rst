@@ -365,24 +365,6 @@ Generic configuration
 
         confluence_include_search = True
 
-.. confval:: confluence_max_doc_depth
-
-    .. important::
-
-        This feature is deprecated. If there is a desire to generate a single
-        document page instead, consider using the ``singleconfluence``
-        :doc:`builder <builders>` instead.
-
-    A positive integer value, if provided, to indicate the maximum depth
-    permitted for a nested child page before its contents is inlined with a
-    parent. The root of all pages is typically the configured root_doc_. The
-    root page is considered to be at a depth of zero. By default, the maximum
-    document depth is disabled with a value of ``None``.
-
-    .. code-block:: python
-
-        confluence_max_doc_depth = 2
-
 .. confval:: confluence_page_generation_notice
 
     .. versionadded:: 1.7
