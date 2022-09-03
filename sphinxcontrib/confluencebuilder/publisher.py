@@ -423,7 +423,7 @@ reported a success (which can be permitted for anonymous users).
 
         return attachment_info
 
-    def get_page(self, page_name, expand='version'):
+    def get_page(self, page_name, expand='version', status='current'):
         """
         get page information with the provided page name
 
@@ -435,6 +435,7 @@ reported a success (which can be permitted for anonymous users).
         Args:
             page_name: the page name
             expand (optional): data to expand on
+            status (optional): the page status to search for
 
         Returns:
             the page id and page object
@@ -446,7 +447,7 @@ reported a success (which can be permitted for anonymous users).
             'type': 'page',
             'spaceKey': self.space_key,
             'title': page_name,
-            'status': 'current',
+            'status': status,
             'expand': expand,
         })
 
@@ -667,6 +668,16 @@ reported a success (which can be permitted for anonymous users).
             expand += ',metadata.labels'
 
         _, page = self.get_page(page_name, expand=expand)
+
+        # if the page is not found, but it determined to be an archived page,
+        # Confluence Cloud does not appear to support moving/updating an
+        # archived page back into a `current` mode -- instead, try to delete
+        # the archived page before generating a new page
+        if not page:
+            _, page = self.get_page(page_name, expand=expand, status='archived')
+            if page:
+                self.remove_page(page['id'])
+                page = None
 
         if self.onlynew and page:
             self._onlynew('skipping existing page', page['id'])
