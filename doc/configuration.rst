@@ -702,6 +702,28 @@ Publishing configuration
 
     See also |confluence_watch|_.
 
+.. confval:: confluence_full_width
+
+    .. versionadded:: 2.0
+
+    .. note::
+
+        This option is only supported using the ``v2``
+        :ref:`editor <confluence_editor>`.
+
+    A boolean value to whether to publish pages using the full width of a page.
+    By default, page widths will use their default/existing page widths with
+    a value of ``None``. Specifying this option to ``True`` will ensure any
+    new/updated page will attempt to use the full width of a page; likewise,
+    specifying this option to ``False`` will ensure any new/updated page will
+    attempt to use a smaller width.
+
+    .. code-block:: python
+
+        confluence_full_width = True
+
+    See also |confluence_editor|_.
+
 .. |confluence_global_labels| replace:: ``confluence_global_labels``
 .. _confluence_global_labels:
 
