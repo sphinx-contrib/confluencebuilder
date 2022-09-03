@@ -22,11 +22,15 @@ class TestConfluenceRstHighlights(ConfluenceTestCase):
         out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
-            quote = data.find('blockquote')
+            quote = data.find('div')
             self.assertIsNotNone(quote)
 
-            parts = list(quote.children)
-            self.assertEqual(len(parts), 2)
+            quote_text = quote.find('p')
+            self.assertIsNotNone(quote_text)
+            self.assertEqual(quote_text.text.strip(), 'quote')
 
-            self.assertEqual(parts[0].text.strip(), 'quote')
-            self.assertEqual(parts[1].strip(), '-- source')
+            quote_sep = quote.find('br')
+            self.assertIsNotNone(quote_sep)
+
+            quote_source = quote_sep.nextSibling.strip()
+            self.assertEqual(quote_source, '— source')
