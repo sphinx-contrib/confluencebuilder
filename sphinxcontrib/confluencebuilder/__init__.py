@@ -93,8 +93,6 @@ def setup(app):
     cm.add_conf('confluence_footer_data', 'env')
     # Enablement of a generated search documents
     cm.add_conf_bool('confluence_include_search')
-    # Enablement of the maximum document depth (before inlining).
-    cm.add_conf_int('confluence_max_doc_depth', 'env')
     # Enablement of a "page generated" notice.
     cm.add_conf_bool('confluence_page_generation_notice', 'env')
     # Enablement of publishing pages into a hierarchy from a root toctree.
@@ -251,6 +249,8 @@ def setup(app):
     cm.add_conf_bool('confluence_purge_from_root')
     # replaced by confluence_space_key
     cm.add_conf('confluence_space_name')
+    # dropped
+    cm.add_conf_int('confluence_max_doc_depth')
 
     # ##########################################################################
 

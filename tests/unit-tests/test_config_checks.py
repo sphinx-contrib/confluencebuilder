@@ -486,31 +486,6 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
-    def test_config_check_max_doc_depth(self):
-        self.config['confluence_max_doc_depth'] = 2
-        with self.assertRaises(SphinxWarning):
-            self._try_config()
-
-        self.config['confluence_max_doc_depth'] = '2'
-        with self.assertRaises(SphinxWarning):
-            self._try_config()
-
-        self.config['confluence_max_doc_depth'] = -1
-        with self.assertRaises(ConfluenceConfigurationError):
-            self._try_config()
-
-        self.config['confluence_max_doc_depth'] = 0
-        with self.assertRaises(SphinxWarning):
-            self._try_config()
-
-        del self.config['confluence_max_doc_depth']
-
-        defines = {
-            'confluence_max_doc_depth': '1',
-        }
-        with self.assertRaises(SphinxWarning):
-            self._try_config(edefs=defines)
-
     def test_config_check_mentions(self):
         self.config['confluence_mentions'] = {}
         self._try_config()

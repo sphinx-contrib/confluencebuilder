@@ -16,6 +16,8 @@ DEPRECATED_CONFIGS = {
         'to be removed in a future version',
     'confluence_master_homepage':
         'use "confluence_root_homepage" instead',
+    'confluence_max_doc_depth':
+        'option does nothing',
     'confluence_parent_page_id_check':
         '"confluence_parent_page" now accepts a page id',
     'confluence_publish_subset':
@@ -47,14 +49,6 @@ def deprecated(validator):
     for key, msg in DEPRECATED_CONFIGS.items():
         if config[key] is not None:
             logger.warn('%s deprecated; %s' % (key, msg))
-
-    # promote singleconfluence over confluence_max_doc_depth=0
-    if config.confluence_max_doc_depth == 0:
-        logger.warn('confluence_max_doc_depth with a value of zero '
-            "is deprecated; use the 'singleconfluence' builder instead")
-    elif config.confluence_max_doc_depth:
-        logger.warn('confluence_max_doc_depth is deprecated and will '
-            "be removed; consider using the 'singleconfluence' builder instead")
 
 
 def warnings(validator):

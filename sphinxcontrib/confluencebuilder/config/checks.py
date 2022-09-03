@@ -417,23 +417,6 @@ The following keys are required:
 
     # ##################################################################
 
-    # confluence_max_doc_depth
-    try:
-        validator.conf('confluence_max_doc_depth') \
-                 .int_()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-When limiting the document depth permitted for a building/publishing event, the
-defined maximum document depth must be defined as a non-negative integer value.
-
-If planning to use a depth of zero, it is recommended to use the
-'singleconfluence' builder instead.
-'''.format(msg=e))
-
-    # ##################################################################
-
     # confluence_navdocs_transform
     validator.conf('confluence_navdocs_transform') \
              .callable_()
