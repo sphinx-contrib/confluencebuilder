@@ -8,6 +8,7 @@ from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 from requests.auth import AuthBase
 import os
 
@@ -53,6 +54,12 @@ def validate_configuration(builder):
 
     # confluence_adv_bulk_archiving
     validator.conf('confluence_adv_bulk_archiving') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_adv_permit_editor
+    validator.conf('confluence_adv_permit_editor') \
              .bool()
 
     # ##################################################################
@@ -212,6 +219,23 @@ The option 'confluence_domain_indices' has been provided to indicate that
 domain indices should be generated. This value can either be set to `True` or
 set to a list of domains (strings) to be included.
 ''')
+
+    # ##################################################################
+
+    # confluence_editor
+    validator.conf('confluence_editor') \
+             .string()
+
+    if config.confluence_editor:
+        if not config.confluence_adv_permit_editor:
+            if config.confluence_editor not in EDITORS:
+                raise ConfluenceConfigurationError('''\
+invalid editor provided in confluence_editor
+
+The following editors are supported:
+
+ - {}
+'''.format('\n - '.join(EDITORS)))
 
     # ##################################################################
 

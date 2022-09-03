@@ -28,6 +28,7 @@ import time
 class ConfluencePublisher:
     def __init__(self):
         self.cloud = None
+        self.editor = None
         self.space_display_name = None
         self.space_type = None
         self._ancestors_cache = set()
@@ -39,6 +40,7 @@ class ConfluencePublisher:
         self.append_labels = config.confluence_append_labels
         self.debug = config.confluence_publish_debug
         self.dryrun = config.confluence_publish_dryrun
+        self.editor = config.confluence_editor
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
         self.parent_id = config.confluence_parent_page_id_check
@@ -913,20 +915,20 @@ reported a success (which can be permitted for anonymous users).
                     'value': data['content'],
                 }
             },
-            # only the legacy editor is supported at this time; forced v1
-            # since Confluence Cloud appears to have an inconsistent default
-            # editor
             'metadata': {
-                'properties': {
-                    'editor': {
-                        'value': 'v1',
-                    }
-                }
+                'properties': {},
             },
             'space': {
                 'key': self.space_key,
             },
         }
+
+        if self.editor:
+            page['metadata']['properties'] = {
+                'editor': {
+                    'value': self.editor,
+                },
+            }
 
         return page
 

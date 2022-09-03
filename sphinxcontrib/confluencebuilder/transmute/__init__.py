@@ -276,6 +276,8 @@ def replace_math_blocks(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
+    math_image_ids = []
+
     for node in itertools.chain(findall(doctree, confluence_latex_inline),
             findall(doctree, confluence_latex_block)):
         try:
@@ -292,6 +294,20 @@ def replace_math_blocks(builder, doctree):
                 new_node['math_depth'] = depth
 
             node.replace_self(new_node)
+
+            if builder.config.confluence_editor == 'v2':
+                if 'ids' in new_node:
+                    math_image_ids.extend(new_node['ids'])
+
         except imgmath.MathExtError as exc:
             ConfluenceLogger.warn('inline latex {}: {}'.format(
                 node.astext(), exc))
+
+    # v2 editor will manually inject anchors in an image-managed
+    # section to avoid a newline spacing between the anchor and
+    # the image; keep track of ids for these images, and then
+    # remove any targets with matching ids to prevent anchors from
+    # being created
+    for node in findall(doctree, nodes.target):
+        if 'refid' in node and node['refid'] in math_image_ids:
+            node.parent.remove(node)

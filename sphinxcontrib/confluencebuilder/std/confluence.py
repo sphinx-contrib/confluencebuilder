@@ -19,6 +19,12 @@ API_REST_BIND_PATH = 'rest/api'
 #       java/com/atlassian/confluence/pages/AbstractPage::isValidTitleLength
 CONFLUENCE_MAX_TITLE_LEN = 255
 
+# list of supported editors
+EDITORS = [
+    'v1',
+    'v2',
+]
+
 # confluence default (paragraph) indent offset (in pixels)
 INDENT = 30
 
@@ -48,7 +54,7 @@ FONT_X_HEIGHT = 7
 # [3]: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 # [4]: http://pygments.org/docs/lexers/
 # [5]: http://www.sphinx-doc.org/en/stable/markup/code.html
-LITERAL2LANG_MAP = {
+LITERAL2LANG_MAP_V1 = {
     # ActionScript
     'actionscript3': 'actionscript3',
     'as3': 'actionscript3',
@@ -133,6 +139,251 @@ LITERAL2LANG_MAP = {
     'vb': 'vb',
     'vbscript': 'vb',
     # YAML (Confluence Server >=6.7)
+    'yaml': 'yaml',
+    # (special)
+    # Sphinx's default highlight language is based off a superset of 'python'.
+    # To follow Sphinx's method of highlighting, use Confluence's 'python'
+    # highlight type as the target language for the default type.
+    #
+    # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
+    DEFAULT_HIGHLIGHT_STYLE: 'python'
+}
+
+LITERAL2LANG_MAP_V2 = {
+    # (none)
+    'none': 'none',
+    'raw': 'none',
+    # ABAP
+    'abap': 'abap',
+    # ActionScript
+    'actionscript3': 'actionscript3',
+    'as3': 'actionscript3',
+    # Ada
+    'ada': 'ada',
+    'ada2005': 'ada',
+    'ada95': 'ada',
+    # AppleScript
+    'applescript': 'applescript',
+    # Arduino
+    'arduino': 'arduino',
+    # Autoit
+    'autoit': 'autoit',
+    # C
+    'c': 'c',
+    # C++
+    'c++': 'cpp',
+    'cpp': 'cpp',
+    # C#
+    'c#': 'c#',
+    'csharp': 'c#',
+    # Clojure
+    'clj': 'clojure',
+    'clojure': 'clojure',
+    # CoffeeScript
+    'coffee': 'coffeescript',
+    'coffee-script': 'coffeescript',
+    'coffeescript': 'coffeescript',
+    # ColdFusion
+    'cfc': 'coldfusion',
+    'coldfusion': 'coldfusion',
+    # CSS
+    'css': 'css',
+    # CUDA
+    'cu': 'cuda',
+    'cuda': 'cuda',
+    # D
+    'd': 'd',
+    # Dart
+    'dart': 'dart',
+    # Diff
+    'diff': 'diff',
+    'udiff': 'diff',
+    # Elixir
+    'elixir': 'elixir',
+    'ex': 'elixir',
+    'exs': 'elixir',
+    # Erlang
+    'erlang': 'erl',
+    # Fortran
+    'f90': 'fortran',
+    'fortran': 'fortran',
+    # FoxPro
+    'clipper': 'foxpro',
+    'foxpro': 'foxpro',
+    'vfp': 'foxpro',
+    'xbase': 'foxpro',
+    # Go
+    'go': 'go',
+    'golang': 'go',
+    # GraphQL
+    'graphql': 'graphql',
+    # Groovy
+    'groovy': 'groovy',
+    # Haskell
+    'haskell': 'haskell',
+    'hs': 'haskell',
+    # Haxe
+    'haxe': 'haxe',
+    'hx': 'haxe',
+    'hxsl': 'haxe',
+    # HTML and XML
+    'html': 'html',
+    # Java
+    'java': 'java',
+    # Java FX
+    'javafx': 'javafx',
+    # JavaScript
+    'javascript': 'js',
+    'js': 'js',
+    # JSON
+    'json': 'json',
+    'json-object': 'json',
+    # JSX
+    'jsx': 'jsx',
+    # Julia
+    'jl': 'julia',
+    'julia': 'julia',
+    # Kotlin
+    'kotlin': 'kotlin',
+    # LiveScript
+    'live-script': 'livescript',
+    'livescript': 'livescript',
+    # Lua
+    'lua': 'lua',
+    # Mathematica
+    'mathematica': 'mathematica',
+    'mma': 'mathematica',
+    'nb': 'mathematica',
+    # MATLAB
+    'matlab': 'matlab',
+    # Objective-C
+    'obj-c': 'objective-c',
+    'objc': 'objective-c',
+    'objective-c': 'objective-c',
+    'objectivec': 'objective-c',
+    # Objective-J
+    'obj-j': 'objective-j',
+    'objective-j': 'objective-j',
+    'objectivej': 'objective-j',
+    'objj': 'objective-j',
+    # OCaml
+    'ocaml': 'ocaml',
+    # Octave
+    'octave': 'octave',
+    # Pascal
+    'delphi': 'pas',
+    'pas': 'pas',
+    'pascal': 'pas',
+    'objectpascal': 'pas',
+    # Perl
+    'perl': 'perl',
+    'pl': 'perl',
+    # PHP
+    'php': 'php',
+    'php3': 'php',
+    'php4': 'php',
+    'php5': 'php',
+    # Plain Text
+    'text': 'text',
+    # PowerShell
+    'posh': 'powershell',
+    'powershell': 'powershell',
+    'ps1': 'powershell',
+    'psm1': 'powershell',
+    # Prolog
+    'prolog': 'prolog',
+    # Puppet
+    'puppet': 'puppet',
+    # Python
+    'py': 'py',
+    'py3': 'py',
+    'python': 'py',
+    'python3': 'py',
+    'sage': 'py',
+    # QML
+    'qbs': 'qbs',
+    'qml': 'qbs',
+    # R
+    'r': 'r',
+    # Racket
+    'racket': 'racket',
+    'rkt': 'racket',
+    # reStructuredText
+    'rest': 'restructuredtext',
+    'restructuredtext': 'restructuredtext',
+    'rst': 'restructuredtext',
+    # Ruby
+    'duby': 'ruby',
+    'rb': 'ruby',
+    'ruby': 'ruby',
+    # Rust
+    'rs': 'rust',
+    'rust': 'rust',
+    # Sass
+    'sass': 'sass',
+    # Scala
+    'scala': 'scala',
+    # Scheme
+    'scm': 'scheme',
+    'scheme': 'scheme',
+    # Shell
+    'bash': 'bash',
+    'ksh': 'bash',
+    'sh': 'bash',
+    'shell': 'bash',
+    'zsh': 'bash',
+    # Smalltalk
+    'smalltalk': 'smalltalk',
+    'squeak': 'smalltalk',
+    'st': 'smalltalk',
+    # SplunkSPL
+    'spl': 'splunk-spl',
+    'splunkspl': 'splunk-spl',
+    # SQL
+    'sql': 'sql',
+    # StandardML
+    'sml': 'standardml',
+    'standardml': 'standardml',
+    # Swift
+    'swift': 'swift',
+    # Tcl
+    'tcl': 'tcl',
+    # TeX
+    'latex': 'tex',
+    'tex': 'tex',
+    # TSX
+    'tsx': 'tsx',
+    # TypeScript
+    'ts': 'typescript',
+    'typescript': 'typescript',
+    # Vala
+    'vala': 'vala',
+    'vapi': 'vala',
+    # VbNet
+    'lobas': 'vbnet',
+    'oobas': 'vbnet',
+    'sobas': 'vbnet',
+    'vb.net': 'vbnet',
+    'vbnet': 'vbnet',
+    # Verilog
+    'v': 'verilog',
+    'verilog': 'verilog',
+    # VHDL
+    'vhdl': 'vhdl',
+    # Visual Basic
+    'vb': 'vb',
+    'vbscript': 'vb',
+    'visualbasic': 'vb',
+    # XML
+    'xml': 'xml',
+    'xslt': 'xml',
+    # XQuery
+    'xq': 'xquery',
+    'xql': 'xquery',
+    'xqm': 'xquery',
+    'xquery': 'xquery',
+    'xqy': 'xquery',
+    # YAML
     'yaml': 'yaml',
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.

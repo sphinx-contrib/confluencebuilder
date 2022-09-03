@@ -5,6 +5,7 @@
 """
 
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
+from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
@@ -88,3 +89,7 @@ def warnings(validator):
         logger.warn(
             'confluence_file_suffix ends with a period; '
             'a default value will be applied instead')
+
+    # confluence_editor assigned to an editor that is not supported
+    if config.confluence_editor and config.confluence_editor not in EDITORS:
+        logger.warn('confluence_editor configured with an unsupported editor')

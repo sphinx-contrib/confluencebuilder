@@ -7,6 +7,17 @@
 from sphinxcontrib.confluencebuilder.util import str2bool
 
 
+# configures the default editor to publication
+#
+# The following configures the default editor to use for publication. The
+# default value is "v1" (over the newer "v2"; Confluence default editor). This
+# is a result of not all Sphinx capabilities are supported with the newer
+# editor. Users can override the editor using configuration options -- but
+# this selection is solely driven on maximizing capabilities provided by
+# Sphinx over capabilities of Confluence.
+DEFAULT_EDITOR = 'v1'
+
+
 def apply_defaults(builder):
     """
     applies default values for select configurations
@@ -35,6 +46,9 @@ def apply_defaults(builder):
     if conf.confluence_client_cert is not None:
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
+
+    if conf.confluence_editor is None:
+        conf.confluence_editor = DEFAULT_EDITOR
 
     if conf.confluence_file_suffix:
         if conf.confluence_file_suffix.endswith('.'):
