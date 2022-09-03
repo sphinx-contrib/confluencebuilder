@@ -1,7 +1,16 @@
+Development
+===========
+
+* Hierarchy mode is now enabled by default
+* Improve look of quote-like directives
+* Support Confluence Cloud's "Fabric" (v2) editor
+* Support for Python 2.7 has been dropped
+* Support for ``confluence_max_doc_depth`` has been dropped
+
 1.9.0 (2022-08-21)
 ==================
 
-* **(note)** Final release supporting Python 2.7.
+* **(note)** Final release supporting Python 2.7
 * Allow ``confluence_ca_cert`` to accept a CA-bundle path
 * Default publish Intersphinx databases to root documents
 * Fixed issue where code blocks may not properly render captions
