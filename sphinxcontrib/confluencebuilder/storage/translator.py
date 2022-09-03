@@ -752,7 +752,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_block_quote(self, node):
         if first(findall(node, nodes.attribution)):
-            self.body.append(self._start_tag(node, 'blockquote'))
+            if self.v2:
+                self.body.append(self._start_tag(node, 'blockquote'))
+            else:
+                # older editor updates no longer render blockquotes as
+                # expected; emulate the legacy and v2 editor style
+                style = 'margin: 10px 0px 10px 19px;'
+                style += 'border-left: 1px solid #ccc;'
+                style += 'padding: 10px 20px;'
+                style += 'color: #707070;'
+                self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                    **{'style': style}))
+
             self.context.append(self._end_tag(node))
         elif self.v2:
             self._indent_level += 1
@@ -815,9 +826,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # see `visit_block_quote` fallback case
         if not self.v2:
             self.body.append('<br />')
-            self.body.append('-- ')
-        else:
-            self.body.append('— ')
+        self.body.append('— ')
 
     def depart_attribution(self, node):
         pass
