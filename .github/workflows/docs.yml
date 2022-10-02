@@ -37,6 +37,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt-get update
         sudo apt-get install \
             latexmk \
             texlive-latex-extra \

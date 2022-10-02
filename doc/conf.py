@@ -14,9 +14,9 @@ author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
 
-supported_confluence_ver = '7.8+'
-supported_python_ver = '2.7 or 3.7+'
-supported_sphinx_ver = '1.8 or 4.1+'
+supported_confluence_ver = '7.9+'
+supported_python_ver = '3.7+'
+supported_sphinx_ver = '4.4+'
 
 root_doc = 'contents'
 

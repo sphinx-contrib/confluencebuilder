@@ -36,11 +36,11 @@ Next release requirements:
 
 * Python_ 3.7+
 * Requests_ 2.14.0+
-* Sphinx_ 4.3+
+* Sphinx_ 4.4+
 
 If publishing:
 
-* Confluence_ Cloud or Data Center / Server 7.8+
+* Confluence_ Cloud or Data Center / Server 7.9+
 
 Installing
 ==========
