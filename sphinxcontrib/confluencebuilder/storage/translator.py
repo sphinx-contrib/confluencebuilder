@@ -2527,16 +2527,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         style = ''
 
         if self.v2:
-            # see "visit_paragraph"
-            style += 'margin-left: {}px;'.format(INDENT * self._indent_level)
+            tag = 'p'
         else:
-            # indent this line-block if its not the first element in the parent
-            # (excluding titles for a new section), or if the parent is
-            # also a line-block
-            if (node.parent[0] != node and
-                    not isinstance(node.parent[0], nodes.title)) or \
-                    isinstance(node.parent, nodes.line_block):
-                style += 'margin-left: {}px;'.format(INDENT)
+            tag = 'div'
 
             # if this line-block is not the first element in the parent and the
             # parent is not a line-block, add some separation from a previous
@@ -2544,10 +2537,29 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if node.parent[0] != node and not isinstance(node.parent, nodes.line_block):
                 style += 'padding-top: {}px;'.format(FCMMO)
 
+        # indent this line-block if its not the first element in the parent
+        # (excluding titles for a new section), or if the parent is
+        # also a line-block
+        if (node.parent[0] != node and
+                not isinstance(node.parent[0], nodes.title)) or \
+                isinstance(node.parent, nodes.line_block):
+
+            indent = INDENT
+
+            # if v2, apply additional indentation (if needed)
+            # (see "visit_paragraph")
+            if self.v2:
+                indent = INDENT * (self._indent_level + 1)
+
+            style += 'margin-left: {}px;'.format(indent)
+        elif self.v2:
+            # (see "visit_paragraph")
+            style += 'margin-left: {}px;'.format(INDENT * self._indent_level)
+
         if style:
             attribs['style'] = style
 
-        self.body.append(self._start_tag(node, 'div', **attribs))
+        self.body.append(self._start_tag(node, tag, **attribs))
         self.context.append(self._end_tag(node))
 
     def depart_line_block(self, node):
