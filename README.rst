@@ -40,7 +40,7 @@ Next release requirements:
 
 If publishing:
 
-* Confluence_ Cloud or Data Center / Server 7.8+
+* Confluence_ Cloud or Data Center / Server 7.9+
 
 Installing
 ==========
