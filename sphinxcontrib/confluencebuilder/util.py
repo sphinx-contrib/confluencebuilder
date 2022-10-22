@@ -305,7 +305,7 @@ def remove_nonspace_control_chars(text):
     """
 
     return ''.join(c for c in text if c.isspace()
-        or unicodedata.category(c)[0] != 'C')
+        or unicodedata.category(c) != 'Cc')
 
 
 def str2bool(value):
