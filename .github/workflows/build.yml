@@ -60,10 +60,15 @@ jobs:
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx50, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx51, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~/.cache/pip }
-            - { os:   macos-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~/Library/Caches/pip }
-            - { os: windows-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~\AppData\Local\pip\Cache }
-            - { os:  ubuntu-latest, python: "3.10", toxenv:         flake8, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.10", toxenv:         pylint, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx44, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx45, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx50, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx51, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx52, cache: ~/.cache/pip }
+            - { os:   macos-latest, python: "3.11", toxenv: py311-sphinx52, cache: ~/Library/Caches/pip }
+            - { os: windows-latest, python: "3.11", toxenv: py311-sphinx52, cache: ~\AppData\Local\pip\Cache }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:         flake8, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:         pylint, cache: ~/.cache/pip }
 
     steps:
     - uses: actions/checkout@v2

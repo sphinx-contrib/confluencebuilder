@@ -11,7 +11,7 @@ on:
       python:
         description: 'Python interpreter'
         required: true
-        default: '3.10'
+        default: '3.11'
       sphinx:
         description: 'Sphinx Revision'
         required: true
