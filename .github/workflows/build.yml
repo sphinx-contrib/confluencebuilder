@@ -58,21 +58,28 @@ jobs:
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx44, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx45, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx50, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx51, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx44, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx45, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx50, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx51, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx52, cache: ~/.cache/pip }
             - { os:   macos-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~/Library/Caches/pip }
-            - { os: windows-latest, python: "3.10", toxenv: py310-sphinx52, cache: ~\AppData\Local\pip\Cache }
-            - { os:  ubuntu-latest, python: "3.10", toxenv:         flake8, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.10", toxenv:         pylint, cache: ~/.cache/pip }
+            - { os: windows-latest, python: "3.11", toxenv: py311-sphinx52, cache: ~\AppData\Local\pip\Cache }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:         flake8, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv:         pylint, cache: ~/.cache/pip }
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python }}
 
     - name: Cache pip
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache-pip
       with:
         path: ${{ matrix.cache }}
