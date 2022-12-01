@@ -25,6 +25,7 @@ from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import first
 import posixpath
+import re
 import sys
 
 
@@ -2425,6 +2426,37 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
+
+    # ---------------------------------------------
+    # sphinx -- extension (third party) -- nbsphinx
+    # ---------------------------------------------
+
+    def visit_AdmonitionNode(self, node):
+        if 'warning' in node.get('classes', []):
+            self._visit_warning(node)
+        else:
+            self._visit_info(node)
+
+    depart_AdmonitionNode = _depart_admonition
+
+    def visit_CodeAreaNode(self, node):
+        # if nbsphinx provides a prompt for a code block, use it for the title
+        # values (since we cannot gracefully inject it on the side of the
+        # block)
+        prompt = node.get('prompt', None)
+        if prompt:
+            next_child = first(findall(node, include_self=False))
+            if isinstance(next_child, nodes.literal_block):
+                next_child['scb-caption'] = re.escape(prompt)
+
+    def depart_CodeAreaNode(self, node):
+        pass
+
+    def visit_FancyOutputNode(self, node):
+        pass
+
+    def depart_FancyOutputNode(self, node):
+        pass
 
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-toolbox

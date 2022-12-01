@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.svg import svg_initialize
+from sphinxcontrib.confluencebuilder.transmute.ext_nbsphinx import replace_nbsphinx_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_diagrams import replace_sphinx_diagrams_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_gallery import replace_sphinx_gallery_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_toolbox import replace_sphinx_toolbox_nodes
@@ -71,6 +72,8 @@ def doctree_transmute(builder, doctree):
     # --------------------------
     # sphinx external extensions
     # --------------------------
+
+    replace_nbsphinx_nodes(builder, doctree)
 
     replace_sphinx_diagrams_nodes(builder, doctree)
 
