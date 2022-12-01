@@ -2427,6 +2427,50 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- jupyter-sphinx
+    # ---------------------------------------------------
+
+    def visit_CellInputNode(self, node):
+        pass
+
+    def depart_CellInputNode(self, node):
+        pass
+
+    def visit_CellOutputNode(self, node):
+        pass
+
+    def depart_CellOutputNode(self, node):
+        pass
+
+    def visit_JupyterCellNode(self, node):
+        pass
+
+    def depart_JupyterCellNode(self, node):
+        pass
+
+    def visit_MimeBundleNode(self, node):
+        # note: do not promote svgs first in v2, since the v2 editor does not
+        #       display SVGs as nice as v1 editor does
+        if self.v2:
+            preferred_mimetypes = ['image/png', 'image/jpeg', 'image/svg+xml']
+        else:
+            preferred_mimetypes = ['image/svg+xml', 'image/png', 'image/jpeg']
+
+        mimetypes = node.get('mimetypes', [])
+        for mimetype in mimetypes:
+            if mimetype in preferred_mimetypes:
+                idx = node['mimetypes'].index(mimetype)
+                self.visit_image(node[idx])
+                self.depart_image(node[idx])
+                raise nodes.SkipNode
+
+        if 'text/plain' in mimetypes:
+            idx = node['mimetypes'].index('text/plain')
+            self.body.append(self.encode(node[idx].astext()))
+
+        raise nodes.SkipNode
+
     # ---------------------------------------------
     # sphinx -- extension (third party) -- nbsphinx
     # ---------------------------------------------
