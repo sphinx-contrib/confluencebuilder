@@ -13,6 +13,8 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.svg import svg_initialize
+from sphinxcontrib.confluencebuilder.transmute.ext_jupyter_sphinx import replace_jupyter_sphinx_nodes
+from sphinxcontrib.confluencebuilder.transmute.ext_nbsphinx import replace_nbsphinx_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_diagrams import replace_sphinx_diagrams_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_gallery import replace_sphinx_gallery_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_toolbox import replace_sphinx_toolbox_nodes
@@ -65,12 +67,16 @@ def doctree_transmute(builder, doctree):
     # replace graphviz nodes with images
     replace_graphviz_nodes(builder, doctree)
 
-    # replace math blocks with images
+    # replace math blocks with Confluence LaTeX blocks
     replace_math_blocks(builder, doctree)
 
     # --------------------------
     # sphinx external extensions
     # --------------------------
+
+    replace_jupyter_sphinx_nodes(builder, doctree)
+
+    replace_nbsphinx_nodes(builder, doctree)
 
     replace_sphinx_diagrams_nodes(builder, doctree)
 
@@ -84,8 +90,79 @@ def doctree_transmute(builder, doctree):
     # post-transmute work
     # -------------------
 
+    # replace Confluence LaTeX blocks with images (if configured/supported)
+    prepare_math_images(builder, doctree)
+
     # re-work svg entries to support confluence
     prepare_svgs(builder, doctree)
+
+
+def prepare_math_images(builder, doctree):
+    """
+    replace Confluence LaTeX blocks with images
+
+    If configured and supported, Confluence LaTeX blocks can be replaced with
+    images. This can help render LaTeX content on a Confluence instance that
+    does not support a LaTeX macro. Math support will work on systems which
+    have latex/dvipng installed.
+
+    Args:
+        builder: the builder
+        doctree: the doctree to replace blocks on
+    """
+
+    # disable automatic conversion of latex blocks to images if a latex
+    # macro is configured
+    if builder.config.confluence_latex_macro:
+        return
+
+    if imgmath is None:
+        return
+
+    # convert Confluence LaTeX blocks into image blocks
+    #
+    # imgmath's render_math call expects a translator to be passed
+    # in; mock a translator tied to our builder
+    class MockTranslator:
+        def __init__(self, builder):
+            self.builder = builder
+    mock_translator = MockTranslator(builder)
+
+    math_image_ids = []
+
+    for node in itertools.chain(findall(doctree, confluence_latex_inline),
+            findall(doctree, confluence_latex_block)):
+        try:
+            mf, depth = imgmath.render_math(mock_translator, node.astext())
+            if not mf:
+                continue
+
+            new_node = nodes.image(
+                candidates={'?'},
+                uri=path.join(builder.outdir, mf),
+                **node.attributes)
+
+            if depth is not None:
+                new_node['math_depth'] = depth
+
+            node.replace_self(new_node)
+
+            if builder.config.confluence_editor == 'v2':
+                if 'ids' in new_node:
+                    math_image_ids.extend(new_node['ids'])
+
+        except imgmath.MathExtError as exc:
+            ConfluenceLogger.warn('inline latex {}: {}'.format(
+                node.astext(), exc))
+
+    # v2 editor will manually inject anchors in an image-managed
+    # section to avoid a newline spacing between the anchor and
+    # the image; keep track of ids for these images, and then
+    # remove any targets with matching ids to prevent anchors from
+    # being created
+    for node in findall(doctree, nodes.target):
+        if 'refid' in node and node['refid'] in math_image_ids:
+            node.parent.remove(node)
 
 
 def prepare_svgs(builder, doctree):
@@ -223,10 +300,10 @@ def replace_math_blocks(builder, doctree):
     """
     replace math blocks with images
 
-    Math blocks are pre-processed and replaced with respective images in the
-    list of documents to process. This is to help prepare additional images into
-    the asset management for this extension. Math support will work on systems
-    which have latex/dvipng installed.
+    Math blocks are pre-processed and replaced with Confluence LaTeX blocks.
+    This is to help prepare nodes that can later be used for user-configured
+    LaTeX macros, or help converting LaTeX blocks into images (if supported on
+    the system).
 
     Args:
         builder: the builder
@@ -238,7 +315,7 @@ def replace_math_blocks(builder, doctree):
     if 'ext-imgmath' in restricted:
         return
 
-    # phase 1 -- convert math blocks into Confluence LaTeX blocks
+    # convert math blocks into Confluence LaTeX blocks
     for node in itertools.chain(findall(doctree, nodes.math),
             findall(doctree, nodes.math_block)):
         if not isinstance(node, nodes.math):
@@ -258,56 +335,3 @@ def replace_math_blocks(builder, doctree):
             new_node['align'] = 'center'
 
         node.replace_self(new_node)
-
-    # disable automatic conversion of latex blocks to images if a latex
-    # macro is configured
-    if builder.config.confluence_latex_macro:
-        return
-
-    if imgmath is None:
-        return
-
-    # phase 2 -- convert Confluence LaTeX blocks into image blocks
-    #
-    # imgmath's render_math call expects a translator to be passed
-    # in; mock a translator tied to our builder
-    class MockTranslator:
-        def __init__(self, builder):
-            self.builder = builder
-    mock_translator = MockTranslator(builder)
-
-    math_image_ids = []
-
-    for node in itertools.chain(findall(doctree, confluence_latex_inline),
-            findall(doctree, confluence_latex_block)):
-        try:
-            mf, depth = imgmath.render_math(mock_translator, node.astext())
-            if not mf:
-                continue
-
-            new_node = nodes.image(
-                candidates={'?'},
-                uri=path.join(builder.outdir, mf),
-                **node.attributes)
-
-            if depth is not None:
-                new_node['math_depth'] = depth
-
-            node.replace_self(new_node)
-
-            if builder.config.confluence_editor == 'v2':
-                if 'ids' in new_node:
-                    math_image_ids.extend(new_node['ids'])
-
-        except imgmath.MathExtError as exc:
-            ConfluenceLogger.warn('inline latex {}: {}'.format(
-                node.astext(), exc))
-
-    # v2 editor will manually inject anchors in an image-managed
-    # section to avoid a newline spacing between the anchor and
-    # the image; keep track of ids for these images, and then
-    # remove any targets with matching ids to prevent anchors from
-    # being created
-    for node in findall(doctree, nodes.target):
-        if 'refid' in node and node['refid'] in math_image_ids:
-            node.parent.remove(node)

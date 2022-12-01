@@ -25,6 +25,7 @@ from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import first
 import posixpath
+import re
 import sys
 
 
@@ -2425,6 +2426,81 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
+
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- jupyter-sphinx
+    # ---------------------------------------------------
+
+    def visit_CellInputNode(self, node):
+        pass
+
+    def depart_CellInputNode(self, node):
+        pass
+
+    def visit_CellOutputNode(self, node):
+        pass
+
+    def depart_CellOutputNode(self, node):
+        pass
+
+    def visit_JupyterCellNode(self, node):
+        pass
+
+    def depart_JupyterCellNode(self, node):
+        pass
+
+    def visit_MimeBundleNode(self, node):
+        # note: do not promote svgs first in v2, since the v2 editor does not
+        #       display SVGs as nice as v1 editor does
+        if self.v2:
+            preferred_mimetypes = ['image/png', 'image/jpeg', 'image/svg+xml']
+        else:
+            preferred_mimetypes = ['image/svg+xml', 'image/png', 'image/jpeg']
+
+        mimetypes = node.get('mimetypes', [])
+        for mimetype in mimetypes:
+            if mimetype in preferred_mimetypes:
+                idx = node['mimetypes'].index(mimetype)
+                self.visit_image(node[idx])
+                self.depart_image(node[idx])
+                raise nodes.SkipNode
+
+        if 'text/plain' in mimetypes:
+            idx = node['mimetypes'].index('text/plain')
+            self.body.append(self.encode(node[idx].astext()))
+
+        raise nodes.SkipNode
+
+    # ---------------------------------------------
+    # sphinx -- extension (third party) -- nbsphinx
+    # ---------------------------------------------
+
+    def visit_AdmonitionNode(self, node):
+        if 'warning' in node.get('classes', []):
+            self._visit_warning(node)
+        else:
+            self._visit_info(node)
+
+    depart_AdmonitionNode = _depart_admonition
+
+    def visit_CodeAreaNode(self, node):
+        # if nbsphinx provides a prompt for a code block, use it for the title
+        # values (since we cannot gracefully inject it on the side of the
+        # block)
+        prompt = node.get('prompt', None)
+        if prompt:
+            next_child = first(findall(node, include_self=False))
+            if isinstance(next_child, nodes.literal_block):
+                next_child['scb-caption'] = re.escape(prompt)
+
+    def depart_CodeAreaNode(self, node):
+        pass
+
+    def visit_FancyOutputNode(self, node):
+        pass
+
+    def depart_FancyOutputNode(self, node):
+        pass
 
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-toolbox
