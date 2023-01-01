@@ -241,7 +241,7 @@ reported a success (which can be permitted for anonymous users).
         return ancestors
 
     def get_base_page_id(self):
-        base_page_id = None
+        base_page_id = self.config.confluence_publish_root
 
         if not self.parent_ref:
             return base_page_id
