@@ -102,9 +102,6 @@ Type                    Notes
 `versionchanged`_       Supported
 ======================= =====
 
-*(note: directive options "class" and "name" are ignored as they are not
-supported in a Confluence format document)*
-
 .. raw:: latex
 
     \newpage
