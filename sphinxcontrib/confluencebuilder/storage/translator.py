@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -708,12 +708,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._start_ac_macro(node, 'code'))
         self.body.append(self._build_ac_param(node, 'language', lang))
         self.body.append(self._build_ac_param(node, 'linenumbers', num))
+
         if firstline is not None and firstline > 1:
             self.body.append(
                 self._build_ac_param(node, 'firstline', str(firstline))
             )
+
         if title:
             self.body.append(self._build_ac_param(node, 'title', title))
+
+        if 'collapse' in node.get('classes', []):
+            self.body.append(self._build_ac_param(node, 'collapse', 'true'))
+
         self.body.append(self._start_ac_plain_text_body_macro(node))
         self.body.append(self._escape_cdata(data))
         self.body.append(self._end_ac_plain_text_body_macro(node))

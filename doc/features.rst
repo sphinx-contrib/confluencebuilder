@@ -88,6 +88,9 @@ Type                    Notes
                         supported in the Confluence markup. The code block macro
                         only supports a simple line numbers (configurable with
                         the ``linenos`` option).
+
+                        When the ``class`` attribute contains ``collapse``, the
+                        macro will be configured to be collapsed.
 `deprecated`_           Supported
 `download`_             Supported
 `glossary`_             Supported
@@ -98,9 +101,6 @@ Type                    Notes
 `versionadded`_         Supported
 `versionchanged`_       Supported
 ======================= =====
-
-*(note: directive options "class" and "name" are ignored as they are not
-supported in a Confluence format document)*
 
 .. raw:: latex
 

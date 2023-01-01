@@ -116,6 +116,17 @@ A code block can also include a caption:
 
     print('Explicit is better than implicit.')
 
+Code macros can be collapsed when using the `class` option:
+
+.. code-block:: none
+    :class: collapse
+
+    .. code-block:: python
+        :class: collapse
+
+        import example
+        example.method()
+
 
 .. references ------------------------------------------------------------------
 
