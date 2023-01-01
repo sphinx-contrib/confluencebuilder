@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 
 See also:
@@ -241,7 +241,7 @@ reported a success (which can be permitted for anonymous users).
         return ancestors
 
     def get_base_page_id(self):
-        base_page_id = None
+        base_page_id = self.config.confluence_publish_root
 
         if not self.parent_ref:
             return base_page_id
