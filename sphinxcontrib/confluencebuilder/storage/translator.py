@@ -225,7 +225,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['style'] = style
 
         self.body.append(self._start_tag(node, 'p', **attribs))
-        self.context.append(self._end_tag(node))
+        self.context.append(self._end_tag(node, suffix=''))
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())  # p
@@ -2117,6 +2117,58 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- extension -- confluence builder
     # -----------------------------------------
 
+    def visit_confluence_excerpt(self, node):
+        self.body.append(self._start_ac_macro(node, 'excerpt'))
+        for k, v in sorted(node.params.items()):
+            self.body.append(self._build_ac_param(node, k, str(v)))
+        self.body.append(self._start_ac_rich_text_body_macro(node))
+        self.context.append(self._end_ac_rich_text_body_macro(node) +
+            self._end_ac_macro(node, suffix=''))
+
+    def depart_confluence_excerpt(self, node):
+        self.body.append(self.context.pop())  # macro
+
+    def visit_confluence_excerpt_include(self, node):
+        doclink = node['doclink']
+        space_key = None
+
+        # if prefixed with an exclamation, document is refering to another
+        # Sphinx document -- find the respective title based off the captured
+        # state
+        if doclink.startswith('!'):
+            docname = doclink[1:]
+            doctitle = self.state.title(docname)
+            if not doctitle:
+                self.warn('unable to build excerpt include to document since '
+                    'document is missing or is missing title '
+                    '(in {}): {}'.format(self.docname, docname))
+                raise nodes.SkipNode
+        elif ':' in doclink:
+            space_key, doctitle = doclink.split(':', 1)
+        else:
+            doctitle = doclink
+
+        self.body.append(self._start_ac_macro(node, 'excerpt-include'))
+        for k, v in sorted(node.params.items()):
+            self.body.append(self._build_ac_param(node, k, str(v)))
+
+        attribs = {
+            'ri:content-title': doctitle,
+        }
+        if space_key:
+            attribs['ri:space-key'] = space_key
+
+        doctitle = self.encode(doctitle)
+        param_value = self._start_ac_link(node) + \
+            self._start_tag(node, 'ri:page', suffix=self.nl,
+                empty=True, **attribs) + \
+            self._end_ac_link(node)
+        self.body.append(self._build_ac_param(node, '', param_value))
+
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
+
     def visit_confluence_expand(self, node):
         self.body.append(self._start_ac_macro(node, 'expand'))
         if 'title' in node:
@@ -2918,7 +2970,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:rich-text-body', suffix=self.nl)
+        return self._start_tag(node, 'ac:rich-text-body')
 
     def _end_ac_rich_text_body_macro(self, node):
         """

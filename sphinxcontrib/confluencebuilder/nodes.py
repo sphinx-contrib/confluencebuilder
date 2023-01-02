@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2019-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2019-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -34,6 +34,24 @@ class confluence_emoticon_inline(nodes.Inline, nodes.TextElement):
 
     A Confluence builder defined emoticon inline node, used to help manage
     emoticon content designed for an inlined section of a paragraph.
+    """
+
+
+class confluence_excerpt(nodes.Structural, ConfluenceParams):
+    """
+    confluence excerpt node
+
+    A Confluence builder defined excerpt node serves as a hint to wrap content
+    using Confluence's excerpt macro.
+    """
+
+
+class confluence_excerpt_include(nodes.Structural, ConfluenceParams):
+    """
+    confluence excerpt include node
+
+    A Confluence builder defined excerpt include node serves as a hint to
+    inject a Confluence's excerpt include macro into a page.
     """
 
 
