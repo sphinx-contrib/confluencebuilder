@@ -1,11 +1,15 @@
 Development
 ===========
 
+* Fixed issue publishing orphan pages when a publish root is configured
 * Hierarchy mode is now enabled by default
 * Improve look of quote-like directives
+* Introduce the Confluence excerpt (macro) directives
 * Support Confluence Cloud's "Fabric" (v2) editor
+* Support collapsible code blocks
 * Support for Python 2.7 has been dropped
 * Support for ``confluence_max_doc_depth`` has been dropped
+* Support no publishing with an empty ``confluence_publish_allowlist``
 
 1.9.0 (2022-08-21)
 ==================
