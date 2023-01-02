@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: sphinxcontrib-confluencebuilder\n"
+"X-Crowdin-Project-ID: 558685\n"
+"X-Crowdin-Language: ta\n"
+"X-Crowdin-File: sphinxcontrib.confluencebuilder.pot\n"
+"X-Crowdin-File-ID: 3\n"
+"Project-Id-Version: sphinxcontrib-confluencebuilder\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Tamil\n"
+"Language: ta_IN\n"
+"PO-Revision-Date: 2023-01-02 18:56\n"
+
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:81
+msgid "assembling single confluence document"
+msgstr ""
+
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:110
+msgid "writing single confluence document"
+msgstr ""
+
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
+#: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2299
+msgid "This page has been automatically generated."
+msgstr ""
+
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2323
+msgid "Edit Source"
+msgstr "மூலத்தைத் திருத்தவும்"
+
