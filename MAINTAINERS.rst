@@ -44,6 +44,22 @@ state:
     running update_catalog
     ...
 
+Push updated catalogs to Crowdin:
+
+.. code-block:: shell-session
+
+    $ crowdin upload sources
+    [OK] Fetching project info
+    ...
+
+Pull most recent translations from Crowdin:
+
+.. code-block:: shell-session
+
+    $ crowdin download
+    [OK] Fetching project info
+    ...
+
 Compile machine objects  (``.mo``) using the following:
 
 .. code-block:: shell-session
