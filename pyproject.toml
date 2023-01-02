@@ -20,6 +20,7 @@ classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'Environment :: Web Environment',
+    'Framework :: Sphinx',
     'Framework :: Sphinx :: Extension',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
@@ -33,6 +34,7 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Topic :: Documentation',
+    'Topic :: Documentation :: Sphinx',
     'Topic :: Utilities',
 ]
 dynamic = [
