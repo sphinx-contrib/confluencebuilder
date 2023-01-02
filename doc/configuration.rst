@@ -1239,6 +1239,8 @@ Advanced publishing configuration
 .. confval:: confluence_publish_allowlist
 
     .. versionadded:: 1.3
+    .. versionchanged:: 2.0 An empty allow list will no longer publish any
+                            documents.
 
     .. note::
 
