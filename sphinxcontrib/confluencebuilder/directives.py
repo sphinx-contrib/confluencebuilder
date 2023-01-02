@@ -8,6 +8,7 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
+from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt_include
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
@@ -44,6 +45,9 @@ def string_list(argument):
 class ConfluenceExcerptDirective(Directive):
     has_content = True
     option_spec = {
+        'atlassian-macro-output-type':
+            lambda x: directives.choice(x, ('block', 'inline')),
+        'hidden': lambda x: directives.choice(x, ('true', 'false')),
         'name': directives.unchanged,
     }
 
@@ -52,10 +56,38 @@ class ConfluenceExcerptDirective(Directive):
         text = '\n'.join(self.content)
 
         node = confluence_excerpt(rawsource=text)
-        if 'name' in self.options:
-            node['name'] = self.options['name']
+
+        # an excerpt's output type is a special option which does not appear
+        # to support/following the Kebab  case style -- extract and manually
+        # apply this option directly on the node (values for this option are
+        # also expected to be in uppercase)
+        output_type = 'atlassian-macro-output-type'
+        if output_type in self.options:
+            node.params[output_type] = self.options[output_type].upper()
+            del self.options[output_type]
+
+        for k, v in self.options.items():
+            node.params[kebab_case_to_camel_case(k)] = v
 
         self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class ConfluenceExcerptIncludeDirective(Directive):
+    has_content = False
+    option_spec = {
+        'name': directives.unchanged,
+        'nopanel': lambda x: directives.choice(x, ('true', 'false')),
+    }
+    required_arguments = 1
+
+    def run(self):
+        node = confluence_excerpt_include()
+        node['doclink'] = self.arguments[0]
+
+        for k, v in self.options.items():
+            node.params[kebab_case_to_camel_case(k)] = v
+
         return [node]
 
 

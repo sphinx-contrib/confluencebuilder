@@ -225,7 +225,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['style'] = style
 
         self.body.append(self._start_tag(node, 'p', **attribs))
-        self.context.append(self._end_tag(node))
+        self.context.append(self._end_tag(node, suffix=''))
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())  # p
@@ -2119,17 +2119,38 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_confluence_excerpt(self, node):
         self.body.append(self._start_ac_macro(node, 'excerpt'))
-        if 'name' in node:
-            self.body.append(
-                self._build_ac_param(node, 'name', node['name']))
-        self.body.append(
-            self._build_ac_param(node, 'atlassian-macro-output-type', "INLINE"))
+        for k, v in sorted(node.params.items()):
+            self.body.append(self._build_ac_param(node, k, str(v)))
         self.body.append(self._start_ac_rich_text_body_macro(node))
         self.context.append(self._end_ac_rich_text_body_macro(node) +
-            self._end_ac_macro(node))
+            self._end_ac_macro(node, suffix=''))
 
     def depart_confluence_excerpt(self, node):
         self.body.append(self.context.pop())  # macro
+
+    def visit_confluence_excerpt_include(self, node):
+        docname = node['doclink']
+        doctitle = self.state.title(docname)
+        if not doctitle:
+            self.warn('unable to build excerpt include to document since '
+                'document is missing or is missing title '
+                '(in {}): {}'.format(self.docname, docname))
+            raise nodes.SkipNode
+
+        self.body.append(self._start_ac_macro(node, 'excerpt-include'))
+        for k, v in sorted(node.params.items()):
+            self.body.append(self._build_ac_param(node, k, str(v)))
+
+        doctitle = self.encode(doctitle)
+        param_value = self._start_ac_link(node) + \
+            self._start_tag(node, 'ri:page', suffix=self.nl, empty=True,
+                **{'ri:content-title': doctitle}) + \
+            self._end_ac_link(node)
+        self.body.append(self._build_ac_param(node, '', param_value))
+
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
 
     def visit_confluence_expand(self, node):
         self.body.append(self._start_ac_macro(node, 'expand'))
@@ -2932,7 +2953,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:rich-text-body', suffix=self.nl)
+        return self._start_tag(node, 'ac:rich-text-body')
 
     def _end_ac_rich_text_body_macro(self, node):
         """

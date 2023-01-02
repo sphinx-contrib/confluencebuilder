@@ -37,12 +37,21 @@ class confluence_emoticon_inline(nodes.Inline, nodes.TextElement):
     """
 
 
-class confluence_excerpt(nodes.Body, nodes.Element):
+class confluence_excerpt(nodes.Structural, ConfluenceParams):
     """
     confluence excerpt node
 
     A Confluence builder defined excerpt node serves as a hint to wrap content
     using Confluence's excerpt macro.
+    """
+
+
+class confluence_excerpt_include(nodes.Structural, ConfluenceParams):
+    """
+    confluence excerpt include node
+
+    A Confluence builder defined excerpt include node serves as a hint to
+    inject a Confluence's excerpt include macro into a page.
     """
 
 
