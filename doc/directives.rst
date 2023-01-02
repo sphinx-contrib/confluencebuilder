@@ -18,6 +18,126 @@ used to restrict these directives to supported builders by using the
 Common
 ------
 
+.. index:: Macros; Excerpt Macro (directive)
+.. index:: Excerpt Macro
+
+.. rst:directive:: confluence_excerpt
+
+    .. versionadded:: 2.0
+
+    The ``confluence_excerpt`` directive allows a user to define a Confluence
+    `Excerpt Macro`_ to help build snippets of content to be shared for
+    other pages. For example:
+
+    .. code-block:: rst
+
+        .. confluence_excerpt::
+
+            This content is reusable.
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: atlassian-macro-output-type: output type
+        :type: block, inline
+
+        When this option is configured to ``inline`` (default), the
+        rendered excerpt macro will be presented inlined with other content
+        in the page (no additional line breaks). The ``block`` type can
+        be used to help render an excerpt macro as a block-level element.
+
+        .. code-block:: rst
+
+            .. confluence_excerpt::
+                :atlassian-macro-output-type: block
+
+                This content is reusable.
+
+    .. rst:directive:option:: hidden: flag
+        :type: boolean
+
+        Whether the macro's content should be rendered on the page that
+        defines it. Valid values are ``true`` or ``false`` (default).
+
+        .. code-block:: rst
+
+            .. confluence_excerpt::
+                :hidden: true
+
+                This content is reusable.
+
+    .. rst:directive:option:: name: value
+        :type: string
+
+        A name value to apply to the macros "name" field. This can be used
+        to name a specific excerpt on a page, which can be explicitly mapped
+        to with an excerpt-include when attempting to define multiple excerpts
+        on the same page. If only a single excerpt is created, an
+        excerpt-include will implicitly use the first excerpt on a page.
+
+        .. code-block:: rst
+
+            .. confluence_excerpt::
+                :name: my-excerpt
+
+                This content is reusable.
+
+.. index:: Macros; Excerpt Include Macro (directive)
+.. index:: Excerpt Include Macro
+
+.. rst:directive:: .. confluence_excerpt_include:: [ref]
+
+    .. versionadded:: 2.0
+
+    The ``confluence_excerpt_include`` directive allows a user to define a
+    Confluence `Excerpt Include Macro`_ to help include snippets of content
+    provided by excerpt macro definitions. An include macro requires an
+    explicit reference to the page which holds the excerpt content to load.
+    Users can specify an exclamation-prefixed document name, referring to a
+    local Sphinx documentation file to load an excerpt from. For example:
+
+    .. code-block:: rst
+
+        .. confluence_excerpt_include:: !my-excerpt-docname
+
+    Users may also specify a known document title name that may be managed
+    outside their Sphinx project set. For example:
+
+    .. code-block:: rst
+
+        .. confluence_excerpt_include:: Custom excerpt
+
+    To target a page on a different space, the space name can be prefixed
+    before the document title:
+
+    .. code-block:: rst
+
+        .. confluence_excerpt_include:: MYSPACE:Custom excerpt
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: name: value
+        :type: string
+
+        The explicit name of the excerpt to use for a given page. If no name
+        is provided, the excerpt-include macro will use the first available
+        excerpt on the target page.
+
+        .. code-block:: rst
+
+            .. confluence_excerpt_include:: !my-excerpt-docname
+                :name: my-excerpt
+
+    .. rst:directive:option:: nopanel: flag
+        :type: boolean
+
+        Whether the macro's content should remove the panel around the
+        excerpted content. Valid values are ``true`` or ``false`` (default).
+
+        .. code-block:: rst
+
+            .. confluence_excerpt_include:: !my-excerpt-docname
+                :nopanel: true
+
 .. index:: Macros; Expand Macro (directive)
 .. index:: Expand Macro
 
@@ -414,6 +534,8 @@ See also :ref:`LaTeX roles <latex-roles>`.
 
 .. references ------------------------------------------------------------------
 
+.. _Excerpt Include Macro: https://confluence.atlassian.com/doc/excerpt-include-macro-148067.html
+.. _Excerpt Macro: https://confluence.atlassian.com/doc/excerpt-macro-148062.html
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
 .. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
