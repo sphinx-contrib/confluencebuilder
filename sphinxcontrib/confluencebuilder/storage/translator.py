@@ -93,35 +93,47 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         return None
 
-    def add_secnumber(self, node):
+    def build_secnumber(self, node):
         if not self.add_secnumbers:
-            return
+            return ''
 
         secnumber = self.get_secnumber(node)
+        if not secnumber:
+            return ''
+
+        return '.'.join(map(str, secnumber)) + self.secnumber_suffix
+
+    def add_secnumber(self, node):
+        secnumber = self.build_secnumber(node)
         if secnumber:
-            self.body.append('.'.join(map(str, secnumber)) +
-                self.secnumber_suffix)
+            self.body.append(secnumber)
 
-    def add_fignumber(self, node):
-        if not self.numfig:
-            return
-
-        def append_fignumber(figtype, figure_id):
-            if self.builder.name == 'singleconfluence':
-                key = '%s/%s' % (self._docnames[-1], figtype)
-            else:
-                key = figtype
-
-            if figure_id in self.builder.fignumbers.get(key, {}):
-                prefix = self.numfig_format.get(figtype)
-                if prefix:
-                    numbers = self.builder.fignumbers[key][figure_id]
-                    self.body.append(prefix % '.'.join(map(str, numbers)) + ' ')
+    def build_fignumber(self, node):
+        if not self.numfig or not node['ids']:
+            return ''
 
         figtype = self.builder.env.domains['std'].get_enumerable_node_type(node)
-        if figtype:
-            if len(node['ids']) > 0:
-                append_fignumber(figtype, node['ids'][0])
+        if not figtype:
+            return ''
+
+        if self.builder.name == 'singleconfluence':
+            key = '%s/%s' % (self._docnames[-1], figtype)
+        else:
+            key = figtype
+
+        figid = first(node['ids'])
+        if figid in self.builder.fignumbers.get(key, {}):
+            prefix = self.numfig_format.get(figtype)
+            if prefix:
+                numbers = self.builder.fignumbers[key][figid]
+                return prefix % '.'.join(map(str, numbers)) + ' '
+
+        return ''
+
+    def add_fignumber(self, node):
+        fignumber = self.build_fignumber(node)
+        if fignumber:
+            self.body.append(fignumber)
 
     def visit_start_of_file(self, node):
         ConfluenceBaseTranslator.visit_start_of_file(self, node)
@@ -1527,7 +1539,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # anything that is not a parsed literals
             if next_sibling.rawsource == next_sibling.astext() or \
                     'source' in next_sibling:
-                next_sibling['scb-caption'] = node.astext()
+                next_sibling['scb-caption'] = \
+                    self.build_secnumber(node) + \
+                    self.build_fignumber(node.parent) + \
+                    node.astext()
                 raise nodes.SkipNode
 
         attribs = {}
