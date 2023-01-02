@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2017-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2017-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -9,12 +9,12 @@ from sphinx.transforms.post_transforms import SphinxPostTransform
 import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
-copyright = '2022 Sphinx Confluence Builder Contributors'
+copyright = '2023 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
 
-supported_confluence_ver = '7.9+'
+supported_confluence_ver = '7.11+'
 supported_python_ver = '3.7+'
 supported_sphinx_ver = '4.4+'
 
