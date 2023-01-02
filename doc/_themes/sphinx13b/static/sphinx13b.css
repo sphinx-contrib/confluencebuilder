@@ -483,6 +483,12 @@ code.literal {
     color: #CE0000;
 }
 
+.sphinxsidebarwrapper code.literal {
+    border: unset;
+    padding: unset;
+    color: unset;
+}
+
 code.xref, a code {
     font-weight: normal;
 }

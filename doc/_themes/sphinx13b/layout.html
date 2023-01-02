@@ -38,14 +38,15 @@ $(window).scroll(function() {
     var curtop = sb.position()['top'];
     var curbot = curtop + sbh;
     if (sbh < win.innerHeight()) {
-        sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-        $(document).height() - sbh - 200]));
+        sb.css('top', Math.min(
+            Math.max(0, wintop - offset - 10),
+            $(document).height() - sbh - 200));
     } else {
         if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
+            sb.css('top', Math.max(wintop - offset - 10, 0));
         } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-            $(document).height() - sbh - 200]));
+            sb.css('top', Math.min(winbot - sbh - offset - 20,
+                $(document).height() - sbh - 200));
         }
     }
 });
