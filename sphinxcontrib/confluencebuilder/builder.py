@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -39,6 +39,7 @@ from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
+from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 import os
@@ -73,8 +74,8 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
-        self.publish_allowlist = []
-        self.publish_denylist = []
+        self.publish_allowlist = None
+        self.publish_denylist = None
         self.publish_docnames = []
         self.publisher = ConfluencePublisher()
         self.root_doc_page_id = None
@@ -176,19 +177,19 @@ class ConfluenceBuilder(Builder):
 
         def prepare_subset(option):
             value = getattr(config, option)
-            if not value:
+            if value is None:
                 return None
 
-            # if provided via command line, treat as a list
-            if option in config['overrides'] and isinstance(value, str):
-                value = value.split(',')
+            value = handle_cli_file_subset(config, option, value)
+            if value is None:
+                return None
 
             if isinstance(value, str):
                 files = extract_strings_from_file(value)
             else:
                 files = value
 
-            return set(files) if files else None
+            return set(files)
 
         self.publish_allowlist = prepare_subset('confluence_publish_allowlist')
         self.publish_denylist = prepare_subset('confluence_publish_denylist')
@@ -755,7 +756,8 @@ class ConfluenceBuilder(Builder):
         if self.publish_denylist and docname in self.publish_denylist:
             return True
 
-        if self.publish_allowlist and docname not in self.publish_allowlist:
+        if self.publish_allowlist is not None and \
+                docname not in self.publish_allowlist:
             return True
 
         return False

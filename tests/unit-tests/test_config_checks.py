@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -625,7 +625,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         ]
 
         for option in options:
-            # empty value (list; ignore state)
+            # empty value (None; ignore state)
+            self.config[option] = None
+            self._try_config(dataset=dataset)
+
+            # empty value (list; no publish or no denied state)
             self.config[option] = []
             self._try_config(dataset=dataset)
 
@@ -676,6 +680,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # cleanup
             self.config[option] = None
+
+            # enumalate command line empty string to unset (valid)
+            config = dict(self.minimal_config)
+            config[option] = ''
+            self._try_config(config=config, dataset=dataset)
 
             # enumalate command line csv string to list (valid)
             config = dict(self.minimal_config)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2018-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2018-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
 
@@ -288,6 +288,36 @@ def getpass2(prompt='Password: '):
         return value
     else:
         return getpass.getpass(prompt=prompt)
+
+
+def handle_cli_file_subset(config, option, value):
+    """
+    process a file subset entry based on a cli-provided value
+
+    If the value of an option is provided in the "overrides", this is (most
+    likely) an option set from the command line. If this string points to an
+    existing file, we will return the provided file name as is. However, if
+    this is a string, it is most likely a list of files from the command line.
+
+    Args:
+        config: the sphinx configuration
+        option: the key associated to this configuration value
+        value: the configuration value
+
+    Returns:
+        the resolved configuration value
+    """
+
+    if option in config['overrides'] and isinstance(value, str):
+        if not value:
+            # an empty command line subset is an "unset" request
+            # (and not an empty list); if no values are detected,
+            # return `None`
+            return None
+        elif not os.path.isfile(value):
+            value = value.split(',')
+
+    return value
 
 
 def remove_nonspace_control_chars(text):
