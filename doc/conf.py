@@ -110,9 +110,9 @@ class DocumentationPostTransform(SphinxPostTransform):
 
 
 def setup(app):
-    app.require_sphinx('4.0')
+    app.require_sphinx('6.0')
 
-    # append unreleased version-alert
+    app.add_js_file('jquery-3.6.3.min.js')
     app.add_js_file('version-alert.js')
 
     # custom directives/roles for documentation
