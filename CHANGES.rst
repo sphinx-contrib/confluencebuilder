@@ -2,6 +2,8 @@ Development
 ===========
 
 * Fixed issue publishing orphan pages when a publish root is configured
+* Fixed issue where captioned code blocks may not be numbered with ``numfig``
+* Fixed issue where captioned tables were not be numbered with ``numfig``
 * Hierarchy mode is now enabled by default
 * Improve look of quote-like directives
 * Introduce the Confluence excerpt (macro) directives
