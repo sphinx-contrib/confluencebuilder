@@ -38,7 +38,7 @@ Next release requirements:
 * Confluence_ Cloud or Data Center / Server 7.11+
 * Python_ 3.7+
 * Requests_ 2.14.0+
-* Sphinx_ 4.4+
+* Sphinx_ 5.0+
 
 Installing
 ==========
