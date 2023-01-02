@@ -9,6 +9,7 @@ from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
+from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from requests.auth import AuthBase
 import os
 
@@ -484,11 +485,9 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
         if not value:
             continue
 
-        # if provided via command line, treat as a list
+        # if provided a file via command line, treat as a list
         def conf_translate(value):
-            if option in config['overrides'] and isinstance(value, str):
-                value = value.split(',')
-            return value
+            return handle_cli_file_subset(config, option, value)
         value = conf_translate(value)
 
         try:
