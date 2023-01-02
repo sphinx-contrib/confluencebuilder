@@ -1,5 +1,5 @@
-Development
-===========
+2.0.0 (2023-01-02)
+==================
 
 * Fixed issue publishing orphan pages when a publish root is configured
 * Fixed issue where captioned code blocks may not be numbered with ``numfig``
