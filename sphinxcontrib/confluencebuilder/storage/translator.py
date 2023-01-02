@@ -958,6 +958,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if title_node:
             self.body.append(self._start_tag(node, 'p'))
             self.body.append(self._start_tag(node, 'strong'))
+            self.add_fignumber(node)
             self.body.append(self.encode(title_node.astext()))
             self.body.append(self._end_tag(node))
             self.body.append(self._end_tag(node))
