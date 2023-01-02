@@ -2129,22 +2129,39 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # macro
 
     def visit_confluence_excerpt_include(self, node):
-        docname = node['doclink']
-        doctitle = self.state.title(docname)
-        if not doctitle:
-            self.warn('unable to build excerpt include to document since '
-                'document is missing or is missing title '
-                '(in {}): {}'.format(self.docname, docname))
-            raise nodes.SkipNode
+        doclink = node['doclink']
+        space_key = None
+
+        # if prefixed with an exclamation, document is refering to another
+        # Sphinx document -- find the respective title based off the captured
+        # state
+        if doclink.startswith('!'):
+            docname = doclink[1:]
+            doctitle = self.state.title(docname)
+            if not doctitle:
+                self.warn('unable to build excerpt include to document since '
+                    'document is missing or is missing title '
+                    '(in {}): {}'.format(self.docname, docname))
+                raise nodes.SkipNode
+        elif ':' in doclink:
+            space_key, doctitle = doclink.split(':', 1)
+        else:
+            doctitle = doclink
 
         self.body.append(self._start_ac_macro(node, 'excerpt-include'))
         for k, v in sorted(node.params.items()):
             self.body.append(self._build_ac_param(node, k, str(v)))
 
+        attribs = {
+            'ri:content-title': doctitle,
+        }
+        if space_key:
+            attribs['ri:space-key'] = space_key
+
         doctitle = self.encode(doctitle)
         param_value = self._start_ac_link(node) + \
-            self._start_tag(node, 'ri:page', suffix=self.nl, empty=True,
-                **{'ri:content-title': doctitle}) + \
+            self._start_tag(node, 'ri:page', suffix=self.nl,
+                empty=True, **attribs) + \
             self._end_ac_link(node)
         self.body.append(self._build_ac_param(node, '', param_value))
 

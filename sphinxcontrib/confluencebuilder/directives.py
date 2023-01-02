@@ -80,6 +80,7 @@ class ConfluenceExcerptIncludeDirective(Directive):
         'nopanel': lambda x: directives.choice(x, ('true', 'false')),
     }
     required_arguments = 1
+    final_argument_whitespace = True
 
     def run(self):
         node = confluence_excerpt_include()
