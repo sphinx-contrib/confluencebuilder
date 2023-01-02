@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2016-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
