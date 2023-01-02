@@ -1,0 +1,15 @@
+# https://crowdin.com/project/sphinxcontrib-confluencebuilder
+project_id: 558685
+
+files:
+  - source: /sphinxcontrib/confluencebuilder/locale/*.pot
+    translation: /sphinxcontrib/confluencebuilder/locale/%two_letters_code%/LC_MESSAGES/%file_name%.po
+    languages_mapping:
+      two_letters_code:
+        hi-IN: hi_IN
+        pt-BR: pt_BR
+        pt-PT: pt_PT
+        sr-CS: sr_CS
+        uk-UA: uk_UA
+        zh-CN: zh_CH
+        zh-TW: zh_TW
