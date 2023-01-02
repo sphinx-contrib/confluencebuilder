@@ -1,19 +1,21 @@
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:80
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:81
 msgid "assembling single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:109
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:110
 msgid "writing single confluence document"
 msgstr ""
 
 #: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:11
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
 #: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
-#: sphinxcontrib/confluencebuilder/storage/translator.py:1779
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2299
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:1794
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2323
 msgid "Edit Source"
 msgstr ""
 
