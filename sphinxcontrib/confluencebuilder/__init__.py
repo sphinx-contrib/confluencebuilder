@@ -9,8 +9,8 @@ from sphinx.util import docutils
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.config.manager import ConfigManager
-from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExcerptDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLatexDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceNewline
@@ -290,8 +290,8 @@ def confluence_builder_inited(app):
         app.add_node(jira_issue)
 
     # register directives
-    app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_excerpt', ConfluenceExcerptDirective)
+    app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_latex', ConfluenceLatexDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
     app.add_directive('confluence_newline', ConfluenceNewline)

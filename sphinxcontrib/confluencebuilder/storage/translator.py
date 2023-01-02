@@ -2117,18 +2117,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- extension -- confluence builder
     # -----------------------------------------
 
-    def visit_confluence_expand(self, node):
-        self.body.append(self._start_ac_macro(node, 'expand'))
-        if 'title' in node:
-            self.body.append(
-                self._build_ac_param(node, 'title', node['title']))
-        self.body.append(self._start_ac_rich_text_body_macro(node))
-        self.context.append(self._end_ac_rich_text_body_macro(node) +
-            self._end_ac_macro(node))
-
-    def depart_confluence_expand(self, node):
-        self.body.append(self.context.pop())  # macro
-
     def visit_confluence_excerpt(self, node):
         self.body.append(self._start_ac_macro(node, 'excerpt'))
         if 'name' in node:
@@ -2141,6 +2129,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._end_ac_macro(node))
 
     def depart_confluence_excerpt(self, node):
+        self.body.append(self.context.pop())  # macro
+
+    def visit_confluence_expand(self, node):
+        self.body.append(self._start_ac_macro(node, 'expand'))
+        if 'title' in node:
+            self.body.append(
+                self._build_ac_param(node, 'title', node['title']))
+        self.body.append(self._start_ac_rich_text_body_macro(node))
+        self.context.append(self._end_ac_rich_text_body_macro(node) +
+            self._end_ac_macro(node))
+
+    def depart_confluence_expand(self, node):
         self.body.append(self.context.pop())  # macro
 
     def visit_confluence_footer(self, node):

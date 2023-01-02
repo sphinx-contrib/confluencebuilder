@@ -41,23 +41,6 @@ def string_list(argument):
     return data
 
 
-class ConfluenceExpandDirective(Directive):
-    has_content = True
-    option_spec = {
-        'title': directives.unchanged,
-    }
-
-    def run(self):
-        self.assert_has_content()
-        text = '\n'.join(self.content)
-
-        node = confluence_expand(rawsource=text)
-        if 'title' in self.options:
-            node['title'] = self.options['title']
-
-        self.state.nested_parse(self.content, self.content_offset, node)
-        return [node]
-
 class ConfluenceExcerptDirective(Directive):
     has_content = True
     option_spec = {
@@ -71,6 +54,24 @@ class ConfluenceExcerptDirective(Directive):
         node = confluence_excerpt(rawsource=text)
         if 'name' in self.options:
             node['name'] = self.options['name']
+
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class ConfluenceExpandDirective(Directive):
+    has_content = True
+    option_spec = {
+        'title': directives.unchanged,
+    }
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_expand(rawsource=text)
+        if 'title' in self.options:
+            node['title'] = self.options['title']
 
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
