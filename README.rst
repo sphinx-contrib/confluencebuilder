@@ -26,15 +26,6 @@ optionally publish them to a Confluence instance.
 Requirements
 ============
 
-Active release (v1.9) requirements:
-
-* Confluence_ Cloud or Data Center / Server 7.8+
-* Python_ 2.7 or 3.7+
-* Requests_ 2.14.0+
-* Sphinx_ 1.8 or 4.1+
-
-Next release requirements:
-
 * Confluence_ Cloud or Data Center / Server 7.11+
 * Python_ 3.7+
 * Requests_ 2.14.0+
