@@ -77,14 +77,13 @@ following steps are performed:
 - Ensure newly added/changed configuration options are properly reflecting a
   ``versionadded`` or equivalent hint.
 - Ensure message catalogs are up-to-date (see "Internationalization"; above).
+- Update ``README.rst``, replacing any notes of active requirements compared
+  to future requirements, to just a requirements list.
 - Update ``CHANGES.rst``, replacing the development title with release version
   and date.
 - Ensure version values in the implementation are incremented and tagged
   appropriately. The tagged commit should have a "clean" version string.
 - Ensure the release tag is signed.
-- After invoking a build, ensure a universal wheel has been created
-  (i.e. inspect that the generated package inside ``dist/``  properly reflects
-  ``py2.py3`` support).
 
 A release can be made with the following commands:
 
@@ -100,6 +99,14 @@ A release can be made with the following commands:
 
     (note: validate artifacts with a local pip install)
 
+    $ pip install dist/*.whl
+    $ cd <working-project>
+    $ python -m sphinxcontrib.confluencebuilder --version
+    $ python -m sphinx -b confluence . _build/confluence -E -a
+    $ pip uninstall sphinxcontrib-confluencebuilder
+
+    (note: generate hashes)
+
     $ gpg --detach-sign -a dist/sphinxcontrib*.gz
     $ gpg --detach-sign -a dist/sphinxcontrib*.whl
 
@@ -108,6 +115,14 @@ A release can be made with the following commands:
     $ twine upload dist/*
 
     (note: check pip install with PyPI package)
+
+    $ cd <working-project>
+    $ pip install sphinxcontrib-confluencebuilder
+    $ python -m sphinxcontrib.confluencebuilder --version
+    $ python -m sphinx -b confluence . _build/confluence -E -a
+    $ pip uninstall sphinxcontrib-confluencebuilder
+
+    (note: tag and push)
 
     $ git tag -s -a v<version> <hash> -m "sphinxcontrib-confluencebuilder <version>"
     $ git verify-tag <tag>
