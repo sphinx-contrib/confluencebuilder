@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
+:copyright: Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 :copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 :license: BSD-2-Clause (LICENSE)
 """
@@ -13,6 +13,15 @@ from sphinx.locale import __
 from sphinx.util.nodes import inline_all_toctrees as sphinx_inline_all_toctrees
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
+
+# pylint: disable=no-name-in-module
+if sphinx_version_info >= (6, 1):
+    from sphinx.util.display import status_iterator  # noqa: F401
+    from sphinx.util.display import progress_message  # noqa: F401
+else:
+    from sphinx.util import status_iterator  # noqa: F401
+    from sphinx.util import progress_message  # noqa: F401
+# pylint: enable=no-name-in-module
 
 
 # use docutil's findall call over traverse (obsolete)
