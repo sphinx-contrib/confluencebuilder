@@ -1,0 +1,6 @@
+:orphan:
+
+pageb
+=====
+
+content
