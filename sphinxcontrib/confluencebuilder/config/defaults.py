@@ -73,6 +73,9 @@ def apply_defaults(builder):
     if conf.confluence_publish_intersphinx is None:
         conf.confluence_publish_intersphinx = True
 
+    if conf.confluence_publish_orphan is None:
+        conf.confluence_publish_orphan = True
+
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True
 

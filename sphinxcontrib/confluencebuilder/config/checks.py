@@ -532,6 +532,18 @@ names are relative to the documentation's source directory.
 
     # ##################################################################
 
+    # confluence_publish_orphan
+    validator.conf('confluence_publish_orphan') \
+             .bool()
+
+    # ##################################################################
+
+    # confluence_publish_orphan_container
+    validator.conf('confluence_publish_orphan_container') \
+             .int_()
+
+    # ##################################################################
+
     # confluence_publish_postfix
     validator.conf('confluence_publish_postfix') \
              .string()

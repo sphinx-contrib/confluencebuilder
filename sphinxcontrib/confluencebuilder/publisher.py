@@ -999,6 +999,11 @@ reported a success (which can be permitted for anonymous users).
             if page['id'] == parent_id:
                 raise ConfluencePublishSelfAncestorError(page_name)
 
+        # zero-id parent ~ a hint to remove the ancestor
+        # (looks like setting a value of "1" is a way to "clear" the option)
+        elif parent_id is not None:
+            update_page['ancestors'] = [{'id': '1'}]
+
         page_id_explicit = page['id'] + '?status=current'
         try:
             self.rest_client.put('content', page_id_explicit, update_page)
