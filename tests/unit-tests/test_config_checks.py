@@ -697,6 +697,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config(config=config, dataset=dataset)
 
+    def test_config_check_publish_orphan_container(self):
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        self.config['confluence_publish_orphan_container'] = 0
+        self._try_config()
+
+        self.config['confluence_publish_orphan_container'] = 123456
+        self._try_config()
+
+        self.config['confluence_publish_orphan_container'] = '123456'
+        self._try_config()
+
+        self.config['confluence_publish_orphan_container'] = -123456
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_publish_postfix(self):
         self.config['confluence_publish_postfix'] = ''
         self._try_config()

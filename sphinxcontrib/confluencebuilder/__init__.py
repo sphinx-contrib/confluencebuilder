@@ -135,6 +135,10 @@ def setup(app):
     cm.add_conf_bool('confluence_publish_dryrun')
     # Publish only new content (no page updates, etc.).
     cm.add_conf_bool('confluence_publish_onlynew')
+    # Publish orphan pages to Confluence.
+    cm.add_conf_bool('confluence_publish_orphan')
+    # Container page to publish orphan pages under.
+    cm.add_conf_int('confluence_publish_orphan_container')
     # Postfix to apply to title of published pages.
     cm.add_conf('confluence_publish_postfix', 'env')
     # Prefix to apply to published pages.

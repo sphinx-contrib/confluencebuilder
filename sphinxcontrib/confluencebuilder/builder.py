@@ -74,6 +74,7 @@ class ConfluenceBuilder(Builder):
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
+        self.orphan_docnames = []
         self.publish_allowlist = None
         self.publish_denylist = None
         self.publish_docnames = []
@@ -266,7 +267,9 @@ class ConfluenceBuilder(Builder):
             ordered_docnames, self.config.root_doc, traversed)
 
         # add orphans (if any) to the publish list
-        ordered_docnames.extend(x for x in docnames if x not in traversed)
+        if self.config.confluence_publish_orphan:
+            self.orphan_docnames = [x for x in docnames if x not in traversed]
+            ordered_docnames.extend(self.orphan_docnames)
 
         for docname in ordered_docnames:
             doctree = self.env.get_doctree(docname)
@@ -474,6 +477,14 @@ class ConfluenceBuilder(Builder):
         if not parent_id:
             parent_id = self.parent_id
 
+            # if a custom orphan root has been configured and this is an orphan
+            # page, override the parent to publish under; either the provided
+            # orphan root ID or no parent (zero value)
+            orphan_root_id = conf.confluence_publish_orphan_container
+            if orphan_root_id is not None:
+                if docname in self.orphan_docnames:
+                    parent_id = orphan_root_id
+
         data = {
             'content': output,
             'labels': [],
@@ -522,6 +533,12 @@ class ConfluenceBuilder(Builder):
                 self.legacy_pages = self.publisher.get_descendants_compat(baseid)
             else:
                 self.legacy_pages = self.publisher.get_descendants(baseid)
+
+            # remove any configured orphan root id from a cleanup check
+            orphan_root_id = str(conf.confluence_publish_orphan_container)
+            if conf.confluence_publish_orphan and orphan_root_id:
+                if orphan_root_id in self.legacy_pages:
+                    self.legacy_pages.remove(orphan_root_id)
 
             # only populate a list of possible legacy assets when a user is
             # configured to check or push assets to the target space
