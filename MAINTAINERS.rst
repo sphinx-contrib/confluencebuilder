@@ -22,8 +22,7 @@ messages are included in the portable object template (``.pot``):
 
 .. code-block:: shell-session
 
-    $ python setup.py extract_messages
-    running extract_messages
+    $ ./babel extract
     ...
     writing PO template file to sphinxcontrib/confluencebuilder/locale/sphinxcontrib.confluencebuilder.pot
 
@@ -31,7 +30,7 @@ If adding support for a new locale, invoke the following:
 
 .. code-block:: shell-session
 
-    $ python setup.py init_catalog --locale <locale>
+    $ ./babel init --locale <locale>
     running init_catalog
     ...
 
@@ -40,7 +39,7 @@ state:
 
 .. code-block:: shell-session
 
-    $ python setup.py update_catalog
+    $ ./babel update
     running update_catalog
     ...
 
@@ -64,7 +63,7 @@ Compile machine objects  (``.mo``) using the following:
 
 .. code-block:: shell-session
 
-    $ python setup.py compile_catalog
+    $ ./babel compile
     running compile_catalog
     ...
 

@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+# Copyright 2023 Sphinx Confluence Builder Contributors (AUTHORS)
+
+WORK_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)"
+
+action=
+args=("$@")
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -*) shift ;;
+    *) [[ -z "$action" ]] && action=$1
+        break ;;
+    esac
+done
+
+case $action in
+compile)
+    args+=("--domain=sphinxcontrib.confluencebuilder")
+    args+=("--directory=sphinxcontrib/confluencebuilder/locale/")
+    ;;
+extract)
+    args+=("--keyword=C")
+    args+=("--keyword=L")
+    args+=("--mapping-file=babel.cfg")
+    args+=("--no-default-keywords")
+    args+=("--omit-header")
+    args+=("--output-file=sphinxcontrib/confluencebuilder/locale/sphinxcontrib.confluencebuilder.pot")
+    args+=(".")
+    ;;
+init)
+    args+=("--domain=sphinxcontrib.confluencebuilder")
+    args+=("--input-file=sphinxcontrib/confluencebuilder/locale/sphinxcontrib.confluencebuilder.pot")
+    args+=("--output-dir=sphinxcontrib/confluencebuilder/locale/")
+    ;;
+update)
+    args+=("--domain=sphinxcontrib.confluencebuilder")
+    args+=("--input-file=sphinxcontrib/confluencebuilder/locale/sphinxcontrib.confluencebuilder.pot")
+    args+=("--omit-header")
+    args+=("--output-dir=sphinxcontrib/confluencebuilder/locale/")
+    ;;
+*)
+    echo "unsupported action"
+    exit 1
+    ;;
+esac
+
+cd $WORK_DIR
+exec python -m babel.messages.frontend ${args[@]}

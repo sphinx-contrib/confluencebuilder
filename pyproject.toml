@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    'setuptools',
+    'flit_core>=3.7',
 ]
-build-backend = 'setuptools.build_meta'
+build-backend = 'flit_core.buildapi'
 
 [project]
 name = 'sphinxcontrib-confluencebuilder'
@@ -37,8 +37,11 @@ classifiers = [
     'Topic :: Documentation :: Sphinx',
     'Topic :: Utilities',
 ]
+dependencies = [
+    'requests>=2.14.0',
+    'sphinx>=5.0',
+]
 dynamic = [
-    'entry-points',
     'version',
 ]
 
@@ -49,3 +52,6 @@ Source = 'https://github.com/sphinx-contrib/confluencebuilder'
 
 [project.scripts]
 sphinx-build-confluence = 'sphinxcontrib.confluencebuilder.__main__:main'
+
+[tool.flit.module]
+name = 'sphinxcontrib.confluencebuilder'
