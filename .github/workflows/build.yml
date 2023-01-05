@@ -16,8 +16,6 @@ on:
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
   pull_request:
     branches:
@@ -31,8 +29,6 @@ on:
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
-      - 'setup.cfg'
-      - 'setup.py'
       - 'tox.ini'
 
 jobs:
