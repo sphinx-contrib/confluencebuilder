@@ -1452,6 +1452,48 @@ Advanced publishing configuration
 
         confluence_publish_onlynew = True
 
+.. |confluence_publish_orphan| replace:: ``confluence_publish_orphan``
+.. _confluence_publish_orphan:
+
+.. confval:: confluence_publish_orphan
+
+    .. versionadded:: 2.1
+
+    Whether to permit the publishing of orphan pages to a Confluence space.
+    This option must be explicitly set to ``False`` if a user wishes to not
+    publish orphan pages for their documentation. By default, the value is set
+    to ``True``.
+
+    .. code-block:: python
+
+        confluence_publish_orphan = True
+
+    See also |confluence_publish_orphan_container|_.
+
+.. |confluence_publish_orphan_container| replace:: ``confluence_publish_orphan_container``
+.. _confluence_publish_orphan_container:
+
+.. confval:: confluence_publish_orphan_container
+
+    .. versionadded:: 2.1
+
+    The page identifier of the page to hold orphan pages. The parent page
+    associated to an orphan page can vary per configuration. When a user
+    configures for a parent page/root, orphan pages will be placed under the
+    respective parent page/root configuration. If no parent page/root is
+    configured, orphan pages will not be associated with a parent page.
+    
+    Users can override where orphan pages are placed by using this option. By
+    specifying a page identifier, orphan pages will placed under the configured
+    container page. Users can also provide a special value of ``0`` to indicate
+    to always publish with no parent page.
+
+    .. code-block:: python
+
+        confluence_publish_orphan_container = 123456
+
+    See also |confluence_publish_orphan|_.
+
 .. confval:: confluence_request_session_override
 
     .. versionadded:: 1.7
