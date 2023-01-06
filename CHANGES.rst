@@ -1,3 +1,11 @@
+Development
+===========
+
+* Fixed document processing issues with Sphinx 6.1.x
+* Support deployment with Python 3.12
+* Support the ability to configure where orphan pages are stored
+* Support the ability to not publish orphan pages
+
 2.0.0 (2023-01-02)
 ==================
 
