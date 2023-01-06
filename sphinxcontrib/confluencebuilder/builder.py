@@ -260,6 +260,15 @@ class ConfluenceBuilder(Builder):
         self._original_get_doctree = self.env.get_doctree
         self.env.get_doctree = self._get_doctree
 
+        # TMPFIX: as of Sphinx v6.1.x, doctrees can be cached when first
+        # written, which can prevent manipulating them between the doctree
+        # (pickle) write state and re-reading them later (specifically, this
+        # extension's means of manipulation) -- for now, if we detect the
+        # environment is performing any doctree caching, clear the entire
+        # cache
+        if getattr(self.env, '_write_doc_doctree_cache', None):
+            self.env._write_doc_doctree_cache = {}
+
         # process the document structure of the root document, populating a
         # publish order to ensure parent pages are created first (when using
         # hierarchy mode)
