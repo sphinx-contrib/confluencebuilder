@@ -43,6 +43,7 @@ from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import io
 import os
+import tempfile
 
 
 class ConfluenceBuilder(Builder):
@@ -118,6 +119,18 @@ class ConfluenceBuilder(Builder):
             self.graphviz_output_format = self.config['graphviz_output_format']
         else:
             self.graphviz_output_format = 'png'
+
+        # For users building with Windows and using `dvisvgm` from MiKTeX, the
+        # process may fail when dealing with temporary file locations that do
+        # not share a common partition as the output directory.
+        #
+        #  ERROR: Windows API error 87: The parameter is incorrect.
+        #
+        # The imgmath extension allows a builder to override where temporary
+        # files are build -- use this to hint to using a temporary directory
+        # on the same partition the output directory to help prevent issues.
+        self._imgmath_tempdir = tempfile.mkdtemp(
+            prefix='.imgmath-', dir=self.outdir)
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)
