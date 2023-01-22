@@ -640,7 +640,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # explicitly force unicode strings to help verify python 2.x series
             # dealing with unicode strings inside the document subset
-            self.config[option] = [u'doc-c']
+            self.config[option] = ['doc-c']
             self._try_config(dataset=dataset)
 
             # file with a valid document list
