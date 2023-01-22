@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2018-2022 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2018-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 # sphinx's default highlight style
 #  http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language

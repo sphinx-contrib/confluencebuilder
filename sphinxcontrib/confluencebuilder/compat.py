@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
-:copyright: Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import __version_info__ as docutils_version_info
 from docutils import nodes

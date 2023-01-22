@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
-:copyright: Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import nodes
 from os import path

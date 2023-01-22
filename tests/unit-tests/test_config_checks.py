@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from requests.auth import AuthBase
 from requests.auth import HTTPDigestAuth
