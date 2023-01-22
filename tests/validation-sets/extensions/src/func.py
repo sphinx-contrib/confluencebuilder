@@ -5,4 +5,3 @@ def my_custom_function(obj):
 
     :param obj: the function argument
     """
-    pass
