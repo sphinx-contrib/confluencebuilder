@@ -19,33 +19,33 @@ except ImportError:
 class TestCreateDocnameUniqueHash(ConfluenceTestCase):
     def test_no_parent_or_root_page_or_project_configured(self):
         test_docname = 'docs/test_file.rst'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '75b0047d7552a5e4d91481e992f5ed339d868b3c')
+        self.assertEqual(hv, '75b0047d7552a5e4d91481e992f5ed339d868b3c')
 
     def test_parent_page_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_parent_page'] = 'parent_page'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '9ca6dcc0b0e9eff175f1182ed75a2c43f359ed24')
+        self.assertEqual(hv, '9ca6dcc0b0e9eff175f1182ed75a2c43f359ed24')
 
     def test_publish_root_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_publish_root'] = 'publish_root'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '02fe177ef99b746ed60cb1959d6134d3ea54fab9')
+        self.assertEqual(hv, '02fe177ef99b746ed60cb1959d6134d3ea54fab9')
 
     def test_project_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['project'] = 'grand_project'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
+        self.assertEqual(hv, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
 
 
 class TestFormatPostfix(ConfluenceTestCase):
