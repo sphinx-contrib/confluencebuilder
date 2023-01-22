@@ -241,4 +241,4 @@ class ConfluenceState:
         prehash += str(config.project)
         prehash += str(config.confluence_parent_page)
         prehash += str(config.confluence_publish_root)
-        return hashlib.sha1(prehash.encode()).hexdigest()
+        return hashlib.sha1(prehash.encode()).hexdigest()  # noqa: S324
