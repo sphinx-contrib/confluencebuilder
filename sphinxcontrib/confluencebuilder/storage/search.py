@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2021 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2021-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
 import os

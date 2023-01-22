@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
-:copyright: Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import nodes
 from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module

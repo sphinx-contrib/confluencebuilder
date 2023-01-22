@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2022 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
-
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2022-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 class ConfigManager:
     def __init__(self, app):

@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2021-2022 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2021-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from hashlib import sha256
 from sphinx.util.images import guess_mimetype

@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-:copyright: Copyright 2020-2022 Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
