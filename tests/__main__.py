@@ -47,7 +47,7 @@ def main():
         enable_sphinx_info(verbosity=verbosity)
     else:
         # disable short descriptions to minimize output (one test per line)
-        unittest.TestCase.shortDescription = lambda x: None
+        unittest.TestCase.shortDescription = lambda _: None
 
     # discover unit tests
     test_base = os.path.dirname(os.path.realpath(__file__))

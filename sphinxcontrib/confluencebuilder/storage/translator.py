@@ -1843,7 +1843,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_hlist(self, node):
         if self.v2:
             # add empty sections to complete the three column requirement
-            for x in range(self._hlist_columns_left % 3):
+            for _ in range(self._hlist_columns_left % 3):
                 self.body.append(self._start_tag(node, 'ac:layout-cell'))
                 self.body.append(self._end_tag(node))
 
