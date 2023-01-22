@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstMarkup(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstMarkup, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'markup')
 

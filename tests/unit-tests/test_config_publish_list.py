@@ -13,7 +13,7 @@ import os
 class TestConfluenceConfigPublishList(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigPublishList, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'publish-list')
 
@@ -25,7 +25,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         with patch.object(ConfluencePublisher, 'connect'), \
                 patch.object(ConfluencePublisher, 'disconnect'), \
                 patch.object(ConfluenceBuilder, 'publish_asset'):
-            super(TestConfluenceConfigPublishList, self).run(result)
+            super().run(result)
 
     def test_config_publishlist_allow_empty(self):
         config = dict(self.config)

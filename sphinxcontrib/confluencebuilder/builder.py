@@ -57,10 +57,10 @@ class ConfluenceBuilder(Builder):
         # assigned.
         if sphinx_version_info >= (5, 1):
             # pylint: disable=too-many-function-args
-            super(ConfluenceBuilder, self).__init__(app, env)
+            super().__init__(app, env)
             # pylint: enable=too-many-function-args
         else:
-            super(ConfluenceBuilder, self).__init__(app)
+            super().__init__(app)
 
         self.cache_doctrees = {}
         self.cloud = False

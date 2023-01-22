@@ -13,7 +13,7 @@ import os
 class TestConfluenceConfigOrphan(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigOrphan, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'orphan')
 
@@ -25,7 +25,7 @@ class TestConfluenceConfigOrphan(ConfluenceTestCase):
         with patch.object(ConfluencePublisher, 'connect'), \
                 patch.object(ConfluencePublisher, 'disconnect'), \
                 patch.object(ConfluenceBuilder, 'publish_asset'):
-            super(TestConfluenceConfigOrphan, self).run(result)
+            super().run(result)
 
     def test_config_orphan_allow_explicit(self):
         config = dict(self.config)

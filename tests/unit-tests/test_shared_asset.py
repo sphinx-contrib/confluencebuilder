@@ -10,7 +10,7 @@ import os
 class TestConfluenceSharedAsset(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSharedAsset, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'shared-asset')
 

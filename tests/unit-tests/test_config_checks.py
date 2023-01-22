@@ -30,7 +30,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         # unique configuration each run to avoid copying it in each test
         self.config = prepare_conf()
 
-        super(TestConfluenceConfigChecks, self).run(result)
+        super().run(result)
 
     def _prepare_valid_publish(self):
         self.config['confluence_publish'] = True

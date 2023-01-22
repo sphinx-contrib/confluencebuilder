@@ -10,7 +10,7 @@ import os
 class TestConfluenceSphinxDeprecated(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxDeprecated, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'deprecated')
 

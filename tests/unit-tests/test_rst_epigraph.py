@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstEpigraph(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstEpigraph, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'epigraph')
 

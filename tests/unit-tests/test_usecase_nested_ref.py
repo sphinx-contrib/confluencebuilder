@@ -10,7 +10,7 @@ import os
 class TestConfluenceUseCaseNestedRef(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceUseCaseNestedRef, cls).setUpClass()
+        super().setUpClass()
 
         cls.config['root_doc'] = 'nested-ref-contents'
         cls.dataset = os.path.join(cls.datasets, 'use-cases')

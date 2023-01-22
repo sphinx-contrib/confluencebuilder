@@ -11,7 +11,7 @@ import os
 class TestConfluenceSphinxDomains(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxDomains, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'domains')
 

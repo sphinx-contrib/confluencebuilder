@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstRaw(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstRaw, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'raw-storage')
 

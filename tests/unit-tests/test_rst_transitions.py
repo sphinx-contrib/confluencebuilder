@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstTransitions(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstTransitions, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'transitions')
 

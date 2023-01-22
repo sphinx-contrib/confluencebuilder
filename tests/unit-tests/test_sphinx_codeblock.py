@@ -11,7 +11,7 @@ import os
 class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxCodeblock, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'code-block')
 

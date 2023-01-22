@@ -10,7 +10,7 @@ import os
 class TestConfluenceMentions(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceMentions, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'mentions')
 

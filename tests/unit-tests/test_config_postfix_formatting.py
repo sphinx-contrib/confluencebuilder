@@ -102,7 +102,7 @@ class TestFormatPostfix(ConfluenceTestCase):
 class TestRegisterTitle(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestRegisterTitle, cls).setUpClass()
+        super().setUpClass()
         cls.config['root_doc'] = 'index'
         cls.dataset = os.path.join(cls.datasets, 'postfix_formatting')
 

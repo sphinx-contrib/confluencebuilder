@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstBlockQuotes(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstBlockQuotes, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'block-quotes')
 

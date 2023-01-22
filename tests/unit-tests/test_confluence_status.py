@@ -10,7 +10,7 @@ import os
 class TestConfluenceStatus(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceStatus, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'status')
 

@@ -10,7 +10,7 @@ import os
 class TestConfluenceToc(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceToc, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'confluence-toc')
 

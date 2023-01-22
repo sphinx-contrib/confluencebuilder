@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstTargets(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstTargets, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'targets')
 

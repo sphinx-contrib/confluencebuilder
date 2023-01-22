@@ -10,7 +10,7 @@ import os
 class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigHeaderFooter, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'header-footer')
 

@@ -11,7 +11,7 @@ import os
 class TestConfluenceJira(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceJira, cls).setUpClass()
+        super().setUpClass()
 
         cls.container = os.path.join(cls.datasets, 'jira')
 

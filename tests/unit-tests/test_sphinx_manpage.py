@@ -10,7 +10,7 @@ import os
 class TestConfluenceSphinxManpage(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxManpage, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'manpage')
 

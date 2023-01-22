@@ -10,7 +10,7 @@ import os
 class TestConfluenceConfigPrevNext(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigPrevNext, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'prevnext')
 

@@ -38,7 +38,7 @@ RATE_LIMITED_MAX_RETRY_DURATION = 30
 class SslAdapter(HTTPAdapter):
     def __init__(self, config, *args, **kwargs):
         self._config = config
-        super(SslAdapter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
         context = ssl.create_default_context()
@@ -60,10 +60,10 @@ class SslAdapter(HTTPAdapter):
             context.check_hostname = False
 
         kwargs['ssl_context'] = context
-        return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
+        return super().init_poolmanager(*args, **kwargs)
 
     def cert_verify(self, conn, url, verify, *args, **kwargs):
-        super(SslAdapter, self).cert_verify(conn, url, verify, *args, **kwargs)
+        super().cert_verify(conn, url, verify, *args, **kwargs)
 
         # prevent requests from injected an embedded certificates to instead
         # rely on the default certificate stores loaded by the context

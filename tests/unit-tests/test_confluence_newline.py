@@ -10,7 +10,7 @@ import os
 class TestConfluenceNewline(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceNewline, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'newline')
 
