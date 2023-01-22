@@ -139,7 +139,7 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         except IndexError:
             return None
 
-    def register_delete_rsp(self, code,):
+    def register_delete_rsp(self, code):
         """
         register a delete response
 
@@ -375,7 +375,7 @@ def mock_confluence_instance(config=None, ignore_requests=False):
                 sync.set()
                 daemon.serve_forever()
 
-            serve_thread = Thread(target=serve_forever, args=(daemon, sync,))
+            serve_thread = Thread(target=serve_forever, args=(daemon, sync))
             serve_thread.start()
 
             # wait for the serving thread to be running
