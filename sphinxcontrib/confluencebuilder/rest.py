@@ -159,7 +159,7 @@ def requests_exception_wrappers():
     return _decorator
 
 
-class Rest(object):
+class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
