@@ -114,7 +114,8 @@ class TestRegisterTitle(ConfluenceTestCase):
         out_dir = self.build(self.dataset, config=config)
         with parse('index', out_dir) as data:
             page_refs = data.find_all('ri:page')
-            assert len(page_refs) == 2
+            self.assertEqual(len(page_refs), 2)
+
             self.assertEqual(
                 page_refs[0]['ri:content-title'], 'readme -cef4211633')
             self.assertEqual(

@@ -79,7 +79,7 @@ class TestConfluenceMentions(ConfluenceTestCase):
 
         with parse('index', out_dir) as data:
             links = data.find_all('ac:link')
-            self.assertTrue(len(links) >= 3)
+            self.assertGreaterEqual(len(links), 3)
 
             # ##########################################################
             # Replaced ID mention
