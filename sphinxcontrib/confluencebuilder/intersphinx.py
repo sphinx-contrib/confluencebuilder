@@ -64,7 +64,7 @@ def build_intersphinx(builder):
                     # confluence will convert quotes to right-quotes for
                     # anchor values; replace and encode the anchor value
                     anchor = anchor.replace('"', '”')
-                    anchor = anchor.replace("'", '’')
+                    anchor = anchor.replace("'", '’')  # noqa: RUF001
                     anchor = requests.utils.quote(anchor.encode('utf-8'))
                 else:
                     anchor = ''
