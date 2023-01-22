@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright 2018-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinxcontrib.confluencebuilder.util import ConfluenceUtil as UTIL
+from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import unittest
 
 
@@ -19,4 +19,4 @@ class TestConfluenceUtil(unittest.TestCase):
 'http://example.atlassian.net/wiki':              'http://example.atlassian.net/wiki/',
         }
         for key in data:
-            self.assertEqual(UTIL.normalize_base_url(key), data[key])
+            self.assertEqual(ConfluenceUtil.normalize_base_url(key), data[key])
