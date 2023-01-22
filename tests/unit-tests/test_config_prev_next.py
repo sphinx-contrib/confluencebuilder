@@ -2,7 +2,6 @@
 # Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from tests.lib.testcase import ConfluenceTestCase
-import io
 import os
 
 
@@ -58,7 +57,7 @@ class TestConfluenceConfigPrevNext(ConfluenceTestCase):
         self.assertTrue(os.path.exists(test_path),
             'missing output file: {}'.format(test_path))
 
-        with io.open(test_path, encoding='utf8') as test_file:
+        with open(test_path, encoding='utf8') as test_file:
             data = ''.join([o.strip() + '\n' for o in test_file.readlines()])
             for char, count in expected.items():
                 found = data.count(char)

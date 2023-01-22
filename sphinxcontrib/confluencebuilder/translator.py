@@ -15,7 +15,6 @@ from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import remove_nonspace_control_chars
-import io
 import sys
 
 
@@ -92,7 +91,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             header_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
-                with io.open(header_file, encoding='utf-8') as file:
+                with open(header_file, encoding='utf-8') as file:
                     header_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(header_file, err))
@@ -115,7 +114,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             footer_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
-                with io.open(footer_file, encoding='utf-8') as file:
+                with open(footer_file, encoding='utf-8') as file:
                     footer_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn('error reading file {}: {}'.format(footer_file, err))

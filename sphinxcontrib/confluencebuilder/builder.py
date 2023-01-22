@@ -38,7 +38,6 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
-import io
 import os
 import tempfile
 
@@ -477,7 +476,7 @@ class ConfluenceBuilder(Builder):
         if self.writer.output is not None:
             ensuredir(path.dirname(outfilename))
             try:
-                with io.open(outfilename, 'w', encoding='utf-8') as file:
+                with open(outfilename, 'w', encoding='utf-8') as file:
                     if self.writer.output:
                         file.write(self.writer.output)
             except (IOError, OSError) as err:
@@ -733,7 +732,7 @@ class ConfluenceBuilder(Builder):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
-                    with io.open(docfile, 'r', encoding='utf-8') as file:
+                    with open(docfile, 'r', encoding='utf-8') as file:
                         output = file.read()
                         self.publish_doc(docname, output)
 
@@ -864,7 +863,7 @@ class ConfluenceBuilder(Builder):
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_header_file)
                 try:
-                    with io.open(fname, encoding='utf-8') as file:
+                    with open(fname, encoding='utf-8') as file:
                         header_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
                     self.warn('error reading file {}: {}'.format(fname, err))
@@ -886,7 +885,7 @@ class ConfluenceBuilder(Builder):
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_footer_file)
                 try:
-                    with io.open(fname, encoding='utf-8') as file:
+                    with open(fname, encoding='utf-8') as file:
                         footer_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
                     self.warn('error reading file {}: {}'.format(fname, err))
@@ -902,7 +901,7 @@ class ConfluenceBuilder(Builder):
         # generate/replace the document in the output directory
         fname = path.join(self.outdir, docname + self.file_suffix)
         try:
-            with io.open(fname, 'w', encoding='utf-8') as f:
+            with open(fname, 'w', encoding='utf-8') as f:
                 f.write(self._cached_header_data)
                 generator(self, docname, f)
                 f.write(self._cached_footer_data)

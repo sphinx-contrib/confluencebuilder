@@ -5,7 +5,6 @@ from collections import deque
 from contextlib import suppress
 from sphinx.util import logging
 from sphinx.util.console import bold  # pylint: disable=no-name-in-module
-import io
 import sys
 
 
@@ -118,7 +117,7 @@ class ConfluenceLogger:
         This is solely for manually debugging unexpected scenarios.
         """
         try:
-            with io.open('trace.log', 'a', encoding='utf-8') as file:
+            with open('trace.log', 'a', encoding='utf-8') as file:
                 file.write(u'[%s]\n' % container)
                 file.write(data)
                 file.write(u'\n')

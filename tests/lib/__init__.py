@@ -16,7 +16,6 @@ from threading import Thread
 import builtins
 import http.server as http_server
 import inspect
-import io
 import json
 import os
 import shutil
@@ -455,7 +454,7 @@ def parse(filename, dirname=None):
 
     target += '.conf'
 
-    with io.open(target, encoding='utf-8') as fp:
+    with open(target, encoding='utf-8') as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         yield soup
 
