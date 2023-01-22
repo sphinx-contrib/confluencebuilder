@@ -368,8 +368,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             'server-1': {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         self._try_config()
 
@@ -380,20 +380,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             None: {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
-            'server-1': None
+            'server-1': None,
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
-            'server-1': {}
+            'server-1': {},
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
@@ -401,15 +401,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             'server-1': {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-            }
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
             'server-1': {
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
@@ -791,7 +791,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_server_cookies'] = {
             'SESSION_ID': 'b8e536f5-895a-4054-b370-e0c579cb8d6b',
-            'U_ID': 'myusername'
+            'U_ID': 'myusername',
         }
         self._try_config()
 

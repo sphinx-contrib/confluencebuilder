@@ -83,7 +83,7 @@ class ConfluenceState:
 
             postfix = ConfluenceState._format_postfix(
                 postfix=config.confluence_publish_postfix, docname=docname,
-                config=config
+                config=config,
             )
 
         if prefix:

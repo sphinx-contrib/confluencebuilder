@@ -2283,12 +2283,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # v2: does not support font-size assignment; use sup tag
             # to make small
             self.body.append(self._start_tag(node, 'span', **{
-                'style': 'color: #707070;'
+                'style': 'color: #707070;',
             }))
             self.body.append(self._start_tag(node, 'sup'))
         else:
             self.body.append(self._start_tag(node, 'div', **{
-                'style': 'color: #707070; font-size: 12px;'
+                'style': 'color: #707070; font-size: 12px;',
             }))
 
         self.body.append(self.encode(

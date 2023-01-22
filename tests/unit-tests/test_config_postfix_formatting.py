@@ -54,7 +54,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         self.create_docname_unique_hash_patch = patch(
             'sphinxcontrib.confluencebuilder.state.ConfluenceState.'
             '_create_docname_unique_hash',
-            return_value=self.test_hash
+            return_value=self.test_hash,
         )
         self.create_docname_unique_hash_patch.start()
 

@@ -67,7 +67,7 @@ class TestConfluenceJira(ConfluenceTestCase):
             'test-jira-server': {
                 'name': 'test-server-name',
                 'id': '00000000-1234-0000-5678-000000000009',
-            }
+            },
         }
 
         out_dir = self.build(dataset, config=config)

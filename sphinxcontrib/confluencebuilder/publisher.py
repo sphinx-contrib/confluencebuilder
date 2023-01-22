@@ -66,7 +66,7 @@ class ConfluencePublisher:
         try:
             rsp = self.rest_client.get('space', {
                 'spaceKey': self.space_key,
-                'limit': 1
+                'limit': 1,
             })
         except ConfluenceBadApiError as e:
             raise ConfluenceBadServerUrlError(server_url, e)
@@ -258,7 +258,7 @@ reported a success (which can be permitted for anonymous users).
             'type': 'page',
             'spaceKey': self.space_key,
             'title': self.parent_ref,
-            'status': 'current'
+            'status': 'current',
         })
         if rsp['size'] == 0:
             raise ConfluenceConfigurationError(
@@ -923,7 +923,7 @@ reported a success (which can be permitted for anonymous users).
                 'storage': {
                     'representation': 'storage',
                     'value': data['content'],
-                }
+                },
             },
             'metadata': {
                 'properties': {},
