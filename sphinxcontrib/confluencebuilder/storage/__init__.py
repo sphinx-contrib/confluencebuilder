@@ -55,7 +55,7 @@ def intern_uri_anchor_value(docname, refuri):
     anchor_value = None
     if '#' in refuri:
         anchor = refuri.split('#')[1]
-        target_name = '{}#{}'.format(docname, anchor)
+        target_name = f'{docname}#{anchor}'
 
         # check if this target is reachable without an anchor; if so, use
         # the identifier value instead

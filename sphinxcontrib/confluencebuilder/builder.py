@@ -38,7 +38,6 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
-import io
 import os
 import tempfile
 
@@ -57,10 +56,10 @@ class ConfluenceBuilder(Builder):
         # assigned.
         if sphinx_version_info >= (5, 1):
             # pylint: disable=too-many-function-args
-            super(ConfluenceBuilder, self).__init__(app, env)
+            super().__init__(app, env)
             # pylint: enable=too-many-function-args
         else:
-            super(ConfluenceBuilder, self).__init__(app)
+            super().__init__(app)
 
         self.cache_doctrees = {}
         self.cloud = False
@@ -252,7 +251,7 @@ class ConfluenceBuilder(Builder):
             for domain_name in sorted(self.env.domains):
                 domain = self.env.domains[domain_name]
                 for indexcls in domain.indices:
-                    indexname = '%s-%s' % (domain.name, indexcls.name)
+                    indexname = f'{domain.name}-{indexcls.name}'
 
                     if isinstance(indices_config, list):
                         if indexname not in indices_config:
@@ -477,11 +476,11 @@ class ConfluenceBuilder(Builder):
         if self.writer.output is not None:
             ensuredir(path.dirname(outfilename))
             try:
-                with io.open(outfilename, 'w', encoding='utf-8') as file:
+                with open(outfilename, 'w', encoding='utf-8') as file:
                     if self.writer.output:
                         file.write(self.writer.output)
             except (IOError, OSError) as err:
-                self.warn('error writing file %s: %s' % (outfilename, err))
+                self.warn(f'error writing file {outfilename}: {err}')
 
     def publish_doc(self, docname, output):
         conf = self.config
@@ -698,7 +697,7 @@ class ConfluenceBuilder(Builder):
         # build domain indexes
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
-                self.info('generating index ({})...'.format(indexname),
+                self.info(f'generating index ({indexname})...',
                     nonl=(not self._verbose))
 
                 self._generate_special_document(indexname,
@@ -733,12 +732,12 @@ class ConfluenceBuilder(Builder):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
-                    with io.open(docfile, 'r', encoding='utf-8') as file:
+                    with open(docfile, 'r', encoding='utf-8') as file:
                         output = file.read()
                         self.publish_doc(docname, output)
 
                 except (IOError, OSError) as err:
-                    self.warn('error reading file %s: %s' % (docfile, err))
+                    self.warn(f'error reading file {docfile}: {err}')
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)
@@ -769,7 +768,7 @@ class ConfluenceBuilder(Builder):
                         output = file.read()
                         self.publish_asset(key, docname, output, type_, hash_)
                 except (IOError, OSError) as err:
-                    self.warn('error reading asset %s: %s' % (key, err))
+                    self.warn(f'error reading asset {key}: {err}')
 
             self.publish_cleanup()
             self.publish_finalize()
@@ -864,10 +863,10 @@ class ConfluenceBuilder(Builder):
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_header_file)
                 try:
-                    with io.open(fname, encoding='utf-8') as file:
+                    with open(fname, encoding='utf-8') as file:
                         header_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
-                    self.warn('error reading file {}: {}'.format(fname, err))
+                    self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_header_data is None:
@@ -886,10 +885,10 @@ class ConfluenceBuilder(Builder):
                 fname = path.join(self.env.srcdir,
                     self.config.confluence_footer_file)
                 try:
-                    with io.open(fname, encoding='utf-8') as file:
+                    with open(fname, encoding='utf-8') as file:
                         footer_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
-                    self.warn('error reading file {}: {}'.format(fname, err))
+                    self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_footer_data is None:
@@ -902,7 +901,7 @@ class ConfluenceBuilder(Builder):
         # generate/replace the document in the output directory
         fname = path.join(self.outdir, docname + self.file_suffix)
         try:
-            with io.open(fname, 'w', encoding='utf-8') as f:
+            with open(fname, 'w', encoding='utf-8') as f:
                 f.write(self._cached_header_data)
                 generator(self, docname, f)
                 f.write(self._cached_footer_data)
@@ -973,7 +972,7 @@ class ConfluenceBuilder(Builder):
                 else:
                     # unsupported source type should not pass here after this
                     # extension's configuration check
-                    assert False
+                    raise AssertionError('unsupported source type')
 
                 sourcelink['url'] = url_base + url
 
@@ -1085,10 +1084,10 @@ class ConfluenceBuilder(Builder):
                     section_id = doc_used_names.get(target, 0)
                     doc_used_names[target] = section_id + 1
                     if section_id > 0:
-                        target = '{}.{}'.format(target, section_id)
+                        target = f'{target}.{section_id}'
 
                     for id_ in section_node['ids']:
-                        id_ = '{}#{}'.format(docname, id_)
+                        id_ = f'{docname}#{id_}'
                         self.state.register_target(id_, target)
 
     def _top_ref_check(self, node):
@@ -1121,7 +1120,7 @@ class ConfluenceBuilder(Builder):
 
         if not doctitle:
             if not self.config.confluence_disable_autogen_title:
-                doctitle = "autogen-{}".format(docname)
+                doctitle = f'autogen-{docname}'
                 if self.publish:
                     self.warn('document will be published using an '
                         'generated title value: {}'.format(docname))

@@ -11,7 +11,7 @@ import os
 class TestConfluenceSphinxDownload(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxDownload, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'download')
 

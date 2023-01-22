@@ -10,7 +10,7 @@ import os
 class TestConfluenceExcerpt(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceExcerpt, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'excerpt')
 

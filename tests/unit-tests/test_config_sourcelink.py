@@ -10,7 +10,7 @@ import os
 class TestConfluenceConfigSourceLink(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigSourceLink, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'minimal')
 

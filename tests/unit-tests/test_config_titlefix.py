@@ -10,7 +10,7 @@ import os
 class TestConfluenceConfigTitlefix(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigTitlefix, cls).setUpClass()
+        super().setUpClass()
 
         cls.config['root_doc'] = 'titlefix'
         cls.dataset = os.path.join(cls.datasets, 'titlefix')

@@ -10,7 +10,7 @@ import os
 class TestConfluenceEmoticon(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceEmoticon, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'emoticon')
 

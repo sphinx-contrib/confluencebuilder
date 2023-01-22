@@ -36,9 +36,9 @@ def build_intersphinx(builder):
         # header
         f.write((
             '# Sphinx inventory version 2\n'
-            '# Project: %s\n'
-            '# Version: %s\n'
-            '# The remainder of this file is compressed using zlib.\n' % (
+            '# Project: {}\n'
+            '# Version: {}\n'
+            '# The remainder of this file is compressed using zlib.\n'.format(
                 escape(builder.env.config.project),
                 escape(builder.env.config.version))).encode())
 
@@ -53,7 +53,7 @@ def build_intersphinx(builder):
                 if not page_id:
                     continue
 
-                target_name = '{}#{}'.format(docname, raw_anchor)
+                target_name = f'{docname}#{raw_anchor}'
                 target = builder.state.target(target_name)
 
                 if raw_anchor and target:
@@ -64,7 +64,7 @@ def build_intersphinx(builder):
                     # confluence will convert quotes to right-quotes for
                     # anchor values; replace and encode the anchor value
                     anchor = anchor.replace('"', '”')
-                    anchor = anchor.replace("'", '’')
+                    anchor = anchor.replace("'", '’')  # noqa: RUF001
                     anchor = requests.utils.quote(anchor.encode('utf-8'))
                 else:
                     anchor = ''

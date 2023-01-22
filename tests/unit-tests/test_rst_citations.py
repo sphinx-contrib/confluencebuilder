@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstCitations(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstCitations, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'citations')
 

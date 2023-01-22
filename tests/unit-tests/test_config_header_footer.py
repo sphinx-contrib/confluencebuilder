@@ -10,7 +10,7 @@ import os
 class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceConfigHeaderFooter, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'header-footer')
 
@@ -60,10 +60,10 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
         config['confluence_footer_file'] = '../../templates/sample-footer-with-jinja.tpl'
         config['confluence_header_file'] = '../../templates/sample-header-with-jinja.tpl'
         config['confluence_footer_data'] = {
-            "variable": "footer_value"
+            'variable': 'footer_value',
         }
         config['confluence_header_data'] = {
-            "variable": "header_value"
+            'variable': 'header_value',
         }
 
         out_dir = self.build(self.dataset, config=config)

@@ -3,6 +3,7 @@
 
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
+from contextlib import suppress
 from copy import deepcopy
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
@@ -15,7 +16,6 @@ from threading import Thread
 import builtins
 import http.server as http_server
 import inspect
-import io
 import json
 import os
 import shutil
@@ -138,7 +138,7 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         except IndexError:
             return None
 
-    def register_delete_rsp(self, code,):
+    def register_delete_rsp(self, code):
         """
         register a delete response
 
@@ -364,7 +364,7 @@ def mock_confluence_instance(config=None, ignore_requests=False):
 
         host, port = daemon.server_address
         if config:
-            config.confluence_server_url = 'http://{}:{}/'.format(host, port)
+            config.confluence_server_url = f'http://{host}:{port}/'
 
         # start accepting requests
         if not ignore_requests:
@@ -374,7 +374,7 @@ def mock_confluence_instance(config=None, ignore_requests=False):
                 sync.set()
                 daemon.serve_forever()
 
-            serve_thread = Thread(target=serve_forever, args=(daemon, sync,))
+            serve_thread = Thread(target=serve_forever, args=(daemon, sync))
             serve_thread.start()
 
             # wait for the serving thread to be running
@@ -454,7 +454,7 @@ def parse(filename, dirname=None):
 
     target += '.conf'
 
-    with io.open(target, encoding='utf-8') as fp:
+    with open(target, encoding='utf-8') as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         yield soup
 
@@ -575,10 +575,8 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     verbosity = 0
     if 'SPHINX_VERBOSITY' in os.environ:
-        try:
+        with suppress(ValueError):
             verbosity = int(os.environ['SPHINX_VERBOSITY'])
-        except ValueError:
-            pass
 
     # default to using this extension's builder
     if not builder:

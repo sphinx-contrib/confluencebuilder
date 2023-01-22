@@ -20,7 +20,7 @@ class TestConfluenceConfigEnvironment(unittest.TestCase):
         # ensure environment overrides do not leak between tests
         old_env = dict(os.environ)
         try:
-            super(TestConfluenceConfigEnvironment, self).run(result)
+            super().run(result)
         finally:
             os.environ.clear()
             os.environ.update(old_env)

@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstReferences(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstReferences, cls).setUpClass()
+        super().setUpClass()
 
         cls.config['root_doc'] = 'references'
         cls.dataset = os.path.join(cls.datasets, 'rst', 'references')

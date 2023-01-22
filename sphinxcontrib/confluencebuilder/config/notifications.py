@@ -45,7 +45,7 @@ def deprecated(validator):
     # inform users of a deprecated configuration being used
     for key, msg in DEPRECATED_CONFIGS.items():
         if config[key] is not None:
-            logger.warn('%s deprecated; %s' % (key, msg))
+            logger.warn(f'{key} deprecated; {msg}')
 
 
 def warnings(validator):

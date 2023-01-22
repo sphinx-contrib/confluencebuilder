@@ -50,9 +50,9 @@ def process_ask_configs(config):
         default_user = config.confluence_server_user
         u_str = ''
         if default_user:
-            u_str = ' [{}]'.format(default_user)
+            u_str = f' [{default_user}]'
 
-        target_user = input(' User{}: '.format(u_str)) or default_user
+        target_user = input(f' User{u_str}: ') or default_user
         if not target_user:
             raise ConfluenceConfigurationError('no user provided')
 

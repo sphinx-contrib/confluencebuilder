@@ -10,7 +10,7 @@ import os
 class TestConfluenceSinglepageAssets(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSinglepageAssets, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'shared-asset')
 

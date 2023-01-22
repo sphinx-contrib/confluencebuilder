@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstHeadings(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstHeadings, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'headings')
 

@@ -11,7 +11,7 @@ import os
 class TestConfluenceRstLiteral(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstLiteral, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'literal')
 

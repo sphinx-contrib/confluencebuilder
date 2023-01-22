@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstDefinitionLists(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstDefinitionLists, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'definition-lists')
 

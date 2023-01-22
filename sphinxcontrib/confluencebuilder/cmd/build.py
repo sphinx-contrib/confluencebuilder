@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
+from contextlib import suppress
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -51,10 +52,8 @@ def build_main(args_parser):
 
     verbosity = 0
     if args.verbose:
-        try:
+        with suppress(ValueError):
             verbosity = int(args.verbose)
-        except ValueError:
-            pass
 
     # run sphinx engine
     with docutils_namespace():

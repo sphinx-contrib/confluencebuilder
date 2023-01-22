@@ -11,7 +11,7 @@ import os
 class TestConfluenceRstFigure(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstFigure, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'figure')
 

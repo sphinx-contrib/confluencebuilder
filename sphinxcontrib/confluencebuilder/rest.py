@@ -38,7 +38,7 @@ RATE_LIMITED_MAX_RETRY_DURATION = 30
 class SslAdapter(HTTPAdapter):
     def __init__(self, config, *args, **kwargs):
         self._config = config
-        super(SslAdapter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
         context = ssl.create_default_context()
@@ -60,10 +60,10 @@ class SslAdapter(HTTPAdapter):
             context.check_hostname = False
 
         kwargs['ssl_context'] = context
-        return super(SslAdapter, self).init_poolmanager(*args, **kwargs)
+        return super().init_poolmanager(*args, **kwargs)
 
     def cert_verify(self, conn, url, verify, *args, **kwargs):
-        super(SslAdapter, self).cert_verify(conn, url, verify, *args, **kwargs)
+        super().cert_verify(conn, url, verify, *args, **kwargs)
 
         # prevent requests from injected an embedded certificates to instead
         # rely on the default certificate stores loaded by the context
@@ -159,7 +159,7 @@ def requests_exception_wrappers():
     return _decorator
 
 
-class Rest(object):
+class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
@@ -218,7 +218,7 @@ class Rest(object):
         elif config.confluence_server_user:
             passwd = config.confluence_server_pass
             if passwd is None:
-                passwd = ''
+                passwd = ''  # noqa: S105
             session.auth = (config.confluence_server_user, passwd)
 
         if config.confluence_server_cookies:
@@ -326,12 +326,12 @@ class Rest(object):
 
     def _format_error(self, rsp, key):
         err = ""
-        err += "REQ: {0}\n".format(rsp.request.method)
+        err += f"REQ: {rsp.request.method}\n"
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.bind_path + "\n"
         err += "API: " + key + "\n"
         try:
-            err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
+            err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
         except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err

@@ -10,7 +10,7 @@ import os
 class TestConfluenceExpand(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceExpand, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'expand')
 

@@ -32,12 +32,12 @@ def generate_storage_format_domainindex(builder, docname, f):
     for key, entries in content:
         for (i, entry) in enumerate(entries):
             if isinstance(entry, list):
-                refuri = '{}#{}'.format(entry[2], entry[3])
+                refuri = f'{entry[2]}#{entry[3]}'
                 doctitle, anchor_value = process_doclink(builder.config, refuri)
                 entry[2] = doctitle
                 entry[3] = anchor_value
             else:
-                refuri = '{}#{}'.format(entry.docname, entry.anchor)
+                refuri = f'{entry.docname}#{entry.anchor}'
                 doctitle, anchor_value = process_doclink(builder.config, refuri)
                 entries[i] = entries[i]._replace(
                     docname=doctitle, anchor=anchor_value)

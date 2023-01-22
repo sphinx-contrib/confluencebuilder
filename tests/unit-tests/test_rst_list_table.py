@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstListTable(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstListTable, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'list-table')
 

@@ -163,7 +163,7 @@ class ConfigurationValidation:
                             os.path.join(self.env.srcdir, docname + suffix))
                         for suffix in self.config.source_suffix):
                     raise ConfluenceConfigurationError(
-                        '%s is missing document %s' % (self.key, docname))
+                        f'{self.key} is missing document {docname}')
 
         return self
 
@@ -198,7 +198,7 @@ class ConfigurationValidation:
                             os.path.join(self.env.srcdir, docname + suffix))
                         for suffix in self.config.source_suffix):
                     raise ConfluenceConfigurationError(
-                        '%s is missing document %s' % (self.key, docname))
+                        f'{self.key} is missing document {docname}')
 
         return self
 

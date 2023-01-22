@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstFootnotes(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstFootnotes, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'footnotes')
 

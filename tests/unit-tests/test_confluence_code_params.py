@@ -10,7 +10,7 @@ import os
 class TestConfluenceCodeParams(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceCodeParams, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'code-block-params')
 

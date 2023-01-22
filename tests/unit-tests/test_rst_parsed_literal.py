@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstParsedLiteral(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstParsedLiteral, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'parsed-literal')
 

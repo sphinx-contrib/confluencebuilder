@@ -2,9 +2,9 @@
 # Copyright 2017-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from collections import deque
+from contextlib import suppress
 from sphinx.util import logging
 from sphinx.util.console import bold  # pylint: disable=no-name-in-module
-import io
 import sys
 
 
@@ -41,10 +41,10 @@ class ConfluenceLogger:
                     self.verbosity = 0
                     self.warningiserror = False
                     self._warncount = 0
-            try:
+
+            # fail silently if mocked application is missing something
+            with suppress(Exception):
                 logging.setup(MockSphinx(), sys.stdout, sys.stderr)
-            except Exception:
-                pass  # fail silently if mocked application is missing something
 
     @staticmethod
     def error(msg, *args, **kwargs):
@@ -117,9 +117,9 @@ class ConfluenceLogger:
         This is solely for manually debugging unexpected scenarios.
         """
         try:
-            with io.open('trace.log', 'a', encoding='utf-8') as file:
-                file.write(u'[%s]\n' % container)
+            with open('trace.log', 'a', encoding='utf-8') as file:
+                file.write('[%s]\n' % container)
                 file.write(data)
-                file.write(u'\n')
+                file.write('\n')
         except (IOError, OSError) as err:
             ConfluenceLogger.warn('unable to trace: %s' % err)

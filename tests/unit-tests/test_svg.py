@@ -11,7 +11,7 @@ import xml.etree.ElementTree as xml_et
 class TestSvg(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestSvg, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'svg')
 

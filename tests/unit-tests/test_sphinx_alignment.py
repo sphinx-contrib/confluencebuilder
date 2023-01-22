@@ -10,7 +10,7 @@ import os
 class TestConfluenceSphinxAlignment(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxAlignment, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'alignment')
 

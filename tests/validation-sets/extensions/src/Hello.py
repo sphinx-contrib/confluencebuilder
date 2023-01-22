@@ -3,7 +3,7 @@ This is a module docstring
 """
 
 
-class Hello(object):
+class Hello:
     """
     This is a Hello class docstring
     """

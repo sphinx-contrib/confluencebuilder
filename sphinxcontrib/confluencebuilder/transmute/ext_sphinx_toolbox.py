@@ -95,9 +95,9 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
                 break
 
             if isinstance(node, sphinx_toolbox_IssueNodeWithName):
-                title = '{}#{}'.format(node.repo_name, node.issue_number)
+                title = f'{node.repo_name}#{node.issue_number}'
             else:
-                title = '#{}'.format(node.issue_number)
+                title = f'#{node.issue_number}'
 
             new_node = nodes.reference(title, title, refuri=node.issue_url)
             node.replace_self(new_node)

@@ -15,7 +15,6 @@ from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import remove_nonspace_control_chars
-import io
 import sys
 
 
@@ -92,10 +91,10 @@ class ConfluenceBaseTranslator(BaseTranslator):
             header_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
-                with io.open(header_file, encoding='utf-8') as file:
+                with open(header_file, encoding='utf-8') as file:
                     header_template_data = file.read()
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(header_file, err))
+                self.warn(f'error reading file {header_file}: {err}')
 
             # if no data is supplied, the file is plain text
             if self.builder.config.confluence_header_data is None:
@@ -115,10 +114,10 @@ class ConfluenceBaseTranslator(BaseTranslator):
             footer_file = path.join(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
-                with io.open(footer_file, encoding='utf-8') as file:
+                with open(footer_file, encoding='utf-8') as file:
                     footer_template_data = file.read()
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(footer_file, err))
+                self.warn(f'error reading file {footer_file}: {err}')
 
             # if no data is supplied, the file is plain text
             if self.builder.config.confluence_footer_data is None:
@@ -142,7 +141,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         node_name = node.__class__.__name__
         ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
         if node_name in ignore_nodes:
-            self.verbose('ignore node {} (conf)'.format(node_name))
+            self.verbose(f'ignore node {node_name} (conf)')
             raise nodes.SkipNode
 
         # allow users to override unknown nodes

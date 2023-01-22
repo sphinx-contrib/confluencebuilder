@@ -9,7 +9,7 @@ import os
 class TestConfluenceMetadata(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceMetadata, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'metadata')
 

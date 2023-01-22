@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstAttribution(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstAttribution, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'attribution')
 

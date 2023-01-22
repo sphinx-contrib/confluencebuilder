@@ -9,7 +9,7 @@ import os
 class TestConfluenceHierarchy(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceHierarchy, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'hierarchy')
 

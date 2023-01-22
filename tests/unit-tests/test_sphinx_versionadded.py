@@ -10,7 +10,7 @@ import os
 class TestConfluenceSphinxVersionAdded(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxVersionAdded, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'versionadded')
 

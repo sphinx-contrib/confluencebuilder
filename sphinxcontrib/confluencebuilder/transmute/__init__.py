@@ -289,7 +289,7 @@ def replace_inheritance_diagram(builder, doctree):
                 new_node['align'] = node['align']
             node.replace_self(new_node)
         except GraphvizError as exc:
-            ConfluenceLogger.warn('dot code {}: {}'.format(dotcode, exc))
+            ConfluenceLogger.warn(f'dot code {dotcode}: {exc}')
             node.parent.remove(node)
 
 
@@ -319,7 +319,7 @@ def replace_math_blocks(builder, doctree):
             if node['nowrap']:
                 latex = node.astext()
             else:
-                latex = wrap_displaymath(node.astext(), None, False)
+                latex = wrap_displaymath(node.astext(), None, numbering=False)
             new_node_type = confluence_latex_block
         else:
             latex = '$' + node.astext() + '$'

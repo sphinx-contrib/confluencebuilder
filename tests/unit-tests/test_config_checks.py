@@ -30,7 +30,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         # unique configuration each run to avoid copying it in each test
         self.config = prepare_conf()
 
-        super(TestConfluenceConfigChecks, self).run(result)
+        super().run(result)
 
     def _prepare_valid_publish(self):
         self.config['confluence_publish'] = True
@@ -231,7 +231,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_cert_pass(self):
-        self.config['confluence_client_cert_pass'] = 'dummy'
+        self.config['confluence_client_cert_pass'] = 'dummy'  # noqa: S105
         self._try_config()
 
     def test_config_check_default_alignment(self):
@@ -368,8 +368,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             'server-1': {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         self._try_config()
 
@@ -380,20 +380,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             None: {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
-            'server-1': None
+            'server-1': None,
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
-            'server-1': {}
+            'server-1': {},
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
@@ -401,15 +401,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_jira_servers'] = {
             'server-1': {
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
-            }
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
             'server-1': {
-                'name': 'MyAwesomeServer'
-            }
+                'name': 'MyAwesomeServer',
+            },
         }
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
@@ -640,7 +640,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # explicitly force unicode strings to help verify python 2.x series
             # dealing with unicode strings inside the document subset
-            self.config[option] = [u'doc-c']
+            self.config[option] = ['doc-c']
             self._try_config(dataset=dataset)
 
             # file with a valid document list
@@ -754,10 +754,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_publish_token(self):
-        self.config['confluence_publish_token'] = ''
+        self.config['confluence_publish_token'] = ''  # noqa: S105
         self._try_config()
 
-        self.config['confluence_publish_token'] = 'dummy'
+        self.config['confluence_publish_token'] = 'dummy'  # noqa: S105
         self._try_config()
 
     def test_config_check_secnumber_suffix(self):
@@ -791,7 +791,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_server_cookies'] = {
             'SESSION_ID': 'b8e536f5-895a-4054-b370-e0c579cb8d6b',
-            'U_ID': 'myusername'
+            'U_ID': 'myusername',
         }
         self._try_config()
 
@@ -802,7 +802,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_server_pass(self):
-        self.config['confluence_server_pass'] = 'dummy'
+        self.config['confluence_server_pass'] = 'dummy'  # noqa: S105
         self._try_config()
 
         # enable publishing enabled checks

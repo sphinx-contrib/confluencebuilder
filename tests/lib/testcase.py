@@ -31,7 +31,7 @@ class ConfluenceTestCase(unittest.TestCase):
                 ...
         """
 
-        super(ConfluenceTestCase, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.builder = DEFAULT_BUILDER
 

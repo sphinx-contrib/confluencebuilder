@@ -8,44 +8,39 @@ from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib import parse
 from tests.lib.testcase import setup_builder
-# python2.7 is still supported so unittest will not contain mock so we must
-# catch the import error and import it from the installed module instead
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
+from unittest.mock import patch
 
 
 class TestCreateDocnameUniqueHash(ConfluenceTestCase):
     def test_no_parent_or_root_page_or_project_configured(self):
         test_docname = 'docs/test_file.rst'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '75b0047d7552a5e4d91481e992f5ed339d868b3c')
+        self.assertEqual(hv, '75b0047d7552a5e4d91481e992f5ed339d868b3c')
 
     def test_parent_page_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_parent_page'] = 'parent_page'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '9ca6dcc0b0e9eff175f1182ed75a2c43f359ed24')
+        self.assertEqual(hv, '9ca6dcc0b0e9eff175f1182ed75a2c43f359ed24')
 
     def test_publish_root_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_publish_root'] = 'publish_root'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '02fe177ef99b746ed60cb1959d6134d3ea54fab9')
+        self.assertEqual(hv, '02fe177ef99b746ed60cb1959d6134d3ea54fab9')
 
     def test_project_configured(self):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['project'] = 'grand_project'
-        hash = ConfluenceState._create_docname_unique_hash(
+        hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
-        self.assertEqual(hash, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
+        self.assertEqual(hv, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
 
 
 class TestFormatPostfix(ConfluenceTestCase):
@@ -54,7 +49,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         self.create_docname_unique_hash_patch = patch(
             'sphinxcontrib.confluencebuilder.state.ConfluenceState.'
             '_create_docname_unique_hash',
-            return_value=self.test_hash
+            return_value=self.test_hash,
         )
         self.create_docname_unique_hash_patch.start()
 
@@ -68,7 +63,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         postfix = ConfluenceState._format_postfix(
             postfix=confluence_publish_prefix, docname=test_docname,
             config=config)
-        self.assertEqual(postfix, '- ({hash})'.format(hash=self.test_hash))
+        self.assertEqual(postfix, f'- ({self.test_hash})')
 
     def test_no_placeholders(self):
         test_docname = 'docs/test_file.rst'
@@ -102,7 +97,7 @@ class TestFormatPostfix(ConfluenceTestCase):
 class TestRegisterTitle(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestRegisterTitle, cls).setUpClass()
+        super().setUpClass()
         cls.config['root_doc'] = 'index'
         cls.dataset = os.path.join(cls.datasets, 'postfix_formatting')
 
@@ -114,7 +109,8 @@ class TestRegisterTitle(ConfluenceTestCase):
         out_dir = self.build(self.dataset, config=config)
         with parse('index', out_dir) as data:
             page_refs = data.find_all('ri:page')
-            assert len(page_refs) == 2
+            self.assertEqual(len(page_refs), 2)
+
             self.assertEqual(
                 page_refs[0]['ri:content-title'], 'readme -cef4211633')
             self.assertEqual(

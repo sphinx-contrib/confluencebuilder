@@ -66,7 +66,7 @@ class ConfluencePublisher:
         try:
             rsp = self.rest_client.get('space', {
                 'spaceKey': self.space_key,
-                'limit': 1
+                'limit': 1,
             })
         except ConfluenceBadApiError as e:
             raise ConfluenceBadServerUrlError(server_url, e)
@@ -173,7 +173,7 @@ reported a success (which can be permitted for anonymous users).
             while attempt <= MAX_WAIT_FOR_PAGE_ARCHIVE:
                 time.sleep(0.5)
 
-                rsp = self.rest_client.get('longtask/{}'.format(longtask_id))
+                rsp = self.rest_client.get(f'longtask/{longtask_id}')
                 if rsp['finished']:
                     break
 
@@ -258,7 +258,7 @@ reported a success (which can be permitted for anonymous users).
             'type': 'page',
             'spaceKey': self.space_key,
             'title': self.parent_ref,
-            'status': 'current'
+            'status': 'current',
         })
         if rsp['size'] == 0:
             raise ConfluenceConfigurationError(
@@ -370,7 +370,7 @@ reported a success (which can be permitted for anonymous users).
         attachment = None
         attachment_id = None
 
-        url = 'content/{}/child/attachment'.format(page_id)
+        url = f'content/{page_id}/child/attachment'
         rsp = self.rest_client.get(url, {
             'filename': name,
         })
@@ -397,7 +397,7 @@ reported a success (which can be permitted for anonymous users).
         """
         attachment_info = {}
 
-        url = 'content/{}/child/attachment'.format(page_id)
+        url = f'content/{page_id}/child/attachment'
         search_fields = {}
 
         # Configure a larger limit value than the default (no provided
@@ -474,7 +474,7 @@ reported a success (which can be permitted for anonymous users).
             the page id and page object
         """
 
-        page = self.rest_client.get('content/{}'.format(page_id), {
+        page = self.rest_client.get(f'content/{page_id}', {
             'status': 'current',
             'expand': expand,
         })
@@ -589,7 +589,7 @@ reported a success (which can be permitted for anonymous users).
         try:
             # split hash comment into chunks to minimize rendering issues with a
             # single one-world-long-hash value
-            hash_ = '{}:{}'.format(HASH_KEY, hash_)
+            hash_ = f'{HASH_KEY}:{hash_}'
             chunked_hash = '\n'.join(
                 [hash_[i:i + 16] for i in range(0, len(hash_), 16)])
 
@@ -603,7 +603,7 @@ reported a success (which can be permitted for anonymous users).
                 data['minorEdit'] = 'true'
 
             if not attachment:
-                url = 'content/{}/child/attachment'.format(page_id)
+                url = f'content/{page_id}/child/attachment'
                 rsp = self.rest_client.post(url, None, files=data)
                 uploaded_attachment_id = rsp['results'][0]['id']
             else:
@@ -711,7 +711,7 @@ reported a success (which can be permitted for anonymous users).
                     # initial labels need to be applied in their own request
                     labels = new_page['metadata']['labels']
                     if not self.cloud and labels:
-                        url = 'content/{}/label'.format(uploaded_page_id)
+                        url = f'content/{uploaded_page_id}/label'
                         self.rest_client.post(url, labels)
 
                 except ConfluenceBadApiError as ex:
@@ -923,7 +923,7 @@ reported a success (which can be permitted for anonymous users).
                 'storage': {
                     'representation': 'storage',
                     'value': data['content'],
-                }
+                },
             },
             'metadata': {
                 'properties': {},
@@ -1064,7 +1064,7 @@ reported a success (which can be permitted for anonymous users).
         if id_ and id_ in self._name_cache:
             s += ' ' + self._name_cache[id_]
         if id_:
-            s += ' ({})'.format(id_)
+            s += f' ({id_})'
         if misc:
             s += ' ' + misc
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
@@ -1086,7 +1086,7 @@ reported a success (which can be permitted for anonymous users).
         if id_ and id_ in self._name_cache:
             s += ' ' + self._name_cache[id_]
         if id_:
-            s += ' ({})'.format(id_)
+            s += f' ({id_})'
         logger.info(s + min(80, 80 - len(s)) * ' ')  # 80c-min clearing
 
     def _populate_labels(self, page, labels):

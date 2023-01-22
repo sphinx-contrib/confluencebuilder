@@ -38,8 +38,7 @@ class ConfluenceState:
         [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#directive-toctree
         """
         ConfluenceState.doc2parentDoc[docname] = parent_docname
-        logger.verbose(
-            'setting parent of %s to: %s' % (docname, parent_docname))
+        logger.verbose(f'setting parent of {docname} to: {parent_docname}')
 
     @staticmethod
     def register_target(refid, target):
@@ -55,7 +54,7 @@ class ConfluenceState:
         writer can properly prepare a link; see also `target`).
         """
         ConfluenceState.refid2target[refid] = target
-        logger.verbose('mapping %s to target: %s' % (refid, target))
+        logger.verbose(f'mapping {refid} to target: {target}')
 
     @staticmethod
     def register_title(docname, title, config):
@@ -83,7 +82,7 @@ class ConfluenceState:
 
             postfix = ConfluenceState._format_postfix(
                 postfix=config.confluence_publish_postfix, docname=docname,
-                config=config
+                config=config,
             )
 
         if prefix:
@@ -110,7 +109,7 @@ class ConfluenceState:
                     "'{}' and '{}'".format(
                         ConfluenceState.title2doc[title.lower()], docname))
 
-            tail = ' ({}){}'.format(offset, base_tail)
+            tail = f' ({offset}){base_tail}'
             if len(base_title) + len(tail) > try_max:
                 base_title = base_title[0:(try_max - len(tail))]
 
@@ -119,7 +118,7 @@ class ConfluenceState:
 
         ConfluenceState.doc2title[docname] = title
         ConfluenceState.title2doc[title.lower()] = docname
-        logger.verbose('mapping %s to title: %s' % (docname, title))
+        logger.verbose(f'mapping {docname} to title: {title}')
         return title
 
     @staticmethod
@@ -135,7 +134,7 @@ class ConfluenceState:
         [1]: http://www.sphinx-doc.org/en/stable/markup/toctree.html#id3
         """
         ConfluenceState.doc2ttd[docname] = depth
-        logger.verbose('track %s toc-depth: %s' % (docname, depth))
+        logger.verbose(f'track {docname} toc-depth: {depth}')
 
     @staticmethod
     def register_upload_id(docname, id_):
@@ -152,7 +151,8 @@ class ConfluenceState:
         tracked in this state (see also `uploadId`).
         """
         ConfluenceState.doc2uploadId[docname] = id_
-        logger.verbose("tracking docname %s's upload id: %s" % (docname, id_))
+        logger.verbose(
+            f"tracking docname {docname}'s upload id: {id_}")
 
     @staticmethod
     def reset():
@@ -241,4 +241,4 @@ class ConfluenceState:
         prehash += str(config.project)
         prehash += str(config.confluence_parent_page)
         prehash += str(config.confluence_publish_root)
-        return hashlib.sha1(prehash.encode()).hexdigest()
+        return hashlib.sha1(prehash.encode()).hexdigest()  # noqa: S324

@@ -11,7 +11,7 @@ class ConfluenceError(SphinxError):
 
 class ConfluenceAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
-        super(ConfluenceAuthenticationFailedUrlError, self).__init__('''
+        super().__init__('''
 ---
 Unable to authenticate with Confluence
 
@@ -25,7 +25,7 @@ browser or asking an administrator of the Confluence instance for help.
 
 class ConfluenceBadApiError(ConfluenceError):
     def __init__(self, code, details):
-        super(ConfluenceBadApiError, self).__init__('''
+        super().__init__('''
 ---
 Unsupported Confluence API call
 
@@ -43,7 +43,7 @@ class ConfluenceBadSpaceError(ConfluenceError):
         uname_value = uname if uname else '(empty)'
         pw_value = '<set>' if pw_set else '(empty)'
         token_value = '<set>' if token_set else '(empty)'
-        super(ConfluenceBadSpaceError, self).__init__('''
+        super().__init__('''
 ---
 Invalid Confluence URL detected
 
@@ -66,7 +66,7 @@ Note: Confluence space keys are case-sensitive.{details}
 
 class ConfluenceBadServerUrlError(ConfluenceError):
     def __init__(self, server_url, ex):
-        super(ConfluenceBadServerUrlError, self).__init__('''
+        super().__init__('''
 ---
 Invalid Confluence URL detected
 
@@ -83,7 +83,7 @@ inspect that the configured Confluence URL is valid:
 
 class ConfluenceCertificateError(ConfluenceError):
     def __init__(self, ex):
-        super(ConfluenceCertificateError, self).__init__('''
+        super().__init__('''
 ---
 SSL certificate issue
 
@@ -101,7 +101,7 @@ class ConfluenceConfigurationError(ConfluenceError, ConfigError):
 
 class ConfluenceMissingPageIdError(ConfluenceError):
     def __init__(self, space_key, page_id):
-        super(ConfluenceMissingPageIdError, self).__init__('''
+        super().__init__('''
 ---
 Unable to find a requested page
 
@@ -117,7 +117,7 @@ as the identifier could not be found.
 
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
-        super(ConfluencePermissionError, self).__init__('''
+        super().__init__('''
 ---
 Permission denied on Confluence ({desc})
 
@@ -130,7 +130,7 @@ using a personal access token, ensure the token is not expired/revoked.
 
 class ConfluenceProxyPermissionError(ConfluenceError):
     def __init__(self):
-        super(ConfluenceProxyPermissionError, self).__init__('''
+        super().__init__('''
 ---
 Unable to authenticate with the proxy server
 
@@ -148,7 +148,7 @@ class ConfluencePublishCheckError(ConfluenceError):
 
 class ConfluencePublishAncestorError(ConfluencePublishCheckError):
     def __init__(self, page_name):
-        super(ConfluencePublishAncestorError, self).__init__('''
+        super().__init__('''
 ---
 Ancestor publish check failed for: {name}
 
@@ -177,7 +177,7 @@ please inform the maintainers of this extension.
 
 class ConfluencePublishSelfAncestorError(ConfluencePublishCheckError):
     def __init__(self, page_name):
-        super(ConfluencePublishSelfAncestorError, self).__init__('''
+        super().__init__('''
 ---
 Ancestor (self) publish check failed for: {name}
 
@@ -198,7 +198,7 @@ please inform the maintainers of this extension.
 
 class ConfluenceRateLimited(ConfluenceError):
     def __init__(self):
-        super(ConfluenceRateLimited, self).__init__('''
+        super().__init__('''
 ---
 Request has been rate limited
 
@@ -211,7 +211,7 @@ requests to make at this time.
 
 class ConfluenceSeraphAuthenticationFailedUrlError(ConfluenceError):
     def __init__(self):
-        super(ConfluenceSeraphAuthenticationFailedUrlError, self).__init__('''
+        super().__init__('''
 ---
 Unable to authenticate with the Confluence instance (Seraph)
 
@@ -226,7 +226,7 @@ Confluence instance for help.
 
 class ConfluenceSslError(ConfluenceError):
     def __init__(self, server_url, ex):
-        super(ConfluenceSslError, self).__init__('''
+        super().__init__('''
 ---
 SSL connection issue has been detected
 
@@ -249,7 +249,7 @@ option.
 
 class ConfluenceTimeoutError(ConfluenceError):
     def __init__(self, server_url):
-        super(ConfluenceTimeoutError, self).__init__('''
+        super().__init__('''
 ---
 Connection has timed out
 
@@ -265,7 +265,7 @@ configured Confluence URL is valid:
 
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, ex):
-        super(ConfluenceUnreconciledPageError, self).__init__('''
+        super().__init__('''
 ---
 Unable to update unreconciled page: {name} (id: {id})
 

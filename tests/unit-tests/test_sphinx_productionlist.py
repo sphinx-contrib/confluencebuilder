@@ -10,7 +10,7 @@ import os
 class TestConfluenceSphinxProductionList(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceSphinxProductionList, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'production-list')
 

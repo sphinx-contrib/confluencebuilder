@@ -10,7 +10,7 @@ import os
 class TestConfluenceRstOptionLists(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceRstOptionLists, cls).setUpClass()
+        super().setUpClass()
 
         cls.dataset = os.path.join(cls.datasets, 'rst', 'option-lists')
 

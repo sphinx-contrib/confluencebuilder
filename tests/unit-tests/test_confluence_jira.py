@@ -11,7 +11,7 @@ import os
 class TestConfluenceJira(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestConfluenceJira, cls).setUpClass()
+        super().setUpClass()
 
         cls.container = os.path.join(cls.datasets, 'jira')
 
@@ -67,7 +67,7 @@ class TestConfluenceJira(ConfluenceTestCase):
             'test-jira-server': {
                 'name': 'test-server-name',
                 'id': '00000000-1234-0000-5678-000000000009',
-            }
+            },
         }
 
         out_dir = self.build(dataset, config=config)
