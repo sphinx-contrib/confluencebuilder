@@ -231,7 +231,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_cert_pass(self):
-        self.config['confluence_client_cert_pass'] = 'dummy'
+        self.config['confluence_client_cert_pass'] = 'dummy'  # noqa: S105
         self._try_config()
 
     def test_config_check_default_alignment(self):
@@ -754,10 +754,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_publish_token(self):
-        self.config['confluence_publish_token'] = ''
+        self.config['confluence_publish_token'] = ''  # noqa: S105
         self._try_config()
 
-        self.config['confluence_publish_token'] = 'dummy'
+        self.config['confluence_publish_token'] = 'dummy'  # noqa: S105
         self._try_config()
 
     def test_config_check_secnumber_suffix(self):
@@ -802,7 +802,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_server_pass(self):
-        self.config['confluence_server_pass'] = 'dummy'
+        self.config['confluence_server_pass'] = 'dummy'  # noqa: S105
         self._try_config()
 
         # enable publishing enabled checks

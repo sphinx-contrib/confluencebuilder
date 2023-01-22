@@ -102,7 +102,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that a publisher will issue an `Authorization` header when
         # configure to use a personal access token.
 
-        token = 'dummy-pat-value'
+        token = 'dummy-pat-value'  # noqa: S105
         expected_auth_value = 'Bearer {}'.format(token)
 
         config = self.config.clone()
