@@ -74,7 +74,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
-            expected_request = '/rest/api/content/{}?'.format(expected_page_id)
+            expected_request = f'/rest/api/content/{expected_page_id}?'
             self.assertTrue(req_path.startswith(expected_request))
 
             # check that an update request is processed
@@ -137,7 +137,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
-            expected_request = '/rest/api/content/{}?'.format(expected_page_id)
+            expected_request = f'/rest/api/content/{expected_page_id}?'
             self.assertTrue(req_path.startswith(expected_request))
 
             # check that an update request is processed
@@ -148,7 +148,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             unwatch_req = daemon.pop_delete_request()
             self.assertIsNotNone(unwatch_req)
             req_path, _ = unwatch_req
-            ereq = '/rest/api/user/watch/content/{}'.format(expected_page_id)
+            ereq = f'/rest/api/user/watch/content/{expected_page_id}'
             self.assertEqual(req_path, ereq)
 
             # verify that no other request was made
@@ -194,7 +194,7 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
-            expected_request = '/rest/api/content/{}?'.format(expected_page_id)
+            expected_request = f'/rest/api/content/{expected_page_id}?'
             self.assertTrue(req_path.startswith(expected_request))
 
             # verify that no update request was made

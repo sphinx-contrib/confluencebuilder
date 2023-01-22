@@ -187,7 +187,7 @@ def report_main(args_parser):
                 else:
                     logger.error('bad response from server ({})'.format(
                         rsp.status_code))
-                    info += '   fetched: error ({})\n'.format(rsp.status_code)
+                    info += f'   fetched: error ({rsp.status_code})\n'
                     rv = 1
             except Exception:
                 sys.stdout.flush()
@@ -279,7 +279,7 @@ def report_main(args_parser):
     print('(configuration)')
     if config:
         for k, v in OrderedDict(sorted(config.items())).items():
-            print('{}: {}'.format(k, v))
+            print(f'{k}: {v}')
     else:
         print('~default configuration~')
 

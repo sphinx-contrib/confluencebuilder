@@ -103,7 +103,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # configure to use a personal access token.
 
         token = 'dummy-pat-value'  # noqa: S105
-        expected_auth_value = 'Bearer {}'.format(token)
+        expected_auth_value = f'Bearer {token}'
 
         config = self.config.clone()
         config.confluence_publish_token = token
@@ -161,7 +161,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
                     mock_confluence_instance() as proxy_daemon:
 
                 proxy_host, proxy_port = proxy_daemon.server_address
-                proxy_url = 'http://{}:{}/'.format(proxy_host, proxy_port)
+                proxy_url = f'http://{proxy_host}:{proxy_port}/'
 
                 # check default space is accessible
                 default_daemon.register_get_rsp(200, std_rsp)

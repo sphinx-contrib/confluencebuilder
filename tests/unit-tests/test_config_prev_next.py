@@ -55,7 +55,7 @@ class TestConfluenceConfigPrevNext(ConfluenceTestCase):
     def _character_check(self, name, output, expected):
         test_path = os.path.join(output, name + '.conf')
         self.assertTrue(os.path.exists(test_path),
-            'missing output file: {}'.format(test_path))
+            f'missing output file: {test_path}')
 
         with open(test_path, encoding='utf8') as test_file:
             data = ''.join([o.strip() + '\n' for o in test_file.readlines()])

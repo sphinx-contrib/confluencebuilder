@@ -63,7 +63,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         postfix = ConfluenceState._format_postfix(
             postfix=confluence_publish_prefix, docname=test_docname,
             config=config)
-        self.assertEqual(postfix, '- ({hash})'.format(hash=self.test_hash))
+        self.assertEqual(postfix, f'- ({self.test_hash})')
 
     def test_no_placeholders(self):
         test_docname = 'docs/test_file.rst'

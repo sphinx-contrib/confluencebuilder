@@ -364,7 +364,7 @@ def mock_confluence_instance(config=None, ignore_requests=False):
 
         host, port = daemon.server_address
         if config:
-            config.confluence_server_url = 'http://{}:{}/'.format(host, port)
+            config.confluence_server_url = f'http://{host}:{port}/'
 
         # start accepting requests
         if not ignore_requests:

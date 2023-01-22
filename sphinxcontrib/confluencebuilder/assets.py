@@ -295,7 +295,7 @@ class ConfluenceAssetManager:
                 idx = 1
                 while key in self.keys:
                     idx += 1
-                    key = '{}_{}{}'.format(filename, idx, file_ext)
+                    key = f'{filename}_{idx}{file_ext}'
                 self.keys.add(key)
 
                 asset = ConfluenceAsset(key, path, type_, hash_)

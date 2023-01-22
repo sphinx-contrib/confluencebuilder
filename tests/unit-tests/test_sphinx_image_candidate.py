@@ -29,8 +29,8 @@ class TestConfluenceSphinxImageCandidate(ConfluenceTestCase):
 
             pyver = 'py{}{}'.format(sys.version_info.major,
                 sys.version_info.minor)
-            doc_dir = prepare_dirs(postfix='-{}-docs-{}'.format(pyver, ext[1:]))
-            out_dir = prepare_dirs(postfix='-{}-out-{}'.format(pyver, ext[1:]))
+            doc_dir = prepare_dirs(postfix=f'-{pyver}-docs-{ext[1:]}')
+            out_dir = prepare_dirs(postfix=f'-{pyver}-out-{ext[1:]}')
 
             # prepare documentation set
             #  - create and index document with an asterisk image extension

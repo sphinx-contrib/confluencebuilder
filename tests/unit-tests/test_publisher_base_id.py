@@ -61,7 +61,7 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
-            expected_request = '/rest/api/content/{}'.format(expected_page_id)
+            expected_request = f'/rest/api/content/{expected_page_id}'
             self.assertTrue(req_path.startswith(expected_request))
 
             # verify that no other request was made
@@ -112,7 +112,7 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
-            expected_opt = 'title={}'.format(expected_page_name)
+            expected_opt = f'title={expected_page_name}'
             self.assertTrue(req_path.startswith('/rest/api/content'))
             self.assertTrue(expected_opt in expected_opt)
 

@@ -94,7 +94,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with open(header_file, encoding='utf-8') as file:
                     header_template_data = file.read()
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(header_file, err))
+                self.warn(f'error reading file {header_file}: {err}')
 
             # if no data is supplied, the file is plain text
             if self.builder.config.confluence_header_data is None:
@@ -117,7 +117,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
                 with open(footer_file, encoding='utf-8') as file:
                     footer_template_data = file.read()
             except (IOError, OSError) as err:
-                self.warn('error reading file {}: {}'.format(footer_file, err))
+                self.warn(f'error reading file {footer_file}: {err}')
 
             # if no data is supplied, the file is plain text
             if self.builder.config.confluence_footer_data is None:
@@ -141,7 +141,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         node_name = node.__class__.__name__
         ignore_nodes = self.builder.config.confluence_adv_ignore_nodes
         if node_name in ignore_nodes:
-            self.verbose('ignore node {} (conf)'.format(node_name))
+            self.verbose(f'ignore node {node_name} (conf)')
             raise nodes.SkipNode
 
         # allow users to override unknown nodes

@@ -33,7 +33,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         for docname, secnums in self.env.toc_secnumbers.items():
             for id_, secnum in secnums.items():
-                alias = '{}/{}'.format(docname, id_)
+                alias = f'{docname}/{id_}'
                 new_secnumbers[alias] = secnum
 
         return {self.config.root_doc: new_secnumbers}
@@ -43,7 +43,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         for docname, fignumlist in self.env.toc_fignumbers.items():
             for figtype, fignums in fignumlist.items():
-                alias = '{}/{}'.format(docname, figtype)
+                alias = f'{docname}/{figtype}'
                 new_fignumbers.setdefault(alias, {})
 
                 for id_, fignum in fignums.items():
@@ -215,7 +215,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                     for id_ in section_node['ids']:
                         target = title_name
 
-                        anchorname = '%s/#%s' % (docname, id_)
+                        anchorname = f'{docname}/#{id_}'
                         if anchorname not in secnumbers:
                             anchorname = '%s/' % id_
 
@@ -228,7 +228,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                         section_id = doc_used_names.get(target, 0)
                         doc_used_names[target] = section_id + 1
                         if section_id > 0:
-                            target = '{}.{}'.format(target, section_id)
+                            target = f'{target}.{section_id}'
 
                         self.state.register_target(anchorname, target)
 

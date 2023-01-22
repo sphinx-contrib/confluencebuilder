@@ -289,7 +289,7 @@ def replace_inheritance_diagram(builder, doctree):
                 new_node['align'] = node['align']
             node.replace_self(new_node)
         except GraphvizError as exc:
-            ConfluenceLogger.warn('dot code {}: {}'.format(dotcode, exc))
+            ConfluenceLogger.warn(f'dot code {dotcode}: {exc}')
             node.parent.remove(node)
 
 

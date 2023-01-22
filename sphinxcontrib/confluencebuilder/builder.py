@@ -251,7 +251,7 @@ class ConfluenceBuilder(Builder):
             for domain_name in sorted(self.env.domains):
                 domain = self.env.domains[domain_name]
                 for indexcls in domain.indices:
-                    indexname = '%s-%s' % (domain.name, indexcls.name)
+                    indexname = f'{domain.name}-{indexcls.name}'
 
                     if isinstance(indices_config, list):
                         if indexname not in indices_config:
@@ -480,7 +480,7 @@ class ConfluenceBuilder(Builder):
                     if self.writer.output:
                         file.write(self.writer.output)
             except (IOError, OSError) as err:
-                self.warn('error writing file %s: %s' % (outfilename, err))
+                self.warn(f'error writing file {outfilename}: {err}')
 
     def publish_doc(self, docname, output):
         conf = self.config
@@ -697,7 +697,7 @@ class ConfluenceBuilder(Builder):
         # build domain indexes
         if self.domain_indices:
             for indexname, indexdata in self.domain_indices.items():
-                self.info('generating index ({})...'.format(indexname),
+                self.info(f'generating index ({indexname})...',
                     nonl=(not self._verbose))
 
                 self._generate_special_document(indexname,
@@ -737,7 +737,7 @@ class ConfluenceBuilder(Builder):
                         self.publish_doc(docname, output)
 
                 except (IOError, OSError) as err:
-                    self.warn('error reading file %s: %s' % (docfile, err))
+                    self.warn(f'error reading file {docfile}: {err}')
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)
@@ -768,7 +768,7 @@ class ConfluenceBuilder(Builder):
                         output = file.read()
                         self.publish_asset(key, docname, output, type_, hash_)
                 except (IOError, OSError) as err:
-                    self.warn('error reading asset %s: %s' % (key, err))
+                    self.warn(f'error reading asset {key}: {err}')
 
             self.publish_cleanup()
             self.publish_finalize()
@@ -866,7 +866,7 @@ class ConfluenceBuilder(Builder):
                     with open(fname, encoding='utf-8') as file:
                         header_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
-                    self.warn('error reading file {}: {}'.format(fname, err))
+                    self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_header_data is None:
@@ -888,7 +888,7 @@ class ConfluenceBuilder(Builder):
                     with open(fname, encoding='utf-8') as file:
                         footer_template_data = file.read() + '\n'
                 except (IOError, OSError) as err:
-                    self.warn('error reading file {}: {}'.format(fname, err))
+                    self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_footer_data is None:
@@ -1084,10 +1084,10 @@ class ConfluenceBuilder(Builder):
                     section_id = doc_used_names.get(target, 0)
                     doc_used_names[target] = section_id + 1
                     if section_id > 0:
-                        target = '{}.{}'.format(target, section_id)
+                        target = f'{target}.{section_id}'
 
                     for id_ in section_node['ids']:
-                        id_ = '{}#{}'.format(docname, id_)
+                        id_ = f'{docname}#{id_}'
                         self.state.register_target(id_, target)
 
     def _top_ref_check(self, node):
@@ -1120,7 +1120,7 @@ class ConfluenceBuilder(Builder):
 
         if not doctitle:
             if not self.config.confluence_disable_autogen_title:
-                doctitle = "autogen-{}".format(docname)
+                doctitle = f'autogen-{docname}'
                 if self.publish:
                     self.warn('document will be published using an '
                         'generated title value: {}'.format(docname))

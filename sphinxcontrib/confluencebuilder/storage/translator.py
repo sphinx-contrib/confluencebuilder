@@ -78,7 +78,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.name == 'singleconfluence':
                 docname = self._docnames[-1]
                 raw_anchor = node.parent['ids'][0]
-                anchorname = '%s/#%s' % (docname, node.parent['ids'][0])
+                anchorname = '{}/#{}'.format(docname, node.parent['ids'][0])
                 if anchorname not in self.builder.secnumbers:
                     anchorname = '%s/' % raw_anchor
             else:
@@ -115,7 +115,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             return ''
 
         if self.builder.name == 'singleconfluence':
-            key = '%s/%s' % (self._docnames[-1], figtype)
+            key = f'{self._docnames[-1]}/{figtype}'
         else:
             key = figtype
 
@@ -159,7 +159,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
-                self._start_tag(node, 'h{}'.format(self._title_level)))
+                self._start_tag(node, f'h{self._title_level}'))
 
             # generate anchors inside headers for v2, to avoid extra
             # spacing from an anchor macro
@@ -308,7 +308,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if isinstance(node.parent, nodes.list_item):
             try:
                 if node.parent.__confluence_list_item_margin:
-                    attribs['style'] = 'margin-top: {}px;'.format(FCMMO)
+                    attribs['style'] = f'margin-top: {FCMMO}px;'
             except AttributeError:
                 pass
 
@@ -383,7 +383,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         try:
             if node.__confluence_list_item_margin:
-                attribs['style'] = 'margin-top: {}px;'.format(FCMMO)
+                attribs['style'] = f'margin-top: {FCMMO}px;'
         except AttributeError:
             pass
 
@@ -788,7 +788,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # Confluence's WYSIWYG, when indenting paragraphs, will produce
             # paragraphs will margin values offset by 30 pixels units. The same
             # indentation is applied here via a style value.
-            style += 'margin-left: {}px;'.format(INDENT)
+            style += f'margin-left: {INDENT}px;'
 
             # Confluence's provided styles remove first-child elements leading
             # margins. This causes some unexpected styling issues when various
@@ -825,7 +825,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 firstchild_margin = False
 
             if firstchild_margin:
-                style += 'padding-top: {}px;'.format(FCMMO)
+                style += f'padding-top: {FCMMO}px;'
 
             self.body.append(self._start_tag(node, 'div', suffix=self.nl,
                 **{'style': style}))
@@ -1157,11 +1157,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.builder.name == 'singleconfluence':
             docname = self._docnames[-1]
-            anchorname = '%s/#%s' % (docname, raw_anchor)
+            anchorname = f'{docname}/#{raw_anchor}'
             if anchorname not in self.builder.secnumbers:
                 anchorname = '%s/' % raw_anchor
         else:
-            anchorname = '{}#{}'.format(self.docname, raw_anchor)
+            anchorname = f'{self.docname}#{raw_anchor}'
 
         # check if this target is reachable without an anchor; if so, use the
         # identifier value instead
@@ -1300,7 +1300,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             # only build an anchor if required (e.g. is a reference label
             # already provided by a build section element)
-            target_name = '{}#{}'.format(self.docname, anchor)
+            target_name = f'{self.docname}#{anchor}'
             target = self.state.target(target_name)
             if not target:
                 self.body.append(self._start_ac_macro(node, 'anchor'))
@@ -1417,7 +1417,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._building_footnotes = False
 
     def visit_footnote_reference(self, node):
-        text = "[{}]".format(node.astext())
+        text = f"[{node.astext()}]"
 
         # build an anchor for back reference
         self.body.append(self._start_ac_macro(node, 'anchor'))
@@ -1591,7 +1591,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.config.math_numfig and self.builder.config.numfig:
                 figtype = 'displaymath'
                 if self.builder.name == 'singleconfluence':
-                    key = '%s/%s' % (self._docnames[-1], figtype)
+                    key = f'{self._docnames[-1]}/{figtype}'
                 else:
                     key = figtype
 
@@ -1604,7 +1604,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not self.v2 and node.math_number:
             self.body.append(self._start_tag(node, 'div',
                 **{'style': 'float: right'}))
-            self.body.append('({})'.format(node.math_number))
+            self.body.append(f'({node.math_number})')
             self.body.append(self._end_tag(node))
 
         attribs = {}
@@ -1627,12 +1627,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             style = 'display: inline-block;'
 
             if hu == '%':
-                style += 'height: {}%;'.format(height)
+                style += f'height: {height}%;'
                 height = None
                 hu = None
 
             if wu == '%':
-                style += 'width: {}%;'.format(width)
+                style += f'width: {width}%;'
                 width = None
                 wu = None
 
@@ -1718,7 +1718,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             self.body.append(self._start_tag(node, 'p',
                 **{'style': 'text-align: right'}))
-            self.body.append('({})'.format(node.math_number))
+            self.body.append(f'({node.math_number})')
             self.body.append(self._end_tag(node))
 
             self.body.append(self._end_tag(node))  # layout-cell
@@ -1729,7 +1729,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         alignment = self._fetch_alignment(node)
         if alignment and alignment != 'left':
-            attribs['style'] = 'text-align: {};'.format(alignment)
+            attribs['style'] = f'text-align: {alignment};'
 
         self.body.append(self._start_tag(node, 'div', **attribs))
         self.context.append(self._end_tag(node))
@@ -1916,7 +1916,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if production['tokenname']:
                 formatted_token = production['tokenname'].ljust(max_len)
                 formatted_token = self.encode(formatted_token)
-                self.body.append('{} ::='.format(formatted_token))
+                self.body.append(f'{formatted_token} ::=')
                 lastname = production['tokenname']
             else:
                 self.body.append('{}    '.format(' ' * len(lastname)))
@@ -2385,7 +2385,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.config.math_numfig and self.builder.config.numfig:
                 figtype = 'displaymath'
                 if self.builder.name == 'singleconfluence':
-                    key = '%s/%s' % (self._docnames[-1], figtype)
+                    key = f'{self._docnames[-1]}/{figtype}'
                 else:
                     key = figtype
 
@@ -2397,7 +2397,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             self.body.append(self._start_tag(node, 'div',
                 **{'style': 'float: right'}))
-            self.body.append('({})'.format(number))
+            self.body.append(f'({number})')
             self.body.append(self._end_tag(node))
 
         self.body.append(self._start_ac_macro(node, macro))
@@ -2606,7 +2606,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         alignment = self._fetch_alignment(node)
         if alignment and alignment != 'left':
-            attribs['style'] = 'text-align: {};'.format(alignment)
+            attribs['style'] = f'text-align: {alignment};'
 
         ri_url = self._start_tag(
             node, 'ri:url', empty=True, **{'ri:value': self.encode(uri)})
@@ -2681,7 +2681,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # parent is not a line-block, add some separation from a previous
             # sibling element
             if node.parent[0] != node and not isinstance(node.parent, nodes.line_block):
-                style += 'padding-top: {}px;'.format(FCMMO)
+                style += f'padding-top: {FCMMO}px;'
 
         # indent this line-block if its not the first element in the parent
         # (excluding titles for a new section), or if the parent is
@@ -2697,7 +2697,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.v2:
                 indent = INDENT * (self._indent_level + 1)
 
-            style += 'margin-left: {}px;'.format(indent)
+            style += f'margin-left: {indent}px;'
         elif self.v2:
             # (see "visit_paragraph")
             style += 'margin-left: {}px;'.format(INDENT * self._indent_level)
@@ -2764,7 +2764,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs[key.lower()] = value
 
         for key, value in sorted(attribs.items()):
-            data.append('{}="{}"'.format(key, value))
+            data.append(f'{key}="{value}"')
 
         if suffix is None:
             suffix = ''
@@ -2804,7 +2804,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if suffix is None:
             suffix = self.nl
 
-        return '</{}>{}'.format(tag, suffix)
+        return f'</{tag}>{suffix}'
 
     def _build_ac_param(self, node, name, value):
         """

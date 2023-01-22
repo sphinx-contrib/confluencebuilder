@@ -326,12 +326,12 @@ class Rest:
 
     def _format_error(self, rsp, key):
         err = ""
-        err += "REQ: {0}\n".format(rsp.request.method)
+        err += f"REQ: {rsp.request.method}\n"
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.bind_path + "\n"
         err += "API: " + key + "\n"
         try:
-            err += 'DATA: {}'.format(json.dumps(rsp.json(), indent=2))
+            err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
         except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err
