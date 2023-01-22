@@ -3,6 +3,7 @@
 
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
+from contextlib import suppress
 from copy import deepcopy
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
@@ -575,10 +576,8 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     verbosity = 0
     if 'SPHINX_VERBOSITY' in os.environ:
-        try:
+        with suppress(ValueError):
             verbosity = int(os.environ['SPHINX_VERBOSITY'])
-        except ValueError:
-            pass
 
     # default to using this extension's builder
     if not builder:

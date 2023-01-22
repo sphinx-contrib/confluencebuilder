@@ -2,6 +2,7 @@
 # Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 # Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
+from contextlib import suppress
 from docutils import nodes
 from os import path
 from sphinx import addnodes
@@ -709,10 +710,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         firstline = None
         if num == 'true':
-            try:
+            with suppress(KeyError):
                 firstline = node.attributes['highlight_args']['linenostart']
-            except KeyError:
-                pass
 
         self.body.append(self._start_ac_macro(node, 'code'))
         self.body.append(self._build_ac_param(node, 'language', lang))

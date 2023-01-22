@@ -2,6 +2,7 @@
 # Copyright 2017-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
 from collections import deque
+from contextlib import suppress
 from sphinx.util import logging
 from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 import io
@@ -41,10 +42,10 @@ class ConfluenceLogger:
                     self.verbosity = 0
                     self.warningiserror = False
                     self._warncount = 0
-            try:
+
+            # fail silently if mocked application is missing something
+            with suppress(Exception):
                 logging.setup(MockSphinx(), sys.stdout, sys.stderr)
-            except Exception:
-                pass  # fail silently if mocked application is missing something
 
     @staticmethod
     def error(msg, *args, **kwargs):
