@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
-from __future__ import unicode_literals
 from tests.lib.testcase import ConfluenceTestCase
 import io
 import os
