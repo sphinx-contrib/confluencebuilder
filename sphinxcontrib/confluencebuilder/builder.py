@@ -973,7 +973,7 @@ class ConfluenceBuilder(Builder):
                 else:
                     # unsupported source type should not pass here after this
                     # extension's configuration check
-                    assert False
+                    raise AssertionError('unsupported source type')
 
                 sourcelink['url'] = url_base + url
 
