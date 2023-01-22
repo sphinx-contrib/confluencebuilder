@@ -84,7 +84,7 @@ class ConfluenceAssetManager:
         """
         logger.verbose('adding manual attachment: %s' % path)
         abspath = find_env_abspath(self.env, self.outdir, path)
-        return self._handle_entry(abspath, docname, True)
+        return self._handle_entry(abspath, docname, standalone=True)
 
     def build(self):
         """

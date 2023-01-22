@@ -319,7 +319,7 @@ def replace_math_blocks(builder, doctree):
             if node['nowrap']:
                 latex = node.astext()
             else:
-                latex = wrap_displaymath(node.astext(), None, False)
+                latex = wrap_displaymath(node.astext(), None, numbering=False)
             new_node_type = confluence_latex_block
         else:
             latex = '$' + node.astext() + '$'
