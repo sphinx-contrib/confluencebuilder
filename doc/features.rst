@@ -204,7 +204,7 @@ or create a new extension which can bind both desired extensions together
 added into this extension's repository will be limited to the arbitrary
 release/development windows of this extension.
 
-The following table show a most recent state of various third-party extensions
+The following table shows a most recent state of various third-party extensions
 interacting with this extension:
 
 .. only:: latex
