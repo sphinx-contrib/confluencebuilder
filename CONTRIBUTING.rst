@@ -81,18 +81,8 @@ maximum of five major-minor trees.
   application (e.g. 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x).
 
 `PEP 8`_ is a standard styling guide for Python projects and is recommended for
-considerations when making contributions. On that note, please read the
-following:
-
-- Line lengths are recommended to be at maximum 79 characters (relaxed to even
-  80 characters) for implementation. This option is not explicitly enforced in
-  styling checks primarily since there can be valid cases where lines may exceed
-  such limits (e.g. a long URL in comments).
-- The recommendation of two blank lines (in various scenarios) are ignored.
-  Apply appropriate blank lines where it makes sense in the implementation.
-- Avoid multiple imports on a single line (even for ``from ...`` usages). This
-  is to help long term maintenance of imports with minimal clashing between
-  various modules/types/etc. being used.
+consideration when making contributions. Default linters configured in tox are
+required to pass. Note that select exceptions may be used.
 
 .. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
