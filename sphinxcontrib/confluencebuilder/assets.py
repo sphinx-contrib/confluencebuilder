@@ -94,7 +94,7 @@ class ConfluenceAssetManager:
         A tuple entry will contain the following:
 
          - The key (or name) of the asset.
-         - The absolulte path of the asset on the system.
+         - The absolute path of the asset on the system.
          - The content-type value of the asset.
          - The hash value of the asset.
          - The name of the document this asset should be published to.
