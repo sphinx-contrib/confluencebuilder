@@ -48,6 +48,7 @@ class ConfluenceBuilder(Builder):
     name = 'confluence'
     format = 'confluence_storage'
     supported_image_types = ConfluenceSupportedImages()
+    supported_linkcode = True
     supported_remote_images = True
 
     def __init__(self, app, env=None):
