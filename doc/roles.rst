@@ -149,8 +149,9 @@ generated Confluence documents.
 
         :confluence_status:`WARNING <yellow>`
 
-    To tweak the style of a status macro to an outlined variant, adjust the
-    color enclosure to square brackets:
+    To tweak the style of a status macro to an outlined variant (if supported
+    by the configured Confluence editor), adjust the color enclosure to
+    square brackets:
 
     .. code-block:: rst
 
