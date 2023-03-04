@@ -86,6 +86,6 @@ required to pass. Note that select exceptions may be used.
 
 .. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
-.. _PEP 8: https://www.python.org/dev/peps/pep-0008
+.. _PEP 8: https://peps.python.org/pep-0008/
 .. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
 .. _pull requests: https://github.com/sphinx-contrib/confluencebuilder/pulls
