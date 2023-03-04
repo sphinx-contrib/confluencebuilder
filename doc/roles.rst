@@ -154,7 +154,7 @@ generated Confluence documents.
 
     .. code-block:: rst
 
-        :confluence_status:`PASSED <green>`
+        :confluence_status:`PASSED [green]`
 
 
 .. references ------------------------------------------------------------------
