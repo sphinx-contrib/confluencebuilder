@@ -74,19 +74,11 @@ marked as end-of-life as well as support Sphinx versions with a suggested
 maximum of five major-minor trees.
 
 - Python interpreters that have not been marked as end-of-life will be supported
-  by this extension. An exception exists for Python 2.7 at this time where
-  support *may* extend to the RHEL's supported end-of-life date for Python 2.7
-  of June 2024 (see also `How is Python 2 supported in RHEL after 2020?`_). Note
-  that this is the maximum date for support; however, support may be dropped
-  earlier than this date (with a notification). At minimum, Python 2.7 will be
-  supported until the end of the 2020 calendar year (a year after Python's
-  end-of-life date for Python 2.7).
+  by this extension.
 - Supported Confluence versions will be supported versions listed in
   `Atlassian Support End of Life Policy`_.
 - Supported Sphinx versions include the last five major-minor versions of the
-  application (e.g. 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x). An exception exists for
-  Sphinx 1.8.x series, which will be supported until this extension's support
-  for Python 2.7 has been dropped.
+  application (e.g. 3.2.x, 3.1.x, 3.0.x, 2.4.x, 2.3.x).
 
 `PEP 8`_ is a standard styling guide for Python projects and is recommended for
 considerations when making contributions. On that note, please read the
@@ -104,7 +96,6 @@ following:
 
 .. _Atlassian Support End of Life Policy: https://confluence.atlassian.com/support/atlassian-support-end-of-life-policy-201851003.html
 .. _Developer’s Certificate of Origin: https://developercertificate.org/
-.. _How is Python 2 supported in RHEL after 2020?: https://access.redhat.com/solutions/4455511
 .. _PEP 8: https://www.python.org/dev/peps/pep-0008
 .. _issue tracker: https://github.com/sphinx-contrib/confluencebuilder/issues
 .. _pull requests: https://github.com/sphinx-contrib/confluencebuilder/pulls
