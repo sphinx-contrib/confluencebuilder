@@ -1557,6 +1557,14 @@ Advanced publishing configuration
 .. confval:: confluence_version_comment
 
     .. versionadded:: 1.8
+    .. versionchanged:: 2.1
+
+        Support comments for first/new pages on Confluence Cloud.
+
+    .. note::
+
+        Confluence Server/DC does not support setting a version comment for
+        the first/new page revision.
 
     A string value to be added as a comment to Confluence's version history.
 

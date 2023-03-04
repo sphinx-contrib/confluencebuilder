@@ -931,6 +931,10 @@ reported a success (which can be permitted for anonymous users).
             'space': {
                 'key': self.space_key,
             },
+            'version': {
+                'number': 1,
+                'message': self.config.confluence_version_comment,
+            },
         }
 
         if self.editor:
@@ -972,10 +976,7 @@ reported a success (which can be permitted for anonymous users).
 
         update_page = self._build_page(page_name, data)
         update_page['id'] = page['id']
-        update_page['version'] = {
-            'number': last_version + 1,
-            'message': self.config.confluence_version_comment,
-        }
+        update_page['version']['number'] = last_version + 1
 
         labels = list(data['labels'])
         if self.append_labels:
