@@ -1140,9 +1140,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         next_child = first(findall(node, include_self=False))
         if isinstance(next_child, nodes.inline):
             if 'viewcode-link' in next_child.get('classes', []):
-                self.body.append(self._start_tag(node, 'div',
-                    **{'style': 'float: right'}))
-                self._reference_context.append(self._end_tag(node))
+                if self.v2:
+                    self.body.append(' ')
+                else:
+                    self.body.append(self._start_tag(node, 'div',
+                        **{'style': 'float: right'}))
+                    self._reference_context.append(self._end_tag(node))
 
         if 'reftitle' in node:
             title = node['reftitle']
