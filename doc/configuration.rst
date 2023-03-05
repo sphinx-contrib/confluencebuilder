@@ -1669,6 +1669,8 @@ Advanced processing configuration
 
 .. confval:: confluence_lang_transform
 
+    .. versionchanged:: 2.1 Support a ``None`` return to use a default value.
+
     A function to override the translation of literal block-based directive
     language values to Confluence supported code block macro language values.
     The default translation accepts `Pygments documented language types`_ to
@@ -1680,6 +1682,10 @@ Advanced processing configuration
            return 'default'
 
        confluence_lang_transform = my_language_translation
+
+    In the event that the transform returns a ``None`` value, the provided
+    language type will be transform to a default language type for a language
+    as if this transform was not provided.
 
 .. |confluence_latex_macro| replace:: ``confluence_latex_macro``
 .. _confluence_latex_macro:
