@@ -503,7 +503,7 @@ def prepare_conf_publisher():
     return config
 
 
-def prepare_dirs(container=None, f_back_count=1, postfix=None):
+def prepare_dirs(container=None, postfix=None):
     """
     return the output directory base for all unit tests
 
@@ -513,8 +513,6 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
 
     Args:
         container (optional): the output container name to use
-        f_back_count (optional): number of frame objects to move back when
-                                  attempting to auto-generate a container name
         postfix (optional): postfix to add to the container directory
 
     Returns:
@@ -522,9 +520,9 @@ def prepare_dirs(container=None, f_back_count=1, postfix=None):
     """
     if not container:
         frame = inspect.currentframe()
-        for _ in range(f_back_count):
+        while frame and not frame.f_code.co_name.startswith('test_'):
             frame = frame.f_back
-        container = frame.f_code.co_name
+        container = frame.f_code.co_name if frame else 'unknown'
     lib_dir = os.path.dirname(os.path.realpath(__file__))
     test_dir = os.path.join(lib_dir, os.pardir)
     base_dir = os.path.join(test_dir, os.pardir)
@@ -583,8 +581,7 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder = 'confluence'
 
     if not out_dir:
-        # 3 = prepare_dirs, this, contextmanager
-        out_dir = prepare_dirs(f_back_count=3)
+        out_dir = prepare_dirs()
 
     doctrees_dir = os.path.join(out_dir, '.doctrees')
 
@@ -671,8 +668,7 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     """
 
     if not out_dir:
-        # 2 = prepare_dirs, this
-        out_dir = prepare_dirs(f_back_count=2)
+        out_dir = prepare_dirs()
 
     files = []
     force_all = True
