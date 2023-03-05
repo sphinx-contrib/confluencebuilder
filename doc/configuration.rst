@@ -1482,7 +1482,7 @@ Advanced publishing configuration
     configures for a parent page/root, orphan pages will be placed under the
     respective parent page/root configuration. If no parent page/root is
     configured, orphan pages will not be associated with a parent page.
-    
+
     Users can override where orphan pages are placed by using this option. By
     specifying a page identifier, orphan pages will placed under the configured
     container page. Users can also provide a special value of ``0`` to indicate
