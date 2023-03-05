@@ -133,6 +133,18 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
             languages = data.find_all('ac:parameter', {'ac:name': 'language'})
             self._verify_set_languages(languages, expected)
 
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_highlight_suppress_warning(self):
+        dataset = os.path.join(self.datasets, 'code-block-fallback')
+
+        # configure to suppress the generated warning
+        config = dict(self.config)
+        config['suppress_warnings'] = [
+            'confluence.unsupported_code_lang',
+        ]
+
+        self.build(dataset, config=config)
+
     def _verify_set_languages(self, tags, languages):
         self.assertEqual(len(tags), len(languages))
 
