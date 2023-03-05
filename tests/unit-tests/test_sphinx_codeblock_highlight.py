@@ -90,7 +90,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
             if lang == 'csharp':
                 return 'custom-csharp'
 
-            return 'custom'
+            return None
         config['confluence_lang_transform'] = test_override_lang_method
 
         out_dir = self.build(self.dataset, config=config,
@@ -98,12 +98,12 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
 
         with parse('code-block-highlight', out_dir) as data:
             expected = [
-                'custom',
-                'custom',
+                'python',
+                'bash',
                 'custom-csharp',
-                'custom',
-                'custom',
-                'custom',
+                'python',
+                'html/xml',
+                'python',
             ]
 
             languages = data.find_all('ac:parameter', {'ac:name': 'language'})
