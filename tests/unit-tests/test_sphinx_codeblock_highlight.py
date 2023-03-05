@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright 2016-2023 Sphinx Confluence Builder Contributors (AUTHORS)
 
+from sphinx.errors import SphinxWarning
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib import parse
@@ -27,6 +28,29 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
                 'python',
                 'html/xml',
                 'python',
+            ]
+
+            languages = data.find_all('ac:parameter', {'ac:name': 'language'})
+            self._verify_set_languages(languages, expected)
+
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_highlight_fallback_default(self):
+        dataset = os.path.join(self.datasets, 'code-block-fallback')
+
+        # check that a fallback language generates a warning
+        with self.assertRaises(SphinxWarning):
+            self.build(dataset)
+
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_highlight_fallback_handle(self):
+        dataset = os.path.join(self.datasets, 'code-block-fallback')
+
+        # run in relaxed mode, to ensure a fallback language is applied
+        out_dir = self.build(dataset, relax=True)
+
+        with parse('index', out_dir) as data:
+            expected = [
+                'cpp',
             ]
 
             languages = data.find_all('ac:parameter', {'ac:name': 'language'})
