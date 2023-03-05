@@ -1482,7 +1482,7 @@ Advanced publishing configuration
     configures for a parent page/root, orphan pages will be placed under the
     respective parent page/root configuration. If no parent page/root is
     configured, orphan pages will not be associated with a parent page.
-    
+
     Users can override where orphan pages are placed by using this option. By
     specifying a page identifier, orphan pages will placed under the configured
     container page. Users can also provide a special value of ``0`` to indicate
@@ -1832,6 +1832,20 @@ Advanced processing configuration
     - |confluence_disable_autogen_title|_
     - |confluence_title_overrides|_
 
+Other options
+-------------
+
+.. confval:: suppress_warnings
+
+    .. versionadded:: 2.1
+
+    This extension supports suppressing warnings using Sphinx's
+    `suppress_warnings`_ configuration. The following includes additional
+    warning types that may be suppressed:
+
+    - ``confluence`` -- All warnings
+    - ``confluence.unsupported_code_lang`` -- Unsupported code language
+
 Deprecated options
 ------------------
 
@@ -1910,5 +1924,6 @@ Deprecated options
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 .. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath
+.. _suppress_warnings: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
 .. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc

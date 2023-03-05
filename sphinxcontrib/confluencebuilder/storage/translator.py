@@ -699,7 +699,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             lang = lang_map[lang]
         else:
             if lang not in self._tracked_unknown_code_lang:
-                self.warn('unsupported code language for confluence: ' + lang)
+                self.warn('unsupported code language for confluence: ' + lang,
+                    subtype='unsupported_code_lang')
                 self._tracked_unknown_code_lang.append(lang)
             lang = fb_map.get(lang, FALLBACK_HIGHLIGHT_STYLE)
 

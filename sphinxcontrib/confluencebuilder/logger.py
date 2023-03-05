@@ -105,6 +105,7 @@ class ConfluenceLogger:
          https://docs.python.org/3/library/logging.html#logging.Logger.warning
         """
         if ConfluenceLogger.logger:
+            kwargs['type'] = 'confluence'
             ConfluenceLogger.logger.warning(msg, *args, **kwargs)
 
     @staticmethod
