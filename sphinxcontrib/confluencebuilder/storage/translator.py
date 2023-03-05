@@ -685,8 +685,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if not lang:
             lang = node.get('language', self._highlight).lower()
+
+        translated_lang = None
         if self.builder.lang_transform:
-            lang = self.builder.lang_transform(lang)
+            translated_lang = self.builder.lang_transform(lang)
+
+        if translated_lang:
+            lang = translated_lang
         elif lang in lang_map:
             lang = lang_map[lang]
         else:
