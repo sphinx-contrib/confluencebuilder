@@ -14,6 +14,8 @@ from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
 from sphinxcontrib.confluencebuilder.std.confluence import INDENT
+from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V1
+from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V2
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V1
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V2
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
@@ -663,6 +665,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_literal_block(self, node):
         lang = None
         lang_map = LITERAL2LANG_MAP_V2 if self.v2 else LITERAL2LANG_MAP_V1
+        fb_map = LITERAL2LANG_FBMAP_V2 if self.v2 else LITERAL2LANG_FBMAP_V1
 
         # non-raw literal
         if node.rawsource != node.astext():
@@ -698,7 +701,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if lang not in self._tracked_unknown_code_lang:
                 self.warn('unsupported code language for confluence: ' + lang)
                 self._tracked_unknown_code_lang.append(lang)
-            lang = lang_map[FALLBACK_HIGHLIGHT_STYLE]
+            lang = fb_map.get(lang, FALLBACK_HIGHLIGHT_STYLE)
 
         data = self.nl.join(node.astext().splitlines())
 

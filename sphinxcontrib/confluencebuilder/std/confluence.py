@@ -391,6 +391,58 @@ LITERAL2LANG_MAP_V2 = {
     DEFAULT_HIGHLIGHT_STYLE: 'python'
 }
 
+# sphinx literal to confluence language map (fallbacks)
+#
+# Provides an extended map to help provide fallback language types where an
+# "unsupported code language" warning is still desired but an alternative
+# language type is better than a default/"plain" language type. For example,
+# Confluence does not support interactive Python code blocks. A warning should
+# be generated to inform users that their documentation cannot render them
+# (specifically, the interactive part); however, it will be still nice to
+# render the content as Python code instead of plain text.
+LITERAL2LANG_FBMAP_COMMON = {
+    # C-like languages
+    'arduino': 'cpp',
+    'charmci': 'cpp',
+    'clay': 'cpp',
+    'cu': 'cpp',
+    'cuda': 'cpp',
+    'ec': 'cpp',
+    'mq4': 'cpp',
+    'mq5': 'cpp',
+    'mql': 'cpp',
+    'mql4': 'cpp',
+    'mql5': 'cpp',
+    'nesc': 'cpp',
+    'omg-idl': 'cpp',
+    'pike': 'cpp',
+    'swig': 'cpp',
+    'vala': 'cpp',
+    'vapi': 'cpp',
+}
+
+LITERAL2LANG_FBMAP_V1 = {
+    **LITERAL2LANG_FBMAP_COMMON,
+    # Interactive Python
+    'ipython': 'python',
+    'ipython2': 'python',
+    'ipython3': 'python',
+    # JSON (if JSON is not explicitly supported, Python style slightly works)
+    'json': 'python',
+    'json-object': 'python',
+}
+
+LITERAL2LANG_FBMAP_V2 = {
+    **LITERAL2LANG_FBMAP_COMMON,
+    # Interactive Python
+    'ipython': 'py',
+    'ipython2': 'py',
+    'ipython3': 'py',
+    # JSON (if JSON is not explicitly supported, Python style slightly works)
+    'json': 'py',
+    'json-object': 'py',
+}
+
 # fallback highlight language
 #
 # When provided a language type that is not supported by Confluence is detected on
