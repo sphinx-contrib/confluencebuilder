@@ -68,6 +68,7 @@ def main():
         description='Atlassian Confluence Sphinx Extension Sandbox')
     parser.add_argument('-D', action='append', default=[], dest='define')
     parser.add_argument('--builder', '-b')
+    parser.add_argument('--debug', action='store_true')
     parser.add_argument('--raw-upload', '-R', action='store_true')
     parser.add_argument('--sandbox', default='sandbox')
     parser.add_argument('--verbose', '-v', action='store_true')
@@ -86,7 +87,7 @@ def main():
 
     print('[sandbox] target sandbox:', args.sandbox)
 
-    if args.verbose:
+    if args.debug or args.verbose:
         if 'SPHINX_VERBOSITY' not in os.environ:
             os.environ['SPHINX_VERBOSITY'] = '2'
 
