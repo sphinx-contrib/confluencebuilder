@@ -2,9 +2,9 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from bs4 import CData
+from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-from tests.lib import parse
 import os
 
 

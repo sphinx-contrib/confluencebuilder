@@ -2,9 +2,9 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
+from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-from tests.lib import parse
 from tests.lib import prepare_dirs
 import mimetypes
 import os

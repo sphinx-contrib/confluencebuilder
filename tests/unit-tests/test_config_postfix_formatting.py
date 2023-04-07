@@ -5,8 +5,8 @@ import os
 from sphinxcontrib.confluencebuilder.exceptions import \
     ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
-from tests.lib import parse
 from tests.lib.testcase import setup_builder
 from unittest.mock import patch
 
