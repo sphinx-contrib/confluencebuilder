@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 # Copyright 2007-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from os import path

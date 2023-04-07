@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2021-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinx.environment.adapters.indexentries import IndexEntries
 from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
