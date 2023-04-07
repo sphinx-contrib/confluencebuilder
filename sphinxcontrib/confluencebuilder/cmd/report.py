@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2020-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from collections import OrderedDict
 from docutils import __version__ as docutils_version

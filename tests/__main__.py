@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2018-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from tests.lib import enable_sphinx_info
 import argparse

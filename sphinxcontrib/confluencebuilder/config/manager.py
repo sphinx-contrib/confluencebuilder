@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2022-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 class ConfigManager:
     def __init__(self, app):

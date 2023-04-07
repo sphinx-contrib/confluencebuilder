@@ -1,6 +1,6 @@
 @echo OFF
 setlocal
-REM Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+REM Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 REM find python
 where /q python

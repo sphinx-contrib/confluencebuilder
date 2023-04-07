@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-2-Clause
-# Copyright 2018-2023 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 # sphinx's default highlight style
 #  http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language

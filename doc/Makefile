@@ -1,4 +1,4 @@
-# Copyright 2020-2021 Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 DOC_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 BASE_DIR := $(abspath $(DOC_DIR)/..)
