@@ -158,6 +158,30 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._build_ac_param(node, '', doc_id))
                 self.body.append(self._end_ac_macro(node, suffix=''))
 
+    def pre_body_data(self):
+        data = ''
+
+        # Confluence's v1 editor ignores a full-width page style on
+        # publication (most likely since the concept of page width was
+        # developed for v2 and newer). To emulate a non-full-width state with
+        # a v1 editor, apply a layout around the page contents.
+        if not self.v2 and self.builder.config.confluence_full_width is False:
+            data += '<ac:layout>'
+            data += '<ac:layout-section ac:type="fixed-width">'
+            data += '<ac:layout-cell>'
+
+        return data
+
+    def post_body_data(self):
+        data = ''
+
+        if not self.v2 and self.builder.config.confluence_full_width is False:
+            data += '</ac:layout-cell>'
+            data += '</ac:layout-section>'
+            data += '</ac:layout>'
+
+        return data
+
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
