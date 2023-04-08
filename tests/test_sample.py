@@ -40,7 +40,6 @@ def main():
         print('[sample] (error) missing tox ini environment variable')
         return 1
 
-
     sample_base = os.environ['TOX_INI_DIR']
     sample_set_dir = os.path.dirname(sample_base)
     sample_name = os.path.basename(sample_base)
