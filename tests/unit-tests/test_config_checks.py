@@ -234,6 +234,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_client_cert_pass'] = 'dummy'  # noqa: S105
         self._try_config()
 
+    def test_config_check_cleanup_purge_mode(self):
+        self.config['confluence_cleanup_search_mode'] = 'direct'
+        self._try_config()
+
+        self.config['confluence_cleanup_search_mode'] = 'direct-aggressive'
+        self._try_config()
+
+        self.config['confluence_cleanup_search_mode'] = 'search'
+        self._try_config()
+
+        self.config['confluence_cleanup_search_mode'] = 'search-aggressive'
+        self._try_config()
+
+        self.config['confluence_cleanup_search_mode'] = 'invalid'
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_default_alignment(self):
         self.config['confluence_default_alignment'] = 'left'
         self._try_config()
