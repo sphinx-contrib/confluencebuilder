@@ -587,6 +587,7 @@ Publishing configuration
 
     - |confluence_cleanup_from_root|_
     - |confluence_cleanup_purge|_
+    - |confluence_cleanup_search_mode|_
     - |confluence_publish_dryrun|_
 
 .. |confluence_cleanup_from_root| replace:: ``confluence_cleanup_from_root``
@@ -658,6 +659,7 @@ Publishing configuration
 
     - |confluence_cleanup_archive|_
     - |confluence_cleanup_from_root|_
+    - |confluence_cleanup_search_mode|_
     - |confluence_publish_dryrun|_
 
 .. |confluence_disable_notifications| replace:: ``confluence_disable_notifications``
@@ -1130,6 +1132,44 @@ Advanced publishing configuration
     - |confluence_client_cert_pass|_
     - |confluence_client_cert|_
     - |confluence_disable_ssl_validation|_
+
+.. |confluence_cleanup_search_mode| replace:: ``confluence_cleanup_search_mode``
+.. _confluence_cleanup_search_mode:
+
+.. confval:: confluence_cleanup_search_mode
+
+    .. versionadded:: 2.1
+
+    .. note::
+
+        Prior to the introduction of this configuration, the internal search
+        mode for this extension followed a ``search`` styled mode.
+
+    Configures the search mode used for finding descendant pages to be cleaned
+    up (when configured for archiving/purging legacy pages). By default, this
+    extension will ask Confluence for known descendants for the root page:
+
+    .. code-block:: python
+
+        confluence_cleanup_search_mode = 'direct'
+
+    However, in some cases, the provided list of descendants may be incorrect
+    (due to the Confluence version used, the state of Confluence's ancestors
+    table caching, etc.). This configuration can be used to tweak how this
+    extension searches for descendants, if a user experiences issues with the
+    default method of searching. Supported modes are as follows:
+
+    - ``direct`` `(default)`: Query known descendants from a page's cache.
+    - ``search``: Search for descendants using Confluence's CQL capability.
+
+    Users can also postfix ``-aggressive`` (e.g. ``search-aggressive``) on a
+    mode to perform a recursive search for descendants ensure all descendants
+    are found. Note that an aggressive search will increase the amount of API
+    calls to a configured Confluence instance.
+    See also:
+
+    - |confluence_cleanup_archive|_
+    - |confluence_cleanup_purge|_
 
 .. |confluence_client_cert| replace:: ``confluence_client_cert``
 .. _confluence_client_cert:
