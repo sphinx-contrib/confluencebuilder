@@ -1,4 +1,7 @@
 [flake8]
+exclude =
+    tests/sample-sets/*/.tox
+    tests/sandbox*/
 ignore =
     E122
     E124
