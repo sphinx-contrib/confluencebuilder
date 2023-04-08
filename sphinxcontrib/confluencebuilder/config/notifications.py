@@ -7,6 +7,8 @@ import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
 DEPRECATED_CONFIGS = {
+    'confluence_adv_aggressive_search':
+        'use "confluence_cleanup_search_mode" instead',
     'confluence_adv_trace_data':
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':

@@ -548,10 +548,9 @@ class ConfluenceBuilder(Builder):
             if (conf.confluence_cleanup_from_root and
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
-            elif self.config.confluence_adv_aggressive_search is True:
-                self.legacy_pages = self.publisher.get_descendants_compat(baseid)
             else:
-                self.legacy_pages = self.publisher.get_descendants(baseid)
+                self.legacy_pages = self.publisher.get_descendants(
+                    baseid, conf.confluence_cleanup_search_mode)
 
             # remove any configured orphan root id from a cleanup check
             orphan_root_id = str(conf.confluence_publish_orphan_container)

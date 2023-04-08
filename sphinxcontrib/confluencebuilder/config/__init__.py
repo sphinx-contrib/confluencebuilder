@@ -29,6 +29,10 @@ def handle_config_inited(app, config):
     legacy('confluence_root_homepage', 'confluence_master_homepage')
     legacy('confluence_space_key', 'confluence_space_name')
 
+    if getattr(config, 'confluence_adv_aggressive_search') is True:
+        if getattr(config, 'confluence_cleanup_search_mode') is None:
+            config['confluence_cleanup_search_mode'] = 'search-aggressive'
+
 
 def process_ask_configs(config):
     """
