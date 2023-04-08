@@ -14,12 +14,12 @@ __pycache__/
 .DS_Store
 
 # testing
-/.tox*/
 /_build/
 /htmlcov*/
 /output/
 /sandbox-*/
 /.coverage*
+.tox*
 validation_test_overrides.py
 !.coveragerc
 
