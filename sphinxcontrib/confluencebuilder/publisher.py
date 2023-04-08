@@ -662,9 +662,36 @@ reported a success (which can be permitted for anonymous users).
 
             if not attachment:
                 url = f'content/{page_id}/child/attachment'
-                rsp = self.rest_client.post(url, None, files=data)
-                uploaded_attachment_id = rsp['results'][0]['id']
-            else:
+
+                try:
+                    rsp = self.rest_client.post(url, None, files=data)
+                    uploaded_attachment_id = rsp['results'][0]['id']
+                except ConfluenceBadApiError as ex:
+                    if ex.status_code != 503:
+                        raise
+
+                    # retry 503-failed new attachment uploads
+                    #
+                    # It has been observed on Confluence Cloud that in some
+                    # cases when a user publishes a new attachment to a page
+                    # (and maybe specifically attached to a newly created page),
+                    # Confluence may report a 503 error. The behaviour is odd
+                    # since Confluence does partially process the new
+                    # attachment (a viewable entry on the page's list of
+                    # attachments), but the data for the attachment entry is
+                    # corrupted. And in a next publish attempt, since the
+                    # comment hash is unchanged, this extension will not
+                    # attempt to re-upload. To help prevent this case, if a 503
+                    # error state is detected, check to see if the attachment
+                    # entry was created with corrupted data (i.e. can we query
+                    # for an existing attachment). If we find it, re-attempt
+                    # to publish the attachment.
+                    with skip_warningiserror():
+                        logger.warn('attachment failure (503); retrying...')
+                    time.sleep(0.5)
+                    _, attachment = self.get_attachment(page_id, name)
+
+            if attachment:
                 url = 'content/{}/child/attachment/{}/data'.format(
                     page_id, attachment['id'])
                 rsp = self.rest_client.post(url, None, files=data)
