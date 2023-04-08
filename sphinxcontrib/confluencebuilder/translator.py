@@ -106,7 +106,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
             self.body_final += header + self.nl
 
+        self.body_final += self.pre_body_data()
         self.body_final += ''.join(self.body)
+        self.body_final += self.post_body_data()
 
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
@@ -128,6 +130,12 @@ class ConfluenceBaseTranslator(BaseTranslator):
                     self.builder.config.confluence_footer_data)
 
             self.body_final += footer + self.nl
+
+    def pre_body_data(self):
+        return ''
+
+    def post_body_data(self):
+        return ''
 
     def visit_Text(self, node):
         text = node.astext()
