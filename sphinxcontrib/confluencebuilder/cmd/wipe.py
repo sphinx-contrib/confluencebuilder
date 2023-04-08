@@ -72,7 +72,6 @@ To use this action, the argument '--danger' must be set.
                     status=sys.stdout,   # sphinx status output
                     warning=sys.stderr)  # sphinx warning output
 
-                aggressive_search = app.config.confluence_adv_aggressive_search
                 dryrun = app.config.confluence_publish_dryrun
                 server_url = app.config.confluence_server_url
                 space_key = app.config.confluence_space_key
@@ -128,10 +127,9 @@ pages. Only use this action if you know what you are doing.
     if args.parent:
         base_page_id = publisher.get_base_page_id()
 
-    if aggressive_search:
-        legacy_pages = publisher.get_descendants_compat(base_page_id)
-    else:
-        legacy_pages = publisher.get_descendants(base_page_id)
+    # find all legacy pages; always search aggressive to prevent any Confluence
+    # caching issues/delays
+    legacy_pages = publisher.get_descendants(base_page_id, 'search-aggressive')
 
     print('         URL:', server_url)
     print('       Space:', space_key)

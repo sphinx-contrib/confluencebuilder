@@ -118,6 +118,8 @@ def setup(app):
     cm.add_conf_bool('confluence_cleanup_from_root')
     # Enablement of purging legacy child pages.
     cm.add_conf_bool('confluence_cleanup_purge')
+    # The mode to search for legacy child pages.
+    cm.add_conf('confluence_cleanup_search_mode')
     # Explicitly prevent auto-generation of titles for titleless documents.
     cm.add_conf_bool('confluence_disable_autogen_title')
     # Explicitly prevent page notifications on update.
@@ -220,8 +222,6 @@ def setup(app):
     cm.add_conf_bool('confluence_remove_title', 'env')
 
     # (configuration - undocumented)
-    # Enablement for aggressive descendents search (for cleanup).
-    cm.add_conf_bool('confluence_adv_aggressive_search')
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
     # Flag to permit the use of embedded certificates from requests.
@@ -242,6 +242,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'env')
 
     # (configuration - deprecated)
+    # replaced by confluence_cleanup_search_mode
+    cm.add_conf_bool('confluence_adv_aggressive_search')
     # replaced by confluence_root_homepage
     cm.add_conf('confluence_master_homepage')
     # replaced by confluence_publish_allowlist

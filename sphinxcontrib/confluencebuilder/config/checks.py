@@ -133,6 +133,25 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_cleanup_search_mode
+    try:
+        validator.conf('confluence_cleanup_search_mode').matching(
+            'direct',
+            'direct-aggressive',
+            'search',
+            'search-aggressive',
+        )
+    except ConfluenceConfigurationError as e:
+        raise ConfluenceConfigurationError('''\
+{msg}
+
+The option 'confluence_cleanup_search_mode' has been provided to override the
+default search method for page descendants. Accepted values include 'direct',
+'search' and '<mode>-aggressive'.
+'''.format(msg=e))
+
+    # ##################################################################
+
     if config.confluence_client_cert is not None:
         client_cert = config.confluence_client_cert
         if isinstance(client_cert, tuple):

@@ -40,6 +40,9 @@ def apply_defaults(builder):
     if conf.confluence_adv_restricted is None:
         conf.confluence_adv_restricted = []
 
+    if conf.confluence_cleanup_search_mode is None:
+        conf.confluence_cleanup_search_mode = 'direct'
+
     if conf.confluence_client_cert is not None:
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)

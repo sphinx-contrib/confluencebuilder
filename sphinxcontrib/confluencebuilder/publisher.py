@@ -276,7 +276,57 @@ reported a success (which can be permitted for anonymous users).
 
         return base_page_id
 
-    def get_descendants(self, page_id):
+    def get_descendants(self, page_id, mode):
+        """
+        generate a list of descendants
+
+        Queries the configured Confluence instance for a set of descendants for
+        the provided `page_id` or (if set to `None`) the configured space.
+
+        There are a series of modes supported by this call:
+
+        - `direct`
+            Descendants will be queried for by asking Confluence the list of
+            descendants by looking at the content data cached for the specified
+            page/space. In theory, this should be the proper/fastest call to
+            use. However, it has been observed in some scenarios that not all
+            descendants will be listed (depending on the version of Confluence,
+            possible caching, etc.).
+
+        - `search`
+            Descendants will be queried for by asking Confluence the list of
+            descendants by performing a CQL search for descendants of a
+            specified page/space. This method of searching for descendants is
+            available since it appeared to provide more consistent results in
+            earlier versions of Confluence. However, this method (in the
+            same manner for `direct`), may be missing some descendants
+            (depending on the version of Confluence, possible caching, etc.).
+
+        - `<mode>-aggressive`
+            Descendants will be queried in the same manner as the specied mode
+            type, with the addition that for each page found, an additional
+            fetching will be performed to check for descendants for a found
+            descendant. Querying stops when all descendants have been fetched
+            on. This method of searching provides the most consistent results in
+            populating known descendants. However, this call significantly
+            increases the amount of API calls performed.
+
+        Args:
+            page_id: the ancestor to search on (if not `None`)
+            mode: the mode to search for descendants
+
+        Returns:
+            the descendants
+        """
+
+        if 'aggressive' in mode:
+            descendants = self._get_descendants_aggressive(page_id, mode)
+        else:
+            descendants = self._get_descendants(page_id, mode)
+
+        return descendants
+
+    def _get_descendants(self, page_id, mode):
         """
         generate a list of descendants
 
@@ -285,24 +335,31 @@ reported a success (which can be permitted for anonymous users).
 
         Args:
             page_id: the ancestor to search on (if not `None`)
+            mode: the mode to search for descendants
 
         Returns:
             the descendants
         """
+
+        api_endpoint = 'content/search'
         descendants = set()
+        search_fields = {}
 
         if page_id:
-            search_fields = {'cql': 'ancestor=' + str(page_id)}
+            if 'direct' in mode:
+                api_endpoint = f'content/{page_id}/descendant/page'
+            else:
+                search_fields['cql'] = f'ancestor={page_id}'
         else:
-            search_fields = {'cql': 'space="' + self.space_key +
-                '" and type=page'}
+            # always use search if no page id was provided (e.g. a space search)
+            search_fields['cql'] = f'space="{self.space_key}" and type=page'
 
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete descendants set (for larger sets).
         search_fields['limit'] = 1000
 
-        rsp = self.rest_client.get('content/search', search_fields)
+        rsp = self.rest_client.get(api_endpoint, search_fields)
         idx = 0
         while rsp['size'] > 0:
             for result in rsp['results']:
@@ -315,11 +372,11 @@ reported a success (which can be permitted for anonymous users).
             idx += int(rsp['limit'])
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
-            rsp = self.rest_client.get('content/search', sub_search_fields)
+            rsp = self.rest_client.get(api_endpoint, sub_search_fields)
 
         return descendants
 
-    def get_descendants_compat(self, page_id):
+    def _get_descendants_aggressive(self, page_id, mode):
         """
         generate a list of descendants (aggressive)
 
@@ -335,6 +392,7 @@ reported a success (which can be permitted for anonymous users).
 
         Args:
             page_id: the ancestor to search on (if not `None`)
+            mode: the mode to search for descendants
 
         Returns:
             the descendants
@@ -342,7 +400,7 @@ reported a success (which can be permitted for anonymous users).
         visited_pages = set()
 
         def find_legacy_pages(page_id, pages):
-            descendants = self.get_descendants(page_id)
+            descendants = self._get_descendants(page_id, mode)
             for descendant in descendants:
                 if descendant not in pages:
                     pages.add(descendant)
