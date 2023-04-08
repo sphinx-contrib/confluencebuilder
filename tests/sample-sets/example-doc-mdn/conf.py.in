@@ -1,0 +1,8 @@
+extensions = [
+    'myst_parser',
+    'sphinxcontrib.confluencebuilder',
+]
+
+source_suffix = [
+    '.md',
+]
