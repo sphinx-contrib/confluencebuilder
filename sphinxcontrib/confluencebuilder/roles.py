@@ -7,6 +7,7 @@ See also docutils roles:
     https://docutils.sourceforge.io/docs/howto/rst-roles.html#define-the-role-function
 """
 
+from docutils import nodes
 from sphinxcontrib.confluencebuilder.nodes import confluence_emoticon_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_mention_inline
@@ -133,6 +134,31 @@ def ConfluenceStatusRole(name, rawtext, text, lineno, inliner, options=None, con
     node.params['title'] = text
     if outlined:
         node.params['subtle'] = 'true'
+
+    return [node], []
+
+
+def ConfluenceStrikeRole(name, rawtext, text, lineno, inliner, options=None, content=None):
+    """
+    a confluence strike role
+
+    Defines an inline Confluence strike role where users can inject inlined
+    node to styled with a strikethrough.
+
+    Args:
+        name: local name of the interpreted text role
+        rawtext: the entire interpreted text construct
+        text: the interpreted text content
+        lineno: the line number where the interpreted text beings
+        inliner: inliner object that called the role function
+        options: dictionary of directive options for customization
+        content: list of strings, the directive content for customization
+
+    Returns:
+        returns a tuple include a list of nodes and a list of system messages
+    """
+
+    node = nodes.inline(rawsource=text, text=text, classes=['strike'])
 
     return [node], []
 
