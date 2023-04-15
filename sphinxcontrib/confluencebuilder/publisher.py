@@ -667,6 +667,21 @@ reported a success (which can be permitted for anonymous users).
                     rsp = self.rest_client.post(url, None, files=data)
                     uploaded_attachment_id = rsp['results'][0]['id']
                 except ConfluenceBadApiError as ex:
+                    # file type restricted? generate a warning
+                    #
+                    # Be a bit flexible in the situation where a specific
+                    # file type is restricted. Instead of hard failing, only
+                    # generate a warning that an attachment could not be added.
+                    # This has been observed for environments using Akeles
+                    # Consulting's "Attachment Checker for Confluence".
+                    if 'file type is not allowed' in str(ex):
+                        fail_msg = f'unable to upload attachment "{name}" '
+                        fail_msg += f'(page: "{self._name_cache[page_id]}"); '
+                        fail_msg += 'this Confluence instance restricts this '
+                        fail_msg += f'file extension ({mimetype})'
+                        logger.warn(fail_msg)
+                        return None
+
                     if ex.status_code != 503:
                         raise
 
