@@ -82,6 +82,8 @@ markup ``:linenos:``):
 Presenting another code block which contains CDATA information (which should be
 escaped to prevent publishing issues or display issues):
 
+.. Broken in v8.2.0, v8.0.4, v8.1.1; see also: CONFSERVER-82849
+
 .. code-block:: html
 
     <html>
