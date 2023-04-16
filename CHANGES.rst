@@ -2,7 +2,9 @@ Development
 ===========
 
 * Allow users to configure legacy page search mode for cleanup
+* Fixed anchor page links with v2 editor
 * Fixed document processing issues with Sphinx 6.1.x
+* Introduce the Confluence strike role
 * Perform an attachment re-upload attempt on an unexpected Confluence 503 error
 * Provide fallback styling for code languages with a similar style
 * Support ``confluence_full_width`` with v1 editor
