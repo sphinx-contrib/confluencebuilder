@@ -1134,18 +1134,21 @@ Advanced publishing configuration
 
     .. versionadded:: 2.1
 
-    .. note::
+    .. warning::
 
-        Prior to the introduction of this configuration, the internal search
-        mode for this extension followed a ``search`` styled mode.
+        The ``direct`` search mode may not work on Confluence Server/DC
+        instances. For these cases, Confluence may report the following error:
+
+         | *(Not Implemented; 500)*
+         | Page children is currently only supported for direct children.
 
     Configures the search mode used for finding descendant pages to be cleaned
     up (when configured for archiving/purging legacy pages). By default, this
-    extension will ask Confluence for known descendants for the root page:
+    extension will search Confluence for known descendants for the root page:
 
     .. code-block:: python
 
-        confluence_cleanup_search_mode = 'direct'
+        confluence_cleanup_search_mode = 'search'
 
     However, in some cases, the provided list of descendants may be incorrect
     (due to the Confluence version used, the state of Confluence's ancestors
@@ -1153,8 +1156,9 @@ Advanced publishing configuration
     extension searches for descendants, if a user experiences issues with the
     default method of searching. Supported modes are as follows:
 
-    - ``direct`` `(default)`: Query known descendants from a page's cache.
-    - ``search``: Search for descendants using Confluence's CQL capability.
+    - ``direct``: Query known descendants from a page's cache.
+    - ``search`` `(default)`: Search for descendants using Confluence's CQL
+      capability.
 
     Users can also postfix ``-aggressive`` (e.g. ``search-aggressive``) on a
     mode to perform a recursive search for descendants ensure all descendants
