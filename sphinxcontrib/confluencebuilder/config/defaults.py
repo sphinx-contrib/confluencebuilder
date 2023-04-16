@@ -41,7 +41,10 @@ def apply_defaults(builder):
         conf.confluence_adv_restricted = []
 
     if conf.confluence_cleanup_search_mode is None:
-        conf.confluence_cleanup_search_mode = 'direct'
+        # the default is `search`, since on Confluence Server/DC; the `direct`
+        # mode may always fail since Confluence may not completely implement
+        # the API capability
+        conf.confluence_cleanup_search_mode = 'search'
 
     if conf.confluence_client_cert is not None:
         if not isinstance(conf.confluence_client_cert, tuple):
