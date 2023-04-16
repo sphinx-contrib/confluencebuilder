@@ -211,10 +211,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # reference, create a link to it
             if 'refid' in node and not node.next_node(nodes.reference):
                 anchor_value = ''.join(node['refid'].split())
-                self.body.append(self._start_ac_link(node, anchor_value))
-                self.context.append(self._end_ac_link(node))
-                self.body.append(self._start_ac_link_body(node))
-                self.context.append(self._end_ac_link_body(node))
+
+                if self.v2:
+                    attribs = {
+                        'href': f'#{anchor_value}',
+                    }
+
+                    self.body.append(self._start_tag(node, 'a', **attribs))
+                    self.context.append(self._end_tag(node, suffix=''))
+                else:
+                    self.body.append(self._start_ac_link(node, anchor_value))
+                    self.body.append(self._start_ac_link_body(node))
+                    self.context.append(self._end_ac_link_body(node) +
+                        self._end_ac_link(node))
         elif (isinstance(node.parent, addnodes.compact_paragraph) and
                 node.parent.get('toctree')):
             self.visit_caption(node)
@@ -226,8 +235,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             if 'refid' in node and not node.next_node(nodes.reference):
-                self.body.append(self.context.pop())  # ac_link_body
-                self.body.append(self.context.pop())  # end_ac_link
+                self.body.append(self.context.pop())  # link
 
             self.body.append(self.context.pop())  # h<x>
         elif (isinstance(node.parent, addnodes.compact_paragraph) and
@@ -1222,15 +1230,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._reference_context.append(self._end_tag(node, suffix=''))
 
         if anchor_value:
-            # build link to internal anchor (on the same page)
-            #  Note: plain-text-link body cannot have inline markup; content
-            #        will be added into body already and skip-children should be
-            #        invoked for this use case.
-            self.body.append(self._start_ac_link(node, anchor_value))
-            self._reference_context.append(self._end_ac_link(node))
+            if self.v2:
+                attribs = {
+                    'href': f'#{anchor_value}',
+                }
 
-            self.body.append(self._start_ac_link_body(node))
-            self._reference_context.append(self._end_ac_link_body(node))
+                self.body.append(self._start_tag(node, 'a', **attribs))
+                self._reference_context.append(self._end_tag(node, suffix=''))
+            else:
+                # build link to internal anchor (on the same page)
+                #  Note: plain-text-link body cannot have inline markup; content
+                #        will be added into body already and skip-children
+                #        should be invoked for this use case.
+                self.body.append(self._start_ac_link(node, anchor_value))
+                self._reference_context.append(self._end_ac_link(node))
+
+                self.body.append(self._start_ac_link_body(node))
+                self._reference_context.append(self._end_ac_link_body(node))
 
     def _visit_reference_intern_uri(self, node):
         docname = posixpath.normpath(
@@ -1410,16 +1426,34 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for idx, backref in enumerate(node['backrefs']):
                 if idx != 0:
                     self.body.append(', ')
-                self.body.append(self._start_ac_link(node, backref))
-                self.body.append(
-                    self._start_ac_plain_text_link_body_macro(node))
-                self.body.append(self._escape_cdata(str(idx + 1)))
-                self.body.append(self._end_ac_plain_text_link_body_macro(node))
-                self.body.append(self._end_ac_link(node))
+
+                if self.v2:
+                    attribs = {
+                        'href': f'#{backref}',
+                    }
+
+                    self.body.append(self._start_tag(node, 'a', **attribs))
+                    self.body.append(self._escape_cdata(str(idx + 1)))
+                    self.body.append(self._end_tag(node, suffix=''))
+                else:
+                    self.body.append(self._start_ac_link(node, backref))
+                    self.body.append(
+                        self._start_ac_plain_text_link_body_macro(node))
+                    self.body.append(self._escape_cdata(str(idx + 1)))
+                    self.body.append(self._end_ac_plain_text_link_body_macro(node))
+                    self.body.append(self._end_ac_link(node))
             self.body.append(')')
             self.body.append(self._end_tag(node, suffix=''))  # em
             if not self.v2:
                 self.body.append(self._end_tag(node))  # div
+        elif self.v2:
+            attribs = {
+                'href': '#' + node['backrefs'][0],
+            }
+
+            self.body.append(self._start_tag(node, 'a', **attribs))
+            self.body.append(self._escape_cdata(label_text))
+            self.body.append(self._end_tag(node, suffix=''))
         else:
             self.body.append(self._start_ac_link(node, node['backrefs'][0]))
             self.body.append(self._start_ac_plain_text_link_body_macro(node))
@@ -1464,11 +1498,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         target_anchor = ''.join(node['refid'].split())
 
         self.body.append(self._start_tag(node, 'sup'))
-        self.body.append(self._start_ac_link(node, target_anchor))
-        self.body.append(self._start_ac_plain_text_link_body_macro(node))
-        self.body.append(self._escape_cdata(text))
-        self.body.append(self._end_ac_plain_text_link_body_macro(node))
-        self.body.append(self._end_ac_link(node))
+        if self.v2:
+            attribs = {
+                'href': f'#{target_anchor}',
+            }
+
+            self.body.append(self._start_tag(node, 'a', **attribs))
+            self.body.append(self._escape_cdata(text))
+            self.body.append(self._end_tag(node, suffix=''))
+        else:
+            self.body.append(self._start_ac_link(node, target_anchor))
+            self.body.append(self._start_ac_plain_text_link_body_macro(node))
+            self.body.append(self._escape_cdata(text))
+            self.body.append(self._end_ac_plain_text_link_body_macro(node))
+            self.body.append(self._end_ac_link(node))
         self.body.append(self._end_tag(node, suffix=''))  # sup
         raise nodes.SkipNode
 
