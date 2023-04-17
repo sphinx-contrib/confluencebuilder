@@ -146,7 +146,7 @@ What macro names to use will vary based off which macro types are installed
 
 .. list-table::
     :header-rows: 1
-    :widths: auto
+    :widths: 40 60
 
     * - Marketplace Application
 
