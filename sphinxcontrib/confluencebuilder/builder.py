@@ -963,6 +963,9 @@ class ConfluenceBuilder(Builder):
                     default_host = 'bitbucket.org'
                     default_view = 'view'
                     url = 'src/{version}/{container}{page}{suffix}?mode={view}'
+                elif source_type == 'codeberg':
+                    default_host = 'codeberg.org'
+                    url = 'src/{version}/{container}{page}{suffix}'
                 elif source_type == 'github':
                     default_host = 'github.com'
                     url = '{view}/{version}/{container}{page}{suffix}'

@@ -882,6 +882,7 @@ Publishing configuration
     following types:
 
     - ``bitbucket``
+    - ``codeberg``
     - ``github``
     - ``gitlab``
 
@@ -907,6 +908,9 @@ Publishing configuration
     +-----------------+-------------------------------------------------------+
     | | ``version``   | The version of the sources to list. This is typically |
     | | *(required)*  | set to either a branch (e.g. ``main``) or tag value.  |
+    |                 |                                                       |
+    |                 | For Codeberg, also include the version type. For      |
+    |                 | example, ``branch/main`` or ``tag/1.0``.              |
     +-----------------+-------------------------------------------------------+
     | ``view``        | The view mode to configure. By default, this value is |
     |                 | set to ``blob`` for GitHub/GitLab and ``view`` for    |

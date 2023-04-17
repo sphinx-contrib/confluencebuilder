@@ -651,6 +651,7 @@ following:
         # check if a supported template type is provided
         supported_types = [
             'bitbucket',
+            'codeberg',
             'github',
             'gitlab',
         ]
