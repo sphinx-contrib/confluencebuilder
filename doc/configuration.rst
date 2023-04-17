@@ -158,8 +158,8 @@ Essential configuration
 
         confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
 
-    If `API tokens`_ are not being used, the plain password for the configured
-    username value can be used:
+    If `API tokens`_ are not being used, the plaintext password for the
+    configured username value can be used:
 
     .. code-block:: python
 
@@ -715,7 +715,7 @@ Publishing configuration
             'label-b',
         ]
 
-    For per-document labels, please consult the ``confluence_metadata``
+    For per-document labels, please see the ``confluence_metadata``
     :ref:`directive <confluence_metadata>`. See also
     |confluence_append_labels|_.
 
@@ -1563,7 +1563,7 @@ Advanced publishing configuration
 
     Note that this extension does not define custom authentication handlers.
     This configuration is a passthrough option only. For more details on various
-    ways to use authentication handlers, please consult
+    ways to use authentication handlers, please see
     `Requests -- Authentication`_. By default, no custom authentication handler
     is provided to generated REST API requests. An example OAuth 1 is as
     follows:
@@ -1758,7 +1758,7 @@ Advanced processing configuration
 
     The name of a LaTeX macro will vary based on which add-on is installed.
     For a list of known macro names or steps to determine the name of a
-    supported macro, consult the
+    supported macro, see the
     :ref:`macro table/instructions <guide_math_macro_names>`
     found in the math guide.
 

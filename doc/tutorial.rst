@@ -59,8 +59,6 @@ Next, create a configuration file ``conf.py`` with the following information:
 
 .. code-block:: python
 
-    # -*- coding: utf-8 -*-
-
     extensions = []
 
 After preparing these files, continue by
@@ -118,17 +116,6 @@ their configuration file. For example:
 
 When publishing a documentation set, the above configuration will tell this
 extension to publish all documents under the ``MyDocumentation`` page.
-
-By default, all documents published to a Confluence instance will be stored
-either in the root of the space or a configured parent space (as mentioned
-above). For larger documentation sets which include multiple nested documents,
-it may be desired to have individual documents published as children of other
-published documents. Configuring the ``confluence_page_hierarchy`` option will
-allow a user to enable hierarchy support. For example:
-
-.. code-block:: python
-
-    confluence_page_hierarchy = True
 
 For first time users, they may wish to sanity check what content will be
 published before publishing for the first time to a Confluence instance. A user

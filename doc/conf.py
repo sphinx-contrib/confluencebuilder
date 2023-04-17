@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 :copyright: Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)
@@ -86,9 +85,11 @@ latex_elements = {
     ''',
     # iso datetime support
     # disable hyphenatation
+    # disable justified text
     'preamble': r'''
         \usepackage{datetime2}
         \usepackage[none]{hyphenat}
+        \usepackage[document]{ragged2e}
     ''',
 }
 

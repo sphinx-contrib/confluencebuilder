@@ -142,11 +142,11 @@ LaTeX macro names
 ~~~~~~~~~~~~~~~~~
 
 What macro names to use will vary based off which macro types are installed
-(if any). Please consult the following table for reported macro names:
+(if any). Please see the following table for reported macro names:
 
 .. list-table::
     :header-rows: 1
-    :widths: auto
+    :widths: 40 60
 
     * - Marketplace Application
 
