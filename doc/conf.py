@@ -85,9 +85,11 @@ latex_elements = {
     ''',
     # iso datetime support
     # disable hyphenatation
+    # disable justified text
     'preamble': r'''
         \usepackage{datetime2}
         \usepackage[none]{hyphenat}
+        \usepackage[document]{ragged2e}
     ''',
 }
 
