@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 :copyright: Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 :license: BSD-2-Clause (LICENSE)

@@ -59,8 +59,6 @@ Next, create a configuration file ``conf.py`` with the following information:
 
 .. code-block:: python
 
-    # -*- coding: utf-8 -*-
-
     extensions = []
 
 After preparing these files, continue by
