@@ -2621,6 +2621,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # ------------------------------------------
+    # confluence-builder -- enhancements -- link
+    # ------------------------------------------
+
+    def visit_confluence_link_inline(self, node):
+        attribs = {
+            "data-card-appearance": node.attributes["flavour"],
+            "href": node.attributes["href"]
+        }
+        self.body.append(
+            self._start_tag(
+                node,
+                'a',
+                **attribs
+            )
+        )
+        self.body.append(attribs["href"])
+        self.context.append(self._end_tag(node))
+
+    def depart_confluence_link_inline(self, node):
+        self.body.append(self.context.pop())
+
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- jupyter-sphinx
     # ---------------------------------------------------

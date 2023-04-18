@@ -25,6 +25,15 @@ class ConfluenceParams(nodes.Element):
         self.params = self.attributes.setdefault('confluence-params', {})
 
 
+class confluence_link_inline(nodes.Inline, nodes.Element):
+    """
+    confluence link inline node
+
+    A Confluence builder defined link inline node, used to manage how a link
+    is displayed: embed, inline, as an url or as a card.
+    """
+
+
 class confluence_emoticon_inline(nodes.Inline, nodes.TextElement):
     """
     confluence emoticon inline node

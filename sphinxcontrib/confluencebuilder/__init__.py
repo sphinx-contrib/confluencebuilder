@@ -26,6 +26,7 @@ from sphinxcontrib.confluencebuilder.roles import ConfluenceLatexRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceMentionRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStatusRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStrikeRole
+from sphinxcontrib.confluencebuilder.roles import ConfluenceLinkRole
 from sphinxcontrib.confluencebuilder.roles import JiraRole
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
 
@@ -313,6 +314,7 @@ def confluence_builder_inited(app):
     app.add_role('confluence_status', ConfluenceStatusRole)
     app.add_role('confluence_strike', ConfluenceStrikeRole)
     app.add_role('jira', JiraRole)
+    app.add_role('confluence_link', ConfluenceLinkRole)
 
     # inject compatible autosummary nodes if the extension is available/loaded
     if autosummary:
