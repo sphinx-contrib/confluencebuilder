@@ -1069,8 +1069,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     self.body.append(self._start_tag(node, 'colgroup'))
                     has_colspec = True
 
-                self.body.append(self._start_tag(node, 'col', empty=True,
-                    **{'style': 'width: {}%'.format(colspec['colwidth'])}))
+                # apply a width percentage based on the configured colwidth
+                # value; however, if this is a v2 editor and it is detected
+                # that the configured width is set to 100%, do not apply any
+                # styling, v2 tables are already 100% by default, and
+                # configuring it explicitly may break the editor's page
+                # width configuration
+                attribs = {}
+                if colspec['colwidth'] != 100 or not self.v2:
+                    attribs['style'] = 'width: {}%'.format(colspec['colwidth'])
+
+                self.body.append(self._start_tag(
+                    node, 'col', empty=True, **attribs))
 
             if has_colspec:
                 self.body.append(self._end_tag(node))
