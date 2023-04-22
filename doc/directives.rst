@@ -140,6 +140,7 @@ Common
 
 .. index:: Macros; Expand Macro (directive)
 .. index:: Expand Macro
+.. _confluence_expand-directive:
 
 .. rst:directive:: confluence_expand
 

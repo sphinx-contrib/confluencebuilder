@@ -2735,8 +2735,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # acronym
 
     def visit_container(self, node):
-        self.body.append(self._start_tag(node, 'div'))
-        self.context.append(self._end_tag(node))
+        if 'collapse' in node.get('classes', []):
+            self.body.append(self._start_ac_macro(node, 'expand'))
+            self.body.append(self._start_ac_rich_text_body_macro(node))
+            self.context.append(self._end_ac_rich_text_body_macro(node) +
+                self._end_ac_macro(node))
+        else:
+            self.body.append(self._start_tag(node, 'div'))
+            self.context.append(self._end_tag(node))
 
     def depart_container(self, node):
         self.body.append(self.context.pop())  # div
