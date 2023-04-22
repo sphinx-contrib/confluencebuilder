@@ -25,7 +25,7 @@ Type                    Notes
 `bullet lists`_         Supported
 `citations`_            Supported
 `compound paragraph`_   Supported
-`container`_            Unsupported.
+`container`_            Limited support.
 
                         Confluence markup does not permit the use of the
                         ``class`` attribute for tags.
