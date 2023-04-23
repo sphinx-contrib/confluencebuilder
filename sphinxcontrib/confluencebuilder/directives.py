@@ -3,10 +3,12 @@
 
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt_include
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
@@ -37,6 +39,46 @@ def string_list(argument):
                     data.append(label)
 
     return data
+
+
+class ConfluenceCardDirective(Directive):
+    has_content = False
+    option_spec = {
+        'card': lambda x: directives.choice(x, ('block', 'embed')),
+        'layout': lambda x: directives.choice(x, ('align-start', 'align-end',
+            'center', 'wrap-left', 'wrap-right')),
+        'width': directives.positive_int,
+    }
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self):
+        node = self._build_card_node()
+        node.params['href'] = self.arguments[0]
+
+        if 'card' in self.options:
+            node.params['data-card-appearance'] = self.options['card']
+
+        if 'layout' in self.options:
+            node.params['data-layout'] = self.options['layout']
+
+        if 'width' in self.options:
+            node.params['data-width'] = self.options['width']
+
+        return [node]
+
+    def _build_card_node(self):
+        raise NotImplementedError()
+
+
+class ConfluenceDocDirective(ConfluenceCardDirective):
+    def _build_card_node(self):
+        return confluence_doc_card()
+
+
+class ConfluenceLinkDirective(ConfluenceCardDirective):
+    def _build_card_node(self):
+        return confluence_link_card()
 
 
 class ConfluenceExcerptDirective(Directive):

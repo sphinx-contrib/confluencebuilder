@@ -25,12 +25,21 @@ class ConfluenceParams(nodes.Element):
         self.params = self.attributes.setdefault('confluence-params', {})
 
 
-class confluence_link_inline(nodes.Inline, nodes.Element):
+class confluence_doc_card(nodes.Structural, ConfluenceParams):
     """
-    confluence link inline node
+    confluence document card node
 
-    A Confluence builder defined link inline node, used to manage how a link
-    is displayed: embed, inline, as an url or as a card.
+    A Confluence builder defined document card node, used to help add
+    Confluence document-CARD for a block section.
+    """
+
+
+class confluence_doc_card_inline(nodes.Inline, ConfluenceParams):
+    """
+    confluence document card inline node
+
+    A Confluence builder defined document card inline node, used to help add
+    Confluence document-CARD for an inlined section of a paragraph.
     """
 
 
@@ -124,6 +133,24 @@ class confluence_latex_inline(nodes.Inline, nodes.TextElement):
 
     A Confluence builder defined LaTeX inline node, used to help manage LaTeX
     content designed for an inlined section of a paragraph.
+    """
+
+
+class confluence_link_card(nodes.Structural, ConfluenceParams):
+    """
+    confluence link card node
+
+    A Confluence builder defined link card node, used to help add
+    Confluence link-CARD for a block section.
+    """
+
+
+class confluence_link_card_inline(nodes.Inline, ConfluenceParams):
+    """
+    confluence card inline node
+
+    A Confluence builder defined inline card node, used to help add
+    Confluence link-CARD for an inlined section of a paragraph.
     """
 
 
