@@ -1017,9 +1017,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         # [sphinxcontrib-needs]
         # force needs tables to a maximum width
+        # (do not for v2 editor, as it will already use the page's width)
         needs_styles = ['need', 'NEEDS_TABLE', 'NEEDS_DATATABLES']
         node.__needs_table = any(ns in table_classes for ns in needs_styles)
-        if node.__needs_table:
+        if node.__needs_table and not self.v2:
             attribs['style'] = 'width: 100%;'
 
         self.body.append(self._start_tag(
@@ -1037,6 +1038,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_table(self, node):
         self.body.append(self.context.pop())  # table
         self._thead_context.pop()
+
+        # [sphinxcontrib-needs]
+        # inject a newline on v1 editor for needs tables, to help space out
+        # different requirements; note v2 editor tables already force some
+        # level of spacing
+        if node.__needs_table and not self.v2:
+            self.body.append(self._start_tag(
+                node, 'br', suffix=self.nl, empty=True))
 
     def visit_tgroup(self, node):
         node.stubs = []
@@ -1060,8 +1069,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     self.body.append(self._start_tag(node, 'colgroup'))
                     has_colspec = True
 
-                self.body.append(self._start_tag(node, 'col', empty=True,
-                    **{'style': 'width: {}%'.format(colspec['colwidth'])}))
+                # apply a width percentage based on the configured colwidth
+                # value; however, if this is a v2 editor and it is detected
+                # that the configured width is set to 100%, do not apply any
+                # styling, v2 tables are already 100% by default, and
+                # configuring it explicitly may break the editor's page
+                # width configuration
+                attribs = {}
+                if colspec['colwidth'] != 100 or not self.v2:
+                    attribs['style'] = 'width: {}%'.format(colspec['colwidth'])
+
+                self.body.append(self._start_tag(
+                    node, 'col', empty=True, **attribs))
 
             if has_colspec:
                 self.body.append(self._end_tag(node))
@@ -1122,11 +1141,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 attribs['style'] = 'text-align: center;'
             if 'head_right' in node.get('classes', []):
                 attribs['style'] = 'text-align: right;'
+            if 'footer_right' in node.get('classes', []):
+                attribs['style'] = 'text-align: right;'
 
         self.body.append(self._start_tag(node, target_tag, **attribs))
         self.context.append(self._end_tag(node))
 
+        # [sphinxcontrib-needs]
+        # for meta-like fields, attempt to make the font smaller
+        node.__needs_table_extra = False
+        entry_classes = node.get('classes', [])
+        sup_styles = ['meta', 'head_right', 'head_left',
+                      'footer_left', 'footer_right']
+        if table.__needs_table:
+            if any(ns in entry_classes for ns in sup_styles):
+                self.body.append(self._start_tag(node, 'sup'))
+                self.context.append(self._end_tag(node, suffix=''))
+                node.__needs_table_extra = True
+
     def depart_entry(self, node):
+        if node.__needs_table_extra:
+            self.body.append(self.context.pop())  # sup
+
         self.body.append(self.context.pop())  # td/th
 
     def visit_tabular_col_spec(self, node):
@@ -1574,6 +1610,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             has_added = True
         elif classes in [['strike']]:
             self.body.append(self._start_tag(node, 's'))
+            has_added = True
+        # [sphinxcontrib-needs]
+        # ignore collapse buttons, since they will not work in Confluence
+        elif 'needs_collapse' in classes:
+            raise nodes.SkipNode
+        # [sphinxcontrib-needs]
+        # strong text any title content
+        elif 'needs_title' in classes:
+            self.body.append(self._start_tag(node, 'strong'))
             has_added = True
         elif isinstance(node.parent, addnodes.desc_parameter):
             # check if an identifier in signature
