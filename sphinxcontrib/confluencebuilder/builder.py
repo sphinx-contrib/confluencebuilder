@@ -60,7 +60,7 @@ class ConfluenceBuilder(Builder):
             super().__init__(app, env)
             # pylint: enable=too-many-function-args
         else:
-            super().__init__(app)
+            super().__init__(app)  # pylint: disable=E1120
 
         self.cache_doctrees = {}
         self.cloud = False
