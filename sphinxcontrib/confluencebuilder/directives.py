@@ -128,7 +128,6 @@ class ConfluenceMetadataDirective(Directive):
     option_spec = {
         'labels': string_list,
     }
-    final_argument_whitespace = True
 
     def run(self):
         node = confluence_metadata()
@@ -163,7 +162,6 @@ class ConfluenceToc(Directive):
         'style': directives.unchanged,
         'type': lambda x: directives.choice(x, ('flat', 'list')),
     }
-    final_argument_whitespace = True
 
     def run(self):
         node = confluence_toc()
