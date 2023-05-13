@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from sphinx.errors import SphinxWarning
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
@@ -80,3 +81,15 @@ class TestConfluenceLink(ConfluenceTestCase):
             self.assertEqual(link['data-card-appearance'], 'block')
             self.assertTrue(link.has_attr('href'))
             self.assertEqual(link['href'], 'https://www.example.com')
+
+    @setup_builder('confluence')
+    def test_storage_confluence_link_invalid_layout(self):
+        dataset = self.dataset + '-invalid-layout'
+        with self.assertRaises(SphinxWarning):
+            self.build(dataset)
+
+    @setup_builder('confluence')
+    def test_storage_confluence_link_invalid_width(self):
+        dataset = self.dataset + '-invalid-width'
+        with self.assertRaises(SphinxWarning):
+            self.build(dataset)

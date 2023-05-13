@@ -3,6 +3,7 @@
 
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
@@ -55,15 +56,29 @@ class ConfluenceCardDirective(Directive):
     def run(self):
         node = self._build_card_node()
         node.params['href'] = self.arguments[0]
+        warnings = []
 
-        if 'card' in self.options:
-            node.params['data-card-appearance'] = self.options['card']
+        card = self.options.get('card', None)
+        layout = self.options.get('layout', None)
+        width = self.options.get('width', None)
 
-        if 'layout' in self.options:
-            node.params['data-layout'] = self.options['layout']
+        if card:
+            node.params['data-card-appearance'] = card
 
-        if 'width' in self.options:
-            node.params['data-width'] = self.options['width']
+        if layout and card == 'embed':
+            node.params['data-layout'] = layout
+        elif layout:
+            warnings.append('layout only allowed for embedded card')
+
+        if width and card == 'embed':
+            node.params['data-width'] = width
+        elif width:
+            warnings.append('width only allowed for embedded card')
+
+        for warning in warnings:
+            reporter = self.state.document.reporter
+            source, lineno = reporter.get_source_and_line(self.lineno)
+            logger.warn('%s:%s: %s', source, lineno, warning)
 
         return [node]
 
