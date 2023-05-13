@@ -532,6 +532,136 @@ Confluence page.
 
 See also :ref:`LaTeX roles <latex-roles>`.
 
+.. index:: Smart links (directive)
+.. _smart-link-directives:
+
+Smart links
+-----------
+
+.. note::
+
+    Smart links will only render when using the v2 editor
+    (see ``confluence_editor``; :ref:`ref<confluence_editor>`).
+
+.. rst:directive:: confluence_doc
+
+    .. versionadded:: 2.1
+
+    The ``confluence_doc`` directive allows a user to define a link to a
+    document that is styled with a card appearance. The directive accepts the
+    name of a document in an absolute or relative fashion (in the same manner
+    as Sphinx's `:doc: <role-doc_>`_ role). For example:
+
+    .. code-block:: rst
+
+        .. confluence_doc:: my-other-page
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: card: card type
+        :type: block, embed
+
+        When using ``block``, a smart link card is generated for the document
+        link. The card will provide a summary of the target document. When
+        using ``embed``, the contents of the document will rendered on the
+        page.
+
+        .. code-block:: rst
+
+            .. confluence_doc:: my-other-page
+                :card: block
+
+    .. rst:directive:option:: layout: layout type
+        :type: align-start, align-end, center, wrap-left, wrap-right
+
+        .. note:: This option is only applicable when using an ``embed`` card.
+
+        Specifies how an embedded card will be laid out on a page. Embedded
+        cards will default to 100% width. Therefore, to take advantage of
+        certain layout capabilities, users should also assign an appropriate
+        width as well.
+
+        .. code-block:: rst
+
+            .. confluence_doc:: my-other-page
+                :card: embed
+                :layout: align-end
+                :width: 20
+
+    .. rst:directive:option:: width: value
+        :type: integer
+
+        .. note:: This option is only applicable when using an ``embed`` card.
+
+        Specifies the width to apply for an embedded card. The width is a value
+        from 0 to 100 (e.g. a value of ``80`` for 80% of the page).
+
+        .. code-block:: rst
+
+            .. confluence_doc:: my-other-page
+                :card: embed
+                :width: 50
+
+.. rst:directive:: confluence_link
+
+    .. versionadded:: 2.1
+
+    The ``confluence_link`` directive allows a user to define a link to a
+    page that is styled with a card appearance. The directive accepts a URL.
+    How Confluence renders the context of a link card will vary based on
+    which link targets Confluence supports. For example:
+
+    .. code-block:: rst
+
+        .. confluence_link:: https://example.com
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: card: card type
+        :type: block, embed
+
+        When using ``block``, a smart link card is generated for the link.
+        The card will provide a summary of the target link. When using
+        ``embed``, the contents of the link will rendered on the page.
+
+        .. code-block:: rst
+
+            .. confluence_link:: https://example.com
+                :card: block
+
+    .. rst:directive:option:: layout: layout type
+        :type: align-start, align-end, center, wrap-left, wrap-right
+
+        .. note:: This option is only applicable when using an ``embed`` card.
+
+        Specifies how an embedded card will be laid out on a page. Embedded
+        cards will default to 100% width. Therefore, to take advantage of
+        certain layout capabilities, users should also assign an appropriate
+        width as well.
+
+        .. code-block:: rst
+
+            .. confluence_link:: https://example.com
+                :card: embed
+                :layout: align-end
+                :width: 20
+
+    .. rst:directive:option:: width: value
+        :type: integer
+
+        .. note:: This option is only applicable when using an ``embed`` card.
+
+        Specifies the width to apply for an embedded card. The width is a value
+        from 0 to 100 (e.g. a value of ``80`` for 80% of the page).
+
+        .. code-block:: rst
+
+            .. confluence_link:: https://example.com
+                :card: embed
+                :width: 50
+
+See also :ref:`smart link roles <smart-link-roles>`.
+
 
 .. references ------------------------------------------------------------------
 
@@ -541,5 +671,6 @@ See also :ref:`LaTeX roles <latex-roles>`.
 .. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html
-.. _reStructuredText's Table of Contents: https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents
 .. _only: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-only
+.. _reStructuredText's Table of Contents: https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents
+.. _role-doc: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-doc
