@@ -6,10 +6,12 @@ from sphinx.util import docutils
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
 from sphinxcontrib.confluencebuilder.config.manager import ConfigManager
+from sphinxcontrib.confluencebuilder.directives import ConfluenceDocDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExcerptDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExcerptIncludeDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLatexDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceLinkDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceNewline
 from sphinxcontrib.confluencebuilder.directives import ConfluenceToc
@@ -21,8 +23,10 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.roles import ConfluenceDocRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceEmoticonRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceLatexRole
+from sphinxcontrib.confluencebuilder.roles import ConfluenceLinkRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceMentionRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStatusRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStrikeRole
@@ -295,11 +299,13 @@ def confluence_builder_inited(app):
         app.add_node(jira_issue)
 
     # register directives
+    app.add_directive('confluence_doc', ConfluenceDocDirective)
     app.add_directive('confluence_excerpt', ConfluenceExcerptDirective)
     app.add_directive('confluence_excerpt_include',
         ConfluenceExcerptIncludeDirective)
     app.add_directive('confluence_expand', ConfluenceExpandDirective)
     app.add_directive('confluence_latex', ConfluenceLatexDirective)
+    app.add_directive('confluence_link', ConfluenceLinkDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
     app.add_directive('confluence_newline', ConfluenceNewline)
     app.add_directive('confluence_toc', ConfluenceToc)
@@ -307,8 +313,10 @@ def confluence_builder_inited(app):
     app.add_directive('jira_issue', JiraIssueDirective)
 
     # register roles
+    app.add_role('confluence_doc', ConfluenceDocRole)
     app.add_role('confluence_emoticon', ConfluenceEmoticonRole)
     app.add_role('confluence_latex', ConfluenceLatexRole)
+    app.add_role('confluence_link', ConfluenceLinkRole)
     app.add_role('confluence_mention', ConfluenceMentionRole)
     app.add_role('confluence_status', ConfluenceStatusRole)
     app.add_role('confluence_strike', ConfluenceStrikeRole)

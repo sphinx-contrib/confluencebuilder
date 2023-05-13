@@ -2487,6 +2487,106 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # ------------------------------------------
+    # confluence-builder -- enhancements -- card
+    # ------------------------------------------
+
+    def visit_confluence_doc_card(self, node):
+        # v1 editor does not support cards; contain in a panel to emulate a
+        # block feel
+        if not self.v2:
+            self.body.append(self._start_ac_macro(node, 'panel'))
+            self.body.append(self._start_ac_rich_text_body_macro(node))
+
+        docname = posixpath.normpath(self.docparent +
+            path.splitext(node.params['href'].split('#')[0])[0])
+        doctitle = self.state.title(docname)
+        if doctitle:
+            attribs = {}
+
+            if 'data-card-appearance' in node.params:
+                attribs['ac:card-appearance'] = \
+                    node.params['data-card-appearance']
+
+            if 'data-layout' in node.params:
+                attribs['ac:layout'] = node.params['data-layout']
+
+            if 'data-width' in node.params:
+                attribs['ac:width'] = node.params['data-width']
+
+            doctitle = self.encode(doctitle)
+            self.body.append(self._start_tag(node, 'ac:link', **attribs))
+            self.body.append(self._start_tag(node, 'ri:page',
+                suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
+            self.body.append(self._start_ac_link_body(node))
+            self.body.append(node.astext())
+            self.body.append(self._end_ac_link_body(node))
+            self.body.append(self._end_tag(node, suffix=''))
+        else:
+            self.warn('unable to build link to document card due to '
+                'missing title (in {}): {}'.format(self.docname, docname))
+            self.body.append(node.astext())
+
+        if not self.v2:
+            self.body.append(self._end_ac_rich_text_body_macro(node))
+            self.body.append(self._end_ac_macro(node))  # panel
+
+        raise nodes.SkipNode
+
+    def visit_confluence_doc_card_inline(self, node):
+        docname = posixpath.normpath(self.docparent +
+            path.splitext(node['reftarget'].split('#')[0])[0])
+        doctitle = self.state.title(docname)
+        if doctitle:
+            doctitle = self.encode(doctitle)
+            self.body.append(self._start_ac_link(node, appearance='inline'))
+            self.body.append(self._start_tag(node, 'ri:page',
+                suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
+            self.body.append(self._start_ac_link_body(node))
+            self.body.append(node.astext())
+            self.body.append(self._end_ac_link_body(node))
+            self.body.append(self._end_ac_link(node))
+        else:
+            self.warn('unable to build link to document card due to '
+                'missing title (in {}): {}'.format(self.docname, docname))
+            self.body.append(node.astext())
+
+        raise nodes.SkipNode
+
+    def visit_confluence_link_card(self, node):
+        options = dict(node.params)
+        url = self.encode(options.pop('href'))
+        options['href'] = url
+
+        # v1 editor does not support cards; contain in a panel to emulate a
+        # block feel
+        if not self.v2:
+            self.body.append(self._start_ac_macro(node, 'panel'))
+            self.body.append(self._start_ac_rich_text_body_macro(node))
+
+        self.body.append(self._start_tag(node, 'a', **options))
+        self.body.append(url)
+        self.body.append(self._end_tag(node, suffix=''))
+
+        if not self.v2:
+            self.body.append(self._end_ac_rich_text_body_macro(node))
+            self.body.append(self._end_ac_macro(node))  # panel
+
+        raise nodes.SkipNode
+
+    def visit_confluence_link_card_inline(self, node):
+        # raw href | give it an inline card appearance
+        attribs = {
+            'data-card-appearance': 'inline',
+            'href': self.encode(node.params['href']),
+        }
+
+        self.body.append(self._start_tag(node, 'a', **attribs))
+        self.body.append(attribs['href'])
+        self.body.append(self._end_tag(node, suffix=''))
+
+        raise nodes.SkipNode
+
     # ----------------------------------------------
     # confluence-builder -- enhancements -- emoticon
     # ----------------------------------------------
@@ -2989,7 +3089,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         """
         return self._end_tag(node, suffix='')
 
-    def _start_ac_link(self, node, anchor=None):
+    def _start_ac_link(self, node, anchor=None, appearance=None):
         """
         generates a confluence link start tag
 
@@ -3001,6 +3101,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Args:
             node: the node processing the link
             anchor (optional): the anchor value to use (defaults to None)
+            appearance (optional): card appearance to use (defaults to None)
 
         Returns:
             the content
@@ -3008,6 +3109,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         if anchor:
             attribs['ac:anchor'] = anchor
+        if appearance:
+            attribs['ac:card-appearance'] = appearance
         return self._start_tag(node, 'ac:link', suffix=self.nl, **attribs)
 
     def _end_ac_link(self, node):

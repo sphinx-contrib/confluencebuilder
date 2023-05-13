@@ -3,10 +3,13 @@
 
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
+from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt_include
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
@@ -37,6 +40,60 @@ def string_list(argument):
                     data.append(label)
 
     return data
+
+
+class ConfluenceCardDirective(Directive):
+    has_content = False
+    option_spec = {
+        'card': lambda x: directives.choice(x, ('block', 'embed')),
+        'layout': lambda x: directives.choice(x, ('align-start', 'align-end',
+            'center', 'wrap-left', 'wrap-right')),
+        'width': directives.positive_int,
+    }
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self):
+        node = self._build_card_node()
+        node.params['href'] = self.arguments[0]
+        warnings = []
+
+        card = self.options.get('card', None)
+        layout = self.options.get('layout', None)
+        width = self.options.get('width', None)
+
+        if card:
+            node.params['data-card-appearance'] = card
+
+        if layout and card == 'embed':
+            node.params['data-layout'] = layout
+        elif layout:
+            warnings.append('layout only allowed for embedded card')
+
+        if width and card == 'embed':
+            node.params['data-width'] = width
+        elif width:
+            warnings.append('width only allowed for embedded card')
+
+        for warning in warnings:
+            reporter = self.state.document.reporter
+            source, lineno = reporter.get_source_and_line(self.lineno)
+            logger.warn('%s:%s: %s', source, lineno, warning)
+
+        return [node]
+
+    def _build_card_node(self):
+        raise NotImplementedError()
+
+
+class ConfluenceDocDirective(ConfluenceCardDirective):
+    def _build_card_node(self):
+        return confluence_doc_card()
+
+
+class ConfluenceLinkDirective(ConfluenceCardDirective):
+    def _build_card_node(self):
+        return confluence_link_card()
 
 
 class ConfluenceExcerptDirective(Directive):

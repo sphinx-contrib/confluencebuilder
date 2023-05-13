@@ -121,6 +121,47 @@ generated Confluence documents.
     A user mapping table can also be configured using the
     ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
 
+.. index:: Smart links; Roles
+.. _smart-link-roles:
+
+Smart links
+-----------
+
+.. note::
+
+    Smart links will only render when using the v2 editor
+    (see ``confluence_editor``; :ref:`ref<confluence_editor>`).
+
+Support for inlined smart links can be created using the following roles.
+
+.. rst:role:: confluence_doc
+
+    .. versionadded:: 2.1
+
+    The ``confluence_doc`` role allows a user to define an inlined link to a
+    document that is styled with a card appearance. The role accepts the
+    name of a document in an absolute or relative fashion (in the same manner
+    as Sphinx's `:doc: <role-doc_>`_ role). For example:
+
+    .. code-block:: rst
+
+        See :confluence_doc:`my-other-page`.
+
+.. rst:role:: confluence_link
+
+    .. versionadded:: 2.1
+
+    The ``confluence_link`` role allows a user to define an inlined link to a
+    page that is styled with a card appearance. The role accepts a URL.
+    How Confluence renders the context of a link card will vary based on
+    which link targets Confluence supports. For example:
+
+    .. code-block:: rst
+
+        See :confluence_link:`https://example.com`.
+
+See also :ref:`smart link directives <smart-link-directives>`.
+
 .. index:: Macros; Status Macro (role)
 .. index:: Status Macro
 
@@ -197,4 +238,5 @@ generated Confluence documents.
 
 .. _Confluence mentions: https://support.atlassian.com/confluence-cloud/docs/mention-a-person-or-team/
 .. _Confluence status macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-status-macro/
+.. _role-doc: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-doc
 .. _roles: https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html
