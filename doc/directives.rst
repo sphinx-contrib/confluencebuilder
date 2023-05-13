@@ -532,7 +532,7 @@ Confluence page.
 
 See also :ref:`LaTeX roles <latex-roles>`.
 
-.. index:: Smart links (directive)
+.. index:: Smart links; Directives
 .. _smart-link-directives:
 
 Smart links

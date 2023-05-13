@@ -121,7 +121,7 @@ generated Confluence documents.
     A user mapping table can also be configured using the
     ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
 
-.. index:: Smart links (role)
+.. index:: Smart links; Roles
 .. _smart-link-roles:
 
 Smart links
