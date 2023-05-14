@@ -4,12 +4,16 @@ Development
 * Allow users to configure legacy page search mode for cleanup
 * Fixed anchor page links with v2 editor
 * Fixed document processing issues with Sphinx 6.1.x
+* Introduce Confluence Smart link directives/roles
+* Introduce rendering when using sphinxcontrib-needs extension
 * Introduce the Confluence strike role
 * Perform an attachment re-upload attempt on an unexpected Confluence 503 error
 * Provide fallback styling for code languages with a similar style
+* Support Codeberg helper for source links
 * Support ``confluence_full_width`` with v1 editor
 * Support default-fallback when using ``confluence_lang_transform``
 * Support deployment with Python 3.12
+* Support publishing only pages with content changes
 * Support suppressing extension warnings using Sphinx's ``suppress_warnings``
 * Support the ability to configure where orphan pages are stored
 * Support the ability to not publish orphan pages
