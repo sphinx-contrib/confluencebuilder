@@ -1446,6 +1446,24 @@ Advanced publishing configuration
     See also
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
+.. confval:: confluence_publish_force
+
+    .. versionadded:: 2.1
+
+    A boolean value on whether or not to force publish page updates even if
+    no changes are detected on the Confluence instance. When a page is
+    published by this extension, a hash of the page will be stored on the
+    Confluence page. This hash can be referred to later by hosts using this
+    extension, by query the hash and comparing it against a locally prepared
+    page update. If hashes match, no attempt will be made to update the
+    specific page. If users are experience issues with this check, they may
+    force publishing by configuring this option to ``True``. By default, this
+    option is disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_force = True
+
 .. confval:: confluence_publish_intersphinx
 
     .. versionadded:: 1.9

@@ -189,6 +189,8 @@ def setup(app):
     cm.add_conf('confluence_publish_delay')
     # Subset of documents which are denied to be published.
     cm.add_conf('confluence_publish_denylist')
+    # Whether to check for changes on remote before publishing.
+    cm.add_conf('confluence_publish_force')
     # Disable adding `rest/api` to REST requests.
     cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # Header(s) to use for Confluence REST interaction.
