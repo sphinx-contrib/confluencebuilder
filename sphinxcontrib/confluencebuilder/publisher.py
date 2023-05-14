@@ -19,9 +19,14 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAnce
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
+from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import json
 import logging
 import time
+
+
+# key used for managing this extension's properties on a Confluence instance
+PROP_KEY = 'sphinx'
 
 
 class ConfluencePublisher:
@@ -587,6 +592,36 @@ reported a success (which can be permitted for anonymous users).
 
         return page_id, page
 
+    def get_page_properties(self, page_id, expand='version'):
+        """
+        get properties from the provided page id
+
+        Performs an API call to acquire known properties about a specific page.
+        This call can returns the page properties dictionary if found;
+        otherwise ``None`` will be returned.
+
+        Args:
+            page_id: the page identifier
+            expand (optional): data to expand on
+
+        Returns:
+            the properties
+        """
+
+        props = None
+
+        try:
+            property_path = f'content/{page_id}/property/{PROP_KEY}'
+            props = self.rest_client.get(property_path, {
+                'status': 'current',
+                'expand': expand,
+            })
+        except ConfluenceBadApiError as ex:
+            if ex.status_code != 404:
+                raise
+
+        return props
+
     def store_attachment(self, page_id, name, data, mimetype, hash_, force=False):
         """
         request to store an attachment on a provided page
@@ -782,6 +817,25 @@ reported a success (which can be permitted for anonymous users).
             self._onlynew('skipping existing page', page['id'])
             return page['id']
 
+        # fetch known properties (associated with this extension) from the page
+        if page:
+            props = self.get_page_properties(page['id'])
+        else:
+            props = None
+
+        # calculate the hash for a page; we will first use this to check if
+        # there is a update to apply, and if we do need to update, we will
+        # add this value into the page's properties
+        new_page_hash = ConfluenceUtil.hash(data['content'])
+
+        # if we are not force uploading, check if the new page hash matches
+        # the remote hash; if so, do not publish
+        if props and not self.config.confluence_publish_force:
+            remote_hash = props.get('value', {}).get('hash')
+            if new_page_hash == remote_hash:
+                logger.verbose('no changes in page: {}'.format(page_name))
+                return page['id']
+
         try:
             # new page
             if not page:
@@ -839,6 +893,20 @@ reported a success (which can be permitted for anonymous users).
             if page:
                 self._update_page(page, page_name, data, parent_id=parent_id)
                 uploaded_page_id = page['id']
+
+            if not props:
+                props = {
+                    'value': {},
+                    'version': {
+                        'number': 1,
+                    },
+                }
+            else:
+                last_props_version = int(props['version']['number'])
+                props['version']['number'] = last_props_version + 1
+
+            props['value']['hash'] = new_page_hash
+            self.store_page_properties(uploaded_page_id, props)
 
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
@@ -902,6 +970,21 @@ reported a success (which can be permitted for anonymous users).
             self.rest_client.delete('user/watch/content', page_id)
 
         return page_id
+
+    def store_page_properties(self, page_id, data):
+        """
+        request to store properties on a page to a confluence instance
+
+        Performs a request which will attempt to store properties on a
+        provided page.
+
+        Args:
+            page_id: the id of the page to update
+            data: the properties data to apply
+        """
+
+        property_path = f'{page_id}/property/{PROP_KEY}'
+        self.rest_client.put('content', property_path, data)
 
     def remove_attachment(self, id_):
         """

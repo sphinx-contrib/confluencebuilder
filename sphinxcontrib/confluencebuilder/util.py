@@ -23,6 +23,22 @@ class ConfluenceUtil:
     """
 
     @staticmethod
+    def hash(data):
+        """
+        generate a hash of the provided string
+
+        Calculate a hash for a string. When publishing Confluence pages, hashes
+        can be used to check if pages needs to be uploaded again.
+
+        Args:
+            data: the raw string
+
+        Returns:
+            the hash
+        """
+        return sha256(data.encode()).hexdigest()
+
+    @staticmethod
     def hash_asset(asset):
         """
         generate a hash of the provided asset
