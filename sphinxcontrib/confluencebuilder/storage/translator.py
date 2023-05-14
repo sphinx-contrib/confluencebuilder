@@ -2518,9 +2518,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'ac:link', **attribs))
             self.body.append(self._start_tag(node, 'ri:page',
                 suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
-            self.body.append(self._start_ac_link_body(node))
-            self.body.append(node.astext())
-            self.body.append(self._end_ac_link_body(node))
             self.body.append(self._end_tag(node, suffix=''))
         else:
             self.warn('unable to build link to document card due to '
