@@ -386,7 +386,11 @@ div.admonition > p, div.warning > p {
     padding: 0;
 }
 
-div.admonition > pre, div.warning > pre {
+div.admonition > pre,
+div.admonition > div > div.highlight > pre,
+div.warning > pre,
+div.warning > div > div.highlight > pre {
+    background-color: #fcfcfc;
     margin: 0.4em 1em 0.4em 1em;
 }
 
