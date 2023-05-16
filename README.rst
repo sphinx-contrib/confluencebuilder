@@ -26,10 +26,10 @@ optionally publish them to a Confluence instance.
 Requirements
 ============
 
-* Confluence_ Cloud or Data Center / Server 7.12+
+* Confluence_ Cloud or Data Center / Server 7.13+
 * Python_ 3.7+
 * Requests_ 2.14.0+
-* Sphinx_ 5.0+
+* Sphinx_ 5.3+
 
 Installing
 ==========
