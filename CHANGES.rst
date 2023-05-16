@@ -1,5 +1,5 @@
-Development
-===========
+2.1.0 (2023-05-15)
+==================
 
 * Allow users to configure legacy page search mode for cleanup
 * Fixed anchor page links with v2 editor
