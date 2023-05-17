@@ -1279,6 +1279,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # identifier value instead
         target = self.state.target(anchorname)
         if target:
+            # Johannes Loibl: If multiple anchors are generated for the same reference (e.g. when an explicit reference
+            # is placed directly before a heading, Sphinx will generate two anchors and increase the suffix counter,
+            # e.g. HEADING, HEADING.1, HEADING.2, ... . This leads to a wrong naming of the final anchor link,
+            # since the heading can only be accessed via the root name (HEADING in this case).
+            # So we have to strip off the number suffix
+            if "." in target:
+                target = target.split(".")[0]
             anchor_value = target
             anchor_value = self.encode(anchor_value)
         else:
