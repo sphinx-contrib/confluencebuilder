@@ -15,7 +15,7 @@ maintainers = [
 ]
 requires-python = '>=3.7'
 readme = 'README.rst'
-license = {text = 'BSD-2-Clause'}
+license = {file = 'LICENSE'}
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
