@@ -61,6 +61,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._needs_navnode_spacing = False
         self._reference_context = []
         self._thead_context = []
+        self._v2_header_added = False
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
 
