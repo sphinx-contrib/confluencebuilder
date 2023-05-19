@@ -1,3 +1,9 @@
+Development
+===========
+
+* Ensure source distribution includes the ``LICENSE`` document
+* Fixed issue where v2 editor may fail with ``object has no attribute`` error
+
 2.1.0 (2023-05-15)
 ==================
 
