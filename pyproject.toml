@@ -15,7 +15,6 @@ maintainers = [
 ]
 requires-python = '>=3.7'
 readme = 'README.rst'
-license = {text = 'BSD-2-Clause'}
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
@@ -55,3 +54,10 @@ sphinx-build-confluence = 'sphinxcontrib.confluencebuilder.__main__:main'
 
 [tool.flit.module]
 name = 'sphinxcontrib.confluencebuilder'
+
+[tool.flit.sdist]
+include = [
+    'AUTHORS',
+    'LICENSE',
+    'MANIFEST.in',
+]
