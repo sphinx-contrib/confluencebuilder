@@ -213,6 +213,16 @@ Generic configuration
 
     See also |confluence_publish_prefix|_.
 
+.. confval:: confluence_code_block_theme
+
+    .. versionadded:: 2.2
+
+    Specifies the color scheme to use when displaying a Confluence ``Code Block`` macro.
+
+    .. code-block:: python
+
+        confluence_code_block_theme = 'Midnight'
+
 .. confval:: confluence_default_alignment
 
     .. versionadded:: 1.3
@@ -456,16 +466,6 @@ Generic configuration
     .. code-block:: python
 
         singleconfluence_toctree = True
-
-.. confval:: confluence_code_block_theme
-
-    .. versionadded:: 2.2
-
-    Specifies the color scheme to use when displaying a Confluence ``Code Block`` macro.
-
-    .. code-block:: python
-
-        confluence_code_block_theme = 'Midnight'
 
 Publishing configuration
 ------------------------
