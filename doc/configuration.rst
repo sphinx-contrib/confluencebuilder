@@ -217,7 +217,7 @@ Generic configuration
 
     .. versionadded:: 2.2
 
-    Specifies the color scheme to use when displaying a Confluence ``Code Block`` macro.
+    Specifies the color scheme to use when displaying a Confluence code block macro.
 
     .. code-block:: python
 
