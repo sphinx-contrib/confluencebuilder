@@ -32,8 +32,8 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_theme(self):
         theme = 'Midnight'
-        config = prepare_conf()
-        config.confluence_code_block_theme = theme
+        config = dict(self.config)
+        config['confluence_code_block_theme'] = theme
         out_dir = self.build(self.dataset, filenames=['code-block'], config=config)
 
         with parse('code-block', out_dir) as data:
