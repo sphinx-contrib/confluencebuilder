@@ -457,6 +457,16 @@ Generic configuration
 
         singleconfluence_toctree = True
 
+.. confval:: confluence_code_block_theme
+
+    .. versionadded:: 2.2
+
+    Specifies the color scheme to use when displaying a Confluence ``Code Block`` macro.
+
+    .. code-block:: python
+
+        confluence_code_block_theme = 'Midnight'
+
 Publishing configuration
 ------------------------
 

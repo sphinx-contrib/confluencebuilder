@@ -111,6 +111,8 @@ def setup(app):
     cm.add_conf_bool('confluence_use_index')
     # Enablement for toctrees for singleconfluence documents.
     cm.add_conf_bool('singleconfluence_toctree', 'singleconfluence')
+    # Specify the color scheme used for displaying code blocks.
+    cm.add_conf('confluence_code_block_theme', 'env')
 
     # (configuration - publishing)
     # Request for publish password to come from interactive session.
