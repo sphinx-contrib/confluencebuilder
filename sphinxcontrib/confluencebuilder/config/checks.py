@@ -189,6 +189,12 @@ found. Ensure the following file exists:
 
     # ##################################################################
 
+    # confluence_code_block_theme
+    validator.conf('confluence_code_block_theme') \
+        .string()
+
+    # ##################################################################
+
     # confluence_default_alignment
     try:
         validator.conf('confluence_default_alignment') \
