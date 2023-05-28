@@ -251,6 +251,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+    def test_config_check_code_block_theme(self):
+        self.config['confluence_code_block_theme'] = True
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_code_block_theme'] = 'invalid'
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
     def test_config_check_default_alignment(self):
         self.config['confluence_default_alignment'] = 'left'
         self._try_config()
