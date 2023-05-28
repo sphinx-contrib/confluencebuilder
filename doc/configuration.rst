@@ -223,6 +223,10 @@ Generic configuration
 
         confluence_code_block_theme = 'Midnight'
 
+    .. note::
+
+        This option is only supported using the ``v1`` :ref:`editor <confluence_editor>`.
+
 .. confval:: confluence_default_alignment
 
     .. versionadded:: 1.3
