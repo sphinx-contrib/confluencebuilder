@@ -759,6 +759,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._build_ac_param(node, 'language', lang))
         self.body.append(self._build_ac_param(node, 'linenumbers', num))
 
+        if self.builder.config.confluence_code_block_theme:
+            theme = self.builder.config.confluence_code_block_theme
+            self.body.append(self._build_ac_param(node, 'theme', theme))
+
         if firstline is not None and firstline > 1:
             self.body.append(
                 self._build_ac_param(node, 'firstline', str(firstline))

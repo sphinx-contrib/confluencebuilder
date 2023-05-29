@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
-from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
+from sphinxcontrib.confluencebuilder.std.confluence import EDITORS, SUPPORTED_CODE_BLOCK_THEMES
 import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
@@ -70,6 +70,13 @@ def warnings(validator):
             if not mimetypes.guess_extension(mime_type):
                 logger.warn('confluence_additional_mime_types '
                     'defines an unknown mime type: ' + mime_type)
+
+    # confluence_code_block_theme assigned an unsupported theme
+    if config.confluence_code_block_theme is not None:
+        theme = config.confluence_code_block_theme
+        if theme not in SUPPORTED_CODE_BLOCK_THEMES:
+            logger.warn('confluence_code_block_theme '
+                        'defines an unknown theme: ' + theme)
 
     # warn when ssl validation is disabled
     if config.confluence_disable_ssl_validation:

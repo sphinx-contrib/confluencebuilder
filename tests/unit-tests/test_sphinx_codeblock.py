@@ -29,6 +29,22 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
             self.assertEqual(title_param.text, 'code caption test')
 
     @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_theme(self):
+        theme = 'Midnight'
+        config = dict(self.config)
+        config['confluence_code_block_theme'] = theme
+        out_dir = self.build(self.dataset, filenames=['code-block'], config=config)
+
+        with parse('code-block', out_dir) as data:
+            theme_params = data.find_all('ac:parameter', {'ac:name': 'theme'})
+            self.assertIsNotNone(theme_params)
+            self.assertEqual(len(theme_params), 3)
+
+            for theme_param in theme_params:
+                self.assertIsNotNone(theme_param)
+                self.assertEqual(theme_param.text, theme)
+
+    @setup_builder('confluence')
     def test_storage_sphinx_codeblock_default(self):
         out_dir = self.build(self.dataset, filenames=['code-block'])
 
@@ -40,6 +56,9 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
             for code_macro in code_macros:
                 self.assertTrue(code_macro.has_attr('ac:name'))
                 self.assertEqual(code_macro['ac:name'], 'code')
+                # No theme, by default.
+                code_macro_theme = code_macro.find('ac:parameter', {'ac:name': 'theme'})
+                self.assertIsNone(code_macro_theme)
 
             # python block
             python_block = code_macros.pop(0)

@@ -81,6 +81,8 @@ def setup(app):
     # (configuration - generic)
     # Add page and section numbers if doctree has :numbered: option
     cm.add_conf_bool('confluence_add_secnumbers', 'env')
+    # Specify the color scheme used for displaying code blocks.
+    cm.add_conf('confluence_code_block_theme', 'env')
     # Default alignment for tables, figures, etc.
     cm.add_conf('confluence_default_alignment', 'env')
     # Enablement of a generated domain index documents
