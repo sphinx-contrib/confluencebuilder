@@ -2855,6 +2855,37 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_youtube(self, node):
         self._visit_video(node, 'https://www.youtube.com/watch?v=' + node['id'])
 
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-video
+    # ---------------------------------------------------
+
+    def visit_video_node(self, node):
+        autoplay = node.get("autoplay")
+        height = node.get("height")
+        width = node.get("width")
+        source_path, _ = node.get("primary_src") or (None, None)
+
+        img_key, _, _ = self.assets.add(source_path, self.docname)
+
+        if not img_key:
+            self.warn(f"Couldn't find video name {source_path}")
+            raise nodes.SkipNode
+
+        ri_filename = self._start_ri_attachment(node, img_key) + self._end_ri_attachment(node)
+
+        self.body.append(self._start_tag(node, 'div'))
+        self.body.append(self._start_ac_macro(node, 'multimedia'))
+        self.body.append(self._build_ac_param(node, 'name', ri_filename))
+        if width:
+            self.body.append(self._build_ac_param(node, "width", str(width)))
+        if height:
+            self.body.append(self._build_ac_param(node, "height", str(height)))
+        if autoplay:
+            self.body.append(self._build_ac_param(node, "autostart", str(autoplay).lower()))
+        self.body.append(self._end_ac_macro(node))
+        self.body.append(self._end_tag(node))
+        raise nodes.SkipNode
+
     # -------------
     # miscellaneous
     # -------------
