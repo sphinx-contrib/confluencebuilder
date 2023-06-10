@@ -16,6 +16,13 @@ API_REST_BIND_PATH = 'rest/api'
 #       java/com/atlassian/confluence/pages/AbstractPage::isValidTitleLength
 CONFLUENCE_MAX_TITLE_LEN = 255
 
+# maximum width for a non-full-width page (v1; Server/DC)
+#
+# It has been observed that some stock macros would default to a fixed width
+# of "960" (e.g. when using the Widget Connector macro). We will use this as
+# a reference to the max width to ensure no unexpected overflows.
+CONFLUENCE_MAX_WIDTH = 960
+
 # list of supported editors
 EDITORS = [
     'v1',

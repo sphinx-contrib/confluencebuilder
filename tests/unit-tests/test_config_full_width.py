@@ -25,8 +25,8 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
             self.assertIsNone(layout)
 
     @setup_builder('confluence')
-    def test_storage_config_full_width_v1_disabled(self):
-        """validate full width modifications for v1 editor (disabled)"""
+    def test_storage_config_full_width_v1_disabled_cloud(self):
+        """validate full width modifications for v1 editor (disabled; cloud)"""
         #
         # The use of `confluence_full_width` would typically advise a
         # Confluence instance the layout type on publish. However, this
@@ -36,6 +36,8 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
 
         config = dict(self.config)
         config['confluence_full_width'] = False
+        config['confluence_server_url'] = \
+            'https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/'
 
         out_dir = self.build(self.dataset, config=config)
 
@@ -50,6 +52,26 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
 
             cell = section.find('ac:layout-cell')
             self.assertIsNotNone(cell)
+
+    @setup_builder('confluence')
+    def test_storage_config_full_width_v1_disabled_dc(self):
+        """validate full width modifications for v1 editor (disabled; dc)"""
+        #
+        # See: test_storage_config_full_width_v1_disabled_cloud
+        #
+        # This is a variant for non-Cloud versions, which needs an explicit
+        # max-width hint.
+
+        config = dict(self.config)
+        config['confluence_full_width'] = False
+
+        out_dir = self.build(self.dataset, config=config)
+
+        with parse('index', out_dir) as data:
+            container = data.find('div')
+            self.assertIsNotNone(container)
+            self.assertTrue(container.has_attr('style'))
+            self.assertIn('max-width', container['style'])
 
     @setup_builder('confluence')
     def test_storage_config_full_width_v1_enabled(self):
