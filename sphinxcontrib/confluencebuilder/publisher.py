@@ -57,6 +57,14 @@ class ConfluencePublisher:
         if self.append_labels is None:
             self.append_labels = True
 
+        # determine appearance to apply (if any) for the page
+        self.content_appearance = None
+        if self.config.confluence_full_width is not None:
+            if self.config.confluence_full_width:
+                self.content_appearance = 'full-width'
+            else:
+                self.content_appearance = 'default'
+
         # if debugging, enable requests (urllib3) logging
         if self.debug:
             logging.basicConfig()
@@ -797,9 +805,17 @@ reported a success (which can be permitted for anonymous users).
                 self._dryrun('updating existing page', page['id'], misc)
                 return page['id']
 
+        # fetch the page data
+        # (expand on certain fields that may be required)
         expand = 'version'
-        if self.append_labels:
+        if parent_id:
+            expand += ',ancestors'
+        if self.append_labels or self.config.confluence_global_labels:
             expand += ',metadata.labels'
+        if self.content_appearance:
+            expand += ',metadata.properties.content_appearance_published'
+        if self.editor:
+            expand += ',metadata.properties.editor'
 
         _, page = self.get_page(page_name, expand=expand)
 
@@ -828,9 +844,56 @@ reported a success (which can be permitted for anonymous users).
         # add this value into the page's properties
         new_page_hash = ConfluenceUtil.hash(data['content'])
 
+        # check if we have to force a page update
+        force_publish = self.config.confluence_publish_force
+        if page and not force_publish:
+            metadata = page.get('metadata', {})
+            meta_props = metadata.get('properties', {})
+
+            # if the parent page has changed, force an update
+            if parent_id:
+                parent_changed = True
+                last_ancestor = page.get('ancestors', [])[-1:]
+                if last_ancestor:
+                    if last_ancestor[0].get('id') == str(parent_id):
+                        parent_changed = False
+
+                if parent_changed:
+                    logger.verbose('parent changed: {}'.format(page_name))
+                    force_publish = True
+
+            # if we are missing any global variables, force publish
+            if self.config.confluence_global_labels:
+                expected_labels = set(self.config.confluence_global_labels)
+                existing_labels = [lbl.get('name')
+                    for lbl in page.get('metadata', {}).get(
+                        'labels', {}).get('results', {})
+                ]
+                if expected_labels.difference(existing_labels):
+                    logger.verbose('labels missing: {}'.format(page_name))
+                    force_publish = True
+
+            # if instance supports appearance changes and the appearance
+            # looks to be changed, force publish
+            cap_props = meta_props.get('content-appearance-published', {})
+            if cap_props and self.content_appearance:
+                current_appearance = cap_props.get('value')
+                if self.content_appearance != current_appearance:
+                    logger.verbose('appearance changed: {}'.format(page_name))
+                    force_publish = True
+
+            # if instance supports editors and the editor to be changed,
+            # force publish
+            editor_props = meta_props.get('editor', {})
+            if editor_props and self.editor:
+                current_editor = editor_props.get('value')
+                if self.editor != current_editor:
+                    logger.verbose('editor changed: {}'.format(page_name))
+                    force_publish = True
+
         # if we are not force uploading, check if the new page hash matches
         # the remote hash; if so, do not publish
-        if props and not self.config.confluence_publish_force:
+        if props and not force_publish:
             remote_hash = props.get('value', {}).get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose('no changes in page: {}'.format(page_name))
@@ -1123,14 +1186,9 @@ reported a success (which can be permitted for anonymous users).
         if self.editor:
             page['metadata']['properties']['editor'] = {'value': self.editor}
 
-        if self.config.confluence_full_width is not None:
-            if self.config.confluence_full_width:
-                content_appearance = 'full-width'
-            else:
-                content_appearance = 'default'
-
+        if self.content_appearance:
             page['metadata']['properties']['content-appearance-published'] = {
-                'value': content_appearance,
+                'value': self.content_appearance,
             }
 
         return page

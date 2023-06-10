@@ -718,6 +718,12 @@ Publishing configuration
 
     .. versionadded:: 1.3
 
+    .. note::
+
+        If removing global labels for a documentation set that already
+        has been published, user may need to publish once with the
+        |confluence_publish_force|_ option to help clear old labels.
+
     Defines a list of labels to apply to each document being published. When a
     publish event either adds a new page or updates an existing page, the labels
     defined in this option will be added/set on the page. For example:
@@ -1459,6 +1465,9 @@ Advanced publishing configuration
 
     See also
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
+
+.. |confluence_publish_force| replace:: ``confluence_publish_force``
+.. _confluence_publish_force:
 
 .. confval:: confluence_publish_force
 
