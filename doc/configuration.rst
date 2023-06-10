@@ -295,6 +295,9 @@ Generic configuration
 
         confluence_editor = 'v1'
 
+    For per-document overrides, please see the ``confluence_metadata``
+    :ref:`directive <confluence_metadata>`.
+
 .. |confluence_header_file| replace:: ``confluence_header_file``
 .. _confluence_header_file:
 
@@ -695,6 +698,9 @@ Publishing configuration
 
     See also |confluence_watch|_.
 
+.. |confluence_full_width| replace:: ``confluence_full_width``
+.. _confluence_full_width:
+
 .. confval:: confluence_full_width
 
     .. versionadded:: 2.0
@@ -710,6 +716,9 @@ Publishing configuration
     .. code-block:: python
 
         confluence_full_width = True
+
+    For per-document overrides, please see the ``confluence_metadata``
+    :ref:`directive <confluence_metadata>`.
 
 .. |confluence_global_labels| replace:: ``confluence_global_labels``
 .. _confluence_global_labels:
