@@ -2,7 +2,8 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
-from sphinxcontrib.confluencebuilder.std.confluence import EDITORS, SUPPORTED_CODE_BLOCK_THEMES
+from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
+from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_CODE_BLOCK_THEMES
 import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
