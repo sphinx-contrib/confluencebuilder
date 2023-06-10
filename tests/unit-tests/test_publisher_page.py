@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from collections import defaultdict
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
@@ -59,10 +60,8 @@ class TestConfluencePublisherPage(unittest.TestCase):
             daemon.register_put_rsp(200, dict(page_fetch_rsp))
 
             # perform page update request
-            data = {
-                'content': 'dummy page data',
-                'labels': [],
-            }
+            data = defaultdict(str)
+            data['content'] = 'dummy page data'
             page_id = publisher.store_page_by_id(
                 'dummy-name', expected_page_id, data)
 
@@ -122,10 +121,8 @@ class TestConfluencePublisherPage(unittest.TestCase):
             daemon.register_delete_rsp(200)
 
             # perform page update request
-            data = {
-                'content': 'dummy page data',
-                'labels': [],
-            }
+            data = defaultdict(str)
+            data['content'] = 'dummy page data'
             page_id = publisher.store_page_by_id(
                 'dummy-name', expected_page_id, data)
 

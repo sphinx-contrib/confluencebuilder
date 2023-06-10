@@ -504,17 +504,7 @@ class ConfluenceBuilder(Builder):
                 if docname in self.orphan_docnames:
                     parent_id = orphan_root_id
 
-        data = {
-            'content': output,
-            'labels': [],
-        }
-
-        if self.config.confluence_global_labels:
-            data['labels'].extend(self.config.confluence_global_labels)
-
-        metadata = self.metadata[docname]
-        if 'labels' in metadata:
-            data['labels'].extend([v for v in metadata['labels']])
+        data = self._prepare_page_data(docname, output)
 
         if conf.confluence_publish_root and is_root_doc:
             uploaded_id = self.publisher.store_page_by_id(title,
@@ -569,6 +559,43 @@ class ConfluenceBuilder(Builder):
         if self.post_cleanup:
             if uploaded_id in self.legacy_pages:
                 self.legacy_pages.remove(uploaded_id)
+
+    def _prepare_page_data(self, docname, output):
+        data = {
+            'content': output,
+            'editor': self.config.confluence_editor,
+            'full-width': None,
+            'labels': [],
+        }
+        metadata = self.metadata[docname]
+
+        # apply editor override (if any)
+        if 'editor' in metadata:
+            data['editor'] = metadata['editor']
+
+        # determine appearance
+        #
+        # Note: we do not have an "OFF" for v1 editor since an
+        # appearance hint is ignored; width management in this
+        # case is managed in the translator
+        if 'fullWidth' in metadata:
+            confluence_full_width = (metadata['fullWidth'] == 'true')
+        else:
+            confluence_full_width = self.config.confluence_full_width
+
+        if confluence_full_width:
+            data['full-width'] = 'full-width'
+        else:
+            data['full-width'] = 'default'
+
+        # add global labels and page-specific labels
+        if self.config.confluence_global_labels:
+            data['labels'].extend(self.config.confluence_global_labels)
+
+        if 'labels' in metadata:
+            data['labels'].extend([v for v in metadata['labels']])
+
+        return data
 
     def publish_asset(self, key, docname, output, type_, hash_):
         conf = self.config
@@ -812,8 +839,13 @@ class ConfluenceBuilder(Builder):
         metadata = self.metadata.setdefault(docname, {})
 
         for node in findall(doctree, confluence_metadata):
-            labels = metadata.setdefault('labels', [])
-            labels.extend(node.params['labels'])
+            for k, v in node.params.items():
+                if k == 'labels':
+                    labels = metadata.setdefault('labels', [])
+                    labels.extend(v)
+                else:
+                    metadata[k] = v
+
             node.parent.remove(node)
 
     def _find_title_element(self, doctree):

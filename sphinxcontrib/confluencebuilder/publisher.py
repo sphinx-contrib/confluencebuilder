@@ -32,7 +32,6 @@ PROP_KEY = 'sphinx'
 class ConfluencePublisher:
     def __init__(self):
         self.cloud = None
-        self.editor = None
         self.space_display_name = None
         self.space_type = None
         self._ancestors_cache = set()
@@ -44,7 +43,6 @@ class ConfluencePublisher:
         self.append_labels = config.confluence_append_labels
         self.debug = config.confluence_publish_debug
         self.dryrun = config.confluence_publish_dryrun
-        self.editor = config.confluence_editor
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
         self.parent_id = config.confluence_parent_page_id_check
@@ -56,14 +54,6 @@ class ConfluencePublisher:
         # append labels by default
         if self.append_labels is None:
             self.append_labels = True
-
-        # determine appearance to apply (if any) for the page
-        self.content_appearance = None
-        if self.config.confluence_full_width is not None:
-            if self.config.confluence_full_width:
-                self.content_appearance = 'full-width'
-            else:
-                self.content_appearance = 'default'
 
         # if debugging, enable requests (urllib3) logging
         if self.debug:
@@ -812,9 +802,9 @@ reported a success (which can be permitted for anonymous users).
             expand += ',ancestors'
         if self.append_labels or self.config.confluence_global_labels:
             expand += ',metadata.labels'
-        if self.content_appearance:
+        if data['full-width']:
             expand += ',metadata.properties.content_appearance_published'
-        if self.editor:
+        if data['editor']:
             expand += ',metadata.properties.editor'
 
         _, page = self.get_page(page_name, expand=expand)
@@ -876,18 +866,18 @@ reported a success (which can be permitted for anonymous users).
             # if instance supports appearance changes and the appearance
             # looks to be changed, force publish
             cap_props = meta_props.get('content-appearance-published', {})
-            if cap_props and self.content_appearance:
+            if cap_props and data['full-width']:
                 current_appearance = cap_props.get('value')
-                if self.content_appearance != current_appearance:
+                if data['full-width'] != current_appearance:
                     logger.verbose('appearance changed: {}'.format(page_name))
                     force_publish = True
 
             # if instance supports editors and the editor to be changed,
             # force publish
             editor_props = meta_props.get('editor', {})
-            if editor_props and self.editor:
+            if editor_props and data['editor']:
                 current_editor = editor_props.get('value')
-                if self.editor != current_editor:
+                if data['editor'] != current_editor:
                     logger.verbose('editor changed: {}'.format(page_name))
                     force_publish = True
 
@@ -1183,12 +1173,14 @@ reported a success (which can be permitted for anonymous users).
             },
         }
 
-        if self.editor:
-            page['metadata']['properties']['editor'] = {'value': self.editor}
+        if data['editor']:
+            page['metadata']['properties']['editor'] = {
+                'value': data['editor'],
+            }
 
-        if self.content_appearance:
+        if data['full-width']:
             page['metadata']['properties']['content-appearance-published'] = {
-                'value': self.content_appearance,
+                'value': data['full-width'],
             }
 
         return page

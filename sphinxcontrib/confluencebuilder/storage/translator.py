@@ -46,9 +46,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def __init__(self, document, builder):
         ConfluenceBaseTranslator.__init__(self, document, builder)
         config = builder.config
+        metadata = builder.metadata.get(self.docname, {})
 
         self.add_secnumbers = config.confluence_add_secnumbers
         self.editor = config.confluence_editor
+        self.confluence_full_width = config.confluence_full_width
         self.numfig = config.numfig
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
@@ -65,6 +67,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._v2_header_added = False
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
+
+        # override editor if the document specifies another
+        editor_override = metadata.get('editor')
+        if editor_override:
+            self.editor = editor_override
+
+        # override full-width option if the document hints to override
+        fw_override = metadata.get('fullWidth')
+        if fw_override:
+            self.confluence_full_width = (fw_override == 'true')
 
     def encode(self, text):
         text = encode_storage_format(text)
@@ -167,7 +179,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # publication (most likely since the concept of page width was
         # developed for v2 and newer). To emulate a non-full-width state with
         # a v1 editor, apply a layout around the page contents.
-        if not self.v2 and self.builder.config.confluence_full_width is False:
+        if not self.v2 and self.confluence_full_width is False:
             if self.builder.cloud:
                 data += '<ac:layout>'
                 data += '<ac:layout-section ac:type="fixed-width">'
@@ -181,7 +193,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def post_body_data(self):
         data = ''
 
-        if not self.v2 and self.builder.config.confluence_full_width is False:
+        if not self.v2 and self.confluence_full_width is False:
             if self.builder.cloud:
                 data += '</ac:layout-cell>'
                 data += '</ac:layout-section>'
