@@ -15,6 +15,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
+from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 from uuid import UUID
 
 
@@ -183,6 +184,8 @@ class ConfluenceLatexDirective(Directive):
 class ConfluenceMetadataDirective(Directive):
     has_content = False
     option_spec = {
+        'editor': lambda x: directives.choice(x, EDITORS),
+        'full-width': lambda x: directives.choice(x, ('true', 'false')),
         'labels': string_list,
     }
 

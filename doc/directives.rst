@@ -175,10 +175,40 @@ Common
 .. rst:directive:: confluence_metadata
 
     .. versionadded:: 1.3
+    .. versionchanged:: 2.2 Added ``editor`` and ``full-width`` support.
 
     The ``confluence_metadata`` directive allows a user to define metadata
     information to be added during a publish event. This directive supports the
     following options:
+
+    .. rst:directive:option:: editor: value
+        :type: v1, v2
+
+        Pages are publish with the editor type configured through the
+        ``confluence_editor`` option. However, users can override the editor
+        for a specific page using the ``editor`` metadata option.
+
+        .. code-block:: rst
+
+            .. confluence_metadata::
+                :editor: v2
+
+        See also ``confluence_editor`` (:ref:`ref<confluence_editor>`).
+
+    .. rst:directive:option:: full-width: flag
+        :type: boolean
+
+        Pages are publish with the full-width appearance configured through the
+        ``confluence_full_width`` option. However, users can override the
+        appearance for a specific page using the ``full-width`` metadata
+        option.
+
+        .. code-block:: rst
+
+            .. confluence_metadata::
+                :full-width: false
+
+        See also ``confluence_full_width`` (:ref:`ref<confluence_full_width>`).
 
     .. rst:directive:option:: labels: value
         :type: space separated strings
@@ -192,8 +222,8 @@ Common
             .. confluence_metadata::
                 :labels: label-a label-b
 
-    See also ``confluence_global_labels``
-    (:ref:`ref<confluence_global_labels>`).
+        See also ``confluence_global_labels``
+        (:ref:`ref<confluence_global_labels>`).
 
 .. rst:directive:: confluence_newline
 

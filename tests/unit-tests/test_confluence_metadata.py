@@ -20,15 +20,26 @@ class TestConfluenceMetadata(ConfluenceTestCase):
 
             self.assertTrue(builder_metadata)
             self.assertTrue('index' in builder_metadata)
-            doc_labels = builder_metadata['index']
 
-            self.assertTrue(doc_labels)
-            self.assertTrue('labels' in doc_labels)
+            doc_metadata = builder_metadata['index']
+            self.assertTrue(doc_metadata)
 
-            labels = doc_labels['labels']
+            # verify expected editor override
+            self.assertTrue('editor' in doc_metadata)
+            editor = doc_metadata['editor']
+            self.assertEqual(editor, 'v2')
+
+            # verify expected full-width override
+            self.assertTrue('fullWidth' in doc_metadata)
+            editor = doc_metadata['fullWidth']
+            self.assertEqual(editor, 'true')
+
+            # verify expected labels
+            self.assertTrue('labels' in doc_metadata)
+            labels = doc_metadata['labels']
             self.assertEqual(len(labels), 2)
-            self.assertTrue('tag-a' in labels)
-            self.assertTrue('tag-c' in labels)
+            self.assertIn('tag-a', labels)
+            self.assertIn('tag-c', labels)
 
     @setup_builder('html')
     def test_html_confluence_metadata_directive_ignore(self):
