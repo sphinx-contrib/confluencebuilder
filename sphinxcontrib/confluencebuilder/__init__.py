@@ -80,35 +80,35 @@ def setup(app):
 
     # (configuration - generic)
     # Add page and section numbers if doctree has :numbered: option
-    cm.add_conf_bool('confluence_add_secnumbers', 'env')
+    cm.add_conf_bool('confluence_add_secnumbers', 'confluence')
     # Specify the color scheme used for displaying code blocks.
-    cm.add_conf('confluence_code_block_theme', 'env')
+    cm.add_conf('confluence_code_block_theme', 'confluence')
     # Default alignment for tables, figures, etc.
-    cm.add_conf('confluence_default_alignment', 'env')
+    cm.add_conf('confluence_default_alignment', 'confluence')
     # Enablement of a generated domain index documents
     cm.add_conf('confluence_domain_indices')
     # Confluence editor to target for publication.
-    cm.add_conf('confluence_editor', 'env')
+    cm.add_conf('confluence_editor', 'confluence')
     # File to get page header information from.
-    cm.add_conf('confluence_header_file', 'env')
+    cm.add_conf('confluence_header_file', 'confluence')
     # Dictionary to pass to header when rendering template
-    cm.add_conf('confluence_header_data', 'env')
+    cm.add_conf('confluence_header_data', 'confluence')
     # File to get page footer information from.
-    cm.add_conf('confluence_footer_file', 'env')
+    cm.add_conf('confluence_footer_file', 'confluence')
     # Dictionary to pass to footer when rendering template.
-    cm.add_conf('confluence_footer_data', 'env')
+    cm.add_conf('confluence_footer_data', 'confluence')
     # Enablement of a generated search documents
     cm.add_conf_bool('confluence_include_search')
     # Enablement of a "page generated" notice.
-    cm.add_conf_bool('confluence_page_generation_notice', 'env')
+    cm.add_conf_bool('confluence_page_generation_notice', 'confluence')
     # Enablement of publishing pages into a hierarchy from a root toctree.
     cm.add_conf_bool('confluence_page_hierarchy')
     # Show previous/next buttons (bottom, top, both, None).
-    cm.add_conf('confluence_prev_next_buttons_location', 'env')
+    cm.add_conf('confluence_prev_next_buttons_location', 'confluence')
     # Suffix to put after section numbers, before section name
-    cm.add_conf('confluence_secnumber_suffix', 'env')
+    cm.add_conf('confluence_secnumber_suffix', 'confluence')
     # Enablement of a "Edit/Show Source" reference on each document
-    cm.add_conf('confluence_sourcelink', 'env')
+    cm.add_conf('confluence_sourcelink', 'confluence')
     # Enablement of a generated index document
     cm.add_conf_bool('confluence_use_index')
     # Enablement for toctrees for singleconfluence documents.
@@ -146,13 +146,13 @@ def setup(app):
     # Container page to publish orphan pages under.
     cm.add_conf_int('confluence_publish_orphan_container')
     # Postfix to apply to title of published pages.
-    cm.add_conf('confluence_publish_postfix', 'env')
+    cm.add_conf('confluence_publish_postfix', 'confluence')
     # Prefix to apply to published pages.
-    cm.add_conf('confluence_publish_prefix', 'env')
+    cm.add_conf('confluence_publish_prefix', 'confluence')
     # Root page's identifier to publish documents into.
     cm.add_conf_int('confluence_publish_root')
     # docname-2-title dictionary for title overrides.
-    cm.add_conf('confluence_title_overrides', 'env')
+    cm.add_conf('confluence_title_overrides', 'confluence')
     # Timeout for network-related calls (publishing).
     cm.add_conf_int('confluence_timeout')
     # Whether or not new content should be watched.
@@ -160,11 +160,11 @@ def setup(app):
 
     # (configuration - advanced publishing)
     # Register additional mime types to be selected for image candidates.
-    cm.add_conf('confluence_additional_mime_types', 'env')
+    cm.add_conf('confluence_additional_mime_types', 'confluence')
     # Whether or not labels will be appended instead of overwriting them.
     cm.add_conf_bool('confluence_append_labels')
     # Forcing all assets to be standalone.
-    cm.add_conf_bool('confluence_asset_force_standalone', 'env')
+    cm.add_conf_bool('confluence_asset_force_standalone', 'confluence')
     # Tri-state asset handling (auto, force push or disable).
     cm.add_conf_bool('confluence_asset_override')
     # File/path to Certificate Authority
@@ -175,10 +175,10 @@ def setup(app):
     cm.add_conf('confluence_client_cert_pass')
     # Disable SSL validation with Confluence server.
     cm.add_conf_bool('confluence_disable_ssl_validation')
-    # Whether to utilize the full width of a Confluence page (v2 only).
-    cm.add_conf_bool('confluence_full_width')
+    # Whether to utilize the full width of a Confluence page.
+    cm.add_conf_bool('confluence_full_width', 'confluence')
     # Ignore adding a titlefix on the index document.
-    cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'env')
+    cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'confluence')
     # Parent page's identifier to publish documents under.
     cm.add_conf_int('confluence_parent_page_id_check')
     # Proxy server needed to communicate with Confluence server.
@@ -210,25 +210,25 @@ def setup(app):
 
     # (configuration - advanced processing)
     # Filename suffix for generated files.
-    cm.add_conf('confluence_file_suffix', 'env')
+    cm.add_conf('confluence_file_suffix', 'confluence')
     # Translation of docname to a filename.
-    cm.add_conf('confluence_file_transform', 'env')
+    cm.add_conf('confluence_file_transform', 'confluence')
     # Configuration for named JIRA Servers
-    cm.add_conf('confluence_jira_servers', 'env')
+    cm.add_conf('confluence_jira_servers', 'confluence')
     # Translation of a raw language to code block macro language.
-    cm.add_conf('confluence_lang_transform', 'env')
+    cm.add_conf('confluence_lang_transform', 'confluence')
     # Macro configuration for Confluence-managed LaTeX content.
-    cm.add_conf('confluence_latex_macro', 'env')
+    cm.add_conf('confluence_latex_macro', 'confluence')
     # Link suffix for generated files.
-    cm.add_conf('confluence_link_suffix', 'env')
+    cm.add_conf('confluence_link_suffix', 'confluence')
     # Translation of docname to a (partial) URI.
-    cm.add_conf('confluence_link_transform', 'env')
+    cm.add_conf('confluence_link_transform', 'confluence')
     # Mappings for documentation mentions to Confluence keys.
-    cm.add_conf('confluence_mentions', 'env')
+    cm.add_conf('confluence_mentions', 'confluence')
     # Inject navigational hints into the documentation.
     cm.add_conf('confluence_navdocs_transform')
     # Remove a detected title from generated documents.
-    cm.add_conf_bool('confluence_remove_title', 'env')
+    cm.add_conf_bool('confluence_remove_title', 'confluence')
 
     # (configuration - undocumented)
     # Enablement for bulk archiving of packages (for premium environments).
@@ -240,15 +240,15 @@ def setup(app):
     # Unknown node handler dictionary for advanced integrations.
     cm.add_conf('confluence_adv_node_handler')
     # Permit any string value to be provided as the editor.
-    cm.add_conf('confluence_adv_permit_editor', 'env')
+    cm.add_conf('confluence_adv_permit_editor', 'confluence')
     # Enablement of permitting raw html blocks to be used in storage format.
-    cm.add_conf_bool('confluence_adv_permit_raw_html', 'env')
+    cm.add_conf_bool('confluence_adv_permit_raw_html', 'confluence')
     # List of optional features/macros/etc. restricted for use.
-    cm.add_conf('confluence_adv_restricted', 'env')
+    cm.add_conf('confluence_adv_restricted', 'confluence')
     # Enablement of tracing processed data.
     cm.add_conf_bool('confluence_adv_trace_data')
     # Do not cap sections to a maximum of six (6) levels.
-    cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'env')
+    cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'confluence')
 
     # (configuration - deprecated)
     # replaced by confluence_cleanup_search_mode
