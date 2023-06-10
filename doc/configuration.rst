@@ -225,7 +225,8 @@ Generic configuration
 
     .. note::
 
-        This option is only supported using the ``v1`` :ref:`editor <confluence_editor>`.
+        This option is only supported using the ``v1``
+        :ref:`editor <confluence_editor>`.
 
 .. confval:: confluence_default_alignment
 
@@ -1488,7 +1489,7 @@ Advanced publishing configuration
     Confluence page. This hash can be referred to later by hosts using this
     extension, by query the hash and comparing it against a locally prepared
     page update. If hashes match, no attempt will be made to update the
-    specific page. If users are experience issues with this check, they may
+    specific page. If users are experiencing issues with this check, they may
     force publishing by configuring this option to ``True``. By default, this
     option is disabled with a value of ``False``.
 
