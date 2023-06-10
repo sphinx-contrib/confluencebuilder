@@ -1121,11 +1121,7 @@ reported a success (which can be permitted for anonymous users).
         }
 
         if self.editor:
-            page['metadata']['properties'] = {
-                'editor': {
-                    'value': self.editor,
-                },
-            }
+            page['metadata']['properties']['editor'] = {'value': self.editor}
 
         if self.config.confluence_full_width is not None:
             if self.config.confluence_full_width:
@@ -1133,10 +1129,8 @@ reported a success (which can be permitted for anonymous users).
             else:
                 content_appearance = 'default'
 
-            page['metadata']['properties'] = {
-                'content-appearance-published': {
-                    'value': content_appearance,
-                },
+            page['metadata']['properties']['content-appearance-published'] = {
+                'value': content_appearance,
             }
 
         return page
