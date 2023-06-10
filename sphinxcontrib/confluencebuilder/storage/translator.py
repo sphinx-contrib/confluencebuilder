@@ -11,6 +11,7 @@ from sphinx.locale import admonitionlabels
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
 from sphinxcontrib.confluencebuilder.std.confluence import INDENT
@@ -167,9 +168,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # developed for v2 and newer). To emulate a non-full-width state with
         # a v1 editor, apply a layout around the page contents.
         if not self.v2 and self.builder.config.confluence_full_width is False:
-            data += '<ac:layout>'
-            data += '<ac:layout-section ac:type="fixed-width">'
-            data += '<ac:layout-cell>'
+            if self.builder.cloud:
+                data += '<ac:layout>'
+                data += '<ac:layout-section ac:type="fixed-width">'
+                data += '<ac:layout-cell>'
+            else:
+                max_width = f'{CONFLUENCE_MAX_WIDTH}px'
+                data += f'<div style="max-width: {max_width}; margin: 0 auto;">'
 
         return data
 
@@ -177,9 +182,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         data = ''
 
         if not self.v2 and self.builder.config.confluence_full_width is False:
-            data += '</ac:layout-cell>'
-            data += '</ac:layout-section>'
-            data += '</ac:layout>'
+            if self.builder.cloud:
+                data += '</ac:layout-cell>'
+                data += '</ac:layout-section>'
+                data += '</ac:layout>'
+            else:
+                data += '</div>'
 
         return data
 
