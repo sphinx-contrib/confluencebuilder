@@ -3,6 +3,7 @@
 
 .. raw:: confluence_storage
 
+    <div style="max-width: 900px; margin: 0 auto;">
     <ac:layout><ac:layout-section ac:type="fixed-width"><ac:layout-cell>
 
 Validation content is published using both editors. Users and extension
@@ -55,7 +56,7 @@ This content has been generated with
 .. raw:: confluence_storage
 
     </ac:layout-cell></ac:layout-section></ac:layout>
-
+    </div>
 
 .. references ------------------------------------------------------------------
 
