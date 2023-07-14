@@ -1587,6 +1587,38 @@ Advanced publishing configuration
 
     See also |confluence_publish_orphan|_.
 
+.. confval:: confluence_parent_override_transform
+
+    .. versionadded:: 2.2
+
+    .. note::
+
+        Using this option may have unexpected results when using certain
+        features of this extension. For example, users with purging
+        enabled may not have pages with parent-ID overrides purged.
+
+    A function to override the specific page to publish a specific document.
+    This option is available for advanced users needing to tailor specific
+    parent pages for individual documents. A provided transform is invoked
+    with the document name and the expected parent page (numerical
+    identifier) the document will be published under. A configuration can
+    tweak the identifier used when publishing. This extension will not check
+    the validity of the identifiers set. If a provided page identifier does
+    not exist or the publishing user does not have access to manipulate the
+    page, the publication will fail with an error provided by Confluence.
+
+    .. code-block:: python
+
+        def my_publish_override(docname, parent_id):
+            if docname == 'special-doc':
+                return 123456
+
+            return parent_id
+
+        confluence_parent_override_transform = my_publish_override
+
+    See also |confluence_parent_page|_.
+
 .. confval:: confluence_request_session_override
 
     .. versionadded:: 1.7

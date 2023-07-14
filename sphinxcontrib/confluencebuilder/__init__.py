@@ -135,6 +135,8 @@ def setup(app):
     cm.add_conf('confluence_global_labels')
     # Enablement of configuring root as space's homepage.
     cm.add_conf_bool('confluence_root_homepage')
+    # Translation to override parent page identifier to publish to.
+    cm.add_conf('confluence_parent_override_transform')
     # Parent page's name or identifier to publish documents under.
     cm.add_conf('confluence_parent_page')
     # Perform a dry run of publishing to inspect what publishing will do.
