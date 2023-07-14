@@ -1904,6 +1904,42 @@ Advanced processing configuration
 
     See also |confluence_prev_next_buttons_location|_.
 
+.. confval:: confluence_permit_raw_html
+
+    .. versionadded:: 2.2
+
+    .. caution::
+
+        Using this option is considered unsupported. This extension will
+        allow users to directly publish HTML content defined in a document,
+        but there is no guarantees that the content will render as expected,
+        or even be able to be published to a configured Confluence instance.
+
+    Configure whether to permit the use of raw HTML content in generated
+    documents. While Confluence renders pages through a website, content
+    is stored using a "storage" format, which only supports a subset of HTML.
+    Confluence may filter out or reject the publication of pages with certain
+    HTML content.
+
+    Some documentation may rely on HTML-specific content, and if this HTML
+    content is not too complex, this may be renderable on a Confluence
+    instance. Users wanting to allow this can enable this option to have
+    HTML content directly injected on pages, or even placed inside an
+    HTML-supported macro (if such a macro is available for the target
+    Confluence instance):
+
+    .. code-block:: python
+
+        confluence_permit_raw_html = True
+         (or)
+        confluence_permit_raw_html = 'html'
+
+    Using this option is not supported. Content may be automatically
+    stripped when published into Confluence, content may not render as
+    expected (e.g. styles can be ignored, JavaScript will not function)
+    or Confluence may reject the publication of Confluence document (i.e.
+    failing to upload a page).
+
 .. |confluence_remove_title| replace:: ``confluence_remove_title``
 .. _confluence_remove_title:
 
