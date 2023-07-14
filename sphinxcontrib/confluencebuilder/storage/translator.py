@@ -24,6 +24,7 @@ from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import convert_length
+from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import first
 import posixpath
 import re
@@ -2830,6 +2831,48 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_ItalicAbbreviationNode(self, node):
         self.depart_abbreviation(node)
         self.body.append(self.context.pop())  # i
+
+    # ---------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-video
+    # ---------------------------------------------------
+
+    def visit_video_node(self, node):
+        autoplay = node.get('autoplay')
+        height, hu = extract_length(node.get('height'))
+        width, wu = extract_length(node.get('width'))
+        source_path, _ = node.get('primary_src') or (None, None)
+
+        if height:
+            height = convert_length(height, hu)
+            if height is None:
+                self.warn('unsupported unit type for confluence: ' + hu)
+
+        if width:
+            width = convert_length(width, wu)
+            if width is None:
+                self.warn('unsupported unit type for confluence: ' + wu)
+
+        video_key, _, _ = self.assets.add(source_path, self.docname)
+
+        if not video_key:
+            self.warn(f'Unable to find video name: {source_path}')
+            raise nodes.SkipNode
+
+        ri_filename = self._start_ri_attachment(node, video_key) + \
+            self._end_ri_attachment(node)
+
+        self.body.append(self._start_tag(node, 'div'))
+        self.body.append(self._start_ac_macro(node, 'multimedia'))
+        self.body.append(self._build_ac_param(node, 'name', ri_filename))
+        if width:
+            self.body.append(self._build_ac_param(node, 'width', str(width)))
+        if height:
+            self.body.append(self._build_ac_param(node, 'height', str(height)))
+        if autoplay:
+            self.body.append(self._build_ac_param(node, 'autostart', 'true'))
+        self.body.append(self._end_ac_macro(node))
+        self.body.append(self._end_tag(node))
+        raise nodes.SkipNode
 
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-youtube

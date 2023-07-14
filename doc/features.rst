@@ -259,6 +259,7 @@ Type                              Notes
                                   PNGs only; cannot configure for SVG at this
                                   time.
 `sphinxcontrib-svgbob`_           Supported
+`sphinxcontrib-video`_            Supported
 `sphinxcontrib-youtube`_          Supported
 ================================= =====
 
@@ -358,6 +359,7 @@ brings up another concern, feel free to bring up an issue:
 .. _sphinxcontrib-programoutput: https://sphinxcontrib-programoutput.readthedocs.io/
 .. _sphinxcontrib-seqdiag: https://pypi.org/project/sphinxcontrib-seqdiag/
 .. _sphinxcontrib-svgbob: https://pypi.org/project/sphinxcontrib-svgbob/
+.. _sphinxcontrib-video: https://pypi.org/project/sphinxcontrib-video/
 .. _sphinxcontrib-youtube: https://pypi.org/project/sphinxcontrib-youtube/
 .. _tables: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#tables
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
