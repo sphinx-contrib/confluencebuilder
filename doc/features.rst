@@ -25,10 +25,7 @@ Type                    Notes
 `bullet lists`_         Supported
 `citations`_            Supported
 `compound paragraph`_   Supported
-`container`_            Limited support.
-
-                        Confluence markup does not permit the use of the
-                        ``class`` attribute for tags.
+`container`_            Supported
 `csv-table`_            Supported
 `definition lists`_     Supported
 `enumerated lists`_     Limited support.
@@ -61,7 +58,7 @@ Type                    Notes
 `transitions`_          Supported
 ======================= =====
 
-*(note: directive options "class" and "name" are ignored as they are not
+*(note: directive options "class" and "name" a mostly ignored as they are not
 supported in a Confluence format document)*
 
 Sphinx markup
@@ -120,15 +117,7 @@ each of these extensions:
 ================================= =====
 Type                              Notes
 ================================= =====
-`sphinx.ext.autodoc`_             Supported*.
-
-                                  While support for autodocs has been included
-                                  in this extension, only a limited amount of
-                                  examples and testing has been done to verify
-                                  its capabilities. If an issue is observed when
-                                  using an autodoc feature, please confirm an
-                                  expected result using an ``html`` build then
-                                  report the issue.
+`sphinx.ext.autodoc`_             Supported
 `sphinx.ext.autosectionlabel`_    Supported
 `sphinx.ext.autosummary`_         Supported
 `sphinx.ext.coverage`_            N/A
