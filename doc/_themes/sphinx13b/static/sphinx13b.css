@@ -368,7 +368,7 @@ table.right td {
     border: 1px solid #ccc;
 }
 
-div.admonition, div.warning {
+div.admonition {
     font-size: 0.9em;
     margin: 1em 0 1em 0;
     border: 1px solid #86989B;
@@ -381,21 +381,18 @@ div.admonition p:last-child {
     padding-bottom: 8px;
 }
 
-div.admonition > p, div.warning > p {
+div.admonition > p {
     margin: 0.5em 1em 0.5em 1em;
     padding: 0;
 }
 
 div.admonition > pre,
-div.admonition > div > div.highlight > pre,
-div.warning > pre,
-div.warning > div > div.highlight > pre {
+div.admonition > div > div.highlight > pre  {
     background-color: #fcfcfc;
     margin: 0.4em 1em 0.4em 1em;
 }
 
-div.admonition > p.admonition-title,
-div.warning > p.admonition-title {
+div.admonition > p.admonition-title {
     margin-top: 0.5em;
     font-weight: bold;
 }
@@ -405,9 +402,7 @@ div.warning {
 }
 
 div.admonition > ul,
-div.admonition > ol,
-div.warning > ul,
-div.warning > ol {
+div.admonition > ol {
     margin: 0.1em 0.5em 0.5em 3em;
     padding: 0;
 }
