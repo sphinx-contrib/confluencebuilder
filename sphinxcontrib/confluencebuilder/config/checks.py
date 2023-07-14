@@ -446,6 +446,12 @@ The following keys are required:
 
     # ##################################################################
 
+    # confluence_parent_override_transform
+    validator.conf('confluence_parent_override_transform') \
+             .callable_()
+
+    # ##################################################################
+
     try:
         validator.conf('confluence_parent_page').string()
     except ConfluenceConfigurationError:

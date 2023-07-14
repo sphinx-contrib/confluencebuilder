@@ -510,6 +510,12 @@ class ConfluenceBuilder(Builder):
             uploaded_id = self.publisher.store_page_by_id(title,
                 conf.confluence_publish_root, data)
         else:
+            po_transform = conf.confluence_parent_override_transform
+            if po_transform:
+                new_parent_id = po_transform(docname, parent_id)
+                if new_parent_id:
+                    parent_id = new_parent_id
+
             uploaded_id = self.publisher.store_page(title, data, parent_id)
         self.state.register_upload_id(docname, uploaded_id)
 
