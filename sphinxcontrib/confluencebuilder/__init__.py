@@ -330,7 +330,20 @@ def confluence_builder_inited(app):
     app.add_role('confluence_strike', ConfluenceStrikeRole)
     app.add_role('jira', JiraRole)
 
-    # inject compatible autosummary nodes if the extension is available/loaded
+    # other
+    confluence_autosummary_support(app)
+    confluence_imgmath_support(app)
+    confluence_remove_mathnodemigrator(app)
+
+
+def confluence_autosummary_support(app):
+    """
+    inject compatible autosummary nodes if the extension is available/loaded
+
+    Args:
+        app: the sphinx application
+    """
+
     if autosummary:
         for ext in app.extensions.values():
             if ext.name == 'sphinx.ext.autosummary':
@@ -358,18 +371,36 @@ def confluence_builder_inited(app):
                 )
                 break
 
-    # lazy bind sphinx.ext.imgmath to provide configuration options
-    #
-    # If 'sphinx.ext.imgmath' is not already explicitly loaded, bind it into the
-    # setup process to a configurer can use the same configuration options
-    # outlined in the sphinx.ext.imgmath in this extension.
+
+def confluence_imgmath_support(app):
+    """
+    lazy bind sphinx.ext.imgmath to provide configuration options
+
+    If 'sphinx.ext.imgmath' is not already explicitly loaded, bind it into the
+    setup process to a configurer can use the same configuration options
+    outlined in the sphinx.ext.imgmath in this extension.
+
+    Args:
+        app: the sphinx application
+    """
+
     if imgmath is not None:
         if 'sphinx.ext.imgmath' not in app.config.extensions:
             imgmath.setup(app)
 
-    # remove math-node-migration post-transform as this extension manages both
-    # future and legacy math implementations (removing this transform removes
-    # a warning notification to the user)
+
+def confluence_remove_mathnodemigrator(app):
+    """
+    remove math-node-migration post-transform
+
+    Remove math-node-migration post-transform as this extension manages both
+    future and legacy math implementations (removing this transform removes
+    a warning notification to the user)
+
+    Args:
+        app: the sphinx application
+    """
+
     for transform in app.registry.get_post_transforms():
         if transform.__name__ == 'MathNodeMigrator':
             app.registry.get_post_transforms().remove(transform)
