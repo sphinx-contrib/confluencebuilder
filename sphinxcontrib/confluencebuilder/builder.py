@@ -46,7 +46,7 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     default_translator_class = ConfluenceStorageFormatTranslator
     name = 'confluence'
-    format = 'confluence_storage'
+    format = 'confluence_storage'  # noqa: A003
     supported_image_types = ConfluenceSupportedImages()
     supported_linkcode = True
     supported_remote_images = True
@@ -227,7 +227,7 @@ class ConfluenceBuilder(Builder):
                 srcmtime = path.getmtime(sourcename)
                 if srcmtime > targetmtime:
                     yield docname
-            except EnvironmentError:
+            except OSError:
                 # source doesn't exist anymore
                 pass
 
@@ -362,7 +362,7 @@ class ConfluenceBuilder(Builder):
             nav_docnames.remove('search')
 
         if self.domain_indices:
-            for indexname, indexdata in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 if indexname in nav_docnames:
                     nav_docnames.remove(indexname)
 
@@ -480,7 +480,7 @@ class ConfluenceBuilder(Builder):
                 with open(outfilename, 'w', encoding='utf-8') as file:
                     if self.writer.output:
                         file.write(self.writer.output)
-            except (IOError, OSError) as err:
+            except OSError as err:
                 self.warn(f'error writing file {outfilename}: {err}')
 
     def publish_doc(self, docname, output):
@@ -599,7 +599,7 @@ class ConfluenceBuilder(Builder):
             data['labels'].extend(self.config.confluence_global_labels)
 
         if 'labels' in metadata:
-            data['labels'].extend([v for v in metadata['labels']])
+            data['labels'].extend(list(metadata['labels']))
 
         return data
 
@@ -765,11 +765,10 @@ class ConfluenceBuilder(Builder):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
-                    with open(docfile, 'r', encoding='utf-8') as file:
+                    with open(docfile, encoding='utf-8') as file:
                         output = file.read()
                         self.publish_doc(docname, output)
-
-                except (IOError, OSError) as err:
+                except OSError as err:
                     self.warn(f'error reading file {docfile}: {err}')
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
@@ -800,7 +799,7 @@ class ConfluenceBuilder(Builder):
                     with open(absfile, 'rb') as file:
                         output = file.read()
                         self.publish_asset(key, docname, output, type_, hash_)
-                except (IOError, OSError) as err:
+                except OSError as err:
                     self.warn(f'error reading asset {key}: {err}')
 
             self.publish_cleanup()
@@ -903,7 +902,7 @@ class ConfluenceBuilder(Builder):
                 try:
                     with open(fname, encoding='utf-8') as file:
                         header_template_data = file.read() + '\n'
-                except (IOError, OSError) as err:
+                except OSError as err:
                     self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
@@ -925,7 +924,7 @@ class ConfluenceBuilder(Builder):
                 try:
                     with open(fname, encoding='utf-8') as file:
                         footer_template_data = file.read() + '\n'
-                except (IOError, OSError) as err:
+                except OSError as err:
                     self.warn(f'error reading file {fname}: {err}')
 
                 # if no data is supplied, the file is plain text
@@ -943,7 +942,7 @@ class ConfluenceBuilder(Builder):
                 f.write(self._cached_header_data)
                 generator(self, docname, f)
                 f.write(self._cached_footer_data)
-        except (IOError, OSError) as err:
+        except OSError as err:
             self.warn('error writing file %s: %s', docname, err)
 
     def _get_doctree(self, docname):

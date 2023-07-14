@@ -661,8 +661,8 @@ reported a success (which can be permitted for anonymous users).
             if len(parts) > 1:
                 tracked_hash = ''.join(parts[1].split())
                 if hash_ == tracked_hash:
-                    logger.verbose('attachment ({}) is already '
-                        'published to document with same hash'.format(name))
+                    logger.verbose(f'attachment ({name}) is already '
+                        'published to document with same hash')
                     return attachment['id']
 
         if self.dryrun:
@@ -849,7 +849,7 @@ reported a success (which can be permitted for anonymous users).
                         parent_changed = False
 
                 if parent_changed:
-                    logger.verbose('parent changed: {}'.format(page_name))
+                    logger.verbose(f'parent changed: {page_name}')
                     force_publish = True
 
             # if we are missing any global variables, force publish
@@ -860,7 +860,7 @@ reported a success (which can be permitted for anonymous users).
                         'labels', {}).get('results', {})
                 ]
                 if expected_labels.difference(existing_labels):
-                    logger.verbose('labels missing: {}'.format(page_name))
+                    logger.verbose(f'labels missing: {page_name}')
                     force_publish = True
 
             # if instance supports appearance changes and the appearance
@@ -869,7 +869,7 @@ reported a success (which can be permitted for anonymous users).
             if cap_props and data['full-width']:
                 current_appearance = cap_props.get('value')
                 if data['full-width'] != current_appearance:
-                    logger.verbose('appearance changed: {}'.format(page_name))
+                    logger.verbose(f'appearance changed: {page_name}')
                     force_publish = True
 
             # if instance supports editors and the editor to be changed,
@@ -878,7 +878,7 @@ reported a success (which can be permitted for anonymous users).
             if editor_props and data['editor']:
                 current_editor = editor_props.get('value')
                 if data['editor'] != current_editor:
-                    logger.verbose('editor changed: {}'.format(page_name))
+                    logger.verbose(f'editor changed: {page_name}')
                     force_publish = True
 
         # if we are not force uploading, check if the new page hash matches
@@ -886,7 +886,7 @@ reported a success (which can be permitted for anonymous users).
         if props and not force_publish:
             remote_hash = props.get('value', {}).get('hash')
             if new_page_hash == remote_hash:
-                logger.verbose('no changes in page: {}'.format(page_name))
+                logger.verbose(f'no changes in page: {page_name}')
                 return page['id']
 
         try:
@@ -932,7 +932,7 @@ reported a success (which can be permitted for anonymous users).
                         raise
 
                     logger.verbose('title already exists warning '
-                        'for page {}'.format(page_name))
+                        f'for page {page_name}')
 
                     _, page = self.get_page_case_insensitive(page_name)
                     if not page:
@@ -1094,7 +1094,7 @@ reported a success (which can be permitted for anonymous users).
                 raise
 
             logger.verbose('ignore missing delete for page '
-                'identifier: {}'.format(page_id))
+                f'identifier: {page_id}')
         except ConfluencePermissionError:
             raise ConfluencePermissionError(
                 """Publish user does not have permission to delete """

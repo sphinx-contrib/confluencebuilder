@@ -786,7 +786,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if firstline is not None and firstline > 1:
             self.body.append(
-                self._build_ac_param(node, 'firstline', str(firstline))
+                self._build_ac_param(node, 'firstline', firstline)
             )
 
         if title:
@@ -2282,7 +2282,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_confluence_excerpt(self, node):
         self.body.append(self._start_ac_macro(node, 'excerpt'))
         for k, v in sorted(node.params.items()):
-            self.body.append(self._build_ac_param(node, k, str(v)))
+            self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._start_ac_rich_text_body_macro(node))
         self.context.append(self._end_ac_rich_text_body_macro(node) +
             self._end_ac_macro(node, suffix=''))
@@ -2312,7 +2312,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.body.append(self._start_ac_macro(node, 'excerpt-include'))
         for k, v in sorted(node.params.items()):
-            self.body.append(self._build_ac_param(node, k, str(v)))
+            self.body.append(self._build_ac_param(node, k, v))
 
         attribs = {
             'ri:content-title': doctitle,
@@ -2712,7 +2712,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def _visit_jira_node(self, node):
         self.body.append(self._start_ac_macro(node, 'jira'))
         for k, v in sorted(node.params.items()):
-            self.body.append(self._build_ac_param(node, k, str(v)))
+            self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
@@ -2727,7 +2727,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_confluence_status_inline(self, node):
         self.body.append(self._start_ac_macro(node, 'status'))
         for k, v in sorted(node.params.items()):
-            self.body.append(self._build_ac_param(node, k, str(v)))
+            self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
@@ -2739,7 +2739,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_confluence_toc(self, node):
         self.body.append(self._start_ac_macro(node, 'toc'))
         for k, v in sorted(node.params.items()):
-            self.body.append(self._build_ac_param(node, k, str(v)))
+            self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
         raise nodes.SkipNode
@@ -2832,9 +2832,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.depart_abbreviation(node)
         self.body.append(self.context.pop())  # i
 
-    # ---------------------------------------------------
+    # -------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-video
-    # ---------------------------------------------------
+    # -------------------------------------------------
 
     def visit_video_node(self, node):
         autoplay = node.get('autoplay')
@@ -2865,9 +2865,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._start_ac_macro(node, 'multimedia'))
         self.body.append(self._build_ac_param(node, 'name', ri_filename))
         if width:
-            self.body.append(self._build_ac_param(node, 'width', str(width)))
+            self.body.append(self._build_ac_param(node, 'width', width))
         if height:
-            self.body.append(self._build_ac_param(node, 'height', str(height)))
+            self.body.append(self._build_ac_param(node, 'height', height))
         if autoplay:
             self.body.append(self._build_ac_param(node, 'autostart', 'true'))
         self.body.append(self._end_ac_macro(node))
@@ -2904,9 +2904,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._start_ac_macro(node, 'widget'))
         self.body.append(self._build_ac_param(node, 'url', ri_url))
         if height:
-            self.body.append(self._build_ac_param(node, 'height', str(height)))
+            self.body.append(self._build_ac_param(node, 'height', height))
         if width:
-            self.body.append(self._build_ac_param(node, 'width', str(width)))
+            self.body.append(self._build_ac_param(node, 'width', width))
         self.body.append(self._end_ac_macro(node))
         self.body.append(self._end_tag(node))
 
@@ -3134,7 +3134,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             the content
         """
         return (self._start_tag(node, 'ac:parameter', **{'ac:name': name}) +
-            value + self._end_tag(node))
+            str(value) + self._end_tag(node))
 
     def _start_ac_image(self, node, **kwargs):
         """

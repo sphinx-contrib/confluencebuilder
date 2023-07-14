@@ -1,0 +1,48 @@
+select = [
+    'ALL',
+]
+
+ignore = [
+    # various translator/role/etc. definitions may not use all/any arguments
+    'ARG001',
+    'ARG002',
+    # we are a bit complex for now
+    'C90',
+    # ignore pydocstyle
+    'D',
+    # ignore pyupgrade since python 2.7 is supported
+    'E501',
+    # ignore eradicate since spdx ids and parenthesis are false flagged
+    'ERA001',
+    # imports are sorted lexicographically in this project
+    'FBT002',
+    # imports are sorted lexicographically in this project
+    'I001',
+    # permit import aliases with case changes
+    'N812',
+    'N813',
+    # prevent false-positives with pandas checks
+    'PD',
+    # project uses unittest module
+    'PT',
+    # single quotes are preferred in this project
+    'Q000',
+    'Q001',
+    # use of asserts are acceptable for this extension
+    'S101',
+    # some formats are preferred for code readability
+    'SIM102',
+    # ignore flake8-print since we support/expect printing
+    'T20',
+]
+
+[per-file-ignores]
+'sphinxcontrib\confluencebuilder\nodes.py' = [
+    # node classes follow docutils/Sphinx casing convention
+    'N801',
+]
+
+'sphinxcontrib\confluencebuilder\roles.py' = [
+    # role functions follow Sphinx casing convention
+    'N802',
+]

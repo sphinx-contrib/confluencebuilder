@@ -61,30 +61,29 @@ To use this action, the argument '--danger' must be set.
     publisher = None
 
     try:
-        with temp_dir() as tmp_dir:
-            with docutils_namespace():
-                app = Sphinx(
-                    work_dir,            # document sources
-                    work_dir,            # directory with configuration
-                    tmp_dir,             # output for built documents
-                    tmp_dir,             # output for doctree files
-                    'confluence',        # builder to execute
-                    status=sys.stdout,   # sphinx status output
-                    warning=sys.stderr)  # sphinx warning output
+        with temp_dir() as tmp_dir, docutils_namespace():
+            app = Sphinx(
+                work_dir,            # document sources
+                work_dir,            # directory with configuration
+                tmp_dir,             # output for built documents
+                tmp_dir,             # output for doctree files
+                'confluence',        # builder to execute
+                status=sys.stdout,   # sphinx status output
+                warning=sys.stderr)  # sphinx warning output
 
-                dryrun = app.config.confluence_publish_dryrun
-                server_url = app.config.confluence_server_url
-                space_key = app.config.confluence_space_key
-                parent_ref = app.config.confluence_parent_page
+            dryrun = app.config.confluence_publish_dryrun
+            server_url = app.config.confluence_server_url
+            space_key = app.config.confluence_space_key
+            parent_ref = app.config.confluence_parent_page
 
-                # initialize the publisher (if permitted)
-                if app.config.confluence_publish:
-                    process_ask_configs(app.config)
+            # initialize the publisher (if permitted)
+            if app.config.confluence_publish:
+                process_ask_configs(app.config)
 
-                    publisher = ConfluencePublisher()
-                    publisher.init(app.config)
+                publisher = ConfluencePublisher()
+                publisher.init(app.config)
 
-    except Exception:
+    except Exception:  # noqa: BLE001
         sys.stdout.flush()
         logger.error(traceback.format_exc())
         if os.path.isfile(os.path.join(work_dir, 'conf.py')):
