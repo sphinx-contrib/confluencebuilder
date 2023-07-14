@@ -83,7 +83,7 @@ To use this action, the argument '--danger' must be set.
                 publisher = ConfluencePublisher()
                 publisher.init(app.config)
 
-    except Exception:
+    except Exception:  # noqa: BLE001
         sys.stdout.flush()
         logger.error(traceback.format_exc())
         if os.path.isfile(os.path.join(work_dir, 'conf.py')):

@@ -121,7 +121,7 @@ def report_main(args_parser):
             # initialize the publisher (if needed later)
             publisher.init(app.config)
 
-    except Exception:
+    except Exception:  # noqa: BLE001
         sys.stdout.flush()
         tb_msg = traceback.format_exc()
         logger.error(tb_msg)
@@ -147,7 +147,7 @@ def report_main(args_parser):
             publisher.connect()
             info += ' connected: yes\n'
             session = publisher.rest_client.session
-        except Exception:
+        except Exception:  # noqa: BLE001
             sys.stdout.flush()
             logger.error(traceback.format_exc())
             info += ' connected: no\n'
@@ -185,7 +185,7 @@ def report_main(args_parser):
                         rsp.status_code))
                     info += f'   fetched: error ({rsp.status_code})\n'
                     rv = 1
-            except Exception:
+            except Exception:  # noqa: BLE001
                 sys.stdout.flush()
                 logger.error(traceback.format_exc())
                 info += 'failure to determine confluence data\n'
