@@ -362,7 +362,7 @@ class ConfluenceBuilder(Builder):
             nav_docnames.remove('search')
 
         if self.domain_indices:
-            for indexname, indexdata in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 if indexname in nav_docnames:
                     nav_docnames.remove(indexname)
 
@@ -599,7 +599,7 @@ class ConfluenceBuilder(Builder):
             data['labels'].extend(self.config.confluence_global_labels)
 
         if 'labels' in metadata:
-            data['labels'].extend([v for v in metadata['labels']])
+            data['labels'].extend(list(metadata['labels']))
 
         return data
 
