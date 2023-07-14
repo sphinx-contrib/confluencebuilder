@@ -4,8 +4,11 @@ Development
 * Fixed ``confluence_full_width`` issues on Confluence server/DC
 * Fixed issue where using ``confluence_full_width`` breaks an editor selection
 * Fixed re-publishing issues when certain options change (e.g. parent page)
+* Improve support when using the sphinxcontrib-video extension
+* Introduce the ``confluence_permit_raw_html`` option
 * Support configuring the theme on generated code block macros
 * Support page-specific editor and full-width overrides
+* Support page-specific parent identifier overrides when publishing
 
 2.1.1 (2023-05-19)
 ==================
