@@ -397,7 +397,7 @@ div.admonition > p.admonition-title {
     font-weight: bold;
 }
 
-div.warning {
+div.caution, div.warning {
     border: 1px solid #940000;
 }
 
