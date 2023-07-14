@@ -2971,9 +2971,24 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # publish or contents may be suppressed on the Confluence instance. This
         # is provided to help users wanted to somewhat support raw HTML content
         # generated from Markdown sources.
-        if self.builder.config.confluence_adv_permit_raw_html:
+        permit_raw_html = self.builder.config.confluence_permit_raw_html
+        if permit_raw_html:
             if 'html' in node.get('format', '').split():
-                self.body.append(self.nl.join(node.astext().splitlines()))
+                raw_html = self.nl.join(node.astext().splitlines())
+
+                # boolean flag -- raw injection of html
+                if isinstance(permit_raw_html, bool):
+                    self.body.append(raw_html)
+                # string value -- placed in an supported HTML macro available
+                # on the user's Confluence instance
+                else:
+                    macro = permit_raw_html
+                    self.body.append(self._start_ac_macro(node, macro))
+                    self.body.append(self._start_ac_plain_text_body_macro(node))
+                    self.body.append(self._escape_cdata(raw_html))
+                    self.body.append(self._end_ac_plain_text_body_macro(node))
+                    self.body.append(self._end_ac_macro(node))
+
                 raise nodes.SkipNode
 
         if 'confluence_storage' in node.get('format', '').split():

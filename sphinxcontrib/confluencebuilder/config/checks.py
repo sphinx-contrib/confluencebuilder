@@ -474,6 +474,23 @@ confluence_parent_page is not a string or a positive integer''')
 
     # ##################################################################
 
+    # confluence_permit_raw_html
+    try:
+        validator.conf('confluence_permit_raw_html').bool()
+    except ConfluenceConfigurationError:
+        try:
+            validator.conf('confluence_permit_raw_html').string()
+        except ConfluenceConfigurationError:
+            raise ConfluenceConfigurationError('''\
+confluence_permit_raw_html is not a boolean or a string
+
+The option 'confluence_permit_raw_html' has been provided to indicate that
+raw HTML should be published. This value can either be set to `True` or
+configured to the name of a supported macro identifier.
+''')
+
+    # ##################################################################
+
     # confluence_prev_next_buttons_location
     try:
         validator.conf('confluence_prev_next_buttons_location') \

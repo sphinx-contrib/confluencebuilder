@@ -227,6 +227,8 @@ def setup(app):
     cm.add_conf('confluence_mentions', 'confluence')
     # Inject navigational hints into the documentation.
     cm.add_conf('confluence_navdocs_transform')
+    # Enablement of permitting raw html blocks to be used in storage format.
+    cm.add_conf('confluence_permit_raw_html', 'confluence')
     # Remove a detected title from generated documents.
     cm.add_conf_bool('confluence_remove_title', 'confluence')
 
@@ -241,8 +243,6 @@ def setup(app):
     cm.add_conf('confluence_adv_node_handler')
     # Permit any string value to be provided as the editor.
     cm.add_conf('confluence_adv_permit_editor', 'confluence')
-    # Enablement of permitting raw html blocks to be used in storage format.
-    cm.add_conf_bool('confluence_adv_permit_raw_html', 'confluence')
     # List of optional features/macros/etc. restricted for use.
     cm.add_conf('confluence_adv_restricted', 'confluence')
     # Enablement of tracing processed data.
@@ -253,6 +253,8 @@ def setup(app):
     # (configuration - deprecated)
     # replaced by confluence_cleanup_search_mode
     cm.add_conf_bool('confluence_adv_aggressive_search')
+    # replaced by confluence_permit_raw_html
+    cm.add_conf_bool('confluence_adv_permit_raw_html')
     # replaced by confluence_root_homepage
     cm.add_conf('confluence_master_homepage')
     # replaced by confluence_publish_allowlist

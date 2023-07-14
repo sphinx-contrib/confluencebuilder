@@ -73,6 +73,10 @@ def apply_defaults(builder):
     if conf.confluence_page_hierarchy is None:
         conf.confluence_page_hierarchy = True
 
+    if conf.confluence_permit_raw_html is None and \
+            conf.confluence_adv_permit_raw_html is not None:
+        conf.confluence_permit_raw_html = conf.confluence_adv_permit_raw_html
+
     if conf.confluence_publish_intersphinx is None:
         conf.confluence_publish_intersphinx = True
 
