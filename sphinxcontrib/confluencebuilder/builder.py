@@ -765,7 +765,7 @@ class ConfluenceBuilder(Builder):
                 docfile = path.join(self.outdir, self.file_transform(docname))
 
                 try:
-                    with open(docfile, 'r', encoding='utf-8') as file:
+                    with open(docfile, encoding='utf-8') as file:
                         output = file.read()
                         self.publish_doc(docname, output)
                 except OSError as err:
