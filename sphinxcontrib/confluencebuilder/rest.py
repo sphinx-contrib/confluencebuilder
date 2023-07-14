@@ -10,7 +10,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlErr
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceCertificateError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceRateLimited
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceRateLimitedError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
@@ -51,7 +51,7 @@ class SslAdapter(HTTPAdapter):
                 pw = self._config.confluence_client_cert_pass
                 context.load_cert_chain(certfile=cf, keyfile=kf, password=pw)
             except ssl.SSLError as ex:
-                raise ConfluenceCertificateError(ex)
+                raise ConfluenceCertificateError(ex) from ex
         # otherwise, load default certificates on the system
         else:
             context.load_default_certs()
@@ -106,7 +106,7 @@ def rate_limited_retries():
             while True:
                 try:
                     return func(self, *args, **kwargs)
-                except ConfluenceRateLimited as e:
+                except ConfluenceRateLimitedError as e:
                     # if max attempts have been reached, stop any more attempts
                     if attempt > RATE_LIMITED_MAX_RETRIES:
                         raise e
@@ -373,4 +373,4 @@ class Rest:
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:
-            raise ConfluenceRateLimited
+            raise ConfluenceRateLimitedError

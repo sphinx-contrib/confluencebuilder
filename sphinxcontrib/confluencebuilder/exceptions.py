@@ -196,7 +196,7 @@ please inform the maintainers of this extension.
 '''.format(name=page_name))
 
 
-class ConfluenceRateLimited(ConfluenceError):
+class ConfluenceRateLimitedError(ConfluenceError):
     def __init__(self):
         super().__init__('''
 ---
