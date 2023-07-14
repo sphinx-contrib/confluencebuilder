@@ -10,6 +10,8 @@ import mimetypes
 DEPRECATED_CONFIGS = {
     'confluence_adv_aggressive_search':
         'use "confluence_cleanup_search_mode" instead',
+    'confluence_adv_permit_raw_html':
+        'use "confluence_permit_raw_html" instead',
     'confluence_adv_trace_data':
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':
