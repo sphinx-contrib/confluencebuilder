@@ -76,54 +76,50 @@ def report_main(args_parser):
     publisher = ConfluencePublisher()
 
     try:
-        with temp_dir() as tmp_dir:
-            with docutils_namespace():
-                print('fetching configuration information...')
-                builder = ConfluenceReportBuilder.name
-                app = Sphinx(
-                    work_dir,            # document sources
-                    work_dir,            # directory with configuration
-                    tmp_dir,             # output for built documents
-                    tmp_dir,             # output for doctree files
-                    builder,             # builder to execute
-                    status=sys.stdout,   # sphinx status output
-                    warning=sys.stderr)  # sphinx warning output
+        with temp_dir() as tmp_dir, docutils_namespace():
+            print('fetching configuration information...')
+            builder = ConfluenceReportBuilder.name
+            app = Sphinx(
+                work_dir,            # document sources
+                work_dir,            # directory with configuration
+                tmp_dir,             # output for built documents
+                tmp_dir,             # output for doctree files
+                builder,             # builder to execute
+                status=sys.stdout,   # sphinx status output
+                warning=sys.stderr)  # sphinx warning output
 
-                # apply environment-based configuration changes
-                apply_env_overrides(app.builder)
+            # apply environment-based configuration changes
+            apply_env_overrides(app.builder)
 
-                # if the configuration is enabled for publishing, check if
-                # we need to ask for authentication information (to perform
-                # the connection sanity checks)
-                if app.config.confluence_publish:
-                    try:
-                        process_ask_configs(app.config)
-                    except ConfluenceConfigurationError:
-                        offline = True
+            # if the configuration is enabled for publishing, check if
+            # we need to ask for authentication information (to perform
+            # the connection sanity checks)
+            if app.config.confluence_publish:
+                try:
+                    process_ask_configs(app.config)
+                except ConfluenceConfigurationError:
+                    offline = True
 
-                # extract configuration information
-                cm = app.config_manager_  # pylint: disable=no-member
-                for k, v in app.config.values.items():
-                    raw = getattr(app.config, k)
-                    if raw is None:
-                        continue
+            # extract configuration information
+            cm = app.config_manager_  # pylint: disable=no-member
+            for key in app.config.values:
+                raw = getattr(app.config, key)
+                if raw is None:
+                    continue
 
-                    if callable(raw):
-                        value = '(callable)'
-                    else:
-                        value = raw
+                value = '(callable)' if callable(raw) else raw
 
-                    if not args.full_config and k not in cm.options:
-                        continue
+                if not args.full_config and key not in cm.options:
+                    continue
 
-                    # always extract some known builder configurations
-                    if args.full_config and k.startswith(IGNORE_BUILDER_CONFS):
-                        continue
+                # always extract some known builder configurations
+                if args.full_config and key.startswith(IGNORE_BUILDER_CONFS):
+                    continue
 
-                    config[k] = value
+                config[key] = value
 
-                # initialize the publisher (if needed later)
-                publisher.init(app.config)
+            # initialize the publisher (if needed later)
+            publisher.init(app.config)
 
     except Exception:
         sys.stdout.flush()
