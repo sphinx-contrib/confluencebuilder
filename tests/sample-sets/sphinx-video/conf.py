@@ -1,4 +1,4 @@
 extensions = [
-    'sphinxcontrib.video',
     'sphinxcontrib.confluencebuilder',
+    'sphinxcontrib.video',
 ]
