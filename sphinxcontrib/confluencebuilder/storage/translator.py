@@ -2832,9 +2832,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.depart_abbreviation(node)
         self.body.append(self.context.pop())  # i
 
-    # ---------------------------------------------------
+    # -------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-video
-    # ---------------------------------------------------
+    # -------------------------------------------------
 
     def visit_video_node(self, node):
         autoplay = node.get('autoplay')
