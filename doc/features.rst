@@ -58,7 +58,7 @@ Type                    Notes
 `transitions`_          Supported
 ======================= =====
 
-*(note: directive options "class" and "name" a mostly ignored as they are not
+*(note: directive options "class" and "name" are mostly ignored as they are not
 supported in a Confluence format document)*
 
 Sphinx markup
