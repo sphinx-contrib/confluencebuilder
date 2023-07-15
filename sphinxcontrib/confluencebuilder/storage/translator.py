@@ -19,6 +19,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V1
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V2
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V1
 from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V2
+from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_CODE_BLOCK_THEMES
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.storage import encode_storage_format
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
@@ -780,9 +781,21 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self._build_ac_param(node, 'language', lang))
         self.body.append(self._build_ac_param(node, 'linenumbers', num))
 
-        if self.builder.config.confluence_code_block_theme:
-            theme = self.builder.config.confluence_code_block_theme
-            self.body.append(self._build_ac_param(node, 'theme', theme))
+        theme = self.builder.config.confluence_code_block_theme
+        theme = theme.lower() if theme else None
+        theme_map = SUPPORTED_CODE_BLOCK_THEMES
+
+        for class_ in node.get('classes', []):
+            if class_.startswith('confluence-theme-'):
+                theme = class_[len('confluence-theme-'):].lower()
+                if theme not in theme_map:
+                    self.warn('confluence-theme-* defined an unknown theme: ' +
+                        theme)
+                break
+
+        theme_id = theme_map.get(theme)
+        if theme_id:
+            self.body.append(self._build_ac_param(node, 'theme', theme_id))
 
         if firstline is not None and firstline > 1:
             self.body.append(
