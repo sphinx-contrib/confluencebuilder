@@ -29,22 +29,6 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
             self.assertEqual(title_param.text, 'code caption test')
 
     @setup_builder('confluence')
-    def test_storage_sphinx_codeblock_theme(self):
-        theme = 'Midnight'
-        config = dict(self.config)
-        config['confluence_code_block_theme'] = theme
-        out_dir = self.build(self.dataset, filenames=['code-block'], config=config)
-
-        with parse('code-block', out_dir) as data:
-            theme_params = data.find_all('ac:parameter', {'ac:name': 'theme'})
-            self.assertIsNotNone(theme_params)
-            self.assertEqual(len(theme_params), 3)
-
-            for theme_param in theme_params:
-                self.assertIsNotNone(theme_param)
-                self.assertEqual(theme_param.text, theme)
-
-    @setup_builder('confluence')
     def test_storage_sphinx_codeblock_default(self):
         out_dir = self.build(self.dataset, filenames=['code-block'])
 
@@ -117,3 +101,30 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
             # (check at least one code block's content)
             self.assertEqual(ruby_block_cdata,
                 "puts 'this is a print statement!'")
+
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_theme_config(self):
+        theme = 'Midnight'
+        config = dict(self.config)
+        config['confluence_code_block_theme'] = theme
+        out_dir = self.build(self.dataset, filenames=['code-block'], config=config)
+
+        with parse('code-block', out_dir) as data:
+            theme_params = data.find_all('ac:parameter', {'ac:name': 'theme'})
+            self.assertIsNotNone(theme_params)
+            self.assertEqual(len(theme_params), 3)
+
+            for theme_param in theme_params:
+                self.assertIsNotNone(theme_param)
+                self.assertEqual(theme_param.text, theme)
+
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_theme_override(self):
+        expected_theme = 'Eclipse'
+        dataset = os.path.join(self.datasets, 'code-block-theme')
+        out_dir = self.build(dataset)
+
+        with parse('index', out_dir) as data:
+            code_macro_theme = data.find('ac:parameter', {'ac:name': 'theme'})
+            self.assertIsNotNone(code_macro_theme)
+            self.assertEqual(code_macro_theme.text, expected_theme)
