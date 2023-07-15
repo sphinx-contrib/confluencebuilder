@@ -24,6 +24,8 @@ content. For example:
 This directive will only work when using the Confluence builder. See also the
 :ref:`Confluence expand directive <confluence_expand-directive>`.
 
+.. _confluence_collapsed_ch:
+
 Class hints
 -----------
 

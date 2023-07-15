@@ -1604,15 +1604,12 @@ Advanced publishing configuration
         features of this extension. For example, users with purging
         enabled may not have pages with parent-ID overrides purged.
 
-    A function to override the specific page to publish a specific document.
+    A function to override the parent page to publish a document under.
     This option is available for advanced users needing to tailor specific
     parent pages for individual documents. A provided transform is invoked
     with the document name and the expected parent page (numerical
     identifier) the document will be published under. A configuration can
-    tweak the identifier used when publishing. This extension will not check
-    the validity of the identifiers set. If a provided page identifier does
-    not exist or the publishing user does not have access to manipulate the
-    page, the publication will fail with an error provided by Confluence.
+    tweak the identifier used when publishing.
 
     .. code-block:: python
 
@@ -1623,6 +1620,11 @@ Advanced publishing configuration
             return parent_id
 
         confluence_parent_override_transform = my_publish_override
+
+    This extension will not check the validity of the identifiers set. If
+    a provided page identifier does not exist or the publishing user does
+    not have access to the parent page, the publication will fail with an
+    error provided by Confluence.
 
     See also |confluence_parent_page|_.
 
