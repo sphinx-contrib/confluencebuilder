@@ -2931,6 +2931,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_youtube(self, node):
         self._visit_video(node, 'https://www.youtube.com/watch?v=' + node['id'])
 
+    # -------------------------------------------------------
+    # sphinx -- extension (third party) -- sphinxnotes-strike
+    # -------------------------------------------------------
+
+    def visit_strike_node(self, node):
+        self.body.append(self._start_tag(node, 's'))
+        self.context.append(self._end_tag(node, suffix=''))
+
+    def depart_strike_node(self, node):
+        self.body.append(self.context.pop())  # s
+
     # -------------
     # miscellaneous
     # -------------
