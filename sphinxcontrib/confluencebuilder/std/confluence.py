@@ -478,23 +478,24 @@ else:
 # (see also: https://developer.atlassian.com/cloud/confluence/rate-limiting/)
 RSP_HEADER_RETRY_AFTER = 'Retry-After'
 
+# default code block theme
+DEFAULT_THEME_STYLE = 'default'
+
 # supported code block themes
 #
-# Ref: https://confluence.atlassian.com/doc/code-block-macro-139390.html
-#
-SUPPORTED_CODE_BLOCK_THEMES = [
-    # Ordered to match Confluence documentation.
-    'DJango',
-    'Emacs',
-    'FadeToGrey',
-    'Midnight',
-    'RDark',
-    'Eclipse',
-    'Confluence',
+# (see also: https://confluence.atlassian.com/doc/code-block-macro-139390.html)
+SUPPORTED_CODE_BLOCK_THEMES = {
+    'confluence': 'Confluence',
+    'django': 'DJango',
+    'eclipse': 'Eclipse',
+    'emacs': 'Emacs',
+    'fadetogrey': 'FadeToGrey',
+    'midnight': 'Midnight',
+    'rdark': 'RDark',
     # 'Default' is also valid and is usually synonymous with 'Confluence',
     # unless changed by a user with Confluence Administrator permissions.
-    'Default',
-]
+    DEFAULT_THEME_STYLE: 'Default',
+}
 
 # supported image types
 #

@@ -76,7 +76,7 @@ def warnings(validator):
 
     # confluence_code_block_theme assigned an unsupported theme
     if config.confluence_code_block_theme is not None:
-        theme = config.confluence_code_block_theme
+        theme = config.confluence_code_block_theme.lower()
         if theme not in SUPPORTED_CODE_BLOCK_THEMES:
             logger.warn('confluence_code_block_theme '
                         'defines an unknown theme: ' + theme)
