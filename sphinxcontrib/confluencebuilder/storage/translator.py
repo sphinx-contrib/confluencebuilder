@@ -27,6 +27,7 @@ from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import first
+import json
 import posixpath
 import re
 import sys
@@ -2831,6 +2832,42 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def depart_FancyOutputNode(self, node):
         pass
+
+    # -------------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-data-viewer
+    # -------------------------------------------------------
+
+    def visit_DataViewerNode(self, node):
+        data = json.dumps(json.loads(node['data']), indent=4)
+
+        title = node.get('title', None)
+        if title:
+            title = self.encode(title)
+
+        # use the `none` language type by default; however, if it appears
+        # that this configuration supports json rendering, use that instead
+        target_lang = 'none'
+        if self.builder.lang_transform:
+            new_target_lang = self.builder.lang_transform('json')
+            if 'json' in new_target_lang:
+                target_lang = new_target_lang
+
+        self.body.append(self._start_ac_macro(node, 'code'))
+        self.body.append(self._build_ac_param(node, 'language', target_lang))
+
+        if title:
+            self.body.append(self._build_ac_param(node, 'title', title))
+
+        expand = node.get('expand', None)
+        if not expand:
+            self.body.append(self._build_ac_param(node, 'collapse', 'true'))
+
+        self.body.append(self._start_ac_plain_text_body_macro(node))
+        self.body.append(self._escape_cdata(data))
+        self.body.append(self._end_ac_plain_text_body_macro(node))
+        self.body.append(self._end_ac_macro(node))
+
+        raise nodes.SkipNode
 
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-toolbox
