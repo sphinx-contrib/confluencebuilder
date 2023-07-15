@@ -486,6 +486,12 @@ code.literal {
     color: #CE0000;
 }
 
+h1 code.literal,
+h2 code.literal,
+h3 code.literal,
+h4 code.literal,
+h5 code.literal,
+h6 code.literal,
 .sphinxsidebarwrapper code.literal {
     border: unset;
     padding: unset;

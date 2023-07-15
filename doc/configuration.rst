@@ -213,20 +213,27 @@ Generic configuration
 
     See also |confluence_publish_prefix|_.
 
+.. |confluence_code_block_theme| replace:: ``confluence_code_block_theme``
+.. _confluence_code_block_theme:
+
 .. confval:: confluence_code_block_theme
 
     .. versionadded:: 2.2
-
-    Specifies the color scheme to use when displaying a Confluence code block macro.
-
-    .. code-block:: python
-
-        confluence_code_block_theme = 'Midnight'
 
     .. note::
 
         This option is only supported using the ``v1``
         :ref:`editor <confluence_editor>`.
+
+    Specifies the color scheme to use when displaying a Confluence code
+    block macro.
+
+    .. code-block:: python
+
+        confluence_code_block_theme = 'Midnight'
+
+    For configuring the theme on individual code blocks, see
+    :ref:`class hints <confluence_class_hints>`.
 
 .. confval:: confluence_default_alignment
 

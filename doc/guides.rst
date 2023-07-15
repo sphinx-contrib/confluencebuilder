@@ -7,6 +7,7 @@ the Confluence Builder extension in a Sphinx-enabled environment.
 .. toctree::
     :maxdepth: 1
 
+    guide-class-hints
     guide-collapse
     guide-math
     guide-ci
