@@ -86,10 +86,12 @@ latex_elements = {
     # iso datetime support
     # disable hyphenatation
     # disable justified text
+    # remove italics from links
     'preamble': r'''
         \usepackage{datetime2}
         \usepackage[none]{hyphenat}
         \usepackage[document]{ragged2e}
+        \def\sphinxcrossref#1{#1}
     ''',
 }
 
