@@ -203,22 +203,6 @@ generated Confluence documents.
 Strikethrough
 -------------
 
-.. note::
-
-    This role can be used to help a user observe the ability to strikethrough
-    text on a Confluence page; however, this role only applies to Confluence
-    builders. Users attempting to support multiple builders (such as the
-    ``html`` builder), are recommended to use a ``class`` hint instead. This
-    extension supports an applied ``strike`` class on text as an indication
-    that the text should have a strikethrough format. For example:
-
-    .. code-block:: rst
-
-        .. role:: strike
-            :class: strike
-
-        This is a :strike:`strikeme` example.
-
 The following role can be used to explicitly define strikethrough text into
 generated Confluence documents.
 

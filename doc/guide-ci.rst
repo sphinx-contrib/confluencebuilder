@@ -1,3 +1,7 @@
+.. raw:: latex
+
+    \newpage
+
 .. _tip_manage_publish_subset:
 
 .. index:: Continuous integration
