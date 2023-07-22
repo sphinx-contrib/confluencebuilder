@@ -16,6 +16,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdEr
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnexpectedCdataError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
@@ -922,6 +923,9 @@ reported a success (which can be permitted for anonymous users).
                         self.rest_client.post(url, labels)
 
                 except ConfluenceBadApiError as ex:
+                    if str(ex).find('CDATA block has embedded') != -1:
+                        raise ConfluenceUnexpectedCdataError from ex
+
                     # Check if Confluence reports that the new page request
                     # fails, indicating it already exists. This is usually
                     # (outside of possible permission use cases) that the page
@@ -1235,6 +1239,8 @@ reported a success (which can be permitted for anonymous users).
         try:
             self.rest_client.put('content', page_id_explicit, update_page)
         except ConfluenceBadApiError as ex:
+            if str(ex).find('CDATA block has embedded') != -1:
+                raise ConfluenceUnexpectedCdataError from ex
 
             # Handle select API failures by waiting a moment and retrying the
             # content request. If it happens again, the put request will fail as

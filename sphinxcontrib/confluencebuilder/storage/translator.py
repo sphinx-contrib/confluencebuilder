@@ -3613,5 +3613,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the escaped text
         """
-        data = data.replace(']]>', ']]]]><![CDATA[>')
+
+        # workaround for Confluence 8.0.x to 8.2.x series
+        # (https://jira.atlassian.com/browse/CONFSERVER-82849)
+        #
+        # The else case here should be always working; however, in some
+        # Confluence instances, there was a window where pages could not
+        # be uploaded since Confluence would refuse the EOF sequence for
+        # CDATA blocks. This workaround can help a user get their content
+        # published at the unfortunate tweak of changing any trailing EOF
+        # CDATA blocks to have a space character included.
+        if self.builder.config.confluence_adv_quirk_cdata:
+            data = data.replace(']]>', ']] >')
+        else:
+            data = data.replace(']]>', ']]]]><![CDATA[>')
+
         return ConfluenceBaseTranslator.encode(self, data)
