@@ -84,48 +84,78 @@ following steps are performed:
   appropriately. The tagged commit should have a "clean" version string.
 - Ensure the release tag is signed.
 
-A release can be made with the following commands:
+A release can be made with the following commands.
+
+----
+
+Perform a clean build:
+
+.. code-block:: shell
+
+    python -m build
+
+Verify packages can be published:
+
+.. code-block:: shell
+
+    twine check dist/*
+
+Validate artifacts with a local pip install:
+
+.. code-block:: shell
+
+    pip install dist/*.whl
+    cd <working-project>
+    python -m sphinxcontrib.confluencebuilder --version
+    python -m sphinx -b confluence . _build/confluence -E -a
+    pip uninstall sphinxcontrib-confluencebuilder
+
+Sign the packages:
+
+.. code-block:: shell
+
+    gpg --detach-sign -a dist/sphinxcontrib*.gz
+    gpg --detach-sign -a dist/sphinxcontrib*.whl
+
+Sanity check the signed packages:
 
 .. code-block:: shell-session
 
-    $ python -m build
-    * Creating virtualenv isolated environment...
-    ...
+    gpg --verify dist/sphinxcontrib*.gz.asc
+    gpg --verify dist/sphinxcontrib*.whl.asc
 
-    (note: verify packages can be published)
+Publish the packages:
 
-    $ twine check dist/*
+.. code-block:: shell
 
-    (note: validate artifacts with a local pip install)
+    twine upload dist/*
 
-    $ pip install dist/*.whl
-    $ cd <working-project>
-    $ python -m sphinxcontrib.confluencebuilder --version
-    $ python -m sphinx -b confluence . _build/confluence -E -a
-    $ pip uninstall sphinxcontrib-confluencebuilder
+Check pip install with PyPI package:
 
-    (note: generate hashes)
+.. code-block:: shell
 
-    $ gpg --detach-sign -a dist/sphinxcontrib*.gz
-    $ gpg --detach-sign -a dist/sphinxcontrib*.whl
+    cd <working-project>
+    pip install sphinxcontrib-confluencebuilder
+    python -m sphinxcontrib.confluencebuilder --version
+    python -m sphinx -b confluence . _build/confluence -E -a
+    pip uninstall sphinxcontrib-confluencebuilder
 
-    (note: verify with `gpg --verify <artifact>`)
+Tag/push the release tag:
 
-    $ twine upload dist/*
+.. code-block:: shell
 
-    (note: check pip install with PyPI package)
+    git tag -s -a v<version> <hash> -m "sphinxcontrib-confluencebuilder <version>"
+    git verify-tag <tag>
+    git push origin <tag>
 
-    $ cd <working-project>
-    $ pip install sphinxcontrib-confluencebuilder
-    $ python -m sphinxcontrib.confluencebuilder --version
-    $ python -m sphinx -b confluence . _build/confluence -E -a
-    $ pip uninstall sphinxcontrib-confluencebuilder
+Generate hashes from the release:
 
-    (note: tag and push)
+.. code-block:: shell
 
-    $ git tag -s -a v<version> <hash> -m "sphinxcontrib-confluencebuilder <version>"
-    $ git verify-tag <tag>
-    $ git push origin <tag>
+    cd dist
+    sha256sum -b * >sphinxcontrib-confluencebuilder-<version>.sha256sum
+
+Create a new release entry on GitHub.
 
 Sanity checks and cleanup
 -------------------------
