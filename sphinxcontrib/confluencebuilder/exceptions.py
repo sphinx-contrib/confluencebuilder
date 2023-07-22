@@ -263,6 +263,35 @@ configured Confluence URL is valid:
 '''.format(url=server_url))
 
 
+class ConfluenceUnexpectedCdataError(ConfluenceError):
+    def __init__(self):
+        super().__init__('''
+---
+Unexpected Confluence XML stream CDATA parsing error
+
+Confluence has reported an error processing a document which contains
+CDATA data (e.g. a code block using `<![CDATA[data]]>`). This is
+unexpected since the data should be properly formed. There is a high
+chance that this is occurring on a Confluence instance which introduced
+some processing logic that incorrectly breaks the parsing of CDATA EOF
+strings (as of Confluence 8.x). This should be addressed in Confluence
+8.3.0 (or newer) release [1].
+
+To workaround this issue for the configured Confluence instance, a user
+can enable the `confluence_adv_quirk_cdata` inside their `conf.py`
+configuration file. For example:
+
+    confluence_adv_quirk_cdata = True
+
+If enabling this option does not resolve the publication issue, then
+this error message does not apply. Feel free to report this issue noting
+the exception message above this message.
+
+[1]: https://jira.atlassian.com/browse/CONFSERVER-82849
+---
+''')
+
+
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, ex):
         super().__init__('''
