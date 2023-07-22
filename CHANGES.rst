@@ -1,5 +1,5 @@
-Development
-===========
+2.2.0 (2023-07-22)
+==================
 
 * Fixed ``confluence_full_width`` issues on Confluence server/DC
 * Fixed issue where using ``confluence_full_width`` breaks an editor selection
