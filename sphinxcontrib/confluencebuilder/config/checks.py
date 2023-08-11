@@ -532,7 +532,7 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
 
         # if provided a file via command line, treat as a list
         def conf_translate(value):
-            return handle_cli_file_subset(config, option, value)
+            return handle_cli_file_subset(builder, option, value)
         value = conf_translate(value)
 
         try:
