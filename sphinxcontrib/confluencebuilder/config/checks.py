@@ -171,7 +171,7 @@ certificate/key-pair, or a 2-tuple of the certificate and key.
         for cert in cert_files:
             if cert and not os.path.isfile(os.path.join(env.srcdir, cert)):
                 raise ConfluenceConfigurationError('''\
-confluence_ca_cert missing certificate file
+confluence_client_cert missing certificate file
 
 The option 'confluence_client_cert' has been provided to find a client
 certificate file from a relative location, but the certificate could not be
