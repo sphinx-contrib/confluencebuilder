@@ -157,7 +157,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         }
 
         try:
-            with mock_confluence_instance(self.config) as default_daemon,\
+            with mock_confluence_instance(self.config) as default_daemon, \
                     mock_confluence_instance() as proxy_daemon:
 
                 proxy_host, proxy_port = proxy_daemon.server_address
