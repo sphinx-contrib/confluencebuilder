@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder.util import str2bool
+import os
 
 
 # configures the default editor to publication
@@ -30,6 +31,7 @@ def apply_defaults(builder):
 
     conf = builder.config
     config_manager = builder.app.config_manager_
+    env = builder.env
 
     if conf.confluence_add_secnumbers is None:
         conf.confluence_add_secnumbers = True
@@ -39,6 +41,14 @@ def apply_defaults(builder):
 
     if conf.confluence_adv_restricted is None:
         conf.confluence_adv_restricted = []
+
+    if conf.confluence_ca_cert and not os.path.isabs(conf.confluence_ca_cert):
+        # if the ca path is not an absolute path, the path is a relative
+        # path based on the source directory (i.e. passed configuration
+        # checks); resolve the file here before it eventually gets provided
+        # to Requests
+        conf.confluence_ca_cert = os.path.join(
+            env.srcdir, conf.confluence_ca_cert)
 
     if conf.confluence_cleanup_search_mode is None:
         # the default is `search`, since on Confluence Server/DC; the `direct`
