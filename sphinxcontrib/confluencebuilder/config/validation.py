@@ -354,7 +354,7 @@ class ConfigurationValidation:
             if not isinstance(value, str) or not os.path.exists(
                     os.path.join(self.env.srcdir, value)):
                 raise ConfluenceConfigurationError(
-                    '%s is not a file' % self.key)
+                    '%s is not a path' % self.key)
 
         return self
 
