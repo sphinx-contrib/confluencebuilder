@@ -67,11 +67,23 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
             call('folder/page-b', ANY),
         ], any_order=True)
 
-    def test_config_publishlist_allow_list_file_default(self):
+    def test_config_publishlist_allow_list_file_default_abs(self):
         publish_list = os.path.join(self.dataset, 'publish-list-default')
 
         config = dict(self.config)
         config['confluence_publish_allowlist'] = publish_list
+
+        with patch.object(ConfluenceBuilder, 'publish_doc') as mm:
+            self.build(self.dataset, config=config)
+
+        mm.assert_has_calls([
+            call('page-a', ANY),
+            call('folder/page-b', ANY),
+        ], any_order=True)
+
+    def test_config_publishlist_allow_list_file_default_relative(self):
+        config = dict(self.config)
+        config['confluence_publish_allowlist'] = 'publish-list-default'
 
         with patch.object(ConfluenceBuilder, 'publish_doc') as mm:
             self.build(self.dataset, config=config)
@@ -186,11 +198,22 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
             call('folder/page-b', ANY),
         ], any_order=True)
 
-    def test_config_publishlist_deny_list_file_default(self):
+    def test_config_publishlist_deny_list_file_default_abs(self):
         publish_list = os.path.join(self.dataset, 'publish-list-default')
 
         config = dict(self.config)
         config['confluence_publish_denylist'] = publish_list
+
+        with patch.object(ConfluenceBuilder, 'publish_doc') as mm:
+            self.build(self.dataset, config=config)
+
+        mm.assert_has_calls([
+            call('index', ANY),
+        ], any_order=True)
+
+    def test_config_publishlist_deny_list_file_default_relative(self):
+        config = dict(self.config)
+        config['confluence_publish_denylist'] = 'publish-list-default'
 
         with patch.object(ConfluenceBuilder, 'publish_doc') as mm:
             self.build(self.dataset, config=config)
