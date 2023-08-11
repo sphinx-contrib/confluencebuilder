@@ -303,7 +303,7 @@ def getpass2(prompt='Password: '):
         return getpass.getpass(prompt=prompt)
 
 
-def handle_cli_file_subset(config, option, value):
+def handle_cli_file_subset(builder, option, value):
     """
     process a file subset entry based on a cli-provided value
 
@@ -313,7 +313,7 @@ def handle_cli_file_subset(config, option, value):
     this is a string, it is most likely a list of files from the command line.
 
     Args:
-        config: the sphinx configuration
+        builder: the confluence builder
         option: the key associated to this configuration value
         value: the configuration value
 
@@ -321,14 +321,22 @@ def handle_cli_file_subset(config, option, value):
         the resolved configuration value
     """
 
-    if option in config['overrides'] and isinstance(value, str):
+    if option in builder.config['overrides'] and isinstance(value, str):
         if not value:
             # an empty command line subset is an "unset" request
             # (and not an empty list); if no values are detected,
             # return `None`
             return None
-        elif not os.path.isfile(value):
-            value = value.split(',')
+        else:
+            if os.path.isabs(value):
+                target_file = value
+            else:
+                target_file = os.path.join(builder.env.srcdir, value)
+
+            if os.path.isfile(target_file):
+                value = target_file
+            else:
+                value = value.split(',')
 
     return value
 

@@ -191,7 +191,7 @@ class ConfluenceBuilder(Builder):
             if value is None:
                 return None
 
-            value = handle_cli_file_subset(config, option, value)
+            value = handle_cli_file_subset(self, option, value)
             if value is None:
                 return None
 
