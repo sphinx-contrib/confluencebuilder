@@ -1,3 +1,11 @@
+Development
+===========
+
+* **(note)** Final release supporting Python 3.7 (EOL)
+* Fixed issue when a project defines a relative CA certificate path
+* Fixed issue when a project defines relative publish list files
+* Fixed select directive/role issues with Sphinx 7.2.x
+
 2.2.0 (2023-07-22)
 ==================
 
