@@ -4,6 +4,10 @@
 from docutils import nodes
 
 
+# name for this extension's custom node parameters
+CONFLUENCE_PARAMS_KEY = 'confluence-params'
+
+
 class ConfluenceParams(nodes.Element):
     """
     confluence parameter-holding node
@@ -22,7 +26,7 @@ class ConfluenceParams(nodes.Element):
     """
     def __init__(self, rawsource='', *children, **attributes):
         nodes.Element.__init__(self, rawsource, *children, **attributes)
-        self.params = self.attributes.setdefault('confluence-params', {})
+        self.params = self.attributes.setdefault(CONFLUENCE_PARAMS_KEY, {})
 
 
 class confluence_doc_card(nodes.Structural, ConfluenceParams):
@@ -217,3 +221,20 @@ class jira_issue(nodes.Inline, ConfluenceParams):
     Defines a "JIRA" node to represent a Confluence JIRA macro configured to
     display a single JIRA issue.
     """
+
+
+def confluence_parameters_fetch(node):
+    """
+    fetch confluence parameters tracked on a node
+
+    This call will look at the node's attributes and extract the
+    Confluence-specific parameters (dictionary) from the instance.
+
+    Args:
+        node: the node holding Confluence-specific parameters
+
+    Return:
+        the parameters dictionary
+    """
+
+    return node.attributes[CONFLUENCE_PARAMS_KEY]
