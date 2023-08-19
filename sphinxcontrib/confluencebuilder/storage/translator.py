@@ -11,6 +11,7 @@ from sphinx.locale import admonitionlabels
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
+from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
@@ -2295,7 +2296,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_confluence_excerpt(self, node):
         self.body.append(self._start_ac_macro(node, 'excerpt'))
-        for k, v in sorted(node.params.items()):
+        for k, v in sorted(PARAMS(node).items()):
             self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._start_ac_rich_text_body_macro(node))
         self.context.append(self._end_ac_rich_text_body_macro(node) +
@@ -2325,7 +2326,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             doctitle = doclink
 
         self.body.append(self._start_ac_macro(node, 'excerpt-include'))
-        for k, v in sorted(node.params.items()):
+        for k, v in sorted(PARAMS(node).items()):
             self.body.append(self._build_ac_param(node, k, v))
 
         attribs = {
@@ -2474,13 +2475,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         raise nodes.SkipNode
 
     def visit_confluence_source_link(self, node):
-        uri = node.params['url']
+        uri = PARAMS(node)['url']
 
         docname = self.docname
         suffix = self.builder.env.doc2path(docname, base=None)[len(docname):]
-        uri = uri.format(page=docname, suffix=suffix, **node.params)
+        uri = uri.format(page=docname, suffix=suffix, **PARAMS(node))
 
-        source_text = node.params.get('text', L('Edit Source'))
+        source_text = PARAMS(node).get('text', L('Edit Source'))
         uri = self.encode(uri)
 
         if self.v2:
@@ -2539,20 +2540,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_ac_rich_text_body_macro(node))
 
         docname = posixpath.normpath(self.docparent +
-            path.splitext(node.params['href'].split('#')[0])[0])
+            path.splitext(PARAMS(node)['href'].split('#')[0])[0])
         doctitle = self.state.title(docname)
         if doctitle:
             attribs = {}
 
-            if 'data-card-appearance' in node.params:
+            if 'data-card-appearance' in PARAMS(node):
                 attribs['ac:card-appearance'] = \
-                    node.params['data-card-appearance']
+                    PARAMS(node)['data-card-appearance']
 
-            if 'data-layout' in node.params:
-                attribs['ac:layout'] = node.params['data-layout']
+            if 'data-layout' in PARAMS(node):
+                attribs['ac:layout'] = PARAMS(node)['data-layout']
 
-            if 'data-width' in node.params:
-                attribs['ac:width'] = node.params['data-width']
+            if 'data-width' in PARAMS(node):
+                attribs['ac:width'] = PARAMS(node)['data-width']
 
             doctitle = self.encode(doctitle)
             self.body.append(self._start_tag(node, 'ac:link', **attribs))
@@ -2591,7 +2592,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         raise nodes.SkipNode
 
     def visit_confluence_link_card(self, node):
-        options = dict(node.params)
+        options = dict(PARAMS(node))
         url = self.encode(options.pop('href'))
         options['href'] = url
 
@@ -2615,7 +2616,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # raw href | give it an inline card appearance
         attribs = {
             'data-card-appearance': 'inline',
-            'href': self.encode(node.params['href']),
+            'href': self.encode(PARAMS(node)['href']),
         }
 
         self.body.append(self._start_tag(node, 'a', **attribs))
@@ -2725,7 +2726,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def _visit_jira_node(self, node):
         self.body.append(self._start_ac_macro(node, 'jira'))
-        for k, v in sorted(node.params.items()):
+        for k, v in sorted(PARAMS(node).items()):
             self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
@@ -2740,7 +2741,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_confluence_status_inline(self, node):
         self.body.append(self._start_ac_macro(node, 'status'))
-        for k, v in sorted(node.params.items()):
+        for k, v in sorted(PARAMS(node).items()):
             self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
@@ -2752,7 +2753,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_confluence_toc(self, node):
         self.body.append(self._start_ac_macro(node, 'toc'))
-        for k, v in sorted(node.params.items()):
+        for k, v in sorted(PARAMS(node).items()):
             self.body.append(self._build_ac_param(node, k, v))
         self.body.append(self._end_ac_macro(node))
 
