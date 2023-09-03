@@ -1151,6 +1151,8 @@ Advanced publishing configuration
 
 .. confval:: confluence_ca_cert
 
+    .. versionchanged:: 2.3 Support relative paths.
+
     Provide a CA certificate to use for server certificate authentication. The
     value for this option can either be a file of a certificate or a path
     pointing to an OpenSSL-prepared directory. Refer to the
@@ -1320,6 +1322,7 @@ Advanced publishing configuration
     .. versionadded:: 1.3
     .. versionchanged:: 2.0 An empty allow list will no longer publish any
                             documents.
+    .. versionchanged:: 2.3 Support relative paths.
 
     .. note::
 
@@ -1402,6 +1405,7 @@ Advanced publishing configuration
 .. confval:: confluence_publish_denylist
 
     .. versionadded:: 1.3
+    .. versionchanged:: 2.3 Support relative paths.
 
     .. note::
 
