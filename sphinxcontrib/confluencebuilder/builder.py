@@ -19,6 +19,8 @@ from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
+from sphinxcontrib.confluencebuilder.config.env import build_hash
+from sphinxcontrib.confluencebuilder.env import ConfluenceCacheInfo
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_footer
@@ -67,12 +69,15 @@ class ConfluenceBuilder(Builder):
         self.domain_indices = {}
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
+        self.legacy_assets = {}
+        self.legacy_pages = None
         self.link_suffix = None
         self.metadata = defaultdict(dict)
         self.nav_next = {}
         self.nav_prev = {}
         self.omitted_docnames = []
         self.orphan_docnames = []
+        self.parent_id = None
         self.publish_allowlist = None
         self.publish_denylist = None
         self.publish_docnames = []
@@ -84,8 +89,10 @@ class ConfluenceBuilder(Builder):
         self.use_search = None
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
+        self._cache_info = ConfluenceCacheInfo(self)
         self._cached_footer_data = None
         self._cached_header_data = None
+        self._config_confluence_hash = None
         self._original_get_doctree = None
         self._verbose = self.app.verbosity
 
@@ -148,6 +155,14 @@ class ConfluenceBuilder(Builder):
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config, self.cloud)
 
+        # With the configuration finalizes, generate a Confluence-specific
+        # configuration hash that is applicable to this run
+        self._config_confluence_hash = build_hash(config)
+        self.verbose('configuration hash ' + self._config_confluence_hash)
+
+        self._cache_info.load_cache()
+        self._cache_info.configure(self._config_confluence_hash)
+
         self.create_template_bridge()
         self.templates.init(self)
 
@@ -209,27 +224,11 @@ class ConfluenceBuilder(Builder):
         """
         Return an iterable of input files that are outdated.
         """
-        # This method is taken from TextBuilder.get_outdated_docs()
-        # with minor changes to support :confval:`rst_file_transform`.
+
         for docname in self.env.found_docs:
-            if docname not in self.env.all_docs:
+            if self._cache_info.is_outdated(docname):
                 yield docname
                 continue
-            sourcename = path.join(self.env.srcdir, docname +
-                                   self.file_suffix)
-            targetname = path.join(self.outdir, self.file_transform(docname))
-
-            try:
-                targetmtime = path.getmtime(targetname)
-            except Exception:
-                targetmtime = 0
-            try:
-                srcmtime = path.getmtime(sourcename)
-                if srcmtime > targetmtime:
-                    yield docname
-            except OSError:
-                # source doesn't exist anymore
-                pass
 
     def get_target_uri(self, docname, typ=None):
         return self.link_transform(docname)
@@ -483,6 +482,8 @@ class ConfluenceBuilder(Builder):
             except OSError as err:
                 self.warn(f'error writing file {outfilename}: {err}')
 
+        self._cache_info.track_page_hash(docname)
+
     def publish_doc(self, docname, output):
         conf = self.config
         title = self.state.title(docname)
@@ -518,6 +519,8 @@ class ConfluenceBuilder(Builder):
 
             uploaded_id = self.publisher.store_page(title, data, parent_id)
         self.state.register_upload_id(docname, uploaded_id)
+
+        self._cache_info.track_last_page_id(docname, uploaded_id)
 
         if self.config.root_doc == docname:
             self.root_doc_page_id = uploaded_id
@@ -751,8 +754,6 @@ class ConfluenceBuilder(Builder):
 
         # publish generated output (if desired)
         if self.publish:
-            self.legacy_assets = {}
-            self.legacy_pages = None
             self.parent_id = self.publisher.get_base_page_id()
 
             for docname in status_iterator(
@@ -802,8 +803,20 @@ class ConfluenceBuilder(Builder):
                 except OSError as err:
                     self.warn(f'error reading asset {key}: {err}')
 
+            # if we have documents that were not changes (and therefore, not
+            # needing to be republished), assume any cached publish page ids
+            # are still valid and remove them from the legacy pages list
+            other_docs = self.env.all_docs.keys() - set(self.publish_docnames)
+            for unchanged_doc in other_docs:
+                lpid = self._cache_info.last_page_id(unchanged_doc)
+                if lpid is not None and lpid in self.legacy_pages:
+                    self.legacy_pages.remove(lpid)
+
             self.publish_cleanup()
             self.publish_finalize()
+
+        # persist cache from this run
+        self._cache_info.save_cache()
 
     def cleanup(self):
         if self.publish:

@@ -86,7 +86,7 @@ def setup(app):
     # Default alignment for tables, figures, etc.
     cm.add_conf('confluence_default_alignment', 'confluence')
     # Enablement of a generated domain index documents
-    cm.add_conf('confluence_domain_indices')
+    cm.add_conf('confluence_domain_indices', 'confluence')
     # Confluence editor to target for publication.
     cm.add_conf('confluence_editor', 'confluence')
     # File to get page header information from.
@@ -98,11 +98,11 @@ def setup(app):
     # Dictionary to pass to footer when rendering template.
     cm.add_conf('confluence_footer_data', 'confluence')
     # Enablement of a generated search documents
-    cm.add_conf_bool('confluence_include_search')
+    cm.add_conf_bool('confluence_include_search', 'confluence')
     # Enablement of a "page generated" notice.
     cm.add_conf_bool('confluence_page_generation_notice', 'confluence')
     # Enablement of publishing pages into a hierarchy from a root toctree.
-    cm.add_conf_bool('confluence_page_hierarchy')
+    cm.add_conf_bool('confluence_page_hierarchy', 'confluence')
     # Show previous/next buttons (bottom, top, both, None).
     cm.add_conf('confluence_prev_next_buttons_location', 'confluence')
     # Suffix to put after section numbers, before section name
@@ -110,7 +110,7 @@ def setup(app):
     # Enablement of a "Edit/Show Source" reference on each document
     cm.add_conf('confluence_sourcelink', 'confluence')
     # Enablement of a generated index document
-    cm.add_conf_bool('confluence_use_index')
+    cm.add_conf_bool('confluence_use_index', 'confluence')
     # Enablement for toctrees for singleconfluence documents.
     cm.add_conf_bool('singleconfluence_toctree', 'singleconfluence')
 
@@ -132,7 +132,7 @@ def setup(app):
     # Explicitly prevent page notifications on update.
     cm.add_conf_bool('confluence_disable_notifications')
     # Define a series of labels to apply to all published pages.
-    cm.add_conf('confluence_global_labels')
+    cm.add_conf('confluence_global_labels', 'confluence')
     # Enablement of configuring root as space's homepage.
     cm.add_conf_bool('confluence_root_homepage')
     # Translation to override parent page identifier to publish to.

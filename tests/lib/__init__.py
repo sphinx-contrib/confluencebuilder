@@ -616,7 +616,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
 
 
 def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
-        builder=None, relax=False, filenames=None):
+        builder=None, relax=False, filenames=None, force=True):
     """
     prepare a sphinx application instance
 
@@ -632,6 +632,7 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         builder (optional): the builder to use
         relax (optional): do not generate warnings as errors
         filenames (optional): specific documents to process
+        force (optional): whether to force process each document
 
     Returns:
         the output directory
@@ -641,7 +642,7 @@ def build_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         out_dir = prepare_dirs()
 
     files = []
-    force_all = True
+    force_all = force
 
     if filenames:
         # force-all not supported when using explicit filenames
