@@ -119,11 +119,11 @@ class ConfluenceCacheInfo:
 
     def track_page_hash(self, docname):
         """
-        track the last publish page identifier for a document
+        track the last publish page hash for a document
 
-        This call can be used to track last page identifier a specific
-        document was published to. This is to help on re-runs where a
-        run may wish to be aware of already published documents.
+        This call can be used to track last page hash a specific document.
+        This is to help on re-runs when checking to see if a given page
+        is outdated if the hash changes.
 
         Args:
             docname: the name of the document
