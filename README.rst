@@ -29,7 +29,7 @@ Requirements
 * Confluence_ Cloud or Data Center / Server 7.14+
 * Python_ 3.8+
 * Requests_ 2.14.0+
-* Sphinx_ 5.3+
+* Sphinx_ 6.1+
 
 Installing
 ==========
