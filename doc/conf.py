@@ -13,7 +13,7 @@ author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
 
-supported_confluence_ver = '7.13+'
+supported_confluence_ver = '7.14+'
 supported_python_ver = '3.7+'
 supported_sphinx_ver = '5.3+'
 
