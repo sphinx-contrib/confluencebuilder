@@ -1,5 +1,5 @@
-Development
-===========
+2.3.0 (2023-09-09)
+==================
 
 * **(note)** Final release supporting Python 3.7 (EOL)
 * Fixed issue when a project defines a relative CA certificate path
