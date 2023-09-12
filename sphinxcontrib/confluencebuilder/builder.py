@@ -28,6 +28,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_header
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
 from sphinxcontrib.confluencebuilder.nodes import confluence_source_link
+from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
@@ -857,7 +858,7 @@ class ConfluenceBuilder(Builder):
         metadata = self.metadata.setdefault(docname, {})
 
         for node in findall(doctree, confluence_metadata):
-            for k, v in node.params.items():
+            for k, v in PARAMS(node).items():
                 if k == 'labels':
                     labels = metadata.setdefault('labels', [])
                     labels.extend(v)
@@ -1035,7 +1036,7 @@ class ConfluenceBuilder(Builder):
             sourcelink.setdefault('view', default_view)
 
             es_node = confluence_source_link()
-            es_node.params.update(sourcelink)
+            PARAMS(es_node).update(sourcelink)
             header_node.append(es_node)
             add_header_node = True
 
