@@ -537,7 +537,7 @@ class ConfluenceBuilder(Builder):
         if self.post_cleanup and self.legacy_pages is None:
             if conf.confluence_publish_root:
                 baseid = conf.confluence_publish_root
-            elif conf.confluence_cleanup_from_root and self.root_doc_page_id:
+            elif conf.confluence_cleanup_from_root:
                 baseid = self.root_doc_page_id
             else:
                 baseid = self.parent_id
