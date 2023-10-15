@@ -19,6 +19,8 @@ Unable to authenticate with the Confluence instance. Ensure the
 configured username and password are correct. If credentials appear to
 be correct, the user may need to be unlocked be re-logging in with above
 browser or asking an administrator of the Confluence instance for help.
+
+(code: 401)
 ---
 ''')
 
@@ -124,6 +126,8 @@ Permission denied on Confluence ({desc})
 The configured user does not have permission to perform an action on the
 Confluence instance. If the user should have access and this request is
 using a personal access token, ensure the token is not expired/revoked.
+
+(code: 403)
 ---
 '''.format(desc=details))
 
@@ -138,6 +142,8 @@ The proxy server being used is reporting that authentication is
 required. Verify that the credentials used for the system's proxy
 configuration are correct (this is unrelated to the configured
 Confluence username/password configurations).
+
+(code: 407)
 ---
 ''')
 
@@ -205,6 +211,8 @@ Request has been rate limited
 The configured Confluence instance is reporting that too many requests
 are being made and has instructed to client to limit the amount of
 requests to make at this time.
+
+(code: 429)
 ---
 ''')
 
