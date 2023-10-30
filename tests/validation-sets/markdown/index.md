@@ -12,6 +12,7 @@ pages.
 ```{toctree}
 code
 table
+folder
 ```
 
 [MyST-Parser]: https://myst-parser.readthedocs.io/
