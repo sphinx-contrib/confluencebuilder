@@ -378,7 +378,7 @@ def str2bool(value):
         ``ValueError`` is raised if the string value is not an accepted string
     """
 
-    value = value.lower()
+    value = str(value).lower()
     if value in ['y', 'yes', 't', 'true', 'on', '1']:
         return True
     elif value in ['n', 'no', 'f', 'false', 'off', '0']:
