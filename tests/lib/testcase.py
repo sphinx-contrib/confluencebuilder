@@ -61,7 +61,7 @@ class ConfluenceTestCase(unittest.TestCase):
 
         new_kwargs = dict(kwargs)
         new_kwargs.setdefault('builder', self.builder)
-        new_kwargs.setdefault('config', self.config)
+        new_kwargs.setdefault('config', self.config.clone())
         if self.target_editor:
             new_kwargs['config']['confluence_editor'] = self.target_editor
 
@@ -78,7 +78,7 @@ class ConfluenceTestCase(unittest.TestCase):
 
         new_kwargs = dict(kwargs)
         new_kwargs.setdefault('builder', self.builder)
-        new_kwargs.setdefault('config', self.config)
+        new_kwargs.setdefault('config', self.config.clone())
         if self.target_editor:
             new_kwargs['config']['confluence_editor'] = self.target_editor
 
