@@ -5,6 +5,7 @@ from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_ALIGNMENT
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
+from tests.lib.testcase import setup_editor
 import os
 
 
@@ -166,3 +167,60 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
                 self.assertIsNotNone(next_tag)
                 self.assertTrue(next_tag.has_attr('style'))
                 self.assertTrue('clear: both' in next_tag['style'])
+
+    @setup_builder('confluence')
+    def test_storage_rst_figure_caption_default(self):
+        dataset = os.path.join(self.datasets, 'rst', 'figure-caption')
+        out_dir = self.build(dataset)
+
+        with parse('index', out_dir) as data:
+            figures = data.find_all('p', recursive=False)
+            self.assertEqual(len(figures), 1)
+
+            # ##########################################################
+            # single figure with caption
+            # ##########################################################
+            figure = figures.pop(0)
+
+            image = figure.find('ac:image', recursive=False)
+            self.assertIsNotNone(image)
+
+            caption = figure.find('p', recursive=False)
+            self.assertIsNotNone(caption)
+
+            markup1 = caption.find('strong', recursive=False)
+            self.assertIsNotNone(markup1)
+            self.assertIsNotNone(markup1.text, 'caption')
+
+            markup2 = caption.find('em', recursive=False)
+            self.assertIsNotNone(markup2)
+            self.assertIsNotNone(markup2.text, 'markup')
+
+    @setup_builder('confluence')
+    @setup_editor('v2')
+    def test_storage_rst_figure_caption_v2(self):
+        dataset = os.path.join(self.datasets, 'rst', 'figure-caption')
+        out_dir = self.build(dataset)
+
+        with parse('index', out_dir) as data:
+            figures = data.find_all('p', recursive=False)
+            self.assertEqual(len(figures), 1)
+
+            # ##########################################################
+            # single figure with caption
+            # ##########################################################
+            figure = figures.pop(0)
+
+            image = figure.find('ac:image', recursive=False)
+            self.assertIsNotNone(image)
+
+            caption = image.find('ac:caption', recursive=False)
+            self.assertIsNotNone(caption)
+
+            markup1 = caption.find('strong', recursive=False)
+            self.assertIsNotNone(markup1)
+            self.assertIsNotNone(markup1.text, 'caption')
+
+            markup2 = caption.find('em', recursive=False)
+            self.assertIsNotNone(markup2)
+            self.assertIsNotNone(markup2.text, 'markup')

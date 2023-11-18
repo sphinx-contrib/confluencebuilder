@@ -1865,7 +1865,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self._start_tag(node, 'ac:caption'))
                 next_sibling._skip_caption = True
                 for child in next_sibling.children:
-                    child.walk(self)
+                    child.walkabout(self)
                 self.body.append(self._end_tag(node))
 
         self.body.append(self._end_ac_image(node))

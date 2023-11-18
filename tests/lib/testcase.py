@@ -34,6 +34,7 @@ class ConfluenceTestCase(unittest.TestCase):
         super().__init__(*args, **kwargs)
 
         self.builder = DEFAULT_BUILDER
+        self.target_editor = None
 
     @classmethod
     def setUpClass(cls):
@@ -60,7 +61,9 @@ class ConfluenceTestCase(unittest.TestCase):
 
         new_kwargs = dict(kwargs)
         new_kwargs.setdefault('builder', self.builder)
-        new_kwargs.setdefault('config', self.config)
+        new_kwargs.setdefault('config', self.config.clone())
+        if self.target_editor:
+            new_kwargs['config']['confluence_editor'] = self.target_editor
 
         return build_sphinx(*args, **new_kwargs)
 
@@ -75,7 +78,9 @@ class ConfluenceTestCase(unittest.TestCase):
 
         new_kwargs = dict(kwargs)
         new_kwargs.setdefault('builder', self.builder)
-        new_kwargs.setdefault('config', self.config)
+        new_kwargs.setdefault('config', self.config.clone())
+        if self.target_editor:
+            new_kwargs['config']['confluence_editor'] = self.target_editor
 
         return prepare_sphinx(*args, **new_kwargs)
 
@@ -96,6 +101,28 @@ def setup_builder(builder):
         @wraps(func)
         def _wrapper(self, *args, **kwargs):
             self.builder = builder
+
+            return func(self, *args, **kwargs)
+        return _wrapper
+    return _decorator
+
+
+def setup_editor(editor):
+    """
+    prepare a confluence unit test for a specific editor configuration
+
+    A utility "decorator" to help setup editor options for a unit test. This
+    avoids the need to explicitly configure an editor directly in the
+    configuration for a unit test testing against a dataset.
+
+    Args:
+        editor: the editor to use
+    """
+
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            self.target_editor = editor
 
             return func(self, *args, **kwargs)
         return _wrapper
