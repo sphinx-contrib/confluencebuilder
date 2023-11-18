@@ -216,7 +216,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # spacing from an anchor macro
             if self.v2:
                 # hinted to build an anchor for a target
-                anchor = node.parent.get('section-embedded-anchor', None)
+                anchor = node.parent.get('embedded-anchor', None)
                 if anchor:
                     self.body.append(self._start_ac_macro(node, 'anchor'))
                     self.body.append(self._build_ac_param(node, '', anchor))
@@ -294,6 +294,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['style'] = style
 
         self.body.append(self._start_tag(node, 'p', **attribs))
+
+        # generate anchors inside paragraphs for v2, to avoid extra
+        # spacing from an anchor macro
+        if self.v2:
+            anchor = node.get('embedded-anchor', None)
+            if anchor:
+                self.body.append(self._start_ac_macro(node, 'anchor'))
+                self.body.append(self._build_ac_param(node, '', anchor))
+                self.body.append(self._end_ac_macro(node, suffix=''))
+
         self.context.append(self._end_tag(node, suffix=''))
 
     def depart_paragraph(self, node):
@@ -1417,14 +1427,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if 'refid' in node:
             anchor = ''.join(node['refid'].split())
 
-            # for v2 editor, if this target is for a section, we will flag
-            # the section node to build an anchor for use (to prevent an
-            # undesired newline) inside a heading
+            # for v2 editor, we will flag a section/paragraph node to build
+            # an anchor for use (to prevent an undesired newline) inside a
+            # heading or before a paragraph
             if self.v2:
                 next_sibling = first(findall(node,
                     include_self=False, descend=False, siblings=True))
-                if isinstance(next_sibling, nodes.section):
-                    next_sibling['section-embedded-anchor'] = anchor
+                if next_sibling:
+                    next_sibling['embedded-anchor'] = anchor
                     raise nodes.SkipNode
 
             # only build an anchor if required (e.g. is a reference label
