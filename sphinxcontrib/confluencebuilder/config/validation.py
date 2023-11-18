@@ -52,7 +52,7 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if isinstance(value, str):
+            if isinstance(value, str) or isinstance(value, int):
                 try:
                     str2bool(value)
                 except ValueError:
