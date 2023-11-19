@@ -1,16 +1,6 @@
 Production list
 ===============
 
-.. only:: confluence_storage
-
-    .. ifconfig:: confluence_editor == 'v2'
-
-        .. attention::
-
-            Limitations using the Fabric (``v2``) editor:
-
-            - Confluence does not support disabling code lines.
-
 Sphinx defines a `production list`_. Example markup is as follows:
 
 .. code-block:: none
