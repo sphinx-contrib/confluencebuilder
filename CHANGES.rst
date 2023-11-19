@@ -1,3 +1,14 @@
+Development
+===========
+
+* Fixed anchor links between various editor versions and when using MyST
+* Fixed issue when using markup in captions when using the v2 editor
+* Fixed issue with an editor metadata override may led to unexpected page styles
+* Fixed issue with dry-run reporting pages when configure root does not exist
+* Fixed regression in processing metadata directives on a page
+* Prevent undesired spacing when adding targets in paragraphs with v2 editor
+* Support width hints in v2 editor for CSV tables
+
 2.3.0 (2023-09-09)
 ==================
 
