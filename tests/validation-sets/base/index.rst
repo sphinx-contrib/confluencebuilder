@@ -1,3 +1,6 @@
+.. confluence_metadata::
+    :full-width: true
+
 |test_key|
 ==========
 
