@@ -1,3 +1,6 @@
+.. confluence_metadata::
+    :full-width: true
+
 |test_key|
 ==========
 
@@ -16,11 +19,18 @@ as well as show possible limitations.
     <br /></ac:layout-cell></ac:layout-section>
     <ac:layout-section ac:type="two_equal"><ac:layout-cell>
 
+.. Unable to link images to document pages (unsupported by Sphinx/docutils),
+   but to improve user experience, we create a dummy reference so that when
+   clicking on the images, it doesn't do anything (instead of having Confluence
+   zoom into the image).
+.. _dummy:
+
 :doc:`editor_v1`
 ----------------
 
 .. image:: left.png
    :align: center
+   :target: `dummy`_
    :width: 130px
 
 - Largest compatibility with Sphinx's features.
@@ -37,6 +47,7 @@ as well as show possible limitations.
 
 .. image:: right.png
    :align: center
+   :target: `dummy`_
    :width: 130px
 
 - Confluence's newer editor is more stylish.

@@ -33,6 +33,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config = prepare_conf()
         cls.config['extensions'].append('sphinx.ext.ifconfig')
         cls.config['confluence_disable_notifications'] = True
+        cls.config['confluence_full_width'] = False
         cls.config['confluence_page_hierarchy'] = True
         cls.config['confluence_page_generation_notice'] = True
         cls.config['confluence_parent_page'] = None
