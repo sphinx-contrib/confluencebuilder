@@ -60,7 +60,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
-        self.v2 = config.confluence_editor == 'v2'
         self._building_footnotes = False
         self._figure_context = []
         self._indent_level = 0
@@ -82,6 +81,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         fw_override = metadata.get('fullWidth')
         if fw_override:
             self.confluence_full_width = (fw_override == 'true')
+
+        # helper to track a v2 editor
+        self.v2 = self.editor == 'v2'
 
     def encode(self, text):
         text = encode_storage_format(text)
