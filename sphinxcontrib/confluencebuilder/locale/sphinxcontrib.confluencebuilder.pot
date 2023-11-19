@@ -11,11 +11,11 @@ msgstr ""
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
 #: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2459
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2438
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2483
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2462
 msgid "Edit Source"
 msgstr ""
 
