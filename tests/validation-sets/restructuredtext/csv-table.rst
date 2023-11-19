@@ -1,16 +1,6 @@
 CSV Table
 =========
 
-.. only:: confluence_storage
-
-    .. ifconfig:: confluence_editor == 'v2'
-
-        .. attention::
-
-            Limitations using the Fabric (``v2``) editor:
-
-            - Confluence does not support customizing column widths.
-
 reStructuredText defines a `csv-table`_. Example markup is as follows:
 
 .. code-block:: none
