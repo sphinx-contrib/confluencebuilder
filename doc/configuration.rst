@@ -283,6 +283,10 @@ Generic configuration
           in editors by inspecting the `online demo`_.
         - Using the ``v2`` editor with Confluence server may yield unexpected
           results.
+        - If a page is published with a ``v2`` editor, an attempt to re-publish
+          with a ``v1`` editor style may be ignored in Confluence Cloud. In
+          such situations, users are recommended to delete the pages on
+          Confluence and then retry the publish attempt with this extension.
 
     A string value to indicate which `Confluence editor`_ to target. The
     following editor values are supported:
