@@ -10,13 +10,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Ukrainian\n"
 "Language: uk_UA\n"
-"PO-Revision-Date: 2023-01-02 18:56\n"
+"PO-Revision-Date: 2023-11-19 22:08\n"
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:81
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:78
 msgid "assembling single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:110
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:107
 msgid "writing single confluence document"
 msgstr ""
 
@@ -25,11 +25,11 @@ msgstr ""
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
 #: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2299
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2438
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2323
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2462
 msgid "Edit Source"
 msgstr "Редагувати джерело"
 
