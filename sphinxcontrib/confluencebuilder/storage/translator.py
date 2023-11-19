@@ -12,6 +12,7 @@ from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
@@ -1055,6 +1056,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         table_classes = node.get('classes', [])
         attribs = {}
+
+        # For v2 editor, if we have given explicit widths for columns in the
+        # table (e.g. CSV table), we need to apply a data table width or the
+        # editor will ignore the column-specific widths. If widths are
+        # detected, apply the default table width observed when using the v2
+        # editor.
+        if self.v2 and 'colwidths-given' in table_classes:
+            attribs['data-table-width'] = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
         # [sphinxcontrib-needs]
         # force needs tables to a maximum width
