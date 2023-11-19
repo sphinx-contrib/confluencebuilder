@@ -175,9 +175,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             doc_target = self.state.target(doc_anchorname)
             if not doc_target:
                 doc_id = node['docname']
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', doc_id))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+                self._build_anchor(node, doc_id)
 
     def pre_body_data(self):
         data = ''
@@ -215,21 +213,30 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(
                 self._start_tag(node, f'h{self._title_level}'))
 
-            # generate anchors inside headers for v2, to avoid extra
-            # spacing from an anchor macro
-            if self.v2:
-                # hinted to build an anchor for a target
-                anchor = node.parent.get('embedded-anchor', None)
-                if anchor:
-                    self.body.append(self._start_ac_macro(node, 'anchor'))
-                    self.body.append(self._build_ac_param(node, '', anchor))
-                    self.body.append(self._end_ac_macro(node, suffix=''))
-                # build an anchor if content references this title
-                elif 'refid' in node:
-                    target = '-'.join(node.astext().split()).lower()
-                    self.body.append(self._start_ac_macro(node, 'anchor'))
-                    self.body.append(self._build_ac_param(node, '', target))
-                    self.body.append(self._end_ac_macro(node, suffix=''))
+            # For v2, will will generate section anchors inside the title
+            # area for the following reasons:
+            # - We want to create inside the header inside if we input anchors
+            #    before the header, it increase the space above the anchor
+            #    due to how v2 styles a page.
+            # - We are generating compatible anchor links (prefixed with the
+            #    repsective document name) which helps allow `ac:link` macros
+            #    properly link when coming from v1 or v2 editor pages.
+            if self.v2 and 'names' in node.parent:
+                for anchor in node.parent['names']:
+                    target_name = f'{self.docname}#{anchor}'
+                    target = self.state.target(target_name)
+                    if target:
+                        self._build_anchor(node, target)
+
+            # For MyST sections with an auto-generated slug, we will use this
+            # slug to build an anchor target for anchor links defined in a
+            # Markdown page.
+            slug = node.parent.get('slug')
+            if slug:
+                target_name = f'{self.docname}#{slug}'
+                target = self.state.target(target_name)
+                if target:
+                    self._build_anchor(node, target)
 
             self.add_secnumber(node)
             self.add_fignumber(node.parent)
@@ -239,19 +246,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # reference, create a link to it
             if 'refid' in node and not node.next_node(nodes.reference):
                 anchor_value = ''.join(node['refid'].split())
-
-                if self.v2:
-                    attribs = {
-                        'href': f'#{anchor_value}',
-                    }
-
-                    self.body.append(self._start_tag(node, 'a', **attribs))
-                    self.context.append(self._end_tag(node, suffix=''))
-                else:
-                    self.body.append(self._start_ac_link(node, anchor_value))
-                    self.body.append(self._start_ac_link_body(node))
-                    self.context.append(self._end_ac_link_body(node) +
-                        self._end_ac_link(node))
+                self.body.append(self._start_ac_link(node, anchor_value))
+                self.body.append(self._start_ac_link_body(node))
+                self.context.append(self._end_ac_link_body(node) +
+                    self._end_ac_link(node))
         elif (isinstance(node.parent, addnodes.compact_paragraph) and
                 node.parent.get('toctree')):
             self.visit_caption(node)
@@ -298,14 +296,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.body.append(self._start_tag(node, 'p', **attribs))
 
-        # generate anchors inside paragraphs for v2, to avoid extra
-        # spacing from an anchor macro
-        if self.v2:
-            anchor = node.get('embedded-anchor', None)
-            if anchor:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', anchor))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+        # For any names assigned to a paragraph, generate an anchor link to
+        # ensure content can jump to this specific paragraph. This was
+        # originally handled in `visit_target`, but now applied here since in
+        # v2, anchors need to be inside paragraphs to prevent any undesired
+        # extra spacing above the paragraph (before or after for v1, there is
+        # no difference).
+        if 'names' in node:
+            for anchor in node['names']:
+                self._build_anchor(node, anchor)
 
         self.context.append(self._end_tag(node, suffix=''))
 
@@ -521,9 +520,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if 'ids' in node:
             for id_ in node['ids']:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+                self._build_anchor(node, id_)
 
         if not self.v2:
             self.body.append(self._start_tag(node, 'dt'))
@@ -994,9 +991,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'h3'))
 
         if 'ids' in node and node['ids']:
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-            self.body.append(self._end_ac_macro(node, suffix=''))
+            self._build_anchor(node, node['ids'][0])
 
         if self.v2:
             self.body.append(SL('Todo'))
@@ -1319,9 +1314,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if anchor_value and (is_citation or self._topic) and 'ids' in node:
             for id_ in node['ids']:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+                self._build_anchor(node, id_)
 
         if is_citation:
             self.body.append(self._start_tag(node, 'sup'))
@@ -1435,32 +1428,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
 
     def visit_target(self, node):
-        if 'refid' in node:
-            anchor = ''.join(node['refid'].split())
-
-            # for v2 editor, we will flag a section/paragraph node to build
-            # an anchor for use (to prevent an undesired newline) inside a
-            # heading or before a paragraph
-            if self.v2:
-                next_sibling = first(findall(node,
-                    include_self=False, descend=False, siblings=True))
-                if next_sibling:
-                    next_sibling['embedded-anchor'] = anchor
-                    raise nodes.SkipNode
-
-            # only build an anchor if required (e.g. is a reference label
-            # already provided by a build section element)
-            target_name = f'{self.docname}#{anchor}'
-            target = self.state.target(target_name)
-            if not target:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', anchor))
-                self.body.append(self._end_ac_macro(node, suffix=''))
-        elif 'ids' in node and 'refuri' not in node:
+        # for any target identifiers that do not have a reference uri (e.g.
+        # sections which will have automatically created targets), we will
+        # build an anchor link for them; example cases include documentation
+        # which generate a custom anchor link inside a paragraph
+        if 'ids' in node and 'refuri' not in node:
             for id_ in node['ids']:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+                self._build_anchor(node, id_)
 
             self.body.append(self.encode(node.astext()))
 
@@ -1502,9 +1476,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 **{'style': 'border: none'}))
 
         # footnote anchor
-        self.body.append(self._start_ac_macro(node, 'anchor'))
-        self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-        self.body.append(self._end_ac_macro(node, suffix=''))
+        self._build_anchor(node, node['ids'][0])
 
         # footnote label and back reference(s)
         if 'backrefs' not in node or not node['backrefs']:
@@ -1588,28 +1560,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         text = f"[{node.astext()}]"
 
         # build an anchor for back reference
-        self.body.append(self._start_ac_macro(node, 'anchor'))
-        self.body.append(self._build_ac_param(node, '', node['ids'][0]))
-        self.body.append(self._end_ac_macro(node, suffix=''))
+        self._build_anchor(node, node['ids'][0])
 
         # link to anchor
         target_anchor = ''.join(node['refid'].split())
 
         self.body.append(self._start_tag(node, 'sup'))
-        if self.v2:
-            attribs = {
-                'href': f'#{target_anchor}',
-            }
-
-            self.body.append(self._start_tag(node, 'a', **attribs))
-            self.body.append(self._escape_cdata(text))
-            self.body.append(self._end_tag(node, suffix=''))
-        else:
-            self.body.append(self._start_ac_link(node, target_anchor))
-            self.body.append(self._start_ac_plain_text_link_body_macro(node))
-            self.body.append(self._escape_cdata(text))
-            self.body.append(self._end_ac_plain_text_link_body_macro(node))
-            self.body.append(self._end_ac_link(node))
+        self.body.append(self._start_ac_link(node, target_anchor))
+        self.body.append(self._start_ac_plain_text_link_body_macro(node))
+        self.body.append(self._escape_cdata(text))
+        self.body.append(self._end_ac_plain_text_link_body_macro(node))
+        self.body.append(self._end_ac_link(node))
         self.body.append(self._end_tag(node, suffix=''))  # sup
         raise nodes.SkipNode
 
@@ -1846,9 +1807,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_tag(node, 'ac:layout-cell'))
             if 'ids' in node:
                 for id_ in node['ids']:
-                    self.body.append(self._start_ac_macro(node, 'anchor'))
-                    self.body.append(self._build_ac_param(node, '', id_))
-                    self.body.append(self._end_ac_macro(node, suffix=''))
+                    self._build_anchor(node, id_)
             self.body.append(self._end_tag(node))
 
             self.body.append(self._start_tag(node, 'ac:layout-cell'))
@@ -2163,9 +2122,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_desc_signature_line(self, node):
         if self._desc_sig_ids:
             for id_ in self._desc_sig_ids:
-                self.body.append(self._start_ac_macro(node, 'anchor'))
-                self.body.append(self._build_ac_param(node, '', id_))
-                self.body.append(self._end_ac_macro(node, suffix=''))
+                self._build_anchor(node, id_)
 
         if self._desc_sig_ids is None:
             self.body.append(self._start_tag(
@@ -3129,6 +3086,38 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # # helpers                                                                #
     # #                                                                        #
     # ##########################################################################
+
+    def _build_anchor(self, node, anchor):
+        """
+        build an anchor on a page
+
+        A helper is used to build a anchor on a current page. Using the
+        provided anchor value, an anchor macro will be added to the body of
+        the page.
+
+        In addition, for v2 editor, an additional macro will be created to
+        emulate the original Confluence design of document-prefixed anchors.
+        While we would like to move away from this format, ac:links to other
+        pages with anchors requires the prefixes to properly link (since they
+        expect the prefix to exist; see `_visit_reference_intern_uri`).
+
+        Args:
+            node: the node adding the anchor
+            anchor: the name of the anchor to create
+        """
+
+        self.body.append(self._start_ac_macro(node, 'anchor'))
+        self.body.append(self._build_ac_param(node, '', anchor))
+        self.body.append(self._end_ac_macro(node, suffix=''))
+
+        if self.v2:
+            doctitle = self.state.title(self.docname)
+            doctitle = self.encode(doctitle.replace(' ', ''))
+
+            compat_anchor = f'{doctitle}-{anchor}'
+            self.body.append(self._start_ac_macro(node, 'anchor'))
+            self.body.append(self._build_ac_param(node, '', compat_anchor))
+            self.body.append(self._end_ac_macro(node, suffix=''))
 
     def _start_tag(self, node, tag, suffix=None, empty=False, **kwargs):
         """

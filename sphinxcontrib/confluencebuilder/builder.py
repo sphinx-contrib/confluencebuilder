@@ -321,15 +321,11 @@ class ConfluenceBuilder(Builder):
                 self.state.register_toctree_depth(
                     docname, toctree.get('maxdepth'))
 
-            # register title targets for references; however, not for v2
-            # editor since internal page links do not support linking
-            # directly to headers, so we will need to still generate anchors
-            # for these headers
-            if self.config.confluence_editor != 'v2':
-                self._register_doctree_title_targets(docname, doctree)
-
             # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
+
+            # register title targets for references
+            self._register_doctree_title_targets(docname, doctree)
 
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
