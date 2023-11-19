@@ -57,7 +57,10 @@ def process_raw_upload(target_sandbox):
                 print('[sandbox] failed to publish content:', ex)
 
             print('[sandbox] any key to retry; q to quit')
-            if input().lower() == 'q':
+            try:
+                if input().lower() == 'q':
+                    break
+            except EOFError:
                 break
 
 

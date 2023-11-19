@@ -803,9 +803,9 @@ reported a success (which can be permitted for anonymous users).
             expand += ',ancestors'
         if self.append_labels or self.config.confluence_global_labels:
             expand += ',metadata.labels'
-        if data['full-width']:
+        if data.get('full-width'):
             expand += ',metadata.properties.content_appearance_published'
-        if data['editor']:
+        if data.get('editor'):
             expand += ',metadata.properties.editor'
 
         _, page = self.get_page(page_name, expand=expand)
@@ -867,18 +867,18 @@ reported a success (which can be permitted for anonymous users).
             # if instance supports appearance changes and the appearance
             # looks to be changed, force publish
             cap_props = meta_props.get('content-appearance-published', {})
-            if cap_props and data['full-width']:
+            if cap_props and data.get('full-width'):
                 current_appearance = cap_props.get('value')
-                if data['full-width'] != current_appearance:
+                if data.get('full-width') != current_appearance:
                     logger.verbose(f'appearance changed: {page_name}')
                     force_publish = True
 
             # if instance supports editors and the editor to be changed,
             # force publish
             editor_props = meta_props.get('editor', {})
-            if editor_props and data['editor']:
+            if editor_props and data.get('editor'):
                 current_editor = editor_props.get('value')
-                if data['editor'] != current_editor:
+                if data.get('editor') != current_editor:
                     logger.verbose(f'editor changed: {page_name}')
                     force_publish = True
 
@@ -1177,12 +1177,12 @@ reported a success (which can be permitted for anonymous users).
             },
         }
 
-        if data['editor']:
+        if data.get('editor'):
             page['metadata']['properties']['editor'] = {
                 'value': data['editor'],
             }
 
-        if data['full-width']:
+        if data.get('full-width'):
             page['metadata']['properties']['content-appearance-published'] = {
                 'value': data['full-width'],
             }
