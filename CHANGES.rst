@@ -1,5 +1,5 @@
-Development
-===========
+2.4.0 (2023-12-14)
+==================
 
 * Fixed anchor links between various editor versions and when using MyST
 * Fixed issue when using markup in captions when using the v2 editor
