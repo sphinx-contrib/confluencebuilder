@@ -26,7 +26,7 @@ optionally publish them to a Confluence instance.
 Requirements
 ============
 
-* Confluence_ Cloud or Data Center / Server 7.14+
+* Confluence_ Cloud or Data Center / Server 7.16+
 * Python_ 3.8+
 * Requests_ 2.14.0+
 * Sphinx_ 6.1+
