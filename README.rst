@@ -84,7 +84,7 @@ and publishing:
        'sphinxcontrib.confluencebuilder',
    ]
    confluence_publish = True
-   confluence_space_name = 'TEST'
+   confluence_space_key = 'TEST'
    confluence_parent_page = 'Documentation'
    confluence_server_url = 'https://intranet-wiki.example.com/'
    confluence_ask_user = True
