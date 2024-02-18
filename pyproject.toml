@@ -59,5 +59,6 @@ name = 'sphinxcontrib.confluencebuilder'
 include = [
     'AUTHORS',
     'LICENSE',
+    'LICENSE-3RD-PARTY',
     'MANIFEST.in',
 ]
