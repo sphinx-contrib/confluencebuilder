@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilde
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
+from urllib3 import __version__ as urllib3_version
 from xml.etree import ElementTree
 import os
 import platform
@@ -269,6 +270,7 @@ def report_main(args_parser):
     print('   sphinx:', single_line_version(sphinx_version))
     print(' docutils:', single_line_version(docutils_version))
     print(' requests:', single_line_version(requests_version))
+    print('  urllib3:', single_line_version(urllib3_version))
     print('  builder:', single_line_version(scb_version))
 
     print('')
