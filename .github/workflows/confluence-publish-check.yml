@@ -4,7 +4,7 @@
 #  sphinxcontrib-confluencebuilder -- Development Space
 #  https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/spaces/DEVELOP
 
-name: Publish Check
+name: Confluence Publish Check
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ on:
       python:
         description: 'Python interpreter'
         required: true
-        default: '3.9'
+        default: '3.12'
       space:
         description: 'Space'
         default: 'DEVELOP'
