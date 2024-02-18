@@ -1,7 +1,5 @@
-"""
-:copyright: Copyright Sphinx Confluence Builder Contributors (AUTHORS)
-:license: BSD-2-Clause (LICENSE)
-"""
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
 from sphinx.transforms.post_transforms import SphinxPostTransform
