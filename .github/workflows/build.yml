@@ -33,6 +33,7 @@ on:
 
 jobs:
   build:
+    name: ${{ matrix.toxenv }}  (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
