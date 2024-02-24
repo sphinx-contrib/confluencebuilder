@@ -67,6 +67,23 @@ class ConfluencePublisher:
         self.rest_client = Rest(self.config)
         server_url = self.config.confluence_server_url
 
+        self._connect_simple(server_url)
+
+    def _connect_simple(self, server_url):
+        try:
+            rsp = self.rest_client.get(f'space/{self.space_key}')
+        except ConfluenceBadApiError as e:
+            raise ConfluenceBadServerUrlError(server_url, e)
+
+        if not isinstance(rsp, dict) or not rsp.get('name'):
+            raise ConfluenceBadServerUrlError(server_url,
+                'server did not provide an expected response (no name)')
+
+        # track required space information
+        self.space_display_name = rsp['name']
+        self.space_type = rsp['type']
+
+    def _connect_original(self, server_url):
         try:
             rsp = self.rest_client.get('space', {
                 'spaceKey': self.space_key,
