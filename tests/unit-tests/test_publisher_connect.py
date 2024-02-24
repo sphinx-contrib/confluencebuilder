@@ -105,20 +105,21 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         token = 'dummy-pat-value'  # noqa: S105
         expected_auth_value = f'Bearer {token}'
 
+        space_key = 'MYSPACE'
+        connect_rsp = {
+            'id': 1,
+            'key': space_key,
+            'name': 'My Space',
+            'type': 'global',
+        }
+
         config = self.config.clone()
         config.confluence_publish_token = token
-
-        val = {
-            'size': 1,
-            'results': [{
-                'name': 'My Space',
-                'type': 'global',
-            }],
-        }
+        config.confluence_space_key = space_key
 
         with mock_confluence_instance(config) as daemon, \
                 autocleanup_publisher(ConfluencePublisher) as publisher:
-            daemon.register_get_rsp(200, val)
+            daemon.register_get_rsp(200, connect_rsp)
 
             publisher.init(config)
             publisher.connect()
@@ -138,26 +139,29 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that a publisher can query a Confluence instance and cache the
         # display name for a space.
 
+        std_space_key = 'MYDEFAULTSPACE'
         std_space_name = 'My Default Space'
         std_rsp = {
-            'size': 1,
-            'results': [{
-                'name': std_space_name,
-                'type': 'global',
-            }],
+            'id': 2,
+            'key': std_space_key,
+            'name': std_space_name,
+            'type': 'global',
         }
 
+        proxy_space_key = 'MYPROXYSPACE'
         proxy_space_name = 'My Proxy Space'
         proxy_rsp = {
-            'size': 1,
-            'results': [{
-                'name': proxy_space_name,
-                'type': 'global',
-            }],
+            'id': 3,
+            'key': proxy_space_key,
+            'name': proxy_space_name,
+            'type': 'global',
         }
 
+        config = self.config.clone()
+        config.confluence_space_key = std_space_key
+
         try:
-            with mock_confluence_instance(self.config) as default_daemon, \
+            with mock_confluence_instance(config) as default_daemon, \
                     mock_confluence_instance() as proxy_daemon:
 
                 proxy_host, proxy_port = proxy_daemon.server_address
@@ -165,38 +169,55 @@ class TestConfluencePublisherConnect(unittest.TestCase):
 
                 # check default space is accessible
                 default_daemon.register_get_rsp(200, std_rsp)
-                proxy_daemon.register_get_rsp(200, proxy_rsp)
-
-                with autocleanup_publisher(ConfluencePublisher) as publisher:
-                    publisher.init(self.config)
-                    publisher.connect()
-
-                self.assertEqual(publisher.space_display_name, std_space_name)
-
-                # check confluence proxy option will go through proxy instance
-                config = self.config.clone()
-                config.confluence_proxy = proxy_url
-
-                default_daemon.register_get_rsp(200, std_rsp)
-                proxy_daemon.register_get_rsp(200, proxy_rsp)
+                proxy_daemon.register_get_rsp(418, proxy_rsp)
 
                 with autocleanup_publisher(ConfluencePublisher) as publisher:
                     publisher.init(config)
                     publisher.connect()
+
+                connect_req = default_daemon.pop_get_request()
+                self.assertIsNotNone(connect_req)
+                default_daemon.check_unhandled_requests()
+                proxy_daemon.reset()
+
+                self.assertEqual(publisher.space_display_name, std_space_name)
+
+                # check confluence proxy option will go through proxy instance
+                proxy_config = config.clone()
+                proxy_config.confluence_proxy = proxy_url
+                proxy_config.confluence_space_key = proxy_space_key
+
+                default_daemon.register_get_rsp(418, std_rsp)
+                proxy_daemon.register_get_rsp(200, proxy_rsp)
+
+                with autocleanup_publisher(ConfluencePublisher) as publisher:
+                    publisher.init(proxy_config)
+                    publisher.connect()
+
+                connect_req = proxy_daemon.pop_get_request()
+                self.assertIsNotNone(connect_req)
+                proxy_daemon.check_unhandled_requests()
+                default_daemon.reset()
 
                 self.assertEqual(publisher.space_display_name, proxy_space_name)
 
                 # check system proxy option will go through proxy instance
                 os.environ['http_proxy'] = proxy_url
 
-                default_daemon.register_get_rsp(200, std_rsp)
+                default_daemon.register_get_rsp(418, std_rsp)
                 proxy_daemon.register_get_rsp(200, proxy_rsp)
 
                 with autocleanup_publisher(ConfluencePublisher) as publisher:
-                    publisher.init(self.config)
+                    publisher.init(proxy_config)
                     publisher.connect()
 
+                connect_req = proxy_daemon.pop_get_request()
+                self.assertIsNotNone(connect_req)
+                proxy_daemon.check_unhandled_requests()
+                default_daemon.reset()
+
                 self.assertEqual(publisher.space_display_name, proxy_space_name)
+                default_daemon.check_unhandled_requests()
         finally:
             if 'http_proxy' in os.environ:
                 del os.environ['http_proxy']
@@ -252,21 +273,23 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         # Verify that a publisher can query a Confluence instance and cache the
         # display name for a space.
 
+        space_key = 'MYSPACE'
         space_name = 'My Space'
-
-        val = {
-            'size': 1,
-            'results': [{
-                'name': space_name,
-                'type': 'global',
-            }],
+        connect_rsp = {
+            'id': 1,
+            'key': space_key,
+            'name': space_name,
+            'type': 'global',
         }
 
-        with mock_confluence_instance(self.config) as daemon, \
-                autocleanup_publisher(ConfluencePublisher) as publisher:
-            daemon.register_get_rsp(200, val)
+        config = self.config.clone()
+        config.confluence_space_key = space_key
 
-            publisher.init(self.config)
+        with mock_confluence_instance(config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
+            daemon.register_get_rsp(200, connect_rsp)
+
+            publisher.init(config)
             publisher.connect()
 
             self.assertEqual(publisher.space_display_name, space_name)

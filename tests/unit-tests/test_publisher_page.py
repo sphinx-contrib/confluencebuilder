@@ -13,13 +13,13 @@ class TestConfluencePublisherPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config = prepare_conf_publisher()
+        cls.config.confluence_space_key = 'MOCK'
 
         cls.std_space_connect_rsp = {
-            'size': 1,
-            'results': [{
-                'name': 'Mock Space',
-                'type': 'global',
-            }],
+            'id': 1,
+            'key': 'MOCK',
+            'name': 'Mock Space',
+            'type': 'global',
         }
 
     def test_publisher_page_store_page_id_allow_watch(self):
