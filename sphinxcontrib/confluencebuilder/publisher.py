@@ -56,13 +56,6 @@ class ConfluencePublisher:
         if self.append_labels is None:
             self.append_labels = True
 
-        # if debugging, enable requests (urllib3) logging
-        if self.debug:
-            logging.basicConfig()
-            logging.getLogger().setLevel(logging.DEBUG)
-            rlog = logging.getLogger('requests.packages.urllib3')
-            rlog.setLevel(logging.DEBUG)
-
     def connect(self):
         self.rest_client = Rest(self.config)
         server_url = self.config.confluence_server_url

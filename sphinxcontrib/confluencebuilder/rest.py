@@ -165,6 +165,7 @@ class Rest:
     def __init__(self, config):
         self.bind_path = API_REST_BIND_PATH
         self.config = config
+        self.debug = config.confluence_publish_debug
         self.last_retry = 1
         self.next_delay = None
         self.url = config.confluence_server_url
@@ -237,9 +238,8 @@ class Rest:
     @requests_exception_wrappers()
     def get(self, key, params=None):
         rest_url = self.url + self.bind_path + '/' + key
-
-        rsp = self.session.get(rest_url, params=params, timeout=self.timeout)
-        self._handle_common_request(rsp)
+        req = requests.Request('GET', rest_url, params=params)
+        rsp = self._handle_common_request(req)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -261,9 +261,8 @@ class Rest:
     def post(self, key, data, files=None):
         rest_url = self.url + self.bind_path + '/' + key
 
-        rsp = self.session.post(
-            rest_url, json=data, files=files, timeout=self.timeout)
-        self._handle_common_request(rsp)
+        req = requests.Request('POST', rest_url, json=data, files=files)
+        rsp = self._handle_common_request(req)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -288,8 +287,8 @@ class Rest:
     def put(self, key, value, data):
         rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
 
-        rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
-        self._handle_common_request(rsp)
+        req = requests.Request('PUT', rest_url, json=data)
+        rsp = self._handle_common_request(req)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -314,8 +313,8 @@ class Rest:
     def delete(self, key, value):
         rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
 
-        rsp = self.session.delete(rest_url, timeout=self.timeout)
-        self._handle_common_request(rsp)
+        req = requests.Request('DELETE', rest_url)
+        rsp = self._handle_common_request(req)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, key)
@@ -323,6 +322,29 @@ class Rest:
 
     def close(self):
         self.session.close()
+
+    def _dump_response(self, rsp):
+        print('Response]')
+        print(f'Code: {rsp.status_code}')
+        print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
+        print('')
+        try:
+            print(json.dumps(rsp.json(), indent=2))
+        except:  # noqa: E722
+            print('<not-or-invalid-json>')
+
+    def _dump_request(self, req):
+        print('Request]')
+        print(f'{req.method} {req.url}')
+        print('')
+        print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
+        if req.body:
+            print('')
+            try:
+                json_data = json.loads(req.body.decode('utf-8'))
+                print(f'{json.dumps(json_data, indent=2)}')
+            except:  # noqa: E722
+                print('<not-or-invalid-json>')
 
     def _format_error(self, rsp, key):
         err = ""
@@ -336,7 +358,15 @@ class Rest:
             err += 'DATA: <not-or-invalid-json>'
         return err
 
-    def _handle_common_request(self, rsp):
+    def _handle_common_request(self, req):
+        prepared = self.session.prepare_request(req)
+        if self.debug:
+            self._dump_request(prepared)
+
+        rsp = self.session.send(prepared, timeout=self.timeout)
+
+        if self.debug:
+            self._dump_response(rsp)
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made
@@ -374,3 +404,5 @@ class Rest:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:
             raise ConfluenceRateLimitedError
+
+        return rsp
