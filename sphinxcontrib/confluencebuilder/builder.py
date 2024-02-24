@@ -800,14 +800,16 @@ class ConfluenceBuilder(Builder):
                 except OSError as err:
                     self.warn(f'error reading asset {key}: {err}')
 
-            # if we have documents that were not changes (and therefore, not
+            # if we have documents that were not changed (and therefore, not
             # needing to be republished), assume any cached publish page ids
             # are still valid and remove them from the legacy pages list
-            other_docs = self.env.all_docs.keys() - set(self.publish_docnames)
-            for unchanged_doc in other_docs:
-                lpid = self._cache_info.last_page_id(unchanged_doc)
-                if lpid is not None and lpid in self.legacy_pages:
-                    self.legacy_pages.remove(lpid)
+            if self.legacy_pages:
+                all_docnames = self.env.all_docs.keys()
+                other_docnames = all_docnames - set(self.publish_docnames)
+                for unchanged_docname in other_docnames:
+                    lpid = self._cache_info.last_page_id(unchanged_docname)
+                    if lpid is not None and lpid in self.legacy_pages:
+                        self.legacy_pages.remove(lpid)
 
             self.publish_cleanup()
             self.publish_finalize()
