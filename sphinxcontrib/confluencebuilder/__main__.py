@@ -82,7 +82,7 @@ sphinx-build-confluence [action] <options>
                         (defaults to `_build/confluence`)
 
 (connection-test arguments)
- --dump-cfg            Dump raw configuration at the start of the test
+ --no-sanitize         Do not sanitize configuration content
 
 (report arguments)
  -C, --full-config     include all known sphinx configuration entries

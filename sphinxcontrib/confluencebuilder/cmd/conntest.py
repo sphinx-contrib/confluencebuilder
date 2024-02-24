@@ -35,7 +35,7 @@ def conntest_main(args_parser):
         the exit code
     """
 
-    args_parser.add_argument('--dump-cfg', action='store_true')
+    args_parser.add_argument('--no-sanitize', action='store_true')
 
     known_args = sys.argv[1:]
     args, unknown_args = args_parser.parse_known_args(known_args)
@@ -113,33 +113,33 @@ def conntest_main(args_parser):
     # ##################################################################
     # dump relavant configurations
     # ##################################################################
-    if args.dump_cfg:
-        opts = [
-            'confluence_proxy',
-            'confluence_publish_disable_api_prefix',
-            'confluence_publish_headers',
-            'confluence_publish_token',
-            'confluence_request_session_override',
-            'confluence_server_auth',
-            'confluence_server_cookies',
-            'confluence_server_pass',
-            'confluence_server_url',
-            'confluence_server_user',
-            'confluence_space_key',
-        ]
 
-        print("Network-related configurations]")
-        for opt in opts:
-            if opt in config:
-                if config[opt].strip():
-                    value = config[opt]
-                else:
-                    value = '(set; empty)'
+    opts = [
+        'confluence_proxy',
+        'confluence_publish_disable_api_prefix',
+        'confluence_publish_headers',
+        'confluence_publish_token',
+        'confluence_request_session_override',
+        'confluence_server_auth',
+        'confluence_server_cookies',
+        'confluence_server_pass',
+        'confluence_server_url',
+        'confluence_server_user',
+        'confluence_space_key',
+    ]
+
+    print("Network-related configurations]")
+    for opt in opts:
+        if opt in config:
+            if config[opt]:
+                value = config[opt] if args.no_sanitize else '(set)'
             else:
-                value = '(not set)'
+                value = '(set; empty)'
+        else:
+            value = '(not set)'
 
-            print(f' {opt}: {value}')
-        print('')
+        print(f' {opt}: {value}')
+    print('')
 
     # ##################################################################
     # configuration checks
