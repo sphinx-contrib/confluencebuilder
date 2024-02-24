@@ -10,7 +10,6 @@ See also:
 from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadSpaceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
@@ -68,89 +67,35 @@ class ConfluencePublisher:
         server_url = self.config.confluence_server_url
 
         try:
-            rsp = self.rest_client.get('space', {
-                'spaceKey': self.space_key,
-                'limit': 1,
-            })
+            rsp = self.rest_client.get(f'space/{self.space_key}')
         except ConfluenceBadApiError as e:
             raise ConfluenceBadServerUrlError(server_url, e)
 
-        # if no size entry is provided, this a non-Confluence API server
-        if 'size' not in rsp:
+        # sanity check that we have a sane response
+        if not isinstance(rsp, dict):
             raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response (no size)')
+                'server did not provide an expected response; no dictionary')
 
-        # handle if the provided space key was not found
-        if rsp['size'] == 0:
-            if self.debug:
-                logger.info('''could not find the configured space
+        expected_entries = [
+            'id',
+            'key',
+            'name',
+            'type',
+        ]
 
-(notice to debugging user)
-Either the space does not exist, or the user does not have permission to see
-the space. Another space search will be performed to sanity check the
-configuration to see if a similar space key exists, which can hint to a user
-that the space key may be misconfigured. If the following search request
-results in an access restriction, it is most likely that the authentication
-options are not properly configured, even if the previous search request
-reported a success (which can be permitted for anonymous users).
-''')
-
-            extra_desc = ''
-
-            # If the space key was not found, attempt to search for the space
-            # based off its descriptive name. If something is found, hint to the
-            # user to use a space's key value instead.
-            search_fields = {
-                'cql': 'type=space and space.title~"' + self.space_key + '"',
-                'limit': 2,
-            }
-            rsp = self.rest_client.get('search', search_fields)
-
-            if rsp['size'] == 1:
-                detected_space = rsp['results'][0]
-                space_key = detected_space['space']['key']
-                space_name = detected_space['title']
-                extra_desc = \
-                    '''\n\n''' \
-                    '''There appears to be a space '{0}' which has a name ''' \
-                    ''''{1}'. Did you mean to use this space?\n''' \
-                    '''\n''' \
-                    '''   confluence_space_key = '{0}'\n''' \
-                    ''''''.format(space_key, space_name)
-
-            elif rsp['size'] > 1:
-                extra_desc = \
-                    '''\n\n''' \
-                    '''Multiple spaces have been detected which use the ''' \
-                    '''name '{}'. The unique key of the space should be ''' \
-                    '''used instead. See also:\n\n''' \
-                    '''   https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/\n''' \
-                    ''''''.format(self.space_key)
-
-            pw_set = bool(self.config.confluence_server_pass)
-            token_set = bool(self.config.confluence_publish_token)
-
-            raise ConfluenceBadSpaceError(
-                self.space_key,
-                self.config.confluence_server_user,
-                pw_set,
-                token_set,
-                extra_desc)
-
-        # sanity check that we have any result
-        if 'results' not in rsp or not rsp['results']:
+        if not all(entry in rsp for entry in expected_entries):
             raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response (no results)')
+                'server did not provide an expected response; missing entries')
 
-        result = rsp['results'][0]
-
-        if not isinstance(result, dict) or not result.get('name'):
+        detected_key = rsp['key']
+        if detected_key != self.space_key:
             raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response (no name)')
+                'server did not provide an expected response; bad key match; '
+                f'{detected_key} != {self.space_key}')
 
         # track required space information
-        self.space_display_name = result['name']
-        self.space_type = result['type']
+        self.space_display_name = rsp['name']
+        self.space_type = rsp['type']
 
     def disconnect(self):
         self.rest_client.close()

@@ -193,6 +193,22 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         with self.mtx:
             self.put_rsp.append((code, data))
 
+    def reset(self):
+        """
+        reset any pending requests/responses expected
+
+        Provides a call for a tester to reset expected requests or responses
+        for a given instance.
+        """
+
+        with self.mtx:
+            self.del_req = []
+            self.del_rsp = []
+            self.get_req = []
+            self.get_rsp = []
+            self.put_req = []
+            self.put_rsp = []
+
 
 class ConfluenceInstanceRequestHandler(http_server.SimpleHTTPRequestHandler):
     """

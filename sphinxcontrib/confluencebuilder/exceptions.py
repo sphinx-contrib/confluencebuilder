@@ -40,32 +40,6 @@ details for more information:
         self.status_code = code
 
 
-class ConfluenceBadSpaceError(ConfluenceError):
-    def __init__(self, space_key, uname, pw_set, token_set, extras):
-        uname_value = uname if uname else '(empty)'
-        pw_value = '<set>' if pw_set else '(empty)'
-        token_value = '<set>' if token_set else '(empty)'
-        super().__init__('''
----
-Invalid Confluence URL detected
-
-The configured Confluence space key does not appear to be valid:
-
-    Space key: {space_key}
-     Username: {uname}
-     Password: {pw}
-        Token: {token}
-
-Ensure the instance is running and inspect that the configured
-Confluence URL is valid. Also ensure authentication options are properly
-set.
-
-Note: Confluence space keys are case-sensitive.{details}
----
-'''.format(space_key=space_key, uname=uname_value, pw=pw_value,
-        token=token_value, details=extras))
-
-
 class ConfluenceBadServerUrlError(ConfluenceError):
     def __init__(self, server_url, ex):
         super().__init__('''
