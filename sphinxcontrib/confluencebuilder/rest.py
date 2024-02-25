@@ -377,6 +377,13 @@ class Rest:
                                 math.ceil(delay)))
                     self._reported_large_delay = True
 
+        # check if Confluence reports a `Deprecation` header in the response;
+        # if so, log a message is we have the debug message enabled to help
+        # inform developers that this api call may required updating
+        if PublishDebug.deprecated in self.config.confluence_publish_debug:
+            if rsp.headers.get('Deprecation'):
+                logger.warn(f'(warning) deprecated api call made: {path}')
+
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
