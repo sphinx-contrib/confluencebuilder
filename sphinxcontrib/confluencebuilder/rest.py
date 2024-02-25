@@ -66,8 +66,8 @@ class SslAdapter(HTTPAdapter):
     def cert_verify(self, conn, url, verify, *args, **kwargs):
         super().cert_verify(conn, url, verify, *args, **kwargs)
 
-        # prevent requests from injected an embedded certificates to instead
-        # rely on the default certificate stores loaded by the context
+        # prevent requests from injecting embedded certificates instead of
+        # relying on the default certificate stores loaded by the context
         if verify is True and not self._config.confluence_adv_embedded_certs:
             conn.ca_certs = None
 
