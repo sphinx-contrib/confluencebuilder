@@ -202,6 +202,33 @@ class ConfigurationValidation:
 
         return self
 
+    def enum(self, etype):
+        """
+        checks if a configuration is an enumeration type
+
+        After an instance has been set a configuration key (via `conf`), this
+        method can be used to check if the value (if any) configured with this
+        key is an enumeration of type `etype`. If not, a
+        `ConfluenceConfigurationError` exception will be thrown.
+
+        In the event that the configuration is not set (e.g. a value of `None`),
+        this method will have no effect.
+
+        Returns:
+            the validator instance
+        """
+
+        value = self._value()
+
+        if value is not None and not isinstance(value, etype):
+            try:
+                value = etype[value.lower()]
+            except KeyError:
+                raise ConfluenceConfigurationError(
+                    f'{self.key} is not an enumeration ({etype.__name__})')
+
+        return self
+
     def file(self):
         """
         checks if a configuration is a valid file
