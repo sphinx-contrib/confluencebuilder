@@ -1,3 +1,9 @@
+Development
+===========
+
+* Fixed issue where an exception could throw without cleanup options set
+* Provide extended debugging options for publish events
+
 2.4.0 (2023-12-14)
 ==================
 
