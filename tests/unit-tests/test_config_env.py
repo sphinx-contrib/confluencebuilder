@@ -28,23 +28,23 @@ class TestConfluenceConfigEnvironment(unittest.TestCase):
     def test_config_env_bool(self):
         # default unset
         with prepare_sphinx(self.dataset, config=self.config) as app:
-            self.assertIsNone(app.config.confluence_publish_debug)
+            self.assertIsNone(app.config.confluence_publish_force)
 
         # configure option from environment
-        os.environ['CONFLUENCE_PUBLISH_DEBUG'] = '0'
+        os.environ['CONFLUENCE_PUBLISH_FORCE'] = '0'
         with prepare_sphinx(self.dataset, config=self.config) as app:
-            self.assertFalse(app.config.confluence_publish_debug)
+            self.assertFalse(app.config.confluence_publish_force)
 
-        os.environ['CONFLUENCE_PUBLISH_DEBUG'] = '1'
+        os.environ['CONFLUENCE_PUBLISH_FORCE'] = '1'
         with prepare_sphinx(self.dataset, config=self.config) as app:
-            self.assertTrue(app.config.confluence_publish_debug)
+            self.assertTrue(app.config.confluence_publish_force)
 
         # override the option (taking precedence over environment)
-        self.config['confluence_publish_debug'] = False
+        self.config['confluence_publish_force'] = False
         with prepare_sphinx(self.dataset, config=self.config) as app:
-            self.assertFalse(app.config.confluence_publish_debug)
-        self.assertTrue('CONFLUENCE_PUBLISH_DEBUG' in os.environ)
-        self.assertEqual(os.environ['CONFLUENCE_PUBLISH_DEBUG'], '1')
+            self.assertFalse(app.config.confluence_publish_force)
+        self.assertTrue('CONFLUENCE_PUBLISH_FORCE' in os.environ)
+        self.assertEqual(os.environ['CONFLUENCE_PUBLISH_FORCE'], '1')
 
     def test_config_env_int(self):
         # default unset
