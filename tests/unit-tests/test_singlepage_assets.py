@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSinglepageAssets(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceSinglepageAssets(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'shared-asset')
+        cls.dataset = cls.datasets / 'shared-asset'
 
     @setup_builder('singleconfluence')
     def test_storage_singlepage_asset_defaults(self):

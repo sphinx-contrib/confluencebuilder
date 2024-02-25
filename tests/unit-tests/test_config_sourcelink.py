@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceConfigSourceLink(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceConfigSourceLink(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'minimal')
+        cls.dataset = cls.datasets / 'minimal'
 
     @setup_builder('confluence')
     def test_storage_sourcelink_custom_text(self):

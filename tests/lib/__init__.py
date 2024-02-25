@@ -4,6 +4,7 @@
 from contextlib import contextmanager
 from contextlib import suppress
 from copy import deepcopy
+from pathlib import Path
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
@@ -510,13 +511,14 @@ def prepare_dirs(container=None, postfix=None):
         while frame and not frame.f_code.co_name.startswith('test_'):
             frame = frame.f_back
         container = frame.f_code.co_name if frame else 'unknown'
-    lib_dir = os.path.dirname(os.path.realpath(__file__))
-    test_dir = os.path.join(lib_dir, os.pardir)
-    base_dir = os.path.join(test_dir, os.pardir)
-    output_dir = os.path.join(base_dir, 'output')
-    container_dir = os.path.abspath(os.path.join(output_dir, container))
+
+    lib_dir = Path(__file__).parent.resolve()
+    test_dir = lib_dir.parent
+    base_dir = test_dir.parent
+    output_dir = base_dir / 'output'
+    container_dir = output_dir / container
     if postfix:
-        container_dir += postfix
+        container_dir = container_dir.parent / (container_dir.name + postfix)
 
     shutil.rmtree(container_dir, ignore_errors=True)
 
@@ -551,7 +553,7 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     conf = dict(config) if config else {}
     if extra_config:
         conf.update(extra_config)
-    conf_dir = src_dir if config is None else None
+    conf_dir = str(src_dir) if config is None else None
     warnerr = not relax
 
     sts = None
@@ -570,14 +572,14 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
     if not out_dir:
         out_dir = prepare_dirs()
 
-    doctrees_dir = os.path.join(out_dir, '.doctrees')
+    doctrees_dir = out_dir / '.doctrees'
 
     with docutils_namespace():
         app = Sphinx(
-            src_dir,                 # output for document sources
+            str(src_dir),            # output for document sources
             conf_dir,                # configuration directory
-            out_dir,                 # output for generated documents
-            doctrees_dir,            # output for doctree files
+            str(out_dir),            # output for generated documents
+            str(doctrees_dir),       # output for doctree files
             builder,                 # builder to execute
             confoverrides=conf,      # load provided configuration (volatile)
             status=sts,              # status output
@@ -617,7 +619,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     """
     files = []
     for filename in filenames:
-        files.append(os.path.join(src_dir, filename + '.rst'))
+        files.append(str(src_dir / (filename + '.rst')))
 
     if configs:
         root_doc = 'index'

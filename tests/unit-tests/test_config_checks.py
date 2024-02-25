@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from requests.auth import AuthBase
 from requests.auth import HTTPDigestAuth
 from sphinx.environment import BuildEnvironment
@@ -12,17 +13,16 @@ from tests.lib import mock_getpass
 from tests.lib import mock_input
 from tests.lib import prepare_conf
 from tests.lib import prepare_sphinx
-import os
 import unittest
 
 
 class TestConfluenceConfigChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(cls.test_dir, 'datasets', 'common')
-        cls.dummy_exists = os.path.join(cls.test_dir, 'assets', 'dummy')
-        cls.dummy_missing = os.path.join(cls.test_dir, 'assets', 'missing')
+        cls.test_dir = Path(__file__).parent.resolve()
+        cls.dataset = cls.test_dir / 'datasets' / 'common'
+        cls.dummy_exists = cls.test_dir / 'assets' / 'dummy'
+        cls.dummy_missing = cls.test_dir / 'assets' / 'missing'
 
         cls.minimal_config = {'extensions': EXT_NAME}
 
@@ -188,9 +188,9 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_ca_cert(self):
-        valid_cert_dir = self.test_dir
-        valid_cert_file = self.dummy_exists
-        missing_cert = self.dummy_missing
+        valid_cert_dir = str(self.test_dir)
+        valid_cert_file = str(self.dummy_exists)
+        missing_cert = str(self.dummy_missing)
 
         self.config['confluence_ca_cert'] = valid_cert_dir
         self._try_config()
@@ -203,8 +203,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_client_cert(self):
-        valid_cert = self.dummy_exists
-        missing_cert = self.dummy_missing
+        valid_cert = str(self.dummy_exists)
+        missing_cert = str(self.dummy_missing)
 
         self.config['confluence_client_cert'] = valid_cert
         self._try_config()
@@ -350,8 +350,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_footer_file(self):
-        valid_footer = self.dummy_exists
-        missing_footer = self.dummy_missing
+        valid_footer = str(self.dummy_exists)
+        missing_footer = str(self.dummy_missing)
 
         self.config['confluence_footer_file'] = valid_footer
         self._try_config()
@@ -373,8 +373,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_header_file(self):
-        valid_header = self.dummy_exists
-        missing_header = self.dummy_missing
+        valid_header = str(self.dummy_exists)
+        missing_header = str(self.dummy_missing)
 
         self.config['confluence_header_file'] = valid_header
         self._try_config()
@@ -636,11 +636,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_publish_list(self):
-        dataset = os.path.join(self.test_dir, 'datasets', 'publish-set')
-        assets_dir = os.path.join(self.test_dir, 'assets')
-        invalid_list = os.path.join(assets_dir, 'sample-invalid-publish-list')
+        dataset = self.test_dir / 'datasets' / 'publish-set'
+        assets_dir = self.test_dir / 'assets'
+        invalid_list = assets_dir / 'sample-invalid-publish-list'
         missing_list = self.dummy_missing
-        valid_list = os.path.join(assets_dir, 'sample-valid-publish-list')
+        valid_list = assets_dir / 'sample-valid-publish-list'
 
         options = [
             'confluence_publish_allowlist',
@@ -670,8 +670,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config(dataset=dataset)
 
             # file with a valid document list
-            self.assertTrue(os.path.isfile(valid_list))
-            self.config[option] = valid_list
+            self.assertTrue(valid_list.is_file())
+            self.config[option] = str(valid_list)
             self._try_config(dataset=dataset)
 
             # list with invalid content
@@ -690,14 +690,14 @@ class TestConfluenceConfigChecks(unittest.TestCase):
                 self._try_config(dataset=dataset)
 
             # file with invalid document list
-            self.assertTrue(os.path.isfile(invalid_list))
-            self.config[option] = invalid_list
+            self.assertTrue(invalid_list.is_file())
+            self.config[option] = str(invalid_list)
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config(dataset=dataset)
 
             # missing file
-            self.assertFalse(os.path.isfile(missing_list))
-            self.config[option] = missing_list
+            self.assertFalse(missing_list.is_file())
+            self.config[option] = str(missing_list)
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config(dataset=dataset)
 

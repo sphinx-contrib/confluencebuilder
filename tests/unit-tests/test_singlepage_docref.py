@@ -4,13 +4,12 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSinglepageToctree(ConfluenceTestCase):
     @setup_builder('singleconfluence')
     def test_storage_singlepage_docref_pageref(self):
-        dataset = os.path.join(self.datasets, 'singlepage-docref')
+        dataset = self.datasets / 'singlepage-docref'
 
         out_dir = self.build(dataset)
 
@@ -29,7 +28,7 @@ class TestConfluenceSinglepageToctree(ConfluenceTestCase):
 
     @setup_builder('singleconfluence')
     def test_storage_singlepage_docref_index_no_title(self):
-        dataset = os.path.join(self.datasets, 'singlepage-docref')
+        dataset = self.datasets / 'singlepage-docref'
 
         out_dir = self.build(dataset)
 
@@ -48,7 +47,7 @@ class TestConfluenceSinglepageToctree(ConfluenceTestCase):
         config = dict(self.config)
         config['confluence_remove_title'] = False
 
-        dataset = os.path.join(self.datasets, 'singlepage-docref')
+        dataset = self.datasets / 'singlepage-docref'
 
         out_dir = self.build(dataset, config=config)
 

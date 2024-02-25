@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceRstBibliographic(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceRstBibliographic(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'bibliographic')
+        cls.dataset = cls.datasets / 'rst' / 'bibliographic'
 
     @setup_builder('confluence')
     def test_storage_rst_bibliographic_defaults(self):

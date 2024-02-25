@@ -7,7 +7,6 @@ from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib import prepare_dirs
 import mimetypes
-import os
 import shutil
 import sys
 
@@ -15,7 +14,7 @@ import sys
 class TestConfluenceSphinxImageCandidate(ConfluenceTestCase):
     @setup_builder('confluence')
     def test_storage_sphinx_image_candidate(self):
-        sample_img = os.path.join(self.assets_dir, 'test.png')
+        sample_img = self.assets_dir / 'test.png'
 
         for mime_type in SUPPORTED_IMAGE_TYPES:
             ext = mimetypes.guess_extension(mime_type)
@@ -38,14 +37,14 @@ class TestConfluenceSphinxImageCandidate(ConfluenceTestCase):
             #     image is needed as the contents can be parsed through sphinx
             #     to see if its a real image before considering it to be a
             #     candidate
-            os.makedirs(doc_dir)
+            doc_dir.mkdir(parents=True, exist_ok=True)
 
-            index_file = os.path.join(doc_dir, 'index.rst')
-            with open(index_file, 'w') as f:
+            index_file = doc_dir / 'index.rst'
+            with index_file.open('w') as f:
                 f.write('.. image:: candidate.*')
 
             img_filename = 'candidate' + ext
-            dummy_img_file = os.path.join(doc_dir, img_filename)
+            dummy_img_file = doc_dir / img_filename
             shutil.copyfile(sample_img, dummy_img_file)
 
             # build and check

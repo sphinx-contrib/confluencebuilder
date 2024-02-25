@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestSdocSearch(ConfluenceTestCase):
@@ -12,12 +11,12 @@ class TestSdocSearch(ConfluenceTestCase):
     def test_storage_sdoc_search_default_missing(self):
         """validate search is not added by default (storage)"""
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
 
         out_dir = self.build(dataset)
 
-        fname_check = os.path.join(out_dir, 'search.conf')
-        self.assertFalse(os.path.exists(fname_check))
+        fname_check = out_dir / 'search.conf'
+        self.assertFalse(fname_check.is_file())
 
     @setup_builder('confluence')
     def test_storage_sdoc_search_explicit_disabled(self):
@@ -27,7 +26,7 @@ class TestSdocSearch(ConfluenceTestCase):
         # automatically generate its contents, by disabling the search option
         # explicitly, the original search document should not be touched.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'search-placeholder')
+        dataset = self.datasets / 'sdoc' / 'search-placeholder'
         config = dict(self.config)
         config['confluence_include_search'] = False
 
@@ -45,7 +44,7 @@ class TestSdocSearch(ConfluenceTestCase):
         # Ensures the extension adds a "search" document; even if its not in a
         # documentation set's toctree.
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
         config = dict(self.config)
         config['confluence_include_search'] = True
 
@@ -63,9 +62,9 @@ class TestSdocSearch(ConfluenceTestCase):
         # Ensures that when the extension adds a "search" document; any custom
         # defined header/footer data is also injected into the document.
 
-        dataset = os.path.join(self.datasets, 'minimal')
-        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
+        dataset = self.datasets / 'minimal'
+        footer_tpl = str(self.templates_dir / 'sample-footer.tpl')
+        header_tpl = str(self.templates_dir / 'sample-header.tpl')
 
         config = dict(self.config)
         config['confluence_include_search'] = True
@@ -88,7 +87,7 @@ class TestSdocSearch(ConfluenceTestCase):
         # If a "search" document is found in the documentation set's toctree,
         # the document should be generated.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'search-placeholder')
+        dataset = self.datasets / 'sdoc' / 'search-placeholder'
 
         out_dir = self.build(dataset)
 

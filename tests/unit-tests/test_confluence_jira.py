@@ -5,7 +5,6 @@ from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from sphinx.errors import SphinxWarning
-import os
 
 
 class TestConfluenceJira(ConfluenceTestCase):
@@ -13,54 +12,54 @@ class TestConfluenceJira(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.container = os.path.join(cls.datasets, 'jira')
+        cls.container = cls.datasets / 'jira'
 
     def test_confluence_jira_directive_bad_sid(self):
-        dataset = os.path.join(self.container, 'bad-sid')
+        dataset = self.container / 'bad-sid'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     def test_confluence_jira_directive_conflicting_server_id(self):
-        dataset = os.path.join(self.container, 'conflicting-server-id')
+        dataset = self.container / 'conflicting-server-id'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     def test_confluence_jira_directive_conflicting_server_name(self):
-        dataset = os.path.join(self.container, 'conflicting-server-name')
+        dataset = self.container / 'conflicting-server-name'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     def test_confluence_jira_directive_missing_server_entry(self):
-        dataset = os.path.join(self.container, 'missing-server-entry')
+        dataset = self.container / 'missing-server-entry'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     def test_confluence_jira_directive_missing_server_id(self):
-        dataset = os.path.join(self.container, 'missing-server-id')
+        dataset = self.container / 'missing-server-id'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     def test_confluence_jira_directive_missing_server_name(self):
-        dataset = os.path.join(self.container, 'missing-server-name')
+        dataset = self.container / 'missing-server-name'
 
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     @setup_builder('html')
     def test_html_confluence_jira_directive_ignore(self):
-        dataset = os.path.join(self.container, 'valid')
+        dataset = self.container / 'valid'
 
         # build attempt should not throw an exception/error
         self.build(dataset, relax=True)
 
     @setup_builder('confluence')
     def test_storage_confluence_jira_directive_expected(self):
-        dataset = os.path.join(self.container, 'valid')
+        dataset = self.container / 'valid'
 
         config = dict(self.config)
         config['confluence_jira_servers'] = {
@@ -130,7 +129,7 @@ class TestConfluenceJira(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_confluence_jira_role_default_expected(self):
-        dataset = os.path.join(self.container, 'valid-role')
+        dataset = self.container / 'valid-role'
 
         out_dir = self.build(dataset)
 
@@ -151,7 +150,7 @@ class TestConfluenceJira(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_confluence_jira_substitution_expected(self):
-        dataset = os.path.join(self.container, 'valid-substitution')
+        dataset = self.container / 'valid-substitution'
 
         out_dir = self.build(dataset)
 

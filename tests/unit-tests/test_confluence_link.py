@@ -5,7 +5,6 @@ from sphinx.errors import SphinxWarning
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceLink(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceLink(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'confluence-link')
+        cls.dataset = cls.datasets / 'confluence-link'
 
     @setup_builder('html')
     def test_html_confluence_link_ignore(self):
@@ -84,12 +83,12 @@ class TestConfluenceLink(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_confluence_link_invalid_layout(self):
-        dataset = self.dataset + '-invalid-layout'
+        dataset = self.dataset.parent / (self.dataset.name + '-invalid-layout')
         with self.assertRaises(SphinxWarning):
             self.build(dataset)
 
     @setup_builder('confluence')
     def test_storage_confluence_link_invalid_width(self):
-        dataset = self.dataset + '-invalid-width'
+        dataset = self.dataset.parent / (self.dataset.name + '-invalid-width')
         with self.assertRaises(SphinxWarning):
             self.build(dataset)

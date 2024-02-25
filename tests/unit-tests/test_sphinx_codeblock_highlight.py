@@ -5,7 +5,6 @@ from sphinx.errors import SphinxWarning
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'code-block')
+        cls.dataset = cls.datasets / 'code-block'
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_default(self):
@@ -35,7 +34,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_fallback_default(self):
-        dataset = os.path.join(self.datasets, 'code-block-fallback')
+        dataset = self.datasets / 'code-block-fallback'
 
         # check that a fallback language generates a warning
         with self.assertRaises(SphinxWarning):
@@ -43,7 +42,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_fallback_handle(self):
-        dataset = os.path.join(self.datasets, 'code-block-fallback')
+        dataset = self.datasets / 'code-block-fallback'
 
         # run in relaxed mode, to ensure a fallback language is applied
         out_dir = self.build(dataset, relax=True)
@@ -135,7 +134,7 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_highlight_suppress_warning(self):
-        dataset = os.path.join(self.datasets, 'code-block-fallback')
+        dataset = self.datasets / 'code-block-fallback'
 
         # configure to suppress the generated warning
         config = dict(self.config)

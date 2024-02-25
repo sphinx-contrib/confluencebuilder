@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 import re
 
 
@@ -13,7 +12,7 @@ class TestConfluenceRstContents(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'contents')
+        cls.dataset = cls.datasets / 'rst' / 'contents'
 
         cls.expected_header_text = [
             'section',

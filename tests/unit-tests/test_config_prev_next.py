@@ -2,7 +2,6 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from tests.lib.testcase import ConfluenceTestCase
-import os
 
 
 class TestConfluenceConfigPrevNext(ConfluenceTestCase):
@@ -10,7 +9,7 @@ class TestConfluenceConfigPrevNext(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'prevnext')
+        cls.dataset = cls.datasets / 'prevnext'
 
     def test_config_prevnext_bottom(self):
         config = dict(self.config)
@@ -53,11 +52,11 @@ class TestConfluenceConfigPrevNext(ConfluenceTestCase):
         self._character_check('final',  out_dir, {'←': 1, '→': 0})
 
     def _character_check(self, name, output, expected):
-        test_path = os.path.join(output, name + '.conf')
-        self.assertTrue(os.path.exists(test_path),
+        test_path = output / (name + '.conf')
+        self.assertTrue(test_path.is_file(),
             f'missing output file: {test_path}')
 
-        with open(test_path, encoding='utf8') as test_file:
+        with test_path.open(encoding='utf8') as test_file:
             data = ''.join([o.strip() + '\n' for o in test_file.readlines()])
             for char, count in expected.items():
                 found = data.count(char)

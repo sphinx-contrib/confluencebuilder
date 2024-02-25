@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceRstReferences(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceRstReferences(ConfluenceTestCase):
         super().setUpClass()
 
         cls.config['root_doc'] = 'references'
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'references')
+        cls.dataset = cls.datasets / 'rst' / 'references'
 
     @setup_builder('confluence')
     def test_storage_rst_references(self):

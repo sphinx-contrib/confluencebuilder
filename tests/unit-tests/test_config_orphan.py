@@ -7,7 +7,6 @@ from tests.lib.testcase import ConfluenceTestCase
 from unittest.mock import ANY
 from unittest.mock import call
 from unittest.mock import patch
-import os
 
 
 class TestConfluenceConfigOrphan(ConfluenceTestCase):
@@ -15,7 +14,7 @@ class TestConfluenceConfigOrphan(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'orphan')
+        cls.dataset = cls.datasets / 'orphan'
 
         cls.config['confluence_publish'] = True
         cls.config['confluence_server_url'] = 'https://dummy.example.com/'

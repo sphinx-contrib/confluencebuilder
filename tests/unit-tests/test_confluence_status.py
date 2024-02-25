@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceStatus(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceStatus(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'status')
+        cls.dataset = cls.datasets / 'status'
 
     @setup_builder('html')
     def test_html_confluence_status_role_ignore(self):

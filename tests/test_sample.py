@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_dirs
@@ -40,16 +41,16 @@ def main():
         print('[sample] (error) missing tox ini environment variable')
         return 1
 
-    sample_base = os.environ['TOX_INI_DIR']
-    sample_set_dir = os.path.dirname(sample_base)
-    sample_name = os.path.basename(sample_base)
+    sample_base = Path(os.environ['TOX_INI_DIR'])
+    sample_set_dir = sample_base.parent
+    sample_name = sample_base.name
     container = 'sample-' + sample_name
     if args.builder:
         container += '-' + args.builder
 
     # check if there is a sub-folder the documentation will be found under
     if 'SAMPLE_DIR' in os.environ:
-        sample_dir = os.path.join(sample_base, os.environ['SAMPLE_DIR'])
+        sample_dir = sample_base / os.environ['SAMPLE_DIR']
     else:
         sample_dir = sample_base
 
@@ -57,9 +58,9 @@ def main():
 
     # extract any shared confguration values and inject them into the
     # define list
-    shared_config = os.path.join(sample_set_dir, 'config.py')
-    if os.path.isfile(shared_config):
-        with open(shared_config, encoding='utf-8') as f:
+    shared_config = sample_set_dir / 'config.py'
+    if shared_config.is_file():
+        with shared_config.open(encoding='utf-8') as f:
             data = f.read()
 
         ast_data = ast.parse(data, filename=shared_config)

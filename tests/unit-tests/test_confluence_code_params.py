@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceCodeParams(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceCodeParams(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'code-block-params')
+        cls.dataset = cls.datasets / 'code-block-params'
 
     @setup_builder('confluence')
     def test_storage_confluence_code_params_collapse(self):

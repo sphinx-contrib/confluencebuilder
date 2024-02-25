@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceConfigTitlefix(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceConfigTitlefix(ConfluenceTestCase):
         super().setUpClass()
 
         cls.config['root_doc'] = 'titlefix'
-        cls.dataset = os.path.join(cls.datasets, 'titlefix')
+        cls.dataset = cls.datasets / 'titlefix'
 
     @setup_builder('confluence')
     def test_storage_config_titlefix_none(self):

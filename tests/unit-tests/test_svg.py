@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 import xml.etree.ElementTree as xml_et
 
 
@@ -13,10 +12,10 @@ class TestSvg(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'svg')
+        cls.dataset = cls.datasets / 'svg'
 
-    def _extract_svg_size(self, fname):
-        with open(fname, 'rb') as f:
+    def _extract_svg_size(self, svg_file):
+        with svg_file.open('rb') as f:
             svg_data = f.read()
 
         svg_root = xml_et.fromstring(svg_data)
@@ -62,8 +61,8 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
-            with open(fname, 'rb') as f:
+            attachment_file = out_dir / 'svgs' / attachment['ri:filename']
+            with attachment_file.open('rb') as f:
                 svg_data = f.read()
                 self.assertTrue(svg_data.lstrip().startswith(b'<?xml'))
 
@@ -79,7 +78,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 100)
             self.assertEqual(svg_width, 25)
@@ -96,7 +95,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 75)
             self.assertEqual(svg_width, 75)
@@ -109,7 +108,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 192)
             self.assertEqual(svg_width, 192)
@@ -122,7 +121,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 50)
             self.assertEqual(svg_width, 1600)
@@ -135,7 +134,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 200)
             self.assertEqual(svg_width, 200)
@@ -152,7 +151,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 200)
             self.assertEqual(svg_width, 50)
@@ -165,7 +164,7 @@ class TestSvg(ConfluenceTestCase):
             self.assertFalse(attachment.has_attr('ac:height'))
             self.assertFalse(attachment.has_attr('ac:width'))
 
-            fname = os.path.join(out_dir, 'svgs', attachment['ri:filename'])
+            fname = out_dir / 'svgs' / attachment['ri:filename']
             svg_width, svg_height = self._extract_svg_size(fname)
             self.assertEqual(svg_height, 200)
             self.assertEqual(svg_width, 50)

@@ -3,7 +3,6 @@
 
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceMetadata(ConfluenceTestCase):
@@ -11,7 +10,7 @@ class TestConfluenceMetadata(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'metadata')
+        cls.dataset = cls.datasets / 'metadata'
 
     def test_confluence_metadata_directive_expected(self):
         with self.prepare(self.dataset) as app:

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from tests.lib import enable_sphinx_info
 import argparse
 import fnmatch
-import os
 import sys
 import unittest
 
@@ -50,8 +50,8 @@ def main():
         unittest.TestCase.shortDescription = lambda _: None
 
     # discover unit tests
-    test_base = os.path.dirname(os.path.realpath(__file__))
-    unit_tests_dir = os.path.join(test_base, 'unit-tests')
+    test_base = Path(__file__).parent.resolve()
+    unit_tests_dir = test_base / 'unit-tests'
     unit_tests = loader.discover(unit_tests_dir)
 
     # check if a unit test name was provided

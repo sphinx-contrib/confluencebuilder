@@ -5,7 +5,6 @@ from bs4 import CData
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxDownload(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceSphinxDownload(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'download')
+        cls.dataset = cls.datasets / 'download'
 
     @setup_builder('confluence')
     def test_storage_sphinx_download_defaults(self):

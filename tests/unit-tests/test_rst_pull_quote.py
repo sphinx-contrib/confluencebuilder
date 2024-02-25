@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'pull-quote')
+        cls.dataset = cls.datasets / 'rst' / 'pull-quote'
 
     @setup_builder('confluence')
     def test_storage_rst_pull_quote(self):

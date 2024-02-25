@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
@@ -93,11 +94,11 @@ class TestConfluenceValidation(unittest.TestCase):
 """.format(cls.test_key, cls.test_desc)
 
         # find validate-sets base folder
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.datasets = os.path.join(test_dir, 'validation-sets')
+        test_dir = Path(__file__).parent.resolve()
+        cls.datasets = test_dir / 'validation-sets'
 
         # setup base structure
-        dataset = os.path.join(cls.datasets, 'base')
+        dataset = cls.datasets / 'base'
         doc_dir = prepare_dirs('validation-set-base')
 
         config = cls.config.clone()
@@ -178,7 +179,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config = self._prepare_editor(editor)
         config['confluence_sourcelink']['container'] += 'restructuredtext/'
 
-        dataset = os.path.join(self.datasets, 'restructuredtext')
+        dataset = self.datasets / 'restructuredtext'
         doc_dir = prepare_dirs('validation-set-restructuredtext-' + editor)
 
         # inject a navdoc to the header/footer start page
@@ -206,7 +207,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config = self._prepare_editor(editor)
         config['confluence_sourcelink']['container'] += 'sphinx/'
 
-        dataset = os.path.join(self.datasets, 'sphinx')
+        dataset = self.datasets / 'sphinx'
         doc_dir = prepare_dirs('validation-set-sphinx-' + editor)
 
         # inject a navdoc to the header/footer start page
@@ -235,7 +236,7 @@ class TestConfluenceValidation(unittest.TestCase):
         config['confluence_sourcelink']['container'] += 'markdown/'
         config['extensions'].append('myst_parser')
 
-        dataset = os.path.join(self.datasets, 'markdown')
+        dataset = self.datasets / 'markdown'
         doc_dir = prepare_dirs('validation-set-markdown-' + editor)
 
         # inject a navdoc to the header/footer start page
@@ -277,7 +278,7 @@ class TestConfluenceValidation(unittest.TestCase):
         else:
             config['graphviz_output_format'] = 'svg'
 
-        dataset = os.path.join(self.datasets, 'extensions')
+        dataset = self.datasets / 'extensions'
         doc_dir = prepare_dirs('validation-set-extensions-' + editor)
 
         # inject a navdoc to the header/footer start page
@@ -296,9 +297,9 @@ class TestConfluenceValidation(unittest.TestCase):
             return docnames
         config['confluence_navdocs_transform'] = navdocs_transform
 
-        dataset = os.path.join(self.datasets, 'extensions')
+        dataset = self.datasets / 'extensions'
         doc_dir = prepare_dirs('validation-set-extensions')
-        sys.path.insert(0, os.path.join(dataset, 'src'))
+        sys.path.insert(0, str(dataset / 'src'))
 
         build_sphinx(dataset, config=config, out_dir=doc_dir)
 

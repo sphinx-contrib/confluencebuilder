@@ -3,12 +3,11 @@
 
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib import EXT_NAME
-import os
 
 
 class TestConfluenceExtension(ConfluenceTestCase):
     def test_extension_registration(self):
-        mock_ds = os.path.join(self.datasets, 'common')
+        mock_ds = self.datasets / 'common'
 
         with self.prepare(mock_ds) as app:
             if hasattr(app, 'extensions'):

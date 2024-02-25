@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceUseCaseNestedRef(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceUseCaseNestedRef(ConfluenceTestCase):
         super().setUpClass()
 
         cls.config['root_doc'] = 'nested-ref-contents'
-        cls.dataset = os.path.join(cls.datasets, 'use-cases')
+        cls.dataset = cls.datasets / 'use-cases'
         cls.filenames = [
             'nested-ref-contents',
             'nested-ref-external',

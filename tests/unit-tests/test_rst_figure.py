@@ -6,7 +6,6 @@ from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib.testcase import setup_editor
-import os
 
 
 class TestConfluenceRstFigure(ConfluenceTestCase):
@@ -14,7 +13,7 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'figure')
+        cls.dataset = cls.datasets / 'rst' / 'figure'
 
     @setup_builder('confluence')
     def test_storage_rst_figure_defaults(self):
@@ -170,7 +169,7 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_rst_figure_caption_default(self):
-        dataset = os.path.join(self.datasets, 'rst', 'figure-caption')
+        dataset = self.datasets / 'rst' / 'figure-caption'
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
@@ -199,7 +198,7 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
     @setup_builder('confluence')
     @setup_editor('v2')
     def test_storage_rst_figure_caption_v2(self):
-        dataset = os.path.join(self.datasets, 'rst', 'figure-caption')
+        dataset = self.datasets / 'rst' / 'figure-caption'
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:

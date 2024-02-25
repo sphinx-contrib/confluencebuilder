@@ -3,7 +3,6 @@
 
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib.testcase import ConfluenceTestCase
-import os
 
 
 class TestConfluenceHierarchy(ConfluenceTestCase):
@@ -11,7 +10,7 @@ class TestConfluenceHierarchy(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'hierarchy')
+        cls.dataset = cls.datasets / 'hierarchy'
 
     def test_config_hierarchy_parent_registration_default(self):
         ConfluenceState.reset()
