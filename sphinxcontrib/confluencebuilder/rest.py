@@ -4,6 +4,7 @@
 from functools import wraps
 from email.utils import mktime_tz
 from email.utils import parsedate_tz
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
@@ -324,12 +325,29 @@ class Rest:
         return err
 
     def _process_request(self, method, path, *args, **kwargs):
+        dump = PublishDebug.headers in self.config.confluence_publish_debug
+
         rest_url = f'{self.url}{self.bind_path}/{path}'
-        req = requests.Request(method, rest_url, *args, **kwargs)
-        prepared_request = self.session.prepare_request(req)
+        base_req = requests.Request(method, rest_url, *args, **kwargs)
+        req = self.session.prepare_request(base_req)
+
+        # debug logging
+        if dump:
+            print('')  # leading newline, if debugging into active line
+            print('(debug) Request]')
+            print(f'{req.method} {req.url}')
+            print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
+            print('')
 
         # perform the rest request
-        rsp = self.session.send(prepared_request, timeout=self.timeout)
+        rsp = self.session.send(req, timeout=self.timeout)
+
+        # debug logging
+        if dump:
+            print('(debug) Response]')
+            print(f'Code: {rsp.status_code}')
+            print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
+            print('')
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made

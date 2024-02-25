@@ -18,7 +18,9 @@ class PublishDebug(Flag):
 
     # do not perform any logging
     none = auto()
+    # log raw requests/responses in stdout with header data
+    headers = auto()
     # log urllib3-supported debug messages
     urllib3 = auto()
     # enable all logging
-    all = urllib3
+    all = headers | urllib3
