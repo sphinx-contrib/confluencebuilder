@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceConfigFullWidth(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'common')
+        cls.dataset = cls.datasets / 'common'
 
     @setup_builder('confluence')
     def test_storage_config_full_width_v1_default(self):

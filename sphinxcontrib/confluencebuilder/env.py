@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import json
-import os
 
 
 # base filename for cache information
@@ -21,16 +21,14 @@ ENV_CACHE_PUBLISH = ENV_CACHE_BASENAME + 'publish'
 
 class ConfluenceCacheInfo:
     def __init__(self, builder):
-        outdir = builder.outdir
-
         self.builder = builder
         self.env = builder.env
         self._active_dochash = {}
         self._active_hash = None
         self._active_pids = {}
-        self._cache_cfg_file = os.path.join(outdir, ENV_CACHE_CONFIG)
-        self._cache_hash_file = os.path.join(outdir, ENV_CACHE_DOCHASH)
-        self._cache_publish_file = os.path.join(outdir, ENV_CACHE_PUBLISH)
+        self._cache_cfg_file = builder.out_dir / ENV_CACHE_CONFIG
+        self._cache_hash_file = builder.out_dir / ENV_CACHE_DOCHASH
+        self._cache_publish_file = builder.out_dir / ENV_CACHE_PUBLISH
         self._cached_dochash = {}
         self._cached_hash = None
         self._cached_pids = {}
@@ -76,13 +74,13 @@ class ConfluenceCacheInfo:
 
         # if there is not output file, considered outdated
         dst_filename = self.builder.file_transform(docname)
-        dst_file = os.path.join(self.builder.outdir, dst_filename)
-        if not os.path.exists(dst_file):
+        dst_file = self.builder.out_dir / dst_filename
+        if not dst_file.is_file():
             return True
 
         # if there is not source file (removed document), considered outdated
-        src_file = self.env.doc2path(docname)
-        if not os.path.exists(src_file):
+        src_file = Path(self.env.doc2path(docname))
+        if not src_file.is_file():
             return True
 
         # check if the hashes do not match; if not, this document is outdated
@@ -173,7 +171,7 @@ class ConfluenceCacheInfo:
         """
 
         try:
-            with open(self._cache_cfg_file, encoding='utf-8') as f:
+            with self._cache_cfg_file.open(encoding='utf-8') as f:
                 self._cached_hash = json.load(f).get('hash')
         except FileNotFoundError:
             pass
@@ -181,7 +179,7 @@ class ConfluenceCacheInfo:
             self.builder.warn('failed to load cache (config): ' + e)
 
         try:
-            with open(self._cache_hash_file, encoding='utf-8') as f:
+            with self._cache_hash_file.open(encoding='utf-8') as f:
                 self._cached_dochash = json.load(f)
         except FileNotFoundError:
             pass
@@ -189,7 +187,7 @@ class ConfluenceCacheInfo:
             self.builder.warn('failed to load cache (hashes): ' + e)
 
         try:
-            with open(self._cache_publish_file, encoding='utf-8') as f:
+            with self._cache_publish_file.open(encoding='utf-8') as f:
                 self._cached_pids = json.load(f)
         except FileNotFoundError:
             pass
@@ -213,19 +211,19 @@ class ConfluenceCacheInfo:
         new_dochashs.update(self._active_dochash)
 
         try:
-            with open(self._cache_cfg_file, 'w', encoding='utf-8') as f:
+            with self._cache_cfg_file.open('w', encoding='utf-8') as f:
                 json.dump(new_cfg, f)
         except OSError as e:
             self.builder.warn('failed to save cache (config): ' + e)
 
         try:
-            with open(self._cache_hash_file, 'w', encoding='utf-8') as f:
+            with self._cache_hash_file.open('w', encoding='utf-8') as f:
                 json.dump(new_dochashs, f)
         except OSError as e:
             self.builder.warn('failed to save cache (hashes): ' + e)
 
         try:
-            with open(self._cache_publish_file, 'w', encoding='utf-8') as f:
+            with self._cache_publish_file.open('w', encoding='utf-8') as f:
                 json.dump(self._active_pids, f)
         except OSError as e:
             self.builder.warn('failed to save cache (pids): ' + e)

@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxDomains(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
         super().setUpClass()
 
         cls.config['root_doc'] = 'glossary'
-        cls.dataset = os.path.join(cls.datasets, 'glossary')
+        cls.dataset = cls.datasets / 'glossary'
 
     @setup_builder('confluence')
     def test_storage_sphinx_glossary_defaults(self):

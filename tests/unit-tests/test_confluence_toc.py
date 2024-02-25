@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceToc(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceToc(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'confluence-toc')
+        cls.dataset = cls.datasets / 'confluence-toc'
 
     @setup_builder('html')
     def test_html_confluence_toc_directive_ignore(self):

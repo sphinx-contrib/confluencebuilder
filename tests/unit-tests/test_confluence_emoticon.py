@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceEmoticon(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceEmoticon(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'emoticon')
+        cls.dataset = cls.datasets / 'emoticon'
 
     @setup_builder('html')
     def test_html_confluence_emoticon_role_ignore(self):

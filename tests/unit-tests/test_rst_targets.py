@@ -5,7 +5,6 @@ from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib.testcase import setup_editor
-import os
 
 
 class TestConfluenceRstTargets(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceRstTargets(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'targets')
+        cls.dataset = cls.datasets / 'rst' / 'targets'
 
     @setup_builder('confluence')
     def test_storage_rst_targets_defaults(self):

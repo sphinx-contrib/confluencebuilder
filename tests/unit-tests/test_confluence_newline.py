@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceNewline(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceNewline(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'newline')
+        cls.dataset = cls.datasets / 'newline'
 
     @setup_builder('confluence')
     def test_storage_confluence_newline_directive_expected(self):

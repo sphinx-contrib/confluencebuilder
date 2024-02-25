@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceExcerpt(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceExcerpt(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'excerpt')
+        cls.dataset = cls.datasets / 'excerpt'
 
     @setup_builder('confluence')
     def test_storage_confluence_excerpt_directive_expected(self):

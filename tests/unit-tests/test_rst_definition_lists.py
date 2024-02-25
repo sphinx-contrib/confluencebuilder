@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceRstDefinitionLists(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceRstDefinitionLists(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'definition-lists')
+        cls.dataset = cls.datasets / 'rst' / 'definition-lists'
 
     @setup_builder('confluence')
     def test_storage_rst_definition_lists(self):

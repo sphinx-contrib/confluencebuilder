@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-import os
 from sphinxcontrib.confluencebuilder.exceptions import \
     ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
@@ -99,7 +98,7 @@ class TestRegisterTitle(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.config['root_doc'] = 'index'
-        cls.dataset = os.path.join(cls.datasets, 'postfix_formatting')
+        cls.dataset = cls.datasets / 'postfix_formatting'
 
     @setup_builder('confluence')
     def test_postfix_hash_fixing_name_conflict(self):

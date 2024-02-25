@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxDeprecated(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceSphinxDeprecated(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'deprecated')
+        cls.dataset = cls.datasets / 'deprecated'
 
     @setup_builder('confluence')
     def test_storage_sphinx_deprecated_defaults(self):

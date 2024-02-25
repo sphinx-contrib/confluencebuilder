@@ -5,7 +5,6 @@ from bs4 import CData
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
@@ -13,7 +12,7 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'code-block')
+        cls.dataset = cls.datasets / 'code-block'
 
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_caption(self):
@@ -121,7 +120,7 @@ class TestConfluenceSphinxCodeblock(ConfluenceTestCase):
     @setup_builder('confluence')
     def test_storage_sphinx_codeblock_theme_override(self):
         expected_theme = 'Eclipse'
-        dataset = os.path.join(self.datasets, 'code-block-theme')
+        dataset = self.datasets / 'code-block-theme'
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:

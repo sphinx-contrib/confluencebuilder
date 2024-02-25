@@ -4,13 +4,12 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSphinxToctree(ConfluenceTestCase):
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_caption(self):
-        dataset = os.path.join(self.datasets, 'toctree-caption')
+        dataset = self.datasets / 'toctree-caption'
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
@@ -23,7 +22,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_default(self):
-        dataset = os.path.join(self.datasets, 'toctree-default')
+        dataset = self.datasets / 'toctree-default'
 
         out_dir = self.build(dataset)
 
@@ -69,7 +68,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_hidden(self):
-        dataset = os.path.join(self.datasets, 'toctree-hidden')
+        dataset = self.datasets / 'toctree-hidden'
 
         out_dir = self.build(dataset)
 
@@ -79,7 +78,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_maxdepth(self):
-        dataset = os.path.join(self.datasets, 'toctree-maxdepth')
+        dataset = self.datasets / 'toctree-maxdepth'
 
         out_dir = self.build(dataset)
 
@@ -99,7 +98,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_numbered_default(self):
-        dataset = os.path.join(self.datasets, 'toctree-numbered')
+        dataset = self.datasets / 'toctree-numbered'
 
         out_dir = self.build(dataset)
 
@@ -147,7 +146,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_numbered_depth(self):
-        dataset = os.path.join(self.datasets, 'toctree-numbered-depth')
+        dataset = self.datasets / 'toctree-numbered-depth'
 
         out_dir = self.build(dataset)
 
@@ -183,7 +182,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_numbered_disable(self):
-        dataset = os.path.join(self.datasets, 'toctree-numbered')
+        dataset = self.datasets / 'toctree-numbered'
 
         config = dict(self.config)
         config['confluence_add_secnumbers'] = False
@@ -236,7 +235,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
         # Ensure that the toctree secnumber suffix value can be set to an
         # empty string.
 
-        dataset = os.path.join(self.datasets, 'toctree-numbered')
+        dataset = self.datasets / 'toctree-numbered'
 
         config = dict(self.config)
         config['confluence_secnumber_suffix'] = ''
@@ -287,7 +286,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_sphinx_toctree_numbered_secnumbers_suffix_set(self):
-        dataset = os.path.join(self.datasets, 'toctree-numbered')
+        dataset = self.datasets / 'toctree-numbered'
 
         config = dict(self.config)
         config['confluence_secnumber_suffix'] = '!Z /+4'

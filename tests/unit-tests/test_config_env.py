@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from tests.lib import prepare_conf
 from tests.lib import prepare_sphinx
 import os
@@ -10,8 +11,8 @@ import unittest
 class TestConfluenceConfigEnvironment(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        test_dir = os.path.dirname(os.path.realpath(__file__))
-        cls.dataset = os.path.join(test_dir, 'datasets', 'common')
+        test_dir = Path(__file__).parent.resolve()
+        cls.dataset = test_dir / 'datasets' / 'common'
 
     def run(self, result=None):
         # unique configuration each run to avoid copying it in each test

@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceRstTransitions(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceRstTransitions(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'rst', 'transitions')
+        cls.dataset = cls.datasets / 'rst' / 'transitions'
 
     @setup_builder('confluence')
     def test_storage_rst_transitions_default(self):

@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceExpand(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceExpand(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'expand')
+        cls.dataset = cls.datasets / 'expand'
 
     @setup_builder('confluence')
     def test_storage_confluence_expand_directive_expected(self):

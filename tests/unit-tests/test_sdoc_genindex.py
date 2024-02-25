@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestSdocGenindex(ConfluenceTestCase):
@@ -12,23 +11,23 @@ class TestSdocGenindex(ConfluenceTestCase):
     def test_storage_sdoc_genindex_default_missing_confluence(self):
         """validate genindex is not added by default (confluence)"""
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
 
         out_dir = self.build(dataset)
 
-        fname_check = os.path.join(out_dir, 'genindex.conf')
-        self.assertFalse(os.path.exists(fname_check))
+        fname_check = out_dir / 'genindex.conf'
+        self.assertFalse(fname_check.is_file())
 
     @setup_builder('singleconfluence')
     def test_storage_sdoc_genindex_default_missing_singleconfluence(self):
         """validate genindex is not added by default (singleconfluence)"""
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
 
         out_dir = self.build(dataset)
 
-        fname_check = os.path.join(out_dir, 'genindex.conf')
-        self.assertFalse(os.path.exists(fname_check))
+        fname_check = out_dir / 'genindex.conf'
+        self.assertFalse(fname_check.is_file())
 
     @setup_builder('confluence')
     def test_storage_sdoc_genindex_explicit_disabled(self):
@@ -39,7 +38,7 @@ class TestSdocGenindex(ConfluenceTestCase):
         # option explicitly, the original genindex document should not be
         # touched.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'genindex-placeholder')
+        dataset = self.datasets / 'sdoc' / 'genindex-placeholder'
         config = dict(self.config)
         config['confluence_use_index'] = False
 
@@ -57,7 +56,7 @@ class TestSdocGenindex(ConfluenceTestCase):
         # Ensures the extension adds a "genindex" document; even if its not in a
         # documentation set's toctree.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'genindex')
+        dataset = self.datasets / 'sdoc' / 'genindex'
         config = dict(self.config)
         config['confluence_use_index'] = True
 
@@ -85,9 +84,9 @@ class TestSdocGenindex(ConfluenceTestCase):
         # Ensures that when the extension adds a "genindex" document; any custom
         # defined header/footer data is also injected into the document.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'genindex')
-        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
+        dataset = self.datasets / 'sdoc' / 'genindex'
+        footer_tpl = str(self.templates_dir / 'sample-footer.tpl')
+        header_tpl = str(self.templates_dir / 'sample-header.tpl')
 
         config = dict(self.config)
         config['confluence_use_index'] = True
@@ -110,7 +109,7 @@ class TestSdocGenindex(ConfluenceTestCase):
         # If a "genindex" document is found in the documentation set's toctree,
         # the document should be generated.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'genindex-placeholder')
+        dataset = self.datasets / 'sdoc' / 'genindex-placeholder'
 
         out_dir = self.build(dataset)
 

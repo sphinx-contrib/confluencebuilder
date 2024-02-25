@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
@@ -12,15 +11,15 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'header-footer')
+        cls.dataset = cls.datasets / 'header-footer'
 
     @setup_builder('confluence')
     def test_storage_config_headerfooter_absolute(self):
         config = dict(self.config)
-        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
-        config['confluence_footer_file'] = footer_tpl
-        config['confluence_header_file'] = header_tpl
+        footer_tpl = self.templates_dir / 'sample-footer.tpl'
+        header_tpl = self.templates_dir / 'sample-header.tpl'
+        config['confluence_footer_file'] = str(footer_tpl)
+        config['confluence_header_file'] = str(header_tpl)
 
         out_dir = self.build(self.dataset, config=config)
 

@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestSdocModindex(ConfluenceTestCase):
@@ -12,23 +11,23 @@ class TestSdocModindex(ConfluenceTestCase):
     def test_sdoc_modindex_default_missing_confluence(self):
         """validate modindex is not added by default (storage)"""
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
 
         out_dir = self.build(dataset)
 
-        fname_check = os.path.join(out_dir, 'py-modindex.conf')
-        self.assertFalse(os.path.exists(fname_check))
+        fname_check = out_dir / 'py-modindex.conf'
+        self.assertFalse(fname_check.is_file())
 
     @setup_builder('singleconfluence')
     def test_sdoc_modindex_default_missing_singleconfluence(self):
         """validate modindex is not added by default (storage)"""
 
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
 
         out_dir = self.build(dataset)
 
-        fname_check = os.path.join(out_dir, 'py-modindex.conf')
-        self.assertFalse(os.path.exists(fname_check))
+        fname_check = out_dir / 'py-modindex.conf'
+        self.assertFalse(fname_check.is_file())
 
     @setup_builder('confluence')
     def test_storage_sdoc_modindex_enabled(self):
@@ -37,7 +36,7 @@ class TestSdocModindex(ConfluenceTestCase):
         # Ensures the extension adds a "py-modindex" document when the domain
         # indices option is assigned to include the domain type.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
+        dataset = self.datasets / 'sdoc' / 'py-modindex'
         config = dict(self.config)
         config['confluence_domain_indices'] = [
             'py-modindex',
@@ -67,7 +66,7 @@ class TestSdocModindex(ConfluenceTestCase):
         # Ensures the extension adds a "py-modindex" document when the domain
         # indices option is assigned to a `True` value.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
+        dataset = self.datasets / 'sdoc' / 'py-modindex'
         config = dict(self.config)
         config['confluence_domain_indices'] = True
 
@@ -95,9 +94,9 @@ class TestSdocModindex(ConfluenceTestCase):
         # Ensures that when the extension adds a "modindex" document; any custom
         # defined header/footer data is also injected into the document.
 
-        dataset = os.path.join(self.datasets, 'sdoc', 'py-modindex')
-        footer_tpl = os.path.join(self.templates_dir, 'sample-footer.tpl')
-        header_tpl = os.path.join(self.templates_dir, 'sample-header.tpl')
+        dataset = self.datasets / 'sdoc' / 'py-modindex'
+        footer_tpl = str(self.templates_dir / 'sample-footer.tpl')
+        header_tpl = str(self.templates_dir / 'sample-header.tpl')
 
         config = dict(self.config)
         config['confluence_domain_indices'] = True

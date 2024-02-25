@@ -3,7 +3,7 @@
 
 from bs4 import BeautifulSoup
 from contextlib import contextmanager
-import os
+from pathlib import Path
 
 
 @contextmanager
@@ -24,12 +24,12 @@ def parse(filename, dirname=None):
         the parsed output
     """
     if dirname:
-        target = os.path.join(dirname, filename)
+        target = Path(dirname) / filename
     else:
-        target = filename
+        target = Path(filename)
 
-    target += '.conf'
+    target = target.parent / (target.name + '.conf')
 
-    with open(target, encoding='utf-8') as fp:
+    with target.open(encoding='utf-8') as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         yield soup

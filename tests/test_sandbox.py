@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import build_sphinx
@@ -13,9 +14,8 @@ import sys
 
 
 def process_sandbox(target_sandbox, builder=None, defines=None):
-    test_dir = os.path.dirname(os.path.realpath(__file__))
-    base_dir = os.path.join(test_dir, os.pardir)
-    sandbox_dir = os.path.join(base_dir, target_sandbox)
+    test_dir = Path(__file__).parent.resolve()
+    sandbox_dir = test_dir.parent / target_sandbox
 
     container = 'sandbox-test'
     if builder:
@@ -27,12 +27,11 @@ def process_sandbox(target_sandbox, builder=None, defines=None):
 
 
 def process_raw_upload(target_sandbox):
-    test_dir = os.path.dirname(os.path.realpath(__file__))
-    base_dir = os.path.join(test_dir, os.pardir)
-    sandbox_dir = os.path.join(base_dir, target_sandbox)
-    raw_file = os.path.join(sandbox_dir, 'raw.conf')
+    test_dir = Path(__file__).parent.resolve()
+    sandbox_dir = test_dir.parent / target_sandbox
+    raw_file = sandbox_dir / 'raw.conf'
 
-    if not os.path.exists(raw_file):
+    if not raw_file.is_file():
         print('[sandbox] missing file', raw_file)
         return
 
@@ -47,7 +46,7 @@ def process_raw_upload(target_sandbox):
                 'labels': [],
             }
 
-            with open(raw_file, 'r', encoding='utf-8') as f:
+            with raw_file.open(encoding='utf-8') as f:
                 data['content'] = f.read()
 
             print('[sandbox] publishing page...')

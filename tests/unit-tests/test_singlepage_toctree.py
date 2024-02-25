@@ -4,13 +4,12 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceSinglepageToctree(ConfluenceTestCase):
     @setup_builder('singleconfluence')
     def test_storage_singlepage_toctree_default(self):
-        dataset = os.path.join(self.datasets, 'toctree-default')
+        dataset = self.datasets / 'toctree-default'
 
         out_dir = self.build(dataset)
 
@@ -72,7 +71,7 @@ class TestConfluenceSinglepageToctree(ConfluenceTestCase):
 
     @setup_builder('singleconfluence')
     def test_storage_singlepage_toctree_numbered(self):
-        dataset = os.path.join(self.datasets, 'toctree-numbered')
+        dataset = self.datasets / 'toctree-numbered'
 
         out_dir = self.build(dataset)
 

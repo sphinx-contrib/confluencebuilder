@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from tests.lib import prepare_dirs
 from tests.lib.testcase import ConfluenceTestCase
 from unittest.mock import patch
-import os
 
 
 class TestConfluenceLegacyPages(ConfluenceTestCase):
@@ -39,10 +39,11 @@ class TestConfluenceLegacyPages(ConfluenceTestCase):
         out_dir = prepare_dirs()
 
         with temp_dir() as src_dir:
-            conf_file = os.path.join(src_dir, 'conf.py')
+            src_dir = Path(src_dir)
+            conf_file = src_dir / 'conf.py'
             write_doc(conf_file, '')
 
-            index_file = os.path.join(src_dir, 'index.rst')
+            index_file = src_dir / 'index.rst'
             write_doc(index_file, '''\
 index
 =====
@@ -53,7 +54,7 @@ index
     third
 ''')
 
-            second_file = os.path.join(src_dir, 'second.rst')
+            second_file = src_dir / 'second.rst'
             write_doc(second_file, '''\
 second
 ======
@@ -61,7 +62,7 @@ second
 content
 ''')
 
-            third_file = os.path.join(src_dir, 'third.rst')
+            third_file = src_dir / 'third.rst'
             write_doc(third_file, '''\
 third
 =====
@@ -86,7 +87,7 @@ content
             self.assertEqual(len(publisher.removed), 0)
 
             # remove the second file; update the index to drop the entry
-            os.remove(second_file)
+            second_file.unlink()
 
             write_doc(index_file, '''\
 index
@@ -166,9 +167,9 @@ class MockedPublisher:
         return 0
 
 
-def write_doc(fname, data):
+def write_doc(file, data):
     try:
-        with open(fname, 'w') as f:
+        with file.open('w') as f:
             f.write(data)
     except OSError:
         pass

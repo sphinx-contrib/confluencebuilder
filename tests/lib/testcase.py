@@ -2,10 +2,10 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from functools import wraps
+from pathlib import Path
 from tests.lib import build_sphinx
 from tests.lib import prepare_conf
 from tests.lib import prepare_sphinx
-import os
 import unittest
 
 # default builder to test against
@@ -42,13 +42,12 @@ class ConfluenceTestCase(unittest.TestCase):
         cls.config = prepare_conf()
 
         # provide a reference to common directories
-        lib_dir = os.path.dirname(os.path.realpath(__file__))
-        tests_dir = os.path.join(lib_dir, os.pardir)
-        unit_tests_dir = os.path.join(tests_dir, 'unit-tests')
+        lib_dir = Path(__file__).parent.resolve()
+        unit_tests_dir = lib_dir.parent / 'unit-tests'
 
-        cls.assets_dir = os.path.join(unit_tests_dir, 'assets')
-        cls.datasets = os.path.join(unit_tests_dir, 'datasets')
-        cls.templates_dir = os.path.join(unit_tests_dir, 'templates')
+        cls.assets_dir = unit_tests_dir / 'assets'
+        cls.datasets = unit_tests_dir / 'datasets'
+        cls.templates_dir = unit_tests_dir / 'templates'
 
     def build(self, *args, **kwargs):
         """

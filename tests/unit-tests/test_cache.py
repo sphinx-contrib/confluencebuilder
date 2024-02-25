@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from tests.lib import prepare_dirs
 from tests.lib.testcase import ConfluenceTestCase
-import os
 
 
 class TestCache(ConfluenceTestCase):
@@ -15,7 +15,7 @@ class TestCache(ConfluenceTestCase):
         # Confluence-specific configuration flags that a rebuild is needed.
 
         config = dict(self.config)
-        dataset = os.path.join(self.datasets, 'minimal')
+        dataset = self.datasets / 'minimal'
         out_dir = prepare_dirs()
         src_docs = []
 
@@ -90,15 +90,16 @@ class TestCache(ConfluenceTestCase):
 
             return []
 
-        def write_doc(fname, data):
+        def write_doc(file, data):
             try:
-                with open(fname, 'w') as f:
+                with file.open('w') as f:
                     f.write(data)
             except OSError:
                 pass
 
         with temp_dir() as src_dir:
-            index_file = os.path.join(src_dir, 'index.rst')
+            src_dir = Path(src_dir)
+            index_file = src_dir / 'index.rst'
             write_doc(index_file, '''\
 index
 =====
@@ -106,7 +107,7 @@ index
 content
 ''')
 
-            second_file = os.path.join(src_dir, 'second.rst')
+            second_file = src_dir / 'second.rst'
             write_doc(second_file, '''\
 :orphan:
 

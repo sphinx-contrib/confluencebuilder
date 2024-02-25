@@ -4,7 +4,6 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import os
 
 
 class TestConfluenceMentions(ConfluenceTestCase):
@@ -12,7 +11,7 @@ class TestConfluenceMentions(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'mentions')
+        cls.dataset = cls.datasets / 'mentions'
 
     @setup_builder('html')
     def test_html_confluence_mention_role_ignore(self):

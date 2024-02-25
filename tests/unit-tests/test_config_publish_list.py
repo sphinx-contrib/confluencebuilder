@@ -7,7 +7,6 @@ from tests.lib.testcase import ConfluenceTestCase
 from unittest.mock import ANY
 from unittest.mock import call
 from unittest.mock import patch
-import os
 
 
 class TestConfluenceConfigPublishList(ConfluenceTestCase):
@@ -15,7 +14,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = os.path.join(cls.datasets, 'publish-list')
+        cls.dataset = cls.datasets / 'publish-list'
 
         cls.config['confluence_publish'] = True
         cls.config['confluence_server_url'] = 'https://dummy.example.com/'
@@ -68,7 +67,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_allow_list_file_default_abs(self):
-        publish_list = os.path.join(self.dataset, 'publish-list-default')
+        publish_list = str(self.dataset / 'publish-list-default')
 
         config = dict(self.config)
         config['confluence_publish_allowlist'] = publish_list
@@ -94,7 +93,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_allow_list_file_empty(self):
-        publish_list = os.path.join(self.dataset, 'publish-list-empty')
+        publish_list = str(self.dataset / 'publish-list-empty')
 
         config = dict(self.config)
         config['confluence_publish_allowlist'] = publish_list
@@ -199,7 +198,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_deny_list_file_default_abs(self):
-        publish_list = os.path.join(self.dataset, 'publish-list-default')
+        publish_list = str(self.dataset / 'publish-list-default')
 
         config = dict(self.config)
         config['confluence_publish_denylist'] = publish_list
@@ -223,7 +222,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_deny_list_file_empty(self):
-        publish_list = os.path.join(self.dataset, 'publish-list-empty')
+        publish_list = str(self.dataset / 'publish-list-empty')
 
         config = dict(self.config)
         config['confluence_publish_denylist'] = publish_list

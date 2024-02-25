@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from os import path
+from pathlib import Path
 from sphinx.util import docutils
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config import handle_config_inited
@@ -58,9 +58,9 @@ def setup(app):
     app.add_builder(SingleConfluenceBuilder)
 
     # register this extension's locale
-    package_dir = path.abspath(path.dirname(__file__))
-    locale_dir = path.join(package_dir, 'locale')
-    app.add_message_catalog(MESSAGE_CATALOG_NAME, locale_dir)
+    package_dir = Path(__file__).parent.resolve()
+    locale_dir = package_dir / 'locale'
+    app.add_message_catalog(MESSAGE_CATALOG_NAME, str(locale_dir))
 
     # ##########################################################################
 
