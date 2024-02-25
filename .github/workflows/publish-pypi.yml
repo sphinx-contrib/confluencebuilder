@@ -1,0 +1,88 @@
+name: Publish
+permissions: read-all
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Generate hashes
+        run: |
+          cd dist/
+          sha256sum -b * >SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Store release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: dist/
+
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/project/sphinxcontrib-confluencebuilder/
+    needs:
+      - build
+    permissions:
+      id-token: write
+    steps:
+      - name: Acquire release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: dist/
+
+      - name: Prepare distribution
+        run: rm dist/SHA256SUMS
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  draft-release:
+    name: Prepare GitHub Draft Release
+    runs-on: ubuntu-latest
+    environment: release
+    needs:
+      - build
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Acquire release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: dist/
+
+      - name: Prepare GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          gh release create --draft --verify-tag
+            '${{ github.ref_name }}' dist/**
