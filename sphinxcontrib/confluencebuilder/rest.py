@@ -4,6 +4,7 @@
 from functools import wraps
 from email.utils import mktime_tz
 from email.utils import parsedate_tz
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
@@ -235,14 +236,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def get(self, key, params=None):
-        rest_url = self.url + self.bind_path + '/' + key
-
-        rsp = self.session.get(rest_url, params=params, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def get(self, path, params=None):
+        rsp = self._process_request('GET', path, params=params)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -258,15 +256,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def post(self, key, data, files=None):
-        rest_url = self.url + self.bind_path + '/' + key
-
-        rsp = self.session.post(
-            rest_url, json=data, files=files, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def post(self, path, data, files=None):
+        rsp = self._process_request('POST', path, json=data, files=files)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
@@ -285,14 +279,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def put(self, key, value, data):
-        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
-
-        rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def put(self, path, value, data):
+        rsp = self._process_request('PUT', f'{path}/{value}', json=data)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
@@ -311,32 +302,52 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def delete(self, key, value):
-        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
-
-        rsp = self.session.delete(rest_url, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def delete(self, path, value):
+        rsp = self._process_request('DELETE', f'{path}/{value}')
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
 
     def close(self):
         self.session.close()
 
-    def _format_error(self, rsp, key):
+    def _format_error(self, rsp, path):
         err = ""
         err += f"REQ: {rsp.request.method}\n"
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.bind_path + "\n"
-        err += "API: " + key + "\n"
+        err += "API: " + path + "\n"
         try:
             err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
         except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err
 
-    def _handle_common_request(self, rsp):
+    def _process_request(self, method, path, *args, **kwargs):
+        dump = PublishDebug.headers in self.config.confluence_publish_debug
+
+        rest_url = f'{self.url}{self.bind_path}/{path}'
+        base_req = requests.Request(method, rest_url, *args, **kwargs)
+        req = self.session.prepare_request(base_req)
+
+        # debug logging
+        if dump:
+            print('')  # leading newline, if debugging into active line
+            print('(debug) Request]')
+            print(f'{req.method} {req.url}')
+            print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
+            print('')
+
+        # perform the rest request
+        rsp = self.session.send(req, timeout=self.timeout)
+
+        # debug logging
+        if dump:
+            print('(debug) Response]')
+            print(f'Code: {rsp.status_code}')
+            print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
+            print('')
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made
@@ -366,6 +377,13 @@ class Rest:
                                 math.ceil(delay)))
                     self._reported_large_delay = True
 
+        # check if Confluence reports a `Deprecation` header in the response;
+        # if so, log a message is we have the debug message enabled to help
+        # inform developers that this api call may required updating
+        if PublishDebug.deprecated in self.config.confluence_publish_debug:
+            if rsp.headers.get('Deprecation'):
+                logger.warn(f'(warning) deprecated api call made: {path}')
+
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
@@ -374,3 +392,5 @@ class Rest:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:
             raise ConfluenceRateLimitedError
+
+        return rsp

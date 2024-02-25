@@ -1378,15 +1378,28 @@ Advanced publishing configuration
 .. confval:: confluence_publish_debug
 
     .. versionadded:: 1.8
+    .. versionchanged:: 2.5
 
-    A boolean value to whether or not to print debug requests made to a
-    Confluence instance. This can be helpful for users attempting to debug
-    their connection to a Confluence instance. By default, this option is
-    disabled with a value of ``False``.
+        Switched from boolean to string for setting new debugging options.
+
+    Configures the ability to enable certain debugging messages for requests
+    made to a Confluence instance. This can be helpful for users attempting
+    to debug their connection to a Confluence instance. By default, no
+    debugging is enabled.
+
+    Available options are as follows:
+
+    - ``all``: Enable all debugging options.
+    - ``deprecated``: Log warnings when a deprecated API call is used
+      (*for development purposes*).
+    - ``headers``: Log requests and responses, including their headers.
+    - ``urllib3``: Enable urllib3 library debugging messages.
+
+    An example debugging configuration is as follows:
 
     .. code-block:: python
 
-        confluence_publish_debug = True
+        confluence_publish_debug = 'urllib3'
 
 .. confval:: confluence_publish_delay
 

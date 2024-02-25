@@ -8,6 +8,7 @@ See also:
 """
 
 from sphinx.util.logging import skip_warningiserror
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
@@ -41,7 +42,6 @@ class ConfluencePublisher:
         self.cloud = cloud
         self.config = config
         self.append_labels = config.confluence_append_labels
-        self.debug = config.confluence_publish_debug
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
@@ -56,7 +56,7 @@ class ConfluencePublisher:
             self.append_labels = True
 
         # if debugging, enable requests (urllib3) logging
-        if self.debug:
+        if PublishDebug.urllib3 in self.config.confluence_publish_debug:
             logging.basicConfig()
             logging.getLogger().setLevel(logging.DEBUG)
             rlog = logging.getLogger('requests.packages.urllib3')

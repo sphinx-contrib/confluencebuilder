@@ -187,8 +187,8 @@ def setup(app):
     cm.add_conf('confluence_proxy')
     # Subset of documents which are allowed to be published.
     cm.add_conf('confluence_publish_allowlist')
-    # Enable debugging for publish requests.
-    cm.add_conf_bool('confluence_publish_debug')
+    # Configure debugging for publish requests.
+    cm.add_conf('confluence_publish_debug')
     # Duration (in seconds) to delay each API request.
     cm.add_conf('confluence_publish_delay')
     # Subset of documents which are denied to be published.

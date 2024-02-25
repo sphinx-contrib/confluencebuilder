@@ -4,6 +4,7 @@
 from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
@@ -551,6 +552,28 @@ The value type permitted for this publish list option can either be a list of
 document names or a string pointing to a file containing documents. Document
 names are relative to the documentation's source directory.
 '''.format(msg=e))
+
+    # ##################################################################
+
+    opts = PublishDebug._member_names_  # pylint: disable=no-member
+
+    # confluence_publish_debug
+    try:
+        validator.conf('confluence_publish_debug').bool()  # deprecated
+    except ConfluenceConfigurationError:
+        try:
+            validator.conf('confluence_publish_debug').enum(PublishDebug)
+        except ConfluenceConfigurationError as e:
+            opts = PublishDebug._member_names_  # pylint: disable=no-member
+            raise ConfluenceConfigurationError('''\
+{msg}
+
+The option 'confluence_publish_debug' has been configured to enable publish
+debugging. Accepted values include:
+
+ - all
+ - {opts}
+'''.format(msg=e, opts='\n - '.join(opts)))
 
     # ##################################################################
 
