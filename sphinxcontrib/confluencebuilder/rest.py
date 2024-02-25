@@ -235,14 +235,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def get(self, key, params=None):
-        rest_url = self.url + self.bind_path + '/' + key
-
-        rsp = self.session.get(rest_url, params=params, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def get(self, path, params=None):
+        rsp = self._process_request('GET', path, params=params)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
@@ -258,15 +255,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def post(self, key, data, files=None):
-        rest_url = self.url + self.bind_path + '/' + key
-
-        rsp = self.session.post(
-            rest_url, json=data, files=files, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def post(self, path, data, files=None):
+        rsp = self._process_request('POST', path, json=data, files=files)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
@@ -285,14 +278,11 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def put(self, key, value, data):
-        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
-
-        rsp = self.session.put(rest_url, json=data, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def put(self, path, value, data):
+        rsp = self._process_request('PUT', f'{path}/{value}', json=data)
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             if self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
@@ -311,32 +301,35 @@ class Rest:
 
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def delete(self, key, value):
-        rest_url = self.url + self.bind_path + '/' + key + '/' + str(value)
-
-        rsp = self.session.delete(rest_url, timeout=self.timeout)
-        self._handle_common_request(rsp)
+    def delete(self, path, value):
+        rsp = self._process_request('DELETE', f'{path}/{value}')
 
         if not rsp.ok:
-            errdata = self._format_error(rsp, key)
+            errdata = self._format_error(rsp, path)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
 
     def close(self):
         self.session.close()
 
-    def _format_error(self, rsp, key):
+    def _format_error(self, rsp, path):
         err = ""
         err += f"REQ: {rsp.request.method}\n"
         err += "RSP: " + str(rsp.status_code) + "\n"
         err += "URL: " + self.url + self.bind_path + "\n"
-        err += "API: " + key + "\n"
+        err += "API: " + path + "\n"
         try:
             err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
         except:  # noqa: E722
             err += 'DATA: <not-or-invalid-json>'
         return err
 
-    def _handle_common_request(self, rsp):
+    def _process_request(self, method, path, *args, **kwargs):
+        rest_url = f'{self.url}{self.bind_path}/{path}'
+        req = requests.Request(method, rest_url, *args, **kwargs)
+        prepared_request = self.session.prepare_request(req)
+
+        # perform the rest request
+        rsp = self.session.send(prepared_request, timeout=self.timeout)
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made
@@ -374,3 +367,5 @@ class Rest:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:
             raise ConfluenceRateLimitedError
+
+        return rsp
