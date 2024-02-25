@@ -2,7 +2,6 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 # Copyright 2007-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
-from os import path
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 import re
 import requests
@@ -32,7 +31,8 @@ def build_intersphinx(builder):
     else:
         pages_part = 'pages/viewpage.action?pageId={}'
 
-    with open(path.join(builder.outdir, INVENTORY_FILENAME), 'wb') as f:
+    inventory_db = builder.out_dir / INVENTORY_FILENAME
+    with inventory_db.open('wb') as f:
         # header
         f.write((
             '# Sphinx inventory version 2\n'

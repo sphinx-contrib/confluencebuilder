@@ -5,12 +5,12 @@
 from collections import defaultdict
 from docutils import nodes
 from docutils.io import StringOutput
+from pathlib import Path
 from os import path
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
 from sphinx.locale import _ as SL
-from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
@@ -41,7 +41,6 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
-import os
 import tempfile
 
 
@@ -78,6 +77,7 @@ class ConfluenceBuilder(Builder):
         self.nav_prev = {}
         self.omitted_docnames = []
         self.orphan_docnames = []
+        self.out_dir = Path(self.outdir)
         self.parent_id = None
         self.publish_allowlist = None
         self.publish_denylist = None
@@ -135,7 +135,7 @@ class ConfluenceBuilder(Builder):
         # files are build -- use this to hint to using a temporary directory
         # on the same partition the output directory to help prevent issues.
         self._imgmath_tempdir = tempfile.mkdtemp(
-            prefix='.imgmath-', dir=self.outdir)
+            prefix='.imgmath-', dir=self.out_dir)
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)
@@ -469,15 +469,15 @@ class ConfluenceBuilder(Builder):
         destination = StringOutput(encoding='utf-8')
 
         self.writer.write(doctree, destination)
-        outfilename = path.join(self.outdir, self.file_transform(docname))
+        out_file = self.out_dir / self.file_transform(docname)
         if self.writer.output is not None:
-            ensuredir(path.dirname(outfilename))
+            out_file.parent.mkdir(parents=True, exist_ok=True)
             try:
-                with open(outfilename, 'w', encoding='utf-8') as file:
+                with out_file.open('w', encoding='utf-8') as file:
                     if self.writer.output:
                         file.write(self.writer.output)
             except OSError as err:
-                self.warn(f'error writing file {outfilename}: {err}')
+                self.warn(f'error writing file {out_file}: {err}')
 
         self._cache_info.track_page_hash(docname)
 
@@ -760,10 +760,10 @@ class ConfluenceBuilder(Builder):
                 if self._check_publish_skip(docname):
                     self.verbose(docname + ' skipped due to configuration')
                     continue
-                docfile = path.join(self.outdir, self.file_transform(docname))
+                docfile = self.out_dir / self.file_transform(docname)
 
                 try:
-                    with open(docfile, encoding='utf-8') as file:
+                    with docfile.open(encoding='utf-8') as file:
                         output = file.read()
                         self.publish_doc(docname, output)
                 except OSError as err:
@@ -774,10 +774,10 @@ class ConfluenceBuilder(Builder):
             self.info('done')
 
             if self.config.confluence_publish_intersphinx:
-                inv = path.join(self.outdir, 'objects.inv')
-                if os.path.exists(inv):
+                inventory_db = self.out_dir / 'objects.inv'
+                if inventory_db.is_file():
                     self.verbose('registering intersphinx database attachment')
-                    self.assets.add(inv, self.config.root_doc)
+                    self.assets.add(str(inventory_db), self.config.root_doc)
                 else:
                     self.verbose('no generated intersphinx database detected')
 
@@ -948,9 +948,9 @@ class ConfluenceBuilder(Builder):
                         self.config.confluence_footer_data)
 
         # generate/replace the document in the output directory
-        fname = path.join(self.outdir, docname + self.file_suffix)
+        out_file = self.out_dir / (docname + self.file_suffix)
         try:
-            with open(fname, 'w', encoding='utf-8') as f:
+            with out_file.open('w', encoding='utf-8') as f:
                 f.write(self._cached_header_data)
                 generator(self, docname, f)
                 f.write(self._cached_footer_data)

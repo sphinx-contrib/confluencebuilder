@@ -3,12 +3,10 @@
 
 from hashlib import sha256
 from sphinx.util.images import guess_mimetype
-from sphinx.util.osutil import ensuredir
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
-import os
 import xml.etree.ElementTree as xml_et
 
 
@@ -194,23 +192,23 @@ def confluence_supported_svg(builder, node):
         return
 
     fname = sha256(svg_data).hexdigest() + '.svg'
-    outfn = os.path.join(builder.outdir, builder.imagedir, 'svgs', fname)
+    out_file = builder.out_dir / builder.imagedir / 'svgs' / fname
 
     # write the new svg file (if needed)
-    if not os.path.isfile(outfn):
+    if not out_file.is_file():
         logger.verbose('generating compatible svg of: %s' % uri)
-        logger.verbose('generating compatible svg to: %s' % outfn)
+        logger.verbose(f'generating compatible svg to: {out_file}')
 
-        ensuredir(os.path.dirname(outfn))
+        out_file.parent.mkdir(parents=True, exist_ok=True)
         try:
-            with open(outfn, 'wb') as f:
+            with out_file.open('wb') as f:
                 f.write(svg_data)
         except (IOError, OSError) as err:
             builder.warn('error writing svg: %s' % err)
             return
 
     # replace the required node attributes
-    node['uri'] = outfn
+    node['uri'] = str(out_file)
 
     if 'height' in node:
         del node['height']

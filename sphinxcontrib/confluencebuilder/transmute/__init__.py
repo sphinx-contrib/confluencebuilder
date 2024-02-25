@@ -2,7 +2,6 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
-from os import path
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
@@ -136,7 +135,7 @@ def prepare_math_images(builder, doctree):
 
             new_node = nodes.image(
                 candidates={'?'},
-                uri=path.join(builder.outdir, mf),
+                uri=str(builder.out_dir / mf),
                 **node.attributes)
 
             if depth is not None:
