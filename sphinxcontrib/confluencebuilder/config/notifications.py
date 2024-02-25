@@ -96,3 +96,7 @@ def warnings(validator):
     # confluence_editor assigned to an editor that is not supported
     if config.confluence_editor and config.confluence_editor not in EDITORS:
         logger.warn('confluence_editor configured with an unsupported editor')
+
+    # confluence_publish_debug should be using the new string values
+    if isinstance(config.confluence_publish_debug, bool):
+        logger.warn('confluence_publish_debug using deprecated bool value')

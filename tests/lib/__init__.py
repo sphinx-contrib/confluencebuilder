@@ -9,6 +9,7 @@ from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import util
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from threading import Event
 from threading import Lock
 from threading import Thread
@@ -480,8 +481,8 @@ def prepare_conf_publisher():
 
     config = prepare_conf()
 
-    # always enable debug prints from urllib
-    config.confluence_publish_debug = True
+    # always enable debug prints from urllib3
+    config.confluence_publish_debug = PublishDebug.urllib3
 
     # define a timeout to ensure publishing tests do not block
     config.confluence_timeout = 5

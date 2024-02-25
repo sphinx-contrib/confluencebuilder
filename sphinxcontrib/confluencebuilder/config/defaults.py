@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.util import str2bool
 import os
 
@@ -86,6 +87,19 @@ def apply_defaults(builder):
     if conf.confluence_permit_raw_html is None and \
             conf.confluence_adv_permit_raw_html is not None:
         conf.confluence_permit_raw_html = conf.confluence_adv_permit_raw_html
+
+    # ensure confluence_publish_debug is set with its expected enum value
+    publish_debug = conf.confluence_publish_debug
+    if publish_debug is not None and publish_debug is not False:
+        # a boolean-provided publish debug is deprecated, but we will accept
+        # it as its original implementation as an indication to enable
+        # urllib3 logs
+        if publish_debug is True:
+            conf.confluence_publish_debug = PublishDebug.urllib3
+        elif not isinstance(publish_debug, PublishDebug):
+            conf.confluence_publish_debug = PublishDebug[publish_debug.lower()]
+    else:
+        conf.confluence_publish_debug = PublishDebug.none
 
     if conf.confluence_publish_intersphinx is None:
         conf.confluence_publish_intersphinx = True
