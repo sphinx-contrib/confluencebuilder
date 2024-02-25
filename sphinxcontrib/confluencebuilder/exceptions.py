@@ -86,7 +86,6 @@ as the identifier could not be found.
 
       Space: {space_key}
     Page Id: {page_id}
-
 ---
 '''.format(space_key=space_key, page_id=page_id))
 
@@ -240,7 +239,6 @@ timed out. Ensure the instance is running and inspect that the
 configured Confluence URL is valid:
 
    {url}
-
 ---
 '''.format(url=server_url))
 
