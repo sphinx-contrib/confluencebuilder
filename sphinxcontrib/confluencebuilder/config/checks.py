@@ -278,7 +278,6 @@ The following editors are supported:
     # confluence_footer_file
     try:
         validator.conf('confluence_footer_file') \
-                 .string() \
                  .file()
     except ConfluenceConfigurationError as e:
         raise ConfluenceConfigurationError('''\
@@ -315,7 +314,6 @@ that contains no spaces.
     # confluence_header_file
     try:
         validator.conf('confluence_header_file') \
-                 .string() \
                  .file()
     except ConfluenceConfigurationError as e:
         raise ConfluenceConfigurationError('''\
@@ -534,16 +532,15 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
         # if provided a file via command line, treat as a list
         def conf_translate(value):
             return handle_cli_file_subset(builder, option, value)
+
         value = conf_translate(value)
+        option_val = validator.conf(option, conf_translate)
 
         try:
-            validator.conf(option, conf_translate) \
-                     .string_or_strings()
-
-            if isinstance(value, str):
-                validator.docnames_from_file()
+            if isinstance(value, (str, os.PathLike)):
+                option_val.docnames_from_file()
             else:
-                validator.docnames()
+                option_val.docnames()
         except ConfluenceConfigurationError as e:
             raise ConfluenceConfigurationError('''\
 {msg}

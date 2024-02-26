@@ -41,6 +41,7 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
+import os
 import tempfile
 
 
@@ -211,7 +212,7 @@ class ConfluenceBuilder(Builder):
             if value is None:
                 return None
 
-            if isinstance(value, str):
+            if isinstance(value, (str, os.PathLike)):
                 files = extract_strings_from_file(value)
             else:
                 files = value

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import str2bool
@@ -152,15 +153,14 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if not (isinstance(value, (list, set, tuple)) or not all(
-                    isinstance(label, str) for label in value)):
+            if not (isinstance(value, (list, set, tuple))) or not all(
+                    isinstance(label, (str, os.PathLike)) for label in value):
                 raise ConfluenceConfigurationError(
                     '%s is not a collection of filenames' % self.key)
 
             for docname in value:
                 if not any(
-                        os.path.isfile(
-                            os.path.join(self.env.srcdir, docname + suffix))
+                        Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
                     raise ConfluenceConfigurationError(
                         f'{self.key} is missing document {docname}')
@@ -186,16 +186,12 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if not isinstance(value, str) or not os.path.isfile(
-                    os.path.join(self.env.srcdir, value)):
-                raise ConfluenceConfigurationError(
-                    '%s is not a file' % self.key)
+            self.file()
 
             docnames = extract_strings_from_file(value)
             for docname in docnames:
                 if not any(
-                        os.path.isfile(
-                            os.path.join(self.env.srcdir, docname + suffix))
+                        Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
                     raise ConfluenceConfigurationError(
                         f'{self.key} is missing document {docname}')
@@ -247,8 +243,8 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if not isinstance(value, str) or not os.path.isfile(
-                    os.path.join(self.env.srcdir, value)):
+            if not isinstance(value, (str, os.PathLike)) or \
+                    not Path(self.env.srcdir, value).is_file():
                 raise ConfluenceConfigurationError(
                     '%s is not a file' % self.key)
 
@@ -378,8 +374,8 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if not isinstance(value, str) or not os.path.exists(
-                    os.path.join(self.env.srcdir, value)):
+            if not isinstance(value, (str, os.PathLike)) or \
+                    not Path(self.env.srcdir, value).exists():
                 raise ConfluenceConfigurationError(
                     '%s is not a path' % self.key)
 
