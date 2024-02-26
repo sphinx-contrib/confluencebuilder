@@ -18,8 +18,8 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
         config = dict(self.config)
         footer_tpl = self.templates_dir / 'sample-footer.tpl'
         header_tpl = self.templates_dir / 'sample-header.tpl'
-        config['confluence_footer_file'] = str(footer_tpl)
-        config['confluence_header_file'] = str(header_tpl)
+        config['confluence_footer_file'] = footer_tpl
+        config['confluence_header_file'] = header_tpl
 
         out_dir = self.build(self.dataset, config=config)
 

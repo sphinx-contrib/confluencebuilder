@@ -95,8 +95,8 @@ class TestSdocModindex(ConfluenceTestCase):
         # defined header/footer data is also injected into the document.
 
         dataset = self.datasets / 'sdoc' / 'py-modindex'
-        footer_tpl = str(self.templates_dir / 'sample-footer.tpl')
-        header_tpl = str(self.templates_dir / 'sample-header.tpl')
+        footer_tpl = self.templates_dir / 'sample-footer.tpl'
+        header_tpl = self.templates_dir / 'sample-header.tpl'
 
         config = dict(self.config)
         config['confluence_domain_indices'] = True

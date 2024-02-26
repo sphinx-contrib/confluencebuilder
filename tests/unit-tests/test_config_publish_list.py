@@ -67,7 +67,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_allow_list_file_default_abs(self):
-        publish_list = str(self.dataset / 'publish-list-default')
+        publish_list = self.dataset / 'publish-list-default'
 
         config = dict(self.config)
         config['confluence_publish_allowlist'] = publish_list
@@ -93,7 +93,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_allow_list_file_empty(self):
-        publish_list = str(self.dataset / 'publish-list-empty')
+        publish_list = self.dataset / 'publish-list-empty'
 
         config = dict(self.config)
         config['confluence_publish_allowlist'] = publish_list
@@ -198,7 +198,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_deny_list_file_default_abs(self):
-        publish_list = str(self.dataset / 'publish-list-default')
+        publish_list = self.dataset / 'publish-list-default'
 
         config = dict(self.config)
         config['confluence_publish_denylist'] = publish_list
@@ -222,7 +222,7 @@ class TestConfluenceConfigPublishList(ConfluenceTestCase):
         ], any_order=True)
 
     def test_config_publishlist_deny_list_file_empty(self):
-        publish_list = str(self.dataset / 'publish-list-empty')
+        publish_list = self.dataset / 'publish-list-empty'
 
         config = dict(self.config)
         config['confluence_publish_denylist'] = publish_list
