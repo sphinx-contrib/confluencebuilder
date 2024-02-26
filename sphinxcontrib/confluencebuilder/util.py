@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from contextlib import contextmanager
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
@@ -321,19 +322,19 @@ def handle_cli_file_subset(builder, option, value):
         the resolved configuration value
     """
 
-    if option in builder.config['overrides'] and isinstance(value, str):
+    if option in builder.config['overrides'] and \
+            isinstance(value, (str, os.PathLike)):
         if not value:
             # an empty command line subset is an "unset" request
             # (and not an empty list); if no values are detected,
             # return `None`
             return None
         else:
-            if os.path.isabs(value):
-                target_file = value
-            else:
-                target_file = os.path.join(builder.env.srcdir, value)
+            target_file = Path(value)
+            if not target_file.is_absolute():
+                target_file = Path(builder.env.srcdir, value)
 
-            if os.path.isfile(target_file):
+            if target_file.is_file():
                 value = target_file
             else:
                 value = value.split(',')

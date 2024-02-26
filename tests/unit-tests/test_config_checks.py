@@ -188,31 +188,48 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_ca_cert(self):
-        valid_cert_dir = str(self.test_dir)
-        valid_cert_file = str(self.dummy_exists)
-        missing_cert = str(self.dummy_missing)
+        valid_cert_dir = self.test_dir
+        valid_cert_file = self.dummy_exists
+        missing_cert = self.dummy_missing
 
         self.config['confluence_ca_cert'] = valid_cert_dir
         self._try_config()
 
+        self.config['confluence_ca_cert'] = str(valid_cert_dir)
+        self._try_config()
+
         self.config['confluence_ca_cert'] = valid_cert_file
+        self._try_config()
+
+        self.config['confluence_ca_cert'] = str(valid_cert_file)
         self._try_config()
 
         self.config['confluence_ca_cert'] = missing_cert
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
+        self.config['confluence_ca_cert'] = str(missing_cert)
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
     def test_config_check_client_cert(self):
-        valid_cert = str(self.dummy_exists)
-        missing_cert = str(self.dummy_missing)
+        valid_cert = self.dummy_exists
+        missing_cert = self.dummy_missing
 
         self.config['confluence_client_cert'] = valid_cert
+        self._try_config()
+
+        self.config['confluence_client_cert'] = str(valid_cert)
         self._try_config()
 
         self.config['confluence_client_cert'] = (valid_cert, valid_cert)
         self._try_config()
 
         self.config['confluence_client_cert'] = missing_cert
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_client_cert'] = str(missing_cert)
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
@@ -350,13 +367,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_footer_file(self):
-        valid_footer = str(self.dummy_exists)
-        missing_footer = str(self.dummy_missing)
+        valid_footer = self.dummy_exists
+        missing_footer = self.dummy_missing
 
         self.config['confluence_footer_file'] = valid_footer
         self._try_config()
 
+        self.config['confluence_footer_file'] = str(valid_footer)
+        self._try_config()
+
         self.config['confluence_footer_file'] = missing_footer
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_footer_file'] = str(missing_footer)
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
@@ -373,13 +397,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_header_file(self):
-        valid_header = str(self.dummy_exists)
-        missing_header = str(self.dummy_missing)
+        valid_header = self.dummy_exists
+        missing_header = self.dummy_missing
 
         self.config['confluence_header_file'] = valid_header
         self._try_config()
 
+        self.config['confluence_header_file'] = str(valid_header)
+        self._try_config()
+
         self.config['confluence_header_file'] = missing_header
+        with self.assertRaises(ConfluenceConfigurationError):
+            self._try_config()
+
+        self.config['confluence_header_file'] = str(missing_header)
         with self.assertRaises(ConfluenceConfigurationError):
             self._try_config()
 
@@ -671,6 +702,9 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # file with a valid document list
             self.assertTrue(valid_list.is_file())
+            self.config[option] = valid_list
+            self._try_config(dataset=dataset)
+
             self.config[option] = str(valid_list)
             self._try_config(dataset=dataset)
 
@@ -691,12 +725,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # file with invalid document list
             self.assertTrue(invalid_list.is_file())
+            self.config[option] = invalid_list
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config(dataset=dataset)
+
             self.config[option] = str(invalid_list)
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config(dataset=dataset)
 
             # missing file
             self.assertFalse(missing_list.is_file())
+            self.config[option] = missing_list
+            with self.assertRaises(ConfluenceConfigurationError):
+                self._try_config(dataset=dataset)
+
             self.config[option] = str(missing_list)
             with self.assertRaises(ConfluenceConfigurationError):
                 self._try_config(dataset=dataset)
