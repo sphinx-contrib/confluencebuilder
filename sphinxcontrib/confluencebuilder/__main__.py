@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder import __version__ as version
@@ -29,7 +30,7 @@ def main():
     parser.add_argument('--verbose', '-V', action='count', default=0)
     parser.add_argument('--version', action='version',
         version='%(prog)s ' + version)
-    parser.add_argument('--work-dir')
+    parser.add_argument('--work-dir', type=Path)
 
     args, _ = parser.parse_known_args()
     if args.help:

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinx.application import Sphinx
 from sphinx.locale import __
 from sphinx.util.docutils import docutils_namespace
@@ -8,7 +9,6 @@ from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.util import temp_dir
-import os
 import sys
 import traceback
 
@@ -34,7 +34,7 @@ def wipe_main(args_parser):
     if unknown_args:
         logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
 
-    work_dir = args.work_dir if args.work_dir else os.getcwd()
+    work_dir = args.work_dir if args.work_dir else Path.cwd()
 
     # protection warning
     if not args.danger:
@@ -63,8 +63,8 @@ To use this action, the argument '--danger' must be set.
     try:
         with temp_dir() as tmp_dir, docutils_namespace():
             app = Sphinx(
-                work_dir,            # document sources
-                work_dir,            # directory with configuration
+                str(work_dir),       # document sources
+                str(work_dir),       # directory with configuration
                 tmp_dir,             # output for built documents
                 tmp_dir,             # output for doctree files
                 'confluence',        # builder to execute
@@ -86,7 +86,7 @@ To use this action, the argument '--danger' must be set.
     except Exception:  # noqa: BLE001
         sys.stdout.flush()
         logger.error(traceback.format_exc())
-        if os.path.isfile(os.path.join(work_dir, 'conf.py')):
+        if Path(work_dir / 'conf.py').is_file():
             logger.error('unable to load configuration')
         else:
             logger.error('no documentation/missing configuration')

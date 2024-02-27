@@ -3,6 +3,7 @@
 
 from collections import OrderedDict
 from docutils import __version__ as docutils_version
+from pathlib import Path
 from requests import __version__ as requests_version
 from sphinx import __version__ as sphinx_version
 from sphinx.application import Sphinx
@@ -19,7 +20,6 @@ from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
 from urllib3 import __version__ as urllib3_version
 from xml.etree import ElementTree
-import os
 import platform
 import sys
 import traceback
@@ -68,7 +68,7 @@ def report_main(args_parser):
 
     rv = 0
     offline = args.offline
-    work_dir = args.work_dir if args.work_dir else os.getcwd()
+    work_dir = args.work_dir if args.work_dir else Path.cwd()
 
     # setup sphinx engine to extract configuration
     config = {}
@@ -81,8 +81,8 @@ def report_main(args_parser):
             print('fetching configuration information...')
             builder = ConfluenceReportBuilder.name
             app = Sphinx(
-                work_dir,            # document sources
-                work_dir,            # directory with configuration
+                str(work_dir),       # document sources
+                str(work_dir),       # directory with configuration
                 tmp_dir,             # output for built documents
                 tmp_dir,             # output for doctree files
                 builder,             # builder to execute
@@ -126,7 +126,7 @@ def report_main(args_parser):
         sys.stdout.flush()
         tb_msg = traceback.format_exc()
         logger.error(tb_msg)
-        if os.path.isfile(os.path.join(work_dir, 'conf.py')):
+        if Path(work_dir / 'conf.py').is_file():
             configuration_load_issue = 'unable to load configuration'
             configuration_load_issue += '\n\n' + tb_msg.strip()
         else:

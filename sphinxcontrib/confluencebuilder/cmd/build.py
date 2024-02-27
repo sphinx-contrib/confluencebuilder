@@ -2,10 +2,10 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from contextlib import suppress
+from pathlib import Path
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
-import os
 import sys
 
 #: default builder to invoke when one is not specified
@@ -26,7 +26,7 @@ def build_main(args_parser):
     """
 
     args_parser.add_argument('-D', action='append', default=[], dest='define')
-    args_parser.add_argument('--output-dir', '-o')
+    args_parser.add_argument('--output-dir', '-o', type=Path)
 
     known_args = sys.argv[1:]
     args, unknown_args = args_parser.parse_known_args(known_args)
@@ -42,12 +42,12 @@ def build_main(args_parser):
             logger.error('invalid define provided in command line')
             return 1
 
-    work_dir = args.work_dir if args.work_dir else os.getcwd()
+    work_dir = args.work_dir if args.work_dir else Path.cwd()
     if args.output_dir:
         output_dir = args.output_dir
     else:
-        output_dir = os.path.join(work_dir, '_build', 'confluence')
-    doctrees_dir = os.path.join(output_dir, '.doctrees')
+        output_dir = work_dir / '_build' / 'confluence'
+    doctrees_dir = output_dir / '.doctrees'
     builder = args.action if args.action else DEFAULT_BUILDER
 
     verbosity = 0
