@@ -4,7 +4,7 @@
 
 from contextlib import suppress
 from docutils import nodes
-from os import path
+from pathlib import Path
 from sphinx import addnodes
 from sphinx.locale import _ as SL
 from sphinx.locale import admonitionlabels
@@ -1340,8 +1340,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self._reference_context.append(self._end_ac_link_body(node))
 
     def _visit_reference_intern_uri(self, node):
-        docname = posixpath.normpath(
-            self.docparent + path.splitext(node['refuri'].split('#')[0])[0])
+        doc_path = Path(node['refuri'].split('#')[0])
+        doc_raw_id = Path(self.docparent) / doc_path.parent / doc_path.stem
+        docname = posixpath.normpath(doc_raw_id.as_posix())
         doctitle = self.state.title(docname)
         if not doctitle:
             self.warn('unable to build link to document due to '
@@ -2517,8 +2518,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._start_ac_macro(node, 'panel'))
             self.body.append(self._start_ac_rich_text_body_macro(node))
 
-        docname = posixpath.normpath(self.docparent +
-            path.splitext(PARAMS(node)['href'].split('#')[0])[0])
+        doc_path = Path(PARAMS(node)['href'].split('#')[0])
+        doc_raw_id = Path(self.docparent) / doc_path.parent / doc_path.stem
+        docname = posixpath.normpath(doc_raw_id.as_posix())
         doctitle = self.state.title(docname)
         if doctitle:
             attribs = {}
@@ -2550,8 +2552,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         raise nodes.SkipNode
 
     def visit_confluence_doc_card_inline(self, node):
-        docname = posixpath.normpath(self.docparent +
-            path.splitext(node['reftarget'].split('#')[0])[0])
+        doc_path = Path(node['reftarget'].split('#')[0])
+        doc_raw_id = Path(self.docparent) / doc_path.parent / doc_path.stem
+        docname = posixpath.normpath(doc_raw_id.as_posix())
         doctitle = self.state.title(docname)
         if doctitle:
             doctitle = self.encode(doctitle)

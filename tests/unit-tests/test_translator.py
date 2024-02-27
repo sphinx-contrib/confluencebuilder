@@ -33,4 +33,4 @@ class TestConfluenceBaseTranslator(unittest.TestCase):
             translator = ConfluenceBaseTranslator(doc, app.builder)
 
         self.assertEqual(translator.docname, 'foo/bar/baz')
-        self.assertEqual(translator.docparent, 'foo/bar/')
+        self.assertEqual(translator.docparent.as_posix(), 'foo/bar')

@@ -3,7 +3,7 @@
 
 from docutils import nodes
 from docutils.nodes import NodeVisitor as BaseTranslator
-from os import path
+from pathlib import Path
 from sphinx.util.images import get_image_size
 from sphinx.util.images import guess_mimetype
 from sphinx.util.osutil import SEP
@@ -49,9 +49,10 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # for relative document uris
         # (see '_visit_reference_intern_uri')
         if SEP in self.docname:
-            self.docparent = self.docname[0 : self.docname.rfind(SEP) + 1]
+            docparent = self.docname[0 : self.docname.rfind(SEP) + 1]
         else:
-            self.docparent = ''
+            docparent = ''
+        self.docparent = Path(docparent)
 
         self.assets = builder.assets
         self.body = []
