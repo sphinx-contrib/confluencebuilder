@@ -9,10 +9,10 @@ from pathlib import Path
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.locale import _ as SL
+from sphinx.util.display import status_iterator
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
-from sphinxcontrib.confluencebuilder.compat import status_iterator
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults

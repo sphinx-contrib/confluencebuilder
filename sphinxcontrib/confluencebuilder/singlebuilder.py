@@ -4,10 +4,10 @@
 
 from docutils import nodes
 from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
+from sphinx.util.display import progress_message
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
-from sphinxcontrib.confluencebuilder.compat import progress_message
 from sphinxcontrib.confluencebuilder.locale import C
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
