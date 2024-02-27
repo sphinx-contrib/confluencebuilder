@@ -399,6 +399,6 @@ def temp_dir():
     """
     dir_ = tempfile.mkdtemp()
     try:
-        yield dir_
+        yield Path(dir_)
     finally:
         shutil.rmtree(dir_, ignore_errors=True)

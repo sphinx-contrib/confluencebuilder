@@ -83,8 +83,8 @@ def report_main(args_parser):
             app = Sphinx(
                 str(work_dir),       # document sources
                 str(work_dir),       # directory with configuration
-                tmp_dir,             # output for built documents
-                tmp_dir,             # output for doctree files
+                str(tmp_dir),        # output for built documents
+                str(tmp_dir),        # output for doctree files
                 builder,             # builder to execute
                 status=sys.stdout,   # sphinx status output
                 warning=sys.stderr)  # sphinx warning output

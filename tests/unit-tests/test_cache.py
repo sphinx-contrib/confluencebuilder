@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from pathlib import Path
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from tests.lib import prepare_dirs
 from tests.lib.testcase import ConfluenceTestCase
@@ -98,7 +97,6 @@ class TestCache(ConfluenceTestCase):
                 pass
 
         with temp_dir() as src_dir:
-            src_dir = Path(src_dir)
             index_file = src_dir / 'index.rst'
             write_doc(index_file, '''\
 index

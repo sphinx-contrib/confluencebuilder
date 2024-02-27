@@ -65,8 +65,8 @@ To use this action, the argument '--danger' must be set.
             app = Sphinx(
                 str(work_dir),       # document sources
                 str(work_dir),       # directory with configuration
-                tmp_dir,             # output for built documents
-                tmp_dir,             # output for doctree files
+                str(tmp_dir),        # output for built documents
+                str(tmp_dir),        # output for doctree files
                 'confluence',        # builder to execute
                 status=sys.stdout,   # sphinx status output
                 warning=sys.stderr)  # sphinx warning output
