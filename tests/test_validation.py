@@ -50,7 +50,7 @@ class TestConfluenceValidation(unittest.TestCase):
             'container': 'tests/validation-sets/',
         }
         cls.config['confluence_space_key'] = space_key
-        cls.config['confluence_timeout'] = 10
+        cls.config['confluence_timeout'] = 30
         cls.config['imgmath_font_size'] = 14
         cls.config['imgmath_image_format'] = 'svg'
         cls.config['imgmath_use_preview'] = True
