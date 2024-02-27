@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinx.environment.adapters.indexentries import IndexEntries
 from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
-import os
 import pkgutil
 import posixpath
 
@@ -48,8 +48,8 @@ def generate_storage_format_domainindex(builder, docname, f):
     else:
         domainindex_fname = 'domainindex.html'
 
-    domainindex_template = os.path.join('templates', domainindex_fname)
-    template_data = pkgutil.get_data(__name__, domainindex_template)
+    domainindex_template = Path('templates', domainindex_fname)
+    template_data = pkgutil.get_data(__name__, str(domainindex_template))
 
     # process the template with the generated index
     ctx = {
@@ -96,8 +96,8 @@ def generate_storage_format_genindex(builder, docname, f):
     else:
         genindex_fname = 'genindex.html'
 
-    genindex_template = os.path.join('templates', genindex_fname)
-    template_data = pkgutil.get_data(__name__, genindex_template)
+    genindex_template = Path('templates', genindex_fname)
+    template_data = pkgutil.get_data(__name__, str(genindex_template))
 
     # process the template with the generated index
     ctx = {
@@ -125,7 +125,9 @@ def process_doclink(config, refuri):
         the document's title and anchor value
     """
 
-    docname = posixpath.normpath(os.path.splitext(refuri.split('#')[0])[0])
+    doc_path = Path(refuri.split('#')[0])
+    doc_raw_id = doc_path.parent / doc_path.stem
+    docname = posixpath.normpath(doc_raw_id.as_posix())
     doctitle = ConfluenceState.title(docname)
     anchor_value = intern_uri_anchor_value(docname, refuri)
 

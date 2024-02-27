@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
-import os
 import pkgutil
 
 
@@ -23,8 +23,8 @@ def generate_storage_format_search(builder, docname, f):
     space_name = builder.config.confluence_space_name
 
     # fetch raw template data
-    search_template = os.path.join('templates', 'search.html')
-    template_data = pkgutil.get_data(__name__, search_template)
+    search_template = Path('templates', 'search.html')
+    template_data = pkgutil.get_data(__name__, str(search_template))
 
     # process the template with the generated index
     ctx = {
