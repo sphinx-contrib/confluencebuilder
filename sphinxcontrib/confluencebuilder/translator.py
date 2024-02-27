@@ -89,10 +89,10 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
             header_template_data = ''
-            header_file = path.join(self.builder.env.srcdir,
+            header_file = Path(self.builder.env.srcdir,
                 self.builder.config.confluence_header_file)
             try:
-                with open(header_file, encoding='utf-8') as file:
+                with header_file.open(encoding='utf-8') as file:
                     header_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn(f'error reading file {header_file}: {err}')
@@ -114,10 +114,10 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # append footer (if any)
         if self.builder.config.confluence_footer_file is not None:
             footer_template_data = ''
-            footer_file = path.join(self.builder.env.srcdir,
+            footer_file = Path(self.builder.env.srcdir,
                 self.builder.config.confluence_footer_file)
             try:
-                with open(footer_file, encoding='utf-8') as file:
+                with footer_file.open(encoding='utf-8') as file:
                     footer_template_data = file.read()
             except (IOError, OSError) as err:
                 self.warn(f'error reading file {footer_file}: {err}')

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
@@ -170,7 +171,7 @@ certificate/key-pair, or a 2-tuple of the certificate and key.
 ''')
 
         for cert in cert_files:
-            if cert and not os.path.isfile(os.path.join(env.srcdir, cert)):
+            if cert and not Path(env.srcdir, cert).is_file():
                 raise ConfluenceConfigurationError('''\
 confluence_client_cert missing certificate file
 

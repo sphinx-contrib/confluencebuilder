@@ -185,8 +185,9 @@ def extract_strings_from_file(filename):
     """
     filelist = []
 
-    if os.path.isfile(filename):
-        with open(filename) as f:
+    file = Path(filename) if isinstance(filename, str) else filename
+    if file.is_file():
+        with file.open() as f:
             for raw_line in f:
                 line = raw_line.strip()
                 if not line or line.startswith('#'):
