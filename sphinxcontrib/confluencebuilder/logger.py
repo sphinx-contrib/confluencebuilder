@@ -3,6 +3,7 @@
 
 from collections import deque
 from contextlib import suppress
+from pathlib import Path
 from sphinx.util import logging
 from sphinx.util.console import bold  # pylint: disable=no-name-in-module
 import sys
@@ -118,7 +119,8 @@ class ConfluenceLogger:
         This is solely for manually debugging unexpected scenarios.
         """
         try:
-            with open('trace.log', 'a', encoding='utf-8') as file:
+            trace_file = Path('trace.log')
+            with trace_file.open('a', encoding='utf-8') as file:
                 file.write('[%s]\n' % container)
                 file.write(data)
                 file.write('\n')
