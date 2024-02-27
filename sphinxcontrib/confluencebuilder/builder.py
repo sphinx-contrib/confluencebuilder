@@ -6,7 +6,6 @@ from collections import defaultdict
 from docutils import nodes
 from docutils.io import StringOutput
 from pathlib import Path
-from os import path
 from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
@@ -152,7 +151,7 @@ class ConfluenceBuilder(Builder):
         if new_url:
             self.cloud = new_url.endswith('.atlassian.net/wiki/')
 
-        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
+        self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config, self.cloud)
@@ -789,13 +788,13 @@ class ConfluenceBuilder(Builder):
             for asset in status_iterator(assets, 'publishing assets... ',
                     length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
-                key, absfile, type_, hash_, docname = asset
+                key, abs_file, type_, hash_, docname = asset
                 if self._check_publish_skip(docname):
                     self.verbose(key + ' skipped due to configuration')
                     continue
 
                 try:
-                    with open(absfile, 'rb') as file:
+                    with abs_file.open('rb') as file:
                         output = file.read()
                         self.publish_asset(key, docname, output, type_, hash_)
                 except OSError as err:
@@ -910,13 +909,13 @@ class ConfluenceBuilder(Builder):
             header_template_data = ''
 
             if self.config.confluence_header_file is not None:
-                fname = path.join(self.env.srcdir,
+                header_file = Path(self.env.srcdir,
                     self.config.confluence_header_file)
                 try:
-                    with open(fname, encoding='utf-8') as file:
+                    with header_file.open(encoding='utf-8') as file:
                         header_template_data = file.read() + '\n'
                 except OSError as err:
-                    self.warn(f'error reading file {fname}: {err}')
+                    self.warn(f'error reading file {header_file}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_header_data is None:
@@ -932,13 +931,13 @@ class ConfluenceBuilder(Builder):
             footer_template_data = ''
 
             if self.config.confluence_footer_file is not None:
-                fname = path.join(self.env.srcdir,
+                footer_file = Path(self.env.srcdir,
                     self.config.confluence_footer_file)
                 try:
-                    with open(fname, encoding='utf-8') as file:
+                    with footer_file.open(encoding='utf-8') as file:
                         footer_template_data = file.read() + '\n'
                 except OSError as err:
-                    self.warn(f'error reading file {fname}: {err}')
+                    self.warn(f'error reading file {footer_file}: {err}')
 
                 # if no data is supplied, the file is plain text
                 if self.config.confluence_footer_data is None:

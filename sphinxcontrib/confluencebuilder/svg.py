@@ -60,17 +60,17 @@ def confluence_supported_svg(builder, node):
         return
 
     # invalid uri/path
-    uri_abspath = find_env_abspath(builder.env, builder.outdir, uri)
-    if not uri_abspath:
+    abs_path = find_env_abspath(builder.env, builder.out_dir, uri)
+    if not abs_path:
         return
 
     # ignore non-svgs
-    mimetype = guess_mimetype(uri_abspath)
+    mimetype = guess_mimetype(str(abs_path))  # cast for sphinx-6.1
     if mimetype != 'image/svg+xml':
         return
 
     try:
-        with open(uri_abspath, 'rb') as f:
+        with abs_path.open('rb') as f:
             svg_data = f.read()
     except (IOError, OSError) as err:
         builder.warn('error reading svg: %s' % err)

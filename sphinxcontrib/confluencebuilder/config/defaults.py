@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.util import str2bool
-import os
 
 
 # configures the default editor to publication
@@ -43,13 +43,13 @@ def apply_defaults(builder):
     if conf.confluence_adv_restricted is None:
         conf.confluence_adv_restricted = []
 
-    if conf.confluence_ca_cert and not os.path.isabs(conf.confluence_ca_cert):
-        # if the ca path is not an absolute path, the path is a relative
-        # path based on the source directory (i.e. passed configuration
-        # checks); resolve the file here before it eventually gets provided
-        # to Requests
-        conf.confluence_ca_cert = os.path.join(
-            env.srcdir, conf.confluence_ca_cert)
+    if conf.confluence_ca_cert:
+        if not Path(conf.confluence_ca_cert).is_absolute():
+            # if the ca path is not an absolute path, the path is a relative
+            # path based on the source directory (i.e. passed configuration
+            # checks); resolve the file here before it eventually gets provided
+            # to Requests
+            conf.confluence_ca_cert = Path(env.srcdir, conf.confluence_ca_cert)
 
     if conf.confluence_cleanup_search_mode is None:
         # the default is `search`, since on Confluence Server/DC; the `direct`
