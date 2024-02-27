@@ -7,13 +7,12 @@ from docutils import nodes
 from docutils.io import StringOutput
 from pathlib import Path
 from sphinx import addnodes
-from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
 from sphinx.locale import _ as SL
+from sphinx.util.display import status_iterator
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
-from sphinxcontrib.confluencebuilder.compat import status_iterator
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
@@ -54,15 +53,7 @@ class ConfluenceBuilder(Builder):
     supported_remote_images = True
 
     def __init__(self, app, env=None):
-        # As of Sphinx v5.1.0, builders will accept an `env` option to
-        # configure against an environment (over later having an environment
-        # assigned.
-        if sphinx_version_info >= (5, 1):
-            # pylint: disable=too-many-function-args
-            super().__init__(app, env)
-            # pylint: enable=too-many-function-args
-        else:
-            super().__init__(app)  # pylint: disable=E1120
+        super().__init__(app, env)
 
         self.cache_doctrees = {}
         self.cloud = False

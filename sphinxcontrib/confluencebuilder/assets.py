@@ -76,7 +76,7 @@ class ConfluenceAssetManager:
         intersphinx database).
 
         Args:
-            path: the path of the fiel
+            path: the path of the file
             docname: the document's name to attach to
 
         Returns:
