@@ -152,7 +152,7 @@ class ConfluenceBuilder(Builder):
         if new_url:
             self.cloud = new_url.endswith('.atlassian.net/wiki/')
 
-        self.assets = ConfluenceAssetManager(config, self.env, self.outdir)
+        self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config, self.cloud)
@@ -789,13 +789,13 @@ class ConfluenceBuilder(Builder):
             for asset in status_iterator(assets, 'publishing assets... ',
                     length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
-                key, absfile, type_, hash_, docname = asset
+                key, abs_file, type_, hash_, docname = asset
                 if self._check_publish_skip(docname):
                     self.verbose(key + ' skipped due to configuration')
                     continue
 
                 try:
-                    with open(absfile, 'rb') as file:
+                    with abs_file.open('rb') as file:
                         output = file.read()
                         self.publish_asset(key, docname, output, type_, hash_)
                 except OSError as err:

@@ -56,7 +56,7 @@ class ConfluenceUtil:
         """
         BLOCKSIZE = 65536
         sha = sha256()
-        with open(asset, 'rb') as file:
+        with asset.open('rb') as file:
             buff = file.read(BLOCKSIZE)
             while len(buff) > 0:
                 sha.update(buff)
@@ -196,7 +196,7 @@ def extract_strings_from_file(filename):
     return filelist
 
 
-def find_env_abspath(env, outdir, path):
+def find_env_abspath(env, out_dir, path: str):
     """
     find an existing absolute path for a provided path in a sphinx environment
 
@@ -206,43 +206,51 @@ def find_env_abspath(env, outdir, path):
 
     Args:
         env: the build environment
-        outdir: the build's output directory
+        out_dir: the build's output directory
         path: the path to use
 
     Returns:
         the absolute path
     """
 
-    abspath = None
-    if path:
-        path = os.path.normpath(path)
-        if os.path.isabs(path):
-            abspath = path
+    if not path:
+        return None
 
-            # some generated nodes will prefix the path of an asset with `/`,
-            # with the intent of that path being the root from the
-            # configured source directory instead of an absolute path on the
-            # system -- check the environment's source directory first before
-            # checking the full system's path
-            if path[0] == os.sep:
-                new_path = os.path.join(env.srcdir, path[1:])
+    try:
+        normalized_path = Path(os.path.normpath(path))
+    except OSError:
+        # ignore paths that may not resolve; this may include paths with
+        # with wildcard hints to be used for candidate fetching at a
+        # later stage
+        return None
 
-                if os.path.isfile(new_path):
-                    abspath = new_path
-        else:
-            abspath = os.path.join(env.srcdir, path)
+    if normalized_path.is_absolute():
+        abs_path = normalized_path
 
-            # extensions may dump a generated asset in the output directory; if
-            # the absolute mapping to the source directory does not find the
-            # asset, attempt to bind the path based on the output directory
-            if not os.path.isfile(abspath):
-                abspath = os.path.join(outdir, path)
+        # some generated nodes will prefix the path of an asset with `/`,
+        # with the intent of that path being the root from the
+        # configured source directory instead of an absolute path on the
+        # system -- check the environment's source directory first before
+        # checking the full system's path
+        if normalized_path.name[0] == os.sep:
+            new_path = Path(env.srcdir, normalized_path.name[1:])
+
+            if new_path.is_file():
+                abs_path = new_path
+    else:
+        abs_path = Path(env.srcdir, normalized_path)
+
+        # extensions may dump a generated asset in the output directory; if
+        # the absolute mapping to the source directory does not find the
+        # asset, attempt to bind the path based on the output directory
+        if not abs_path.is_file():
+            abs_path = out_dir / normalized_path
 
     # if no asset can be found, ensure a `None` path is returned
-    if not os.path.isfile(abspath):
-        abspath = None
+    if not abs_path.is_file():
+        abs_path = None
 
-    return abspath
+    return abs_path
 
 
 def first(it):

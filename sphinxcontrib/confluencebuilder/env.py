@@ -135,7 +135,7 @@ class ConfluenceCacheInfo:
             return doc_hash
 
         # determine the hash of the document based on data + config-hash
-        src_file = self.env.doc2path(docname)
+        src_file = Path(self.env.doc2path(docname))
         src_file_hash = ConfluenceUtil.hash_asset(src_file)
         doc_hash_data = self._active_hash + src_file_hash
         doc_hash = ConfluenceUtil.hash(doc_hash_data)

@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
+from pathlib import Path
 from sphinx import addnodes
 from sphinx.util.osutil import canon_path
 from sphinx.util.images import guess_mimetype
@@ -11,7 +12,6 @@ from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
-import os
 
 # default content type to use if a type cannot be detected for an asset
 DEFAULT_CONTENT_TYPE = 'application/octet-stream'
@@ -54,15 +54,15 @@ class ConfluenceAssetManager:
     Args:
         config: the active configuration
         env: the build environment
-        outdir: configured output directory (where assets may be stored)
+        out_dir: configured output directory (where assets may be stored)
     """
-    def __init__(self, config, env, outdir):
+    def __init__(self, config, env, out_dir):
         self.assets = []
         self.env = env
         self.force_standalone = config.confluence_asset_force_standalone
         self.hash2asset = {}
         self.keys = set()
-        self.outdir = outdir
+        self.out_dir = out_dir
         self.path2asset = {}
         self.root_doc = config.root_doc
 
@@ -83,8 +83,8 @@ class ConfluenceAssetManager:
             the key, document name and path
         """
         logger.verbose('adding manual attachment: %s' % path)
-        abspath = find_env_abspath(self.env, self.outdir, path)
-        return self._handle_entry(abspath, docname, standalone=True)
+        abs_path = find_env_abspath(self.env, self.out_dir, path)
+        return self._handle_entry(abs_path, docname, standalone=True)
 
     def build(self):
         """
@@ -284,18 +284,18 @@ class ConfluenceAssetManager:
             hash_exists = hash_ in self.hash2asset
             if not hash_exists or standalone:
                 # no asset entry and no hash entry (or standalone); new asset
-                key = os.path.basename(path)
+                key = path.name
 
                 # Confluence does not allow attachments with select characters.
                 # Filter out the asset name to a compatible key value.
                 for rep in INVALID_CHARS:
                     key = key.replace(rep, '_')
 
-                filename, file_ext = os.path.splitext(key)
+                new_path = Path(key)
                 idx = 1
                 while key in self.keys:
                     idx += 1
-                    key = f'{filename}_{idx}{file_ext}'
+                    key = f'{new_path.stem}_{idx}{new_path.suffix}'
                 self.keys.add(key)
 
                 asset = ConfluenceAsset(key, path, type_, hash_)
@@ -332,20 +332,20 @@ class ConfluenceAssetManager:
         path = None
         if isinstance(node, nodes.image):
             # uri's will be relative to documentation root.
-            path = str(node['uri'])
+            path = Path(node['uri'])
         elif isinstance(node, addnodes.download_reference):
             # reftarget will be a reference to the asset with respect to the
             # document (refdoc) holding this reference. Use reftarget and refdoc
             # to find a proper path.
-            docdir = os.path.dirname(node['refdoc'])
-            path = os.path.join(docdir, node['reftarget'])
+            docdir = Path(node['refdoc']).parent
+            path = docdir / node['reftarget']
 
-        abspath = find_env_abspath(self.env, self.outdir, path)
+        abs_path = find_env_abspath(self.env, self.out_dir, path)
 
-        if not abspath:
+        if not abs_path:
             logger.verbose('failed to find path: %s' % path)
 
-        return abspath
+        return abs_path
 
 
 class ConfluenceSupportedImages:
