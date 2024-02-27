@@ -65,7 +65,7 @@ def confluence_supported_svg(builder, node):
         return
 
     # ignore non-svgs
-    mimetype = guess_mimetype(abs_path)
+    mimetype = guess_mimetype(str(abs_path))  # cast for sphinx-6.1
     if mimetype != 'image/svg+xml':
         return
 

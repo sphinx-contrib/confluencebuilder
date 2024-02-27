@@ -274,7 +274,8 @@ class ConfluenceAssetManager:
 
         if path not in self.path2asset:
             hash_ = ConfluenceUtil.hash_asset(path)
-            type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
+            # str-cast for sphinx-6.1
+            type_ = guess_mimetype(str(path), default=DEFAULT_CONTENT_TYPE)
         else:
             hash_ = self.path2asset[path].hash
             type_ = self.path2asset[path].type
