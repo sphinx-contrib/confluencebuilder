@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
-from os import path
+from pathlib import Path
 from sphinx import addnodes
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
@@ -68,11 +68,11 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
             # directory; which the processing of a download_reference will
             # strip and use the asset directory has the container folder to find
             # the file in
-            mock_docname = path.join(builder.config.assets_dir, 'mock')
+            mock_docname = Path(builder.config.assets_dir, 'mock')
             new_node = addnodes.download_reference(
                 node.astext(),
                 node.astext(),
-                refdoc=mock_docname,
+                refdoc=str(mock_docname),
                 refexplicit=True,
                 reftarget=node['refuri'],
             )
