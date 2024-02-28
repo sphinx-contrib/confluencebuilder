@@ -5,5 +5,5 @@ from sphinx.errors import ConfigError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 
 
-class ConfluenceConfigurationError(ConfluenceError, ConfigError):
+class ConfluenceConfigError(ConfluenceError, ConfigError):
     pass

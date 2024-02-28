@@ -7,7 +7,7 @@ from requests.auth import HTTPDigestAuth
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
 from tests.lib import mock_input
@@ -72,7 +72,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._prepare_valid_publish()
 
         with mock_getpass('password'):
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
         self.config['confluence_ask_user'] = True
@@ -87,7 +87,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
         with mock_getpass(''):
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
         del self.config['confluence_ask_password']
@@ -98,7 +98,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'confluence_ask_password': '1',
         }
         with mock_getpass(''):
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(edefs=defines)
 
         defines = {
@@ -132,7 +132,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
         with mock_input(''):
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
         # accepting default username
@@ -147,7 +147,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'confluence_ask_user': '1',
         }
         with mock_input(''):
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(edefs=defines)
 
         defines = {
@@ -176,11 +176,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_additional_mime_types'] = 'image/tiff'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_additional_mime_types'] = ['image tiff']
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_additional_mime_types'] = ['image/unknown-type']
@@ -205,11 +205,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_ca_cert'] = missing_cert
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_ca_cert'] = str(missing_cert)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_client_cert(self):
@@ -226,25 +226,25 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_client_cert'] = missing_cert
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_client_cert'] = str(missing_cert)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_client_cert'] = (valid_cert, missing_cert)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_client_cert'] = (missing_cert, valid_cert)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         # too many
         self.config['confluence_client_cert'] = \
             (valid_cert, valid_cert, valid_cert)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_cert_pass(self):
@@ -265,12 +265,12 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_cleanup_search_mode'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_code_block_theme(self):
         self.config['confluence_code_block_theme'] = True
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_code_block_theme'] = 'invalid'
@@ -288,7 +288,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_default_alignment'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_disable_ssl_validation(self):
@@ -310,13 +310,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_domain_indices'] = 'py-modindex'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_domain_indices'] = [
             None,
         ]
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_editor(self):
@@ -330,11 +330,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_editor'] = 2
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_editor'] = 'some-value'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_adv_permit_editor'] = True
@@ -363,7 +363,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_file_transform'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_footer_file(self):
@@ -377,11 +377,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_footer_file'] = missing_footer
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_footer_file'] = str(missing_footer)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         relbase = '../../templates/'
@@ -393,7 +393,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_global_labels'] = 'label-a label-b'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_header_file(self):
@@ -407,11 +407,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_header_file'] = missing_header
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_header_file'] = str(missing_header)
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         relbase = '../../templates/'
@@ -431,7 +431,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_jira_servers'] = []
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
@@ -440,19 +440,19 @@ class TestConfluenceConfigChecks(unittest.TestCase):
                 'name': 'MyAwesomeServer',
             },
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
             'server-1': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
             'server-1': {},
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
@@ -460,7 +460,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
                 'id': '92d94d0e-ac8b-4f2e-92a5-2217ad88e5f2',
             },
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_jira_servers'] = {
@@ -468,7 +468,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
                 'name': 'MyAwesomeServer',
             },
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_lang_transform(self):
@@ -479,7 +479,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_lang_transform'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_latex_macro(self):
@@ -502,27 +502,27 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_latex_macro'] = {
             'block-macro': 'block-macro-name',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_latex_macro'] = {
             'inline-macro': 'inline-macro-name',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_latex_macro'] = {
             'block-macro': 'block-macro-name',
             'inline-macro': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_latex_macro'] = {
             'block-macro': None,
             'inline-macro': 'inline-macro-name',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_link_suffix(self):
@@ -537,7 +537,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_link_transform'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_mentions(self):
@@ -552,19 +552,19 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_mentions'] = 'some-value'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_mentions'] = {
             'key': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_mentions'] = {
             'key': 123,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_parent_page(self):
@@ -578,11 +578,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_parent_page'] = 0
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_parent_page'] = -123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_parent_page_id_check(self):
@@ -591,7 +591,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         # without `confluence_parent_page` should throw a error
         self.config['confluence_parent_page_id_check'] = 123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_parent_page'] = 'dummy'
@@ -603,11 +603,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
         self.config['confluence_parent_page_id_check'] = 0
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_parent_page_id_check'] = -123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_prev_next_buttons_location(self):
@@ -621,13 +621,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_prev_next_buttons_location'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish(self):
         # stock configuration should need more than just the publish flag
         self.config['confluence_publish'] = True
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_delay(self):
@@ -641,7 +641,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_publish_delay'] = -1
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_headers(self):
@@ -657,13 +657,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_publish_headers'] = {
             'good-key-bad-value': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_publish_headers'] = {
             123: 'bad-key-good-value',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_list(self):
@@ -710,37 +710,37 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             # list with invalid content
             self.config[option] = [True, False]
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             # missing document
             self.config[option] = ['missing']
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             # use of file extension
             self.config[option] = ['index.rst']
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             # file with invalid document list
             self.assertTrue(invalid_list.is_file())
             self.config[option] = invalid_list
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             self.config[option] = str(invalid_list)
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             # missing file
             self.assertFalse(missing_list.is_file())
             self.config[option] = missing_list
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             self.config[option] = str(missing_list)
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(dataset=dataset)
 
             # cleanup
@@ -759,7 +759,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             # enumalate command line csv string to list (invalid)
             config = dict(self.minimal_config)
             config[option] = 'doc-a2,doc-c'
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config(config=config, dataset=dataset)
 
     def test_config_check_publish_orphan_container(self):
@@ -776,7 +776,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_publish_orphan_container'] = -123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_postfix(self):
@@ -804,11 +804,11 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_publish_root'] = 0
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_publish_root'] = -123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_target_conflicts(self):
@@ -818,7 +818,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         # confluence_parent_page and confluence_publish_root conflict
         self.config['confluence_parent_page'] = 'dummy'
         self.config['confluence_publish_root'] = 123456
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_publish_token(self):
@@ -850,7 +850,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             pass
 
         self.config['confluence_server_auth'] = InvalidAuth()
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_server_cookies(self):
@@ -866,7 +866,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_server_cookies'] = {
             'SID': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_server_pass(self):
@@ -877,7 +877,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._prepare_valid_publish()
 
         # without `confluence_server_user` should throw an error
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_server_user'] = 'dummy'
@@ -912,7 +912,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         # without `confluence_server_url` with publishing should throw an error
         self.config['confluence_server_url'] = None
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_server_url'] = \
@@ -932,7 +932,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         # without `confluence_space_key` with publishing should throw an error
         self.config['confluence_space_key'] = None
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_space_key'] = 'DUMMY2'
@@ -950,13 +950,13 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_sourcelink'] = {
             'dummy': 'value',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_sourcelink'] = {
             'url': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         # reserved check
@@ -964,14 +964,14 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'url': 'https://example.com',
             'page': 'test',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         self.config['confluence_sourcelink'] = {
             'url': 'https://example.com',
             'suffix': 'test',
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
         # templates
@@ -994,19 +994,19 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             sourcelink = dict(valid_template)
             del sourcelink['owner']
             self.config['confluence_sourcelink'] = sourcelink
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
             sourcelink = dict(valid_template)
             del sourcelink['repo']
             self.config['confluence_sourcelink'] = sourcelink
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
             sourcelink = dict(valid_template)
             del sourcelink['version']
             self.config['confluence_sourcelink'] = sourcelink
-            with self.assertRaises(ConfluenceConfigurationError):
+            with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
 
     def test_config_check_title_overrides(self):
@@ -1021,7 +1021,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_title_overrides'] = {
             'index': None,
         }
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_timeout(self):
@@ -1032,7 +1032,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_timeout'] = -1
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
     def test_config_check_confluence_version_comment(self):

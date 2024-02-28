@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
@@ -76,7 +76,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         test_docname = 'docs/test_file.rst'
         config = self.config
         confluence_publish_prefix = '- ({unknown_placeholder})'
-        with self.assertRaises(ConfluenceConfigurationError):
+        with self.assertRaises(ConfluenceConfigError):
             ConfluenceState._format_postfix(
                 postfix=confluence_publish_prefix, docname=test_docname,
                 config=config)

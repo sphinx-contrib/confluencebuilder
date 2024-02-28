@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from sphinxcontrib.confluencebuilder import util
-from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 import sys
 
 
@@ -58,7 +58,7 @@ def process_ask_configs(config):
 
         target_user = input(f' User{u_str}: ') or default_user
         if not target_user:
-            raise ConfluenceConfigurationError('no user provided')
+            raise ConfluenceConfigError('no user provided')
 
         config.confluence_server_user = target_user
 
@@ -71,4 +71,4 @@ def process_ask_configs(config):
         sys.stdout.flush()
         config.confluence_server_pass = util.getpass2('')
         if not config.confluence_server_pass:
-            raise ConfluenceConfigurationError('no password provided')
+            raise ConfluenceConfigError('no password provided')

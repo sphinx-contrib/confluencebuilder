@@ -4,7 +4,7 @@
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
-from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
@@ -19,7 +19,7 @@ def validate_configuration(builder):
 
     This call will check if the provided builder's configuration has any issues
     with the existing configuration. For errors in the existing configuration,
-    an `ConfluenceConfigurationError` exception will be thrown.
+    an `ConfluenceConfigError` exception will be thrown.
 
     In addition to errors, this call will also generate warning messages on
     other configuration issues such as deprecated configurations.
@@ -143,8 +143,8 @@ def validate_configuration(builder):
             'search',
             'search-aggressive',
         )
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_cleanup_search_mode' has been provided to override the
@@ -162,7 +162,7 @@ default search method for page descendants. Accepted values include 'direct',
             cert_files = (client_cert, None)
 
         if len(cert_files) != 2:
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence_client_cert is not a 2-tuple
 
 The option 'confluence_client_cert' has been provided but there are too many
@@ -172,7 +172,7 @@ certificate/key-pair, or a 2-tuple of the certificate and key.
 
         for cert in cert_files:
             if cert and not Path(env.srcdir, cert).is_file():
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 confluence_client_cert missing certificate file
 
 The option 'confluence_client_cert' has been provided to find a client
@@ -201,8 +201,8 @@ found. Ensure the following file exists:
     try:
         validator.conf('confluence_default_alignment') \
                  .matching('left', 'center', 'right')
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_default_alignment' has been provided to override the
@@ -233,11 +233,11 @@ default alignment for tables, figures, etc. Accepted values include 'left',
     # confluence_domain_indices
     try:
         validator.conf('confluence_domain_indices').bool()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_domain_indices').strings()
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
+        except ConfluenceConfigError:
+            raise ConfluenceConfigError('''\
 confluence_domain_indices is not a boolean or collection of strings
 
 The option 'confluence_domain_indices' has been provided to indicate that
@@ -254,7 +254,7 @@ set to a list of domains (strings) to be included.
     if config.confluence_editor:
         if not config.confluence_adv_permit_editor:
             if config.confluence_editor not in EDITORS:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 invalid editor provided in confluence_editor
 
 The following editors are supported:
@@ -280,8 +280,8 @@ The following editors are supported:
     try:
         validator.conf('confluence_footer_file') \
                  .file()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_footer_file' has been provided to find a footer template
@@ -301,8 +301,8 @@ to a proper file path.
     try:
         validator.conf('confluence_global_labels') \
                  .strings(no_space=True)
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_global_labels' can provide a collection to string values
@@ -316,8 +316,8 @@ that contains no spaces.
     try:
         validator.conf('confluence_header_file') \
                  .file()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_header_file' has been provided to find a header template
@@ -365,7 +365,7 @@ to a proper file path.
                     break
 
         if issue:
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence_jira_servers is not properly formed
 
 Jira server definitions should be a dictionary of string keys which contain
@@ -383,12 +383,12 @@ dictionaries with keys 'id' and 'name' which identify the Jira instances.
     # confluence_latex_macro
     try:
         validator.conf('confluence_latex_macro').string()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_latex_macro').dict_str_str()
 
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
+        except ConfluenceConfigError:
+            raise ConfluenceConfigError('''\
 confluence_latex_macro is not a string or dictionary of strings
 
 The option 'confluence_latex_macro' has been provided to indicate that a
@@ -406,7 +406,7 @@ set to a dictionary of key-value strings for advanced options.
             ]
 
             if not all(name in conf_keys for name in required_keys):
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 missing keys in confluence_latex_macro
 
 The following keys are required:
@@ -454,11 +454,11 @@ The following keys are required:
 
     try:
         validator.conf('confluence_parent_page').string()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_parent_page').int_(positive=True)
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
+        except ConfluenceConfigError:
+            raise ConfluenceConfigError('''\
 confluence_parent_page is not a string or a positive integer''')
 
     # ##################################################################
@@ -483,11 +483,11 @@ confluence_parent_page is not a string or a positive integer''')
     # confluence_permit_raw_html
     try:
         validator.conf('confluence_permit_raw_html').bool()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_permit_raw_html').string()
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
+        except ConfluenceConfigError:
+            raise ConfluenceConfigError('''\
 confluence_permit_raw_html is not a boolean or a string
 
 The option 'confluence_permit_raw_html' has been provided to indicate that
@@ -501,8 +501,8 @@ configured to the name of a supported macro identifier.
     try:
         validator.conf('confluence_prev_next_buttons_location') \
                  .matching('bottom', 'both', 'top')
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_prev_next_buttons_location' has been configured to enable
@@ -542,8 +542,8 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
                 option_val.docnames_from_file()
             else:
                 option_val.docnames()
-        except ConfluenceConfigurationError as e:
-            raise ConfluenceConfigurationError('''\
+        except ConfluenceConfigError as e:
+            raise ConfluenceConfigError('''\
 {msg}
 
 The value type permitted for this publish list option can either be a list of
@@ -558,12 +558,12 @@ names are relative to the documentation's source directory.
     # confluence_publish_debug
     try:
         validator.conf('confluence_publish_debug').bool()  # deprecated
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_publish_debug').enum(PublishDebug)
-        except ConfluenceConfigurationError as e:
+        except ConfluenceConfigError as e:
             opts = PublishDebug._member_names_  # pylint: disable=no-member
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 {msg}
 
 The option 'confluence_publish_debug' has been configured to enable publish
@@ -654,7 +654,7 @@ debugging. Accepted values include:
     # confluence_server_auth
     if config.confluence_server_auth is not None:
         if not issubclass(type(config.confluence_server_auth), AuthBase):
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence_server_auth is not an implementation of requests.auth.AuthBase
 
 Providing a custom authentication for Requests requires an implementation that
@@ -707,7 +707,7 @@ following:
         ]
         if 'type' in sourcelink:
             if sourcelink['type'] not in supported_types:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 unsupported type provided in confluence_sourcelink
 
 The following types are supported:
@@ -722,7 +722,7 @@ The following types are supported:
                 'version',
             ]
             if not all(k in sourcelink for k in required):
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 required option missing in confluence_sourcelink
 
 The following options are required for the provided template type:
@@ -732,7 +732,7 @@ The following options are required for the provided template type:
 
         # if not using a template type, ensure url is set
         elif 'url' not in sourcelink or not sourcelink['url']:
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 url option is not set in confluence_sourcelink
 
 If a template type is not being configured for a source link,
@@ -744,7 +744,7 @@ the `url` field must be configured.
             'suffix',
         ]
         if any(k in sourcelink for k in reserved):
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 reserved option set in confluence_sourcelink
 
 The following options are reserved with confluence_sourcelink
@@ -771,8 +771,8 @@ and cannot be set:
     try:
         validator.conf('confluence_timeout') \
                  .int_()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
+    except ConfluenceConfigError as e:
+        raise ConfluenceConfigError('''\
 {msg}
 
 A configured timeout should be set to a duration, in seconds, before any network
@@ -802,7 +802,7 @@ value (e.g. 2).
 
     if config.confluence_publish:
         if not config.confluence_server_url:
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence server url not provided
 
 While publishing has been configured using 'confluence_publish', the Confluence
@@ -811,7 +811,7 @@ Confluence instance to be published to.
 ''')
 
         if not config.confluence_space_key and not config.confluence_space_name:
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence space key not provided
 
 While publishing has been configured using 'confluence_publish', the Confluence
@@ -821,7 +821,7 @@ which content should be published under.
 
         if (config.confluence_ask_password and not config.confluence_server_user
                 and not config.confluence_ask_user):
-            raise ConfluenceConfigurationError('''\
+            raise ConfluenceConfigError('''\
 confluence username not provided
 
 A publishing password has been flagged with 'confluence_ask_password';
@@ -832,7 +832,7 @@ properly set with the publisher's Confluence username or have
 
         if config.confluence_server_pass:
             if not config.confluence_server_user:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 confluence username not provided
 
 A publishing password has been configured with 'confluence_server_pass';
@@ -842,7 +842,7 @@ properly set with the publisher's Confluence username.
 
         if config.confluence_parent_page_id_check:
             if not config.confluence_parent_page:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 parent page (holder) name not set
 
 When a parent page identifier check has been configured with the option
@@ -853,7 +853,7 @@ is provided as well.
 
         if config.confluence_publish_root:
             if config.confluence_parent_page:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 conflicting publish point configurations
 
 When configuring for a publishing container, a user can configure for either
@@ -863,7 +863,7 @@ configured at the same time.
 
         if config.confluence_cleanup_purge:
             if config.confluence_cleanup_archive:
-                raise ConfluenceConfigurationError('''\
+                raise ConfluenceConfigError('''\
 conflicting cleanup configurations
 
 When configuring for cleanup of legacy pages, a user can configure for either
