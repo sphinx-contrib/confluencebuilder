@@ -11,7 +11,7 @@ from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder

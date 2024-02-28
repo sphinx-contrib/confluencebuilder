@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinxcontrib.confluencebuilder.exceptions import \
-    ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase

@@ -7,7 +7,7 @@ from requests.auth import HTTPDigestAuth
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
 from tests.lib import mock_input

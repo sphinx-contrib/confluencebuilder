@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinx.errors import ConfigError
 from sphinx.errors import SphinxError
 
 
@@ -69,10 +68,6 @@ certificates.
 (details: {details})
 ---
 ''')
-
-
-class ConfluenceConfigurationError(ConfluenceError, ConfigError):
-    pass
 
 
 class ConfluenceMissingPageIdError(ConfluenceError):

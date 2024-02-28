@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from pathlib import Path
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import str2bool
 import os
