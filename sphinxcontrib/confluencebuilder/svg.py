@@ -72,7 +72,7 @@ def confluence_supported_svg(builder, node):
     try:
         with abs_path.open('rb') as f:
             svg_data = f.read()
-    except (IOError, OSError) as err:
+    except OSError as err:
         builder.warn('error reading svg: %s' % err)
         return
 
@@ -203,7 +203,7 @@ def confluence_supported_svg(builder, node):
         try:
             with out_file.open('wb') as f:
                 f.write(svg_data)
-        except (IOError, OSError) as err:
+        except OSError as err:
             builder.warn('error writing svg: %s' % err)
             return
 
