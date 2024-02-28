@@ -94,7 +94,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             try:
                 with header_file.open(encoding='utf-8') as file:
                     header_template_data = file.read()
-            except (IOError, OSError) as err:
+            except OSError as err:
                 self.warn(f'error reading file {header_file}: {err}')
 
             # if no data is supplied, the file is plain text
@@ -119,7 +119,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             try:
                 with footer_file.open(encoding='utf-8') as file:
                     footer_template_data = file.read()
-            except (IOError, OSError) as err:
+            except OSError as err:
                 self.warn(f'error reading file {footer_file}: {err}')
 
             # if no data is supplied, the file is plain text

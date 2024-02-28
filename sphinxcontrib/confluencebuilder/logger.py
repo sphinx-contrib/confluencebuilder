@@ -124,5 +124,5 @@ class ConfluenceLogger:
                 file.write('[%s]\n' % container)
                 file.write(data)
                 file.write('\n')
-        except (IOError, OSError) as err:
+        except OSError as err:
             ConfluenceLogger.warn('unable to trace: %s' % err)
