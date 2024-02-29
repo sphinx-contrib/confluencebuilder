@@ -2,11 +2,41 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from pathlib import Path
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceCleanupSearchModeConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertBadTupleConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertMissingCertConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultAlignmentConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDomainIndicesConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceEditorConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceFooterFileConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceGlobalLabelsConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceHeaderFileConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceJiraServersConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroInvalidConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroMissingKeysConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceParentPageConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePrevNextButtonsLocationConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishConflictPublishPointConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishDebugConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishListConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingParentPageConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingServerUrlConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingSpaceKeyConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernameAskConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernamePassConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceServerAuthConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkRequiredConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkReservedConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkTypeConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkUrlConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceTimeoutConfigError
 from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from requests.auth import AuthBase
@@ -19,7 +49,7 @@ def validate_configuration(builder):
 
     This call will check if the provided builder's configuration has any issues
     with the existing configuration. For errors in the existing configuration,
-    an `ConfluenceConfigurationError` exception will be thrown.
+    an `ConfluenceConfigError` exception will be thrown.
 
     In addition to errors, this call will also generate warning messages on
     other configuration issues such as deprecated configurations.
@@ -143,14 +173,8 @@ def validate_configuration(builder):
             'search',
             'search-aggressive',
         )
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_cleanup_search_mode' has been provided to override the
-default search method for page descendants. Accepted values include 'direct',
-'search' and '<mode>-aggressive'.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceCleanupSearchModeConfigError(ex) from ex
 
     # ##################################################################
 
@@ -162,26 +186,11 @@ default search method for page descendants. Accepted values include 'direct',
             cert_files = (client_cert, None)
 
         if len(cert_files) != 2:
-            raise ConfluenceConfigurationError('''\
-confluence_client_cert is not a 2-tuple
-
-The option 'confluence_client_cert' has been provided but there are too many
-values. The client certificate can either be a file/path which defines a
-certificate/key-pair, or a 2-tuple of the certificate and key.
-''')
+            raise ConfluenceClientCertBadTupleConfigError
 
         for cert in cert_files:
             if cert and not Path(env.srcdir, cert).is_file():
-                raise ConfluenceConfigurationError('''\
-confluence_client_cert missing certificate file
-
-The option 'confluence_client_cert' has been provided to find a client
-certificate file from a relative location, but the certificate could not be
-found. Ensure the following file exists:
-
-    {file}
-
-'''.format(file=cert))
+                raise ConfluenceClientCertMissingCertConfigError(cert)
 
     # ##################################################################
 
@@ -201,14 +210,8 @@ found. Ensure the following file exists:
     try:
         validator.conf('confluence_default_alignment') \
                  .matching('left', 'center', 'right')
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_default_alignment' has been provided to override the
-default alignment for tables, figures, etc. Accepted values include 'left',
-'center' and 'right'.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceDefaultAlignmentConfigError(ex) from ex
 
     # ##################################################################
 
@@ -233,17 +236,11 @@ default alignment for tables, figures, etc. Accepted values include 'left',
     # confluence_domain_indices
     try:
         validator.conf('confluence_domain_indices').bool()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_domain_indices').strings()
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
-confluence_domain_indices is not a boolean or collection of strings
-
-The option 'confluence_domain_indices' has been provided to indicate that
-domain indices should be generated. This value can either be set to `True` or
-set to a list of domains (strings) to be included.
-''')
+        except ConfluenceConfigError as ex:
+            raise ConfluenceDomainIndicesConfigError from ex
 
     # ##################################################################
 
@@ -254,13 +251,7 @@ set to a list of domains (strings) to be included.
     if config.confluence_editor:
         if not config.confluence_adv_permit_editor:
             if config.confluence_editor not in EDITORS:
-                raise ConfluenceConfigurationError('''\
-invalid editor provided in confluence_editor
-
-The following editors are supported:
-
- - {}
-'''.format('\n - '.join(EDITORS)))
+                raise ConfluenceEditorConfigError('\n - '.join(EDITORS))
 
     # ##################################################################
 
@@ -280,14 +271,8 @@ The following editors are supported:
     try:
         validator.conf('confluence_footer_file') \
                  .file()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_footer_file' has been provided to find a footer template
-file from a path relative to the documentation source. Ensure the value is set
-to a proper file path.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceFooterFileConfigError(ex) from ex
 
     # ##################################################################
 
@@ -301,14 +286,8 @@ to a proper file path.
     try:
         validator.conf('confluence_global_labels') \
                  .strings(no_space=True)
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_global_labels' can provide a collection to string values
-to use as labels for published documentation. Each label value must be a string
-that contains no spaces.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceGlobalLabelsConfigError(ex) from ex
 
     # ##################################################################
 
@@ -316,14 +295,8 @@ that contains no spaces.
     try:
         validator.conf('confluence_header_file') \
                  .file()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_header_file' has been provided to find a header template
-file from a path relative to the documentation source. Ensure the value is set
-to a proper file path.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceHeaderFileConfigError(ex) from ex
 
     # ##################################################################
 
@@ -365,12 +338,7 @@ to a proper file path.
                     break
 
         if issue:
-            raise ConfluenceConfigurationError('''\
-confluence_jira_servers is not properly formed
-
-Jira server definitions should be a dictionary of string keys which contain
-dictionaries with keys 'id' and 'name' which identify the Jira instances.
-''')
+            raise ConfluenceJiraServersConfigError
 
     # ##################################################################
 
@@ -383,19 +351,12 @@ dictionaries with keys 'id' and 'name' which identify the Jira instances.
     # confluence_latex_macro
     try:
         validator.conf('confluence_latex_macro').string()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError as ex:
         try:
             validator.conf('confluence_latex_macro').dict_str_str()
 
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
-confluence_latex_macro is not a string or dictionary of strings
-
-The option 'confluence_latex_macro' has been provided to indicate that a
-LaTeX content should be rendered with a LaTeX macro supported on a Confluence
-instance. This value can either be set to a string of the macro to be used or
-set to a dictionary of key-value strings for advanced options.
-''')
+        except ConfluenceConfigError as ex:
+            raise ConfluenceLatexMacroInvalidConfigError from ex
 
         if config.confluence_latex_macro:
             conf_keys = config.confluence_latex_macro.keys()
@@ -406,13 +367,9 @@ set to a dictionary of key-value strings for advanced options.
             ]
 
             if not all(name in conf_keys for name in required_keys):
-                raise ConfluenceConfigurationError('''\
-missing keys in confluence_latex_macro
-
-The following keys are required:
-
- - {}
-'''.format('\n - '.join(required_keys)))
+                keys_str = '\n - '.join(required_keys)
+                raise ConfluenceLatexMacroMissingKeysConfigError(keys_str) \
+                    from ex
 
     # ##################################################################
 
@@ -454,12 +411,11 @@ The following keys are required:
 
     try:
         validator.conf('confluence_parent_page').string()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_parent_page').int_(positive=True)
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
-confluence_parent_page is not a string or a positive integer''')
+        except ConfluenceConfigError as ex:
+            raise ConfluenceParentPageConfigError from ex
 
     # ##################################################################
 
@@ -483,17 +439,11 @@ confluence_parent_page is not a string or a positive integer''')
     # confluence_permit_raw_html
     try:
         validator.conf('confluence_permit_raw_html').bool()
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_permit_raw_html').string()
-        except ConfluenceConfigurationError:
-            raise ConfluenceConfigurationError('''\
-confluence_permit_raw_html is not a boolean or a string
-
-The option 'confluence_permit_raw_html' has been provided to indicate that
-raw HTML should be published. This value can either be set to `True` or
-configured to the name of a supported macro identifier.
-''')
+        except ConfluenceConfigError as ex:
+            raise ConfluencePermitRawHtmlConfigError from ex
 
     # ##################################################################
 
@@ -501,14 +451,8 @@ configured to the name of a supported macro identifier.
     try:
         validator.conf('confluence_prev_next_buttons_location') \
                  .matching('bottom', 'both', 'top')
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_prev_next_buttons_location' has been configured to enable
-navigational buttons onto generated pages. Accepted values include 'bottom',
-'both' and 'top'.
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluencePrevNextButtonsLocationConfigError(ex) from ex
 
     # ##################################################################
 
@@ -542,14 +486,8 @@ navigational buttons onto generated pages. Accepted values include 'bottom',
                 option_val.docnames_from_file()
             else:
                 option_val.docnames()
-        except ConfluenceConfigurationError as e:
-            raise ConfluenceConfigurationError('''\
-{msg}
-
-The value type permitted for this publish list option can either be a list of
-document names or a string pointing to a file containing documents. Document
-names are relative to the documentation's source directory.
-'''.format(msg=e))
+        except ConfluenceConfigError as ex:
+            raise ConfluencePublishListConfigError(ex) from ex
 
     # ##################################################################
 
@@ -558,20 +496,12 @@ names are relative to the documentation's source directory.
     # confluence_publish_debug
     try:
         validator.conf('confluence_publish_debug').bool()  # deprecated
-    except ConfluenceConfigurationError:
+    except ConfluenceConfigError:
         try:
             validator.conf('confluence_publish_debug').enum(PublishDebug)
-        except ConfluenceConfigurationError as e:
-            opts = PublishDebug._member_names_  # pylint: disable=no-member
-            raise ConfluenceConfigurationError('''\
-{msg}
-
-The option 'confluence_publish_debug' has been configured to enable publish
-debugging. Accepted values include:
-
- - all
- - {opts}
-'''.format(msg=e, opts='\n - '.join(opts)))
+        except ConfluenceConfigError as ex:
+            opts_str = '\n - '.join(opts)
+            raise ConfluencePublishDebugConfigError(ex, opts_str) from ex
 
     # ##################################################################
 
@@ -654,16 +584,7 @@ debugging. Accepted values include:
     # confluence_server_auth
     if config.confluence_server_auth is not None:
         if not issubclass(type(config.confluence_server_auth), AuthBase):
-            raise ConfluenceConfigurationError('''\
-confluence_server_auth is not an implementation of requests.auth.AuthBase
-
-Providing a custom authentication for Requests requires an implementation that
-inherits 'requests.auth.AuthBase'. For more information, please consult the
-following:
-
-    requests -- Authentication
-    https://requests.readthedocs.io/en/latest/user/authentication/
-''')
+            raise ConfluenceServerAuthConfigError
 
     # ##################################################################
 
@@ -707,13 +628,8 @@ following:
         ]
         if 'type' in sourcelink:
             if sourcelink['type'] not in supported_types:
-                raise ConfluenceConfigurationError('''\
-unsupported type provided in confluence_sourcelink
-
-The following types are supported:
-
- - {}
-'''.format('\n - '.join(supported_types)))
+                supported_types_str = '\n - '.join(supported_types)
+                raise ConfluenceSourcelinkTypeConfigError(supported_types_str)
 
             # ensure requires options are set
             required = [
@@ -722,36 +638,20 @@ The following types are supported:
                 'version',
             ]
             if not all(k in sourcelink for k in required):
-                raise ConfluenceConfigurationError('''\
-required option missing in confluence_sourcelink
-
-The following options are required for the provided template type:
-
- - {}
-'''.format('\n - '.join(required)))
+                required_str = '\n - '.join(required)
+                raise ConfluenceSourcelinkRequiredConfigError(required_str)
 
         # if not using a template type, ensure url is set
         elif 'url' not in sourcelink or not sourcelink['url']:
-            raise ConfluenceConfigurationError('''\
-url option is not set in confluence_sourcelink
-
-If a template type is not being configured for a source link,
-the `url` field must be configured.
-''')
+            raise ConfluenceSourcelinkUrlConfigError
 
         reserved = [
             'page',
             'suffix',
         ]
         if any(k in sourcelink for k in reserved):
-            raise ConfluenceConfigurationError('''\
-reserved option set in confluence_sourcelink
-
-The following options are reserved with confluence_sourcelink
-and cannot be set:
-
- - {}
-'''.format('\n - '.join(reserved)))
+            reserved_str = '\n - '.join(reserved)
+            raise ConfluenceSourcelinkReservedConfigError(reserved_str)
 
     # ##################################################################
 
@@ -771,14 +671,8 @@ and cannot be set:
     try:
         validator.conf('confluence_timeout') \
                  .int_()
-    except ConfluenceConfigurationError as e:
-        raise ConfluenceConfigurationError('''\
-{msg}
-
-A configured timeout should be set to a duration, in seconds, before any network
-request to timeout after inactivity. This should be set to a positive integer
-value (e.g. 2).
-'''.format(msg=e))
+    except ConfluenceConfigError as ex:
+        raise ConfluenceTimeoutConfigError(ex) from ex
 
     # ##################################################################
 
@@ -802,74 +696,30 @@ value (e.g. 2).
 
     if config.confluence_publish:
         if not config.confluence_server_url:
-            raise ConfluenceConfigurationError('''\
-confluence server url not provided
-
-While publishing has been configured using 'confluence_publish', the Confluence
-server URL has not. Ensure 'confluence_server_url' has been set to target
-Confluence instance to be published to.
-''')
+            raise ConfluencePublishMissingServerUrlConfigError
 
         if not config.confluence_space_key and not config.confluence_space_name:
-            raise ConfluenceConfigurationError('''\
-confluence space key not provided
-
-While publishing has been configured using 'confluence_publish', the Confluence
-space key has not. Ensure 'confluence_space_key' has been set to space's key
-which content should be published under.
-''')
+            raise ConfluencePublishMissingSpaceKeyConfigError
 
         if (config.confluence_ask_password and not config.confluence_server_user
                 and not config.confluence_ask_user):
-            raise ConfluenceConfigurationError('''\
-confluence username not provided
-
-A publishing password has been flagged with 'confluence_ask_password';
-however, no username has been configured. Ensure 'confluence_server_user' is
-properly set with the publisher's Confluence username or have
-'confluence_ask_user' set to provide a username.
-''')
+            raise ConfluencePublishMissingUsernameAskConfigError
 
         if config.confluence_server_pass:
             if not config.confluence_server_user:
-                raise ConfluenceConfigurationError('''\
-confluence username not provided
-
-A publishing password has been configured with 'confluence_server_pass';
-however, no username has been configured. Ensure 'confluence_server_user' is
-properly set with the publisher's Confluence username.
-''')
+                raise ConfluencePublishMissingUsernamePassConfigError
 
         if config.confluence_parent_page_id_check:
             if not config.confluence_parent_page:
-                raise ConfluenceConfigurationError('''\
-parent page (holder) name not set
-
-When a parent page identifier check has been configured with the option
-'confluence_parent_page_id_check', no parent page name has been provided with
-the 'confluence_parent_page' option. Ensure the name of the parent page name
-is provided as well.
-''')
+                raise ConfluencePublishMissingParentPageConfigError
 
         if config.confluence_publish_root:
             if config.confluence_parent_page:
-                raise ConfluenceConfigurationError('''\
-conflicting publish point configurations
-
-When configuring for a publishing container, a user can configure for either
-'confluence_parent_page' or 'confluence_publish_root'; however, both cannot be
-configured at the same time.
-''')
+                raise ConfluencePublishConflictPublishPointConfigError
 
         if config.confluence_cleanup_purge:
             if config.confluence_cleanup_archive:
-                raise ConfluenceConfigurationError('''\
-conflicting cleanup configurations
-
-When configuring for cleanup of legacy pages, a user can configure for either
-'confluence_cleanup_archive' or 'confluence_publish_root'; however, both
-cannot be configured at the same time.
-''')
+                raise ConfluencePublishCleanupConflictConfigError
 
     # ##################################################################
 

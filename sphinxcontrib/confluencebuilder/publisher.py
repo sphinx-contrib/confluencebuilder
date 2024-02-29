@@ -8,10 +8,10 @@ See also:
 """
 
 from sphinx.util.logging import skip_warningiserror
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
@@ -198,7 +198,7 @@ class ConfluencePublisher:
             base_page_id, page = self.get_page_by_id(self.parent_ref)
 
             if not page:
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '''Configured parent page identifier does not exist.''')
 
             return base_page_id
@@ -210,17 +210,17 @@ class ConfluencePublisher:
             'status': 'current',
         })
         if rsp['size'] == 0:
-            raise ConfluenceConfigurationError(
+            raise ConfluenceConfigError(
                 '''Configured parent page name does not exist.''')
         page = rsp['results'][0]
         if self.parent_id and page['id'] != str(self.parent_id):
-            raise ConfluenceConfigurationError("""Configured parent """
+            raise ConfluenceConfigError("""Configured parent """
                 """page ID and name do not match.""")
         base_page_id = page['id']
         self._name_cache[base_page_id] = self.parent_ref
 
         if not base_page_id and self.parent_id:
-            raise ConfluenceConfigurationError("""Unable to find the """
+            raise ConfluenceConfigError("""Unable to find the """
                 """parent page matching the ID or name provided.""")
 
         return base_page_id

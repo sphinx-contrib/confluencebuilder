@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinx.errors import ConfigError
 from sphinx.errors import SphinxError
 
 
@@ -27,7 +26,7 @@ browser or asking an administrator of the Confluence instance for help.
 
 class ConfluenceBadApiError(ConfluenceError):
     def __init__(self, code, details):
-        super().__init__('''
+        super().__init__(f'''
 ---
 Unsupported Confluence API call
 
@@ -36,13 +35,13 @@ details for more information:
 
 {details}
 ---
-'''.format(details=details))
+''')
         self.status_code = code
 
 
 class ConfluenceBadServerUrlError(ConfluenceError):
-    def __init__(self, server_url, ex):
-        super().__init__('''
+    def __init__(self, server_url, details):
+        super().__init__(f'''
 ---
 Invalid Confluence URL detected
 
@@ -50,16 +49,16 @@ An issue has been detected when trying to communicate with the
 configured Confluence instance. Ensure the instance is running and
 inspect that the configured Confluence URL is valid:
 
-   {url}
+   {server_url}
 
 (details: {details})
 ---
-'''.format(url=server_url, details=ex))
+''')
 
 
 class ConfluenceCertificateError(ConfluenceError):
-    def __init__(self, ex):
-        super().__init__('''
+    def __init__(self, details):
+        super().__init__(f'''
 ---
 SSL certificate issue
 
@@ -68,16 +67,12 @@ certificates.
 
 (details: {details})
 ---
-'''.format(details=ex))
-
-
-class ConfluenceConfigurationError(ConfluenceError, ConfigError):
-    pass
+''')
 
 
 class ConfluenceMissingPageIdError(ConfluenceError):
     def __init__(self, space_key, page_id):
-        super().__init__('''
+        super().__init__(f'''
 ---
 Unable to find a requested page
 
@@ -87,14 +82,14 @@ as the identifier could not be found.
       Space: {space_key}
     Page Id: {page_id}
 ---
-'''.format(space_key=space_key, page_id=page_id))
+''')
 
 
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
-        super().__init__('''
+        super().__init__(f'''
 ---
-Permission denied on Confluence ({desc})
+Permission denied on Confluence ({details})
 
 The configured user does not have permission to perform an action on the
 Confluence instance. If the user should have access and this request is
@@ -102,7 +97,7 @@ using a personal access token, ensure the token is not expired/revoked.
 
 (code: 403)
 ---
-'''.format(desc=details))
+''')
 
 
 class ConfluenceProxyPermissionError(ConfluenceError):
@@ -127,20 +122,20 @@ class ConfluencePublishCheckError(ConfluenceError):
 
 class ConfluencePublishAncestorError(ConfluencePublishCheckError):
     def __init__(self, page_name):
-        super().__init__('''
+        super().__init__(f'''
 ---
-Ancestor publish check failed for: {name}
+Ancestor publish check failed for: {page_name}
 
 A request has been made to publish a page as a nested child of itself.
 This is most likely a result of an existing documentation set on a
 Confluence instance where a publish attempt is trying to push new pages
 into a parent page which has an ancestor with a matching name:
 
-    {name} (original)
+    {page_name} (original)
         |
          --> Configured Parent/Root
                      |
-                      --> {name} (new update)
+                      --> {page_name} (new update)
 
 This extension will not reorder a configured base page from its
 location. A user can either rename the page in their documentation to
@@ -151,14 +146,14 @@ page on the Confluence instance.
 If the above does not appear to be related to the current use case,
 please inform the maintainers of this extension.
 ---
-'''.format(name=page_name))
+''')
 
 
 class ConfluencePublishSelfAncestorError(ConfluencePublishCheckError):
     def __init__(self, page_name):
-        super().__init__('''
+        super().__init__(f'''
 ---
-Ancestor (self) publish check failed for: {name}
+Ancestor (self) publish check failed for: {page_name}
 
 A request has been made to publish a page as a child of itself. This is
 most likely due to a configuration of `confluence_parent_page` with the
@@ -172,7 +167,7 @@ is not set, users will most likely want to use the
 If the above does not appear to be related to the current use case,
 please inform the maintainers of this extension.
 ---
-'''.format(name=page_name))
+''')
 
 
 class ConfluenceRateLimitedError(ConfluenceError):
@@ -206,8 +201,8 @@ Confluence instance for help.
 
 
 class ConfluenceSslError(ConfluenceError):
-    def __init__(self, server_url, ex):
-        super().__init__('''
+    def __init__(self, server_url, details):
+        super().__init__(f'''
 ---
 SSL connection issue has been detected
 
@@ -215,7 +210,7 @@ An SSL issue has been detected when trying to communicate with the
 configured Confluence instance. Ensure the instance is running and
 inspect that the configured Confluence URL is valid:
 
-   {url}
+   {server_url}
 
 This can be common for internal/self-hosted Confluence instances which
 may have been signed with an internal/corporate root authority. If the
@@ -225,12 +220,12 @@ option.
 
 (details: {details})
 ---
-'''.format(url=server_url, details=ex))
+''')
 
 
 class ConfluenceTimeoutError(ConfluenceError):
     def __init__(self, server_url):
-        super().__init__('''
+        super().__init__(f'''
 ---
 Connection has timed out
 
@@ -238,9 +233,9 @@ A request to communicate with the configured Confluence instance has
 timed out. Ensure the instance is running and inspect that the
 configured Confluence URL is valid:
 
-   {url}
+   {server_url}
 ---
-'''.format(url=server_url))
+''')
 
 
 class ConfluenceUnexpectedCdataError(ConfluenceError):
@@ -273,10 +268,10 @@ the exception message above this message.
 
 
 class ConfluenceUnreconciledPageError(ConfluenceError):
-    def __init__(self, page_name, page_id, url, ex):
-        super().__init__('''
+    def __init__(self, page_name, page_id, url, details):
+        super().__init__(f'''
 ---
-Unable to update unreconciled page: {name} (id: {id})
+Unable to update unreconciled page: {page_name} (id: {page_id})
 
 Unable to update the target page due to the Confluence instance
 reporting an unreconciled page. This is either due to a conflict with
@@ -288,7 +283,7 @@ A possible workaround for this is to manually browse the page using a
 browser which could help force Confluence to reconcile the page. A link
 to the page is a follows:
 
-   {url}pages/viewpage.action?pageId={id}
+   {url}pages/viewpage.action?pageId={page_id}
 
 If an attempt to re-publish fails after a page refresh attempt, a user
 could also try manually deleting the page and retrying again. If the
@@ -301,4 +296,4 @@ discussion on GitHub.
 
 (details: {details})
 ---
-'''.format(name=page_name, id=page_id, url=url, details=ex))
+''')

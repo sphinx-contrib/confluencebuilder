@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 import hashlib
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 
@@ -226,7 +226,7 @@ class ConfluenceState:
                     hash=ConfluenceState._create_docname_unique_hash(docname, config),
                 )
             except KeyError:
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     "Configured confluence_publish_prefix '{postfix}' has an "
                     "unknown template replacement.".format(postfix=postfix))
         return postfix

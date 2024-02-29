@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from pathlib import Path
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceConfigurationError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import str2bool
 import os
@@ -16,7 +16,7 @@ class ConfigurationValidation:
         A helper class used to help validate the configuration state of a
         builder instance. A validator provides a way to performed a chain of
         queries for a configuration entry. In the event that a configuration
-        condition fails, an `ConfluenceConfigurationError` is thrown to indicate
+        condition fails, an `ConfluenceConfigError` is thrown to indicate
         an issue. For example, if there is a desire to check if a configuration
         value `my_config` points to a valid file, the following can be used:
 
@@ -41,7 +41,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a boolean. If not, an `ConfluenceConfigurationError` exception
+        key is a boolean. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -57,10 +57,10 @@ class ConfigurationValidation:
                 try:
                     str2bool(value)
                 except ValueError:
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not a boolean string' % self.key)
             elif not isinstance(value, bool) and not isinstance(value, int):
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a boolean type' % self.key)
 
         return self
@@ -71,7 +71,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a callable type. If not, an `ConfluenceConfigurationError`
+        key is a callable type. If not, an `ConfluenceConfigError`
         exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -83,7 +83,7 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and not callable(value):
-            raise ConfluenceConfigurationError(
+            raise ConfluenceConfigError(
                 '%s is not a callable' % self.key)
 
         return self
@@ -117,7 +117,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is a dictionary type with string keys and values. If not, an
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`)
         or is an empty dictionary, this method will have no effect.
@@ -130,7 +130,7 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, dict) or not all(isinstance(k, str)
                     and isinstance(v, str) for k, v in value.items()):
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a dictionary of strings' % self.key)
 
         return self
@@ -142,7 +142,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is a collection of valid docnames. If not, an
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`)
         or is an empty collection, this method will have no effect.
@@ -155,14 +155,14 @@ class ConfigurationValidation:
         if value is not None:
             if not (isinstance(value, (list, set, tuple))) or not all(
                     isinstance(label, (str, os.PathLike)) for label in value):
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a collection of filenames' % self.key)
 
             for docname in value:
                 if not any(
                         Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         f'{self.key} is missing document {docname}')
 
         return self
@@ -174,7 +174,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is a collection of valid docnames found within the contents of a
-        valid file. If not, an `ConfluenceConfigurationError` exception will be
+        valid file. If not, an `ConfluenceConfigError` exception will be
         thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -193,7 +193,7 @@ class ConfigurationValidation:
                 if not any(
                         Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         f'{self.key} is missing document {docname}')
 
         return self
@@ -205,7 +205,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is an enumeration of type `etype`. If not, a
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
         this method will have no effect.
@@ -220,7 +220,7 @@ class ConfigurationValidation:
             try:
                 value = etype[value.lower()]
             except KeyError:
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     f'{self.key} is not an enumeration ({etype.__name__})')
 
         return self
@@ -231,7 +231,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a valid file. If not, an `ConfluenceConfigurationError` exception
+        key is a valid file. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -245,7 +245,7 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, (str, os.PathLike)) or \
                     not Path(self.env.srcdir, value).is_file():
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a file' % self.key)
 
         return self
@@ -256,7 +256,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a float. If not, an `ConfluenceConfigurationError` exception
+        key is a float. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -276,17 +276,17 @@ class ConfigurationValidation:
                 try:
                     value = float(value)
                 except ValueError:
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not a float string' % self.key)
             elif isinstance(value, int):
                 value = float(value)
 
             if positive:
                 if not isinstance(value, float) or value <= 0:
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not a positive float' % self.key)
             elif not isinstance(value, float) or value < 0:
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a non-negative float' % self.key)
 
         return self
@@ -297,7 +297,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is an integer. If not, an `ConfluenceConfigurationError` exception
+        key is an integer. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -317,15 +317,15 @@ class ConfigurationValidation:
                 try:
                     value = int(value)
                 except ValueError:
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not an integer string' % self.key)
 
             if positive:
                 if not isinstance(value, int) or value <= 0:
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not a positive integer' % self.key)
             elif not isinstance(value, int) or value < 0:
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a non-negative integer' % self.key)
 
         return self
@@ -337,7 +337,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key matches one of the provided expected arguments. If not, an
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
         this method will have no effect.
@@ -351,7 +351,7 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and value not in expected:
-            raise ConfluenceConfigurationError(
+            raise ConfluenceConfigError(
                 '%s does not match expected values' % self.key)
 
         return self
@@ -362,7 +362,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a valid path. If not, an `ConfluenceConfigurationError` exception
+        key is a valid path. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -376,7 +376,7 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, (str, os.PathLike)) or \
                     not Path(self.env.srcdir, value).exists():
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a path' % self.key)
 
         return self
@@ -387,7 +387,7 @@ class ConfigurationValidation:
 
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
-        key is a string. If not, an `ConfluenceConfigurationError` exception
+        key is a string. If not, an `ConfluenceConfigError` exception
         will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`),
@@ -400,7 +400,7 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and not isinstance(value, str):
-            raise ConfluenceConfigurationError(
+            raise ConfluenceConfigError(
                 '%s is not a string' % self.key)
 
         return self
@@ -412,7 +412,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is a string or collection of strings. If not, an
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`)
         or is an empty collection, this method will have no effect.
@@ -425,10 +425,10 @@ class ConfigurationValidation:
         if value is not None:
             if isinstance(value, (list, set, tuple)):
                 if not all(isinstance(entry, str) for entry in value):
-                    raise ConfluenceConfigurationError(
+                    raise ConfluenceConfigError(
                         '%s is not a collection of strings' % self.key)
             elif not isinstance(value, str):
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a string or collection of strings' % self.key)
 
         return self
@@ -440,7 +440,7 @@ class ConfigurationValidation:
         After an instance has been set a configuration key (via `conf`), this
         method can be used to check if the value (if any) configured with this
         key is a collection of strings. If not, an
-        `ConfluenceConfigurationError` exception will be thrown.
+        `ConfluenceConfigError` exception will be thrown.
 
         In the event that the configuration is not set (e.g. a value of `None`)
         or is an empty collection, this method will have no effect.
@@ -457,13 +457,13 @@ class ConfigurationValidation:
         if value is not None:
             if not (isinstance(value, (list, set, tuple)) and all(
                     isinstance(entry, str) for entry in value)):
-                raise ConfluenceConfigurationError(
+                raise ConfluenceConfigError(
                     '%s is not a collection of strings' % self.key)
 
             if no_space:
                 for entry in value:
                     if ' ' in entry:
-                        raise ConfluenceConfigurationError(
+                        raise ConfluenceConfigError(
                             '%s has an entry containing a space' % self.key)
 
         return self
