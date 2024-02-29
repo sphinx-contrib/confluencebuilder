@@ -516,6 +516,13 @@ def prepare_dirs(container=None, postfix=None):
     test_dir = lib_dir.parent
     base_dir = test_dir.parent
     output_dir = base_dir / 'output'
+
+    # attempt to nest under a tox environment folder, to help prevent
+    # issues running in parallel mode
+    suboutput_dir = os.getenv('TOX_ENV_NAME')
+    if suboutput_dir:
+        output_dir = output_dir / suboutput_dir
+
     container_dir = output_dir / container
     if postfix:
         container_dir = container_dir.parent / (container_dir.name + postfix)
