@@ -145,7 +145,7 @@ class ConfluenceCacheInfo:
 
         return doc_hash
 
-    def track_last_page_id(self, docname, id):
+    def track_last_page_id(self, docname, page_id):
         """
         track the last publish page identifier for a document
 
@@ -155,10 +155,10 @@ class ConfluenceCacheInfo:
 
         Args:
             docname: the name of the document
-            id: the page identifier
+            page_id: the page identifier
         """
 
-        self._active_pids[docname] = id
+        self._active_pids[docname] = page_id
         self._cached_pids.pop(docname, None)
 
     def load_cache(self):

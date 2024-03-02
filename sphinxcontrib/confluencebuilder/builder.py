@@ -1129,9 +1129,9 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = f'{target}.{section_id}'
 
-                    for id_ in section_node['ids']:
-                        id_ = f'{docname}#{id_}'
-                        self.state.register_target(id_, target)
+                    for raw_id in section_node['ids']:
+                        full_id = f'{docname}#{raw_id}'
+                        self.state.register_target(full_id, target)
 
     def _top_ref_check(self, node):
         """

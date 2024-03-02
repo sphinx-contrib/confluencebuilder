@@ -70,12 +70,11 @@ def build_intersphinx(builder):
                 else:
                     anchor = ''
 
-                uri = pages_part.format(page_id)
+                uri = pages_part_fmt.format(page_id)
                 if anchor:
                     uri += '#' + anchor
-                if dispname == name:
-                    dispname = '-'
-                entry = f'{name} {domainname}:{typ} {prio} {uri} {dispname}\n'
+                display = '-' if dispname == name else dispname
+                entry = f'{name} {domainname}:{typ} {prio} {uri} {display}\n'
                 logger.verbose('(intersphinx) ' + entry.strip())
                 f.write(compressor.compress(entry.encode('utf-8')))
 

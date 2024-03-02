@@ -35,8 +35,8 @@ def string_list(argument):
 
     if argument:
         for line in argument.splitlines():
-            for label in line.strip().split(' '):
-                label = label.strip()
+            for label_entry in line.strip().split(' '):
+                label = label_entry.strip()
                 if label:
                     data.append(label)
 
