@@ -374,7 +374,7 @@ class ConfluenceBuilder(Builder):
             labels['search'] = 'search', '', ''
 
         if self.domain_indices:
-            for indexname, _ in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 anonlabels[indexname] = indexname, ''
                 labels[indexname] = indexname, '', ''
 
@@ -719,7 +719,7 @@ class ConfluenceBuilder(Builder):
 
         # build domain indexes
         if self.domain_indices:
-            for indexname, indexdata in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 self.info(f'generating index ({indexname})...',
                     nonl=(not self._verbose))
 
