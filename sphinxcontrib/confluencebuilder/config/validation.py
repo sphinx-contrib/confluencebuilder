@@ -284,7 +284,7 @@ class ConfigurationValidation:
             if positive:
                 if not isinstance(value, float) or value <= 0:
                     msg = f'{self.key} is not a positive float'
-                    raise ConfluenceConfigError()
+                    raise ConfluenceConfigError
             elif not isinstance(value, float) or value < 0:
                 msg = f'{self.key} is not a non-negative float'
                 raise ConfluenceConfigError(msg)
