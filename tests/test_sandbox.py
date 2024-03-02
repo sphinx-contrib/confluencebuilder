@@ -79,13 +79,13 @@ def main():
     parser.parse_args()
 
     defines = {}
-    for val in args.define:
-        try:
-            key, val = val.split('=', 1)
+    try:
+        for define in args.define:
+            key, val = define.split('=', 1)
             defines[key] = val
-        except ValueError:
-            print('[sandbox] invalid define provided in command line')
-            return 1
+    except ValueError:
+        print('[sandbox] invalid define provided in command line')
+        return 1
 
     print('[sandbox] target sandbox:', args.sandbox)
 

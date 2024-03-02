@@ -34,13 +34,13 @@ def build_main(args_parser):
         logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
 
     defines = {}
-    for val in args.define:
-        try:
-            key, val = val.split('=', 1)
+    try:
+        for define in args.define:
+            key, val = define.split('=', 1)
             defines[key] = val
-        except ValueError:
-            logger.error('invalid define provided in command line')
-            return 1
+    except ValueError:
+        logger.error('invalid define provided in command line')
+        return 1
 
     work_dir = args.work_dir if args.work_dir else Path.cwd()
     if args.output_dir:
