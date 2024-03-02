@@ -88,8 +88,7 @@ class TestFormatPostfix(ConfluenceTestCase):
         postfix = ConfluenceState._format_postfix(
             postfix=confluence_publish_prefix, docname=test_docname,
             config=config)
-        self.assertEqual(postfix, '- ({hash})'.format(
-            hash=self.test_hash[0:10]))
+        self.assertEqual(postfix, f'- ({self.test_hash[0:10]})')
 
 
 class TestRegisterTitle(ConfluenceTestCase):

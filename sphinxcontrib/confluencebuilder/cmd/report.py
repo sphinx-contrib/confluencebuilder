@@ -182,9 +182,9 @@ def report_main(args_parser):
                     for o in root.findall('buildNumber'):
                         info += '     build: ' + o.text + '\n'
                 else:
-                    logger.error('bad response from server ({})'.format(
-                        rsp.status_code))
-                    info += f'   fetched: error ({rsp.status_code})\n'
+                    code = rsp.status_code
+                    logger.error(f'bad response from server ({code})')
+                    info += f'   fetched: error ({code})\n'
                     rv = 1
             except Exception:  # noqa: BLE001
                 sys.stdout.flush()

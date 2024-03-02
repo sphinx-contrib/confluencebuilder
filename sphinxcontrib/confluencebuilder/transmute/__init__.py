@@ -147,9 +147,8 @@ def prepare_math_images(builder, doctree):
                 if 'ids' in new_node:
                     math_image_ids.extend(new_node['ids'])
 
-        except imgmath.MathExtError as exc:
-            ConfluenceLogger.warn('inline latex {}: {}'.format(
-                node.astext(), exc))
+        except imgmath.MathExtError as ex:
+            ConfluenceLogger.warn(f'inline latex {node.astext()}: {ex}')
 
     # v2 editor will manually inject anchors in an image-managed
     # section to avoid a newline spacing between the anchor and
@@ -215,8 +214,9 @@ def replace_graphviz_nodes(builder, doctree):
     mock_translator = MockTranslator(builder)
 
     for node in findall(doctree, graphviz):
+        node_code = node['code']
         try:
-            _, out_filename = render_dot(mock_translator, node['code'],
+            _, out_filename = render_dot(mock_translator, node_code,
                 node['options'], builder.graphviz_output_format, 'graphviz')
             if not out_filename:
                 node.parent.remove(node)
@@ -226,8 +226,8 @@ def replace_graphviz_nodes(builder, doctree):
             if 'align' in node:
                 new_node['align'] = node['align']
             node.replace_self(new_node)
-        except GraphvizError as exc:
-            ConfluenceLogger.warn('dot code {}: {}'.format(node['code'], exc))
+        except GraphvizError as ex:
+            ConfluenceLogger.warn(f'dot code {node_code}: {ex}')
             node.parent.remove(node)
 
 

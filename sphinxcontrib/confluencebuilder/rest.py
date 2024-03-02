@@ -86,7 +86,7 @@ def rate_limited_retries():
             if self.config.confluence_publish_delay:
                 delay = self.config.confluence_publish_delay
                 logger.verbose('user-set api delay set; '
-                               'waiting {} seconds...'.format(math.ceil(delay)))
+                               f'waiting {math.ceil(delay)} seconds...')
                 time.sleep(delay)
 
             # if confluence asked us to wait so many seconds before a next
@@ -94,7 +94,7 @@ def rate_limited_retries():
             if self.next_delay:
                 delay = self.next_delay
                 logger.verbose('rate-limit header detected; '
-                               'waiting {} seconds...'.format(math.ceil(delay)))
+                               f'waiting {math.ceil(delay)} seconds...')
                 time.sleep(delay)
                 self.next_delay = None
 
@@ -128,7 +128,7 @@ def rate_limited_retries():
 
                     # wait the calculated delay before retrying again
                     logger.warn('rate-limit response detected; '
-                                'waiting {} seconds...'.format(math.ceil(delay)))
+                                f'waiting {math.ceil(delay)} seconds...')
                     time.sleep(delay)
                     self.last_retry = delay
                     attempt += 1
@@ -373,8 +373,8 @@ class Rest:
                 # user once
                 if delay >= 60 and not self._reported_large_delay:
                     logger.warn('(warning) site has reported a long '
-                                'rate-limit delay ({} seconds)'.format(
-                                math.ceil(delay)))
+                                'rate-limit delay '
+                                f'({math.ceil(delay)} seconds)')
                     self._reported_large_delay = True
 
         # check if Confluence reports a `Deprecation` header in the response;
