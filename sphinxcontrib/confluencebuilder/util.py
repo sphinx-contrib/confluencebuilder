@@ -302,11 +302,11 @@ def getpass2(prompt='Password: '):
     # disable this feature.
     if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
-        subprocess.check_call(['/usr/bin/stty', '-echo'])
+        subprocess.check_call(['/usr/bin/stty', '-echo'])  # noqa: S603
         try:
             value = input(prompt)
         finally:
-            subprocess.check_call(['/usr/bin/stty', 'echo'])
+            subprocess.check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
         print('')
         return value
 
