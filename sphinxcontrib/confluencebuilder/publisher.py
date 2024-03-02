@@ -889,8 +889,7 @@ class ConfluencePublisher:
                     if str(ex).find('title already exists') == -1:
                         raise
 
-                    logger.verbose('title already exists warning '
-                        f'for page {page_name}')
+                    logger.verbose(f'title already exists for page {page_name}')
 
                     _, page = self.get_page_case_insensitive(page_name)
                     if not page:
@@ -1056,8 +1055,7 @@ class ConfluencePublisher:
             if str(ex).find('No content found with id') == -1:
                 raise
 
-            logger.verbose('ignore missing delete for page '
-                f'identifier: {page_id}')
+            logger.verbose(f'ignore missing delete for page id: {page_id}')
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to delete '
