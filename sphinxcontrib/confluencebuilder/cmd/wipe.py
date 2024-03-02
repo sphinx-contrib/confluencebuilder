@@ -195,11 +195,14 @@ def ask_question(question, default='no'):
 
     while True:
         rsp = input(question + prompt).strip().lower()
+
         if default is not None and rsp == '':
             return default == 'yes'
-        elif rsp in ('y', 'yes'):
+
+        if rsp in ('y', 'yes'):
             return True
-        elif rsp in ('n', 'no', 'q'):  # q for 'quit'
+
+        if rsp in ('n', 'no', 'q'):  # q for 'quit'
             return False
-        else:
-            print("Please respond with 'y' or 'n'.\n")
+
+        print("Please respond with 'y' or 'n'.\n")

@@ -386,12 +386,14 @@ def str2bool(value):
     """
 
     value = str(value).lower()
+
     if value in ['y', 'yes', 't', 'true', 'on', '1']:
         return True
-    elif value in ['n', 'no', 'f', 'false', 'off', '0']:
+
+    if value in ['n', 'no', 'f', 'false', 'off', '0']:
         return False
-    else:
-        raise ValueError
+
+    raise ValueError
 
 
 @contextmanager
