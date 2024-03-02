@@ -124,7 +124,7 @@ def rate_limited_retries():
                     delay = min(delay, RATE_LIMITED_MAX_RETRY_DURATION)
 
                     # add jitter
-                    delay += random.uniform(0.3, 1.3)
+                    delay += random.uniform(0.3, 1.3)  # noqa: S311
 
                     # wait the calculated delay before retrying again
                     logger.warn('rate-limit response detected; '
