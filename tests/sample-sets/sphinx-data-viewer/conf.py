@@ -8,6 +8,6 @@ data_viewer_data = {
     "my_data": {
         "name": "Mario",
         "job": "plumber",
-        "magic_tubes": [2, 7, 23, 43.5]
-    }
+        "magic_tubes": [2, 7, 23, 43.5],
+    },
 }

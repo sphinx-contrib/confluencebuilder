@@ -19,9 +19,9 @@ needs_layouts = {
             'head': ['**<<meta("title")>>** for *<<meta("author")>>*'],
             'meta': ['**status**: <<meta("status")>>',
                      '**author**: <<meta("author")>>'],
-            'side': ['<<image("_images/{{author}}.png", align="center")>>']
-        }
-    }
+            'side': ['<<image("_images/{{author}}.png", align="center")>>'],
+        },
+    },
 }
 
 # html builder options (to compare)

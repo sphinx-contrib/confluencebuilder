@@ -157,7 +157,7 @@ LITERAL2LANG_MAP_V1 = {
     # highlight type as the target language for the default type.
     #
     # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
-    DEFAULT_HIGHLIGHT_STYLE: 'python'
+    DEFAULT_HIGHLIGHT_STYLE: 'python',
 }
 
 LITERAL2LANG_MAP_V2 = {
@@ -402,7 +402,7 @@ LITERAL2LANG_MAP_V2 = {
     # highlight type as the target language for the default type.
     #
     # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
-    DEFAULT_HIGHLIGHT_STYLE: 'python'
+    DEFAULT_HIGHLIGHT_STYLE: 'python',
 }
 
 # sphinx literal to confluence language map (fallbacks)
