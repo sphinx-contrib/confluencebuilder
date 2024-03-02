@@ -2,7 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from pathlib import Path
-from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation  # noqa: N811
 import pkgutil
 
 

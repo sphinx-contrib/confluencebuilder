@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from sphinx.environment.adapters.indexentries import IndexEntries
-from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation  # noqa: N811
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 import pkgutil
