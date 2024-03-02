@@ -1014,7 +1014,8 @@ class ConfluenceBuilder(Builder):
                 else:
                     # unsupported source type should not pass here after this
                     # extension's configuration check
-                    raise AssertionError('unsupported source type')
+                    msg = 'unsupported source type'
+                    raise AssertionError(msg)
 
                 sourcelink['url'] = url_base + url
 

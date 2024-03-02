@@ -225,10 +225,10 @@ class ConfluenceState:
                 return postfix.format(
                     hash=ConfluenceState._create_docname_unique_hash(docname, config),
                 )
-            except KeyError:
-                raise ConfluenceConfigError(
-                    f"Configured confluence_publish_prefix '{postfix}' has an "
-                    "unknown template replacement.")
+            except KeyError as ex:
+                msg = f"Configured confluence_publish_prefix '{postfix}' has " \
+                      "an unknown template replacement."
+                raise ConfluenceConfigError(msg) from ex
         return postfix
 
     @staticmethod

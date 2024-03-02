@@ -107,10 +107,10 @@ def rate_limited_retries():
             while True:
                 try:
                     return func(self, *args, **kwargs)
-                except ConfluenceRateLimitedError as e:
+                except ConfluenceRateLimitedError:  # noqa: PERF203
                     # if max attempts have been reached, stop any more attempts
                     if attempt > RATE_LIMITED_MAX_RETRIES:
-                        raise e
+                        raise
 
                     # determine the amount of delay to wait again -- either from the
                     # provided delay (if any) or exponential backoff
@@ -149,12 +149,12 @@ def requests_exception_wrappers():
         def _wrapper(self, *args, **kwargs):
             try:
                 return func(self, *args, **kwargs)
-            except requests.exceptions.Timeout:
-                raise ConfluenceTimeoutError(self.url)
+            except requests.exceptions.Timeout as ex:
+                raise ConfluenceTimeoutError(self.url) from ex
             except requests.exceptions.SSLError as ex:
-                raise ConfluenceSslError(self.url, ex)
+                raise ConfluenceSslError(self.url, ex) from ex
             except requests.exceptions.ConnectionError as ex:
-                raise ConfluenceBadServerUrlError(self.url, ex)
+                raise ConfluenceBadServerUrlError(self.url, ex) from ex
 
         return _wrapper
     return _decorator
@@ -248,9 +248,9 @@ class Rest:
         try:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
-        except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+        except ValueError as ex:
+            msg = 'REST reply did not provide valid JSON data.'
+            raise ConfluenceBadServerUrlError(self.url, msg) from ex
 
         return json_data
 
@@ -271,9 +271,9 @@ class Rest:
         try:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
-        except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+        except ValueError as ex:
+            msg = 'REST reply did not provide valid JSON data.'
+            raise ConfluenceBadServerUrlError(self.url, msg) from ex
 
         return json_data
 
@@ -294,9 +294,9 @@ class Rest:
         try:
             rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
             json_data = json.loads(rsp.text)
-        except ValueError:
-            raise ConfluenceBadServerUrlError(self.url,
-                "REST reply did not provide valid JSON data.")
+        except ValueError as ex:
+            msg = 'REST reply did not provide valid JSON data.'
+            raise ConfluenceBadServerUrlError(self.url, msg) from ex
 
         return json_data
 

@@ -74,7 +74,7 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
 
         with self.mtx:
             if self.del_req or self.get_req or self.put_req:
-                raise Exception(f'''unhandled requests detected
+                msg = f'''unhandled requests detected
 
 (get requests)
 {self.get_req}
@@ -83,7 +83,8 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
 {self.put_req}
 
 (del requests)
-{self.del_req}''')
+{self.del_req}'''
+                raise Exception(msg)
 
     def pop_delete_request(self):
         """
