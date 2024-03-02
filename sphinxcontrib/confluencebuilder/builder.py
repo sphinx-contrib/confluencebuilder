@@ -134,8 +134,7 @@ class ConfluenceBuilder(Builder):
         old_url = self.config.confluence_server_url
         new_url = ConfluenceUtil.normalize_base_url(old_url)
         if old_url != new_url:
-            self.warn('normalizing confluence url from '
-                '{} to {} '.format(old_url, new_url))
+            self.warn(f'normalizing confluence url from {old_url} to {new_url}')
             self.config.confluence_server_url = new_url
 
         # detect if Confluence Cloud if using the Atlassian domain
@@ -611,7 +610,7 @@ class ConfluenceBuilder(Builder):
                 self.state.register_upload_id(docname, page_id)
             else:
                 self.warn('cannot publish asset since publishing '
-                    'point cannot be found ({}): {}'.format(key, docname))
+                    f'point cannot be found ({key}): {docname}')
                 return
 
         attachment_id = None
@@ -1166,9 +1165,9 @@ class ConfluenceBuilder(Builder):
                 doctitle = f'autogen-{docname}'
                 if self.publish:
                     self.warn('document will be published using an '
-                        'generated title value: {}'.format(docname))
+                        f'generated title value: {docname}')
             elif self.publish:
                 self.warn('document will not be published since it '
-                    'has no title: {}'.format(docname))
+                    f'has no title: {docname}')
 
         return doctitle

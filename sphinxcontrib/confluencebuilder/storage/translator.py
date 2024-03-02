@@ -101,9 +101,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.name == 'singleconfluence':
                 docname = self._docnames[-1]
                 raw_anchor = node.parent['ids'][0]
-                anchorname = '{}/#{}'.format(docname, node.parent['ids'][0])
+                anchorname = f'{docname}/#{raw_anchor}'
                 if anchorname not in self.builder.secnumbers:
-                    anchorname = '%s/' % raw_anchor
+                    anchorname = f'{raw_anchor}/'
             else:
                 anchorname = '#' + node.parent['ids'][0]
                 if anchorname not in self.builder.secnumbers:
@@ -171,7 +171,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # an anchor point with the name matching the title (which allows the
         # fallback link to jump to the desired point in a document).
         if self.builder.name == 'singleconfluence':
-            doc_anchorname = '%s/' % node['docname']
+            doc_anchorname = node['docname'] + '/'
             doc_target = self.state.target(doc_anchorname)
             if not doc_target:
                 doc_id = node['docname']
@@ -276,7 +276,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # on the paragraph since the v2 editor does not permit nesting
         # block elements for indentation
         if self.v2 and self._indent_level > 0:
-            style += 'margin-left: {}px;'.format(INDENT * self._indent_level)
+            offset = INDENT * self._indent_level
+            style += f'margin-left: {offset}px;'
 
         # MyST-Parser will inject text-align hints in the node's classes
         # attribute; if set, attempt to apply the style
@@ -430,14 +431,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             elif node['enumtype'] == 'arabic':
                 list_style_type = 'decimal'
             else:
-                self.warn(
-                    'unknown enumerated list type: {}'.format(node['enumtype']))
+                self.warn('unknown enumerated list type: ' + node['enumtype'])
 
         if list_style_type:
             if 'style' not in attribs:
                 attribs['style'] = ''
-            attribs['style'] = '{}list-style-type: {};'.format(
-                attribs['style'], list_style_type)
+            attribs['style'] += f'list-style-type: {list_style_type};'
 
         self.body.append(self._start_tag(node, 'ol', suffix=self.nl, **attribs))
         self.context.append(self._end_tag(node))
@@ -513,9 +512,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.context.pop())  # dt/p
 
         if self.v2:
+            offset = INDENT * self._indent_level
             self.body.append(self._start_tag(node, 'p',
-                **{'style': 'margin-left: {}px;'.format(
-                    INDENT * self._indent_level)}))
+                **{'style': f'margin-left: {offset}px;'}))
             self.context.append(self._end_tag(node))
 
         if 'ids' in node:
@@ -1133,8 +1132,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 # configuring it explicitly may break the editor's page
                 # width configuration
                 attribs = {}
-                if colspec['colwidth'] != 100 or not self.v2:
-                    attribs['style'] = 'width: {}%'.format(colspec['colwidth'])
+                colwidth = colspec['colwidth']
+                if colwidth != 100 or not self.v2:
+                    attribs['style'] = f'width: {colwidth}%'
 
                 self.body.append(self._start_tag(
                     node, 'col', empty=True, **attribs))
@@ -1296,7 +1296,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             docname = self._docnames[-1]
             anchorname = f'{docname}/#{raw_anchor}'
             if anchorname not in self.builder.secnumbers:
-                anchorname = '%s/' % raw_anchor
+                anchorname = f'{raw_anchor}/'
         else:
             anchorname = f'{self.docname}#{raw_anchor}'
 
@@ -1346,7 +1346,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         doctitle = self.state.title(docname)
         if not doctitle:
             self.warn('unable to build link to document due to '
-                'missing title (in {}): {}'.format(self.docname, docname))
+                f'missing title (in {self.docname}): {docname}')
 
             # build a broken link
             self.body.append(self._start_tag(node, 'a', **{'href': '#'}))
@@ -1695,8 +1695,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         alignment = self._fetch_alignment(node)
         if alignment and alignment != 'left':
-            attribs['style'] = '{}text-align: {};'.format(
-                attribs['style'], alignment)
+            attribs['style'] += f'text-align: {alignment};'
 
         self.body.append(self._start_tag(node, 'p', **attribs))
         self.add_fignumber(node.parent)
@@ -1730,8 +1729,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # offset vertical image to align with paragraph
         if not self.v2 and node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
+            offset = -1 * math_depth
             self.body.append(self._start_tag(node, 'span',
-                **{'style': 'vertical-align: {}px'.format(-1 * math_depth)}))
+                **{'style': f'vertical-align: {offset}px'}))
             self.context.append(self._end_tag(node))
 
         node.math_number = None
@@ -1888,8 +1888,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ------------------
 
     def visit_download_reference(self, node):
-        uri = node['reftarget']
-        uri = self.encode(uri)
+        reftarget = node['reftarget']
+        uri = self.encode(reftarget)
 
         if uri.find('://') != -1:
             self.body.append(self._start_tag(node, 'strong'))
@@ -1915,8 +1915,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                         node, asset_docname, standalone=True)
 
             if not file_key:
-                self.warn('unable to find download: ' '{}'.format(
-                    node['reftarget']))
+                self.warn(f'unable to find download: {reftarget}')
                 raise nodes.SkipNode
 
             hosting_doctitle = self.state.title(hosting_docname)
@@ -2065,7 +2064,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(f'{formatted_token} ::=')
                 lastname = production['tokenname']
             else:
-                self.body.append('{}    '.format(' ' * len(lastname)))
+                prefix = ' ' * len(lastname)
+                self.body.append(f'{prefix}    ')
             text = production.astext()
             text = self.encode(text)
             self.body.append(text + self.nl)
@@ -2263,8 +2263,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         elif node['type'] == 'versionadded':
             self._visit_info(node)
         else:
-            self.warn('unsupported version modification type: '
-                '{}'.format(node['type']))
+            self.warn('unsupported version modification type: ' + node['type'])
             self._visit_info(node)
 
     depart_versionmodified = _depart_admonition
@@ -2297,7 +2296,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if not doctitle:
                 self.warn('unable to build excerpt include to document since '
                     'document is missing or is missing title '
-                    '(in {}): {}'.format(self.docname, docname))
+                    f'(in {self.docname}): {docname}')
                 raise nodes.SkipNode
         elif ':' in doclink:
             space_key, doctitle = doclink.split(':', 1)
@@ -2542,7 +2541,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_tag(node, suffix=''))
         else:
             self.warn('unable to build link to document card due to '
-                'missing title (in {}): {}'.format(self.docname, docname))
+                f'missing title (in {self.docname}): {docname}')
             self.body.append(node.astext())
 
         if not self.v2:
@@ -2567,7 +2566,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._end_ac_link(node))
         else:
             self.warn('unable to build link to document card due to '
-                'missing title (in {}): {}'.format(self.docname, docname))
+                f'missing title (in {self.docname}): {docname}')
             self.body.append(node.astext())
 
         raise nodes.SkipNode
@@ -3038,7 +3037,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             style += f'margin-left: {indent}px;'
         elif self.v2:
             # (see "visit_paragraph")
-            style += 'margin-left: {}px;'.format(INDENT * self._indent_level)
+            offset = INDENT * self._indent_level
+            style += f'margin-left: {offset}px;'
 
         if style:
             attribs['style'] = style
@@ -3163,7 +3163,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             except AttributeError:
                 node.__confluence_tag = [tag]
 
-        return '<{}{}'.format(' '.join(data), suffix)
+        prefix = ' '.join(data)
+        return f'<{prefix}{suffix}'
 
     def _end_tag(self, node, suffix=None):
         """

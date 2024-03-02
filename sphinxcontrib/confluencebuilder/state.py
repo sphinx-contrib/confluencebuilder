@@ -105,9 +105,9 @@ class ConfluenceState:
         offset = 2
         while title.lower() in ConfluenceState.title2doc:
             if offset == 2:
+                docname2 = ConfluenceState.title2doc[title.lower()]
                 logger.warn('title conflict detected with '
-                    "'{}' and '{}'".format(
-                        ConfluenceState.title2doc[title.lower()], docname))
+                    f"'{docname2}' and '{docname}'")
 
             tail = f' ({offset}){base_tail}'
             if len(base_title) + len(tail) > try_max:
@@ -227,8 +227,8 @@ class ConfluenceState:
                 )
             except KeyError:
                 raise ConfluenceConfigError(
-                    "Configured confluence_publish_prefix '{postfix}' has an "
-                    "unknown template replacement.".format(postfix=postfix))
+                    f"Configured confluence_publish_prefix '{postfix}' has an "
+                    "unknown template replacement.")
         return postfix
 
     @staticmethod

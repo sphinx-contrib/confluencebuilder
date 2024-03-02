@@ -88,10 +88,10 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_publish_postfix'] = ''
         cls.config['confluence_cleanup_archive'] = False
         cls.config['confluence_sourcelink']['version'] = cls.test_version
-        cls.config['rst_epilog'] = """
-.. |test_key| replace:: {}
-.. |test_desc| replace:: {}
-""".format(cls.test_key, cls.test_desc)
+        cls.config['rst_epilog'] = f'''
+.. |test_key| replace:: {cls.test_key}
+.. |test_desc| replace:: {cls.test_desc}
+'''
 
         # find validate-sets base folder
         test_dir = Path(__file__).parent.resolve()

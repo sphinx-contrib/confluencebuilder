@@ -34,13 +34,14 @@ def build_intersphinx(builder):
     inventory_db = builder.out_dir / INVENTORY_FILENAME
     with inventory_db.open('wb') as f:
         # header
-        f.write((
-            '# Sphinx inventory version 2\n'
-            '# Project: {}\n'
-            '# Version: {}\n'
-            '# The remainder of this file is compressed using zlib.\n'.format(
-                escape(builder.env.config.project),
-                escape(builder.env.config.version))).encode())
+        f.write(
+            (
+                '# Sphinx inventory version 2\n'
+                f'# Project: {escape(builder.env.config.project)}\n'
+                f'# Version: {escape(builder.env.config.version)}\n'
+                '# The remainder of this file is compressed using zlib.\n'
+            ).encode()
+        )
 
         # contents
         compressor = zlib.compressobj(9)
@@ -74,8 +75,7 @@ def build_intersphinx(builder):
                     uri += '#' + anchor
                 if dispname == name:
                     dispname = '-'
-                entry = ('%s %s:%s %s %s %s\n' %
-                         (name, domainname, typ, prio, uri, dispname))
+                entry = f'{name} {domainname}:{typ} {prio} {uri} {dispname}\n'
                 logger.verbose('(intersphinx) ' + entry.strip())
                 f.write(compressor.compress(entry.encode('utf-8')))
 

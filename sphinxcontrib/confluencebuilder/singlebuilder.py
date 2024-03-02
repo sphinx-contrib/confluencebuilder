@@ -59,8 +59,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
     def get_target_uri(self, docname, typ=None):
         if docname in self.env.all_docs:
-            return '{}{}#{}'.format(
-                self.config.root_doc, self.link_suffix, docname)
+            return f'{self.config.root_doc}{self.link_suffix}#{docname}'
         else:
             return self.link_transform(docname)
 

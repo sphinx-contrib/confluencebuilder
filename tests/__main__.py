@@ -71,14 +71,14 @@ def main():
             target_unit_test_name_pattern)
         if not target_unit_tests:
             print('\nERROR: unable to find test with pattern: '
-                '{}\n'.format(target_unit_test_name_pattern))
+                f'{target_unit_test_name_pattern}\n')
             if issued:
                 issued[0].debug()
             sys.exit(1)
 
+        total_tests = len(target_unit_tests)
         print('')
-        print('running specific test(s) (total: {})'.format(
-            len(target_unit_tests)))
+        print(f'running specific test(s) (total: {total_tests})')
         for target_unit_test in target_unit_tests:
             print(f' {target_unit_test.id()}')
         print('')
