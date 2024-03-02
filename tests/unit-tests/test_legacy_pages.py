@@ -24,7 +24,7 @@ class TestConfluenceLegacyPages(ConfluenceTestCase):
 
         # prepare a mocked publisher that we can emulate publishing events
         # and check if legacy pages are properly remain/purged
-        old_init = getattr(ConfluenceBuilder, 'init')
+        old_init = ConfluenceBuilder.init
         publisher = MockedPublisher()
 
         def wrapped_init(builder):
