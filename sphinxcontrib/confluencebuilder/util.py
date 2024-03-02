@@ -309,8 +309,8 @@ def getpass2(prompt='Password: '):
             subprocess.check_call(['stty', 'echo'])
         print('')
         return value
-    else:
-        return getpass.getpass(prompt=prompt)
+
+    return getpass.getpass(prompt=prompt)
 
 
 def handle_cli_file_subset(builder, option, value):
@@ -338,15 +338,12 @@ def handle_cli_file_subset(builder, option, value):
             # (and not an empty list); if no values are detected,
             # return `None`
             return None
-        else:
-            target_file = Path(value)
-            if not target_file.is_absolute():
-                target_file = Path(builder.env.srcdir, value)
 
-            if target_file.is_file():
-                value = target_file
-            else:
-                value = value.split(',')
+        target_file = Path(value)
+        if not target_file.is_absolute():
+            target_file = Path(builder.env.srcdir, value)
+
+        value = target_file if target_file.is_file() else value.split(',')
 
     return value
 

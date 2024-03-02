@@ -106,7 +106,8 @@ class ConfluencePublisher:
         if self.dryrun:
             self._dryrun('archive page', page_id)
             return
-        elif self.onlynew:
+
+        if self.onlynew:
             self._onlynew('page archive restricted', page_id)
             return
 
@@ -143,7 +144,8 @@ class ConfluencePublisher:
         if self.dryrun:
             self._dryrun('archiving pages', ', '.join(page_ids))
             return
-        elif self.onlynew:
+
+        if self.onlynew:
             self._onlynew('page archiving restricted', ', '.join(page_ids))
             return
 
@@ -619,10 +621,11 @@ class ConfluencePublisher:
             if not attachment:
                 self._dryrun('adding new attachment ' + name)
                 return None
-            else:
-                self._dryrun('updating existing attachment', attachment['id'])
-                return attachment['id']
-        elif self.onlynew and attachment:
+
+            self._dryrun('updating existing attachment', attachment['id'])
+            return attachment['id']
+
+        if self.onlynew and attachment:
             self._onlynew('skipping existing attachment', attachment['id'])
             return attachment['id']
 
@@ -733,18 +736,18 @@ class ConfluencePublisher:
             if not page:
                 self._dryrun('adding new page ' + page_name)
                 return None
-            else:
-                misc = ''
-                if parent_id and 'ancestors' in page:
-                    if not any(a['id'] == parent_id for a in page['ancestors']):
-                        if parent_id in self._name_cache:
-                            misc += '[new parent page {} ({})]'.format(
-                                self._name_cache[parent_id], parent_id)
-                        else:
-                            misc += '[new parent page]'
 
-                self._dryrun('updating existing page', page['id'], misc)
-                return page['id']
+            misc = ''
+            if parent_id and 'ancestors' in page:
+                if not any(a['id'] == parent_id for a in page['ancestors']):
+                    if parent_id in self._name_cache:
+                        misc += '[new parent page {} ({})]'.format(
+                            self._name_cache[parent_id], parent_id)
+                    else:
+                        misc += '[new parent page]'
+
+            self._dryrun('updating existing page', page['id'], misc)
+            return page['id']
 
         # fetch the page data
         # (expand on certain fields that may be required)
@@ -952,9 +955,9 @@ class ConfluencePublisher:
             if not page:
                 self._dryrun('unable to find page with id', page_id)
                 return None
-            else:
-                self._dryrun('updating existing page', page_id)
-                return page_id
+
+            self._dryrun('updating existing page', page_id)
+            return page_id
 
         expand = 'version'
         if self.append_labels:
@@ -1009,7 +1012,8 @@ class ConfluencePublisher:
         if self.dryrun:
             self._dryrun('removing attachment', id_)
             return
-        elif self.onlynew:
+
+        if self.onlynew:
             self._onlynew('attachment removal restricted', id_)
             return
 
@@ -1026,7 +1030,8 @@ class ConfluencePublisher:
         if self.dryrun:
             self._dryrun('removing page', page_id)
             return
-        elif self.onlynew:
+
+        if self.onlynew:
             self._onlynew('page removal restricted', page_id)
             return
 
@@ -1082,7 +1087,8 @@ class ConfluencePublisher:
         if self.dryrun:
             self._dryrun('updating space home to', page_id)
             return
-        elif self.onlynew:
+
+        if self.onlynew:
             self._onlynew('space home updates restricted')
             return
 
