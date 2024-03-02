@@ -306,9 +306,9 @@ class JiraBaseDirective(Directive):
         if 'serverId' in params:
             try:
                 UUID(params['serverId'], version=4)
-            except ValueError:
+            except ValueError as ex:
                 msg = 'server-id is not a valid uuid'
-                raise self.error(msg)
+                raise self.error(msg) from ex
 
         return [node]
 
