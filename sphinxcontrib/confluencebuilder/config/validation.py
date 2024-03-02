@@ -56,12 +56,12 @@ class ConfigurationValidation:
             if isinstance(value, str) or isinstance(value, int):
                 try:
                     str2bool(value)
-                except ValueError:
-                    raise ConfluenceConfigError(
-                        '%s is not a boolean string' % self.key)
+                except ValueError as ex:
+                    msg = f'{self.key} is not a boolean string'
+                    raise ConfluenceConfigError(msg) from ex
             elif not isinstance(value, bool) and not isinstance(value, int):
-                raise ConfluenceConfigError(
-                    '%s is not a boolean type' % self.key)
+                msg = f'{self.key} is not a boolean type'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -83,8 +83,8 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and not callable(value):
-            raise ConfluenceConfigError(
-                '%s is not a callable' % self.key)
+            msg = f'{self.key} is not a callable'
+            raise ConfluenceConfigError(msg)
 
         return self
 
@@ -130,8 +130,8 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, dict) or not all(isinstance(k, str)
                     and isinstance(v, str) for k, v in value.items()):
-                raise ConfluenceConfigError(
-                    '%s is not a dictionary of strings' % self.key)
+                msg = f'{self.key} is not a dictionary of strings'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -155,15 +155,15 @@ class ConfigurationValidation:
         if value is not None:
             if not (isinstance(value, (list, set, tuple))) or not all(
                     isinstance(label, (str, os.PathLike)) for label in value):
-                raise ConfluenceConfigError(
-                    '%s is not a collection of filenames' % self.key)
+                msg = f'{self.key} is not a collection of filenames'
+                raise ConfluenceConfigError(msg)
 
             for docname in value:
                 if not any(
                         Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
-                    raise ConfluenceConfigError(
-                        f'{self.key} is missing document {docname}')
+                    msg = f'{self.key} is missing document {docname}'
+                    raise ConfluenceConfigError(msg)
 
         return self
 
@@ -193,8 +193,8 @@ class ConfigurationValidation:
                 if not any(
                         Path(self.env.srcdir, docname + suffix).is_file()
                         for suffix in self.config.source_suffix):
-                    raise ConfluenceConfigError(
-                        f'{self.key} is missing document {docname}')
+                    msg = f'{self.key} is missing document {docname}'
+                    raise ConfluenceConfigError(msg)
 
         return self
 
@@ -220,8 +220,8 @@ class ConfigurationValidation:
             try:
                 value = etype[value.lower()]
             except (AttributeError, KeyError):
-                raise ConfluenceConfigError(
-                    f'{self.key} is not an enumeration ({etype.__name__})')
+                msg = f'{self.key} is not an enumeration ({etype.__name__})'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -245,8 +245,8 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, (str, os.PathLike)) or \
                     not Path(self.env.srcdir, value).is_file():
-                raise ConfluenceConfigError(
-                    '%s is not a file' % self.key)
+                msg = f'{self.key} is not a file'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -276,18 +276,18 @@ class ConfigurationValidation:
                 try:
                     value = float(value)
                 except ValueError:
-                    raise ConfluenceConfigError(
-                        '%s is not a float string' % self.key)
+                    msg = f'{self.key} is not a float string'
+                    raise ConfluenceConfigError(msg)
             elif isinstance(value, int):
                 value = float(value)
 
             if positive:
                 if not isinstance(value, float) or value <= 0:
-                    raise ConfluenceConfigError(
-                        '%s is not a positive float' % self.key)
+                    msg = f'{self.key} is not a positive float'
+                    raise ConfluenceConfigError()
             elif not isinstance(value, float) or value < 0:
-                raise ConfluenceConfigError(
-                    '%s is not a non-negative float' % self.key)
+                msg = f'{self.key} is not a non-negative float'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -317,16 +317,16 @@ class ConfigurationValidation:
                 try:
                     value = int(value)
                 except ValueError:
-                    raise ConfluenceConfigError(
-                        '%s is not an integer string' % self.key)
+                    msg = f'{self.key} is not an integer string'
+                    raise ConfluenceConfigError(msg)
 
             if positive:
                 if not isinstance(value, int) or value <= 0:
-                    raise ConfluenceConfigError(
-                        '%s is not a positive integer' % self.key)
+                    msg = f'{self.key} is not a positive integer'
+                    raise ConfluenceConfigError(msg)
             elif not isinstance(value, int) or value < 0:
-                raise ConfluenceConfigError(
-                    '%s is not a non-negative integer' % self.key)
+                msg = f'{self.key} is not a non-negative integer'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -351,8 +351,8 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and value not in expected:
-            raise ConfluenceConfigError(
-                '%s does not match expected values' % self.key)
+            msg = f'{self.key} does not match expected values'
+            raise ConfluenceConfigError(msg)
 
         return self
 
@@ -376,8 +376,8 @@ class ConfigurationValidation:
         if value is not None:
             if not isinstance(value, (str, os.PathLike)) or \
                     not Path(self.env.srcdir, value).exists():
-                raise ConfluenceConfigError(
-                    '%s is not a path' % self.key)
+                msg = f'{self.key} is not a path'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -400,8 +400,8 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None and not isinstance(value, str):
-            raise ConfluenceConfigError(
-                '%s is not a string' % self.key)
+            msg = f'{self.key} is not a string'
+            raise ConfluenceConfigError(msg)
 
         return self
 
@@ -425,11 +425,11 @@ class ConfigurationValidation:
         if value is not None:
             if isinstance(value, (list, set, tuple)):
                 if not all(isinstance(entry, str) for entry in value):
-                    raise ConfluenceConfigError(
-                        '%s is not a collection of strings' % self.key)
+                    msg = f'{self.key} is not a collection of strings'
+                    raise ConfluenceConfigError(msg)
             elif not isinstance(value, str):
-                raise ConfluenceConfigError(
-                    '%s is not a string or collection of strings' % self.key)
+                msg = f'{self.key} is not a string or collection of strings'
+                raise ConfluenceConfigError(msg)
 
         return self
 
@@ -457,14 +457,14 @@ class ConfigurationValidation:
         if value is not None:
             if not (isinstance(value, (list, set, tuple)) and all(
                     isinstance(entry, str) for entry in value)):
-                raise ConfluenceConfigError(
-                    '%s is not a collection of strings' % self.key)
+                msg = f'{self.key} is not a collection of strings'
+                raise ConfluenceConfigError(msg)
 
             if no_space:
                 for entry in value:
                     if ' ' in entry:
-                        raise ConfluenceConfigError(
-                            '%s has an entry containing a space' % self.key)
+                        msg = f'{self.key} has an entry containing a space'
+                        raise ConfluenceConfigError(msg)
 
         return self
 

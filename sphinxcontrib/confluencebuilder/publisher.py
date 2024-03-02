@@ -68,13 +68,13 @@ class ConfluencePublisher:
 
         try:
             rsp = self.rest_client.get(f'space/{self.space_key}')
-        except ConfluenceBadApiError as e:
-            raise ConfluenceBadServerUrlError(server_url, e)
+        except ConfluenceBadApiError as ex:
+            raise ConfluenceBadServerUrlError(server_url, ex) from ex
 
         # sanity check that we have a sane response
         if not isinstance(rsp, dict):
-            raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response; no dictionary')
+            msg = 'server did not provide an expected response; no dictionary'
+            raise ConfluenceBadServerUrlError(server_url, msg)
 
         expected_entries = [
             'id',
@@ -84,14 +84,14 @@ class ConfluencePublisher:
         ]
 
         if not all(entry in rsp for entry in expected_entries):
-            raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response; missing entries')
+            msg = 'server did not provide an expected response; missing entries'
+            raise ConfluenceBadServerUrlError(server_url, msg)
 
         detected_key = rsp['key']
         if detected_key != self.space_key:
-            raise ConfluenceBadServerUrlError(server_url,
-                'server did not provide an expected response; bad key match; '
-                f'{detected_key} != {self.space_key}')
+            msg = 'server did not provide an expected response; ' \
+                  f'bad key match; {detected_key} != {self.space_key}'
+            raise ConfluenceBadServerUrlError(server_url, msg)
 
         # track required space information
         self.space_display_name = rsp['name']
@@ -128,13 +128,12 @@ class ConfluencePublisher:
 
                 attempt += 1
                 if attempt > MAX_WAIT_FOR_PAGE_ARCHIVE:
-                    raise ConfluenceBadApiError(
-                        -1, 'timeout waiting for archive completion')
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to archive """
-                """from the configured space."""
-            )
+                    msg = 'timeout waiting for archive completion'
+                    raise ConfluenceBadApiError(-1, msg)
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to archive ' \
+                  'from the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
     def archive_pages(self, page_ids):
         if self.dryrun:
@@ -157,11 +156,10 @@ class ConfluencePublisher:
             #  Cannot use bulk archive feature for non premium edition
             self.rest_client.post('content/archive', data)
 
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to archive """
-                """from the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to archive ' \
+                  'from the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
     def get_ancestors(self, page_id):
         """
@@ -198,8 +196,8 @@ class ConfluencePublisher:
             base_page_id, page = self.get_page_by_id(self.parent_ref)
 
             if not page:
-                raise ConfluenceConfigError(
-                    '''Configured parent page identifier does not exist.''')
+                msg = 'Configured parent page identifier does not exist.'
+                raise ConfluenceConfigError(msg)
 
             return base_page_id
 
@@ -210,18 +208,18 @@ class ConfluencePublisher:
             'status': 'current',
         })
         if rsp['size'] == 0:
-            raise ConfluenceConfigError(
-                '''Configured parent page name does not exist.''')
+            msg = 'Configured parent page name does not exist.'
+            raise ConfluenceConfigError(msg)
         page = rsp['results'][0]
         if self.parent_id and page['id'] != str(self.parent_id):
-            raise ConfluenceConfigError("""Configured parent """
-                """page ID and name do not match.""")
+            msg = 'Configured parent page ID and name do not match.'
+            raise ConfluenceConfigError(msg)
         base_page_id = page['id']
         self._name_cache[base_page_id] = self.parent_ref
 
         if not base_page_id and self.parent_id:
-            raise ConfluenceConfigError("""Unable to find the """
-                """parent page matching the ID or name provided.""")
+            msg = 'Unable to find parent page matching the ID/name provided.'
+            raise ConfluenceConfigError(msg)
 
         return base_page_id
 
@@ -694,11 +692,10 @@ class ConfluencePublisher:
             if not self.watch:
                 self.rest_client.delete('user/watch/content',
                     uploaded_attachment_id)
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to add an """
-                """attachment to the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to add an ' \
+                  'attachment to the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
         return uploaded_attachment_id
 
@@ -910,11 +907,10 @@ class ConfluencePublisher:
             props['value']['hash'] = new_page_hash
             self.store_page_properties(uploaded_page_id, props)
 
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to add page """
-                """content to the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to add page ' \
+                  'content to the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
         if not self.watch:
             self.rest_client.delete('user/watch/content', uploaded_page_id)
@@ -958,15 +954,14 @@ class ConfluencePublisher:
         except ConfluenceBadApiError as ex:
             if str(ex).find('No content found with id') == -1:
                 raise
-            raise ConfluenceMissingPageIdError(self.space_key, page_id)
+            raise ConfluenceMissingPageIdError(self.space_key, page_id) from ex
 
         try:
             self._update_page(page, page_name, data)
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to add page """
-                """content to the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to add page ' \
+                  'content to the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
         if not self.watch:
             self.rest_client.delete('user/watch/content', page_id)
@@ -1007,11 +1002,10 @@ class ConfluencePublisher:
 
         try:
             self.rest_client.delete('content', id_)
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to delete """
-                """from the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to delete ' \
+                  'from the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
     def remove_page(self, page_id):
         if self.dryrun:
@@ -1044,11 +1038,10 @@ class ConfluencePublisher:
 
             logger.verbose('ignore missing delete for page '
                 f'identifier: {page_id}')
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to delete """
-                """from the configured space."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to delete ' \
+                  'from the configured space.'
+            raise ConfluencePermissionError(msg) from ex
 
     def restrict_ancestors(self, ancestors):
         """
@@ -1084,11 +1077,10 @@ class ConfluencePublisher:
                 'homepage': page,
                 'type': self.space_type,
             })
-        except ConfluencePermissionError:
-            raise ConfluencePermissionError(
-                """Publish user does not have permission to update """
-                """space's homepage."""
-            )
+        except ConfluencePermissionError as ex:
+            msg = 'Publish user does not have permission to update ' \
+                  "space's homepage."
+            raise ConfluencePermissionError(msg) from ex
 
     def _build_page(self, page_name, data):
         """
@@ -1221,7 +1213,7 @@ class ConfluencePublisher:
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(
-                        page_name, page['id'], self.server_url, ex)
+                        page_name, page['id'], self.server_url, ex) from ex
 
                 raise
 

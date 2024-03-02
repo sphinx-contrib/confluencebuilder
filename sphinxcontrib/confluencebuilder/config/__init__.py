@@ -58,7 +58,8 @@ def process_ask_configs(config):
 
         target_user = input(f' User{u_str}: ') or default_user
         if not target_user:
-            raise ConfluenceConfigError('no user provided')
+            msg = 'no user provided'
+            raise ConfluenceConfigError(msg)
 
         config.confluence_server_user = target_user
 
@@ -71,4 +72,5 @@ def process_ask_configs(config):
         sys.stdout.flush()
         config.confluence_server_pass = util.getpass2('')
         if not config.confluence_server_pass:
-            raise ConfluenceConfigError('no password provided')
+            msg = 'no password provided'
+            raise ConfluenceConfigError(msg)
