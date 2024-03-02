@@ -267,7 +267,7 @@ class ConfluenceBuilder(Builder):
         # environment is performing any doctree caching, clear the entire
         # cache
         if getattr(self.env, '_write_doc_doctree_cache', None):
-            self.env._write_doc_doctree_cache = {}
+            self.env._write_doc_doctree_cache = {}  # noqa: SLF001
 
         # process the document structure of the root document, populating a
         # publish order to ensure parent pages are created first (when using
