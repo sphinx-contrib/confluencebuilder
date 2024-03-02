@@ -77,7 +77,7 @@ def confluence_supported_svg(builder, node):
         return
 
     modified = False
-    svg_root = xml_et.fromstring(svg_data)
+    svg_root = xml_et.fromstring(svg_data)  # noqa: S314
 
     # determine (if possible) the svgs desired width/height
     svg_height = None
