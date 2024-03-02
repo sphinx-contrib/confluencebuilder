@@ -440,7 +440,7 @@ class ConfluenceBuilder(Builder):
 
                 if ids:
                     for node in findall(doctree, nodes.reference):
-                        if 'refid' in node and node['refid']:
+                        if node.get('refid'):
                             top_ref = node['refid'] in ids
 
                             # allow a derived class to hint if this is a #top
