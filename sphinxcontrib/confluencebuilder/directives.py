@@ -361,6 +361,5 @@ def kebab_case_to_camel_case(s):
     Returns:
         the converted string
     """
-    s = ''.join(list(map(lambda x: x.capitalize(), s.split('-'))))
-    s = s[0].lower() + s[1:]
-    return s
+    s = ''.join(x.capitalize() for x in s.split('-'))
+    return s[0].lower() + s[1:]

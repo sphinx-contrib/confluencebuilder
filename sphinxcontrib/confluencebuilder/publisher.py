@@ -778,10 +778,7 @@ class ConfluencePublisher:
             return page['id']
 
         # fetch known properties (associated with this extension) from the page
-        if page:
-            props = self.get_page_properties(page['id'])
-        else:
-            props = None
+        props = self.get_page_properties(page['id']) if page else None
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -912,8 +909,8 @@ class ConfluencePublisher:
                     },
                 }
             else:
-                last_props_version = int(props['version']['number'])
-                props['version']['number'] = last_props_version + 1
+                last_props_version = int(props['version']['number'])  # pylint: disable=unsubscriptable-object
+                props['version']['number'] = last_props_version + 1  # pylint: disable=unsubscriptable-object
 
             props['value']['hash'] = new_page_hash
             self.store_page_properties(uploaded_page_id, props)

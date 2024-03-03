@@ -387,7 +387,8 @@ class Rest:
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
-            raise ConfluencePermissionError('rest-call')
+            msg = 'rest-call'
+            raise ConfluencePermissionError(msg)
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:

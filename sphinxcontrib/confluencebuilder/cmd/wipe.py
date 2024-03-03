@@ -147,9 +147,8 @@ pages. Only use this action if you know what you are doing.
 
     if args.verbose:
         print('-------------------------')
-        page_names = []
-        for p in legacy_pages:
-            page_names.append(publisher._name_cache[p])
+        name_cache = publisher._name_cache  # noqa: SLF001
+        page_names = [name_cache[p] for p in legacy_pages]
         sorted(page_names)
         print('\n'.join(page_names))
         print('-------------------------')
