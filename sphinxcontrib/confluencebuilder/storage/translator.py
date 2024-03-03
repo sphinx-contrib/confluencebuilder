@@ -809,9 +809,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._build_ac_param(node, 'theme', theme_id))
 
         if firstline is not None and firstline > 1:
-            self.body.append(
-                self._build_ac_param(node, 'firstline', firstline)
-            )
+            self.body.append(self._build_ac_param(node, 'firstline', firstline))
 
         if title:
             self.body.append(self._build_ac_param(node, 'title', title))
@@ -989,7 +987,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._visit_admonition_adf(node, 'note')
             self.body.append(self._start_tag(node, 'h3'))
 
-        if 'ids' in node and node['ids']:
+        if node.get('ids'):
             self._build_anchor(node, node['ids'][0])
 
         if self.v2:
@@ -1378,9 +1376,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
                 self.body.append(self._start_tag(node, 'ac:layout-cell'))
                 self._reference_context.append(self._end_tag(node))
-                self._v2_marginals_partial = not node._navnode_next
+                self._v2_marginals_partial = not node.cbe_navnode_next
 
-                if node._navnode_next:
+                if node.cbe_navnode_next:
                     self.body.append(self._start_tag(node, 'p',
                         **{'style': 'text-align: right'}))
                     self._reference_context.append(self._end_tag(node))
@@ -1390,7 +1388,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                         **{'style': 'clear: both'}))
                     self._needs_navnode_spacing = False
 
-                float_ = 'right' if node._navnode_next else 'left'
+                float_ = 'right' if node.cbe_navnode_next else 'left'
                 self.body.append(self._start_tag(node, 'div',
                     **{'style': 'float: ' + float_ + ';'}))
                 self._reference_context.append(self._end_tag(node))
@@ -1671,8 +1669,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_caption(self, node):
         # skip any already-processed caption nodes
-        if self.v2 and getattr(node, '_skip_caption', None):
-            raise nodes.SkipNode
+        if self.v2:
+            with suppress(AttributeError):
+                if node.__skip_caption:
+                    raise nodes.SkipNode
 
         # if a caption for a literal block, pass the caption data to it can be
         # rendered in the macro's title field
@@ -1843,7 +1843,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 include_self=False, descend=False, siblings=True))
             if isinstance(next_sibling, nodes.caption):
                 self.body.append(self._start_tag(node, 'ac:caption'))
-                next_sibling._skip_caption = True
+                next_sibling.__skip_caption = True
                 for child in next_sibling.children:
                     child.walkabout(self)
                 self.body.append(self._end_tag(node))

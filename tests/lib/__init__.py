@@ -29,6 +29,10 @@ import time
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
 
 
+class ConfluenceInstanceServerUnhandledRequestError(Exception):
+    pass
+
+
 class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         server_socket.TCPServer):
 
@@ -84,7 +88,7 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
 
 (del requests)
 {self.del_req}'''
-                raise Exception(msg)
+                raise ConfluenceInstanceServerUnhandledRequestError(msg)
 
     def pop_delete_request(self):
         """
@@ -625,9 +629,7 @@ def prepare_sphinx_filenames(src_dir, filenames, configs=None):
     Returns:
         the updated file name list
     """
-    files = []
-    for filename in filenames:
-        files.append(str(src_dir / (filename + '.rst')))
+    files = [str(src_dir / (fname + '.rst')) for fname in filenames]
 
     if configs:
         root_doc = 'index'

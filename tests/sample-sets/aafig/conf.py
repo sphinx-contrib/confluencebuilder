@@ -3,4 +3,6 @@ extensions = [
     'sphinxcontrib.confluencebuilder',
 ]
 
-aafig_format = dict(confluence_storage='svg')
+aafig_format = {
+    'confluence_storage': 'svg',
+}

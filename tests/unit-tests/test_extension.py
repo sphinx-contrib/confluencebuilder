@@ -10,9 +10,4 @@ class TestConfluenceExtension(ConfluenceTestCase):
         mock_ds = self.datasets / 'common'
 
         with self.prepare(mock_ds) as app:
-            if hasattr(app, 'extensions'):
-                extensions = list(app.extensions.keys())
-            else:
-                extensions = list(app._extensions.keys())
-
-            self.assertTrue(EXT_NAME in extensions)
+            self.assertTrue(EXT_NAME in app.extensions)

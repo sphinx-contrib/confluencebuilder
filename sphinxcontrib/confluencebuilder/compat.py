@@ -5,9 +5,7 @@
 from docutils import __version_info__ as docutils_version_info
 from docutils import nodes
 from sphinx import addnodes
-from sphinx import version_info as sphinx_version_info
 from sphinx.locale import __
-from sphinx.util.nodes import inline_all_toctrees as sphinx_inline_all_toctrees
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
 
@@ -20,20 +18,9 @@ def docutils_findall(doctree, *args, **kwargs):
     return doctree.traverse(*args, **kwargs)
 
 
-# use sphinx's inline_all_toctrees which supports the `replace` argument;
-# otherwise, use this local variant instead
+# use this extension's variant of sphinx's inline_all_toctrees which has
+# include support for a `replace` argument
 def inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
-                        traversed, replace):
-    # TODO: https://github.com/sphinx-doc/sphinx/pull/9839
-    if False and sphinx_version_info > (4, 4):
-        return sphinx_inline_all_toctrees(builder,  # pylint: disable=E1123
-            docnameset, docname, tree, colorfunc, traversed, replace=replace)
-    else:
-        return _inline_all_toctrees(builder, docnameset, docname, tree,
-            colorfunc, traversed, replace)
-
-
-def _inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
                         traversed, replace):
     tree = cast(nodes.document, tree.deepcopy())
     for toctreenode in list(docutils_findall(tree, addnodes.toctree)):
@@ -44,12 +31,12 @@ def _inline_all_toctrees(builder, docnameset, docname, tree, colorfunc,
                 try:
                     traversed.append(includefile)
                     logger.info(colorfunc(includefile) + " ", nonl=True)
-                    subtree = _inline_all_toctrees(
+                    subtree = inline_all_toctrees(
                         builder, docnameset, includefile,
                         builder.env.get_doctree(includefile),
                         colorfunc, traversed, replace)
                     docnameset.add(includefile)
-                except Exception:
+                except Exception:  # noqa: BLE001
                     logger.warn(
                         __('toctree contains ref to nonexisting file %r'),
                         includefile, location=docname)

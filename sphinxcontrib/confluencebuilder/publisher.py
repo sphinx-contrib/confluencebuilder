@@ -862,7 +862,7 @@ class ConfluencePublisher:
                                 rsp, indent=2))
                         except TypeError:
                             api_err += 'DATA: <not-or-invalid-json>'
-                        raise ConfluenceBadApiError(-1, api_err)
+                        raise ConfluenceBadApiError(-1, api_err)  # noqa: TRY301
 
                     uploaded_page_id = rsp['id']
 

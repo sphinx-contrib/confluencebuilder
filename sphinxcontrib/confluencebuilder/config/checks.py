@@ -476,7 +476,7 @@ def validate_configuration(builder):
 
         # if provided a file via command line, treat as a list
         def conf_translate(value):
-            return handle_cli_file_subset(builder, option, value)
+            return handle_cli_file_subset(builder, option, value)  # noqa: B023
 
         value = conf_translate(value)
         option_val = validator.conf(option, conf_translate)
@@ -492,13 +492,13 @@ def validate_configuration(builder):
     # ##################################################################
 
     # confluence_publish_debug
+    opts = PublishDebug._member_names_  # noqa: SLF001 pylint: disable=no-member
     try:
         validator.conf('confluence_publish_debug').bool()  # deprecated
     except ConfluenceConfigError:
         try:
             validator.conf('confluence_publish_debug').enum(PublishDebug)
         except ConfluenceConfigError as ex:
-            opts = PublishDebug._member_names_  # pylint: disable=no-member
             opts_str = '\n - '.join(opts)
             raise ConfluencePublishDebugConfigError(ex, opts_str) from ex
 
