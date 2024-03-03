@@ -3,26 +3,47 @@ lint.select = [
 ]
 
 lint.ignore = [
+    # we do not type annotate everything at this time
+    'ANN',
+    'RUF012',
     # various translator/role/etc. definitions may not use all/any arguments
     'ARG001',
     'ARG002',
     # we are a bit complex for now
     'C90',
+    'PLR0911',
+    'PLR0912',
+    'PLR0913',
+    'PLR0915',
     # ignore pydocstyle
     'D',
-    # ignore pyupgrade since python 2.7 is supported
+    # ignore line too long lengths; as we aim to provide implementation that
+    # does not exceed the 80 character limit, there use cases such as various
+    # imports which have long entries (namespaces plus classnames) which do
+    # exceed these limits
     'E501',
     # ignore eradicate since spdx ids and parenthesis are false flagged
     'ERA001',
     # imports are sorted lexicographically in this project
     'FBT002',
-    # imports are sorted lexicographically in this project
     'I001',
+    # select class/roles/etc. follow docutils/Sphinx casing convention
+    'N801',
+    'N802',
+    'N815',
+    # we define "constants" in uppercase in various locations
+    'N806',
     # permit import aliases with case changes
     'N812',
     'N813',
     # prevent false-positives with pandas checks
     'PD',
+    # dict-kwargs usage is preferred formatting for translators
+    'PIE804',
+    # most "magic numbers" usages are acceptable in this extension (http codes)
+    'PLR2004',
+    # ignore indentation concerns when readability is preferred
+    'PLR5501',
     # project uses unittest module
     'PT',
     # single quotes are preferred in this project
@@ -30,19 +51,41 @@ lint.ignore = [
     'Q001',
     # use of asserts are acceptable for this extension
     'S101',
-    # some formats are preferred for code readability
+    # allow nested ifs when readability/line-length is preferred
     'SIM102',
+    # allow non-ternary operators when readability/line-length is preferred
+    'SIM108',
+    # ignore combining ifs that are best presented separated
+    'SIM114',
     # ignore flake8-print since we support/expect printing
     'T20',
 ]
 
-[per-file-ignores]
-'sphinxcontrib\confluencebuilder\nodes.py' = [
-    # node classes follow docutils/Sphinx casing convention
-    'N801',
+[lint.per-file-ignores]
+'sphinxcontrib/confluencebuilder/storage/translator.py' = [
+    # ignore private member access warnings for custom/managed node flags
+    'SLF001',
 ]
 
-'sphinxcontrib\confluencebuilder\roles.py' = [
-    # role functions follow Sphinx casing convention
-    'N802',
+'tests/sample-sets/config.py' = [
+    # ignore all in environment configuration file
+    'ALL',
+]
+
+'tests/unit-tests/test_config_postfix_formatting.py' = [
+    # ignore warnings about using private methods for our own class we
+    # are trying to test
+    'SLF001',
+]
+
+'tests/unit-tests/test_config_checks.py' = [
+    # ignore use of nested with statements as configuration entries are
+    # long named, and using nested with statements makes it easier to
+    # read without exceeding a long line length
+    'SIM117',
+]
+
+'tests\*' = [
+    # ignore implicit-namespace-package warnings for the test structures used
+    'INP001',
 ]
