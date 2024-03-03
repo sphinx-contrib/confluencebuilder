@@ -11,11 +11,11 @@ on:
       - '.github/workflows/build.yml'
       - 'sphinxcontrib/**'
       - 'tests/**'
-      - '.flake8'
       - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
+      - 'ruff.toml'
       - 'tox.ini'
   pull_request:
     branches:
@@ -24,11 +24,11 @@ on:
       - '.github/workflows/build.yml'
       - 'sphinxcontrib/**'
       - 'tests/**'
-      - '.flake8'
       - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
+      - 'ruff.toml'
       - 'tox.ini'
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
 
             # linting
             #  - any OS, using most recent interpreter
-            - { os: ubuntu-latest, python: "3.12", toxenv: flake8, cache: ~/.cache/pip }
+            - { os: ubuntu-latest, python: "3.12", toxenv:   ruff, cache: ~/.cache/pip }
             - { os: ubuntu-latest, python: "3.12", toxenv: pylint, cache: ~/.cache/pip }
 
     steps:
