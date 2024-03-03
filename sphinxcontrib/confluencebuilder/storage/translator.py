@@ -1378,9 +1378,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
                 self.body.append(self._start_tag(node, 'ac:layout-cell'))
                 self._reference_context.append(self._end_tag(node))
-                self._v2_marginals_partial = not node._navnode_next
+                self._v2_marginals_partial = not node.cbe_navnode_next
 
-                if node._navnode_next:
+                if node.cbe_navnode_next:
                     self.body.append(self._start_tag(node, 'p',
                         **{'style': 'text-align: right'}))
                     self._reference_context.append(self._end_tag(node))
@@ -1390,7 +1390,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                         **{'style': 'clear: both'}))
                     self._needs_navnode_spacing = False
 
-                float_ = 'right' if node._navnode_next else 'left'
+                float_ = 'right' if node.cbe_navnode_next else 'left'
                 self.body.append(self._start_tag(node, 'div',
                     **{'style': 'float: ' + float_ + ';'}))
                 self._reference_context.append(self._end_tag(node))

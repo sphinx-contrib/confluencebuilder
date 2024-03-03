@@ -1076,18 +1076,18 @@ class ConfluenceBuilder(Builder):
             prev_label = '← ' + SL('Previous')
             reference = nodes.reference(prev_label, prev_label, internal=True,
                 refuri=self.nav_prev[docname])
-            reference._navnode = True
-            reference._navnode_next = False
-            reference._navnode_previous = True
+            reference.cbe_navnode = True
+            reference.cbe_navnode_next = False
+            reference.cbe_navnode_previous = True
             node.append(reference)
 
         if docname in self.nav_next:
             next_label = SL('Next') + ' →'
             reference = nodes.reference(next_label, next_label, internal=True,
                 refuri=self.nav_next[docname])
-            reference._navnode = True
-            reference._navnode_next = True
-            reference._navnode_previous = False
+            reference.cbe_navnode = True
+            reference.cbe_navnode_next = True
+            reference.cbe_navnode_previous = False
             node.append(reference)
 
         return True
