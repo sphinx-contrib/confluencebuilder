@@ -91,16 +91,16 @@ def apply_defaults(builder):
 
     # ensure confluence_publish_debug is set with its expected enum value
     publish_debug = conf.confluence_publish_debug
-    if publish_debug is not None and publish_debug is not False:
+    if not isinstance(publish_debug, PublishDebug):
         # a boolean-provided publish debug is deprecated, but we will accept
         # it as its original implementation as an indication to enable
         # urllib3 logs
         if publish_debug is True:
             conf.confluence_publish_debug = PublishDebug.urllib3
-        elif not isinstance(publish_debug, PublishDebug):
+        elif isinstance(publish_debug, str) and publish_debug:
             conf.confluence_publish_debug = PublishDebug[publish_debug.lower()]
-    else:
-        conf.confluence_publish_debug = PublishDebug.none
+        else:
+            conf.confluence_publish_debug = PublishDebug.none
 
     if conf.confluence_publish_intersphinx is None:
         conf.confluence_publish_intersphinx = True
