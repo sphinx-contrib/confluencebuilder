@@ -630,6 +630,25 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+    def test_config_check_publish_debug(self):
+        self.config['confluence_publish_debug'] = ''
+        self._try_config()
+
+        self.config['confluence_publish_debug'] = 'urllib3'
+        self._try_config()
+
+        self.config['confluence_publish_debug'] = 'unknown-entry'
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_publish_debug'] = [1, 2, 3]
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_publish_debug'] = True
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
     def test_config_check_publish_delay(self):
         self.config['confluence_publish_delay'] = 0.3
         self._try_config()
