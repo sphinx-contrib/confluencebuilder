@@ -107,14 +107,14 @@ class TestConfluencePublisherBaseId(unittest.TestCase):
             # check expected page id returned
             self.assertEqual(base_id, expected_page_id)
 
-            # check that the provided page id is set in the request
+            # check that the provided title is set in the request
             fetch_req = daemon.pop_get_request()
             self.assertIsNotNone(fetch_req)
             req_path, _ = fetch_req
 
             expected_opt = f'title={expected_page_name}'
             self.assertTrue(req_path.startswith('/rest/api/content'))
-            self.assertTrue(expected_opt in expected_opt)
+            self.assertTrue(expected_opt in req_path)
 
             # verify that no other request was made
             daemon.check_unhandled_requests()
