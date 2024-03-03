@@ -219,7 +219,7 @@ class Rest:
         elif config.confluence_server_user:
             passwd = config.confluence_server_pass
             if passwd is None:
-                passwd = ''  # noqa: S105
+                passwd = ''
             session.auth = (config.confluence_server_user, passwd)
 
         if config.confluence_server_cookies:

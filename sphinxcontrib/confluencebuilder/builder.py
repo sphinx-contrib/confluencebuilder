@@ -47,7 +47,7 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     default_translator_class = ConfluenceStorageFormatTranslator
     name = 'confluence'
-    format = 'confluence_storage'  # noqa: A003
+    format = 'confluence_storage'
     supported_image_types = ConfluenceSupportedImages()
     supported_linkcode = True
     supported_remote_images = True
