@@ -8,6 +8,9 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkTypeConfigError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
 from tests.lib import mock_input
@@ -210,6 +213,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_ca_cert'] = str(missing_cert)
         with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+    def test_config_check_cleanup_conflict(self):
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        self.config['confluence_cleanup_archive'] = True
+        self.config['confluence_cleanup_purge'] = True
+        with self.assertRaises(ConfluencePublishCleanupConflictConfigError):
             self._try_config()
 
     def test_config_check_client_cert(self):
@@ -610,6 +622,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+    def test_config_check_permit_raw_html(self):
+        self.config['confluence_permit_raw_html'] = True
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = False
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = ''
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = 'sample-macro'
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = [1, 2, 3]
+        with self.assertRaises(ConfluencePermitRawHtmlConfigError):
+            self._try_config()
+
     def test_config_check_prev_next_buttons_location(self):
         self.config['confluence_prev_next_buttons_location'] = 'bottom'
         self._try_config()
@@ -660,6 +689,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
         self.config['confluence_publish_delay'] = -1
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_publish_delay'] = 'one-hour'
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
@@ -830,6 +863,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+        self.config['confluence_publish_root'] = 'MyPage'
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_publish_target_conflicts(self):
         # enable publishing enabled checks
         self._prepare_valid_publish()
@@ -996,6 +1033,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         # templates
         supported_templates = [
             'bitbucket',
+            'codeberg',
             'github',
             'gitlab',
         ]
@@ -1027,6 +1065,16 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self.config['confluence_sourcelink'] = sourcelink
             with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
+
+        invalid_template = {
+            'type': 'invalid',
+            'owner': 'test',
+            'repo': 'test',
+            'version': 'test',
+        }
+        self.config['confluence_sourcelink'] = dict(invalid_template)
+        with self.assertRaises(ConfluenceSourcelinkTypeConfigError):
+            self._try_config()
 
     def test_config_check_title_overrides(self):
         self.config['confluence_title_overrides'] = {}
