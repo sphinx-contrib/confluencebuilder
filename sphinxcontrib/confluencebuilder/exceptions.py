@@ -267,6 +267,32 @@ the exception message above this message.
 ''')
 
 
+class ConfluenceUnknownInstanceError(ConfluenceError):
+    def __init__(self, server_url, space_key, uname, pw_set, token_set):
+        uname_value = uname if uname else '(empty)'
+        pw_value = '<set>' if pw_set else '(empty)'
+        token_value = '<set>' if token_set else '(empty)'
+        super().__init__(f'''
+---
+Unknown Confluence URL or invalid/restricted space detected
+
+An issue has been detected when trying to communicate with the
+configured Confluence instance. Ensure the instance is running and
+inspect that the configured Confluence URL is valid:
+
+    {server_url}
+
+If the instance is valid, ensure the configured space key and approriate
+authentication permissions are configured.
+
+                   Space key: {space_key}
+                    Username: {uname_value}
+       Password or API Token: {pw_value}
+ Personal Access Token (PAT): {token_value}
+---
+''')
+
+
 class ConfluenceUnreconciledPageError(ConfluenceError):
     def __init__(self, page_name, page_id, url, details):
         super().__init__(f'''
