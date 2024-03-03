@@ -692,6 +692,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+        self.config['confluence_publish_delay'] = 'one-hour'
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_publish_headers(self):
         self.config['confluence_publish_headers'] = {}
         self._try_config()
@@ -856,6 +860,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
         self.config['confluence_publish_root'] = -123456
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_publish_root'] = 'MyPage'
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
