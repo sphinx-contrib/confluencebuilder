@@ -1,20 +1,18 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from collections import namedtuple
 from pathlib import Path
+from sphinx.util.docutils import NullReporter
 from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
 from tests.lib import prepare_conf
 from tests.lib import prepare_sphinx
 import unittest
 
-Reporter = namedtuple('Reporter', 'warning')
-
 
 class DummyDocument(dict):
-    def __init__(self, source, warn=False):
+    def __init__(self, source):
         self['source'] = str(source)
-        self.reporter = Reporter(warn)
+        self.reporter = NullReporter()
 
 
 class TestConfluenceBaseTranslator(unittest.TestCase):
