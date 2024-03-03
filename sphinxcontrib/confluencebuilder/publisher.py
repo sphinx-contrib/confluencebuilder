@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnexpectedCdataError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstanceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
@@ -69,6 +70,18 @@ class ConfluencePublisher:
         try:
             rsp = self.rest_client.get(f'space/{self.space_key}')
         except ConfluenceBadApiError as ex:
+            if ex.status_code == 404:
+                pw_set = bool(self.config.confluence_server_pass)
+                token_set = bool(self.config.confluence_publish_token)
+
+                raise ConfluenceUnknownInstanceError(
+                    server_url,
+                    self.space_key,
+                    self.config.confluence_server_user,
+                    pw_set,
+                    token_set,
+                ) from ex
+
             raise ConfluenceBadServerUrlError(server_url, ex) from ex
 
         # sanity check that we have a sane response
