@@ -38,7 +38,7 @@ def build_intersphinx(builder):
                 f'# Project: {escape(builder.env.config.project)}\n'
                 f'# Version: {escape(builder.env.config.version)}\n'
                 '# The remainder of this file is compressed using zlib.\n'
-            ).encode()
+            ).encode(),
         )
 
         # contents

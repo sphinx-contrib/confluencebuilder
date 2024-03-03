@@ -809,9 +809,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self._build_ac_param(node, 'theme', theme_id))
 
         if firstline is not None and firstline > 1:
-            self.body.append(
-                self._build_ac_param(node, 'firstline', firstline)
-            )
+            self.body.append(self._build_ac_param(node, 'firstline', firstline))
 
         if title:
             self.body.append(self._build_ac_param(node, 'title', title))
@@ -989,7 +987,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._visit_admonition_adf(node, 'note')
             self.body.append(self._start_tag(node, 'h3'))
 
-        if 'ids' in node and node['ids']:
+        if node.get('ids'):
             self._build_anchor(node, node['ids'][0])
 
         if self.v2:

@@ -878,7 +878,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_publish_token(self):
-        self.config['confluence_publish_token'] = ''  # noqa: S105
+        self.config['confluence_publish_token'] = ''
         self._try_config()
 
         self.config['confluence_publish_token'] = 'dummy'  # noqa: S105

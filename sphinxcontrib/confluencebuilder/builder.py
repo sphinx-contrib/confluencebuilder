@@ -111,7 +111,7 @@ class ConfluenceBuilder(Builder):
             for type_ in self.config.confluence_additional_mime_types:
                 self.supported_image_types.register(type_)
 
-        if 'graphviz_output_format' in self.config:
+        if 'graphviz_output_format' in self.config:  # noqa: SIM401
             self.graphviz_output_format = self.config['graphviz_output_format']
         else:
             self.graphviz_output_format = 'png'
