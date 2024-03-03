@@ -1,8 +1,8 @@
-select = [
+lint.select = [
     'ALL',
 ]
 
-ignore = [
+lint.ignore = [
     # various translator/role/etc. definitions may not use all/any arguments
     'ARG001',
     'ARG002',
