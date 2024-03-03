@@ -10,6 +10,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinxcontrib.confluencebuilder import __version__ as scb_version
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
+from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
 from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -118,6 +119,10 @@ def report_main(args_parser):
                     continue
 
                 config[key] = value
+
+            # ensure internal defaults are applied after we already extracted
+            # raw values and before attempting to use the publisher
+            apply_defaults(app.builder)
 
             # initialize the publisher (if needed later)
             publisher.init(app.config)
