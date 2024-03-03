@@ -29,6 +29,10 @@ import time
 EXT_NAME = 'sphinxcontrib.confluencebuilder'
 
 
+class ConfluenceInstanceServerUnhandledRequestError(Exception):
+    pass
+
+
 class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
         server_socket.TCPServer):
 
@@ -84,7 +88,7 @@ class ConfluenceInstanceServer(server_socket.ThreadingMixIn,
 
 (del requests)
 {self.del_req}'''
-                raise Exception(msg)
+                raise ConfluenceInstanceServerUnhandledRequestError(msg)
 
     def pop_delete_request(self):
         """
