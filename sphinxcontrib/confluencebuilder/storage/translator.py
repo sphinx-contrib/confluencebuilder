@@ -1671,8 +1671,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_caption(self, node):
         # skip any already-processed caption nodes
-        if self.v2 and getattr(node, '_skip_caption', None):
-            raise nodes.SkipNode
+        if self.v2:
+            with suppress(AttributeError):
+                if node.__skip_caption:
+                    raise nodes.SkipNode
 
         # if a caption for a literal block, pass the caption data to it can be
         # rendered in the macro's title field
@@ -1843,7 +1845,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 include_self=False, descend=False, siblings=True))
             if isinstance(next_sibling, nodes.caption):
                 self.body.append(self._start_tag(node, 'ac:caption'))
-                next_sibling._skip_caption = True
+                next_sibling.__skip_caption = True
                 for child in next_sibling.children:
                     child.walkabout(self)
                 self.body.append(self._end_tag(node))
