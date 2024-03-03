@@ -60,8 +60,8 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def get_target_uri(self, docname, typ=None):
         if docname in self.env.all_docs:
             return f'{self.config.root_doc}{self.link_suffix}#{docname}'
-        else:
-            return self.link_transform(docname)
+
+        return self.link_transform(docname)
 
     def write(self, build_docnames, updated_docnames, method='update'):
         docnames = self.env.all_docs

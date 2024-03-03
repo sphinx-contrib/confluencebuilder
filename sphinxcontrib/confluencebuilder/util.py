@@ -302,15 +302,15 @@ def getpass2(prompt='Password: '):
     # disable this feature.
     if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
-        subprocess.check_call(['stty', '-echo'])
+        subprocess.check_call(['/usr/bin/stty', '-echo'])  # noqa: S603
         try:
             value = input(prompt)
         finally:
-            subprocess.check_call(['stty', 'echo'])
+            subprocess.check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
         print('')
         return value
-    else:
-        return getpass.getpass(prompt=prompt)
+
+    return getpass.getpass(prompt=prompt)
 
 
 def handle_cli_file_subset(builder, option, value):
@@ -338,15 +338,12 @@ def handle_cli_file_subset(builder, option, value):
             # (and not an empty list); if no values are detected,
             # return `None`
             return None
-        else:
-            target_file = Path(value)
-            if not target_file.is_absolute():
-                target_file = Path(builder.env.srcdir, value)
 
-            if target_file.is_file():
-                value = target_file
-            else:
-                value = value.split(',')
+        target_file = Path(value)
+        if not target_file.is_absolute():
+            target_file = Path(builder.env.srcdir, value)
+
+        value = target_file if target_file.is_file() else value.split(',')
 
     return value
 
@@ -389,12 +386,14 @@ def str2bool(value):
     """
 
     value = str(value).lower()
+
     if value in ['y', 'yes', 't', 'true', 'on', '1']:
         return True
-    elif value in ['n', 'no', 'f', 'false', 'off', '0']:
+
+    if value in ['n', 'no', 'f', 'false', 'off', '0']:
         return False
-    else:
-        raise ValueError
+
+    raise ValueError
 
 
 @contextmanager

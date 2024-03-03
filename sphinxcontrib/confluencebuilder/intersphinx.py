@@ -26,10 +26,8 @@ def build_intersphinx(builder):
     def escape(string):
         return re.sub("\\s+", ' ', string)
 
-    if builder.cloud:
-        pages_part = 'pages/{}/'
-    else:
-        pages_part = 'pages/viewpage.action?pageId={}'
+    pages_part_fmt = 'pages/'
+    pages_part_fmt += '{}/' if builder.cloud else 'viewpage.action?pageId={}'
 
     inventory_db = builder.out_dir / INVENTORY_FILENAME
     with inventory_db.open('wb') as f:
@@ -70,12 +68,11 @@ def build_intersphinx(builder):
                 else:
                     anchor = ''
 
-                uri = pages_part.format(page_id)
+                uri = pages_part_fmt.format(page_id)
                 if anchor:
                     uri += '#' + anchor
-                if dispname == name:
-                    dispname = '-'
-                entry = f'{name} {domainname}:{typ} {prio} {uri} {dispname}\n'
+                display = '-' if dispname == name else dispname
+                entry = f'{name} {domainname}:{typ} {prio} {uri} {display}\n'
                 logger.verbose('(intersphinx) ' + entry.strip())
                 f.write(compressor.compress(entry.encode('utf-8')))
 

@@ -16,8 +16,8 @@ from typing import cast
 def docutils_findall(doctree, *args, **kwargs):
     if docutils_version_info >= (0, 18, 1):
         return doctree.findall(*args, **kwargs)
-    else:
-        return doctree.traverse(*args, **kwargs)
+
+    return doctree.traverse(*args, **kwargs)
 
 
 # use sphinx's inline_all_toctrees which supports the `replace` argument;

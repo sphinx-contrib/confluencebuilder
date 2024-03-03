@@ -172,7 +172,7 @@ def report_main(args_parser):
 
                     # parse
                     print('parsing information...')
-                    xml_data = ElementTree.fromstring(raw_data)
+                    xml_data = ElementTree.fromstring(raw_data)  # noqa: S314
                     info += '    parsed: yes\n'
                     root = ElementTree.ElementTree(xml_data)
                     for o in root.findall('typeId'):

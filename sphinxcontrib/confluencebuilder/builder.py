@@ -47,7 +47,7 @@ class ConfluenceBuilder(Builder):
     allow_parallel = True
     default_translator_class = ConfluenceStorageFormatTranslator
     name = 'confluence'
-    format = 'confluence_storage'  # noqa: A003
+    format = 'confluence_storage'
     supported_image_types = ConfluenceSupportedImages()
     supported_linkcode = True
     supported_remote_images = True
@@ -267,7 +267,7 @@ class ConfluenceBuilder(Builder):
         # environment is performing any doctree caching, clear the entire
         # cache
         if getattr(self.env, '_write_doc_doctree_cache', None):
-            self.env._write_doc_doctree_cache = {}
+            self.env._write_doc_doctree_cache = {}  # noqa: SLF001
 
         # process the document structure of the root document, populating a
         # publish order to ensure parent pages are created first (when using
@@ -374,7 +374,7 @@ class ConfluenceBuilder(Builder):
             labels['search'] = 'search', '', ''
 
         if self.domain_indices:
-            for indexname, _ in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 anonlabels[indexname] = indexname, ''
                 labels[indexname] = indexname, '', ''
 
@@ -440,7 +440,7 @@ class ConfluenceBuilder(Builder):
 
                 if ids:
                     for node in findall(doctree, nodes.reference):
-                        if 'refid' in node and node['refid']:
+                        if node.get('refid'):
                             top_ref = node['refid'] in ids
 
                             # allow a derived class to hint if this is a #top
@@ -719,7 +719,7 @@ class ConfluenceBuilder(Builder):
 
         # build domain indexes
         if self.domain_indices:
-            for indexname, indexdata in self.domain_indices.items():
+            for indexname in self.domain_indices:
                 self.info(f'generating index ({indexname})...',
                     nonl=(not self._verbose))
 
@@ -1129,9 +1129,9 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = f'{target}.{section_id}'
 
-                    for id_ in section_node['ids']:
-                        id_ = f'{docname}#{id_}'
-                        self.state.register_target(id_, target)
+                    for raw_id in section_node['ids']:
+                        full_id = f'{docname}#{raw_id}'
+                        self.state.register_target(full_id, target)
 
     def _top_ref_check(self, node):
         """

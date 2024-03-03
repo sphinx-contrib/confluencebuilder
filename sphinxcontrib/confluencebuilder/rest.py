@@ -124,7 +124,7 @@ def rate_limited_retries():
                     delay = min(delay, RATE_LIMITED_MAX_RETRY_DURATION)
 
                     # add jitter
-                    delay += random.uniform(0.3, 1.3)
+                    delay += random.uniform(0.3, 1.3)  # noqa: S311
 
                     # wait the calculated delay before retrying again
                     logger.warn('rate-limit response detected; '
@@ -219,7 +219,7 @@ class Rest:
         elif config.confluence_server_user:
             passwd = config.confluence_server_pass
             if passwd is None:
-                passwd = ''  # noqa: S105
+                passwd = ''
             session.auth = (config.confluence_server_user, passwd)
 
         if config.confluence_server_cookies:
@@ -387,7 +387,8 @@ class Rest:
         if rsp.status_code == 401:
             raise ConfluenceAuthenticationFailedUrlError
         if rsp.status_code == 403:
-            raise ConfluencePermissionError('rest-call')
+            msg = 'rest-call'
+            raise ConfluencePermissionError(msg)
         if rsp.status_code == 407:
             raise ConfluenceProxyPermissionError
         if rsp.status_code == 429:

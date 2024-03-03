@@ -18,7 +18,7 @@ class TestSvg(ConfluenceTestCase):
         with svg_file.open('rb') as f:
             svg_data = f.read()
 
-        svg_root = xml_et.fromstring(svg_data)
+        svg_root = xml_et.fromstring(svg_data)  # noqa: S314
         return int(svg_root.attrib['width']), int(svg_root.attrib['height'])
 
     @setup_builder('confluence')

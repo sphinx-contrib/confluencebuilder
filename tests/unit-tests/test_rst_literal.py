@@ -137,4 +137,4 @@ class TestConfluenceRstLiteral(ConfluenceTestCase):
 
             firstline = block.find('ac:parameter', {'ac:name': 'firstline'})
             self.assertIsNotNone(firstline)
-            self.assertEqual(firstline.text, '6')
+            self.assertEqual(firstline.text, '4')

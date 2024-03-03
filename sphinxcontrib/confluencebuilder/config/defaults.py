@@ -4,6 +4,7 @@
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.util import str2bool
+import contextlib
 
 
 # configures the default editor to publication
@@ -131,7 +132,5 @@ def apply_defaults(builder):
     # if the parent page is an integer value in a string type, cast it to an
     # integer; otherwise, assume it is a page name (string)
     if conf.confluence_parent_page:
-        try:
+        with contextlib.suppress(ValueError):
             conf.confluence_parent_page = int(conf.confluence_parent_page)
-        except ValueError:
-            pass

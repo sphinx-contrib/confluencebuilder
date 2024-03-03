@@ -147,9 +147,8 @@ pages. Only use this action if you know what you are doing.
 
     if args.verbose:
         print('-------------------------')
-        page_names = []
-        for p in legacy_pages:
-            page_names.append(publisher._name_cache[p])
+        name_cache = publisher._name_cache  # noqa: SLF001
+        page_names = [name_cache[p] for p in legacy_pages]
         sorted(page_names)
         print('\n'.join(page_names))
         print('-------------------------')
@@ -195,11 +194,14 @@ def ask_question(question, default='no'):
 
     while True:
         rsp = input(question + prompt).strip().lower()
+
         if default is not None and rsp == '':
             return default == 'yes'
-        elif rsp in ('y', 'yes'):
+
+        if rsp in ('y', 'yes'):
             return True
-        elif rsp in ('n', 'no', 'q'):  # q for 'quit'
+
+        if rsp in ('n', 'no', 'q'):  # q for 'quit'
             return False
-        else:
-            print("Please respond with 'y' or 'n'.\n")
+
+        print("Please respond with 'y' or 'n'.\n")

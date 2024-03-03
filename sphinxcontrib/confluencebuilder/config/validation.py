@@ -219,9 +219,9 @@ class ConfigurationValidation:
         if value is not None and not isinstance(value, etype):
             try:
                 value = etype[value.lower()]
-            except (AttributeError, KeyError):
+            except (AttributeError, KeyError) as ex:
                 msg = f'{self.key} is not an enumeration ({etype.__name__})'
-                raise ConfluenceConfigError(msg)
+                raise ConfluenceConfigError(msg) from ex
 
         return self
 
@@ -275,16 +275,16 @@ class ConfigurationValidation:
             if isinstance(value, str):
                 try:
                     value = float(value)
-                except ValueError:
+                except ValueError as ex:
                     msg = f'{self.key} is not a float string'
-                    raise ConfluenceConfigError(msg)
+                    raise ConfluenceConfigError(msg) from ex
             elif isinstance(value, int):
                 value = float(value)
 
             if positive:
                 if not isinstance(value, float) or value <= 0:
                     msg = f'{self.key} is not a positive float'
-                    raise ConfluenceConfigError()
+                    raise ConfluenceConfigError
             elif not isinstance(value, float) or value < 0:
                 msg = f'{self.key} is not a non-negative float'
                 raise ConfluenceConfigError(msg)
@@ -316,9 +316,9 @@ class ConfigurationValidation:
             if isinstance(value, str):
                 try:
                     value = int(value)
-                except ValueError:
+                except ValueError as ex:
                     msg = f'{self.key} is not an integer string'
-                    raise ConfluenceConfigError(msg)
+                    raise ConfluenceConfigError(msg) from ex
 
             if positive:
                 if not isinstance(value, int) or value <= 0:

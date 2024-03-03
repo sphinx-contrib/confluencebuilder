@@ -24,7 +24,7 @@ class TestConfluenceLegacyPages(ConfluenceTestCase):
 
         # prepare a mocked publisher that we can emulate publishing events
         # and check if legacy pages are properly remain/purged
-        old_init = getattr(ConfluenceBuilder, 'init')
+        old_init = ConfluenceBuilder.init
         publisher = MockedPublisher()
 
         def wrapped_init(builder):
@@ -132,17 +132,17 @@ class MockedPublisher:
         self.removed.append(page_name)
 
     def store_page(self, page_name, data, parent_id=None):
-        id = self.page2id.get(page_name)
-        if not id:
-            id = self.base_page_idx
+        page_id = self.page2id.get(page_name)
+        if not page_id:
+            page_id = self.base_page_idx
             self.base_page_idx += 1
 
-            self.page2id[page_name] = id
-            self.id2page[id] = page_name
+            self.page2id[page_name] = page_id
+            self.id2page[page_id] = page_name
 
         self.published.append(page_name)
 
-        return id
+        return page_id
 
     # other unused methods
 

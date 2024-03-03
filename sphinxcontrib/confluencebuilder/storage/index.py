@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from sphinx.environment.adapters.indexentries import IndexEntries
-from sphinxcontrib.confluencebuilder.locale import L as sccb_translation
+from sphinxcontrib.confluencebuilder.locale import L as sccb_translation  # noqa: N811
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
 import pkgutil
@@ -29,7 +29,7 @@ def generate_storage_format_domainindex(builder, docname, f):
         return
 
     # pre-process link entries to use final document titles/anchor values
-    for key, entries in content:
+    for _, entries in content:
         for (i, entry) in enumerate(entries):
             if isinstance(entry, list):
                 refuri = f'{entry[2]}#{entry[3]}'
@@ -80,12 +80,12 @@ def generate_storage_format_genindex(builder, docname, f):
         return
 
     # pre-process link entries to use final document titles/anchor values
-    for key, columns in genindex:
-        for entryname, (links, subitems, key_) in columns:
+    for _, columns in genindex:
+        for _, (links, subitems, _) in columns:
             for (i, (ismain, link)) in enumerate(links):
                 links[i] = (
                     ismain, process_doclink(builder.config, link))
-            for subentryname, subentrylinks in subitems:
+            for _, subentrylinks in subitems:
                 for (i, (ismain, link)) in enumerate(subentrylinks):
                     subentrylinks[i] = (
                         ismain, process_doclink(builder.config, link))

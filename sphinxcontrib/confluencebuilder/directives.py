@@ -35,8 +35,8 @@ def string_list(argument):
 
     if argument:
         for line in argument.splitlines():
-            for label in line.strip().split(' '):
-                label = label.strip()
+            for label_entry in line.strip().split(' '):
+                label = label_entry.strip()
                 if label:
                     data.append(label)
 
@@ -260,43 +260,55 @@ class JiraBaseDirective(Directive):
         # if explicit server is provided, ensure both options are set
         if 'server' in params or 'serverId' in params:
             if 'server' not in params:
-                msg = ':server-name: required when server-id is ' \
-                      'set; but none supplied'
+                msg = (
+                    ':server-name: required when server-id is set; '
+                    'but none supplied'
+                )
                 raise self.error(msg)
             if 'serverId' not in params:
-                msg = ':server-id: required when server-name is ' \
-                      'set; but none supplied'
+                msg = (
+                    ':server-id: required when server-name is set; '
+                    'but none supplied'
+                )
                 raise self.error(msg)
         # if a server key is provided, fetch values from configuration
         elif target_server:
             config = self.state.document.settings.env.config
             if not config.confluence_jira_servers:
-                msg = ':server: is set but no ' \
-                      'confluence_jira_servers defined in config'
+                msg = (
+                    ':server: is set but no '
+                    'confluence_jira_servers defined in config'
+                )
                 raise self.error(msg)
             jira_servers = config['confluence_jira_servers']
             if target_server not in jira_servers:
-                msg = ':server: is set but does not exist in ' \
-                      'confluence_jira_servers config'
+                msg = (
+                    ':server: is set but does not exist in '
+                    'confluence_jira_servers config'
+                )
                 raise self.error(msg)
             jira_server_config = jira_servers[target_server]
             if 'name' not in jira_server_config:
-                msg = ':server: is set but missing name entry in ' \
-                      'confluence_jira_servers config'
+                msg = (
+                    ':server: is set but missing name entry in '
+                    'confluence_jira_servers config'
+                )
                 raise self.error(msg)
             params['server'] = jira_server_config['name']
             if 'id' not in jira_server_config:
-                msg = ':server: is set but missing id entry in ' \
-                      'confluence_jira_servers config'
+                msg = (
+                    ':server: is set but missing id entry in '
+                    'confluence_jira_servers config'
+                )
                 raise self.error(msg)
             params['serverId'] = jira_server_config['id']
 
         if 'serverId' in params:
             try:
                 UUID(params['serverId'], version=4)
-            except ValueError:
+            except ValueError as ex:
                 msg = 'server-id is not a valid uuid'
-                raise self.error(msg)
+                raise self.error(msg) from ex
 
         return [node]
 
@@ -349,6 +361,5 @@ def kebab_case_to_camel_case(s):
     Returns:
         the converted string
     """
-    s = ''.join(list(map(lambda x: x.capitalize(), s.split('-'))))
-    s = s[0].lower() + s[1:]
-    return s
+    s = ''.join(x.capitalize() for x in s.split('-'))
+    return s[0].lower() + s[1:]
