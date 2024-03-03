@@ -10,6 +10,7 @@ from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkTypeConfigError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
 from tests.lib import mock_input
@@ -1024,6 +1025,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         # templates
         supported_templates = [
             'bitbucket',
+            'codeberg',
             'github',
             'gitlab',
         ]
@@ -1055,6 +1057,16 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self.config['confluence_sourcelink'] = sourcelink
             with self.assertRaises(ConfluenceConfigError):
                 self._try_config()
+
+        invalid_template = {
+            'type': 'invalid',
+            'owner': 'test',
+            'repo': 'test',
+            'version': 'test',
+        }
+        self.config['confluence_sourcelink'] = dict(invalid_template)
+        with self.assertRaises(ConfluenceSourcelinkTypeConfigError):
+            self._try_config()
 
     def test_config_check_title_overrides(self):
         self.config['confluence_title_overrides'] = {}
