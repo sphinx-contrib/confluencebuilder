@@ -8,6 +8,7 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
 from tests.lib import mock_input
@@ -210,6 +211,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_ca_cert'] = str(missing_cert)
         with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+    def test_config_check_cleanup_conflict(self):
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        self.config['confluence_cleanup_archive'] = True
+        self.config['confluence_cleanup_purge'] = True
+        with self.assertRaises(ConfluencePublishCleanupConflictConfigError):
             self._try_config()
 
     def test_config_check_client_cert(self):
