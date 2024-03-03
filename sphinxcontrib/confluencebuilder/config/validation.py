@@ -405,34 +405,6 @@ class ConfigurationValidation:
 
         return self
 
-    def string_or_strings(self):
-        """
-        checks if a configuration is a string or collection of strings
-
-        After an instance has been set a configuration key (via `conf`), this
-        method can be used to check if the value (if any) configured with this
-        key is a string or collection of strings. If not, an
-        `ConfluenceConfigError` exception will be thrown.
-
-        In the event that the configuration is not set (e.g. a value of `None`)
-        or is an empty collection, this method will have no effect.
-
-        Returns:
-            the validator instance
-        """
-        value = self._value()
-
-        if value is not None:
-            if isinstance(value, (list, set, tuple)):
-                if not all(isinstance(entry, str) for entry in value):
-                    msg = f'{self.key} is not a collection of strings'
-                    raise ConfluenceConfigError(msg)
-            elif not isinstance(value, str):
-                msg = f'{self.key} is not a string or collection of strings'
-                raise ConfluenceConfigError(msg)
-
-        return self
-
     def strings(self, no_space=False):
         """
         checks if a configuration is a collection of strings
