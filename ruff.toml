@@ -85,7 +85,7 @@ lint.ignore = [
     'SIM117',
 ]
 
-'tests\*' = [
+'tests*' = [
     # ignore implicit-namespace-package warnings for the test structures used
     'INP001',
 ]
