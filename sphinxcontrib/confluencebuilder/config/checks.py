@@ -491,8 +491,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    opts = PublishDebug._member_names_  # pylint: disable=no-member
-
     # confluence_publish_debug
     try:
         validator.conf('confluence_publish_debug').bool()  # deprecated
@@ -500,6 +498,7 @@ def validate_configuration(builder):
         try:
             validator.conf('confluence_publish_debug').enum(PublishDebug)
         except ConfluenceConfigError as ex:
+            opts = PublishDebug._member_names_  # pylint: disable=no-member
             opts_str = '\n - '.join(opts)
             raise ConfluencePublishDebugConfigError(ex, opts_str) from ex
 
