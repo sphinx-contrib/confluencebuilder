@@ -8,6 +8,7 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
 from tests.lib import EXT_NAME
 from tests.lib import mock_getpass
@@ -618,6 +619,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
         self.config['confluence_parent_page_id_check'] = -123456
         with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+    def test_config_check_permit_raw_html(self):
+        self.config['confluence_permit_raw_html'] = True
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = False
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = ''
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = 'sample-macro'
+        self._try_config()
+
+        self.config['confluence_permit_raw_html'] = [1, 2, 3]
+        with self.assertRaises(ConfluencePermitRawHtmlConfigError):
             self._try_config()
 
     def test_config_check_prev_next_buttons_location(self):
