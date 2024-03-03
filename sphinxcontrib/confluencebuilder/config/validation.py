@@ -53,13 +53,13 @@ class ConfigurationValidation:
         value = self._value()
 
         if value is not None:
-            if isinstance(value, str) or isinstance(value, int):
+            if isinstance(value, (int, str)):
                 try:
                     str2bool(value)
                 except ValueError as ex:
                     msg = f'{self.key} is not a boolean string'
                     raise ConfluenceConfigError(msg) from ex
-            elif not isinstance(value, bool) and not isinstance(value, int):
+            elif not isinstance(value, bool):
                 msg = f'{self.key} is not a boolean type'
                 raise ConfluenceConfigError(msg)
 
