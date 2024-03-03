@@ -80,8 +80,9 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
 
     if sphinx_toolbox_collapse:
         for node in findall(doctree, sphinx_toolbox_CollapseNode):
-            new_node = confluence_expand(node.rawsource, title=node.label,
+            new_node = confluence_expand(node.rawsource,
                 *node.children, **node.attributes)
+            new_node.attributes['title'] = node.label
             node.replace_self(new_node)
 
     if sphinx_toolbox_github_issues:
