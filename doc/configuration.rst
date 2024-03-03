@@ -1382,6 +1382,13 @@ Advanced publishing configuration
 
         Switched from boolean to string for setting new debugging options.
 
+    .. warning::
+
+        Enabling certain debugging options may reveal information such as
+        authentication details in printed logs. Take this into consideration
+        when sharing any debug logs with other users or enabling this option
+        when part of a CI/CD script, job or workflow.
+
     Configures the ability to enable certain debugging messages for requests
     made to a Confluence instance. This can be helpful for users attempting
     to debug their connection to a Confluence instance. By default, no
