@@ -4,8 +4,8 @@
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 import os
 
-# confluence trailing bind path for rest api
-API_REST_BIND_PATH = 'rest/api'
+# prefix for all api path requests to a confluence instance (v1 api)
+API_REST_V1 = 'rest/api'
 
 # default width for a table (v2 editor)
 #

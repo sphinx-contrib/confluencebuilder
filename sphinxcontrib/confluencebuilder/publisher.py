@@ -21,6 +21,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstance
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import json
 import logging
@@ -52,6 +53,12 @@ class ConfluencePublisher:
         self.space_key = config.confluence_space_key
         self.watch = config.confluence_watch
 
+        # track api prefix values to apply
+        if config.confluence_publish_disable_api_prefix:
+            self.APIV1 = ''
+        else:
+            self.APIV1 = f'{API_REST_V1}/'
+
         # append labels by default
         if self.append_labels is None:
             self.append_labels = True
@@ -68,7 +75,7 @@ class ConfluencePublisher:
         server_url = self.config.confluence_server_url
 
         try:
-            rsp = self.rest.get(f'space/{self.space_key}')
+            rsp = self.rest.get(f'{self.APIV1}space/{self.space_key}')
         except ConfluenceBadApiError as ex:
             if ex.status_code == 404:
                 pw_set = bool(self.config.confluence_server_pass)
@@ -129,7 +136,7 @@ class ConfluencePublisher:
                 'pages': [{'id': page_id}],
             }
 
-            rsp = self.rest.post('content/archive', data)
+            rsp = self.rest.post(f'{self.APIV1}content/archive', data)
             longtask_id = rsp['id']
 
             # wait for the archiving of the page to complete
@@ -138,7 +145,7 @@ class ConfluencePublisher:
             while attempt <= MAX_WAIT_FOR_PAGE_ARCHIVE:
                 time.sleep(0.5)
 
-                rsp = self.rest.get(f'longtask/{longtask_id}')
+                rsp = self.rest.get(f'{self.APIV1}longtask/{longtask_id}')
                 if rsp['finished']:
                     break
 
@@ -173,7 +180,7 @@ class ConfluencePublisher:
             # Note, multi-page archive can result in Confluence reporting the
             # following message:
             #  Cannot use bulk archive feature for non premium edition
-            self.rest.post('content/archive', data)
+            self.rest.post(f'{self.APIV1}content/archive', data)
 
         except ConfluencePermissionError as ex:
             msg = (
@@ -222,7 +229,7 @@ class ConfluencePublisher:
 
             return base_page_id
 
-        rsp = self.rest.get('content', {
+        rsp = self.rest.get(f'{self.APIV1}content', {
             'type': 'page',
             'spaceKey': self.space_key,
             'title': self.parent_ref,
@@ -309,13 +316,13 @@ class ConfluencePublisher:
             the descendants
         """
 
-        api_endpoint = 'content/search'
+        api_endpoint = f'{self.APIV1}content/search'
         descendants = set()
         search_fields = {}
 
         if page_id:
             if 'direct' in mode:
-                api_endpoint = f'content/{page_id}/descendant/page'
+                api_endpoint = f'{self.APIV1}content/{page_id}/descendant/page'
             else:
                 search_fields['cql'] = f'ancestor={page_id}'
         else:
@@ -396,7 +403,7 @@ class ConfluencePublisher:
         attachment = None
         attachment_id = None
 
-        url = f'content/{page_id}/child/attachment'
+        url = f'{self.APIV1}content/{page_id}/child/attachment'
         rsp = self.rest.get(url, {
             'filename': name,
         })
@@ -423,7 +430,7 @@ class ConfluencePublisher:
         """
         attachment_info = {}
 
-        url = f'content/{page_id}/child/attachment'
+        url = f'{self.APIV1}content/{page_id}/child/attachment'
         search_fields = {}
 
         # Configure a larger limit value than the default (no provided
@@ -468,7 +475,7 @@ class ConfluencePublisher:
         page = None
         page_id = None
 
-        rsp = self.rest.get('content', {
+        rsp = self.rest.get(f'{self.APIV1}content', {
             'type': 'page',
             'spaceKey': self.space_key,
             'title': page_name,
@@ -500,7 +507,7 @@ class ConfluencePublisher:
             the page id and page object
         """
 
-        page = self.rest.get(f'content/{page_id}', {
+        page = self.rest.get(f'{self.APIV1}content/{page_id}', {
             'status': 'current',
             'expand': expand,
         })
@@ -536,7 +543,7 @@ class ConfluencePublisher:
             '" and type=page and title~"' + page_name + '"'}
         search_fields['limit'] = 1000
 
-        rsp = self.rest.get('content/search', search_fields)
+        rsp = self.rest.get(f'{self.APIV1}content/search', search_fields)
         idx = 0
         while rsp['size'] > 0:
             for result in rsp['results']:
@@ -551,7 +558,8 @@ class ConfluencePublisher:
             idx += int(rsp['limit'])
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
-            rsp = self.rest.get('content/search', sub_search_fields)
+            rsp = self.rest.get(f'{self.APIV1}content/search',
+                sub_search_fields)
 
         return page_id, page
 
@@ -574,8 +582,8 @@ class ConfluencePublisher:
         props = None
 
         try:
-            property_path = f'content/{page_id}/property/{PROP_KEY}'
-            props = self.rest.get(property_path, {
+            prop_path = f'{self.APIV1}content/{page_id}/property/{PROP_KEY}'
+            props = self.rest.get(prop_path, {
                 'status': 'current',
                 'expand': expand,
             })
@@ -660,7 +668,7 @@ class ConfluencePublisher:
                 data['minorEdit'] = 'true'
 
             if not attachment:
-                url = f'content/{page_id}/child/attachment'
+                url = f'{self.APIV1}content/{page_id}/child/attachment'
 
                 try:
                     rsp = self.rest.post(url, None, files=data)
@@ -706,13 +714,13 @@ class ConfluencePublisher:
                     _, attachment = self.get_attachment(page_id, name)
 
             if attachment:
-                url = 'content/{}/child/attachment/{}/data'.format(
-                    page_id, attachment['id'])
+                url = '{}content/{}/child/attachment/{}/data'.format(
+                    self.APIV1, page_id, attachment['id'])
                 rsp = self.rest.post(url, None, files=data)
                 uploaded_attachment_id = rsp['id']
 
             if not self.watch:
-                self.rest.delete('user/watch/content',
+                self.rest.delete(f'{self.APIV1}user/watch/content',
                     uploaded_attachment_id)
         except ConfluencePermissionError as ex:
             msg = (
@@ -862,7 +870,7 @@ class ConfluencePublisher:
                     new_page['ancestors'] = [{'id': parent_id}]
 
                 try:
-                    rsp = self.rest.post('content', new_page)
+                    rsp = self.rest.post(f'{self.APIV1}content', new_page)
 
                     if 'id' not in rsp:
                         api_err = (
@@ -882,7 +890,7 @@ class ConfluencePublisher:
                     # initial labels need to be applied in their own request
                     labels = new_page['metadata']['labels']
                     if not self.cloud and labels:
-                        url = f'content/{uploaded_page_id}/label'
+                        url = f'{self.APIV1}content/{uploaded_page_id}/label'
                         self.rest.post(url, labels)
 
                 except ConfluenceBadApiError as ex:
@@ -935,7 +943,8 @@ class ConfluencePublisher:
             raise ConfluencePermissionError(msg) from ex
 
         if not self.watch:
-            self.rest.delete('user/watch/content', uploaded_page_id)
+            self.rest.delete(f'{self.APIV1}user/watch/content',
+                uploaded_page_id)
 
         return uploaded_page_id
 
@@ -988,7 +997,7 @@ class ConfluencePublisher:
             raise ConfluencePermissionError(msg) from ex
 
         if not self.watch:
-            self.rest.delete('user/watch/content', page_id)
+            self.rest.delete(f'{self.APIV1}user/watch/content', page_id)
 
         return page_id
 
@@ -1005,7 +1014,7 @@ class ConfluencePublisher:
         """
 
         property_path = f'{page_id}/property/{PROP_KEY}'
-        self.rest.put('content', property_path, data)
+        self.rest.put(f'{self.APIV1}content', property_path, data)
 
     def remove_attachment(self, id_):
         """
@@ -1026,7 +1035,7 @@ class ConfluencePublisher:
             return
 
         try:
-            self.rest.delete('content', id_)
+            self.rest.delete(f'{self.APIV1}content', id_)
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to delete '
@@ -1045,7 +1054,7 @@ class ConfluencePublisher:
 
         try:
             try:
-                self.rest.delete('content', page_id)
+                self.rest.delete(f'{self.APIV1}content', page_id)
             except ConfluenceBadApiError as ex:
                 if str(ex).find('Transaction rolled back') == -1:
                     raise
@@ -1054,7 +1063,7 @@ class ConfluencePublisher:
                     logger.warn('delete failed; retrying...')
                 time.sleep(3)
 
-                self.rest.delete('content', page_id)
+                self.rest.delete(f'{self.APIV1}content', page_id)
 
         except ConfluenceBadApiError as ex:
             # Check if Confluence reports that this content does not exist. If
@@ -1099,7 +1108,7 @@ class ConfluencePublisher:
             self._onlynew('space home updates restricted')
             return
 
-        page = self.rest.get('content/' + page_id, None)
+        page = self.rest.get(f'{self.APIV1}content/{page_id}', None)
         try:
             self.rest.put('space', self.space_key, {
                 'key': self.space_key,
@@ -1206,7 +1215,7 @@ class ConfluencePublisher:
 
         page_id_explicit = page['id'] + '?status=current'
         try:
-            self.rest.put('content', page_id_explicit, update_page)
+            self.rest.put(f'{self.APIV1}content', page_id_explicit, update_page)
         except ConfluenceBadApiError as ex:
             if str(ex).find('CDATA block has embedded') != -1:
                 raise ConfluenceUnexpectedCdataError from ex
@@ -1241,7 +1250,8 @@ class ConfluencePublisher:
             time.sleep(3)
 
             try:
-                self.rest.put('content', page_id_explicit, update_page)
+                self.rest.put(f'{self.APIV1}content',
+                    page_id_explicit, update_page)
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(

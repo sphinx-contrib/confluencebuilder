@@ -3,7 +3,7 @@
 
 from contextlib import contextmanager
 from pathlib import Path
-from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
 from hashlib import sha256
@@ -77,9 +77,9 @@ class ConfluenceUtil:
             # removing any trailing forward slash user provided
             if url.endswith('/'):
                 url = url[:-1]
-            # check for rest bind path; strip and return if found
-            if url.endswith(API_REST_BIND_PATH):
-                url = url[:-len(API_REST_BIND_PATH)]
+            # check for rest api prefix; strip and return if found
+            if url.endswith(API_REST_V1):
+                url = url[:-len(API_REST_V1)]
             # restore trailing forward flash
             elif not url.endswith('/'):
                 url += '/'

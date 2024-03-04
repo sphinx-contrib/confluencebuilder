@@ -16,7 +16,6 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthentic
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
-from sphinxcontrib.confluencebuilder.std.confluence import API_REST_BIND_PATH
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
 from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
 from requests.adapters import HTTPAdapter
@@ -164,7 +163,6 @@ class Rest:
     CONFLUENCE_DEFAULT_ENCODING = 'utf-8'
 
     def __init__(self, config):
-        self.bind_path = API_REST_BIND_PATH
         self.config = config
         self.last_retry = 1
         self.next_delay = None
@@ -175,9 +173,6 @@ class Rest:
         self._reported_large_delay = False
 
         self.session = self._setup_session(config)
-
-        if config.confluence_publish_disable_api_prefix:
-            self.bind_path = ''
 
     def __del__(self):
         if self.session:
@@ -320,7 +315,7 @@ class Rest:
         err = ""
         err += f"REQ: {rsp.request.method}\n"
         err += "RSP: " + str(rsp.status_code) + "\n"
-        err += "URL: " + self.url + self.bind_path + "\n"
+        err += "URL: " + self.url + "\n"
         err += "API: " + path + "\n"
         try:
             err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
@@ -331,7 +326,7 @@ class Rest:
     def _process_request(self, method, path, *args, **kwargs):
         dump = PublishDebug.headers in self.config.confluence_publish_debug
 
-        rest_url = f'{self.url}{self.bind_path}/{path}'
+        rest_url = f'{self.url}{path}'
         base_req = requests.Request(method, rest_url, *args, **kwargs)
         req = self.session.prepare_request(base_req)
 
