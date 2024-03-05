@@ -44,6 +44,8 @@ class ConfluencePublisher:
     def init(self, config, cloud=None):
         self.cloud = cloud
         self.config = config
+        self.rest = None
+
         self.append_labels = config.confluence_append_labels
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
@@ -164,7 +166,8 @@ class ConfluencePublisher:
         self.space_type = rsp['type']
 
     def disconnect(self):
-        self.rest.close()
+        if self.rest:
+            self.rest.close()
 
     def archive_page(self, page_id):
         if self.dryrun:
