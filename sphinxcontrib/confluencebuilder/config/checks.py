@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from pathlib import Path
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceApiModeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceCleanupSearchModeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertBadTupleConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertMissingCertConfigError
@@ -37,6 +38,7 @@ from sphinxcontrib.confluencebuilder.config.notifications import deprecated
 from sphinxcontrib.confluencebuilder.config.notifications import warnings
 from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValidation
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
+from sphinxcontrib.confluencebuilder.std.confluence import API_MODES
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from requests.auth import AuthBase
@@ -109,6 +111,17 @@ def validate_configuration(builder):
     # confluence_adv_writer_no_section_cap
     validator.conf('confluence_adv_writer_no_section_cap') \
              .bool()
+
+    # ##################################################################
+
+    # confluence_api_mode
+    validator.conf('confluence_api_mode') \
+             .string()
+
+    if config.confluence_api_mode:
+        if config.confluence_api_mode not in API_MODES:
+            modes = '\n - '.join(API_MODES)
+            raise ConfluenceApiModeConfigError(modes)
 
     # ##################################################################
 
@@ -536,6 +549,12 @@ def validate_configuration(builder):
     # confluence_publish_orphan_container
     validator.conf('confluence_publish_orphan_container') \
              .int_()
+
+    # ##################################################################
+
+    # confluence_publish_orphan_container
+    validator.conf('confluence_publish_override_api_prefix') \
+             .dict_str_str()
 
     # ##################################################################
 

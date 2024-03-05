@@ -22,6 +22,8 @@ DEPRECATED_CONFIGS = {
         'option does nothing',
     'confluence_parent_page_id_check':
         '"confluence_parent_page" now accepts a page id',
+    'confluence_publish_disable_api_prefix':
+        'use "confluence_publish_override_api_prefix" instead',
     'confluence_publish_subset':
         'use "confluence_publish_allowlist" instead',
     'confluence_purge_from_master':

@@ -831,6 +831,22 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+    def test_config_check_publish_override_api_prefix(self):
+        self.config['confluence_publish_override_api_prefix'] = {}
+        self._try_config()
+
+        self.config['confluence_publish_override_api_prefix'] = {
+            'v1': 'override1/',
+            'v2': 'override2/',
+        }
+        self._try_config()
+
+        self.config['confluence_publish_override_api_prefix'] = {
+            'v2': None,
+        }
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_publish_postfix(self):
         self.config['confluence_publish_postfix'] = ''
         self._try_config()

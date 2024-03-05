@@ -7,6 +7,15 @@ import os
 # prefix for all api path requests to a confluence instance (v1 api)
 API_REST_V1 = 'rest/api'
 
+# prefix for all api path requests to a confluence instance (v2 api)
+API_REST_V2 = 'api/v2'
+
+# list of supported api modes to operate with
+API_MODES = {
+    'v1',
+    'v2',
+}
+
 # default width for a table (v2 editor)
 #
 # It has been observed that when attempting to fix specific column widths on

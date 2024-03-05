@@ -22,6 +22,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPag
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import json
 import logging
@@ -54,10 +55,20 @@ class ConfluencePublisher:
         self.watch = config.confluence_watch
 
         # track api prefix values to apply
-        if config.confluence_publish_disable_api_prefix:
-            self.APIV1 = ''
+        prefix_overrides = config.confluence_publish_override_api_prefix or {}
+        self.APIV1 = prefix_overrides.get('v1', f'{API_REST_V1}/')
+        self.APIV2 = prefix_overrides.get('v2', f'{API_REST_V2}/')
+
+        # determine api mode to use
+        # - if an explicit api mode is configured, use it
+        # - if this is a cloud instance, use v2
+        # - for all other cases, use v1
+        if config.confluence_api_mode:
+            self.api_mode = config.confluence_api_mode
+        elif self.cloud:
+            self.api_mode = 'v2'
         else:
-            self.APIV1 = f'{API_REST_V1}/'
+            self.api_mode = 'v1'
 
         # append labels by default
         if self.append_labels is None:
@@ -74,13 +85,46 @@ class ConfluencePublisher:
         self.rest = Rest(self.config)
         server_url = self.config.confluence_server_url
 
+        # Example space fetch points:
+        # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/rest/api/space/STABLE
+        # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/api/v2/spaces?keys=STABLE
+
+        pw_set = bool(self.config.confluence_server_pass)
+        token_set = bool(self.config.confluence_publish_token)
+
         try:
-            rsp = self.rest.get(f'{self.APIV1}space/{self.space_key}')
+            if self.api_mode == 'v2':
+                spaces_url = f'{self.APIV2}spaces'
+                rsp_spaces = self.rest.get(spaces_url, {
+                    'keys': self.space_key,
+                    'limit': 1,
+                })
+
+                # if no size entry is provided, this a non-Confluence instance
+                if 'results' not in rsp_spaces:
+                    raise ConfluenceBadServerUrlError(server_url,
+                        'server provided an unexpected response; no results')
+
+                # handle if the provided space key was not found
+                if len(rsp_spaces['results']) == 1:
+                    rsp = rsp_spaces['results'][0]
+                else:
+                    raise ConfluenceUnknownInstanceError(
+                        server_url,
+                        self.space_key,
+                        self.config.confluence_server_user,
+                        pw_set,
+                        token_set,
+                    )
+            else:
+                rsp = self.rest.get(f'{self.APIV1}space/{self.space_key}')
         except ConfluenceBadApiError as ex:
             if ex.status_code == 404:
-                pw_set = bool(self.config.confluence_server_pass)
-                token_set = bool(self.config.confluence_publish_token)
-
+                # if this is a 404 (not found), give a more custom message
+                # since on an initial connect, this may be either that the
+                # instance url is wrong, the space could not be found since
+                # the key is wrong or that the user does not have permission
+                # to see that the space exists
                 raise ConfluenceUnknownInstanceError(
                     server_url,
                     self.space_key,

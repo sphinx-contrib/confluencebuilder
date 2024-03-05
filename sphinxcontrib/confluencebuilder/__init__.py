@@ -115,6 +115,8 @@ def setup(app):
     cm.add_conf_bool('singleconfluence_toctree', 'singleconfluence')
 
     # (configuration - publishing)
+    # API mode to use for REST calls.
+    cm.add_conf('confluence_api_mode')
     # Request for publish password to come from interactive session.
     cm.add_conf_bool('confluence_ask_password')
     # Request for publish username to come from interactive session.
@@ -195,12 +197,12 @@ def setup(app):
     cm.add_conf('confluence_publish_denylist')
     # Whether to check for changes on remote before publishing.
     cm.add_conf_bool('confluence_publish_force')
-    # Disable adding `rest/api` to REST requests.
-    cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # Header(s) to use for Confluence REST interaction.
     cm.add_conf('confluence_publish_headers')
     # Whether to publish a generated intersphinx database to the root document
     cm.add_conf_bool('confluence_publish_intersphinx')
+    # Override the path prefixes for various REST API requests.
+    cm.add_conf('confluence_publish_override_api_prefix')
     # Manipulate a requests instance.
     cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.
@@ -263,6 +265,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_permit_raw_html')
     # replaced by confluence_root_homepage
     cm.add_conf('confluence_master_homepage')
+    # replaced by confluence_publish_override_api_prefix
+    cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # replaced by confluence_publish_allowlist
     cm.add_conf('confluence_publish_subset')
     # replaced by confluence_purge_from_root

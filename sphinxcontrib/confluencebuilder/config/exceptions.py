@@ -9,6 +9,17 @@ class ConfluenceConfigError(ConfluenceError, ConfigError):
     pass
 
 
+class ConfluenceApiModeConfigError(ConfluenceConfigError):
+    def __init__(self, modes):
+        super().__init__(f'''\
+invalid api version provided in confluence_api_mode
+
+The following API modes are supported:
+
+ - {modes}
+''')
+
+
 class ConfluenceCleanupSearchModeConfigError(ConfluenceConfigError):
     def __init__(self, msg):
         super().__init__(f'''\
