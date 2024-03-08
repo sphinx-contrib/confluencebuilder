@@ -560,10 +560,13 @@ class ConfluencePublisher:
             the page id and page object
         """
 
-        page = self.rest.get(f'{self.APIV1}content/{page_id}', {
-            'status': 'current',
-            'expand': expand,
-        })
+        if self.api_mode == 'v2':
+            page = self.rest.get(f'{self.APIV2}pages/{page_id}')
+        else:
+            page = self.rest.get(f'{self.APIV1}content/{page_id}', {
+                'status': 'current',
+                'expand': expand,
+            })
 
         if page:
             assert int(page_id) == int(page['id'])
@@ -1161,7 +1164,10 @@ class ConfluencePublisher:
             self._onlynew('space home updates restricted')
             return
 
-        page = self.rest.get(f'{self.APIV1}content/{page_id}', None)
+        if self.api_mode == 'v2':
+            page = self.rest.get(f'{self.APIV2}pages/{page_id}')
+        else:
+            page = self.rest.get(f'{self.APIV1}content/{page_id}', None)
         try:
             self.rest.put('space', self.space_key, {
                 'key': self.space_key,
