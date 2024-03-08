@@ -1,4 +1,5 @@
 .. index:: Confluence Macros
+.. index:: Macros; Confluence Macros
 
 Confluence Macros
 =================
@@ -47,6 +48,9 @@ Or create an `"Info" macro`_  in a Markdown document:
     ```
 
 Try adding either of these example into a document to observe their results.
+
+After trying out adding a raw macro from above, follow the steps in the next
+section to help add a custom macro to a document.
 
 Steps
 -----
