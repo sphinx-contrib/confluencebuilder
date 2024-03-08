@@ -253,11 +253,17 @@ class ConfluencePublisher:
         assert page_id
         ancestors = set()
 
-        _, page = self.get_page_by_id(page_id, 'ancestors')
+        if self.api_mode == 'v2':
+            rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors')
 
-        if 'ancestors' in page:
-            for ancestor in page['ancestors']:
-                ancestors.add(ancestor['id'])
+            for result in rsp['results']:
+                ancestors.add(result['id'])
+        else:
+            _, page = self.get_page_by_id(page_id, 'ancestors')
+
+            if 'ancestors' in page:
+                for ancestor in page['ancestors']:
+                    ancestors.add(ancestor['id'])
 
         return ancestors
 
