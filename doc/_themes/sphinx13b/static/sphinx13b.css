@@ -541,3 +541,8 @@ p.rubric {
         font-size: 0.5em;
     }
 }
+
+/* rtd badge expanded icon tweak */
+.rst-badge.shift-up .rst-current-version .fa {
+    margin-top: 8px;
+}
