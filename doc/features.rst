@@ -38,14 +38,23 @@ Type                    Notes
 `footnotes`_            Supported
 `highlights`_           Supported
 `hyperlink targets`_    Supported
-`images`_               Supported
+`images`_               Limited support.
+
+                        When using a Confluence v2 editor, images cannot be
+                        inlined and SVGs may not render as expected.
 `inline markup`_        Supported
 `list-table`_           Supported
 `literal blocks`_       Supported
 `math`_                 Supported with additional system tools.
 
                         Requires a LaTeX and dvipng/dvisvgm installation.
-`parsed literal block`_ Supported
+                        When using a Confluence v2 editor, images cannot be
+                        offset to be aligned in a paragraph.
+`parsed literal block`_ Limited support.
+
+                        When using a Confluence v2 editor, literal blocks
+                        cannot be parsed and the contents will be placed
+                        inside a code macro.
 `option lists`_         Supported
 `pull-quote`_           Supported
 `raw`_                  Supported.
@@ -84,14 +93,17 @@ Type                    Notes
                         ``emphasize-lines`` and ``lines`` which are not
                         supported in the Confluence markup. The code block macro
                         only supports a simple line numbers (configurable with
-                        the ``linenos`` option).
+                        the ``linenos`` option; Confluence v1 editor only).
 
                         When the ``class`` attribute contains ``collapse``, the
                         macro will be configured to be collapsed.
 `deprecated`_           Supported
 `download`_             Supported
 `glossary`_             Supported
-`hlist`_                Supported
+`hlist`_                Limited support.
+
+                        When using a Confluence v2 editor, the maximum columns
+                        for an hlist is three.
 `manpage`_              Supported
 `production list`_      Supported
 `toctree`_              Supported
@@ -137,11 +149,7 @@ Type                              Notes
                                   When building with publishing enabled, this
                                   extension will generate an ``objects.inv``
                                   inventory file which can be used by other
-                                  documentation sets. At this time, only
-                                  document names and standard references have
-                                  been tested. If a type of reference does not
-                                  work or yields unexpected results, please
-                                  report the issue with an example.
+                                  documentation sets.
 `sphinx.ext.jsmath`_              Unsupported.
 
                                   Confluence does not support the injection of
