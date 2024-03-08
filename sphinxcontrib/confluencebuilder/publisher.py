@@ -1169,7 +1169,7 @@ class ConfluencePublisher:
         else:
             page = self.rest.get(f'{self.APIV1}content/{page_id}', None)
         try:
-            self.rest.put('space', self.space_key, {
+            self.rest.put(f'{self.APIV1}space', self.space_key, {
                 'key': self.space_key,
                 'name': self.space_display_name,
                 'homepage': page,
