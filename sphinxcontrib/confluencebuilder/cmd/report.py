@@ -235,7 +235,7 @@ def report_main(args_parser):
             parsed = urlparse(value)
 
             if parsed.scheme:
-                value = parsed.scheme + '://<removed>'
+                value = parsed.scheme + '://(removed)'
             else:
                 value = '(set; no scheme)'
 

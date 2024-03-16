@@ -169,16 +169,19 @@ class Rest:
         self.last_retry = 1
         self.next_delay = None
         self.url = config.confluence_server_url
-        self.session = self._setup_session(config)
+        self.session = None
         self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
         self._reported_large_delay = False
+
+        self.session = self._setup_session(config)
 
         if config.confluence_publish_disable_api_prefix:
             self.bind_path = ''
 
     def __del__(self):
-        self.session.close()
+        if self.session:
+            self.session.close()
 
     def _setup_session(self, config):
         session = requests.Session()

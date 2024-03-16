@@ -61,6 +61,6 @@ class TestConfluenceConfigPrevNext(ConfluenceTestCase):
             for char, count in expected.items():
                 found = data.count(char)
                 self.assertTrue(data.count(char) == count,
-                    'unexpected character ({}) count (expected: {}, found: {}) '
-                    'in file: {}'.format(
-                        hex(ord(char)), count, found, test_path))
+                    f'unexpected character ({hex(ord(char))}) count '
+                    f'(expected: {count}, found: {found}) '
+                    f'in file: {test_path}')
