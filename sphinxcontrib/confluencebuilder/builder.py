@@ -1108,11 +1108,17 @@ class ConfluenceBuilder(Builder):
         doc_used_names = {}
         secnumbers = self.env.toc_secnumbers.get(docname, {})
 
+        metadata = self.metadata.get(docname, {})
+        editor = metadata.get('editor', self.config.confluence_editor)
+
         for node in findall(doctree, nodes.title):
             if isinstance(node.parent, nodes.section):
                 section_node = node.parent
                 if 'ids' in section_node:
-                    target = ''.join(node.astext().split())
+                    # sections on v2 pages will replace spaces with dashes
+                    # for anchors, where older editors will strip out spaces
+                    sep = '-' if editor == 'v2' else ''
+                    target = sep.join(node.astext().split())
 
                     if self.add_secnumbers:
                         anchorname = '#' + section_node['ids'][0]
