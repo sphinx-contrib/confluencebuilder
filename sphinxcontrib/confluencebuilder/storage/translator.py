@@ -1352,7 +1352,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         anchor_value = intern_uri_anchor_value(docname, node['refuri'])
 
-        navnode = getattr(node, '_navnode', False)
+        navnode = getattr(node, 'cbe_navnode', False)
 
         if navnode:
             if self.v2:
