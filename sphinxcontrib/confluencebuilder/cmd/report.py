@@ -20,7 +20,7 @@ from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
 from urllib3 import __version__ as urllib3_version
-from xml.etree import ElementTree
+import json
 import platform
 import sys
 import traceback
@@ -177,15 +177,16 @@ def report_main(args_parser):
 
                     # parse
                     print('parsing information...')
-                    xml_data = ElementTree.fromstring(raw_data)  # noqa: S314
+                    json_data = json.loads(raw_data)
                     info += '    parsed: yes\n'
-                    root = ElementTree.ElementTree(xml_data)
-                    for o in root.findall('typeId'):
-                        info += '      type: ' + o.text + '\n'
-                    for o in root.findall('version'):
-                        info += '   version: ' + o.text + '\n'
-                    for o in root.findall('buildNumber'):
-                        info += '     build: ' + o.text + '\n'
+
+                    build_number = json_data.get('buildNumber', '(unknown)')
+                    type_id = json_data.get('typeId', '(unknown)')
+                    version = json_data.get('version', '(unknown)')
+
+                    info += f'      type: {type_id}\n'
+                    info += f'   version: {version}\n'
+                    info += f'     build: {build_number}\n'
                 else:
                     code = rsp.status_code
                     logger.error(f'bad response from server ({code})')
