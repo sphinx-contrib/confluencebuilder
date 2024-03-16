@@ -21,6 +21,7 @@ import json
 import os
 import shutil
 import socketserver as server_socket
+import ssl
 import sys
 import time
 
@@ -361,8 +362,29 @@ def enable_sphinx_info(verbosity=None):
         os.environ['SPHINX_VERBOSITY'] = str(verbosity)
 
 
+def fetch_cert_files():
+    """
+    find certificate files for unit testing
+
+    Returns a tuple of a key file and certificate file used to create a
+    unit testing "secure" HTTP server. Dummy pem files are included in the
+    testing asserts folder, which this call can return the paths to these
+    files.
+
+    Returns:
+        2-tuple of a key file and certificate file
+    """
+
+    lib_dir = Path(__file__).parent.resolve()
+    test_dir = lib_dir.parent
+    httpd_dir = test_dir / 'unit-tests' / 'assets' / 'httpd'
+    keyfile = httpd_dir / 'test-notprivate-key-pem'
+    certfile = httpd_dir / 'test-cert-pem'
+    return keyfile, certfile
+
+
 @contextmanager
-def mock_confluence_instance(config=None, ignore_requests=False):
+def mock_confluence_instance(config=None, ignore_requests=False, secure=None):
     """
     spawns a mocked confluence instance which publishing attempts to be checked
 
@@ -373,9 +395,10 @@ def mock_confluence_instance(config=None, ignore_requests=False):
         config (optional): the configuration to populate a publisher url on
         ignore_requests (optional): whether or not requests made to the server
                                      should be ignored (default: ``False``)
+        secure (optional): start a "secure" instance
 
     Yields:
-        the http daemon
+        the http(s) daemon
     """
 
     serve_thread = None
@@ -384,9 +407,18 @@ def mock_confluence_instance(config=None, ignore_requests=False):
         # spawn a mocked server instance
         daemon = ConfluenceInstanceServer()
 
+        if secure:
+            keyfile, certfile = fetch_cert_files()
+
+            context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+            context.load_cert_chain(certfile, keyfile=keyfile)
+
+            daemon.socket = context.wrap_socket(daemon.socket, server_side=True)
+
         host, port = daemon.server_address
         if config:
-            config.confluence_server_url = f'http://{host}:{port}/'
+            scheme = 'https://' if secure else 'http://'
+            config.confluence_server_url = f'{scheme}{host}:{port}/'
 
         # start accepting requests
         if not ignore_requests:
