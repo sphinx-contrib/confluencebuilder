@@ -6,6 +6,7 @@ from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor  # pylint: disable=no-name-in-module
 from sphinxcontrib.confluencebuilder import __version__ as version
 from sphinxcontrib.confluencebuilder.cmd.build import build_main
+from sphinxcontrib.confluencebuilder.cmd.conntest import conntest_main
 from sphinxcontrib.confluencebuilder.cmd.report import report_main
 from sphinxcontrib.confluencebuilder.cmd.wipe import wipe_main
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -45,7 +46,9 @@ def main():
     logger.initialize(preload=True)
 
     # invoke a desired command mainline
-    if args.action == 'report':
+    if args.action == 'connection-test':
+        rv = conntest_main(parser)
+    elif args.action == 'report':
         rv = report_main(parser)
     elif args.action == 'wipe':
         rv = wipe_main(parser)
@@ -70,6 +73,7 @@ sphinx-build-confluence [action] <options>
 
 (actions)
  <builder>             specify a builder to invoke (defaults to 'confluence')
+ connection-test       Performs a connection test to a Confluence instance
  report                generate a report of this system and the configuration
                         to be shared when generating an issue for developers
  wipe                  wipe the contents of a configured Confluence space
@@ -77,6 +81,9 @@ sphinx-build-confluence [action] <options>
 (builder arguments)
  -o, --output-dir      alter the output directory for generated documentation
                         (defaults to `_build/confluence`)
+
+(connection-test arguments)
+ --no-sanitize         Do not sanitize configuration content
 
 (report arguments)
  -C, --full-config     include all known sphinx configuration entries
