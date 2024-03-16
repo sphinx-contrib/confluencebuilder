@@ -5,9 +5,11 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationF
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceProxyPermissionError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import autocleanup_publisher
+from tests.lib import fetch_cert_files
 from tests.lib import mock_confluence_instance
 from tests.lib import prepare_conf_publisher
 import os
@@ -78,6 +80,21 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             publisher.init(self.config)
 
             with self.assertRaises(ConfluenceProxyPermissionError):
+                publisher.connect()
+
+    def test_publisher_connect_handle_unconfigured_ssl(self):
+        """validate publisher reports an ssl error"""
+        #
+        # Verify that the publisher will report a tailored error message when a
+        # Confluence instance reports a SSL connection issue.
+
+        with mock_confluence_instance(self.config, secure=True) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
+            daemon.register_get_rsp(200, None)
+
+            publisher.init(self.config)
+
+            with self.assertRaises(ConfluenceSslError):
                 publisher.connect()
 
     def test_publisher_connect_invalid_json(self):
@@ -267,7 +284,7 @@ class TestConfluencePublisherConnect(unittest.TestCase):
             with self.assertRaises(ConfluenceBadServerUrlError):
                 publisher.connect()
 
-    def test_publisher_connect_valid_space(self):
+    def test_publisher_connect_valid_space_default(self):
         """validate publisher can find a valid space"""
         #
         # Verify that a publisher can query a Confluence instance and cache the
@@ -286,6 +303,36 @@ class TestConfluencePublisherConnect(unittest.TestCase):
         config.confluence_space_key = space_key
 
         with mock_confluence_instance(config) as daemon, \
+                autocleanup_publisher(ConfluencePublisher) as publisher:
+            daemon.register_get_rsp(200, connect_rsp)
+
+            publisher.init(config)
+            publisher.connect()
+
+            self.assertEqual(publisher.space_display_name, space_name)
+
+    def test_publisher_connect_valid_space_secure(self):
+        """validate publisher can find a valid space over https"""
+        #
+        # Verify that a publisher can query a Confluence instance and cache the
+        # display name for a space (over https).
+
+        space_key = 'MYSPACE'
+        space_name = 'My Space'
+        connect_rsp = {
+            'id': 1,
+            'key': space_key,
+            'name': space_name,
+            'type': 'global',
+        }
+
+        _, certfile = fetch_cert_files()
+
+        config = self.config.clone()
+        config.confluence_ca_cert = certfile
+        config.confluence_space_key = space_key
+
+        with mock_confluence_instance(config, secure=True) as daemon, \
                 autocleanup_publisher(ConfluencePublisher) as publisher:
             daemon.register_get_rsp(200, connect_rsp)
 
