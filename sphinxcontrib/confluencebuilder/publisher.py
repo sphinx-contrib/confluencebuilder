@@ -753,11 +753,10 @@ class ConfluencePublisher:
             misc = ''
             if parent_id and 'ancestors' in page:
                 if not any(a['id'] == parent_id for a in page['ancestors']):
+                    desc = ''
                     if parent_id in self._name_cache:
-                        misc += '[new parent page {} ({})]'.format(
-                            self._name_cache[parent_id], parent_id)
-                    else:
-                        misc += '[new parent page]'
+                        desc = f': {self._name_cache[parent_id]} ({parent_id})'
+                    misc += f'[new parent page{desc}]'
 
             self._dryrun('updating existing page', page['id'], misc)
             return page['id']
