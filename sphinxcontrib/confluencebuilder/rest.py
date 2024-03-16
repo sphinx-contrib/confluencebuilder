@@ -183,6 +183,7 @@ class Rest:
     def _setup_session(self, config):
         session = requests.Session()
         session.headers.update({
+            'Accept': 'application/json; charset=utf-8',
             'User-Agent': 'Sphinx Confluence Builder',
             'X-Atlassian-Token': NOCHECK,
         })
