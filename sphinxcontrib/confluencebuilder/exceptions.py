@@ -270,8 +270,8 @@ the exception message above this message.
 class ConfluenceUnknownInstanceError(ConfluenceError):
     def __init__(self, server_url, space_key, uname, pw_set, token_set):
         uname_value = uname if uname else '(empty)'
-        pw_value = '<set>' if pw_set else '(empty)'
-        token_value = '<set>' if token_set else '(empty)'
+        pw_value = '(set)' if pw_set else '(empty)'
+        token_value = '(set)' if token_set else '(empty)'
         super().__init__(f'''
 ---
 Unknown Confluence URL or invalid/restricted space detected
