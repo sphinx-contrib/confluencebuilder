@@ -1135,6 +1135,17 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = f'{target}.{section_id}'
 
+                    # v2 editor does not link anchors with parenthesis
+                    # gracefully; inject a workaround
+                    #
+                    # See: https://jira.atlassian.com/browse/CONFCLOUD-7469
+                    if not self.config.confluence_adv_disable_confcloud_74698:
+                        if editor == 'v2':
+                            if any(x in target for x in ['(', ')']):
+                                target = 2*'[inlineExtension]' + target
+                                target = target.replace('(', '%28')
+                                target = target.replace(')', '%29')
+
                     for raw_id in section_node['ids']:
                         full_id = f'{docname}#{raw_id}'
                         self.state.register_target(full_id, target)
