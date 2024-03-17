@@ -1015,9 +1015,8 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-        if not self.watch:
-            self.rest.delete(f'{self.APIV1}user/watch/content',
-                uploaded_page_id)
+        # perform any required post-page update actions
+        self._post_page_actions(uploaded_page_id)
 
         return uploaded_page_id
 
@@ -1069,8 +1068,8 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-        if not self.watch:
-            self.rest.delete(f'{self.APIV1}user/watch/content', page_id)
+        # perform any required post-page update actions
+        self._post_page_actions(page_id)
 
         return page_id
 
@@ -1263,6 +1262,20 @@ class ConfluencePublisher:
             }
 
         return page
+
+    def _post_page_actions(self, page_id):
+        """
+        post page actions
+
+        Perform additional actions needed after creating or updating a page.
+
+        Args:
+            page_id: the identifier of the new/updated page
+        """
+
+        # ensure remove any watch flags on the update if watching is disabled
+        if not self.watch:
+            self.rest.delete(f'{self.APIV1}user/watch/content', page_id)
 
     def _update_page(self, page, page_name, data, parent_id=None):
         """
