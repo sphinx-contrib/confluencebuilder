@@ -1107,8 +1107,21 @@ class ConfluencePublisher:
             self._onlynew('attachment removal restricted', id_)
             return
 
+        delete_path = f'{self.APIV1}content'
+
         try:
-            self.rest.delete(f'{self.APIV1}content', id_)
+            try:
+                self.rest.delete(delete_path, id_)
+            except ConfluenceBadApiError as ex:
+                if str(ex).find('Transaction rolled back') == -1:
+                    raise
+
+                with skip_warningiserror():
+                    logger.warn('delete failed; retrying...')
+                time.sleep(3)
+
+                self.rest.delete(delete_path, id_)
+
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to delete '
