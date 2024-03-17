@@ -34,7 +34,7 @@ import time
 BULK_LIMIT = 250
 
 # key used for managing this extension's properties on a Confluence instance
-PROP_KEY = 'sphinx'
+CB_PROP_KEY = 'sphinxcontrib.confluencebuilder'
 
 
 class ConfluencePublisher:
@@ -634,33 +634,42 @@ class ConfluencePublisher:
 
         return page_id, page
 
-    def get_page_properties(self, page_id, expand='version'):
+    def get_page_property(self, page_id, key, default=None):
         """
-        get properties from the provided page id
+        get a property from the provided page id
 
-        Performs an API call to acquire known properties about a specific page.
+        Performs an API call to acquire a property held on a specific page.
         This call can returns the page properties dictionary if found;
         otherwise ``None`` will be returned.
 
         Args:
             page_id: the page identifier
-            expand (optional): data to expand on
+            key: the property key
+            default (optional): default value if no property exists
 
         Returns:
-            the properties
+            the property value
         """
 
-        props = None
+        props = {
+            'value': default,
+        }
 
-        try:
-            prop_path = f'{self.APIV1}content/{page_id}/property/{PROP_KEY}'
-            props = self.rest.get(prop_path, {
-                'status': 'current',
-                'expand': expand,
-            })
-        except ConfluenceBadApiError as ex:
-            if ex.status_code != 404:
-                raise
+        if page_id:
+            try:
+                if self.api_mode == 'v2':
+                    prop_path = f'{self.APIV2}pages/{page_id}/properties'
+                    rsp = self.rest.get(prop_path, {
+                        'key': key,
+                    })
+                    if rsp['results']:
+                        props = rsp['results'][0]
+                else:
+                    prop_path = f'{self.APIV1}content/{page_id}/property/{key}'
+                    props = self.rest.get(prop_path)
+            except ConfluenceBadApiError as ex:
+                if ex.status_code != 404:
+                    raise
 
         return props
 
@@ -871,7 +880,8 @@ class ConfluencePublisher:
             return page['id']
 
         # fetch known properties (associated with this extension) from the page
-        props = self.get_page_properties(page['id']) if page else None
+        page_id = page['id'] if page else None
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -927,8 +937,8 @@ class ConfluencePublisher:
 
         # if we are not force uploading, check if the new page hash matches
         # the remote hash; if so, do not publish
-        if props and not force_publish:
-            remote_hash = props.get('value', {}).get('hash')
+        if cb_props and not force_publish:
+            remote_hash = cb_props.get('value', {}).get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose(f'no changes in page: {page_name}')
                 return page['id']
@@ -994,20 +1004,6 @@ class ConfluencePublisher:
                 self._update_page(page, page_name, data, parent_id=parent_id)
                 uploaded_page_id = page['id']
 
-            if not props:
-                props = {
-                    'value': {},
-                    'version': {
-                        'number': 1,
-                    },
-                }
-            else:
-                last_props_version = int(props['version']['number'])  # pylint: disable=unsubscriptable-object
-                props['version']['number'] = last_props_version + 1  # pylint: disable=unsubscriptable-object
-
-            props['value']['hash'] = new_page_hash
-            self.store_page_properties(uploaded_page_id, props)
-
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to add page '
@@ -1015,8 +1011,11 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
+        # update page hash
+        cb_props['value']['hash'] = new_page_hash
+
         # perform any required post-page update actions
-        self._post_page_actions(uploaded_page_id)
+        self._post_page_actions(uploaded_page_id, cb_props)
 
         return uploaded_page_id
 
@@ -1059,6 +1058,22 @@ class ConfluencePublisher:
                 raise
             raise ConfluenceMissingPageIdError(self.space_key, page_id) from ex
 
+        # fetch known properties (associated with this extension) from the page
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
+
+        # calculate the hash for a page; we will first use this to check if
+        # there is a update to apply, and if we do need to update, we will
+        # add this value into the page's properties
+        new_page_hash = ConfluenceUtil.hash(data['content'])
+
+        # if we are not force uploading, check if the new page hash matches
+        # the remote hash; if so, do not publish
+        if cb_props and not self.config.confluence_publish_force:
+            remote_hash = cb_props.get('value', {}).get('hash')
+            if new_page_hash == remote_hash:
+                logger.verbose(f'no changes in page: {page_name}')
+                return page_id
+
         try:
             self._update_page(page, page_name, data)
         except ConfluencePermissionError as ex:
@@ -1068,12 +1083,15 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
+        # update page hash
+        cb_props['value']['hash'] = new_page_hash
+
         # perform any required post-page update actions
-        self._post_page_actions(page_id)
+        self._post_page_actions(page_id, cb_props)
 
         return page_id
 
-    def store_page_properties(self, page_id, data):
+    def store_page_property(self, page_id, key, data):
         """
         request to store properties on a page to a confluence instance
 
@@ -1082,11 +1100,28 @@ class ConfluencePublisher:
 
         Args:
             page_id: the id of the page to update
+            key: the property key
             data: the properties data to apply
         """
 
-        property_path = f'{page_id}/property/{PROP_KEY}'
-        self.rest.put(f'{self.APIV1}content', property_path, data)
+        # set or bump the known version on this property
+        prop_version = data.setdefault('version', {})
+        last_props_version = int(prop_version.get('number', 0))
+        prop_version['number'] = last_props_version + 1
+
+        if self.api_mode == 'v2':
+            # v2 api expects the key in the body
+            data['key'] = key
+            property_path = f'{self.APIV2}pages/{page_id}/properties'
+
+            if prop_version['number'] == 1:
+                self.rest.post(property_path, data)
+            else:
+                prop_id = data.pop('id')
+                self.rest.put(property_path, prop_id, data)
+        else:
+            property_path = f'{self.APIV1}content/{page_id}/property'
+            self.rest.put(property_path, key, data)
 
     def remove_attachment(self, id_):
         """
@@ -1263,7 +1298,7 @@ class ConfluencePublisher:
 
         return page
 
-    def _post_page_actions(self, page_id):
+    def _post_page_actions(self, page_id, cb_props):
         """
         post page actions
 
@@ -1271,7 +1306,12 @@ class ConfluencePublisher:
 
         Args:
             page_id: the identifier of the new/updated page
+            cb_props: confluence builder page properties
         """
+
+        # push an updated to confluence builder property which includes an
+        # updated hash value
+        self.store_page_property(page_id, CB_PROP_KEY, cb_props)
 
         # ensure remove any watch flags on the update if watching is disabled
         if not self.watch:
