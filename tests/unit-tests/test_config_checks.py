@@ -884,6 +884,15 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_publish_token'] = 'dummy'  # noqa: S105
         self._try_config()
 
+    def test_config_check_quote_wrapped_auth(self):
+        self.config['confluence_publish_token'] = '"test"'  # noqa: S105
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
+        self.config['confluence_server_pass'] = "'test'"  # noqa: S105
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
     def test_config_check_secnumber_suffix(self):
         self.config['confluence_secnumber_suffix'] = ''
         self._try_config()
