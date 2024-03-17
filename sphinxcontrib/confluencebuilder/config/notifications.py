@@ -100,3 +100,27 @@ def warnings(validator):
     # confluence_publish_debug should be using the new string values
     if isinstance(config.confluence_publish_debug, bool):
         logger.warn('confluence_publish_debug using deprecated bool value')
+
+    # check if password/token are wrapped in quotes; these values may be
+    # passed in through arguments/etc. (i.e. not defined in `conf.py`); there
+    # could be a risk of a shell/CI passed value which a user accidentally
+    # quotes a password/token value -- provide a warning if we believe that
+    # has been detected
+    quote_wrap_check = [
+        'confluence_publish_token',
+        'confluence_server_pass',
+    ]
+
+    quote_values = [
+        '"',
+        "'",
+    ]
+
+    for option in quote_wrap_check:
+        value = getattr(config, option)
+        if not value:
+            continue
+
+        for quote_value in quote_values:
+            if value.startswith(quote_value) and value.endswith(quote_value):
+                logger.warn(f'{option} is wrapped in quotes')
