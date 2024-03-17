@@ -122,14 +122,13 @@ div.sphinxsidebar {
 }
 
 div.sphinxsidebar .logo {
-    font-size: 1.8em;
-    color: #343434;
-    font-weight: 300;
-    text-align: center;
-}
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 
-div.sphinxsidebar .logo img {
-    vertical-align: middle;
+    color: #343434;
+    font-size: 1.8em;
+    font-weight: 300;
 }
 
 div.sphinxsidebar .download a img {
