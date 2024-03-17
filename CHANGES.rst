@@ -2,6 +2,7 @@ Development
 ===========
 
 * Fixed issue where an exception could throw without cleanup options set
+* Fixed issue where anchor links may fail to work for v2 editor pages
 * Provide extended debugging options for publish events
 
 2.4.0 (2023-12-14)
