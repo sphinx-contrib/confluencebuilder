@@ -29,6 +29,10 @@ import logging
 import time
 
 
+# number of elements to fetch for bulk requests
+# (Confluence v2 APIs indicate a max of 250; a good enough number as any)
+BULK_LIMIT = 250
+
 # key used for managing this extension's properties on a Confluence instance
 PROP_KEY = 'sphinx'
 
@@ -288,7 +292,7 @@ class ConfluencePublisher:
             'title': self.parent_ref,
             'status': 'current',
         })
-        if rsp['size'] == 0:
+        if not rsp['results']:
             msg = 'Configured parent page name does not exist.'
             raise ConfluenceConfigError(msg)
         page = rsp['results'][0]
@@ -385,19 +389,20 @@ class ConfluencePublisher:
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete descendants set (for larger sets).
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
         rsp = self.rest.get(api_endpoint, search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 descendants.add(result['id'])
                 self._name_cache[result['id']] = result['title']
 
-            if rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
             rsp = self.rest.get(api_endpoint, sub_search_fields)
@@ -461,7 +466,7 @@ class ConfluencePublisher:
             'filename': name,
         })
 
-        if rsp['size'] != 0:
+        if rsp['results']:
             attachment = rsp['results'][0]
             attachment_id = attachment['id']
             self._name_cache[attachment_id] = name
@@ -489,19 +494,20 @@ class ConfluencePublisher:
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete attachment set (for larger sets).
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
         rsp = self.rest.get(url, search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 attachment_info[result['id']] = result['title']
                 self._name_cache[result['id']] = result['title']
 
-            if rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
             rsp = self.rest.get(url, sub_search_fields)
@@ -536,7 +542,7 @@ class ConfluencePublisher:
             'expand': expand,
         })
 
-        if rsp['size'] != 0:
+        if rsp['results']:
             page = rsp['results'][0]
             page_id = page['id']
             self._name_cache[page_id] = page_name
@@ -597,21 +603,22 @@ class ConfluencePublisher:
         page_name = page_name.lower()
         search_fields = {'cql': 'space="' + self.space_key +
             '" and type=page and title~"' + page_name + '"'}
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
         rsp = self.rest.get(f'{self.APIV1}content/search', search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 result_title = result['title']
                 if page_name == result_title.lower():
                     page_id, page = self.get_page(result_title)
                     break
 
-            if page_id or rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if page_id or count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
             rsp = self.rest.get(f'{self.APIV1}content/search',
