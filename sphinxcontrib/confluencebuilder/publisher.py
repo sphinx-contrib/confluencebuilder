@@ -1107,7 +1107,10 @@ class ConfluencePublisher:
             self._onlynew('attachment removal restricted', id_)
             return
 
-        delete_path = f'{self.APIV1}content'
+        if self.api_mode == 'v2':
+            delete_path = f'{self.APIV2}attachments'
+        else:
+            delete_path = f'{self.APIV1}content'
 
         try:
             try:
@@ -1138,9 +1141,14 @@ class ConfluencePublisher:
             self._onlynew('page removal restricted', page_id)
             return
 
+        if self.api_mode == 'v2':
+            delete_path = f'{self.APIV2}pages'
+        else:
+            delete_path = f'{self.APIV1}content'
+
         try:
             try:
-                self.rest.delete(f'{self.APIV1}content', page_id)
+                self.rest.delete(delete_path, page_id)
             except ConfluenceBadApiError as ex:
                 if str(ex).find('Transaction rolled back') == -1:
                     raise
@@ -1149,7 +1157,7 @@ class ConfluencePublisher:
                     logger.warn('delete failed; retrying...')
                 time.sleep(3)
 
-                self.rest.delete(f'{self.APIV1}content', page_id)
+                self.rest.delete(delete_path, page_id)
 
         except ConfluenceBadApiError as ex:
             # Check if Confluence reports that this content does not exist. If
