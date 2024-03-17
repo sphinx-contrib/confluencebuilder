@@ -461,7 +461,11 @@ class ConfluencePublisher:
         attachment = None
         attachment_id = None
 
-        url = f'{self.APIV1}content/{page_id}/child/attachment'
+        if self.api_mode == 'v2':
+            url = f'{self.APIV2}pages/{page_id}/attachments'
+        else:
+            url = f'{self.APIV1}content/{page_id}/child/attachment'
+
         rsp = self.rest.get(url, {
             'filename': name,
         })
@@ -488,7 +492,11 @@ class ConfluencePublisher:
         """
         attachment_info = {}
 
-        url = f'{self.APIV1}content/{page_id}/child/attachment'
+        if self.api_mode == 'v2':
+            url = f'{self.APIV2}pages/{page_id}/attachments'
+        else:
+            url = f'{self.APIV1}content/{page_id}/child/attachment'
+
         search_fields = {}
 
         # Configure a larger limit value than the default (no provided
@@ -687,10 +695,12 @@ class ConfluencePublisher:
 
         # check if attachment (of same hash) is already published to this page
         comment = None
-        if attachment and 'metadata' in attachment:
-            metadata = attachment['metadata']
-            if 'comment' in metadata:
-                comment = metadata['comment']
+        if attachment:
+            if self.api_mode == 'v2':
+                comment = attachment.get('comment')
+            elif 'metadata' in attachment:
+                metadata = attachment['metadata']
+                comment = metadata.get('comment')
 
         if not force and comment:
             parts = comment.split(HASH_KEY + ':', 1)
