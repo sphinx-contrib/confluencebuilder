@@ -1181,7 +1181,7 @@ class ConfluencePublisher:
 
         Registers the provided set of ancestors from being used when page
         updates will move the location of a page. This is a pre-check update
-        requests so that a page cannot be flagged as a descendant of itsel
+        requests so that a page cannot be flagged as a descendant of itself
         (where Confluence self-hosted instances may not report an ideal error
         message).
 
