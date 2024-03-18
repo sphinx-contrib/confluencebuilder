@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from collections import defaultdict
+from sphinxcontrib.confluencebuilder.publisher import CB_PROP_KEY
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from tests.lib import autocleanup_publisher
 from tests.lib import mock_confluence_instance
@@ -56,8 +57,30 @@ class TestConfluencePublisherPage(unittest.TestCase):
             }
             daemon.register_get_rsp(200, page_fetch_rsp)
 
+            # prepare response for properties fetch
+            scb_fetch_props_rsp = {
+                'id': '1234',
+                'key': CB_PROP_KEY,
+                'value': {},
+                'version': {
+                    'number': '1',
+                },
+            }
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)
+
             # prepare response for update event
             daemon.register_put_rsp(200, dict(page_fetch_rsp))
+
+            # prepare response for updated properties
+            scb_updated_props_rsp = {
+                'id': '1234',
+                'key': CB_PROP_KEY,
+                'value': {},
+                'version': {
+                    'number': '2',
+                },
+            }
+            daemon.register_put_rsp(200, scb_updated_props_rsp)
 
             # perform page update request
             data = defaultdict(str)
@@ -79,6 +102,16 @@ class TestConfluencePublisherPage(unittest.TestCase):
             # check that an update request is processed
             update_req = daemon.pop_put_request()
             self.assertIsNotNone(update_req)
+
+            # check that the property request on the page was done
+            props_fetch_req = daemon.pop_get_request()
+            self.assertIsNotNone(props_fetch_req)
+
+            # check that the page property (e.g. hash update) was made
+            update_req = daemon.pop_put_request()
+            self.assertIsNotNone(update_req)
+            req_path, _ = update_req
+            self.assertTrue(req_path.endswith(CB_PROP_KEY))
 
             # verify that no other request was made
             daemon.check_unhandled_requests()
@@ -114,8 +147,30 @@ class TestConfluencePublisherPage(unittest.TestCase):
             }
             daemon.register_get_rsp(200, page_fetch_rsp)
 
+            # prepare response for properties fetch
+            scb_fetch_props_rsp = {
+                'id': '1234',
+                'key': CB_PROP_KEY,
+                'value': {},
+                'version': {
+                    'number': '1',
+                },
+            }
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)
+
             # prepare response for update event
             daemon.register_put_rsp(200, dict(page_fetch_rsp))
+
+            # prepare response for updated properties
+            scb_updated_props_rsp = {
+                'id': '1234',
+                'key': CB_PROP_KEY,
+                'value': {},
+                'version': {
+                    'number': '2',
+                },
+            }
+            daemon.register_put_rsp(200, scb_updated_props_rsp)
 
             # prepare response for unwatch event
             daemon.register_delete_rsp(200)
@@ -140,6 +195,16 @@ class TestConfluencePublisherPage(unittest.TestCase):
             # check that an update request is processed
             update_req = daemon.pop_put_request()
             self.assertIsNotNone(update_req)
+
+            # check that the property request on the page was done
+            props_fetch_req = daemon.pop_get_request()
+            self.assertIsNotNone(props_fetch_req)
+
+            # check that the page property (e.g. hash update) was made
+            update_req = daemon.pop_put_request()
+            self.assertIsNotNone(update_req)
+            req_path, _ = update_req
+            self.assertTrue(req_path.endswith(CB_PROP_KEY))
 
             # check that the page is unwatched
             unwatch_req = daemon.pop_delete_request()

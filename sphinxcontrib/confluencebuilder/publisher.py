@@ -21,20 +21,27 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstance
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 import json
 import logging
 import time
 
 
+# number of elements to fetch for bulk requests
+# (Confluence v2 APIs indicate a max of 250; a good enough number as any)
+BULK_LIMIT = 250
+
 # key used for managing this extension's properties on a Confluence instance
-PROP_KEY = 'sphinx'
+CB_PROP_KEY = 'sphinxcontrib.confluencebuilder'
 
 
 class ConfluencePublisher:
     def __init__(self):
         self.cloud = None
         self.space_display_name = None
+        self.space_id = None
         self.space_type = None
         self._ancestors_cache = set()
         self._name_cache = {}
@@ -42,6 +49,8 @@ class ConfluencePublisher:
     def init(self, config, cloud=None):
         self.cloud = cloud
         self.config = config
+        self.rest = None
+
         self.append_labels = config.confluence_append_labels
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
@@ -51,6 +60,22 @@ class ConfluencePublisher:
         self.server_url = config.confluence_server_url
         self.space_key = config.confluence_space_key
         self.watch = config.confluence_watch
+
+        # track api prefix values to apply
+        prefix_overrides = config.confluence_publish_override_api_prefix or {}
+        self.APIV1 = prefix_overrides.get('v1', f'{API_REST_V1}/')
+        self.APIV2 = prefix_overrides.get('v2', f'{API_REST_V2}/')
+
+        # determine api mode to use
+        # - if an explicit api mode is configured, use it
+        # - if this is a cloud instance, use v2
+        # - for all other cases, use v1
+        if config.confluence_api_mode:
+            self.api_mode = config.confluence_api_mode
+        elif self.cloud:
+            self.api_mode = 'v2'
+        else:
+            self.api_mode = 'v1'
 
         # append labels by default
         if self.append_labels is None:
@@ -64,16 +89,49 @@ class ConfluencePublisher:
             rlog.setLevel(logging.DEBUG)
 
     def connect(self):
-        self.rest_client = Rest(self.config)
+        self.rest = Rest(self.config)
         server_url = self.config.confluence_server_url
 
+        # Example space fetch points:
+        # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/rest/api/space/STABLE
+        # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/api/v2/spaces?keys=STABLE
+
+        pw_set = bool(self.config.confluence_server_pass)
+        token_set = bool(self.config.confluence_publish_token)
+
         try:
-            rsp = self.rest_client.get(f'space/{self.space_key}')
+            if self.api_mode == 'v2':
+                spaces_url = f'{self.APIV2}spaces'
+                rsp_spaces = self.rest.get(spaces_url, {
+                    'keys': self.space_key,
+                    'limit': 1,
+                })
+
+                # if no size entry is provided, this a non-Confluence instance
+                if 'results' not in rsp_spaces:
+                    raise ConfluenceBadServerUrlError(server_url,
+                        'server provided an unexpected response; no results')
+
+                # handle if the provided space key was not found
+                if len(rsp_spaces['results']) == 1:
+                    rsp = rsp_spaces['results'][0]
+                else:
+                    raise ConfluenceUnknownInstanceError(
+                        server_url,
+                        self.space_key,
+                        self.config.confluence_server_user,
+                        pw_set,
+                        token_set,
+                    )
+            else:
+                rsp = self.rest.get(f'{self.APIV1}space/{self.space_key}')
         except ConfluenceBadApiError as ex:
             if ex.status_code == 404:
-                pw_set = bool(self.config.confluence_server_pass)
-                token_set = bool(self.config.confluence_publish_token)
-
+                # if this is a 404 (not found), give a more custom message
+                # since on an initial connect, this may be either that the
+                # instance url is wrong, the space could not be found since
+                # the key is wrong or that the user does not have permission
+                # to see that the space exists
                 raise ConfluenceUnknownInstanceError(
                     server_url,
                     self.space_key,
@@ -110,10 +168,12 @@ class ConfluencePublisher:
 
         # track required space information
         self.space_display_name = rsp['name']
+        self.space_id = rsp['id']
         self.space_type = rsp['type']
 
     def disconnect(self):
-        self.rest_client.close()
+        if self.rest:
+            self.rest.close()
 
     def archive_page(self, page_id):
         if self.dryrun:
@@ -129,7 +189,7 @@ class ConfluencePublisher:
                 'pages': [{'id': page_id}],
             }
 
-            rsp = self.rest_client.post('content/archive', data)
+            rsp = self.rest.post(f'{self.APIV1}content/archive', data)
             longtask_id = rsp['id']
 
             # wait for the archiving of the page to complete
@@ -138,7 +198,7 @@ class ConfluencePublisher:
             while attempt <= MAX_WAIT_FOR_PAGE_ARCHIVE:
                 time.sleep(0.5)
 
-                rsp = self.rest_client.get(f'longtask/{longtask_id}')
+                rsp = self.rest.get(f'{self.APIV1}longtask/{longtask_id}')
                 if rsp['finished']:
                     break
 
@@ -173,7 +233,7 @@ class ConfluencePublisher:
             # Note, multi-page archive can result in Confluence reporting the
             # following message:
             #  Cannot use bulk archive feature for non premium edition
-            self.rest_client.post('content/archive', data)
+            self.rest.post(f'{self.APIV1}content/archive', data)
 
         except ConfluencePermissionError as ex:
             msg = (
@@ -199,11 +259,17 @@ class ConfluencePublisher:
         assert page_id
         ancestors = set()
 
-        _, page = self.get_page_by_id(page_id, 'ancestors')
+        if self.api_mode == 'v2':
+            rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors')
 
-        if 'ancestors' in page:
-            for ancestor in page['ancestors']:
-                ancestors.add(ancestor['id'])
+            for result in rsp['results']:
+                ancestors.add(result['id'])
+        else:
+            _, page = self.get_page_by_id(page_id, 'ancestors')
+
+            if 'ancestors' in page:
+                for ancestor in page['ancestors']:
+                    ancestors.add(ancestor['id'])
 
         return ancestors
 
@@ -213,6 +279,7 @@ class ConfluencePublisher:
         if not self.parent_ref:
             return base_page_id
 
+        # fetching a base page by a numerical identifier
         if isinstance(self.parent_ref, int):
             base_page_id, page = self.get_page_by_id(self.parent_ref)
 
@@ -222,20 +289,17 @@ class ConfluencePublisher:
 
             return base_page_id
 
-        rsp = self.rest_client.get('content', {
-            'type': 'page',
-            'spaceKey': self.space_key,
-            'title': self.parent_ref,
-            'status': 'current',
-        })
-        if rsp['size'] == 0:
+        # fetching a base page by a page-name identifier
+        base_page_id, page = self.get_page(self.parent_ref)
+
+        if not page:
             msg = 'Configured parent page name does not exist.'
             raise ConfluenceConfigError(msg)
-        page = rsp['results'][0]
-        if self.parent_id and page['id'] != str(self.parent_id):
+
+        if self.parent_id and base_page_id != str(self.parent_id):
             msg = 'Configured parent page ID and name do not match.'
             raise ConfluenceConfigError(msg)
-        base_page_id = page['id']
+
         self._name_cache[base_page_id] = self.parent_ref
 
         if not base_page_id and self.parent_id:
@@ -309,13 +373,13 @@ class ConfluencePublisher:
             the descendants
         """
 
-        api_endpoint = 'content/search'
+        api_endpoint = f'{self.APIV1}content/search'
         descendants = set()
         search_fields = {}
 
         if page_id:
             if 'direct' in mode:
-                api_endpoint = f'content/{page_id}/descendant/page'
+                api_endpoint = f'{self.APIV1}content/{page_id}/descendant/page'
             else:
                 search_fields['cql'] = f'ancestor={page_id}'
         else:
@@ -325,22 +389,23 @@ class ConfluencePublisher:
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete descendants set (for larger sets).
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
-        rsp = self.rest_client.get(api_endpoint, search_fields)
+        rsp = self.rest.get(api_endpoint, search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 descendants.add(result['id'])
                 self._name_cache[result['id']] = result['title']
 
-            if rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
-            rsp = self.rest_client.get(api_endpoint, sub_search_fields)
+            rsp = self.rest.get(api_endpoint, sub_search_fields)
 
         return descendants
 
@@ -396,12 +461,16 @@ class ConfluencePublisher:
         attachment = None
         attachment_id = None
 
-        url = f'content/{page_id}/child/attachment'
-        rsp = self.rest_client.get(url, {
+        if self.api_mode == 'v2':
+            url = f'{self.APIV2}pages/{page_id}/attachments'
+        else:
+            url = f'{self.APIV1}content/{page_id}/child/attachment'
+
+        rsp = self.rest.get(url, {
             'filename': name,
         })
 
-        if rsp['size'] != 0:
+        if rsp['results']:
             attachment = rsp['results'][0]
             attachment_id = attachment['id']
             self._name_cache[attachment_id] = name
@@ -423,28 +492,33 @@ class ConfluencePublisher:
         """
         attachment_info = {}
 
-        url = f'content/{page_id}/child/attachment'
+        if self.api_mode == 'v2':
+            url = f'{self.APIV2}pages/{page_id}/attachments'
+        else:
+            url = f'{self.APIV1}content/{page_id}/child/attachment'
+
         search_fields = {}
 
         # Configure a larger limit value than the default (no provided
         # limit defaults to 25). This should reduce the number of queries
         # needed to fetch a complete attachment set (for larger sets).
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
-        rsp = self.rest_client.get(url, search_fields)
+        rsp = self.rest.get(url, search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 attachment_info[result['id']] = result['title']
                 self._name_cache[result['id']] = result['title']
 
-            if rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
-            rsp = self.rest_client.get(url, sub_search_fields)
+            rsp = self.rest.get(url, sub_search_fields)
 
         return attachment_info
 
@@ -468,18 +542,67 @@ class ConfluencePublisher:
         page = None
         page_id = None
 
-        rsp = self.rest_client.get('content', {
-            'type': 'page',
-            'spaceKey': self.space_key,
-            'title': page_name,
-            'status': status,
-            'expand': expand,
-        })
+        if self.api_mode == 'v2':
+            rsp = self.rest.get(f'{self.APIV2}pages', {
+                'body-format': 'storage',
+                'space-id': self.space_id,
+                'status': status,
+                'title': page_name,
+            })
+        else:
+            rsp = self.rest.get(f'{self.APIV1}content', {
+                'type': 'page',
+                'spaceKey': self.space_key,
+                'title': page_name,
+                'status': status,
+                'expand': expand,
+            })
 
-        if rsp['size'] != 0:
+        if rsp['results']:
             page = rsp['results'][0]
             page_id = page['id']
             self._name_cache[page_id] = page_name
+
+        # if `expand` is set and this is a v2 API request, perform additional
+        # queries for various options requested; we will emulate the response
+        # observed in a v1 request (by populating a page with additional data;
+        # which we later need to strip if updating a page)
+        if page_id and self.api_mode == 'v2':
+            assert 'ancestors' not in page
+            assert 'metadata' not in page
+
+            opts = expand.split(',')
+            metadata = page.setdefault('metadata', {})
+            meta_props = metadata.setdefault('properties', {})
+
+            if 'ancestors' in opts:
+                rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors', {
+                    'limit': BULK_LIMIT,
+                })
+                page['ancestors'] = rsp['results']
+
+            if 'metadata.labels' in opts:
+                rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/labels', {
+                    'limit': BULK_LIMIT,
+                })
+
+                metadata['labels'] = rsp
+
+            props_to_fetch = []
+
+            # if certain properties are request, ensure we generate a
+            # request to fetch these values; we will populate the "legacy"
+            # metadata field for processed, but also keep track of these
+            # properties for possible updates
+            if 'metadata.properties.content_appearance_published' in opts:
+                props_to_fetch.append('content-appearance-published')
+
+            if 'metadata.properties.editor' in opts:
+                props_to_fetch.append('editor')
+
+            for prop_key in props_to_fetch:
+                prop_entry = self.get_page_property(page_id, prop_key)
+                meta_props[prop_key] = prop_entry
 
         return page_id, page
 
@@ -500,10 +623,13 @@ class ConfluencePublisher:
             the page id and page object
         """
 
-        page = self.rest_client.get(f'content/{page_id}', {
-            'status': 'current',
-            'expand': expand,
-        })
+        if self.api_mode == 'v2':
+            page = self.rest.get(f'{self.APIV2}pages/{page_id}')
+        else:
+            page = self.rest.get(f'{self.APIV1}content/{page_id}', {
+                'status': 'current',
+                'expand': expand,
+            })
 
         if page:
             assert int(page_id) == int(page['id'])
@@ -534,54 +660,65 @@ class ConfluencePublisher:
         page_name = page_name.lower()
         search_fields = {'cql': 'space="' + self.space_key +
             '" and type=page and title~"' + page_name + '"'}
-        search_fields['limit'] = 1000
+        search_fields['limit'] = BULK_LIMIT
 
-        rsp = self.rest_client.get('content/search', search_fields)
+        rsp = self.rest.get(f'{self.APIV1}content/search', search_fields)
         idx = 0
-        while rsp['size'] > 0:
+        while rsp['results']:
             for result in rsp['results']:
                 result_title = result['title']
                 if page_name == result_title.lower():
                     page_id, page = self.get_page(result_title)
                     break
 
-            if page_id or rsp['size'] != rsp['limit']:
+            count = len(rsp['results'])
+            if page_id or count != BULK_LIMIT:
                 break
 
-            idx += int(rsp['limit'])
+            idx += count
             sub_search_fields = dict(search_fields)
             sub_search_fields['start'] = idx
-            rsp = self.rest_client.get('content/search', sub_search_fields)
+            rsp = self.rest.get(f'{self.APIV1}content/search',
+                sub_search_fields)
 
         return page_id, page
 
-    def get_page_properties(self, page_id, expand='version'):
+    def get_page_property(self, page_id, key, default=None):
         """
-        get properties from the provided page id
+        get a property from the provided page id
 
-        Performs an API call to acquire known properties about a specific page.
+        Performs an API call to acquire a property held on a specific page.
         This call can returns the page properties dictionary if found;
         otherwise ``None`` will be returned.
 
         Args:
             page_id: the page identifier
-            expand (optional): data to expand on
+            key: the property key
+            default (optional): default value if no property exists
 
         Returns:
-            the properties
+            the property value
         """
 
-        props = None
+        props = {
+            'value': default,
+        }
 
-        try:
-            property_path = f'content/{page_id}/property/{PROP_KEY}'
-            props = self.rest_client.get(property_path, {
-                'status': 'current',
-                'expand': expand,
-            })
-        except ConfluenceBadApiError as ex:
-            if ex.status_code != 404:
-                raise
+        if page_id:
+            try:
+                if self.api_mode == 'v2':
+                    prop_path = f'{self.APIV2}pages/{page_id}/properties'
+                    rsp = self.rest.get(prop_path, {
+                        'key': key,
+                    })
+                    if rsp['results']:
+                        props = rsp['results'][0]
+                else:
+                    prop_path = f'{self.APIV1}content/{page_id}/property/{key}'
+                    props = self.rest.get(prop_path)
+            except ConfluenceBadApiError as ex:
+                if ex.status_code != 404:
+                    raise
 
         return props
 
@@ -616,10 +753,12 @@ class ConfluencePublisher:
 
         # check if attachment (of same hash) is already published to this page
         comment = None
-        if attachment and 'metadata' in attachment:
-            metadata = attachment['metadata']
-            if 'comment' in metadata:
-                comment = metadata['comment']
+        if attachment:
+            if self.api_mode == 'v2':
+                comment = attachment.get('comment')
+            elif 'metadata' in attachment:
+                metadata = attachment['metadata']
+                comment = metadata.get('comment')
 
         if not force and comment:
             parts = comment.split(HASH_KEY + ':', 1)
@@ -660,10 +799,10 @@ class ConfluencePublisher:
                 data['minorEdit'] = 'true'
 
             if not attachment:
-                url = f'content/{page_id}/child/attachment'
+                url = f'{self.APIV1}content/{page_id}/child/attachment'
 
                 try:
-                    rsp = self.rest_client.post(url, None, files=data)
+                    rsp = self.rest.post(url, None, files=data)
                     uploaded_attachment_id = rsp['results'][0]['id']
                 except ConfluenceBadApiError as ex:
                     # file type restricted? generate a warning
@@ -706,13 +845,13 @@ class ConfluencePublisher:
                     _, attachment = self.get_attachment(page_id, name)
 
             if attachment:
-                url = 'content/{}/child/attachment/{}/data'.format(
-                    page_id, attachment['id'])
-                rsp = self.rest_client.post(url, None, files=data)
+                url = '{}content/{}/child/attachment/{}/data'.format(
+                    self.APIV1, page_id, attachment['id'])
+                rsp = self.rest.post(url, None, files=data)
                 uploaded_attachment_id = rsp['id']
 
             if not self.watch:
-                self.rest_client.delete('user/watch/content',
+                self.rest.delete(f'{self.APIV1}user/watch/content',
                     uploaded_attachment_id)
         except ConfluencePermissionError as ex:
             msg = (
@@ -790,7 +929,8 @@ class ConfluencePublisher:
             return page['id']
 
         # fetch known properties (associated with this extension) from the page
-        props = self.get_page_properties(page['id']) if page else None
+        page_id = page['id'] if page else None
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -846,8 +986,8 @@ class ConfluencePublisher:
 
         # if we are not force uploading, check if the new page hash matches
         # the remote hash; if so, do not publish
-        if props and not force_publish:
-            remote_hash = props.get('value', {}).get('hash')
+        if cb_props and not force_publish:
+            remote_hash = cb_props.get('value', {}).get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose(f'no changes in page: {page_name}')
                 return page['id']
@@ -856,35 +996,44 @@ class ConfluencePublisher:
             # new page
             if not page:
                 new_page = self._build_page(page_name, data)
+
                 self._populate_labels(new_page, data['labels'])
 
+                new_labels = None
+                new_prop_requests = []
+                if self.api_mode == 'v2':
+                    # use newer space id refrence for v2
+                    new_page.pop('space', None)
+                    new_page['spaceId'] = self.space_id
+
+                    # strip out metadata updates that need to be processed
+                    # in a different request
+                    new_metadata = new_page.pop('metadata', None)
+                    new_labels = new_metadata.get('labels')
+                    new_meta_props = new_metadata.setdefault('properties', {})
+
+                    for prop_key, entry in new_meta_props.items():
+                        new_prop = {
+                            'key': prop_key,
+                            'value': entry['value'],
+                        }
+
+                        new_prop_requests.append(new_prop)
+
+                # configure parent page for this new page
                 if parent_id:
-                    new_page['ancestors'] = [{'id': parent_id}]
+                    if self.api_mode == 'v2':
+                        new_page['parentId'] = parent_id
+                    else:
+                        new_page['ancestors'] = [{'id': parent_id}]
 
                 try:
-                    rsp = self.rest_client.post('content', new_page)
+                    if self.api_mode == 'v2':
+                        build_path = f'{self.APIV2}pages'
+                    else:
+                        build_path = f'{self.APIV1}content'
 
-                    if 'id' not in rsp:
-                        api_err = (
-                            'Confluence reports a successful page '
-                            'creation; however, provided no identifier.\n\n'
-                        )
-                        try:
-                            api_err += 'DATA: {}'.format(json.dumps(
-                                rsp, indent=2))
-                        except TypeError:
-                            api_err += 'DATA: <not-or-invalid-json>'
-                        raise ConfluenceBadApiError(-1, api_err)  # noqa: TRY301
-
-                    uploaded_page_id = rsp['id']
-
-                    # if we have labels and this is a non-cloud instance,
-                    # initial labels need to be applied in their own request
-                    labels = new_page['metadata']['labels']
-                    if not self.cloud and labels:
-                        url = f'content/{uploaded_page_id}/label'
-                        self.rest_client.post(url, labels)
-
+                    rsp = self.rest.post(build_path, new_page)
                 except ConfluenceBadApiError as ex:
                     if str(ex).find('CDATA block has embedded') != -1:
                         raise ConfluenceUnexpectedCdataError from ex
@@ -907,25 +1056,42 @@ class ConfluencePublisher:
                     if self.onlynew:
                         self._onlynew('skipping existing page', page['id'])
                         return page['id']
+                else:
+                    if 'id' not in rsp:
+                        api_err = (
+                            'Confluence reports a successful page '
+                            'creation; however, provided no identifier.\n\n'
+                        )
+                        try:
+                            json_data = json.dumps(rsp, indent=2)
+                            api_err += f'DATA: {json_data}'
+                        except TypeError:
+                            api_err += 'DATA: (not-or-invalid-json)'
+                        raise ConfluenceBadApiError(-1, api_err)
+
+                    uploaded_page_id = rsp['id']
+
+                    # we have properties we would like to apply, but we cannot
+                    # just create new ones if Confluence already created ones
+                    # implicitly in the new page update -- we will need to
+                    # query the page for any of these properties are form
+                    # either new or update requests
+                    self._update_page_properties(rsp['id'], new_prop_requests)
+
+                    # if we have labels and this is a non-cloud instance,
+                    # initial labels need to be applied in their own request
+                    if not self.cloud and self.api_mode == 'v1':
+                        new_labels = new_page['metadata']['labels']
+
+                    # add new labels if we have any to force add
+                    if new_labels:
+                        url = f'{self.APIV1}content/{uploaded_page_id}/label'
+                        self.rest.post(url, new_labels)
 
             # update existing page
             if page:
                 self._update_page(page, page_name, data, parent_id=parent_id)
                 uploaded_page_id = page['id']
-
-            if not props:
-                props = {
-                    'value': {},
-                    'version': {
-                        'number': 1,
-                    },
-                }
-            else:
-                last_props_version = int(props['version']['number'])  # pylint: disable=unsubscriptable-object
-                props['version']['number'] = last_props_version + 1  # pylint: disable=unsubscriptable-object
-
-            props['value']['hash'] = new_page_hash
-            self.store_page_properties(uploaded_page_id, props)
 
         except ConfluencePermissionError as ex:
             msg = (
@@ -934,8 +1100,11 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-        if not self.watch:
-            self.rest_client.delete('user/watch/content', uploaded_page_id)
+        # update page hash
+        cb_props['value']['hash'] = new_page_hash
+
+        # perform any required post-page update actions
+        self._post_page_actions(uploaded_page_id, cb_props)
 
         return uploaded_page_id
 
@@ -978,6 +1147,22 @@ class ConfluencePublisher:
                 raise
             raise ConfluenceMissingPageIdError(self.space_key, page_id) from ex
 
+        # fetch known properties (associated with this extension) from the page
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
+
+        # calculate the hash for a page; we will first use this to check if
+        # there is a update to apply, and if we do need to update, we will
+        # add this value into the page's properties
+        new_page_hash = ConfluenceUtil.hash(data['content'])
+
+        # if we are not force uploading, check if the new page hash matches
+        # the remote hash; if so, do not publish
+        if cb_props and not self.config.confluence_publish_force:
+            remote_hash = cb_props.get('value', {}).get('hash')
+            if new_page_hash == remote_hash:
+                logger.verbose(f'no changes in page: {page_name}')
+                return page_id
+
         try:
             self._update_page(page, page_name, data)
         except ConfluencePermissionError as ex:
@@ -987,12 +1172,70 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-        if not self.watch:
-            self.rest_client.delete('user/watch/content', page_id)
+        # update page hash
+        cb_props['value']['hash'] = new_page_hash
+
+        # perform any required post-page update actions
+        self._post_page_actions(page_id, cb_props)
 
         return page_id
 
-    def store_page_properties(self, page_id, data):
+    def _update_page_properties(self, page_id, properties):
+        """
+        update properties on a specific page
+
+        Perform a request to update properties on a page. This call will
+        fetch an existing property value to determine if an update is
+        required.
+
+        Args:
+            page_id: the id of the page to update
+            properties: the properties to update
+        """
+
+        # we have properties we would like to apply, but we cannot
+        # just create new ones if Confluence already created ones
+        # implicitly in the new page update -- we will need to
+        # query the page for any of these properties are form
+        # either new or update requests
+        for prop in properties:
+            # we permit two attempts to update a property as it has been
+            # observed when we create a new page, Confluence may build a
+            # desired property that an initial `get_page_property` will not
+            # return (timing issue); so if we get a conflict error (409),
+            # we will retry a fetch/update again
+            MAX_ATTEMPTS_TO_UPDATE_PROPERTY = 2
+            attempt = 1
+            while attempt <= MAX_ATTEMPTS_TO_UPDATE_PROPERTY:
+                prop_key = prop['key']
+                prop_entry = self.get_page_property(page_id, prop_key)
+
+                # ignore if the property already matches the desired
+                # value
+                if prop_entry['value'] == prop['value']:
+                    break
+
+                prop_entry['value'] = prop['value']
+
+                try:
+                    self.store_page_property(
+                        page_id,
+                        prop_key,
+                        prop_entry,
+                    )
+                except ConfluenceBadApiError as ex:
+                    if ex.status_code != 409:
+                        raise
+
+                    # retry on conflict
+                    with skip_warningiserror():
+                        logger.warn('property update conflict; retrying...')
+
+                    attempt += 1
+                else:
+                    break
+
+    def store_page_property(self, page_id, key, data):
         """
         request to store properties on a page to a confluence instance
 
@@ -1001,11 +1244,28 @@ class ConfluencePublisher:
 
         Args:
             page_id: the id of the page to update
+            key: the property key
             data: the properties data to apply
         """
 
-        property_path = f'{page_id}/property/{PROP_KEY}'
-        self.rest_client.put('content', property_path, data)
+        # set or bump the known version on this property
+        prop_version = data.setdefault('version', {})
+        last_props_version = int(prop_version.get('number', 0))
+        prop_version['number'] = last_props_version + 1
+
+        if self.api_mode == 'v2':
+            # v2 api expects the key in the body
+            data['key'] = key
+            property_path = f'{self.APIV2}pages/{page_id}/properties'
+
+            if prop_version['number'] == 1:
+                self.rest.post(property_path, data)
+            else:
+                prop_id = data.pop('id')
+                self.rest.put(property_path, prop_id, data)
+        else:
+            property_path = f'{self.APIV1}content/{page_id}/property'
+            self.rest.put(property_path, key, data)
 
     def remove_attachment(self, id_):
         """
@@ -1025,8 +1285,24 @@ class ConfluencePublisher:
             self._onlynew('attachment removal restricted', id_)
             return
 
+        if self.api_mode == 'v2':
+            delete_path = f'{self.APIV2}attachments'
+        else:
+            delete_path = f'{self.APIV1}content'
+
         try:
-            self.rest_client.delete('content', id_)
+            try:
+                self.rest.delete(delete_path, id_)
+            except ConfluenceBadApiError as ex:
+                if str(ex).find('Transaction rolled back') == -1:
+                    raise
+
+                with skip_warningiserror():
+                    logger.warn('delete failed; retrying...')
+                time.sleep(3)
+
+                self.rest.delete(delete_path, id_)
+
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to delete '
@@ -1043,9 +1319,14 @@ class ConfluencePublisher:
             self._onlynew('page removal restricted', page_id)
             return
 
+        if self.api_mode == 'v2':
+            delete_path = f'{self.APIV2}pages'
+        else:
+            delete_path = f'{self.APIV1}content'
+
         try:
             try:
-                self.rest_client.delete('content', page_id)
+                self.rest.delete(delete_path, page_id)
             except ConfluenceBadApiError as ex:
                 if str(ex).find('Transaction rolled back') == -1:
                     raise
@@ -1054,7 +1335,7 @@ class ConfluencePublisher:
                     logger.warn('delete failed; retrying...')
                 time.sleep(3)
 
-                self.rest_client.delete('content', page_id)
+                self.rest.delete(delete_path, page_id)
 
         except ConfluenceBadApiError as ex:
             # Check if Confluence reports that this content does not exist. If
@@ -1078,7 +1359,7 @@ class ConfluencePublisher:
 
         Registers the provided set of ancestors from being used when page
         updates will move the location of a page. This is a pre-check update
-        requests so that a page cannot be flagged as a descendant of itsel
+        requests so that a page cannot be flagged as a descendant of itself
         (where Confluence self-hosted instances may not report an ideal error
         message).
 
@@ -1099,9 +1380,12 @@ class ConfluencePublisher:
             self._onlynew('space home updates restricted')
             return
 
-        page = self.rest_client.get('content/' + page_id, None)
+        if self.api_mode == 'v2':
+            page = self.rest.get(f'{self.APIV2}pages/{page_id}')
+        else:
+            page = self.rest.get(f'{self.APIV1}content/{page_id}', None)
         try:
-            self.rest_client.put('space', self.space_key, {
+            self.rest.put(f'{self.APIV1}space', self.space_key, {
                 'key': self.space_key,
                 'name': self.space_display_name,
                 'homepage': page,
@@ -1158,6 +1442,25 @@ class ConfluencePublisher:
 
         return page
 
+    def _post_page_actions(self, page_id, cb_props):
+        """
+        post page actions
+
+        Perform additional actions needed after creating or updating a page.
+
+        Args:
+            page_id: the identifier of the new/updated page
+            cb_props: confluence builder page properties
+        """
+
+        # push an updated to confluence builder property which includes an
+        # updated hash value
+        self.store_page_property(page_id, CB_PROP_KEY, cb_props)
+
+        # ensure remove any watch flags on the update if watching is disabled
+        if not self.watch:
+            self.rest.delete(f'{self.APIV1}user/watch/content', page_id)
+
     def _update_page(self, page, page_name, data, parent_id=None):
         """
         build a page update and publish it to the confluence instance
@@ -1204,9 +1507,66 @@ class ConfluencePublisher:
         elif parent_id is not None:
             update_page['ancestors'] = [{'id': '1'}]
 
-        page_id_explicit = page['id'] + '?status=current'
+        # if this is an api v2 mode, prepare any extra requests needed for
+        # populating ancestors or metadata information
+        pending_new_labels = []
+        pending_prop_requests = []
+        if self.api_mode == 'v2':
+            orig_metadata = page.get('metadata', None)
+            update_metadata = update_page.pop('metadata', None)
+
+            # configure parent page for this page update
+            #
+            # For v2, we need to strip out `ancestors` and place it with an
+            # expected `parentId` value.
+            ancestors_request = update_page.pop('ancestors', None)
+            if ancestors_request:
+                update_page['parentId'] = ancestors_request[0]['id']
+
+            # extract labels to set
+            pending_new_labels = update_metadata.get('labels')
+
+            # build a list of property creation/update requests needed
+            #
+            # This call will look at the `update_page` page for newly set
+            # properties needed to be set. When cycling through updated
+            # properties, we will also compare against the original page's
+            # properties (`page`) to see if properties are being created or
+            # updated, where we can track the identifier for updated entries
+            # as well as pre-populating a version bump. This will also check
+            # if each property value to be updated has changed. If there is
+            # no change to a given property, it will be ignored.
+            orig_meta_props = orig_metadata.setdefault('properties', {})
+            update_meta_props = update_metadata.setdefault('properties', {})
+
+            for prop_key, entry in update_meta_props.items():
+                updated_prop = {
+                    'key': prop_key,
+                    'value': entry['value'],
+                    'version': {
+                        'number': 1,
+                    },
+                }
+
+                orig_entry = orig_meta_props.get(prop_key, None)
+                if orig_entry:
+                    if orig_entry['value'] == entry['value']:
+                        continue
+
+                    updated_prop['id'] = orig_entry['id']
+                    last_props_version = int(orig_entry['version']['number'])
+                    updated_prop['version']['number'] = last_props_version + 1
+
+                pending_prop_requests.append(updated_prop)
+
+        if self.api_mode == 'v2':
+            update_path = f'{self.APIV2}pages'
+        else:
+            update_path = f'{self.APIV1}content'
+
+        update_page['status'] = 'current'
         try:
-            self.rest_client.put('content', page_id_explicit, update_page)
+            self.rest.put(update_path, page['id'], update_page)
         except ConfluenceBadApiError as ex:
             if str(ex).find('CDATA block has embedded') != -1:
                 raise ConfluenceUnexpectedCdataError from ex
@@ -1241,13 +1601,23 @@ class ConfluencePublisher:
             time.sleep(3)
 
             try:
-                self.rest_client.put('content', page_id_explicit, update_page)
+                self.rest.put(update_path, page['id'], update_page)
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(
                         page_name, page['id'], self.server_url, ex) from ex
 
                 raise
+
+        # post-update requests (api v2 mode)
+        update_page_id = update_page['id']
+
+        self._update_page_properties(update_page_id, pending_prop_requests)
+
+        # add any new labels
+        if pending_new_labels:
+            url = f'{self.APIV1}content/{update_page_id}/label'
+            self.rest.post(url, pending_new_labels)
 
     def _dryrun(self, msg, id_=None, misc=''):
         """

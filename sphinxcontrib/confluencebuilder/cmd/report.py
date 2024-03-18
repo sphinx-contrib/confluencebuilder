@@ -152,7 +152,7 @@ def report_main(args_parser):
 
             publisher.connect()
             info += ' connected: yes\n'
-            session = publisher.rest_client.session
+            session = publisher.rest.session
         except Exception:  # noqa: BLE001
             sys.stdout.flush()
             logger.error(traceback.format_exc())

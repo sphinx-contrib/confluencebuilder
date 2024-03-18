@@ -40,6 +40,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_parent_page'] = None
         cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_publish'] = True
+        cls.config['confluence_publish_debug'] = 'deprecated'
         cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER

@@ -489,6 +489,26 @@ Generic configuration
 Publishing configuration
 ------------------------
 
+.. |confluence_api_mode| replace:: ``confluence_api_mode``
+.. _confluence_api_mode:
+
+.. confval:: confluence_api_mode
+
+    Configures the API mode to use for REST requests. Certain Confluence
+    instances support a newer version of REST APIs (e.g. Confluence Cloud).
+    This extension will attempt to use an appropriate API mode for a
+    configuration set. However, a user can override the operating API mode
+    based on preference or when handling situations where this extension
+    cannot automatically determine the best API mode to use. Values
+    accepted are either ``v1`` or ``v2``.
+
+    .. code-block:: python
+
+        confluence_api_mode = 'v2'
+
+    By default, if a Confluence Cloud configuration is detected, this
+    extension will use ``v2``. For all other cases, the default is ``v1``.
+
 .. |confluence_ask_password| replace:: ``confluence_ask_password``
 .. _confluence_ask_password:
 
@@ -1478,17 +1498,6 @@ Advanced publishing configuration
 
     See also |confluence_publish_allowlist|_.
 
-.. confval:: confluence_publish_disable_api_prefix
-
-    A boolean value which explicitly disables the use of the ``rest/api`` in
-    the Confluence publish URL. This can be useful for environments where the
-    API endpoint for a Confluence instance is proxied through a non-standard
-    location. By default, API prefixes are enabled with a value of ``False``.
-
-    .. code-block:: python
-
-        confluence_publish_disable_api_prefix = True
-
 .. |confluence_publish_dryrun| replace:: ``confluence_publish_dryrun``
 .. _confluence_publish_dryrun:
 
@@ -1621,6 +1630,40 @@ Advanced publishing configuration
         confluence_publish_orphan_container = 123456
 
     See also |confluence_publish_orphan|_.
+
+.. |confluence_publish_override_api_prefix| replace:: ``confluence_publish_override_api_prefix``
+.. _confluence_publish_override_api_prefix:
+
+.. confval:: confluence_publish_override_api_prefix
+
+    .. versionadded:: 2.5
+
+    Allows a user to override the path-prefix value used for API requests.
+    API paths are commonly prefixed, such as ``rest/api/`` for API v1 and
+    ``api/v2/`` for API v2. However, if a user is interacting with a Confluence
+    instance which system administrators have configured non-standard
+    locations for API endpoints, requests made by this extension will fail.
+
+    To support custom API endpoint paths, this option can be used to indicate
+    what prefix to use, if any. By default, this extension operates with an
+    API prefix configuration matching the following:
+
+    .. code-block:: python
+
+        confluence_publish_override_api_prefix = {
+            'v1': 'rest/api/',
+            'v2': 'api/v2/',
+        }
+
+    Users may define a dictionary using |confluence_api_mode|_ values for
+    keys, followed by a prefix override for their environment. For example,
+    to disable prefixes for any API v1 request, the following may be used:
+
+    .. code-block:: python
+
+        confluence_publish_override_api_prefix = {
+            'v1': '',
+        }
 
 .. confval:: confluence_parent_override_transform
 
@@ -2070,6 +2113,12 @@ Deprecated options
         confluence_parent_page_id_check = 123456
 
     See also |confluence_parent_page|_.
+
+.. confval:: confluence_publish_disable_api_prefix
+
+    .. versionchanged:: 2.5
+
+    This option has been replaced by |confluence_publish_override_api_prefix|_.
 
 .. confval:: confluence_publish_subset
 

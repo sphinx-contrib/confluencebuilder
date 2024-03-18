@@ -108,6 +108,16 @@ def apply_defaults(builder):
     if conf.confluence_publish_orphan is None:
         conf.confluence_publish_orphan = True
 
+    if conf.confluence_publish_override_api_prefix is None:
+        # confluence_publish_disable_api_prefix is deprecated, but we will
+        # use its presence to configure v1 api for old config support
+        if conf.confluence_publish_disable_api_prefix:
+            conf.confluence_publish_override_api_prefix = {
+                'v1': '',
+            }
+        else:
+            conf.confluence_publish_override_api_prefix = {}
+
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True
 
