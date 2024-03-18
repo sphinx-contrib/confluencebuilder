@@ -69,6 +69,11 @@ def apply_defaults(builder):
         if conf.confluence_file_suffix.endswith('.'):
             conf.confluence_file_suffix = '.conf'
 
+    if conf.confluence_global_labels:
+        # remove empty labels
+        labels = conf.confluence_global_labels
+        conf.confluence_global_labels = [x for x in labels if x]
+
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
 
