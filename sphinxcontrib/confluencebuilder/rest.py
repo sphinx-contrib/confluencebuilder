@@ -336,7 +336,7 @@ class Rest:
             print('(debug) Request]')
             print(f'{req.method} {req.url}')
             print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
-            print('')
+            print('', flush=True)
 
         # perform the rest request
         rsp = self.session.send(req, timeout=self.timeout)
@@ -346,7 +346,7 @@ class Rest:
             print('(debug) Response]')
             print(f'Code: {rsp.status_code}')
             print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
-            print('')
+            print('', flush=True)
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made
