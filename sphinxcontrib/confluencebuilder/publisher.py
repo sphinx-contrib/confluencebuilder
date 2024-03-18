@@ -41,6 +41,7 @@ class ConfluencePublisher:
     def __init__(self):
         self.cloud = None
         self.space_display_name = None
+        self.space_id = None
         self.space_type = None
         self._ancestors_cache = set()
         self._name_cache = {}
@@ -167,6 +168,7 @@ class ConfluencePublisher:
 
         # track required space information
         self.space_display_name = rsp['name']
+        self.space_id = rsp['id']
         self.space_type = rsp['type']
 
     def disconnect(self):
@@ -540,18 +542,67 @@ class ConfluencePublisher:
         page = None
         page_id = None
 
-        rsp = self.rest.get(f'{self.APIV1}content', {
-            'type': 'page',
-            'spaceKey': self.space_key,
-            'title': page_name,
-            'status': status,
-            'expand': expand,
-        })
+        if self.api_mode == 'v2':
+            rsp = self.rest.get(f'{self.APIV2}pages', {
+                'body-format': 'storage',
+                'space-id': self.space_id,
+                'status': status,
+                'title': page_name,
+            })
+        else:
+            rsp = self.rest.get(f'{self.APIV1}content', {
+                'type': 'page',
+                'spaceKey': self.space_key,
+                'title': page_name,
+                'status': status,
+                'expand': expand,
+            })
 
         if rsp['results']:
             page = rsp['results'][0]
             page_id = page['id']
             self._name_cache[page_id] = page_name
+
+        # if `expand` is set and this is a v2 API request, perform additional
+        # queries for various options requested; we will emulate the response
+        # observed in a v1 request (by populating a page with additional data;
+        # which we later need to strip if updating a page)
+        if page_id and self.api_mode == 'v2':
+            assert 'ancestors' not in page
+            assert 'metadata' not in page
+
+            opts = expand.split(',')
+            metadata = page.setdefault('metadata', {})
+            meta_props = metadata.setdefault('properties', {})
+
+            if 'ancestors' in opts:
+                rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors', {
+                    'limit': BULK_LIMIT,
+                })
+                page['ancestors'] = rsp['results']
+
+            if 'metadata.labels' in opts:
+                rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/labels', {
+                    'limit': BULK_LIMIT,
+                })
+
+                metadata['labels'] = rsp
+
+            props_to_fetch = []
+
+            # if certain properties are request, ensure we generate a
+            # request to fetch these values; we will populate the "legacy"
+            # metadata field for processed, but also keep track of these
+            # properties for possible updates
+            if 'metadata.properties.content_appearance_published' in opts:
+                props_to_fetch.append('content-appearance-published')
+
+            if 'metadata.properties.editor' in opts:
+                props_to_fetch.append('editor')
+
+            for prop_key in props_to_fetch:
+                prop_entry = self.get_page_property(page_id, prop_key)
+                meta_props[prop_key] = prop_entry
 
         return page_id, page
 
@@ -945,35 +996,44 @@ class ConfluencePublisher:
             # new page
             if not page:
                 new_page = self._build_page(page_name, data)
+
                 self._populate_labels(new_page, data['labels'])
 
+                new_labels = None
+                new_prop_requests = []
+                if self.api_mode == 'v2':
+                    # use newer space id refrence for v2
+                    new_page.pop('space', None)
+                    new_page['spaceId'] = self.space_id
+
+                    # strip out metadata updates that need to be processed
+                    # in a different request
+                    new_metadata = new_page.pop('metadata', None)
+                    new_labels = new_metadata.get('labels')
+                    new_meta_props = new_metadata.setdefault('properties', {})
+
+                    for prop_key, entry in new_meta_props.items():
+                        new_prop = {
+                            'key': prop_key,
+                            'value': entry['value'],
+                        }
+
+                        new_prop_requests.append(new_prop)
+
+                # configure parent page for this new page
                 if parent_id:
-                    new_page['ancestors'] = [{'id': parent_id}]
+                    if self.api_mode == 'v2':
+                        new_page['parentId'] = parent_id
+                    else:
+                        new_page['ancestors'] = [{'id': parent_id}]
 
                 try:
-                    rsp = self.rest.post(f'{self.APIV1}content', new_page)
+                    if self.api_mode == 'v2':
+                        build_path = f'{self.APIV2}pages'
+                    else:
+                        build_path = f'{self.APIV1}content'
 
-                    if 'id' not in rsp:
-                        api_err = (
-                            'Confluence reports a successful page '
-                            'creation; however, provided no identifier.\n\n'
-                        )
-                        try:
-                            api_err += 'DATA: {}'.format(json.dumps(
-                                rsp, indent=2))
-                        except TypeError:
-                            api_err += 'DATA: <not-or-invalid-json>'
-                        raise ConfluenceBadApiError(-1, api_err)  # noqa: TRY301
-
-                    uploaded_page_id = rsp['id']
-
-                    # if we have labels and this is a non-cloud instance,
-                    # initial labels need to be applied in their own request
-                    labels = new_page['metadata']['labels']
-                    if not self.cloud and labels:
-                        url = f'{self.APIV1}content/{uploaded_page_id}/label'
-                        self.rest.post(url, labels)
-
+                    rsp = self.rest.post(build_path, new_page)
                 except ConfluenceBadApiError as ex:
                     if str(ex).find('CDATA block has embedded') != -1:
                         raise ConfluenceUnexpectedCdataError from ex
@@ -996,6 +1056,37 @@ class ConfluencePublisher:
                     if self.onlynew:
                         self._onlynew('skipping existing page', page['id'])
                         return page['id']
+                else:
+                    if 'id' not in rsp:
+                        api_err = (
+                            'Confluence reports a successful page '
+                            'creation; however, provided no identifier.\n\n'
+                        )
+                        try:
+                            json_data = json.dumps(rsp, indent=2)
+                            api_err += f'DATA: {json_data}'
+                        except TypeError:
+                            api_err += 'DATA: (not-or-invalid-json)'
+                        raise ConfluenceBadApiError(-1, api_err)
+
+                    uploaded_page_id = rsp['id']
+
+                    # we have properties we would like to apply, but we cannot
+                    # just create new ones if Confluence already created ones
+                    # implicitly in the new page update -- we will need to
+                    # query the page for any of these properties are form
+                    # either new or update requests
+                    self._update_page_properties(rsp['id'], new_prop_requests)
+
+                    # if we have labels and this is a non-cloud instance,
+                    # initial labels need to be applied in their own request
+                    if not self.cloud and self.api_mode == 'v1':
+                        new_labels = new_page['metadata']['labels']
+
+                    # add new labels if we have any to force add
+                    if new_labels:
+                        url = f'{self.APIV1}content/{uploaded_page_id}/label'
+                        self.rest.post(url, new_labels)
 
             # update existing page
             if page:
@@ -1088,6 +1179,61 @@ class ConfluencePublisher:
         self._post_page_actions(page_id, cb_props)
 
         return page_id
+
+    def _update_page_properties(self, page_id, properties):
+        """
+        update properties on a specific page
+
+        Perform a request to update properties on a page. This call will
+        fetch an existing property value to determine if an update is
+        required.
+
+        Args:
+            page_id: the id of the page to update
+            properties: the properties to update
+        """
+
+        # we have properties we would like to apply, but we cannot
+        # just create new ones if Confluence already created ones
+        # implicitly in the new page update -- we will need to
+        # query the page for any of these properties are form
+        # either new or update requests
+        for prop in properties:
+            # we permit two attempts to update a property as it has been
+            # observed when we create a new page, Confluence may build a
+            # desired property that an initial `get_page_property` will not
+            # return (timing issue); so if we get a conflict error (409),
+            # we will retry a fetch/update again
+            MAX_ATTEMPTS_TO_UPDATE_PROPERTY = 2
+            attempt = 1
+            while attempt <= MAX_ATTEMPTS_TO_UPDATE_PROPERTY:
+                prop_key = prop['key']
+                prop_entry = self.get_page_property(page_id, prop_key)
+
+                # ignore if the property already matches the desired
+                # value
+                if prop_entry['value'] == prop['value']:
+                    break
+
+                prop_entry['value'] = prop['value']
+
+                try:
+                    self.store_page_property(
+                        page_id,
+                        prop_key,
+                        prop_entry,
+                    )
+                except ConfluenceBadApiError as ex:
+                    if ex.status_code != 409:
+                        raise
+
+                    # retry on conflict
+                    with skip_warningiserror():
+                        logger.warn('property update conflict; retrying...')
+
+                    attempt += 1
+                else:
+                    break
 
     def store_page_property(self, page_id, key, data):
         """
@@ -1361,9 +1507,66 @@ class ConfluencePublisher:
         elif parent_id is not None:
             update_page['ancestors'] = [{'id': '1'}]
 
-        page_id_explicit = page['id'] + '?status=current'
+        # if this is an api v2 mode, prepare any extra requests needed for
+        # populating ancestors or metadata information
+        pending_new_labels = []
+        pending_prop_requests = []
+        if self.api_mode == 'v2':
+            orig_metadata = page.get('metadata', None)
+            update_metadata = update_page.pop('metadata', None)
+
+            # configure parent page for this page update
+            #
+            # For v2, we need to strip out `ancestors` and place it with an
+            # expected `parentId` value.
+            ancestors_request = update_page.pop('ancestors', None)
+            if ancestors_request:
+                update_page['parentId'] = ancestors_request[0]['id']
+
+            # extract labels to set
+            pending_new_labels = update_metadata.get('labels')
+
+            # build a list of property creation/update requests needed
+            #
+            # This call will look at the `update_page` page for newly set
+            # properties needed to be set. When cycling through updated
+            # properties, we will also compare against the original page's
+            # properties (`page`) to see if properties are being created or
+            # updated, where we can track the identifier for updated entries
+            # as well as pre-populating a version bump. This will also check
+            # if each property value to be updated has changed. If there is
+            # no change to a given property, it will be ignored.
+            orig_meta_props = orig_metadata.setdefault('properties', {})
+            update_meta_props = update_metadata.setdefault('properties', {})
+
+            for prop_key, entry in update_meta_props.items():
+                updated_prop = {
+                    'key': prop_key,
+                    'value': entry['value'],
+                    'version': {
+                        'number': 1,
+                    },
+                }
+
+                orig_entry = orig_meta_props.get(prop_key, None)
+                if orig_entry:
+                    if orig_entry['value'] == entry['value']:
+                        continue
+
+                    updated_prop['id'] = orig_entry['id']
+                    last_props_version = int(orig_entry['version']['number'])
+                    updated_prop['version']['number'] = last_props_version + 1
+
+                pending_prop_requests.append(updated_prop)
+
+        if self.api_mode == 'v2':
+            update_path = f'{self.APIV2}pages'
+        else:
+            update_path = f'{self.APIV1}content'
+
+        update_page['status'] = 'current'
         try:
-            self.rest.put(f'{self.APIV1}content', page_id_explicit, update_page)
+            self.rest.put(update_path, page['id'], update_page)
         except ConfluenceBadApiError as ex:
             if str(ex).find('CDATA block has embedded') != -1:
                 raise ConfluenceUnexpectedCdataError from ex
@@ -1398,14 +1601,23 @@ class ConfluencePublisher:
             time.sleep(3)
 
             try:
-                self.rest.put(f'{self.APIV1}content',
-                    page_id_explicit, update_page)
+                self.rest.put(update_path, page['id'], update_page)
             except ConfluenceBadApiError as ex:
                 if 'unreconciled' in str(ex):
                     raise ConfluenceUnreconciledPageError(
                         page_name, page['id'], self.server_url, ex) from ex
 
                 raise
+
+        # post-update requests (api v2 mode)
+        update_page_id = update_page['id']
+
+        self._update_page_properties(update_page_id, pending_prop_requests)
+
+        # add any new labels
+        if pending_new_labels:
+            url = f'{self.APIV1}content/{update_page_id}/label'
+            self.rest.post(url, pending_new_labels)
 
     def _dryrun(self, msg, id_=None, misc=''):
         """
