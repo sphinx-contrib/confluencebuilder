@@ -277,6 +277,7 @@ class ConfluencePublisher:
         if not self.parent_ref:
             return base_page_id
 
+        # fetching a base page by a numerical identifier
         if isinstance(self.parent_ref, int):
             base_page_id, page = self.get_page_by_id(self.parent_ref)
 
@@ -286,20 +287,17 @@ class ConfluencePublisher:
 
             return base_page_id
 
-        rsp = self.rest.get(f'{self.APIV1}content', {
-            'type': 'page',
-            'spaceKey': self.space_key,
-            'title': self.parent_ref,
-            'status': 'current',
-        })
-        if not rsp['results']:
+        # fetching a base page by a page-name identifier
+        base_page_id, page = self.get_page(self.parent_ref)
+
+        if not page:
             msg = 'Configured parent page name does not exist.'
             raise ConfluenceConfigError(msg)
-        page = rsp['results'][0]
-        if self.parent_id and page['id'] != str(self.parent_id):
+
+        if self.parent_id and base_page_id != str(self.parent_id):
             msg = 'Configured parent page ID and name do not match.'
             raise ConfluenceConfigError(msg)
-        base_page_id = page['id']
+
         self._name_cache[base_page_id] = self.parent_ref
 
         if not base_page_id and self.parent_id:
