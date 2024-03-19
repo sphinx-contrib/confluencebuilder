@@ -29,6 +29,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_source_link
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
 from sphinxcontrib.confluencebuilder.storage.search import generate_storage_format_search
@@ -938,11 +939,43 @@ class ConfluenceBuilder(Builder):
                         self.config.confluence_footer_data)
 
         # generate/replace the document in the output directory
+        is_v2 = self.config.confluence_editor == 'v2'
+        is_wrapped = self.config.confluence_full_width is False
         out_file = self.out_dir / (docname + self.file_suffix)
         try:
             with out_file.open('w', encoding='utf-8') as f:
                 f.write(self._cached_header_data)
+
+                # add fixed width if not configured for full width on v1
+                # (see also: ConfluenceStorageFormatTranslator.pre_body_data)
+                if is_wrapped and not is_v2:
+                    if self.cloud:
+                        wrap_pre = (
+                            '<ac:layout>'
+                            '<ac:layout-section ac:type="fixed-width">'
+                            '<ac:layout-cell>'
+                        )
+                    else:
+                        max_width = f'{CONFLUENCE_MAX_WIDTH}px'
+                        wrap_pre = (
+                            '<div style="max-width: '
+                            f'{max_width}; margin: 0 auto;">'
+                        )
+                    f.write(wrap_pre)
+
                 generator(self, docname, f)
+
+                if is_wrapped and not is_v2:
+                    if self.cloud:
+                        wrap_post = (
+                            '</ac:layout-cell>'
+                            '</ac:layout-section>'
+                            '</ac:layout>'
+                        )
+                    else:
+                        wrap_post = '</div>'
+                    f.write(wrap_post)
+
                 f.write(self._cached_footer_data)
         except OSError as err:
             self.warn('error writing file %s: %s', docname, err)
