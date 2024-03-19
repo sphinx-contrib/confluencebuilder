@@ -7,7 +7,11 @@ Template for a storage-format search document.
 
 {%- if pagegen_notice -%}
     <div style="color: #707070; font-size: 12px;">
-        {{ L('This page has been automatically generated.') }}
+        {%- if pagegen_notice is sameas true -%}
+            {{ L('This page has been automatically generated.') }}
+        {%- else -%}
+            {{ L(pagegen_notice|e)}}
+        {%- endif %}
     </div>
 
     <hr style="clear: both; padding-top: 10px; margin-bottom: 30px" />

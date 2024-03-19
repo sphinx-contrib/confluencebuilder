@@ -154,6 +154,18 @@ The following keys are required:
 ''')
 
 
+class ConfluencePageGenerationNoticeConfigError(ConfluenceConfigError):
+    def __init__(self):
+        super().__init__('''\
+confluence_page_generation_notice is not a boolean or a string
+
+The option 'confluence_page_generation_notice' has been provided to
+indicate that a notice should be added at the top of each page about
+pages being generated. This value can either be set to `True` or
+configured with the message to inform users.
+''')
+
+
 class ConfluenceParentPageConfigError(ConfluenceConfigError):
     def __init__(self):
         super().__init__('''\
