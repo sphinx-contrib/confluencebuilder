@@ -3,10 +3,12 @@ Development
 
 * Fixed issue where an exception could throw without cleanup options set
 * Fixed issue where anchor links may fail to work for v2 editor pages
+* Fixed issue where index/search pages on v1 do not respect width configuration
 * Initial support for using Confluence REST v2 API (Cloud)
 * Provide extended debugging options for publish events
-* Replacing `confluence_publish_disable_api_prefix` with a new option
-  `confluence_publish_override_api_prefix`
+* Replacing ``confluence_publish_disable_api_prefix`` with a new option
+  ``confluence_publish_override_api_prefix``
+* Support custom page notice via ``confluence_page_generation_notice``
 
 2.4.0 (2023-12-14)
 ==================
