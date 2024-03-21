@@ -16,6 +16,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceHeaderFi
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceJiraServersConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroInvalidConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroMissingKeysConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageGenerationNoticeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceParentPageConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePrevNextButtonsLocationConfigError
@@ -444,8 +445,13 @@ def validate_configuration(builder):
     # ##################################################################
 
     # confluence_page_generation_notice
-    validator.conf('confluence_page_generation_notice') \
-             .bool()
+    try:
+        validator.conf('confluence_page_generation_notice').bool()
+    except ConfluenceConfigError:
+        try:
+            validator.conf('confluence_page_generation_notice').string()
+        except ConfluenceConfigError as ex:
+            raise ConfluencePageGenerationNoticeConfigError from ex
 
     # ##################################################################
 

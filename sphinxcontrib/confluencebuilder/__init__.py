@@ -100,7 +100,7 @@ def setup(app):
     # Enablement of a generated search documents
     cm.add_conf_bool('confluence_include_search', 'confluence')
     # Enablement of a "page generated" notice.
-    cm.add_conf_bool('confluence_page_generation_notice', 'confluence')
+    cm.add_conf('confluence_page_generation_notice', 'confluence')
     # Enablement of publishing pages into a hierarchy from a root toctree.
     cm.add_conf_bool('confluence_page_hierarchy', 'confluence')
     # Show previous/next buttons (bottom, top, both, None).

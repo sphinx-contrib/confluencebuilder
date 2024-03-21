@@ -8,6 +8,7 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageGenerationNoticeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkTypeConfigError
@@ -577,6 +578,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'key': 123,
         }
         with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+    def test_config_check_page_generation_notice(self):
+        self.config['confluence_page_generation_notice'] = True
+        self._try_config()
+
+        self.config['confluence_page_generation_notice'] = False
+        self._try_config()
+
+        self.config['confluence_page_generation_notice'] = ''
+        self._try_config()
+
+        self.config['confluence_page_generation_notice'] = 'message'
+        self._try_config()
+
+        self.config['confluence_page_generation_notice'] = [1, 2, 3]
+        with self.assertRaises(ConfluencePageGenerationNoticeConfigError):
             self._try_config()
 
     def test_config_check_parent_page(self):

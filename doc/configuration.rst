@@ -397,14 +397,23 @@ Generic configuration
 .. confval:: confluence_page_generation_notice
 
     .. versionadded:: 1.7
+    .. versionchanged:: 2.5 Accept a string for custom notice.
 
-    A boolean value to whether or not to generate a message at the top of each
-    document that the page has been automatically generated. By default, this
-    notice is disabled with a value of ``False``.
+    This option can be set with a boolean value to whether or not to generate
+    a message at the top of each document that the page has been
+    automatically generated.
 
     .. code-block:: python
 
         confluence_page_generation_notice = True
+
+    Alternatively, users may set a custom message to display.
+
+    .. code-block:: python
+
+        confluence_page_generation_notice = 'My awesome message.'
+
+    By default, this notice is disabled with a value of ``False``.
 
 .. confval:: confluence_page_hierarchy
 

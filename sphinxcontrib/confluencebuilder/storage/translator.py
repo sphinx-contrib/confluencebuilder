@@ -2433,8 +2433,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 'style': 'color: #707070; font-size: 12px;',
             }))
 
-        self.body.append(self.encode(
-            L('This page has been automatically generated.')))
+        if self.builder.config.confluence_page_generation_notice is True:
+            notice_msg = 'This page has been automatically generated.'
+        else:
+            notice_msg = self.builder.config.confluence_page_generation_notice
+
+        self.body.append(self.encode(L(notice_msg)))
 
         if self.v2:
             self.body.append(self._end_tag(node, suffix=''))  # sup
