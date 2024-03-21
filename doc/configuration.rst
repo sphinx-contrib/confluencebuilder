@@ -503,6 +503,8 @@ Publishing configuration
 
 .. confval:: confluence_api_mode
 
+    .. versionadded:: 2.5
+
     Configures the API mode to use for REST requests. Certain Confluence
     instances support a newer version of REST APIs (e.g. Confluence Cloud).
     This extension will attempt to use an appropriate API mode for a
