@@ -40,6 +40,7 @@ from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
+from urllib.parse import quote
 import os
 import tempfile
 
@@ -1168,16 +1169,13 @@ class ConfluenceBuilder(Builder):
                     if section_id > 0:
                         target = f'{target}.{section_id}'
 
-                    # v2 editor does not link anchors with parenthesis
-                    # gracefully; inject a workaround
+                    # v2 editor does not link anchors with select characters;
+                    # provide a workaround that url encodes targets
                     #
                     # See: https://jira.atlassian.com/browse/CONFCLOUD-7469
                     if not self.config.confluence_adv_disable_confcloud_74698:
                         if editor == 'v2':
-                            if any(x in target for x in ['(', ')']):
-                                target = 2*'[inlineExtension]' + target
-                                target = target.replace('(', '%28')
-                                target = target.replace(')', '%29')
+                            target = quote(target)
 
                     for raw_id in section_node['ids']:
                         full_id = f'{docname}#{raw_id}'
