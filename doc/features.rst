@@ -115,6 +115,20 @@ Type                    Notes
 
     \newpage
 
+Markdown support
+----------------
+
+This extension can support the rendering of Markdown content with the use of
+Sphinx with the `MyST Parser`_. Most content can be translated to an
+applicable Confluence storage format. However, not all content produced by
+MyST Parser will work with this extension. Specifically, any directives that
+generate HTML content or users who add raw HTML content to documents are not
+accepted by default by this extension. This includes line breaks,
+strikethroughs and more. Users may attempt to use the
+``confluence_permit_raw_html`` option to help workaround select use cases, but
+the use of the option is unsupported. When the option is enabled, published
+content may not render as expected or may not be able to be published.
+
 Extensions
 ----------
 
@@ -279,6 +293,7 @@ brings up another concern, feel free to bring up an issue:
     | https://github.com/sphinx-contrib/confluencebuilder/issues
 
 
+.. _MyST Parser: https://myst-parser.readthedocs.io/
 .. _Sphinx's main source repository: https://github.com/sphinx-doc/sphinx/tree/master/sphinx/ext
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _admonitions: https://docutils.sourceforge.io/docs/ref/rst/directives.html#admonitions
