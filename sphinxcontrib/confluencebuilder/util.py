@@ -4,6 +4,7 @@
 from contextlib import contextmanager
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
+from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
 from hashlib import sha256
@@ -80,6 +81,8 @@ class ConfluenceUtil:
             # check for rest api prefix; strip and return if found
             if url.endswith(API_REST_V1):
                 url = url[:-len(API_REST_V1)]
+            if url.endswith(API_REST_V2):
+                url = url[:-len(API_REST_V2)]
             # restore trailing forward flash
             elif not url.endswith('/'):
                 url += '/'
