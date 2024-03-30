@@ -1,9 +1,14 @@
 Development
 ===========
 
+* Confluence card directives/roles can be processed with ``linkcheck``
 * Fixed issue where an exception could throw without cleanup options set
 * Fixed issue where anchor links may fail to work for v2 editor pages
+* Fixed issue where generated pages would use incorrect template with an
+  explicit v1 editor
 * Fixed issue where index/search pages on v1 do not respect width configuration
+* Fixed regression where search pages would not be set with a proper space key
+* Improve search box alignment on generated search pages
 * Initial support for using Confluence REST v2 API (Cloud)
 * Provide extended debugging options for publish events
 * Replacing ``confluence_publish_disable_api_prefix`` with a new option
