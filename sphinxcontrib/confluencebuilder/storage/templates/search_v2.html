@@ -17,7 +17,7 @@ Template for a storage-format search document.
     <hr style="clear: both; padding-top: 10px; margin-bottom: 30px" />
 {%- endif %}
 
-<div style="max-width: {{ maxwidth }}; margin: 0 auto">
+<ac:layout><ac:layout-section ac:type="fixed-width"><ac:layout-cell>
 
 <ac:structured-macro ac:name="livesearch">
     <ac:parameter ac:name="additional">page excerpt</ac:parameter>
@@ -28,4 +28,4 @@ Template for a storage-format search document.
     <ac:parameter ac:name="type">page</ac:parameter>
 </ac:structured-macro>
 
-</div>
+</ac:layout-cell></ac:layout-section></ac:layout>
