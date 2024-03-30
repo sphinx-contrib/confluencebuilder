@@ -20,7 +20,7 @@ def generate_storage_format_search(builder, docname, f):
         f: the file to write to
     """
 
-    space_name = builder.config.confluence_space_name
+    space_key = builder.config.confluence_space_key
 
     # fetch raw template data
     search_template = Path('templates', 'search.html')
@@ -30,7 +30,7 @@ def generate_storage_format_search(builder, docname, f):
     ctx = {
         'L': sccb_translation,
         'pagegen_notice': builder.config.confluence_page_generation_notice,
-        'space': space_name,
+        'space': space_key,
     }
     output = builder.templates.render_string(template_data.decode('utf-8'), ctx)
     f.write(output)
