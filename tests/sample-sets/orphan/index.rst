@@ -1,0 +1,6 @@
+orphan test
+===========
+
+.. toctree::
+
+    pagea
