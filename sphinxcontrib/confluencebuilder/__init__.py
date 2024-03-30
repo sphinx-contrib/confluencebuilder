@@ -241,6 +241,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_bulk_archiving')
     # Disable workaround for: https://jira.atlassian.com/browse/CONFCLOUD-74698
     cm.add_conf_bool('confluence_adv_disable_confcloud_74698')
+    # Disable any attempts to initialize this extension's custom entities.
+    cm.add_conf_bool('confluence_adv_disable_init')
     # Flag to permit the use of embedded certificates from requests.
     cm.add_conf_bool('confluence_adv_embedded_certs')
     # List of node types to ignore if no translator support exists.
@@ -302,9 +304,25 @@ def confluence_builder_inited(app):
     Handling a `builder-inited` event generated from Sphinx.
     """
 
-    # ignore non-confluence builder types
-    if not isinstance(app.builder, ConfluenceBuilder):
+    # always skip initialization if configured to do so
+    if app.config.confluence_adv_disable_init:
         return
+
+    # ignore non-confluence builder types if they have a translator
+    # (i.e. a builder that needs to support processing nodes generated
+    # from custom directives/roles); this allows other builders such
+    # as Sphinx's external link check to not generate warnings about
+    # unknown directives/roles, while being flexible for builder that
+    # expect to translate but would generate an exception for an unknown
+    # node
+    if not isinstance(app.builder, ConfluenceBuilder):
+        try:
+            translator = app.builder.get_translator_class()
+        except AttributeError:
+            pass
+        else:
+            if translator:
+                return
 
     # register nodes required by confluence-specific directives
     if not docutils.is_node_registered(confluence_metadata):
@@ -337,6 +355,10 @@ def confluence_builder_inited(app):
     app.add_role('confluence_status', ConfluenceStatusRole)
     app.add_role('confluence_strike', ConfluenceStrikeRole)
     app.add_role('jira', JiraRole)
+
+    # always ignore non-confluence builder types for overrides below
+    if not isinstance(app.builder, ConfluenceBuilder):
+        return
 
     # other
     confluence_autosummary_support(app)
