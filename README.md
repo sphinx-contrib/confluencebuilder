@@ -10,7 +10,7 @@ files and optionally publish them to a Confluence instance.
 
 ## Requirements
 
-* [Confluence][confluence] Cloud or Data Center / Server 7.16+
+* [Confluence][confluence] Cloud or Data Center / Server 7.18+
 * [Python][python] 3.8+
 * [Requests][requests] 2.14.0+
 * [Sphinx][sphinx] 6.1+
