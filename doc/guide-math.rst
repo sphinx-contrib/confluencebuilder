@@ -107,7 +107,7 @@ Support for LaTeX macros for math
     a page may prevent the ability to perfectly align these labels alongside
     the rendered math content.
 
-A stock Confluence instance does not provided LaTeX support. This is the main
+A stock Confluence instance does not provide LaTeX support. This is the main
 reason why the Confluence builder extension promotes the use of
 `sphinx.ext.imgmath`_. However, if a user's Confluence instance supports a
 marketplace add-on which provides LaTeX macro support, math content can instead
@@ -135,6 +135,10 @@ different macros, the following can be used:
         'inline-macro': 'inline-macro-name',
         'inline-macro-param': 'inline-macro-parameter', # (optional)
     }
+
+.. raw:: latex
+
+    \newpage
 
 .. _guide_math_macro_names:
 
