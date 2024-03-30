@@ -43,7 +43,7 @@ def generate_storage_format_domainindex(builder, docname, f):
                     docname=doctitle, anchor=anchor_value)
 
     # fetch raw template data
-    if builder.config.confluence_editor:
+    if builder.config.confluence_editor == 'v2':
         domainindex_fname = 'domainindex_v2.html'
     else:
         domainindex_fname = 'domainindex.html'
@@ -91,7 +91,7 @@ def generate_storage_format_genindex(builder, docname, f):
                         ismain, process_doclink(builder.config, link))
 
     # fetch raw template data
-    if builder.config.confluence_editor:
+    if builder.config.confluence_editor == 'v2':
         genindex_fname = 'genindex_v2.html'
     else:
         genindex_fname = 'genindex.html'
