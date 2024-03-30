@@ -32,6 +32,7 @@ from sphinxcontrib.confluencebuilder.roles import ConfluenceStatusRole
 from sphinxcontrib.confluencebuilder.roles import ConfluenceStrikeRole
 from sphinxcontrib.confluencebuilder.roles import JiraRole
 from sphinxcontrib.confluencebuilder.singlebuilder import SingleConfluenceBuilder
+from sphinxcontrib.confluencebuilder.transform import ConfluenceHyperlinkCollector
 
 # load autosummary extension if available to add additional nodes
 try:
@@ -56,6 +57,7 @@ def setup(app):
     app.add_builder(ConfluenceBuilder)
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
+    app.add_post_transform(ConfluenceHyperlinkCollector)
 
     # register this extension's locale
     package_dir = Path(__file__).parent.resolve()
