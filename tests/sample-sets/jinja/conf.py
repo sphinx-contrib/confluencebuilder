@@ -1,6 +1,6 @@
 from datetime import datetime
+from pathlib import Path
 import json
-import os
 
 
 extensions = [
@@ -10,10 +10,10 @@ extensions = [
 
 
 # load sample data
-test_dir = os.path.dirname(os.path.realpath(__file__))
-data = os.path.join(test_dir, 'test.json')
+test_dir = Path(__file__).parent.resolve()
+data = test_dir / 'test.json'
 
-with open(data, 'rb') as f:
+with data.open('rb') as f:
     data = json.load(f)
 
 for feature in data['features']:
