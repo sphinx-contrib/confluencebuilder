@@ -25,6 +25,10 @@ For environments using an OAuth connector, the following scopes are required:
     write:content:confluence
     write:watcher:confluence
 
+.. raw:: latex
+
+    \newpage
+
 .. index:: Wiping a space
 .. index:: Page removal; Wiping a space
 

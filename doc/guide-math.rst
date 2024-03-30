@@ -136,6 +136,10 @@ different macros, the following can be used:
         'inline-macro-param': 'inline-macro-parameter', # (optional)
     }
 
+.. raw:: latex
+
+    \newpage
+
 .. _guide_math_macro_names:
 
 LaTeX macro names
