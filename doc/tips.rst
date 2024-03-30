@@ -77,6 +77,32 @@ By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
 (see ``confluence_timeout``; :ref:`ref<confluence_timeout>`).
 
+Connection troubleshooting
+--------------------------
+
+The majority of connection issues reported are typically configuration
+issues. For example, attempting to configure a Confluence Cloud API token
+using a configuration designed for a Confluence Server Personal Access
+Token (PAT).
+
+Users may try to invoke a connection test to help debug connection issues.
+To invoke a connection test, run the following command inside the Sphinx
+project:
+
+.. code-block:: shell-session
+
+    $ python -m sphinxcontrib.confluencebuilder connection-test
+    Fetching configuration information...
+    Running Sphinx v7.2.6
+    ...
+    Connecting to Confluence instance... connected!
+    Fetching Confluence instance information... fetched!
+    Decoding information... decoded!
+    Parsing information... parsed!
+        Type: confluence
+     Version: 1000.0.0-395b9ccce521
+       Build: 6452
+
 .. index:: Wiping a space
 .. index:: Page removal; Wiping a space
 
