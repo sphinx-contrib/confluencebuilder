@@ -41,7 +41,7 @@ Type                    Notes
 `images`_               Limited support.
 
                         When using a Confluence v2 editor, images cannot be
-                        inlined and SVGs may not render as expected.
+                        inlined.
 `inline markup`_        Supported
 `list-table`_           Supported
 `literal blocks`_       Supported
