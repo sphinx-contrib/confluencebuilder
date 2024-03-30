@@ -27,7 +27,7 @@ python -m pip install sphinxcontrib-confluencebuilder
 
 For a more in-depth installation information, see also:
 
-> Atlassian Confluence Builder for Sphinx - Installation \
+> Atlassian Confluence Builder for Sphinx — Installation \
 > https://sphinxcontrib-confluencebuilder.readthedocs.io/install
 
 ## Usage
