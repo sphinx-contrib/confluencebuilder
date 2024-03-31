@@ -297,15 +297,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.body.append(self._start_tag(node, 'p', **attribs))
 
-        # For any names assigned to a paragraph, generate an anchor link to
-        # ensure content can jump to this specific paragraph. This was
-        # originally handled in `visit_target`, but now applied here since in
-        # v2, anchors need to be inside paragraphs to prevent any undesired
-        # extra spacing above the paragraph (before or after for v1, there is
-        # no difference).
-        if 'names' in node:
-            for anchor in node['names']:
-                self._build_anchor(node, anchor)
+        # build anchors for ids which references may want to link to
+        #
+        # This was originally handled in `visit_target`, but moved into this
+        # section since in v2, anchors need to be inside paragraphs to prevent
+        # any undesired extra spacing above the paragraph (before or after for
+        # v1, there is no difference). We also used to use `names` over `ids`
+        # which worked for most things; however, some autodocs links seemed to
+        # use some id-only targets instead.
+        self._build_id_anchors(node)
 
         self.context.append(self._end_tag(node, suffix=''))
 
