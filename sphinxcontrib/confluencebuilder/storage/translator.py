@@ -1769,25 +1769,29 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if width:
             attribs['ac:width'] = width
 
-        if self.v2 and node.math_number:
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node))
+        # if this node has a math number assigned to it, build an anchor so
+        # that we can link to this image
+        if node.math_number:
+            if self.v2:
+                self.body.append(self._start_tag(node, 'ac:layout'))
+                self.context.append(self._end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-section',
-                **{
-                    'ac:type': 'three_with_sidebars',
-                    'ac:breakout-mode': 'default',
-                }))
-            self.context.append(self._end_tag(node))
+                self.body.append(self._start_tag(node, 'ac:layout-section',
+                    **{
+                        'ac:type': 'three_with_sidebars',
+                        'ac:breakout-mode': 'default',
+                    }))
+                self.context.append(self._end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
+                self.body.append(self._start_tag(node, 'ac:layout-cell'))
 
             self._build_id_anchors(node)
 
-            self.body.append(self._end_tag(node))
+            if self.v2:
+                self.body.append(self._end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            self.context.append(self._end_tag(node))
+                self.body.append(self._start_tag(node, 'ac:layout-cell'))
+                self.context.append(self._end_tag(node))
 
         if not opts['key']:
             # an external or embedded image
