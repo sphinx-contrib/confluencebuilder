@@ -6,16 +6,17 @@ msgstr ""
 msgid "writing single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:11
-#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:11
-#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
-#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
-#: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:12
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:12
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:38
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:38
+#: sphinxcontrib/confluencebuilder/storage/templates/search.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/search_v2.html:11
 #: sphinxcontrib/confluencebuilder/storage/translator.py:2437
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2461
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2465
 msgid "Edit Source"
 msgstr ""
 
