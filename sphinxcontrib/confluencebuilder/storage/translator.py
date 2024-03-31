@@ -297,15 +297,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         self.body.append(self._start_tag(node, 'p', **attribs))
 
-        # For any names assigned to a paragraph, generate an anchor link to
-        # ensure content can jump to this specific paragraph. This was
-        # originally handled in `visit_target`, but now applied here since in
-        # v2, anchors need to be inside paragraphs to prevent any undesired
-        # extra spacing above the paragraph (before or after for v1, there is
-        # no difference).
-        if 'names' in node:
-            for anchor in node['names']:
-                self._build_anchor(node, anchor)
+        # build anchors for ids which references may want to link to
+        #
+        # This was originally handled in `visit_target`, but moved into this
+        # section since in v2, anchors need to be inside paragraphs to prevent
+        # any undesired extra spacing above the paragraph (before or after for
+        # v1, there is no difference). We also used to use `names` over `ids`
+        # which worked for most things; however, some autodocs links seemed to
+        # use some id-only targets instead.
+        self._build_id_anchors(node)
 
         self.context.append(self._end_tag(node, suffix=''))
 
@@ -517,9 +517,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 **{'style': f'margin-left: {offset}px;'}))
             self.context.append(self._end_tag(node))
 
-        if 'ids' in node:
-            for id_ in node['ids']:
-                self._build_anchor(node, id_)
+        self._build_id_anchors(node)
 
         if not self.v2:
             self.body.append(self._start_tag(node, 'dt'))
@@ -1431,9 +1429,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # build an anchor link for them; example cases include documentation
         # which generate a custom anchor link inside a paragraph
         if 'ids' in node and 'refuri' not in node:
-            for id_ in node['ids']:
-                self._build_anchor(node, id_)
-
+            self._build_id_anchors(node)
             self.body.append(self.encode(node.astext()))
 
         raise nodes.SkipNode
@@ -1805,9 +1801,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self._end_tag(node))
 
             self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            if 'ids' in node:
-                for id_ in node['ids']:
-                    self._build_anchor(node, id_)
+
+            self._build_id_anchors(node)
+
             self.body.append(self._end_tag(node))
 
             self.body.append(self._start_tag(node, 'ac:layout-cell'))
@@ -3092,6 +3088,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # # helpers                                                                #
     # #                                                                        #
     # ##########################################################################
+
+    def _build_id_anchors(self, node):
+        """
+        build anchors for a node that has any ids
+
+        A node may define one more more identifiers through an `ids` list.
+        For some nodes, it may be ideal to generate anchor links for each
+        identifier listed, which may be used by other nodes to link to. For
+        example, a paragraph may have multiple identifiers assigned to it,
+        which features like autotools may want to jump to said paragraph.
+
+        Note all use cases where a node has an identifier will need to build
+        an anchor (so, it is not done automatically). This call can be used
+        to explicitly build anchors on nodes that require it.
+
+        Args:
+            node: the node to generate anchors on
+        """
+
+        if 'ids' in node:
+            for id_ in node['ids']:
+                self._build_anchor(node, id_)
 
     def _build_anchor(self, node, anchor):
         """
