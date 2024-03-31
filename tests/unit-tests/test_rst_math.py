@@ -5,11 +5,18 @@ from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 from tests.lib.testcase import setup_editor
+import shutil
+import unittest
 
 
 class TestConfluenceRstMath(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
+        # math images need latex to create
+        if not shutil.which('latex'):
+            msg = 'latex not installed'
+            raise unittest.SkipTest(msg)
+
         super().setUpClass()
 
         cls.dataset = cls.datasets / 'rst' / 'math'
