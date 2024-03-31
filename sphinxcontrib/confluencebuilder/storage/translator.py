@@ -575,32 +575,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.context.pop())  # table
 
     def visit_field(self, node):
-        if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node, suffix=''))
-
-            self.body.append(self._start_tag(node, 'ac:layout-section',
-                **{
-                    'ac:type': 'two_left_sidebar',
-                    'ac:breakout-mode': 'default',
-                }))
-            self.context.append(self._end_tag(node))
-        else:
+        if not self.v2:
             self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
             self.context.append(self._end_tag(node))
 
     def depart_field(self, node):
-        if self.v2:
-            self.body.append(self.context.pop())  # ac:layout-section
-            self.body.append(self.context.pop())  # ac:layout
-        else:
+        if not self.v2:
             self.body.append(self.context.pop())  # tr
 
     def visit_field_name(self, node):
-        if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            self.context.append(self._end_tag(node))
-        else:
+        if not self.v2:
             self.body.append(self._start_tag(node, 'td',
                 **{'style': 'border: none'}))
             self.context.append(self._end_tag(node))
@@ -612,22 +596,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(':')
         self.body.append(self.context.pop())  # strong
 
-        if self.v2:
-            self.body.append(self.context.pop())  # ac:layout-cell
-        else:
+        if not self.v2:
             self.body.append(self.context.pop())  # td
 
     def visit_field_body(self, node):
-        if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-        else:
+        if not self.v2:
             self.body.append(self._start_tag(node, 'td',
                 **{'style': 'border: none'}))
-
-        self.context.append(self._end_tag(node))
+            self.context.append(self._end_tag(node))
 
     def depart_field_body(self, node):
-        self.body.append(self.context.pop())  # td/ac:layout-cell
+        if not self.v2:
+            self.body.append(self.context.pop())  # td
 
     # -----------------------------
     # body elements -- option lists
