@@ -1,5 +1,5 @@
-Development
-===========
+2.5.0 (2024-03-31)
+==================
 
 * Confluence card directives/roles can be processed with ``linkcheck``
 * Fixed issue where an exception could throw without cleanup options set
