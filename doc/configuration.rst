@@ -466,6 +466,120 @@ Generic configuration
 
     See also |confluence_add_secnumbers|_.
 
+.. confval:: confluence_sourcelink
+
+    .. versionadded:: 1.7
+
+    Provides options to include a link to the documentation's sources at the top
+    of each page. This can either be a generic URL or customized to link to
+    individual documents in a repository.
+
+    An example of a simple link is as follows:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'url': 'https//www.example.com/',
+        }
+
+    Templates for popular hosting services are available. Instead of defining
+    a ``url`` option, the ``type`` option can instead be set to one of the
+    following types:
+
+    - ``bitbucket``
+    - ``codeberg``
+    - ``github``
+    - ``gitlab``
+
+    Options to set for these types are as follows:
+
+    .. rst-class:: spacedtable
+
+    +-----------------+-------------------------------------------------------+
+    | Option          | Description                                           |
+    +=================+=======================================================+
+    | | ``owner``     | The owner (group or user) of a project.               |
+    | | *(required)*  |                                                       |
+    +-----------------+-------------------------------------------------------+
+    | | ``repo``      | The name of the repository.                           |
+    | | *(required)*  |                                                       |
+    +-----------------+-------------------------------------------------------+
+    | ``container``   | The folder inside the repository which is holding the |
+    |                 | documentation. This will vary per project, for        |
+    |                 | example, this may be ``Documentation/`` or ``doc/``.  |
+    |                 | If the documentation resides in the root of the       |
+    |                 | repository, this option can be omitted or set to an   |
+    |                 | empty string.                                         |
+    +-----------------+-------------------------------------------------------+
+    | | ``version``   | The version of the sources to list. This is typically |
+    | | *(required)*  | set to either a branch (e.g. ``main``) or tag value.  |
+    |                 |                                                       |
+    |                 | For Codeberg, also include the version type. For      |
+    |                 | example, ``branch/main`` or ``tag/1.0``.              |
+    +-----------------+-------------------------------------------------------+
+    | ``view``        | The view mode to configure. By default, this value is |
+    |                 | set to ``blob`` for GitHub/GitLab and ``view`` for    |
+    |                 | Bitbucket.                                            |
+    |                 |                                                       |
+    |                 | GitHub/GitLab users may wish to change this to        |
+    |                 | ``edit`` to create a link directly to the editing     |
+    |                 | view for a specific document.                         |
+    +-----------------+-------------------------------------------------------+
+    | ``host``        | The hostname value to override.                       |
+    |                 |                                                       |
+    |                 | This option is useful for instances where a custom    |
+    |                 | domain may be configured for an organization.         |
+    +-----------------+-------------------------------------------------------+
+    | ``protocol``    | The protocol value to override (defaults to           |
+    |                 | ``https``).                                           |
+    +-----------------+-------------------------------------------------------+
+
+    For example, a project hosted on GitHub can use the following:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'type': 'github',
+            'owner': 'sphinx-contrib',
+            'repo': 'confluencebuilder',
+            'container': 'doc/',
+            'version': 'main',
+            'view': 'edit',
+        }
+
+    For unique environments, the source URL can be customized through the
+    ``url`` option. This option is treated as a format string which can be
+    populated based on the configuration and individual documents being
+    processed. An example is as follows:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'url': 'https://git.example.com/mydocs/{page}{suffix}',
+        }
+
+    This configures a base URL, where ``page`` and ``suffix`` will be generated
+    automatically. Any option provided in the ``confluence_sourcelink``
+    dictionary will be forwarded to the format option. For example:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            'base': 'https://git.example.com/mydocs',
+            'url': '{base}/{version}/{page}{suffix}',
+            'version': 'main',
+        }
+
+    The ``text`` option can be used to override the name of the link observed
+    at the top of the page:
+
+    .. code-block:: python
+
+        confluence_sourcelink = {
+            ...
+            'text': 'Edit Source',
+        }
+
 .. confval:: confluence_use_index
 
     .. versionadded:: 1.7
@@ -497,6 +611,29 @@ Generic configuration
 
 Publishing configuration
 ------------------------
+
+.. |confluence_append_labels| replace:: ``confluence_append_labels``
+.. _confluence_append_labels:
+
+.. confval:: confluence_append_labels
+
+    .. versionadded:: 1.3
+
+    Allows a user to decide how to manage labels for an updated page. When a
+    page update contains new labels to set, they can either be stacked on
+    existing labels or replaced. In the event that a publisher wishes to replace
+    any existing labels that are set on published pages, this option can be set
+    to ``False``. By default, labels are always appended with a value of
+    ``True``.
+
+    .. code-block:: python
+
+        confluence_append_labels = True
+
+    See also:
+
+    - |confluence_global_labels|_
+    - ``confluence_metadata`` :ref:`directive <confluence_metadata>`
 
 .. |confluence_api_mode| replace:: ``confluence_api_mode``
 .. _confluence_api_mode:
@@ -570,30 +707,6 @@ Publishing configuration
 
         confluence_ask_user = False
 
-.. |confluence_disable_autogen_title| replace:: ``confluence_disable_autogen_title``
-.. _confluence_disable_autogen_title:
-
-.. confval:: confluence_disable_autogen_title
-
-    A boolean value to explicitly disable the automatic generation of titles for
-    documents which do not have a title set. When this extension processes a set
-    of documents to publish, a document needs a title value to know which
-    Confluence page to create/update. In the event where a title value cannot be
-    extracted from a document, a title value will be automatically generated for
-    the document. For automatically generated titles, the value will always be
-    prefixed with ``autogen-``. For users who wish to ignore pages which have no
-    title, this option can be set to ``True``. By default, this option is set to
-    ``False``.
-
-    .. code-block:: python
-
-        confluence_disable_autogen_title = True
-
-    See also:
-
-    - |confluence_remove_title|_
-    - |confluence_title_overrides|_
-
 .. index:: Page removal; Automatically archiving pages
 
 .. |confluence_cleanup_archive| replace:: ``confluence_cleanup_archive``
@@ -620,9 +733,9 @@ Publishing configuration
 
     .. attention::
 
-        Confluence's archiving API is marked as experimental at the time
-        of writing. This feature may experience issues over time until the
-        API is flagged as stable (if ever).
+        Confluence's archiving API is marked as experimental by Atlassian
+        at the time of writing. This feature may experience issues over time
+        until the API is flagged as stable (if ever).
 
     A boolean value to whether to archive legacy pages detected in a space or
     parent page. By default, this value is set to ``False`` to indicate that no
@@ -791,21 +904,6 @@ Publishing configuration
     :ref:`directive <confluence_metadata>`. See also
     |confluence_append_labels|_.
 
-.. |confluence_root_homepage| replace:: ``confluence_root_homepage``
-.. _confluence_root_homepage:
-
-.. confval:: confluence_root_homepage
-
-    .. versionadded:: 1.6
-
-    A boolean value to whether or not force the configured space's homepage to
-    be set to the page defined by the Sphinx configuration's root_doc_. By
-    default, the root_doc_ configuration is ignored with a value of ``False``.
-
-    .. code-block:: python
-
-        confluence_root_homepage = False
-
 .. |confluence_parent_page| replace:: ``confluence_parent_page``
 .. _confluence_parent_page:
 
@@ -841,6 +939,28 @@ Publishing configuration
     be case-sensitive in most (if not all) versions of Confluence.
 
     See also |confluence_publish_root|_.
+
+.. |confluence_publish_dryrun| replace:: ``confluence_publish_dryrun``
+.. _confluence_publish_dryrun:
+
+.. confval:: confluence_publish_dryrun
+
+    .. versionadded:: 1.3
+
+    When a user wishes to start managing a new document set for publishing,
+    there maybe concerns about conflicts with existing content. When the dry run
+    feature is enabled to ``True``, a publish event will not edit or remove any
+    existing content. Instead, the extension will inform the user which pages
+    will be created, whether or not pages will be moved and whether or not
+    pages/attachments will be removed. By default, the dry run feature is
+    disabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_dryrun = True
+
+    See also
+    :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
 .. |confluence_publish_postfix| replace:: ``confluence_publish_postfix``
 .. _confluence_publish_postfix:
@@ -933,151 +1053,20 @@ Publishing configuration
 
     See also |confluence_parent_page|_.
 
-.. confval:: confluence_sourcelink
+.. |confluence_root_homepage| replace:: ``confluence_root_homepage``
+.. _confluence_root_homepage:
 
-    .. versionadded:: 1.7
+.. confval:: confluence_root_homepage
 
-    Provides options to include a link to the documentation's sources at the top
-    of each page. This can either be a generic URL or customized to link to
-    individual documents in a repository.
+    .. versionadded:: 1.6
 
-    An example of a simple link is as follows:
-
-    .. code-block:: python
-
-        confluence_sourcelink = {
-            'url': 'https//www.example.com/',
-        }
-
-    Templates for popular hosting services are available. Instead of defining
-    a ``url`` option, the ``type`` option can instead be set to one of the
-    following types:
-
-    - ``bitbucket``
-    - ``codeberg``
-    - ``github``
-    - ``gitlab``
-
-    Options to set for these types are as follows:
-
-    .. rst-class:: spacedtable
-
-    +-----------------+-------------------------------------------------------+
-    | Option          | Description                                           |
-    +=================+=======================================================+
-    | | ``owner``     | The owner (group or user) of a project.               |
-    | | *(required)*  |                                                       |
-    +-----------------+-------------------------------------------------------+
-    | | ``repo``      | The name of the repository.                           |
-    | | *(required)*  |                                                       |
-    +-----------------+-------------------------------------------------------+
-    | ``container``   | The folder inside the repository which is holding the |
-    |                 | documentation. This will vary per project, for        |
-    |                 | example, this may be ``Documentation/`` or ``doc/``.  |
-    |                 | If the documentation resides in the root of the       |
-    |                 | repository, this option can be omitted or set to an   |
-    |                 | empty string.                                         |
-    +-----------------+-------------------------------------------------------+
-    | | ``version``   | The version of the sources to list. This is typically |
-    | | *(required)*  | set to either a branch (e.g. ``main``) or tag value.  |
-    |                 |                                                       |
-    |                 | For Codeberg, also include the version type. For      |
-    |                 | example, ``branch/main`` or ``tag/1.0``.              |
-    +-----------------+-------------------------------------------------------+
-    | ``view``        | The view mode to configure. By default, this value is |
-    |                 | set to ``blob`` for GitHub/GitLab and ``view`` for    |
-    |                 | Bitbucket.                                            |
-    |                 |                                                       |
-    |                 | GitHub/GitLab users may wish to change this to        |
-    |                 | ``edit`` to create a link directly to the editing     |
-    |                 | view for a specific document.                         |
-    +-----------------+-------------------------------------------------------+
-    | ``host``        | The hostname value to override.                       |
-    |                 |                                                       |
-    |                 | This option is useful for instances where a custom    |
-    |                 | domain may be configured for an organization.         |
-    +-----------------+-------------------------------------------------------+
-    | ``protocol``    | The protocol value to override (defaults to           |
-    |                 | ``https``).                                           |
-    +-----------------+-------------------------------------------------------+
-
-    For example, a project hosted on GitHub can use the following:
+    A boolean value to whether or not force the configured space's homepage to
+    be set to the page defined by the Sphinx configuration's root_doc_. By
+    default, the root_doc_ configuration is ignored with a value of ``False``.
 
     .. code-block:: python
 
-        confluence_sourcelink = {
-            'type': 'github',
-            'owner': 'sphinx-contrib',
-            'repo': 'confluencebuilder',
-            'container': 'doc/',
-            'version': 'main',
-            'view': 'edit',
-        }
-
-    For unique environments, the source URL can be customized through the
-    ``url`` option. This option is treated as a format string which can be
-    populated based on the configuration and individual documents being
-    processed. An example is as follows:
-
-    .. code-block:: python
-
-        confluence_sourcelink = {
-            'url': 'https://git.example.com/mydocs/{page}{suffix}',
-        }
-
-    This configures a base URL, where ``page`` and ``suffix`` will be generated
-    automatically. Any option provided in the ``confluence_sourcelink``
-    dictionary will be forwarded to the format option. For example:
-
-    .. code-block:: python
-
-        confluence_sourcelink = {
-            'base': 'https://git.example.com/mydocs',
-            'url': '{base}/{version}/{page}{suffix}',
-            'version': 'main',
-        }
-
-    The ``text`` option can be used to override the name of the link observed
-    at the top of the page:
-
-    .. code-block:: python
-
-        confluence_sourcelink = {
-            ...
-            'text': 'Edit Source',
-        }
-
-.. |confluence_title_overrides| replace:: ``confluence_title_overrides``
-.. _confluence_title_overrides:
-
-.. confval:: confluence_title_overrides
-
-    .. versionadded:: 1.3
-
-    Allows a user to override the title value for a specific document. When
-    documents are parsed for title values, the first title element's content
-    will be used as the publish page's title. Select documents may not include a
-    title and are ignored; or, documents may conflict with each other but there
-    is a desire to keep them the same name in reStructuredText form. With
-    ``confluence_title_overrides``, a user can define a dictionary which will
-    map a given docname to a title value instead of the title element (if any)
-    found in the respective document. By default, documents will give assigned
-    titles values based off the first detected title element with a value of
-    ``None``.
-
-    .. code-block:: python
-
-        confluence_title_overrides = {
-            'index': 'Index Override',
-        }
-
-    See also:
-
-    - :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`
-    - |confluence_disable_autogen_title|_
-    - |confluence_publish_postfix|_
-    - |confluence_publish_prefix|_
-    - |confluence_remove_title|_
+        confluence_root_homepage = False
 
 .. _confluence_timeout:
 
@@ -1120,28 +1109,22 @@ Publishing configuration
 Advanced publishing configuration
 ---------------------------------
 
-.. |confluence_append_labels| replace:: ``confluence_append_labels``
-.. _confluence_append_labels:
-
-.. confval:: confluence_append_labels
+.. confval:: confluence_additional_mime_types
 
     .. versionadded:: 1.3
 
-    Allows a user to decide how to manage labels for an updated page. When a
-    page update contains new labels to set, they can either be stacked on
-    existing labels or replaced. In the event that a publisher wishes to replace
-    any existing labels that are set on published pages, this option can be set
-    to ``False``. By default, labels are always appended with a value of
-    ``True``.
+    Candidate selection for images will only support the internally managed list
+    of MIME types supported by a default Confluence instance. A custom
+    installation or future installations of a Confluence instance may support
+    newer MIME types not explicitly managed by this extension. This
+    configuration provides a user the option to register additional MIME types
+    to consider for image candidates.
 
     .. code-block:: python
 
-        confluence_append_labels = True
-
-    See also:
-
-    - |confluence_global_labels|_
-    - ``confluence_metadata`` :ref:`directive <confluence_metadata>`
+        confluence_additional_mime_types = [
+            'image/tiff',
+        ]
 
 .. confval:: confluence_asset_force_standalone
 
@@ -1296,8 +1279,31 @@ Advanced publishing configuration
     - |confluence_client_cert|_
     - |confluence_disable_ssl_validation|_
 
-.. |confluence_disable_ssl_validation| replace::
-   ``confluence_disable_ssl_validation``
+.. |confluence_disable_autogen_title| replace:: ``confluence_disable_autogen_title``
+.. _confluence_disable_autogen_title:
+
+.. confval:: confluence_disable_autogen_title
+
+    A boolean value to explicitly disable the automatic generation of titles for
+    documents which do not have a title set. When this extension processes a set
+    of documents to publish, a document needs a title value to know which
+    Confluence page to create/update. In the event where a title value cannot be
+    extracted from a document, a title value will be automatically generated for
+    the document. For automatically generated titles, the value will always be
+    prefixed with ``autogen-``. For users who wish to ignore pages which have no
+    title, this option can be set to ``True``. By default, this option is set to
+    ``False``.
+
+    .. code-block:: python
+
+        confluence_disable_autogen_title = True
+
+    See also:
+
+    - |confluence_remove_title|_
+    - |confluence_title_overrides|_
+
+.. |confluence_disable_ssl_validation| replace:: ``confluence_disable_ssl_validation``
 .. _confluence_disable_ssl_validation:
 
 .. confval:: confluence_disable_ssl_validation
@@ -1338,6 +1344,40 @@ Advanced publishing configuration
 
     - |confluence_publish_postfix|_
     - |confluence_publish_prefix|_
+
+.. confval:: confluence_parent_override_transform
+
+    .. versionadded:: 2.2
+
+    .. note::
+
+        Using this option may have unexpected results when using certain
+        features of this extension. For example, users with purging
+        enabled may not have pages with parent-ID overrides purged.
+
+    A function to override the parent page to publish a document under.
+    This option is available for advanced users needing to tailor specific
+    parent pages for individual documents. A provided transform is invoked
+    with the document name and the expected parent page (numerical
+    identifier) the document will be published under. A configuration can
+    tweak the identifier used when publishing.
+
+    .. code-block:: python
+
+        def my_publish_override(docname, parent_id):
+            if docname == 'special-doc':
+                return 123456
+
+            return parent_id
+
+        confluence_parent_override_transform = my_publish_override
+
+    This extension will not check the validity of the identifiers set. If
+    a provided page identifier does not exist or the publishing user does
+    not have access to the parent page, the publication will fail with an
+    error provided by Confluence.
+
+    See also |confluence_parent_page|_.
 
 .. confval:: confluence_proxy
 
@@ -1509,28 +1549,6 @@ Advanced publishing configuration
 
     See also |confluence_publish_allowlist|_.
 
-.. |confluence_publish_dryrun| replace:: ``confluence_publish_dryrun``
-.. _confluence_publish_dryrun:
-
-.. confval:: confluence_publish_dryrun
-
-    .. versionadded:: 1.3
-
-    When a user wishes to start managing a new document set for publishing,
-    there maybe concerns about conflicts with existing content. When the dry run
-    feature is enabled to ``True``, a publish event will not edit or remove any
-    existing content. Instead, the extension will inform the user which pages
-    will be created, whether or not pages will be moved and whether or not
-    pages/attachments will be removed. By default, the dry run feature is
-    disabled with a value of ``False``.
-
-    .. code-block:: python
-
-        confluence_publish_dryrun = True
-
-    See also
-    :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
-
 .. |confluence_publish_force| replace:: ``confluence_publish_force``
 .. _confluence_publish_force:
 
@@ -1552,21 +1570,6 @@ Advanced publishing configuration
 
         confluence_publish_force = True
 
-.. confval:: confluence_publish_intersphinx
-
-    .. versionadded:: 1.9
-
-    A publish event will upload a generated intersphinx's inventory
-    (`object.inv`) as an attachment to the configured root_doc_. Inventory
-    files are typically small and should not cause issues for most users.
-    However, if a user desired to not publish an inventory for their
-    documentation, this option can be configured to ``False``. By default,
-    inventories are published with a value of ``True``.
-
-    .. code-block:: python
-
-        confluence_publish_intersphinx = True
-
 .. confval:: confluence_publish_headers
 
     .. versionadded:: 1.5
@@ -1582,6 +1585,21 @@ Advanced publishing configuration
         confluence_publish_headers = {
             'CUSTOM_HEADER': '<some-value>',
         }
+
+.. confval:: confluence_publish_intersphinx
+
+    .. versionadded:: 1.9
+
+    A publish event will upload a generated intersphinx's inventory
+    (`object.inv`) as an attachment to the configured root_doc_. Inventory
+    files are typically small and should not cause issues for most users.
+    However, if a user desired to not publish an inventory for their
+    documentation, this option can be configured to ``False``. By default,
+    inventories are published with a value of ``True``.
+
+    .. code-block:: python
+
+        confluence_publish_intersphinx = True
 
 .. confval:: confluence_publish_onlynew
 
@@ -1676,40 +1694,6 @@ Advanced publishing configuration
             'v1': '',
         }
 
-.. confval:: confluence_parent_override_transform
-
-    .. versionadded:: 2.2
-
-    .. note::
-
-        Using this option may have unexpected results when using certain
-        features of this extension. For example, users with purging
-        enabled may not have pages with parent-ID overrides purged.
-
-    A function to override the parent page to publish a document under.
-    This option is available for advanced users needing to tailor specific
-    parent pages for individual documents. A provided transform is invoked
-    with the document name and the expected parent page (numerical
-    identifier) the document will be published under. A configuration can
-    tweak the identifier used when publishing.
-
-    .. code-block:: python
-
-        def my_publish_override(docname, parent_id):
-            if docname == 'special-doc':
-                return 123456
-
-            return parent_id
-
-        confluence_parent_override_transform = my_publish_override
-
-    This extension will not check the validity of the identifiers set. If
-    a provided page identifier does not exist or the publishing user does
-    not have access to the parent page, the publication will fail with an
-    error provided by Confluence.
-
-    See also |confluence_parent_page|_.
-
 .. confval:: confluence_request_session_override
 
     .. versionadded:: 1.7
@@ -1770,6 +1754,38 @@ Advanced publishing configuration
             'U_ID': '<username>',
         }
 
+.. |confluence_title_overrides| replace:: ``confluence_title_overrides``
+.. _confluence_title_overrides:
+
+.. confval:: confluence_title_overrides
+
+    .. versionadded:: 1.3
+
+    Allows a user to override the title value for a specific document. When
+    documents are parsed for title values, the first title element's content
+    will be used as the publish page's title. Select documents may not include a
+    title and are ignored; or, documents may conflict with each other but there
+    is a desire to keep them the same name in reStructuredText form. With
+    ``confluence_title_overrides``, a user can define a dictionary which will
+    map a given docname to a title value instead of the title element (if any)
+    found in the respective document. By default, documents will give assigned
+    titles values based off the first detected title element with a value of
+    ``None``.
+
+    .. code-block:: python
+
+        confluence_title_overrides = {
+            'index': 'Index Override',
+        }
+
+    See also:
+
+    - :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`
+    - |confluence_disable_autogen_title|_
+    - |confluence_publish_postfix|_
+    - |confluence_publish_prefix|_
+    - |confluence_remove_title|_
+
 .. confval:: confluence_version_comment
 
     .. versionadded:: 1.8
@@ -1790,23 +1806,6 @@ Advanced publishing configuration
 
 Advanced processing configuration
 ---------------------------------
-
-.. confval:: confluence_additional_mime_types
-
-    .. versionadded:: 1.3
-
-    Candidate selection for images will only support the internally managed list
-    of MIME types supported by a default Confluence instance. A custom
-    installation or future installations of a Confluence instance may support
-    newer MIME types not explicitly managed by this extension. This
-    configuration provides a user the option to register additional MIME types
-    to consider for image candidates.
-
-    .. code-block:: python
-
-        confluence_additional_mime_types = [
-            'image/tiff',
-        ]
 
 .. |confluence_file_suffix| replace:: ``confluence_file_suffix``
 .. _confluence_file_suffix:
