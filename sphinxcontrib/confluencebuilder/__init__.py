@@ -117,6 +117,8 @@ def setup(app):
     cm.add_conf_bool('singleconfluence_toctree', 'singleconfluence')
 
     # (configuration - publishing)
+    # Whether labels will be appended instead of overwriting them.
+    cm.add_conf_bool('confluence_append_labels')
     # API mode to use for REST calls.
     cm.add_conf('confluence_api_mode')
     # Request for publish password to come from interactive session.
@@ -129,36 +131,24 @@ def setup(app):
     cm.add_conf_bool('confluence_cleanup_from_root')
     # Enablement of purging legacy child pages.
     cm.add_conf_bool('confluence_cleanup_purge')
-    # The mode to search for legacy child pages.
-    cm.add_conf('confluence_cleanup_search_mode')
-    # Explicitly prevent auto-generation of titles for titleless documents.
-    cm.add_conf_bool('confluence_disable_autogen_title')
     # Explicitly prevent page notifications on update.
     cm.add_conf_bool('confluence_disable_notifications')
+    # Whether to utilize the full width of a Confluence page.
+    cm.add_conf_bool('confluence_full_width', 'confluence')
     # Define a series of labels to apply to all published pages.
     cm.add_conf('confluence_global_labels', 'confluence')
-    # Enablement of configuring root as space's homepage.
-    cm.add_conf_bool('confluence_root_homepage')
-    # Translation to override parent page identifier to publish to.
-    cm.add_conf('confluence_parent_override_transform')
     # Parent page's name or identifier to publish documents under.
     cm.add_conf('confluence_parent_page')
     # Perform a dry run of publishing to inspect what publishing will do.
     cm.add_conf_bool('confluence_publish_dryrun')
-    # Publish only new content (no page updates, etc.).
-    cm.add_conf_bool('confluence_publish_onlynew')
-    # Publish orphan pages to Confluence.
-    cm.add_conf_bool('confluence_publish_orphan')
-    # Container page to publish orphan pages under.
-    cm.add_conf_int('confluence_publish_orphan_container')
     # Postfix to apply to title of published pages.
     cm.add_conf('confluence_publish_postfix', 'confluence')
     # Prefix to apply to published pages.
     cm.add_conf('confluence_publish_prefix', 'confluence')
     # Root page's identifier to publish documents into.
     cm.add_conf_int('confluence_publish_root')
-    # docname-2-title dictionary for title overrides.
-    cm.add_conf('confluence_title_overrides', 'confluence')
+    # Enablement of configuring root as space's homepage.
+    cm.add_conf_bool('confluence_root_homepage')
     # Timeout for network-related calls (publishing).
     cm.add_conf_int('confluence_timeout')
     # Whether or not new content should be watched.
@@ -167,26 +157,26 @@ def setup(app):
     # (configuration - advanced publishing)
     # Register additional mime types to be selected for image candidates.
     cm.add_conf('confluence_additional_mime_types', 'confluence')
-    # Whether or not labels will be appended instead of overwriting them.
-    cm.add_conf_bool('confluence_append_labels')
     # Forcing all assets to be standalone.
     cm.add_conf_bool('confluence_asset_force_standalone', 'confluence')
     # Tri-state asset handling (auto, force push or disable).
     cm.add_conf_bool('confluence_asset_override')
     # File/path to Certificate Authority
     cm.add_conf('confluence_ca_cert')
+    # The mode to search for legacy child pages.
+    cm.add_conf('confluence_cleanup_search_mode')
     # Path to client certificate to use for publishing
     cm.add_conf('confluence_client_cert')
     # Password for client certificate to use for publishing
     cm.add_conf('confluence_client_cert_pass')
+    # Explicitly prevent auto-generation of titles for titleless documents.
+    cm.add_conf_bool('confluence_disable_autogen_title')
     # Disable SSL validation with Confluence server.
     cm.add_conf_bool('confluence_disable_ssl_validation')
-    # Whether to utilize the full width of a Confluence page.
-    cm.add_conf_bool('confluence_full_width', 'confluence')
     # Ignore adding a titlefix on the index document.
     cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'confluence')
-    # Parent page's identifier to publish documents under.
-    cm.add_conf_int('confluence_parent_page_id_check')
+    # Translation to override parent page identifier to publish to.
+    cm.add_conf('confluence_parent_override_transform')
     # Proxy server needed to communicate with Confluence server.
     cm.add_conf('confluence_proxy')
     # Subset of documents which are allowed to be published.
@@ -203,6 +193,12 @@ def setup(app):
     cm.add_conf('confluence_publish_headers')
     # Whether to publish a generated intersphinx database to the root document
     cm.add_conf_bool('confluence_publish_intersphinx')
+    # Publish only new content (no page updates, etc.).
+    cm.add_conf_bool('confluence_publish_onlynew')
+    # Publish orphan pages to Confluence.
+    cm.add_conf_bool('confluence_publish_orphan')
+    # Container page to publish orphan pages under.
+    cm.add_conf_int('confluence_publish_orphan_container')
     # Override the path prefixes for various REST API requests.
     cm.add_conf('confluence_publish_override_api_prefix')
     # Manipulate a requests instance.
@@ -211,6 +207,8 @@ def setup(app):
     cm.add_conf('confluence_server_auth')
     # Cookie(s) to use for Confluence REST interaction.
     cm.add_conf('confluence_server_cookies')
+    # docname-2-title dictionary for title overrides.
+    cm.add_conf('confluence_title_overrides', 'confluence')
     # Comment added to confluence version history.
     cm.add_conf('confluence_version_comment')
 
@@ -269,6 +267,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_permit_raw_html')
     # replaced by confluence_root_homepage
     cm.add_conf('confluence_master_homepage')
+    # confluence_parent_page supports both names and identifiers
+    cm.add_conf_int('confluence_parent_page_id_check')
     # replaced by confluence_publish_override_api_prefix
     cm.add_conf_bool('confluence_publish_disable_api_prefix')
     # replaced by confluence_publish_allowlist
