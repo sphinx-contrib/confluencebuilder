@@ -601,7 +601,9 @@ class ConfluencePublisher:
                 props_to_fetch.append('editor')
 
             for prop_key in props_to_fetch:
-                prop_entry = self.get_page_property(page_id, prop_key)
+                prop_entry = self.get_page_property(page_id, prop_key, {
+                    'value': None,
+                })
                 meta_props[prop_key] = prop_entry
 
         return page_id, page
@@ -700,9 +702,7 @@ class ConfluencePublisher:
             the property value
         """
 
-        props = {
-            'value': default,
-        }
+        props = default
 
         if page_id:
             try:
@@ -930,7 +930,9 @@ class ConfluencePublisher:
 
         # fetch known properties (associated with this extension) from the page
         page_id = page['id'] if page else None
-        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
+            'value': {},
+        })
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -986,8 +988,8 @@ class ConfluencePublisher:
 
         # if we are not force uploading, check if the new page hash matches
         # the remote hash; if so, do not publish
-        if cb_props and not force_publish:
-            remote_hash = cb_props.get('value', {}).get('hash')
+        if not force_publish:
+            remote_hash = cb_props['value'].get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose(f'no changes in page: {page_name}')
                 return page['id']
@@ -1148,7 +1150,9 @@ class ConfluencePublisher:
             raise ConfluenceMissingPageIdError(self.space_key, page_id) from ex
 
         # fetch known properties (associated with this extension) from the page
-        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {})
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
+            'value': {},
+        })
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -1157,8 +1161,8 @@ class ConfluencePublisher:
 
         # if we are not force uploading, check if the new page hash matches
         # the remote hash; if so, do not publish
-        if cb_props and not self.config.confluence_publish_force:
-            remote_hash = cb_props.get('value', {}).get('hash')
+        if not self.config.confluence_publish_force:
+            remote_hash = cb_props['value'].get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose(f'no changes in page: {page_name}')
                 return page_id
@@ -1208,7 +1212,9 @@ class ConfluencePublisher:
             attempt = 1
             while attempt <= MAX_ATTEMPTS_TO_UPDATE_PROPERTY:
                 prop_key = prop['key']
-                prop_entry = self.get_page_property(page_id, prop_key)
+                prop_entry = self.get_page_property(page_id, prop_key, {
+                    'value': None,
+                })
 
                 # ignore if the property already matches the desired
                 # value
