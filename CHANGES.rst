@@ -1,5 +1,5 @@
-Development
-===========
+2.5.1 (2024-04-06)
+==================
 
 * Fixed issue in Confluence REST v2 API usage (Cloud) where edited pages on
   Confluence prevented this extension from publishing updates
