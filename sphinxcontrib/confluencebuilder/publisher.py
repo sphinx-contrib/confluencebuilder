@@ -1555,7 +1555,13 @@ class ConfluencePublisher:
                 }
 
                 orig_entry = orig_meta_props.get(prop_key, None)
-                if orig_entry:
+
+                # if an original entry exists, make sure we bump the version
+                # number for this property; note that the value may be set to
+                # `None`, where this extension requested information about
+                # a property, but Confluence does not have one defined for
+                # a page (i.e. so we treat it as new; no version bump)
+                if orig_entry and orig_entry.get('value') is not None:
                     if orig_entry['value'] == entry['value']:
                         continue
 
