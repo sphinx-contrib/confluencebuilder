@@ -46,7 +46,7 @@ try:
 except ImportError:
     imgmath = None
 
-__version__ = '2.5.0'
+__version__ = '2.5.1'
 
 
 def setup(app):
