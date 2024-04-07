@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install --assume-yes \
     gettext \
     # Graphviz support
     graphviz \
+    # PDF LaTeX support
+    latexpdf \
     # Ensure `python` is available for any support scripts
     python-is-python3 \
     # Install pip support for easy support for installing other dependencies
