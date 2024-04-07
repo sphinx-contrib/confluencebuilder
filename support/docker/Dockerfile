@@ -12,6 +12,8 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install --assume-yes \
+    # Support PNG generation in LaTeX documents
+    dvipng \
     # Sphinx internationalization support
     gettext \
     # Graphviz support
