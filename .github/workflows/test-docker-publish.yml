@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/sphinxcontrib-confluencebuilder-doctest
+  IMAGE_NAME: ${{ github.repository }}/doctest
 
 jobs:
   build:
