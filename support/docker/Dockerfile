@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install --assume-yes \
     python3-pip \
     # Allow preparing a virtual environment
     python3-venv \
-    # Full TeX Live suite for LaTeX/PDF support
-    texlive-full \
+    # TeX Live extra for LaTeX/PDF support
+    texlive-latex-extra \
     # Tool used for select tests
     tox \
     && rm -rf /var/lib/apt/lists/*
