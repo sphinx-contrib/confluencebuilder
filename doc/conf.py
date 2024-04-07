@@ -13,6 +13,7 @@ release = sphinxcontrib.confluencebuilder.__version__
 
 supported_confluence_ver = '7.18+'
 supported_python_ver = '3.8+'
+supported_requests_ver = '2.25.0+'
 supported_sphinx_ver = '6.1+'
 
 root_doc = 'contents'
@@ -21,6 +22,7 @@ root_doc = 'contents'
 rst_epilog = f'''
 .. |supported_confluence_ver| replace:: {supported_confluence_ver}
 .. |supported_python_ver| replace:: {supported_python_ver}
+.. |supported_requests_ver| replace:: {supported_requests_ver}
 .. |supported_sphinx_ver| replace:: {supported_sphinx_ver}
 '''
 

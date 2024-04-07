@@ -4,7 +4,7 @@ Installing
 Atlassian Confluence Builder for Sphinx |version| depends on:
 
 * Python_ |supported_python_ver|
-* Requests_ 2.14.0 or later
+* Requests_ |supported_requests_ver|
 * Sphinx_ |supported_sphinx_ver|
 * Confluence_ Cloud or Server |supported_confluence_ver|
 
