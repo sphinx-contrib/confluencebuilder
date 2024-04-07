@@ -88,7 +88,7 @@ Next, include a series of publish-related settings to the configuration file:
     # (for Confluence Cloud)
     confluence_server_url = 'https://example.atlassian.net/wiki/'
     confluence_server_user = 'myawesomeuser@example.com'
-    # (or, for Confluence Server)
+    # (or, for Confluence Data Center)
     confluence_server_url = 'https://intranet-wiki.example.com/'
     confluence_server_user = 'myawesomeuser'
 

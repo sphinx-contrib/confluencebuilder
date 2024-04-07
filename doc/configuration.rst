@@ -65,7 +65,7 @@ Essential configuration
 
         confluence_server_url = 'https://example.atlassian.net/wiki/'
 
-    For a Confluence Server instance, an example URL configuration, if the
+    For Confluence Data Center, an example URL configuration, if the
     instance's REST API is ``https://intranet-wiki.example.com/rest/api/``,
     should be as follows:
 
@@ -119,7 +119,7 @@ Essential configuration
 
     The username value used to authenticate with the Confluence instance. If
     using Confluence Cloud, this value will most likely be the account's E-mail
-    address. If using Confluence Server, this value will most likely be the
+    address. If using Confluence Data Center, this value will most likely be the
     username value.
 
     .. code-block:: python
@@ -281,8 +281,8 @@ Generic configuration
         - Confluence's ``v1`` editor provides a larger support for Sphinx
           features than the newer editor. Users can compare the difference
           in editors by inspecting the `online demo`_.
-        - Using the ``v2`` editor with Confluence server may yield unexpected
-          results.
+        - Using the ``v2`` editor with Confluence Data Center may yield
+          unexpected results.
         - If a page is published with a ``v2`` editor, an attempt to re-publish
           with a ``v1`` editor style may be ignored in Confluence Cloud. In
           such situations, users are recommended to delete the pages on
@@ -728,7 +728,7 @@ Publishing configuration
     .. warning::
 
         Only Confluence Cloud identifies support for an archiving API.
-        Attempting to Confluence server with this feature will most
+        Attempting to Confluence Data Center with this feature will most
         likely result in an "Unsupported Confluence API call" error (500).
 
     .. attention::
@@ -1197,7 +1197,7 @@ Advanced publishing configuration
 
     .. warning::
 
-        The ``direct`` search mode may not work on Confluence Server/DC
+        The ``direct`` search mode may not work on Confluence Data Center
         instances. For these cases, Confluence may report the following error:
 
          | *(Not Implemented; 500)*
@@ -1795,7 +1795,7 @@ Advanced publishing configuration
 
     .. note::
 
-        Confluence Server/DC does not support setting a version comment for
+        Confluence Data Center does not support setting a version comment for
         the first/new page revision.
 
     A string value to be added as a comment to Confluence's version history.

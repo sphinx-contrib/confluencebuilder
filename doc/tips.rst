@@ -82,7 +82,7 @@ Connection troubleshooting
 
 The majority of connection issues reported are typically configuration
 issues. For example, attempting to configure a Confluence Cloud API token
-using a configuration designed for a Confluence Server Personal Access
+using a configuration designed for a Confluence Data Center Personal Access
 Token (PAT).
 
 Users may try to invoke a connection test to help debug connection issues.

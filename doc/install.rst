@@ -1,12 +1,14 @@
 Installing
 ==========
 
-Atlassian Confluence Builder for Sphinx |version| depends on:
+.. only:: html
 
-* Python_ |supported_python_ver|
-* Requests_ 2.14.0 or later
-* Sphinx_ |supported_sphinx_ver|
-* Confluence_ Cloud or Server |supported_confluence_ver|
+    Atlassian Confluence Builder for Sphinx |version| depends on:
+
+    * Python_ |supported_python_ver|
+    * Requests_ |supported_requests_ver|
+    * Sphinx_ |supported_sphinx_ver|
+    * Confluence_ Cloud / Data Center |supported_confluence_ver|
 
 The recommended method of installing or upgrading is using pip_:
 
@@ -29,18 +31,6 @@ To verify the package has been installed, the following command can be used:
 For new users, the following provides a series of steps to assist in preparing
 a new environment to use this package. For users wishing to use virtualenv,
 please see the instructions in :doc:`install-virtualenv`.
-
-.. note::
-
-    If the installation process fails with the following error "AttributeError:
-    '_NamespacePath' object has no attribute 'sort'", try upgrading the
-    setuptools module:
-
-    .. code-block:: shell
-
-        pip install -U setuptools
-         (or)
-        python -m pip install -U setuptools
 
 .. raw:: latex
 

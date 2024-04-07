@@ -13,16 +13,18 @@ release = sphinxcontrib.confluencebuilder.__version__
 
 supported_confluence_ver = '7.18+'
 supported_python_ver = '3.8+'
+supported_requests_ver = '2.25.0+'
 supported_sphinx_ver = '6.1+'
 
 root_doc = 'contents'
 
 # reStructuredText string included at the end of every source
-rst_epilog = """
-.. |supported_confluence_ver| replace:: {}
-.. |supported_python_ver| replace:: {}
-.. |supported_sphinx_ver| replace:: {}
-""".format(supported_confluence_ver, supported_python_ver, supported_sphinx_ver)
+rst_epilog = f'''
+.. |supported_confluence_ver| replace:: {supported_confluence_ver}
+.. |supported_python_ver| replace:: {supported_python_ver}
+.. |supported_requests_ver| replace:: {supported_requests_ver}
+.. |supported_sphinx_ver| replace:: {supported_sphinx_ver}
+'''
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -31,6 +33,11 @@ exclude_patterns = [
     '_build',
     '.DS_Store',
     'Thumbs.db',
+]
+
+suppress_warnings = [
+    # Ignore excluded documents on toctrees (expected for LaTeX custom docs).
+    'toc.excluded',
 ]
 
 # -- Options for HTML output ----------------------------------------------
@@ -113,6 +120,8 @@ class DocumentationPostTransform(SphinxPostTransform):
 def setup(app):
     app.require_sphinx('6.0')
 
+    app.connect('builder-inited', builder_inited)
+
     app.add_js_file('jquery-3.6.3.min.js')
     app.add_js_file('version-alert.js')
 
@@ -124,3 +133,11 @@ def setup(app):
 
     # register post-transformation hook for additional tweaks
     app.add_post_transform(DocumentationPostTransform)
+
+
+def builder_inited(app):
+    # "introduction.rst" document is for latex (PDF) only
+    if app.builder.name != 'latex':
+        app.config.exclude_patterns.extend([
+            'introduction.rst',
+        ])

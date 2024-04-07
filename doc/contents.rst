@@ -1,6 +1,13 @@
 Documentation contents
 ======================
 
+.. only:: latex
+
+    .. toctree::
+        :maxdepth: 1
+
+        introduction
+
 .. toctree::
     :maxdepth: 1
 
