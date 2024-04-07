@@ -35,6 +35,11 @@ exclude_patterns = [
     'Thumbs.db',
 ]
 
+suppress_warnings = [
+    # Ignore excluded documents on toctrees (expected for LaTeX custom docs).
+    'toc.excluded',
+]
+
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = 'sphinx13b'
@@ -115,6 +120,8 @@ class DocumentationPostTransform(SphinxPostTransform):
 def setup(app):
     app.require_sphinx('6.0')
 
+    app.connect('builder-inited', builder_inited)
+
     app.add_js_file('jquery-3.6.3.min.js')
     app.add_js_file('version-alert.js')
 
@@ -126,3 +133,11 @@ def setup(app):
 
     # register post-transformation hook for additional tweaks
     app.add_post_transform(DocumentationPostTransform)
+
+
+def builder_inited(app):
+    # "introduction.rst" document is for latex (PDF) only
+    if app.builder.name != 'latex':
+        app.config.exclude_patterns.extend([
+            'introduction.rst',
+        ])

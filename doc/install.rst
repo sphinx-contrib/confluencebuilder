@@ -1,12 +1,14 @@
 Installing
 ==========
 
-Atlassian Confluence Builder for Sphinx |version| depends on:
+.. only:: html
 
-* Python_ |supported_python_ver|
-* Requests_ |supported_requests_ver|
-* Sphinx_ |supported_sphinx_ver|
-* Confluence_ Cloud or Server |supported_confluence_ver|
+    Atlassian Confluence Builder for Sphinx |version| depends on:
+
+    * Python_ |supported_python_ver|
+    * Requests_ |supported_requests_ver|
+    * Sphinx_ |supported_sphinx_ver|
+    * Confluence_ Cloud or Server |supported_confluence_ver|
 
 The recommended method of installing or upgrading is using pip_:
 
