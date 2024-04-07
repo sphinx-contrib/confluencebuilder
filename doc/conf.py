@@ -18,11 +18,11 @@ supported_sphinx_ver = '6.1+'
 root_doc = 'contents'
 
 # reStructuredText string included at the end of every source
-rst_epilog = """
-.. |supported_confluence_ver| replace:: {}
-.. |supported_python_ver| replace:: {}
-.. |supported_sphinx_ver| replace:: {}
-""".format(supported_confluence_ver, supported_python_ver, supported_sphinx_ver)
+rst_epilog = f'''
+.. |supported_confluence_ver| replace:: {supported_confluence_ver}
+.. |supported_python_ver| replace:: {supported_python_ver}
+.. |supported_sphinx_ver| replace:: {supported_sphinx_ver}
+'''
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
