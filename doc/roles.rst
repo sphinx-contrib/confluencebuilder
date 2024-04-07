@@ -96,9 +96,9 @@ generated Confluence documents.
     .. warning::
 
         Confluence Cloud mentions should always use account identifiers; where
-        Confluence Server mentions should use either usernames or user keys.
-        Attempting to use Confluence Cloud account identifiers when
-        publishing to a Confluence server will most likely result in an
+        Confluence Data Center mentions should use either usernames or user
+        keys. Attempting to use Confluence Cloud account identifiers when
+        publishing to a Confluence Data Center will most likely result in an
         "Unsupported Confluence API call" error (500).
 
     The ``confluence_mention`` role allows a user to build inlined mentions.
@@ -109,7 +109,7 @@ generated Confluence documents.
 
         See :confluence_mention:`3c5369:fa8b5c24-17f8-4340-b73e-50d383307c59`.
 
-    For Confluence Server instances, a mention to a specific user can either
+    For Confluence Data Center, a mention to a specific user can either
     be set to the username value, or a user's key value:
 
     .. code-block:: rst
