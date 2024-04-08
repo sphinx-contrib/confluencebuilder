@@ -58,7 +58,7 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['manpages_url'] = 'https://example.org/{path}'
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
         cls.test_key = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_KEY)
-        cls.test_version = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_VERSION)
+        cls.test_version = os.getenv(TESTKEY_ENV_VERSION, DEFAULT_TEST_VERSION)
 
         # overrides from user
         try:
