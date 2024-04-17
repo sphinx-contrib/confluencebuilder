@@ -1882,24 +1882,27 @@ Advanced processing configuration
     - :ref:`Jira directives <jira-directives>`
     - :ref:`Jira roles <jira-roles>`
 
-.. confval:: confluence_lang_transform
+.. |confluence_lang_overrides| replace:: ``confluence_lang_overrides``
+.. _confluence_lang_overrides:
 
-    .. versionchanged:: 2.1 Support a ``None`` return to use a default value.
+.. confval:: confluence_lang_overrides
 
-    A function to override the translation of literal block-based directive
-    language values to Confluence supported code block macro language values.
-    The default translation accepts `Pygments documented language types`_ to
+    .. versionadded:: 2.6
+
+    A dictionary to override literal block-based directive language values to
+    a Confluence supported code block macro language values. The default
+    mapping accepts `Pygments documented language types`_ to
     `Confluence-supported syntax highlight languages`_.
 
     .. code-block:: python
 
-       def my_language_translation(lang):
-           return 'default'
+        confluence_lang_overrides = {
+            'rs': 'rust',
+            'rust': 'rust',
+        }
 
-       confluence_lang_transform = my_language_translation
-
-    In the event that the transform returns a ``None`` value, the provided
-    language type will be transform to a default language type for a language
+    In the event that a language entry is missing or returns a ``None`` value,
+    the provided language type will be transform to a default language type
     as if this transform was not provided.
 
 .. |confluence_latex_macro| replace:: ``confluence_latex_macro``
@@ -2099,6 +2102,12 @@ Other options
 
 Deprecated options
 ------------------
+
+.. confval:: confluence_lang_transform
+
+    .. versionchanged:: 2.6
+
+    This option has been replaced by |confluence_lang_overrides|_.
 
 .. confval:: confluence_master_homepage
 
