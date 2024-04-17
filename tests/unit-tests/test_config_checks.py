@@ -369,6 +369,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_file_transform(self):
+        self.config['suppress_warnings'] = [
+            'confluence.deprecated',
+        ]
+
         def mock_transform(docname):
             return docname + '.conf'
 
@@ -548,6 +552,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
     def test_config_check_link_transform(self):
+        self.config['suppress_warnings'] = [
+            'confluence.deprecated',
+        ]
+
         def mock_transform(docname):
             return docname + '.conf'
 
