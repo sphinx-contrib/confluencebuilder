@@ -356,9 +356,11 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_lang_transform
-    validator.conf('confluence_lang_transform') \
-             .callable_()
+    # confluence_lang_overrides
+    try:
+        validator.conf('confluence_lang_overrides').dict_str_str()
+    except ConfluenceConfigError:
+        validator.conf('confluence_lang_overrides').callable_()
 
     # ##################################################################
 

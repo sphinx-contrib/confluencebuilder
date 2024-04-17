@@ -220,7 +220,7 @@ def setup(app):
     # Configuration for named JIRA Servers
     cm.add_conf('confluence_jira_servers', 'confluence')
     # Translation of a raw language to code block macro language.
-    cm.add_conf('confluence_lang_transform', 'confluence')
+    cm.add_conf('confluence_lang_overrides', 'confluence')
     # Macro configuration for Confluence-managed LaTeX content.
     cm.add_conf('confluence_latex_macro', 'confluence')
     # Link suffix for generated files.
@@ -265,6 +265,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_aggressive_search')
     # replaced by confluence_permit_raw_html
     cm.add_conf_bool('confluence_adv_permit_raw_html')
+    # replaced by confluence_lang_overrides
+    cm.add_conf('confluence_lang_transform', 'confluence')
     # replaced by confluence_root_homepage
     cm.add_conf('confluence_master_homepage')
     # confluence_parent_page supports both names and identifiers

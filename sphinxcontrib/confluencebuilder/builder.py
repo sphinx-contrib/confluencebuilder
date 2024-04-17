@@ -183,8 +183,14 @@ class ConfluenceBuilder(Builder):
         else:
             self.link_transform = link_transform
 
-        if self.config.confluence_lang_transform is not None:
-            self.lang_transform = self.config.confluence_lang_transform
+        if self.config.confluence_lang_overrides is not None:
+            if isinstance(self.config.confluence_lang_overrides, dict):
+                def lang_transform(lang):
+                    return self.config.confluence_lang_overrides.get(lang)
+
+                self.lang_transform = lang_transform
+            else:
+                self.lang_transform = self.config.confluence_lang_overrides
         else:
             self.lang_transform = None
 
