@@ -77,6 +77,10 @@ def apply_defaults(builder):
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
 
+    if conf.confluence_lang_overrides is None and \
+            conf.confluence_lang_transform is not None:
+        conf.confluence_lang_overrides = conf.confluence_lang_transform
+
     if conf.confluence_latex_macro and \
             not isinstance(conf.confluence_latex_macro, dict):
         conf.confluence_latex_macro = {

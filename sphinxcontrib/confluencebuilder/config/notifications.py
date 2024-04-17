@@ -12,6 +12,8 @@ DEPRECATED_CONFIGS = {
         'use "confluence_cleanup_search_mode" instead',
     'confluence_adv_permit_raw_html':
         'use "confluence_permit_raw_html" instead',
+    'confluence_lang_transform':
+        'use "confluence_lang_overrides" instead',
     'confluence_adv_trace_data':
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':
@@ -52,7 +54,7 @@ def deprecated(validator):
     # inform users of a deprecated configuration being used
     for key, msg in DEPRECATED_CONFIGS.items():
         if config[key] is not None:
-            logger.warn(f'{key} deprecated; {msg}')
+            logger.warn(f'{key} deprecated; {msg}', subtype='deprecated')
 
 
 def warnings(validator):
