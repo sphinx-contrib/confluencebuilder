@@ -106,15 +106,44 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
             self._verify_set_languages(languages, expected)
 
     @setup_builder('confluence')
-    def test_storage_sphinx_codeblock_highlight_override(self):
+    def test_storage_sphinx_codeblock_highlight_override_default(self):
         config = dict(self.config)
+
+        config['confluence_lang_overrides'] = {
+            'csharp': 'custom-csharp',
+        }
+
+        out_dir = self.build(self.dataset, config=config,
+            filenames=['code-block-highlight'])
+
+        with parse('code-block-highlight', out_dir) as data:
+            expected = [
+                'python',
+                'bash',
+                'custom-csharp',
+                'python',
+                'html/xml',
+                'python',
+            ]
+
+            languages = data.find_all('ac:parameter', {'ac:name': 'language'})
+            self._verify_set_languages(languages, expected)
+
+    @setup_builder('confluence')
+    def test_storage_sphinx_codeblock_highlight_override_legacy(self):
+        config = dict(self.config)
+
+        # ignore warnings in sphinx v7.3+ about non-cachable configuration
+        config['suppress_warnings'] = [
+            'config.cache',
+        ]
 
         def test_override_lang_method(lang):
             if lang == 'csharp':
                 return 'custom-csharp'
 
             return None
-        config['confluence_lang_transform'] = test_override_lang_method
+        config['confluence_lang_overrides'] = test_override_lang_method
 
         out_dir = self.build(self.dataset, config=config,
             filenames=['code-block-highlight'])

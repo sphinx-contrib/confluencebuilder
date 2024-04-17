@@ -485,13 +485,18 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config()
 
     def test_config_check_lang_transform(self):
+        self.config['confluence_lang_overrides'] = {
+            'key': 'value',
+        }
+        self._try_config()
+
         def mock_transform(lang):
             return 'default'
 
-        self.config['confluence_lang_transform'] = mock_transform
+        self.config['confluence_lang_overrides'] = mock_transform
         self._try_config()
 
-        self.config['confluence_lang_transform'] = 'invalid'
+        self.config['confluence_lang_overrides'] = 'invalid'
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
