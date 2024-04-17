@@ -39,35 +39,34 @@ jobs:
       matrix:
         include:
             # test each python/sphinx pair supported
-            - { os:  ubuntu-latest, python:  "3.8", toxenv:  py38-sphinx61, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.8", toxenv:  py38-sphinx62, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.8", toxenv:  py38-sphinx70, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.8", toxenv:  py38-sphinx71, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx61, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx62, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx70, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx71, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx72, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx61, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python:  "3.9", toxenv:  py39-sphinx73, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx62, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx70, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx71, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx72, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx61, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx73, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx62, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx70, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx71, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx72, cache: ~/.cache/pip }
-            - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx61, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx73, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx62, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx70, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx71, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx72, cache: ~/.cache/pip }
+            - { os:  ubuntu-latest, python: "3.12", toxenv: py312-sphinx73, cache: ~/.cache/pip }
 
             # other OSes
             #  - test against all other supported OSes, using most recent interpreter/sphinx
-            - { os:   macos-latest, python: "3.12", toxenv: py312-sphinx72, cache: ~/Library/Caches/pip }
-            - { os: windows-latest, python: "3.12", toxenv: py312-sphinx72, cache: ~\AppData\Local\pip\Cache }
+            - { os:   macos-latest, python: "3.12", toxenv: py312-sphinx73, cache: ~/Library/Caches/pip }
+            - { os: windows-latest, python: "3.12", toxenv: py312-sphinx73, cache: ~\AppData\Local\pip\Cache }
 
             # linting
             #  - any OS, using most recent interpreter
