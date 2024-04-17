@@ -1,3 +1,11 @@
+Development
+===========
+
+* **(note)** ``confluence_file_transform`` support is deprecated
+* **(note)** ``confluence_link_transform`` support is deprecated
+* Replacing ``confluence_lang_transform`` with a new option
+  ``confluence_lang_overrides``
+
 2.5.1 (2024-04-06)
 ==================
 
