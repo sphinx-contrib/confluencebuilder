@@ -1819,18 +1819,6 @@ Advanced processing configuration
 
         confluence_file_suffix = '.conf'
 
-    See also |confluence_file_transform|_.
-
-.. |confluence_file_transform| replace:: ``confluence_file_transform``
-.. _confluence_file_transform:
-
-.. confval:: confluence_file_transform
-
-    A function to override the translation of a document name to a filename. The
-    provided function is used to perform translations for both Sphinx's
-    get_outdated_docs_ and write_doc_ methods. The default translation will be
-    the combination of "``docname`` + |confluence_file_suffix|_".
-
 .. index:: Jira; Configuring Jira servers
 
 .. _confluence_jira_servers:
@@ -1959,18 +1947,6 @@ Advanced processing configuration
     .. code-block:: python
 
         confluence_link_suffix = '.conf'
-
-    See also |confluence_link_transform|_.
-
-.. |confluence_link_transform| replace:: ``confluence_link_transform``
-.. _confluence_link_transform:
-
-.. confval:: confluence_link_transform
-
-    A function to override the translation of a document name to a (partial)
-    URI. The provided function is used to perform translations for both Sphinx's
-    get_relative_uri_ method. The default translation will be the combination of
-    "``docname`` + |confluence_link_suffix|_".
 
 .. index:: Mentions; Configuration
 
@@ -2104,11 +2080,29 @@ Other options
 Deprecated options
 ------------------
 
+.. confval:: confluence_file_transform
+
+    .. versionchanged:: 2.6
+
+    A function to override the translation of a document name to a filename. The
+    provided function is used to perform translations for both Sphinx's
+    get_outdated_docs_ and write_doc_ methods. The default translation will be
+    the combination of "``docname`` + |confluence_file_suffix|_".
+
 .. confval:: confluence_lang_transform
 
     .. versionchanged:: 2.6
 
     This option has been replaced by |confluence_lang_overrides|_.
+
+.. confval:: confluence_link_transform
+
+    .. versionchanged:: 2.6
+
+    A function to override the translation of a document name to a (partial)
+    URI. The provided function is used to perform translations for both Sphinx's
+    get_relative_uri_ method. The default translation will be the combination of
+    "``docname`` + |confluence_link_suffix|_".
 
 .. confval:: confluence_master_homepage
 

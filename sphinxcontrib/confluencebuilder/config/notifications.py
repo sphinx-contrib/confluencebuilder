@@ -18,6 +18,10 @@ DEPRECATED_CONFIGS = {
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':
         'to be removed in a future version',
+    'confluence_file_transform':
+        'capability to be dropped (please report if required)',
+    'confluence_link_transform':
+        'capability to be dropped (please report if required)',
     'confluence_master_homepage':
         'use "confluence_root_homepage" instead',
     'confluence_max_doc_depth':
