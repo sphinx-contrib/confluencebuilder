@@ -2098,6 +2098,7 @@ Other options
     warning types that may be suppressed:
 
     - ``confluence`` -- All warnings
+    - ``confluence.deprecated`` -- Configuration deprecated warnings
     - ``confluence.unsupported_code_lang`` -- Unsupported code language
 
 Deprecated options
