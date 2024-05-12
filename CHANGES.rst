@@ -3,6 +3,8 @@ Development
 
 * **(note)** ``confluence_file_transform`` support is deprecated
 * **(note)** ``confluence_link_transform`` support is deprecated
+* Fixed issue in Confluence REST v2 API usage (Cloud) where page updates
+  may fail when a page has no metadata
 * Replacing ``confluence_lang_transform`` with a new option
   ``confluence_lang_overrides``
 
