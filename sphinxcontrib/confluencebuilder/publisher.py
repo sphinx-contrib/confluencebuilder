@@ -1518,8 +1518,8 @@ class ConfluencePublisher:
         pending_new_labels = []
         pending_prop_requests = []
         if self.api_mode == 'v2':
-            orig_metadata = page.get('metadata', None)
-            update_metadata = update_page.pop('metadata', None)
+            orig_metadata = page.get('metadata', {})
+            update_metadata = update_page.pop('metadata', {})
 
             # configure parent page for this page update
             #
