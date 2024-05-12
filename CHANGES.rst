@@ -21,6 +21,12 @@ Development
   ``confluence_lang_overrides``
 * Translator helpers are now public for advanced configurations/extensions
 
+2.5.2 (2024-05-12)
+==================
+
+* Fixed issue in Confluence REST v2 API usage (Cloud) where page updates
+  may fail when a page has no metadata
+
 2.5.1 (2024-04-06)
 ==================
 
