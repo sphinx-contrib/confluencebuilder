@@ -655,7 +655,8 @@ class ConfluencePublisher:
             params["cursor"] = cursor
 
         if self.api_mode == 'v2':
-            raise NotImplementedError("get_page_by_page_name is not supported in v2 API")
+            msg = "get_page_by_page_name is not supported in v2 API"
+            raise NotImplementedError(msg)
         rsp = self.rest.get(f'{self.APIV1}content/scan', params)
 
         if rsp['size'] != 0:
@@ -667,7 +668,7 @@ class ConfluencePublisher:
 
         if "nextCursor" in rsp:
             return self.get_page_by_page_name(
-                page_name=page_name, expand=expand, status=status, page_size=page_size, cursor=rsp["nextCursor"]
+                page_name=page_name, expand=expand, status=status, page_size=page_size, cursor=rsp["nextCursor"],
             )
         return None, None
 
