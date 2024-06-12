@@ -2854,7 +2854,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         autoplay = node.get('autoplay')
         height, hu = extract_length(node.get('height'))
         width, wu = extract_length(node.get('width'))
-        source_path, _ = node.get('primary_src') or (None, None)
+        if 'sources' in node:  # v0.2.1+
+            sources = node.get('sources', [])
+            source_path, _, _ = first(sources) or (None, None, None)
+        else:
+            source_path, _ = node.get('primary_src') or (None, None)
 
         if height:
             height = convert_length(height, hu)
