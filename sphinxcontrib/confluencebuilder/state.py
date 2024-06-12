@@ -92,9 +92,9 @@ class ConfluenceState:
             base_tail += postfix
 
         if len(title) + len(base_tail) > try_max:
-            warning = 'document title has been trimmed due to length: %s' % title
+            warning = f'document title has been trimmed due to length: {title}'
             if len(base_tail) > 0:
-                warning += '; With postfix: %s' % base_tail
+                warning += f'; With postfix: {base_tail}'
             logger.warn(warning)
             title = title[0:try_max - len(base_tail)]
 

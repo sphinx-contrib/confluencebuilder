@@ -513,7 +513,7 @@ def validate_configuration(builder):
     # ##################################################################
 
     # confluence_publish_debug
-    opts = PublishDebug._member_names_  # noqa: SLF001 pylint: disable=no-member
+    opts = PublishDebug._member_names_  # pylint: disable=no-member
     try:
         validator.conf('confluence_publish_debug').bool()  # deprecated
     except ConfluenceConfigError:

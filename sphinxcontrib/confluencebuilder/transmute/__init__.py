@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from contextlib import suppress
 from docutils import nodes
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
@@ -32,11 +33,10 @@ except ImportError:
     imgmath = None
 
 # load inheritance_diagram extension if available to handle node pre-processing
+inheritance_diagram = None
 if graphviz:
-    try:
+    with suppress(ImportError):
         from sphinx.ext import inheritance_diagram
-    except ImportError:
-        inheritance_diagram = None
 
 
 def doctree_transmute(builder, doctree):
@@ -272,7 +272,7 @@ def replace_inheritance_diagram(builder, doctree):
         graph = node['graph']
 
         graph_hash = inheritance_diagram.get_graph_hash(node)
-        name = 'inheritance%s' % graph_hash
+        name = f'inheritance{graph_hash}'
 
         dotcode = graph.generate_dot(name, {}, env=builder.env)
 

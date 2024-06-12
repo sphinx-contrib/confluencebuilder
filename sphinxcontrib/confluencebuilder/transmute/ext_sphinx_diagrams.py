@@ -67,6 +67,5 @@ def replace_sphinx_diagrams_nodes(builder, doctree):
 
             node.replace_self(new_container)
         except DiagramsError as exc:
-            ConfluenceLogger.warn(
-                'diagrams code %r: ' % node['code'] + str(exc))
+            ConfluenceLogger.warn('diagrams code %r: %s', node['code'], exc)
             node.parent.remove(node)
