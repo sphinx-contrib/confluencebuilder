@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from contextlib import suppress
 from docutils import nodes
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
@@ -32,11 +33,10 @@ except ImportError:
     imgmath = None
 
 # load inheritance_diagram extension if available to handle node pre-processing
+inheritance_diagram = None
 if graphviz:
-    try:
+    with suppress(ImportError):
         from sphinx.ext import inheritance_diagram
-    except ImportError:
-        inheritance_diagram = None
 
 
 def doctree_transmute(builder, doctree):
