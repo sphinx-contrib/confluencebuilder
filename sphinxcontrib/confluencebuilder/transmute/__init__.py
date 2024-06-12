@@ -272,7 +272,7 @@ def replace_inheritance_diagram(builder, doctree):
         graph = node['graph']
 
         graph_hash = inheritance_diagram.get_graph_hash(node)
-        name = 'inheritance%s' % graph_hash
+        name = f'inheritance{graph_hash}'
 
         dotcode = graph.generate_dot(name, {}, env=builder.env)
 

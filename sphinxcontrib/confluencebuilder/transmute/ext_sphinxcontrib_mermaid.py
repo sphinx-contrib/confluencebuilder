@@ -67,5 +67,5 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
                 new_node['align'] = node['align']
             node.replace_self(new_node)
         except MermaidError as exc:
-            ConfluenceLogger.warn('mermaid code %r: ' % node['code'] + str(exc))
+            ConfluenceLogger.warn('mermaid code %r: %s', node['code'], exc)
             node.parent.remove(node)

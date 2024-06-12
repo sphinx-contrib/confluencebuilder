@@ -82,7 +82,7 @@ class ConfluenceAssetManager:
         Returns:
             the key, document name and path
         """
-        logger.verbose('adding manual attachment: %s' % path)
+        logger.verbose(f'adding manual attachment: {path}')
         abs_path = find_env_abspath(self.env, self.out_dir, path)
         return self._handle_entry(abs_path, docname, standalone=True)
 
@@ -219,7 +219,7 @@ class ConfluenceAssetManager:
 
         target = node['reftarget']
         if target.find('://') == -1:
-            logger.verbose('process file node: %s' % target)
+            logger.verbose(f'process file node: {target}')
             path = self._interpret_asset_path(node)
             if path:
                 return self._handle_entry(path, docname, standalone)
@@ -245,7 +245,7 @@ class ConfluenceAssetManager:
 
         uri = str(node['uri'])
         if not uri.startswith('data:') and uri.find('://') == -1:
-            logger.verbose('process image node: %s' % uri)
+            logger.verbose(f'process image node: {uri}')
             path = self._interpret_asset_path(node)
             if path:
                 return self._handle_entry(path, docname, standalone)
@@ -344,7 +344,7 @@ class ConfluenceAssetManager:
         abs_path = find_env_abspath(self.env, self.out_dir, path)
 
         if not abs_path:
-            logger.verbose('failed to find path: %s' % path)
+            logger.verbose(f'failed to find path: {path}')
 
         return abs_path
 

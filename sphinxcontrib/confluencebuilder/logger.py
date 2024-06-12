@@ -121,8 +121,8 @@ class ConfluenceLogger:
         try:
             trace_file = Path('trace.log')
             with trace_file.open('a', encoding='utf-8') as file:
-                file.write('[%s]\n' % container)
+                file.write(f'[{container}]\n')
                 file.write(data)
                 file.write('\n')
         except OSError as err:
-            ConfluenceLogger.warn('unable to trace: %s' % err)
+            ConfluenceLogger.warn(f'unable to trace: {err}')

@@ -199,7 +199,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         secnumbers = self.env.toc_secnumbers.get(self.config.root_doc, {})
 
         docref_set = False
-        doc_anchorname = '%s/' % docname
+        doc_anchorname = f'{docname}/'
         root_section = None
         title_node = self._find_title_element(doctree)
         if title_node:
@@ -216,7 +216,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
                         anchorname = f'{docname}/#{id_}'
                         if anchorname not in secnumbers:
-                            anchorname = '%s/' % id_
+                            anchorname = f'{id_}/'
 
                         if self.add_secnumbers:
                             secnumber = secnumbers.get(anchorname)

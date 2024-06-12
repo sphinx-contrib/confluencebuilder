@@ -73,7 +73,7 @@ def confluence_supported_svg(builder, node):
         with abs_path.open('rb') as f:
             svg_data = f.read()
     except OSError as err:
-        builder.warn('error reading svg: %s' % err)
+        builder.warn(f'error reading svg: {err}')
         return
 
     modified = False
@@ -196,7 +196,7 @@ def confluence_supported_svg(builder, node):
 
     # write the new svg file (if needed)
     if not out_file.is_file():
-        logger.verbose('generating compatible svg of: %s' % uri)
+        logger.verbose(f'generating compatible svg of: {uri}')
         logger.verbose(f'generating compatible svg to: {out_file}')
 
         out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -204,7 +204,7 @@ def confluence_supported_svg(builder, node):
             with out_file.open('wb') as f:
                 f.write(svg_data)
         except OSError as err:
-            builder.warn('error writing svg: %s' % err)
+            builder.warn(f'error writing svg: {err}')
             return
 
     # replace the required node attributes
