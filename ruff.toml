@@ -2,6 +2,11 @@ lint.select = [
     'ALL',
 ]
 
+lint.exclude = [
+    # exclude any hello/sample scripts
+    'Hello.py',
+]
+
 lint.ignore = [
     # we do not type annotate everything at this time
     'ANN',
