@@ -165,7 +165,12 @@ class ConfluenceBaseTranslator(BaseTranslator):
             handler[node_name](self, node)
             raise nodes.SkipNode
 
-        self.warn('unknown node: ' + node_name)
+        if node.source:
+            lpf = f'#{node.line}' if node.line else ''
+            self.warn(f'unknown node {node_name}: {node.source}{lpf}')
+        else:
+            self.warn(f'unknown node {node_name}: {self.docname}')
+
         raise nodes.SkipNode
 
     # ---------
