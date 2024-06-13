@@ -552,7 +552,12 @@ class ConfluencePublisher:
         else:
             # Workaround for https://jira.atlassian.com/browse/CONFSERVER-57639:
             # Hitting the base Content API endpoint can cause performance problem for large instances
-            return self.get_page_by_page_name(page_name=page_name, expand=expand, status=status)
+            rsp = self.rest.get(f'{self.APIV1}content/search', {
+                "cql": f"title='{page_name}'",
+                "cqlcontext": json.dumps({"contentStatuses": [status], "spaceKey": self.space_key}),
+                "expand": ["version"],
+                "limit": 1
+            })
 
         if rsp['results']:
             page = rsp['results'][0]
@@ -634,43 +639,6 @@ class ConfluencePublisher:
             self._name_cache[page_id] = page['title']
 
         return page_id, page
-
-    def get_page_by_page_name(self, page_name, expand='version', status='current', page_size=3, cursor=None):
-        """
-        Workaround for https://jira.atlassian.com/browse/CONFSERVER-57639:
-        Hitting the base Content API endpoint can cause performance problem for large instances
-
-        For some companies the GET /content endpoint is blocked by IT, so we need to use /content/scan.
-        But scan does not support filtering by title, so we have to iterate through all the pages (with paging)
-        and find the page brute force.
-        """
-        params = {
-            'type': 'page',
-            'spaceKey': self.space_key,
-            'status': status,
-            'expand': expand,
-            'limit': page_size,
-        }
-        if cursor:
-            params["cursor"] = cursor
-
-        if self.api_mode == 'v2':
-            msg = "get_page_by_page_name is not supported in v2 API"
-            raise NotImplementedError(msg)
-        rsp = self.rest.get(f'{self.APIV1}content/scan', params)
-
-        if rsp['size'] != 0:
-            for page in rsp["results"]:
-                page_id = page['id']
-                self._name_cache[page_id] = page["title"]
-                if page["title"] == page_name:
-                    return page_id, page
-
-        if "nextCursor" in rsp:
-            return self.get_page_by_page_name(
-                page_name=page_name, expand=expand, status=status, page_size=page_size, cursor=rsp["nextCursor"],
-            )
-        return None, None
 
     def get_page_case_insensitive(self, page_name):
         """
