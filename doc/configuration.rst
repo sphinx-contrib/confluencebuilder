@@ -1345,6 +1345,32 @@ Advanced publishing configuration
     - |confluence_publish_postfix|_
     - |confluence_publish_prefix|_
 
+.. confval:: confluence_page_search_mode
+
+    .. versionadded:: 2.6
+
+    .. note::
+
+        This option is only supported using the ``v1``
+        :ref:`editor <confluence_editor>`.
+
+    Configures the mode which pages will be fetched from Confluence. For
+    Confluence Data Center instances, there may be performance issues when
+    attempting to query ``content/`` API (CONFSERVER-57639_). Select environments
+    may opt to disable this endpoint in attempt to avoid performance issues,
+    which in turn prevents this extension from fetching page content. To
+    support these environments, users can configure this extension to use an
+    alternative mode for fetching page content.
+
+    .. code-block:: python
+
+        confluence_page_search_mode = 'search'
+
+    Supported modes are as follows:
+
+    - ``content`` `(default)`: Pages will fetched using the ``content/`` API.
+    - ``search``: Pages will fetched using the ``content/search/`` API.
+
 .. confval:: confluence_parent_override_transform
 
     .. versionadded:: 2.2
@@ -2167,6 +2193,7 @@ Deprecated options
 .. references ------------------------------------------------------------------
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
+.. _CONFSERVER-57639: https://jira.atlassian.com/browse/CONFSERVER-57639
 .. _Confluence editor: https://support.atlassian.com/confluence-cloud/docs/confluence-cloud-editor-roadmap/
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
