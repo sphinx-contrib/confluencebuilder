@@ -5,6 +5,8 @@ Development
 * **(note)** ``confluence_link_transform`` support is deprecated
 * Fixed issue in Confluence REST v2 API usage (Cloud) where page updates
   may fail when a page has no metadata
+* Fixed support when using the sphinxcontrib-video extension (v2.5.1+)
+* Introduce the ``confluence_page_search_mode`` option
 * Replacing ``confluence_lang_transform`` with a new option
   ``confluence_lang_overrides``
 
