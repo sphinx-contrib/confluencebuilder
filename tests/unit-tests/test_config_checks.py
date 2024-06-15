@@ -653,6 +653,23 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceConfigError):
             self._try_config()
 
+    def test_config_check_page_search_mode(self):
+        self.config['confluence_page_search_mode'] = ''
+        self._try_config()
+
+        self.config['confluence_page_search_mode'] = 'default'
+        self._try_config()
+
+        self.config['confluence_page_search_mode'] = 'content'
+        self._try_config()
+
+        self.config['confluence_page_search_mode'] = 'search'
+        self._try_config()
+
+        self.config['confluence_page_search_mode'] = 'invalid'
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_permit_raw_html(self):
         self.config['confluence_permit_raw_html'] = True
         self._try_config()
