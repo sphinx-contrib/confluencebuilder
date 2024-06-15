@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceJiraServ
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroInvalidConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroMissingKeysConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageGenerationNoticeConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageSearchModeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceParentPageConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePrevNextButtonsLocationConfigError
@@ -404,6 +405,18 @@ def validate_configuration(builder):
     # confluence_mentions
     validator.conf('confluence_mentions') \
              .dict_str_str()
+
+    # ##################################################################
+
+    # confluence_page_search_mode
+    try:
+        validator.conf('confluence_page_search_mode').matching(
+            'default',
+            'content',
+            'search',
+        )
+    except ConfluenceConfigError as ex:
+        raise ConfluencePageSearchModeConfigError(ex) from ex
 
     # ##################################################################
 
