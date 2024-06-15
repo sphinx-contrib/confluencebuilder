@@ -166,6 +166,17 @@ configured with the message to inform users.
 ''')
 
 
+class ConfluencePageSearchModeConfigError(ConfluenceConfigError):
+    def __init__(self, msg):
+        super().__init__(f'''\
+{msg}
+
+The option 'confluence_page_search_mode' has been provided to override the
+default method for querying page content. Accepted values include 'default',
+'content' and 'search'.
+''')
+
+
 class ConfluenceParentPageConfigError(ConfluenceConfigError):
     def __init__(self):
         super().__init__('''\

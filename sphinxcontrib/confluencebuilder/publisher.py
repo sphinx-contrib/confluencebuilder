@@ -549,6 +549,18 @@ class ConfluencePublisher:
                 'status': status,
                 'title': page_name,
             })
+        elif self.config.confluence_page_search_mode == 'search':
+            rsp = self.rest.get(f'{self.APIV1}content/search', {
+                'cql': 'space="' + self.space_key +
+                    '" and type=page and title="' + page_name + '"',
+                "cqlcontext": json.dumps({
+                    'contentStatuses': [
+                        status,
+                    ],
+                }),
+                'expand': expand,
+                'limit': 1,
+            })
         else:
             rsp = self.rest.get(f'{self.APIV1}content', {
                 'type': 'page',

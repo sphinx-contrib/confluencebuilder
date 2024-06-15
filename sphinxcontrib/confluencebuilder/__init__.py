@@ -175,6 +175,8 @@ def setup(app):
     cm.add_conf_bool('confluence_disable_ssl_validation')
     # Ignore adding a titlefix on the index document.
     cm.add_conf_bool('confluence_ignore_titlefix_on_index', 'confluence')
+    # The mode to search for page contents.
+    cm.add_conf('confluence_page_search_mode')
     # Translation to override parent page identifier to publish to.
     cm.add_conf('confluence_parent_override_transform')
     # Proxy server needed to communicate with Confluence server.
