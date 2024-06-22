@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from functools import wraps
 from email.utils import mktime_tz
 from email.utils import parsedate_tz
+from functools import wraps
+from requests.adapters import HTTPAdapter
 from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
@@ -21,7 +22,6 @@ from sphinxcontrib.confluencebuilder.retry import API_NORETRY_ERRORS
 from sphinxcontrib.confluencebuilder.retry import API_RETRY_ERRORS
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
 from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
-from requests.adapters import HTTPAdapter
 import inspect
 import json
 import math
@@ -29,7 +29,6 @@ import random
 import requests
 import ssl
 import time
-
 
 
 # the maximum times a request will be retried until stopping (rate limiting)
@@ -182,8 +181,8 @@ def rate_limited_retries():
                     if attempt > RATE_LIMITED_MAX_RETRIES:
                         raise
 
-                    # determine the amount of delay to wait again -- either from the
-                    # provided delay (if any) or exponential backoff
+                    # determine the amount of delay to wait again -- either
+                    # from the provided delay (if any) or exponential backoff
                     if self.next_delay:
                         delay = self.next_delay
                         self.next_delay = None
@@ -197,8 +196,9 @@ def rate_limited_retries():
                     delay += random.uniform(0.3, 1.3)  # noqa: S311
 
                     # wait the calculated delay before retrying again
-                    logger.warn('rate-limit response detected; '
-                                f'waiting {math.ceil(delay)} seconds...')
+                    with skip_warningiserror():
+                        logger.warn('rate-limit response detected; '
+                                    f'waiting {math.ceil(delay)} seconds...')
                     time.sleep(delay)
                     self.last_retry = delay
                     attempt += 1

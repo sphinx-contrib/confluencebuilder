@@ -1065,6 +1065,16 @@ class ConfluencePublisher:
 
                     _, page = self.get_page_case_insensitive(page_name)
                     if not page:
+                        # If here, the original `get_page` call failed to find
+                        # a page with a specific name and then a retry with
+                        # `get_page_case_insensitive` also failed again, even
+                        # though Confluence reports the title already exists.
+                        # At this time, this appears to be limited to users
+                        # who use `confluence_page_search_mode` with `search`.
+                        # There appears to be some scenarios where a Confluence
+                        # instance will not report the existence of a deleted
+                        # page when queried via CQL, which prevents us from
+                        # reviving a page from the dead.
                         raise
 
                     if self.onlynew:
