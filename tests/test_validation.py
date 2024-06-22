@@ -7,6 +7,7 @@ from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
 from tests.lib import prepare_dirs
+import argparse
 import os
 import sys
 import unittest
@@ -27,8 +28,6 @@ TESTKEY_ENV_VERSION = 'CONFLUENCE_TEST_VERSION'
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        enable_sphinx_info()
-
         # build configuration
         space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
@@ -307,5 +306,25 @@ class TestConfluenceValidation(unittest.TestCase):
         sys.path.pop(0)
 
 
+def main():
+    enable_sphinx_info()
+
+    parser = argparse.ArgumentParser(prog=__name__,
+        description='Atlassian Confluence Sphinx Extension Validation')
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true')
+
+    # parse local argument and rebuild sys.argv with other arguments
+    # which will be handled in `unittest.main`
+    args, unknown_args = parser.parse_known_args(sys.argv[1:])
+    sys.argv = sys.argv[:1] + unknown_args
+
+    if args.debug or args.verbose:
+        if 'SPHINX_VERBOSITY' not in os.environ:
+            os.environ['SPHINX_VERBOSITY'] = '2'
+
+    return unittest.main(failfast=True, verbosity=0)
+
+
 if __name__ == '__main__':
-    sys.exit(unittest.main(failfast=True, verbosity=0))
+    sys.exit(main())
