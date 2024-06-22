@@ -22,6 +22,7 @@ from sphinxcontrib.confluencebuilder.retry import API_RETRY_ERRORS
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
 from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
 from requests.adapters import HTTPAdapter
+import inspect
 import json
 import math
 import random
@@ -406,8 +407,14 @@ class Rest:
 
         # debug logging
         if dump:
+            # attempt to track the origin of the request
+            frame = inspect.currentframe().f_back.f_back
+            while frame and frame.f_code.co_name.startswith('_wrapper'):
+                frame = frame.f_back
+            origin = frame.f_code.co_name if frame else 'unknown'
+
             print('')  # leading newline, if debugging into active line
-            print('(debug) Request]')
+            print(f'(debug) Request: {origin}]')
             print(f'{req.method} {req.url}')
             print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
             print('', flush=True)
