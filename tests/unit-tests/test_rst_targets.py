@@ -30,10 +30,10 @@ class TestConfluenceRstTargets(ConfluenceTestCase):
             self.assertEqual(anchor_param.text, 'inline-target')
 
             # before and after text
-            before_data = anchor_tag.previousSibling.strip()
+            before_data = anchor_tag.previous_sibling.strip()
             self.assertEqual(before_data, 'An')
 
-            trailing_data = anchor_tag.nextSibling.strip()
+            trailing_data = anchor_tag.next_sibling .strip()
             self.assertEqual(trailing_data, 'inline target example.')
 
     @setup_builder('confluence')
@@ -53,5 +53,5 @@ class TestConfluenceRstTargets(ConfluenceTestCase):
             self.assertEqual(anchor_param.text, 'inline-target')
 
             # before text
-            before_data = anchor_tag.previousSibling.strip()
+            before_data = anchor_tag.previous_sibling.strip()
             self.assertEqual(before_data, 'An')

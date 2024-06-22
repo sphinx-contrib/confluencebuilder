@@ -38,9 +38,8 @@ class TestConfluenceRstFootnotes(ConfluenceTestCase):
             self.assertEqual(link_body.text, '[1]')
 
             # leader anchor back to this footnote a
-            anchor_tag = container.find_previous_sibling()
+            anchor_tag = container.find_previous_sibling('ac:structured-macro')
             self.assertIsNotNone(anchor_tag)
-            self.assertEqual(anchor_tag.name, 'ac:structured-macro')
             self.assertTrue(anchor_tag.has_attr('ac:name'))
             self.assertEqual(anchor_tag['ac:name'], 'anchor')
 
@@ -61,9 +60,8 @@ class TestConfluenceRstFootnotes(ConfluenceTestCase):
             self.assertEqual(link_body.text, '[3]')  # 3 since 2 was used
 
             # leader anchor back to this footnote b
-            anchor_tag = container.find_previous_sibling()
+            anchor_tag = container.find_previous_sibling('ac:structured-macro')
             self.assertIsNotNone(anchor_tag)
-            self.assertEqual(anchor_tag.name, 'ac:structured-macro')
             self.assertTrue(anchor_tag.has_attr('ac:name'))
             self.assertEqual(anchor_tag['ac:name'], 'anchor')
 
@@ -84,9 +82,8 @@ class TestConfluenceRstFootnotes(ConfluenceTestCase):
             self.assertEqual(link_body.text, '[2]')
 
             # leader anchor back to this footnote 3
-            anchor_tag = container.find_previous_sibling()
+            anchor_tag = container.find_previous_sibling('ac:structured-macro')
             self.assertIsNotNone(anchor_tag)
-            self.assertEqual(anchor_tag.name, 'ac:structured-macro')
             self.assertTrue(anchor_tag.has_attr('ac:name'))
             self.assertEqual(anchor_tag['ac:name'], 'anchor')
 
