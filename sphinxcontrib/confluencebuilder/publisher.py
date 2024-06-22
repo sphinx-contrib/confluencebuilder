@@ -1309,18 +1309,7 @@ class ConfluencePublisher:
             delete_path = f'{self.APIV1}content'
 
         try:
-            try:
-                self.rest.delete(delete_path, id_)
-            except ConfluenceBadApiError as ex:
-                if str(ex).find('Transaction rolled back') == -1:
-                    raise
-
-                with skip_warningiserror():
-                    logger.warn('delete failed; retrying...')
-                time.sleep(3)
-
-                self.rest.delete(delete_path, id_)
-
+            self.rest.delete(delete_path, id_)
         except ConfluencePermissionError as ex:
             msg = (
                 'Publish user does not have permission to delete '
@@ -1343,18 +1332,7 @@ class ConfluencePublisher:
             delete_path = f'{self.APIV1}content'
 
         try:
-            try:
-                self.rest.delete(delete_path, page_id)
-            except ConfluenceBadApiError as ex:
-                if str(ex).find('Transaction rolled back') == -1:
-                    raise
-
-                with skip_warningiserror():
-                    logger.warn('delete failed; retrying...')
-                time.sleep(3)
-
-                self.rest.delete(delete_path, page_id)
-
+            self.rest.delete(delete_path, page_id)
         except ConfluenceBadApiError as ex:
             # Check if Confluence reports that this content does not exist. If
             # so, we want to suppress the API error. This is most likely a
@@ -1595,43 +1573,9 @@ class ConfluencePublisher:
             if str(ex).find('CDATA block has embedded') != -1:
                 raise ConfluenceUnexpectedCdataError from ex
 
-            # Handle select API failures by waiting a moment and retrying the
-            # content request. If it happens again, the put request will fail as
-            # it normally would.
-            retry_errors = [
-                # Confluence Cloud may (rarely) fail to complete a content
-                # request with an OptimisticLockException/
-                # StaleObjectStateException exception. It is suspected that this
-                # is just an instance timing/processing issue.
-                'OptimisticLockException',
-
-                # Confluence Cloud may (rarely) fail to complete a content
-                # request with an UnexpectedRollbackException exception. It is
-                # suspected that this is just a failed update event due to
-                # processing other updates.
-                'UnexpectedRollbackException',
-
-                # Confluence may report an unreconciled error -- either from a
-                # conflict with another instance updating the same page or some
-                # select backend issues processing previous updates on a page.
-                'unreconciled',
-            ]
-
-            if not any(x in str(ex) for x in retry_errors):
-                raise
-
-            with skip_warningiserror():
-                logger.warn('remote page updated failed; retrying...')
-            time.sleep(3)
-
-            try:
-                self.rest.put(update_path, page['id'], update_page)
-            except ConfluenceBadApiError as ex:
-                if 'unreconciled' in str(ex):
-                    raise ConfluenceUnreconciledPageError(
-                        page_name, page['id'], self.server_url, ex) from ex
-
-                raise
+            if 'unreconciled' in str(ex):
+                raise ConfluenceUnreconciledPageError(
+                    page_name, page['id'], self.server_url, ex) from ex
 
         # post-update requests (api v2 mode)
         update_page_id = update_page['id']

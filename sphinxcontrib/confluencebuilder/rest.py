@@ -4,6 +4,7 @@
 from functools import wraps
 from email.utils import mktime_tz
 from email.utils import parsedate_tz
+from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
@@ -16,6 +17,8 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSeraphAuthentic
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceSslError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceTimeoutError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
+from sphinxcontrib.confluencebuilder.retry import API_NORETRY_ERRORS
+from sphinxcontrib.confluencebuilder.retry import API_RETRY_ERRORS
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
 from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
 from requests.adapters import HTTPAdapter
@@ -27,12 +30,19 @@ import ssl
 import time
 
 
-# the maximum times a request will be retried until stopping
+
+# the maximum times a request will be retried until stopping (rate limiting)
 RATE_LIMITED_MAX_RETRIES = 5
 
 # the maximum duration (in seconds) a retry on a rate-limited request can be
 # delayed
 RATE_LIMITED_MAX_RETRY_DURATION = 30
+
+# the maximum times a request will be retried until stopping (erred instance)
+REMOTE_ERR_MAX_RETRIES = 2
+
+# the maximum duration (in seconds) a retry on a erred request can be delayed
+REMOTE_ERR_MAX_RETRY_DURATION = 4
 
 
 class SslAdapter(HTTPAdapter):
@@ -69,6 +79,66 @@ class SslAdapter(HTTPAdapter):
         # relying on the default certificate stores loaded by the context
         if verify is True and not self._config.confluence_adv_embedded_certs:
             conn.ca_certs = None
+
+
+def confluence_error_retries():
+    """
+    a confluence error retry "decorator"
+
+    A utility "decorator" to handle automatic attempt to retry an API call
+    if Confluence reports an unexpected server error (e.g. a 5xx error).
+    There can be issues where Confluence may have issues with a transaction
+    on a page update, or an unexpected error processing properties on a page.
+    If such a call is detected, the call will be retried again in hopes that
+    it was a one time occurrence.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            attempt = 1
+            while True:
+                try:
+                    return func(self, *args, **kwargs)
+                except ConfluenceBadApiError as ex:  # noqa: PERF203
+                    # if max attempts have been reached, stop any more attempts
+                    if attempt > REMOTE_ERR_MAX_RETRIES:
+                        raise
+
+                    # The following will contain a series of known error
+                    # states reported by Confluence and whether we will
+                    # consider the reported state as a possible condition
+                    # to retry the request.
+                    ex_str = str(ex)
+
+                    # Errors to not retry on.
+                    if any(x in ex_str for x in API_NORETRY_ERRORS):
+                        raise
+
+                    # Always retry on 5xx error codes.
+                    if ex.status_code >= 500 and ex.status_code <= 599:
+                        pass
+                    # Check if the reported state is a retry condition, but
+                    # Confluence does not report a 5xx error code for the
+                    # state.
+                    elif not any(x in ex_str for x in API_RETRY_ERRORS):
+                        raise
+
+                    # configure the delay
+                    delay = REMOTE_ERR_MAX_RETRY_DURATION
+
+                    # add jitter
+                    delay += random.uniform(0.0, 0.5)  # noqa: S311
+
+                    # wait the calculated delay before retrying again
+                    with skip_warningiserror():
+                        reported_delay = math.ceil(delay)
+                        logger.warn('unexpected rest response detected; '
+                                    f'retrying in {reported_delay} seconds...')
+                    time.sleep(delay)
+                    attempt += 1
+
+        return _wrapper
+    return _decorator
 
 
 def rate_limited_retries():
@@ -233,6 +303,7 @@ class Rest:
 
         return session
 
+    @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
     def get(self, path, params=None):
@@ -253,6 +324,7 @@ class Rest:
 
         return json_data
 
+    @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
     def post(self, path, data, files=None):
@@ -276,6 +348,7 @@ class Rest:
 
         return json_data
 
+    @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
     def put(self, path, value, data):
@@ -299,6 +372,7 @@ class Rest:
 
         return json_data
 
+    @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
     def delete(self, path, value):
