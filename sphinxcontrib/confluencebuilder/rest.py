@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from functools import wraps
 from email.utils import mktime_tz
 from email.utils import parsedate_tz
+from functools import wraps
+from requests.adapters import HTTPAdapter
 from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
@@ -21,7 +22,6 @@ from sphinxcontrib.confluencebuilder.retry import API_NORETRY_ERRORS
 from sphinxcontrib.confluencebuilder.retry import API_RETRY_ERRORS
 from sphinxcontrib.confluencebuilder.std.confluence import NOCHECK
 from sphinxcontrib.confluencebuilder.std.confluence import RSP_HEADER_RETRY_AFTER
-from requests.adapters import HTTPAdapter
 import inspect
 import json
 import math
@@ -29,7 +29,6 @@ import random
 import requests
 import ssl
 import time
-
 
 
 # the maximum times a request will be retried until stopping (rate limiting)
