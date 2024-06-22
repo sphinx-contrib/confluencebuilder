@@ -181,8 +181,8 @@ def rate_limited_retries():
                     if attempt > RATE_LIMITED_MAX_RETRIES:
                         raise
 
-                    # determine the amount of delay to wait again -- either from the
-                    # provided delay (if any) or exponential backoff
+                    # determine the amount of delay to wait again -- either
+                    # from the provided delay (if any) or exponential backoff
                     if self.next_delay:
                         delay = self.next_delay
                         self.next_delay = None
