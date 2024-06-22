@@ -28,5 +28,5 @@ class TestConfluenceRstAttribution(ConfluenceTestCase):
             quote_sep = quote.find('br')
             self.assertIsNotNone(quote_sep)
 
-            quote_source = quote_sep.nextSibling.strip()
+            quote_source = quote_sep.next_sibling.strip()
             self.assertEqual(quote_source, '— source')

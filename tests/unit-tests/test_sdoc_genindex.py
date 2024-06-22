@@ -96,10 +96,12 @@ class TestSdocGenindex(ConfluenceTestCase):
         out_dir = self.build(dataset, config=config)
 
         with parse('genindex', out_dir) as data:
-            header_data = data.find().previousSibling.strip()
+            self.assertIsNotNone(data.contents)
+
+            header_data = data.contents[0].strip()
             self.assertEqual(header_data, 'header content')
 
-            footer_data = data.find_all(recursive=False)[-1].nextSibling.strip()
+            footer_data = data.contents[-1].strip()
             self.assertEqual(footer_data, 'footer content')
 
     @setup_builder('confluence')

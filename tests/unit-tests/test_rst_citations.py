@@ -38,9 +38,8 @@ class TestConfluenceRstCitations(ConfluenceTestCase):
             self.assertEqual(link_body.text, '[CIT01]')
 
             # leader anchor back to this citation a
-            anchor_tag = container.find_previous_sibling()
+            anchor_tag = container.find_previous_sibling('ac:structured-macro')
             self.assertIsNotNone(anchor_tag)
-            self.assertEqual(anchor_tag.name, 'ac:structured-macro')
             self.assertTrue(anchor_tag.has_attr('ac:name'))
             self.assertEqual(anchor_tag['ac:name'], 'anchor')
 
@@ -61,9 +60,8 @@ class TestConfluenceRstCitations(ConfluenceTestCase):
             self.assertEqual(link_body.text, '[CIT02]')
 
             # leader anchor back to this citation b
-            anchor_tag = container.find_previous_sibling()
+            anchor_tag = container.find_previous_sibling('ac:structured-macro')
             self.assertIsNotNone(anchor_tag)
-            self.assertEqual(anchor_tag.name, 'ac:structured-macro')
             self.assertTrue(anchor_tag.has_attr('ac:name'))
             self.assertEqual(anchor_tag['ac:name'], 'anchor')
 

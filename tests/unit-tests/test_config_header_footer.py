@@ -28,10 +28,10 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
             self.assertIsNotNone(body)
             self.assertEqual(body.text, 'body content')
 
-            header_data = body.previousSibling.strip()
+            header_data = body.previous_sibling.strip()
             self.assertEqual(header_data, 'header content')
 
-            footer_data = body.nextSibling.strip()
+            footer_data = body.next_sibling.strip()
             self.assertEqual(footer_data, 'footer content')
 
     @setup_builder('confluence')
@@ -47,10 +47,10 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
             self.assertIsNotNone(body)
             self.assertEqual(body.text, 'body content')
 
-            header_data = body.previousSibling.strip()
+            header_data = body.previous_sibling.strip()
             self.assertEqual(header_data, 'header content')
 
-            footer_data = body.nextSibling.strip()
+            footer_data = body.next_sibling.strip()
             self.assertEqual(footer_data, 'footer content')
 
     @setup_builder('confluence')
@@ -72,8 +72,8 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
             self.assertIsNotNone(body)
             self.assertEqual(body.text, 'body content')
 
-            header_data = body.previousSibling.strip()
+            header_data = body.previous_sibling.strip()
             self.assertEqual(header_data, 'header content header_value')
 
-            footer_data = body.nextSibling.strip()
+            footer_data = body.next_sibling.strip()
             self.assertEqual(footer_data, 'footer content footer_value')

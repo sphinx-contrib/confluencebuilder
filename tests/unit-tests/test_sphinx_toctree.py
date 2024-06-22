@@ -16,7 +16,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
             root_toc = data.find('ul', recursive=False)
             self.assertIsNotNone(root_toc)
 
-            caption = root_toc.findPrevious()
+            caption = root_toc.find_previous_sibling('p')
             self.assertIsNotNone(caption)
             self.assertEqual(caption.text, 'toctree caption')
 

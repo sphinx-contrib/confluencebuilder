@@ -159,9 +159,12 @@ class TestConfluenceRstFigure(ConfluenceTestCase):
             # trailing caption/etc. is aligned under the figure's image
             images = data.find_all('ac:image')
             for image in images:
-                next_tag = image.find_next_sibling()
+                # captaion paragraph with a float hint
+                next_tag = image.find_next_sibling('p')
+
+                # or, a trailing div with a float hint
                 if not next_tag:
-                    next_tag = image.parent.find_next_sibling()
+                    next_tag = image.parent.find_next_sibling('div')
 
                 self.assertIsNotNone(next_tag)
                 self.assertTrue(next_tag.has_attr('style'))
