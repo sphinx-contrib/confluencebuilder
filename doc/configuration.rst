@@ -2101,6 +2101,7 @@ Other options
 
     - ``confluence`` -- All warnings
     - ``confluence.deprecated`` -- Configuration deprecated warnings
+    - ``confluence.deprecated_develop`` -- Development deprecated warnings
     - ``confluence.unsupported_code_lang`` -- Unsupported code language
 
 Deprecated options
