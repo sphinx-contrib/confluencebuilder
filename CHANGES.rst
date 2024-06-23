@@ -7,8 +7,10 @@ Development
   may fail when a page has no metadata
 * Fixed support when using the sphinxcontrib-video extension (v2.5.1+)
 * Introduce the ``confluence_page_search_mode`` option
+* REST API calls will retry on select error events (e.g. 5xx errors)
 * Replacing ``confluence_lang_transform`` with a new option
   ``confluence_lang_overrides``
+* Translator helpers are now public for advanced configurations/extensions
 
 2.5.1 (2024-04-06)
 ==================
