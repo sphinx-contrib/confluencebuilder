@@ -211,6 +211,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
+            new_targets = []
+
             self.body.append(
                 self.start_tag(node, f'h{self._title_level}'))
 
@@ -226,8 +228,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 for anchor in node.parent['names']:
                     target_name = f'{self.docname}#{anchor}'
                     target = self.state.target(target_name)
-                    if target:
+                    if target and target not in new_targets:
                         self._build_anchor(node, target)
+                        new_targets.append(target)
 
             # For MyST sections with an auto-generated slug, we will use this
             # slug to build an anchor target for anchor links defined in a
@@ -236,8 +239,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if slug:
                 target_name = f'{self.docname}#{slug}'
                 target = self.state.target(target_name)
-                if target:
+                if target and target not in new_targets:
                     self._build_anchor(node, target)
+                    new_targets.append(target)
 
             self.add_secnumber(node)
             self.add_fignumber(node.parent)
