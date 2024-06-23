@@ -36,6 +36,7 @@ import sys
 
 
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
+    __tracked_deprecated = False
     _tracked_unknown_code_lang = []
 
     """
@@ -211,7 +212,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_title(self, node):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             self.body.append(
-                self._start_tag(node, f'h{self._title_level}'))
+                self.start_tag(node, f'h{self._title_level}'))
 
             # For v2, will will generate section anchors inside the title
             # area for the following reasons:
@@ -240,16 +241,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             self.add_secnumber(node)
             self.add_fignumber(node.parent)
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
             # if title points to a section and does not already contain a
             # reference, create a link to it
             if 'refid' in node and not node.next_node(nodes.reference):
                 anchor_value = ''.join(node['refid'].split())
-                self.body.append(self._start_ac_link(node, anchor_value))
-                self.body.append(self._start_ac_link_body(node))
-                self.context.append(self._end_ac_link_body(node) +
-                    self._end_ac_link(node))
+                self.body.append(self.start_ac_link(node, anchor_value))
+                self.body.append(self.start_ac_link_body(node))
+                self.context.append(self.end_ac_link_body(node) +
+                    self.end_ac_link(node))
         elif (isinstance(node.parent, addnodes.compact_paragraph) and
                 node.parent.get('toctree')):
             self.visit_caption(node)
@@ -295,7 +296,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if style:
             attribs['style'] = style
 
-        self.body.append(self._start_tag(node, 'p', **attribs))
+        self.body.append(self.start_tag(node, 'p', **attribs))
 
         # build anchors for ids which references may want to link to
         #
@@ -307,13 +308,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # use some id-only targets instead.
         self._build_id_anchors(node)
 
-        self.context.append(self._end_tag(node, suffix=''))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())  # p
 
     def visit_transition(self, node):
-        self.body.append(self._start_tag(
+        self.body.append(self.start_tag(
             node, 'hr', suffix=self.nl, empty=True))
         raise nodes.SkipNode
 
@@ -396,8 +397,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
         self._apply_leading_list_item_offets(node, attribs)
 
-        self.body.append(self._start_tag(node, 'ul', suffix=self.nl, **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'ul', suffix=self.nl, **attribs))
+        self.context.append(self.end_tag(node))
         self._list_context.append('')
 
     def depart_bullet_list(self, node):
@@ -438,8 +439,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 attribs['style'] = ''
             attribs['style'] += f'list-style-type: {list_style_type};'
 
-        self.body.append(self._start_tag(node, 'ol', suffix=self.nl, **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'ol', suffix=self.nl, **attribs))
+        self.context.append(self.end_tag(node))
 
     def depart_enumerated_list(self, node):
         self.body.append(self.context.pop())  # ol
@@ -457,8 +458,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         except AttributeError:
             pass
 
-        self.body.append(self._start_tag(node, 'li', suffix=self.nl, **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'li', suffix=self.nl, **attribs))
+        self.context.append(self.end_tag(node))
 
     def depart_list_item(self, node):
         if self._list_context[-1] == 'sphx-glr-horizontal':
@@ -479,8 +480,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._indent_level += 1
             return
 
-        self.body.append(self._start_tag(node, 'dl', suffix=self.nl))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'dl', suffix=self.nl))
+        self.context.append(self.end_tag(node))
 
     def depart_definition_list(self, node):
         if self.v2:
@@ -513,15 +514,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.v2:
             offset = INDENT * self._indent_level
-            self.body.append(self._start_tag(node, 'p',
+            self.body.append(self.start_tag(node, 'p',
                 **{'style': f'margin-left: {offset}px;'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
         self._build_id_anchors(node)
 
         if not self.v2:
-            self.body.append(self._start_tag(node, 'dt'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'dt'))
+            self.context.append(self.end_tag(node))
         self._has_term = True
 
     def depart_term(self, node):
@@ -532,8 +533,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_classifier(self, node):
         self.body.append(' : ')
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'em'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_classifier(self, node):
         self.body.append(self.context.pop())  # em
@@ -546,8 +547,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if self.v2:
             self._indent_level += 1
         else:
-            self.body.append(self._start_tag(node, 'dd', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'dd', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_definition(self, node):
         if self.v2:
@@ -564,10 +565,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_field_list(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'table', suffix=self.nl))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'table', suffix=self.nl))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'tbody', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_field_list(self, node):
         if not self.v2:
@@ -576,8 +577,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_field(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'tr', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_field(self, node):
         if not self.v2:
@@ -585,12 +586,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_field_name(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
-        self.body.append(self._start_tag(node, 'strong'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'strong'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_field_name(self, node):
         self.body.append(':')
@@ -601,9 +602,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_field_body(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
     def depart_field_body(self, node):
         if not self.v2:
@@ -615,10 +616,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_option_list(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'table', suffix=self.nl))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'table', suffix=self.nl))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'tbody', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_option_list(self, node):
         if not self.v2:
@@ -627,18 +628,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_option_list_item(self, node):
         if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'ac:layout'))
+            self.context.append(self.end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-section',
+            self.body.append(self.start_tag(node, 'ac:layout-section',
                 **{
                     'ac:type': 'two_left_sidebar',
                     'ac:breakout-mode': 'default',
                 }))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
         else:
-            self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'tr', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_option_list_item(self, node):
         if self.v2:
@@ -651,14 +652,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._first_option = True
 
         if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
+            self.context.append(self.end_tag(node))
         else:
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'code'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'code'))
+            self.context.append(self.end_tag(node, suffix=''))
 
     def depart_option_group(self, node):
         if self.v2:
@@ -684,20 +685,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_option_argument(self, node):
         self.body.append(node['delimiter'])
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'em'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_option_argument(self, node):
         self.body.append(self.context.pop())  # em
 
     def visit_description(self, node):
         if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
         else:
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
 
-        self.context.append(self._end_tag(node))
+        self.context.append(self.end_tag(node))
 
     def depart_description(self, node):
         self.body.append(self.context.pop())  # td.ac:layout-cell
@@ -720,14 +721,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # parsed literal
             else:
                 self._literal = True
-                self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                self.body.append(self.start_tag(node, 'div', suffix=self.nl,
                     **{'class': 'panel pdl'}))
-                self.context.append(self._end_tag(node))
-                self.body.append(self._start_tag(node, 'pre',
+                self.context.append(self.end_tag(node))
+                self.body.append(self.start_tag(node, 'pre',
                     **{'class': 'panelContent'}))
-                self.context.append(self._end_tag(node))
-                self.body.append(self._start_tag(node, 'code'))
-                self.context.append(self._end_tag(node))
+                self.context.append(self.end_tag(node))
+                self.body.append(self.start_tag(node, 'code'))
+                self.context.append(self.end_tag(node))
                 return
 
         if not lang:
@@ -766,9 +767,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             with suppress(KeyError):
                 firstline = node.attributes['highlight_args']['linenostart']
 
-        self.body.append(self._start_ac_macro(node, 'code'))
-        self.body.append(self._build_ac_param(node, 'language', lang))
-        self.body.append(self._build_ac_param(node, 'linenumbers', num))
+        self.body.append(self.start_ac_macro(node, 'code'))
+        self.body.append(self.build_ac_param(node, 'language', lang))
+        self.body.append(self.build_ac_param(node, 'linenumbers', num))
 
         theme = self.builder.config.confluence_code_block_theme
         theme = theme.lower() if theme else None
@@ -784,21 +785,21 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         theme_id = theme_map.get(theme)
         if theme_id:
-            self.body.append(self._build_ac_param(node, 'theme', theme_id))
+            self.body.append(self.build_ac_param(node, 'theme', theme_id))
 
         if firstline is not None and firstline > 1:
-            self.body.append(self._build_ac_param(node, 'firstline', firstline))
+            self.body.append(self.build_ac_param(node, 'firstline', firstline))
 
         if title:
-            self.body.append(self._build_ac_param(node, 'title', title))
+            self.body.append(self.build_ac_param(node, 'title', title))
 
         if 'collapse' in node.get('classes', []):
-            self.body.append(self._build_ac_param(node, 'collapse', 'true'))
+            self.body.append(self.build_ac_param(node, 'collapse', 'true'))
 
-        self.body.append(self._start_ac_plain_text_body_macro(node))
-        self.body.append(self._escape_cdata(data))
-        self.body.append(self._end_ac_plain_text_body_macro(node))
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self.start_ac_plain_text_body_macro(node))
+        self.body.append(self.escape_cdata(data))
+        self.body.append(self.end_ac_plain_text_body_macro(node))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -818,13 +819,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_doctest_block(self, node):
         data = self.nl.join(node.astext().splitlines())
 
-        self.body.append(self._start_ac_macro(node, 'code'))
-        self.body.append(self._build_ac_param(
+        self.body.append(self.start_ac_macro(node, 'code'))
+        self.body.append(self.build_ac_param(
             node, 'language', 'python'))  # python-specific
-        self.body.append(self._start_ac_plain_text_body_macro(node))
-        self.body.append(self._escape_cdata(data))
-        self.body.append(self._end_ac_plain_text_body_macro(node))
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self.start_ac_plain_text_body_macro(node))
+        self.body.append(self.escape_cdata(data))
+        self.body.append(self.end_ac_plain_text_body_macro(node))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -835,7 +836,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_block_quote(self, node):
         if first(findall(node, nodes.attribution)):
             if self.v2:
-                self.body.append(self._start_tag(node, 'blockquote'))
+                self.body.append(self.start_tag(node, 'blockquote'))
             else:
                 # older editor updates no longer render blockquotes as
                 # expected; emulate the legacy and v2 editor style
@@ -843,10 +844,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 style += 'border-left: 1px solid #ccc;'
                 style += 'padding: 10px 20px;'
                 style += 'color: #707070;'
-                self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+                self.body.append(self.start_tag(node, 'div', suffix=self.nl,
                     **{'style': style}))
 
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
         elif self.v2:
             self._indent_level += 1
         else:
@@ -894,9 +895,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if firstchild_margin:
                 style += f'padding-top: {FCMMO}px;'
 
-            self.body.append(self._start_tag(node, 'div', suffix=self.nl,
+            self.body.append(self.start_tag(node, 'div', suffix=self.nl,
                 **{'style': style}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
     def depart_block_quote(self, node):
         if first(findall(node, nodes.attribution)) or not self.v2:
@@ -918,30 +919,30 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------
 
     def _visit_admonition(self, node, atype, title=None, logo=True):
-        self.body.append(self._start_ac_macro(node, atype))
+        self.body.append(self.start_ac_macro(node, atype))
         if title:
-            self.body.append(self._build_ac_param(node, 'title', title))
+            self.body.append(self.build_ac_param(node, 'title', title))
         if not logo:
             self.body.append(
-                self._build_ac_param(node, 'icon', 'false'))
-        self.body.append(self._start_ac_rich_text_body_macro(node))
-        self.context.append(self._end_ac_rich_text_body_macro(node) +
-            self._end_ac_macro(node))
+                self.build_ac_param(node, 'icon', 'false'))
+        self.body.append(self.start_ac_rich_text_body_macro(node))
+        self.context.append(self.end_ac_rich_text_body_macro(node) +
+            self.end_ac_macro(node))
 
     def _depart_admonition(self, node):
         self.body.append(self.context.pop())  # macro (or blockquote)
 
     def _visit_admonition_adf(self, node, atype, title=None, logo=True):
-        self.body.append(self._start_adf_extension(node))
-        self.context.append(self._end_adf_extension(node))
+        self.body.append(self.start_adf_extension(node))
+        self.context.append(self.end_adf_extension(node))
 
-        self.body.append(self._start_adf_node(node, 'panel'))
-        self.context.append(self._end_adf_node(node))
+        self.body.append(self.start_adf_node(node, 'panel'))
+        self.context.append(self.end_adf_node(node))
 
-        self.body.append(self._build_adf_attribute(node, 'panel-type', atype))
+        self.body.append(self.build_adf_attribute(node, 'panel-type', atype))
 
-        self.body.append(self._start_adf_content(node))
-        self.context.append(self._end_adf_content(node))
+        self.body.append(self.start_adf_content(node))
+        self.context.append(self.end_adf_content(node))
 
     def _depart_admonition_adf(self, node):
         self.body.append(self.context.pop())  # adf-content
@@ -963,14 +964,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.v2:
             self._visit_admonition_adf(node, 'note')
-            self.body.append(self._start_tag(node, 'h3'))
+            self.body.append(self.start_tag(node, 'h3'))
 
         if node.get('ids'):
             self._build_anchor(node, node['ids'][0])
 
         if self.v2:
             self.body.append(SL('Todo'))
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
         else:
             self._visit_admonition(node, 'info', title=SL('Todo'))
 
@@ -985,9 +986,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             if title_node:
                 title = title_node.astext()
-                self.body.append(self._start_tag(node, 'h3'))
+                self.body.append(self.start_tag(node, 'h3'))
                 self.body.append(title)
-                self.body.append(self._end_tag(node))
+                self.body.append(self.end_tag(node))
         else:
             if title_node:
                 title = title_node.astext()
@@ -1029,12 +1030,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_table(self, node):
         title_node = first(findall(node, nodes.title))
         if title_node:
-            self.body.append(self._start_tag(node, 'p'))
-            self.body.append(self._start_tag(node, 'strong'))
+            self.body.append(self.start_tag(node, 'p'))
+            self.body.append(self.start_tag(node, 'strong'))
             self.add_fignumber(node)
             self.body.append(self.encode(title_node.astext()))
-            self.body.append(self._end_tag(node))
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
+            self.body.append(self.end_tag(node))
 
         table_classes = node.get('classes', [])
         attribs = {}
@@ -1055,9 +1056,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if node.__needs_table and not self.v2:
             attribs['style'] = 'width: 100%;'
 
-        self.body.append(self._start_tag(
+        self.body.append(self.start_tag(
             node, 'table', suffix=self.nl, **attribs))
-        self.context.append(self._end_tag(node))
+        self.context.append(self.end_tag(node))
 
         # track the thead context
         #
@@ -1076,7 +1077,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # different requirements; note v2 editor tables already force some
         # level of spacing
         if node.__needs_table and not self.v2:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'br', suffix=self.nl, empty=True))
 
     def visit_tgroup(self, node):
@@ -1098,7 +1099,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             has_colspec = False
             for colspec in findall(node, nodes.colspec):
                 if not has_colspec:
-                    self.body.append(self._start_tag(node, 'colgroup'))
+                    self.body.append(self.start_tag(node, 'colgroup'))
                     has_colspec = True
 
                 # apply a width percentage based on the configured colwidth
@@ -1112,35 +1113,35 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 if colwidth != 100 or not self.v2:
                     attribs['style'] = f'width: {colwidth}%'
 
-                self.body.append(self._start_tag(
+                self.body.append(self.start_tag(
                     node, 'col', empty=True, **attribs))
 
             if has_colspec:
-                self.body.append(self._end_tag(node))
+                self.body.append(self.end_tag(node))
 
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
         self._thead_context.append(True)  # thead context (see visit_table)
-        self.body.append(self._start_tag(node, 'thead', suffix=self.nl))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'thead', suffix=self.nl))
+        self.context.append(self.end_tag(node))
 
     def depart_thead(self, node):
         self.body.append(self.context.pop())  # thead context (see visit_table)
         self._thead_context.pop()
 
     def visit_tbody(self, node):
-        self.body.append(self._start_tag(node, 'tbody', suffix=self.nl))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'tbody', suffix=self.nl))
+        self.context.append(self.end_tag(node))
 
     def depart_tbody(self, node):
         self.body.append(self.context.pop())  # tbody
 
     def visit_row(self, node):
         node.column = 0
-        self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'tr', suffix=self.nl))
+        self.context.append(self.end_tag(node))
 
     def depart_row(self, node):
         self.body.append(self.context.pop())  # tr
@@ -1177,8 +1178,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if 'footer_right' in node.get('classes', []):
                 attribs['style'] = 'text-align: right;'
 
-        self.body.append(self._start_tag(node, target_tag, **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, target_tag, **attribs))
+        self.context.append(self.end_tag(node))
 
         # [sphinxcontrib-needs]
         # for meta-like fields, attempt to make the font smaller
@@ -1188,8 +1189,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                       'footer_left', 'footer_right']
         if table.__needs_table:
             if any(ns in entry_classes for ns in sup_styles):
-                self.body.append(self._start_tag(node, 'sup'))
-                self.context.append(self._end_tag(node, suffix=''))
+                self.body.append(self.start_tag(node, 'sup'))
+                self.context.append(self.end_tag(node, suffix=''))
                 node.__needs_table_extra = True
 
     def depart_entry(self, node):
@@ -1252,17 +1253,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 if self.v2:
                     self.body.append(' ')
                 else:
-                    self.body.append(self._start_tag(node, 'div',
+                    self.body.append(self.start_tag(node, 'div',
                         **{'style': 'float: right'}))
-                    self._reference_context.append(self._end_tag(node))
+                    self._reference_context.append(self.end_tag(node))
 
         if 'reftitle' in node:
             title = node['reftitle']
             title = self.encode(title)
             attribs['title'] = title
 
-        self.body.append(self._start_tag(node, 'a', **attribs))
-        self._reference_context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'a', **attribs))
+        self._reference_context.append(self.end_tag(node, suffix=''))
 
     def _visit_reference_intern_id(self, node):
         raw_anchor = ''.join(node['refid'].split())
@@ -1292,8 +1293,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self._build_anchor(node, id_)
 
         if is_citation:
-            self.body.append(self._start_tag(node, 'sup'))
-            self._reference_context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'sup'))
+            self._reference_context.append(self.end_tag(node, suffix=''))
 
         if anchor_value:
             if self.v2:
@@ -1301,18 +1302,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     'href': f'#{anchor_value}',
                 }
 
-                self.body.append(self._start_tag(node, 'a', **attribs))
-                self._reference_context.append(self._end_tag(node, suffix=''))
+                self.body.append(self.start_tag(node, 'a', **attribs))
+                self._reference_context.append(self.end_tag(node, suffix=''))
             else:
                 # build link to internal anchor (on the same page)
                 #  Note: plain-text-link body cannot have inline markup; content
                 #        will be added into body already and skip-children
                 #        should be invoked for this use case.
-                self.body.append(self._start_ac_link(node, anchor_value))
-                self._reference_context.append(self._end_ac_link(node))
+                self.body.append(self.start_ac_link(node, anchor_value))
+                self._reference_context.append(self.end_ac_link(node))
 
-                self.body.append(self._start_ac_link_body(node))
-                self._reference_context.append(self._end_ac_link_body(node))
+                self.body.append(self.start_ac_link_body(node))
+                self._reference_context.append(self.end_ac_link_body(node))
 
     def _visit_reference_intern_uri(self, node):
         doc_path = Path(node['refuri'].split('#')[0])
@@ -1324,8 +1325,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 f'missing title (in {self.docname}): {docname}')
 
             # build a broken link
-            self.body.append(self._start_tag(node, 'a', **{'href': '#'}))
-            self._reference_context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'a', **{'href': '#'}))
+            self._reference_context.append(self.end_tag(node, suffix=''))
             return
 
         anchor_value = intern_uri_anchor_value(docname, node['refuri'])
@@ -1340,63 +1341,63 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                     self.body.append(self.context.pop())  # ac:layout-section
                     self.body.append(self.context.pop())  # ac:layout
 
-                    self.body.append(self._start_tag(node, 'ac:layout'))
-                    self.context.append(self._end_tag(node))
+                    self.body.append(self.start_tag(node, 'ac:layout'))
+                    self.context.append(self.end_tag(node))
 
-                    self.body.append(self._start_tag(node, 'ac:layout-section',
+                    self.body.append(self.start_tag(node, 'ac:layout-section',
                         **{
                             'ac:type': 'two_equal',
                             'ac:breakout-mode': 'default',
                         }))
-                    self.context.append(self._end_tag(node))
+                    self.context.append(self.end_tag(node))
 
                     self._v2_header_added = False
 
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self._reference_context.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self._reference_context.append(self.end_tag(node))
                 self._v2_marginals_partial = not node.cbe_navnode_next
 
                 if node.cbe_navnode_next:
-                    self.body.append(self._start_tag(node, 'p',
+                    self.body.append(self.start_tag(node, 'p',
                         **{'style': 'text-align: right'}))
-                    self._reference_context.append(self._end_tag(node))
+                    self._reference_context.append(self.end_tag(node))
             else:
                 if self._needs_navnode_spacing:
-                    self.body.append(self._start_tag(node, 'p', empty=True,
+                    self.body.append(self.start_tag(node, 'p', empty=True,
                         **{'style': 'clear: both'}))
                     self._needs_navnode_spacing = False
 
                 float_ = 'right' if node.cbe_navnode_next else 'left'
-                self.body.append(self._start_tag(node, 'div',
+                self.body.append(self.start_tag(node, 'div',
                     **{'style': 'float: ' + float_ + ';'}))
-                self._reference_context.append(self._end_tag(node))
+                self._reference_context.append(self.end_tag(node))
 
         # build link to internal anchor (on another page)
         #  Note: plain-text-link body cannot have inline markup; add the node
         #        contents into body and skip processing the rest of this node.
         doctitle = self.encode(doctitle)
-        self.body.append(self._start_ac_link(node, anchor_value))
-        self._reference_context.append(self._end_ac_link(node))
+        self.body.append(self.start_ac_link(node, anchor_value))
+        self._reference_context.append(self.end_ac_link(node))
 
-        self.body.append(self._start_tag(node, 'ri:page',
+        self.body.append(self.start_tag(node, 'ri:page',
             suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
 
-        self.body.append(self._start_ac_link_body(node))
-        self._reference_context.append(self._end_ac_link_body(node))
+        self.body.append(self.start_ac_link_body(node))
+        self._reference_context.append(self.end_ac_link_body(node))
 
         # style navigation references with an aui-button look
         if navnode:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'span', **{'class': 'aui-button'}))
-            self._reference_context.append(self._end_tag(node, suffix=''))
+            self._reference_context.append(self.end_tag(node, suffix=''))
 
         if self.add_secnumbers and node.get('secnumber'):
             self.body.append('.'.join(map(str, node['secnumber'])) +
                 self.secnumber_suffix)
 
     def _visit_reference_top(self, node):
-        self.body.append(self._start_tag(node, 'a', **{'href': '#top'}))
-        self._reference_context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'a', **{'href': '#top'}))
+        self._reference_context.append(self.end_tag(node, suffix=''))
 
     def depart_reference(self, node):
         for element in reversed(self._reference_context):
@@ -1430,23 +1431,23 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.v2:
                 self._indent_level += 1
 
-                self.body.append(self._start_tag(
+                self.body.append(self.start_tag(
                     node, 'hr', suffix=self.nl, empty=True))
             else:
-                self.body.append(self._start_tag(node, 'table', suffix=self.nl))
-                self.context.append(self._end_tag(node))
-                self.body.append(self._start_tag(node, 'tbody', suffix=self.nl,
+                self.body.append(self.start_tag(node, 'table', suffix=self.nl))
+                self.context.append(self.end_tag(node))
+                self.body.append(self.start_tag(node, 'tbody', suffix=self.nl,
                     **{'style': 'border: none'}))
-                self.context.append(self._end_tag(node))
+                self.context.append(self.end_tag(node))
             self._building_footnotes = True
 
         label_text = '[' + label_node.astext() + ']'
 
         if not self.v2:
-            self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'tr', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
 
         # footnote anchor
@@ -1463,8 +1464,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.v2:
                 self.body.append(' ')
             else:
-                self.body.append(self._start_tag(node, 'div'))
-            self.body.append(self._start_tag(node, 'em'))
+                self.body.append(self.start_tag(node, 'div'))
+            self.body.append(self.start_tag(node, 'em'))
             self.body.append('(')
 
             for idx, backref in enumerate(node['backrefs']):
@@ -1476,41 +1477,41 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                         'href': f'#{backref}',
                     }
 
-                    self.body.append(self._start_tag(node, 'a', **attribs))
-                    self.body.append(self._escape_cdata(str(idx + 1)))
-                    self.body.append(self._end_tag(node, suffix=''))
+                    self.body.append(self.start_tag(node, 'a', **attribs))
+                    self.body.append(self.escape_cdata(str(idx + 1)))
+                    self.body.append(self.end_tag(node, suffix=''))
                 else:
-                    self.body.append(self._start_ac_link(node, backref))
+                    self.body.append(self.start_ac_link(node, backref))
                     self.body.append(
-                        self._start_ac_plain_text_link_body_macro(node))
-                    self.body.append(self._escape_cdata(str(idx + 1)))
-                    self.body.append(self._end_ac_plain_text_link_body_macro(node))
-                    self.body.append(self._end_ac_link(node))
+                        self.start_ac_plain_text_link_body_macro(node))
+                    self.body.append(self.escape_cdata(str(idx + 1)))
+                    self.body.append(self.end_ac_plain_text_link_body_macro(node))
+                    self.body.append(self.end_ac_link(node))
             self.body.append(')')
-            self.body.append(self._end_tag(node, suffix=''))  # em
+            self.body.append(self.end_tag(node, suffix=''))  # em
             if not self.v2:
-                self.body.append(self._end_tag(node))  # div
+                self.body.append(self.end_tag(node))  # div
         elif self.v2:
             attribs = {
                 'href': '#' + node['backrefs'][0],
             }
 
-            self.body.append(self._start_tag(node, 'a', **attribs))
-            self.body.append(self._escape_cdata(label_text))
-            self.body.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'a', **attribs))
+            self.body.append(self.escape_cdata(label_text))
+            self.body.append(self.end_tag(node, suffix=''))
         else:
-            self.body.append(self._start_ac_link(node, node['backrefs'][0]))
-            self.body.append(self._start_ac_plain_text_link_body_macro(node))
-            self.body.append(self._escape_cdata(label_text))
-            self.body.append(self._end_ac_plain_text_link_body_macro(node))
-            self.body.append(self._end_ac_link(node))
+            self.body.append(self.start_ac_link(node, node['backrefs'][0]))
+            self.body.append(self.start_ac_plain_text_link_body_macro(node))
+            self.body.append(self.escape_cdata(label_text))
+            self.body.append(self.end_ac_plain_text_link_body_macro(node))
+            self.body.append(self.end_ac_link(node))
 
         if not self.v2:
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
 
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
     def depart_footnote(self, node):
         if not self.v2:
@@ -1523,7 +1524,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not isinstance(next_sibling, (nodes.citation, nodes.footnote)):
             if self.v2:
                 self._indent_level -= 1
-                self.body.append(self._start_tag(
+                self.body.append(self.start_tag(
                     node, 'hr', suffix=self.nl, empty=True))
             else:
                 self.body.append(self.context.pop())  # tbody
@@ -1539,13 +1540,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # link to anchor
         target_anchor = ''.join(node['refid'].split())
 
-        self.body.append(self._start_tag(node, 'sup'))
-        self.body.append(self._start_ac_link(node, target_anchor))
-        self.body.append(self._start_ac_plain_text_link_body_macro(node))
-        self.body.append(self._escape_cdata(text))
-        self.body.append(self._end_ac_plain_text_link_body_macro(node))
-        self.body.append(self._end_ac_link(node))
-        self.body.append(self._end_tag(node, suffix=''))  # sup
+        self.body.append(self.start_tag(node, 'sup'))
+        self.body.append(self.start_ac_link(node, target_anchor))
+        self.body.append(self.start_ac_plain_text_link_body_macro(node))
+        self.body.append(self.escape_cdata(text))
+        self.body.append(self.end_ac_plain_text_link_body_macro(node))
+        self.body.append(self.end_ac_link(node))
+        self.body.append(self.end_tag(node, suffix=''))  # sup
         raise nodes.SkipNode
 
     def visit_label(self, node):
@@ -1561,36 +1562,36 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -------------
 
     def visit_emphasis(self, node):
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'em'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_emphasis(self, node):
         self.body.append(self.context.pop())  # em
 
     def visit_literal(self, node):
-        self.body.append(self._start_tag(node, 'code'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'code'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_literal(self, node):
         self.body.append(self.context.pop())  # code
 
     def visit_strong(self, node):
-        self.body.append(self._start_tag(node, 'strong'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'strong'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_strong(self, node):
         self.body.append(self.context.pop())  # strong
 
     def visit_subscript(self, node):
-        self.body.append(self._start_tag(node, 'sub'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'sub'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_subscript(self, node):
         self.body.append(self.context.pop())  # sub
 
     def visit_superscript(self, node):
-        self.body.append(self._start_tag(node, 'sup'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'sup'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_superscript(self, node):
         self.body.append(self.context.pop())  # sup
@@ -1600,13 +1601,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         classes = node.get('classes', [])
         if classes in [['guilabel']]:
-            self.body.append(self._start_tag(node, 'em'))
+            self.body.append(self.start_tag(node, 'em'))
             has_added = True
         elif classes in [['accelerator']]:
-            self.body.append(self._start_tag(node, 'u'))
+            self.body.append(self.start_tag(node, 'u'))
             has_added = True
         elif classes in [['strike']]:
-            self.body.append(self._start_tag(node, 's'))
+            self.body.append(self.start_tag(node, 's'))
             has_added = True
         # [sphinxcontrib-needs]
         # ignore collapse buttons, since they will not work in Confluence
@@ -1615,16 +1616,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # [sphinxcontrib-needs]
         # strong text any title content
         elif 'needs_title' in classes:
-            self.body.append(self._start_tag(node, 'strong'))
+            self.body.append(self.start_tag(node, 'strong'))
             has_added = True
         elif isinstance(node.parent, addnodes.desc_parameter):
             # check if an identifier in signature
             if classes in [['n']]:
-                self.body.append(self._start_tag(node, 'em'))
+                self.body.append(self.start_tag(node, 'em'))
                 has_added = True
 
         if has_added:
-            self.context.append(self._end_tag(node, suffix=''))
+            self.context.append(self.end_tag(node, suffix=''))
         else:
             # ignoring; no special handling of other inline entries
             self.context.append('')
@@ -1672,16 +1673,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if alignment and alignment != 'left':
             attribs['style'] += f'text-align: {alignment};'
 
-        self.body.append(self._start_tag(node, 'p', **attribs))
+        self.body.append(self.start_tag(node, 'p', **attribs))
         self.add_fignumber(node.parent)
-        self.context.append(self._end_tag(node))
+        self.context.append(self.end_tag(node))
 
     def depart_caption(self, node):
         self.body.append(self.context.pop())  # p
 
     def visit_figure(self, node):
-        self.body.append(self._start_tag(node, 'p'))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'p'))
+        self.context.append(self.end_tag(node))
 
     def depart_figure(self, node):
         self.body.append(self.context.pop())  # p
@@ -1705,9 +1706,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not self.v2 and node.get('from_math') and node.get('math_depth'):
             math_depth = node['math_depth']
             offset = -1 * math_depth
-            self.body.append(self._start_tag(node, 'span',
+            self.body.append(self.start_tag(node, 'span',
                 **{'style': f'vertical-align: {offset}px'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
         node.math_number = None
         if node.get('from_math') and node.get('number'):
@@ -1725,10 +1726,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 node.math_number = node['number']
 
         if not self.v2 and node.math_number:
-            self.body.append(self._start_tag(node, 'div',
+            self.body.append(self.start_tag(node, 'div',
                 **{'style': 'float: right'}))
             self.body.append(f'({node.math_number})')
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
 
         attribs = {}
 
@@ -1759,8 +1760,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 width = None
                 wu = None
 
-            self.body.append(self._start_tag(node, 'div', **{'style': style}))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'div', **{'style': style}))
+            self.context.append(self.end_tag(node))
             node.__confluence_wrapped_img = True
 
         # apply width/height fields on the image macro
@@ -1773,25 +1774,25 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # that we can link to this image
         if node.math_number:
             if self.v2:
-                self.body.append(self._start_tag(node, 'ac:layout'))
-                self.context.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout'))
+                self.context.append(self.end_tag(node))
 
-                self.body.append(self._start_tag(node, 'ac:layout-section',
+                self.body.append(self.start_tag(node, 'ac:layout-section',
                     **{
                         'ac:type': 'three_with_sidebars',
                         'ac:breakout-mode': 'default',
                     }))
-                self.context.append(self._end_tag(node))
+                self.context.append(self.end_tag(node))
 
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
 
             self._build_id_anchors(node)
 
             if self.v2:
-                self.body.append(self._end_tag(node))
+                self.body.append(self.end_tag(node))
 
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self.context.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self.context.append(self.end_tag(node))
 
         if not opts['key']:
             # an external or embedded image
@@ -1804,31 +1805,31 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #       versions do not consider embedded images as valid URI values
             #       so users might see a "broken images" block).
             uri = self.encode(node['uri'])
-            self.body.append(self._start_ac_image(node, **attribs))
-            self.body.append(self._start_tag(node, 'ri:url',
+            self.body.append(self.start_ac_image(node, **attribs))
+            self.body.append(self.start_tag(node, 'ri:url',
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
         else:
             hosted_doctitle = self.state.title(dochost, dochost)
             hosted_doctitle = self.encode(hosted_doctitle)
 
-            self.body.append(self._start_ac_image(node, **attribs))
-            self.body.append(self._start_ri_attachment(node, opts['key']))
+            self.body.append(self.start_ac_image(node, **attribs))
+            self.body.append(self.start_ri_attachment(node, opts['key']))
             if dochost != self.docname:
-                self.body.append(self._start_tag(node, 'ri:page', empty=True,
+                self.body.append(self.start_tag(node, 'ri:page', empty=True,
                    **{'ri:content-title': hosted_doctitle}))
-            self.body.append(self._end_ri_attachment(node))
+            self.body.append(self.end_ri_attachment(node))
 
         if self.v2:
             next_sibling = first(findall(node,
                 include_self=False, descend=False, siblings=True))
             if isinstance(next_sibling, nodes.caption):
-                self.body.append(self._start_tag(node, 'ac:caption'))
+                self.body.append(self.start_tag(node, 'ac:caption'))
                 next_sibling.__skip_caption = True
                 for child in next_sibling.children:
                     child.walkabout(self)
-                self.body.append(self._end_tag(node))
+                self.body.append(self.end_tag(node))
 
-        self.body.append(self._end_ac_image(node))
+        self.body.append(self.end_ac_image(node))
 
     def depart_image(self, node):
         if node.__confluence_wrapped_img:
@@ -1839,14 +1840,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.v2 and node.math_number:
             self.body.append(self.context.pop())  # layout-cell
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
 
-            self.body.append(self._start_tag(node, 'p',
+            self.body.append(self.start_tag(node, 'p',
                 **{'style': 'text-align: right'}))
             self.body.append(f'({node.math_number})')
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
 
-            self.body.append(self._end_tag(node))  # layout-cell
+            self.body.append(self.end_tag(node))  # layout-cell
             self.body.append(self.context.pop())  # ac:layout-section
             self.body.append(self.context.pop())  # ac:layout
 
@@ -1856,8 +1857,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if alignment and alignment != 'left':
             attribs['style'] = f'text-align: {alignment};'
 
-        self.body.append(self._start_tag(node, 'div', **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'div', **attribs))
+        self.context.append(self.end_tag(node))
 
     def depart_legend(self, node):
         self.body.append(self.context.pop())  # div
@@ -1871,10 +1872,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = self.encode(reftarget)
 
         if uri.find('://') != -1:
-            self.body.append(self._start_tag(node, 'strong'))
-            self.context.append(self._end_tag(node, suffix=''))
-            self.body.append(self._start_tag(node, 'a', **{'href': uri}))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'strong'))
+            self.context.append(self.end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'a', **{'href': uri}))
+            self.context.append(self.end_tag(node, suffix=''))
         else:
             asset_docname = None
             if self.builder.name == 'singleconfluence':
@@ -1906,28 +1907,28 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 # a 'view-file' macro takes an attachment tag as a body; build
                 # the tags in an interim list
                 attachment = []
-                attachment.append(self._start_ri_attachment(node, file_key))
+                attachment.append(self.start_ri_attachment(node, file_key))
                 if hosting_docname != self.docname:
-                    attachment.append(self._start_tag(node, 'ri:page',
+                    attachment.append(self.start_tag(node, 'ri:page',
                        empty=True, **{'ri:content-title': hosting_doctitle}))
-                attachment.append(self._end_ri_attachment(node))
+                attachment.append(self.end_ri_attachment(node))
 
-                self.body.append(self._start_ac_macro(node, 'view-file'))
-                self.body.append(self._build_ac_param(
+                self.body.append(self.start_ac_macro(node, 'view-file'))
+                self.body.append(self.build_ac_param(
                     node, 'name', ''.join(attachment)))
-                self.body.append(self._end_ac_macro(node))
+                self.body.append(self.end_ac_macro(node))
             else:
-                self.body.append(self._start_ac_link(node))
-                self.body.append(self._start_ri_attachment(node, file_key))
+                self.body.append(self.start_ac_link(node))
+                self.body.append(self.start_ri_attachment(node, file_key))
                 if hosting_docname != self.docname:
-                    self.body.append(self._start_tag(node, 'ri:page',
+                    self.body.append(self.start_tag(node, 'ri:page',
                        empty=True, **{'ri:content-title': hosting_doctitle}))
-                self.body.append(self._end_ri_attachment(node))
+                self.body.append(self.end_ri_attachment(node))
                 self.body.append(
-                    self._start_ac_plain_text_link_body_macro(node))
-                self.body.append(self._escape_cdata(node.astext()))
-                self.body.append(self._end_ac_plain_text_link_body_macro(node))
-                self.body.append(self._end_ac_link(node))
+                    self.start_ac_plain_text_link_body_macro(node))
+                self.body.append(self.escape_cdata(node.astext()))
+                self.body.append(self.end_ac_plain_text_link_body_macro(node))
+                self.body.append(self.end_ac_link(node))
 
             raise nodes.SkipNode
 
@@ -1944,32 +1945,32 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # try to use the layout capability to manage lists -- although we will
         # be limited to a three columns maximum
         if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'ac:layout'))
+            self.context.append(self.end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-section',
+            self.body.append(self.start_tag(node, 'ac:layout-section',
                 **{
                     'ac:type': 'three_equal',
                     'ac:breakout-mode': 'default',
                 }))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
             self._hlist_columns_left = 3
         else:
-            self.body.append(self._start_tag(node, 'table', suffix=self.nl))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'tbody', suffix=self.nl,
+            self.body.append(self.start_tag(node, 'table', suffix=self.nl))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'tbody', suffix=self.nl,
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'tr', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'tr', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_hlist(self, node):
         if self.v2:
             # add empty sections to complete the three column requirement
             for _ in range(self._hlist_columns_left % 3):
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self.body.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self.body.append(self.end_tag(node))
 
             self.body.append(self.context.pop())  # ac:layout-section
             self.body.append(self.context.pop())  # ac:layout
@@ -1985,26 +1986,26 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self.body.append(self.context.pop())  # ac:layout-section
                 self.body.append(self.context.pop())  # ac:layout
 
-                self.body.append(self._start_tag(node, 'ac:layout'))
-                self.context.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout'))
+                self.context.append(self.end_tag(node))
 
-                self.body.append(self._start_tag(node, 'ac:layout-section',
+                self.body.append(self.start_tag(node, 'ac:layout-section',
                     **{
                         'ac:type': 'three_equal',
                         'ac:breakout-mode': 'default',
                     }))
-                self.context.append(self._end_tag(node))
+                self.context.append(self.end_tag(node))
 
                 self._hlist_columns_left = 3
 
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
+            self.context.append(self.end_tag(node))
 
             self._hlist_columns_left -= 1
         else:
-            self.body.append(self._start_tag(node, 'td',
+            self.body.append(self.start_tag(node, 'td',
                 **{'style': 'border: none'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
     def depart_hlistcol(self, node):
         if self.v2:
@@ -2034,7 +2035,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_productionlist(self, node):
         max_len = max(len(production['tokenname']) for production in node)
 
-        self.body.append(self._start_tag(node, 'pre'))
+        self.body.append(self.start_tag(node, 'pre'))
 
         for production in node:
             if production['tokenname']:
@@ -2049,7 +2050,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             text = self.encode(text)
             self.body.append(text + self.nl)
 
-        self.body.append(self._end_tag(node))
+        self.body.append(self.end_tag(node))
         raise nodes.SkipNode
 
     # -----------------
@@ -2068,14 +2069,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_desc(self, node):
         if self.v2:
-            self.body.append(self._start_ac_macro(node, 'panel'))
-            self.body.append(self._build_ac_param(node, 'bgColor', 'unset'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
-            self.context.append(self._end_ac_rich_text_body_macro(node) +
-                self._end_ac_macro(node))
+            self.body.append(self.start_ac_macro(node, 'panel'))
+            self.body.append(self.build_ac_param(node, 'bgColor', 'unset'))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+            self.context.append(self.end_ac_rich_text_body_macro(node) +
+                self.end_ac_macro(node))
         else:
-            self.body.append(self._start_tag(node, 'dl', suffix=self.nl))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'dl', suffix=self.nl))
+            self.context.append(self.end_tag(node))
 
     def depart_desc(self, node):
         self.body.append(self.context.pop())  # dl/macro
@@ -2086,8 +2087,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._desc_sig_ids = node.attributes.get('ids', [])
 
         if not self.v2:
-            self.body.append(self._start_tag(node, 'dt'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'dt'))
+            self.context.append(self.end_tag(node))
 
         if not node.get('is_multiline'):
             self.visit_desc_signature_line(node)
@@ -2105,7 +2106,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 self._build_anchor(node, id_)
 
         if self._desc_sig_ids is None:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'br', suffix=self.nl, empty=True))
 
         self._desc_sig_ids = None
@@ -2114,27 +2115,27 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         pass
 
     def visit_desc_annotation(self, node):
-        self.body.append(self._start_tag(node, 'em'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'em'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_desc_annotation(self, node):
         self.body.append(self.context.pop())  # em
 
     def visit_desc_addname(self, node):
         if not self.v2:
-            self.body.append(self._start_tag(node, 'code'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'code'))
+            self.context.append(self.end_tag(node, suffix=''))
 
     def depart_desc_addname(self, node):
         if not self.v2:
             self.body.append(self.context.pop())  # code
 
     def visit_desc_name(self, node):
-        self.body.append(self._start_tag(node, 'strong'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'strong'))
+        self.context.append(self.end_tag(node, suffix=''))
         if not self.v2:
-            self.body.append(self._start_tag(node, 'code'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'code'))
+            self.context.append(self.end_tag(node, suffix=''))
 
     def depart_desc_name(self, node):
         if not self.v2:
@@ -2173,8 +2174,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(', ')
 
         if not node.get('noemph'):
-            self.body.append(self._start_tag(node, 'em'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'em'))
+            self.context.append(self.end_tag(node, suffix=''))
 
     def depart_desc_parameter(self, node):
         if not node.get('noemph'):
@@ -2182,14 +2183,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_desc_content(self, node):
         if self.v2:
-            self.body.append(self._start_ac_macro(node, 'panel'))
-            self.body.append(self._build_ac_param(node, 'bgColor', 'unset'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
-            self.context.append(self._end_ac_rich_text_body_macro(node) +
-                self._end_ac_macro(node))
+            self.body.append(self.start_ac_macro(node, 'panel'))
+            self.body.append(self.build_ac_param(node, 'bgColor', 'unset'))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+            self.context.append(self.end_ac_rich_text_body_macro(node) +
+                self.end_ac_macro(node))
         else:
-            self.body.append(self._start_tag(node, 'dd'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'dd'))
+            self.context.append(self.end_tag(node))
 
     def depart_desc_content(self, node):
         self.body.append(self.context.pop())  # dd/macro
@@ -2199,11 +2200,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------
 
     def visit_centered(self, node):
-        self.body.append(self._start_tag(node, 'h2',
+        self.body.append(self.start_tag(node, 'h2',
             **{'style': 'text-align: center'}))
-        self.context.append(self._end_tag(node))
-        self.body.append(self._start_tag(node, 'strong'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.context.append(self.end_tag(node))
+        self.body.append(self.start_tag(node, 'strong'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_centered(self, node):
         self.body.append(self.context.pop())  # strong
@@ -2213,16 +2214,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # styling hints on paragraphs for rubrics do not work in v2;
         # we'll try to emulate a rubric the best we can
         if self.v2:
-            self.body.append(self._start_tag(node, 'p'))  # extra for spacing
-            self.body.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'p'))
-            self.context.append(self._end_tag(node))
-            self.body.append(self._start_tag(node, 'strong'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'p'))  # extra for spacing
+            self.body.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'p'))
+            self.context.append(self.end_tag(node))
+            self.body.append(self.start_tag(node, 'strong'))
+            self.context.append(self.end_tag(node))
         else:
-            self.body.append(self._start_tag(node, 'p',
+            self.body.append(self.start_tag(node, 'p',
                 **{'style': 'font-weight: bold; margin-top: 30px'}))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
     def depart_rubric(self, node):
         if self.v2:
@@ -2252,12 +2253,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------------------
 
     def visit_confluence_excerpt(self, node):
-        self.body.append(self._start_ac_macro(node, 'excerpt'))
+        self.body.append(self.start_ac_macro(node, 'excerpt'))
         for k, v in sorted(PARAMS(node).items()):
-            self.body.append(self._build_ac_param(node, k, v))
-        self.body.append(self._start_ac_rich_text_body_macro(node))
-        self.context.append(self._end_ac_rich_text_body_macro(node) +
-            self._end_ac_macro(node, suffix=''))
+            self.body.append(self.build_ac_param(node, k, v))
+        self.body.append(self.start_ac_rich_text_body_macro(node))
+        self.context.append(self.end_ac_rich_text_body_macro(node) +
+            self.end_ac_macro(node, suffix=''))
 
     def depart_confluence_excerpt(self, node):
         self.body.append(self.context.pop())  # macro
@@ -2282,9 +2283,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             doctitle = doclink
 
-        self.body.append(self._start_ac_macro(node, 'excerpt-include'))
+        self.body.append(self.start_ac_macro(node, 'excerpt-include'))
         for k, v in sorted(PARAMS(node).items()):
-            self.body.append(self._build_ac_param(node, k, v))
+            self.body.append(self.build_ac_param(node, k, v))
 
         attribs = {
             'ri:content-title': doctitle,
@@ -2293,49 +2294,49 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['ri:space-key'] = space_key
 
         doctitle = self.encode(doctitle)
-        param_value = self._start_ac_link(node) + \
-            self._start_tag(node, 'ri:page', suffix=self.nl,
+        param_value = self.start_ac_link(node) + \
+            self.start_tag(node, 'ri:page', suffix=self.nl,
                 empty=True, **attribs) + \
-            self._end_ac_link(node)
-        self.body.append(self._build_ac_param(node, '', param_value))
+            self.end_ac_link(node)
+        self.body.append(self.build_ac_param(node, '', param_value))
 
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
     def visit_confluence_expand(self, node):
-        self.body.append(self._start_ac_macro(node, 'expand'))
+        self.body.append(self.start_ac_macro(node, 'expand'))
         if 'title' in node:
             self.body.append(
-                self._build_ac_param(node, 'title', node['title']))
-        self.body.append(self._start_ac_rich_text_body_macro(node))
-        self.context.append(self._end_ac_rich_text_body_macro(node) +
-            self._end_ac_macro(node))
+                self.build_ac_param(node, 'title', node['title']))
+        self.body.append(self.start_ac_rich_text_body_macro(node))
+        self.context.append(self.end_ac_rich_text_body_macro(node) +
+            self.end_ac_macro(node))
 
     def depart_confluence_expand(self, node):
         self.body.append(self.context.pop())  # macro
 
     def visit_confluence_footer(self, node):
         if self.v2:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
 
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'ac:layout'))
+            self.context.append(self.end_tag(node, suffix=''))
 
-            self.body.append(self._start_tag(node, 'ac:layout-section',
+            self.body.append(self.start_tag(node, 'ac:layout-section',
                 **{
                     'ac:type': 'two_equal',
                     'ac:breakout-mode': 'default',
                 }))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
             # keep track of if the layout section is incomplete (only one
             # cell has been formed), to help hint at injecting additional
             # cells if some header capabilites are not enabled
             self._v2_marginals_partial = False
         else:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
                 **{'style': 'padding-bottom: 10px; margin-top: 30px'}))
 
@@ -2343,8 +2344,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if self.v2:
             # inject an empty cell if the footer has not filled
             if self._v2_marginals_partial:
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self.body.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self.body.append(self.end_tag(node))
                 self._v2_marginals_partial = False
 
             self.body.append(self.context.pop())  # ac:layout-section
@@ -2354,15 +2355,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_confluence_header(self, node):
         if self.v2:
-            self.body.append(self._start_tag(node, 'ac:layout'))
-            self.context.append(self._end_tag(node, suffix=''))
+            self.body.append(self.start_tag(node, 'ac:layout'))
+            self.context.append(self.end_tag(node, suffix=''))
 
-            self.body.append(self._start_tag(node, 'ac:layout-section',
+            self.body.append(self.start_tag(node, 'ac:layout-section',
                 **{
                     'ac:type': 'two_equal',
                     'ac:breakout-mode': 'default',
                 }))
-            self.context.append(self._end_tag(node))
+            self.context.append(self.end_tag(node))
 
             # keep track of if the layout section is incomplete (only one
             # cell has been formed), to help hint at injecting additional
@@ -2374,8 +2375,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if self.v2:
             # inject an empty cell if the header has not filled
             if self._v2_marginals_partial:
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self.body.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self.body.append(self.end_tag(node))
                 self._v2_marginals_partial = False
 
             self._v2_header_added = False
@@ -2383,16 +2384,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.context.pop())  # ac:layout-section
             self.body.append(self.context.pop())  # ac:layout
 
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'hr', suffix=self.nl, empty=True))
         else:
-            self.body.append(self._start_tag(
+            self.body.append(self.start_tag(
                 node, 'hr', suffix=self.nl, empty=True,
                 **{'style':
                     'clear: both; padding-top: 10px; margin-bottom: 30px'}))
 
     def visit_confluence_newline(self, node):
-        self.body.append(self._start_tag(
+        self.body.append(self.start_tag(
             node, 'br', suffix=self.nl, empty=True))
 
         raise nodes.SkipNode
@@ -2400,16 +2401,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_confluence_page_generation_notice(self, node):
         if self.v2:
             assert not self._v2_marginals_partial
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
 
             # v2: does not support font-size assignment; use sup tag
             # to make small
-            self.body.append(self._start_tag(node, 'span', **{
+            self.body.append(self.start_tag(node, 'span', **{
                 'style': 'color: #707070;',
             }))
-            self.body.append(self._start_tag(node, 'sup'))
+            self.body.append(self.start_tag(node, 'sup'))
         else:
-            self.body.append(self._start_tag(node, 'div', **{
+            self.body.append(self.start_tag(node, 'div', **{
                 'style': 'color: #707070; font-size: 12px;',
             }))
 
@@ -2421,13 +2422,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.encode(msg))
 
         if self.v2:
-            self.body.append(self._end_tag(node, suffix=''))  # sup
-            self.body.append(self._end_tag(node, suffix=''))  # span
-            self.body.append(self._end_tag(node))  # ac:layout-cell
+            self.body.append(self.end_tag(node, suffix=''))  # sup
+            self.body.append(self.end_tag(node, suffix=''))  # span
+            self.body.append(self.end_tag(node))  # ac:layout-cell
             self._v2_header_added = True
             self._v2_marginals_partial = True
         else:
-            self.body.append(self._end_tag(node, suffix=''))  # div
+            self.body.append(self.end_tag(node, suffix=''))  # div
 
             # flag that if any navnodes are created, additional
             # spacing is needed
@@ -2449,18 +2450,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # add an empty leading cell, if no content has been provided
             # (since we right-align this content)
             if not self._v2_marginals_partial:
-                self.body.append(self._start_tag(node, 'ac:layout-cell'))
-                self.body.append(self._end_tag(node))
+                self.body.append(self.start_tag(node, 'ac:layout-cell'))
+                self.body.append(self.end_tag(node))
 
-            self.body.append(self._start_tag(node, 'ac:layout-cell'))
-            self.body.append(self._start_tag(node, 'p', **{
+            self.body.append(self.start_tag(node, 'ac:layout-cell'))
+            self.body.append(self.start_tag(node, 'p', **{
                 'style': 'text-align: right;',
             }))
-            self.body.append(self._start_tag(node, 'a', **{'href': uri}))
+            self.body.append(self.start_tag(node, 'a', **{'href': uri}))
             self.body.append(self.encode(source_text))  # visible text
-            self.body.append(self._end_tag(node))  # a
-            self.body.append(self._end_tag(node))  # p
-            self.body.append(self._end_tag(node))  # ac:layout-cell
+            self.body.append(self.end_tag(node))  # a
+            self.body.append(self.end_tag(node))  # p
+            self.body.append(self.end_tag(node))  # ac:layout-cell
             self._v2_header_added = True
             self._v2_marginals_partial = False
         else:
@@ -2469,19 +2470,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if self.builder.config.confluence_header_file is not None:
                 self.body.append('<div style="clear: both"> </div>\n')
 
-            self.body.append(self._start_tag(node, 'div', **{
+            self.body.append(self.start_tag(node, 'div', **{
                 'style': 'float: right; padding-bottom: 4px',
             }))
-            self.body.append(self._start_tag(node, 'a', **{'href': uri}))
-            self.body.append(self._start_tag(node, 'span', **{
+            self.body.append(self.start_tag(node, 'a', **{'href': uri}))
+            self.body.append(self.start_tag(node, 'span', **{
                 'class': 'aui-icon aui-icon-small '
                          'aui-iconfont-edit-small aui-iconfont-edit-filled',
             }))
             self.body.append(self.encode(source_text))  # span-icon-content
-            self.body.append(self._end_tag(node, suffix=''))  # span
+            self.body.append(self.end_tag(node, suffix=''))  # span
             self.body.append(self.encode(source_text))  # visible text
-            self.body.append(self._end_tag(node))  # a
-            self.body.append(self._end_tag(node))  # div
+            self.body.append(self.end_tag(node))  # a
+            self.body.append(self.end_tag(node))  # div
 
             # flag that if any navnodes are created, additional
             # spacing is needed
@@ -2497,8 +2498,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # v1 editor does not support cards; contain in a panel to emulate a
         # block feel
         if not self.v2:
-            self.body.append(self._start_ac_macro(node, 'panel'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
+            self.body.append(self.start_ac_macro(node, 'panel'))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
 
         doc_path = Path(PARAMS(node)['href'].split('#')[0])
         doc_raw_id = Path(self.docparent) / doc_path.parent / doc_path.stem
@@ -2518,18 +2519,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 attribs['ac:width'] = PARAMS(node)['data-width']
 
             doctitle = self.encode(doctitle)
-            self.body.append(self._start_tag(node, 'ac:link', **attribs))
-            self.body.append(self._start_tag(node, 'ri:page',
+            self.body.append(self.start_tag(node, 'ac:link', **attribs))
+            self.body.append(self.start_tag(node, 'ri:page',
                 suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
-            self.body.append(self._end_tag(node, suffix=''))
+            self.body.append(self.end_tag(node, suffix=''))
         else:
             self.warn('unable to build link to document card due to '
                 f'missing title (in {self.docname}): {docname}')
             self.body.append(node.astext())
 
         if not self.v2:
-            self.body.append(self._end_ac_rich_text_body_macro(node))
-            self.body.append(self._end_ac_macro(node))  # panel
+            self.body.append(self.end_ac_rich_text_body_macro(node))
+            self.body.append(self.end_ac_macro(node))  # panel
 
         raise nodes.SkipNode
 
@@ -2540,13 +2541,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         doctitle = self.state.title(docname)
         if doctitle:
             doctitle = self.encode(doctitle)
-            self.body.append(self._start_ac_link(node, appearance='inline'))
-            self.body.append(self._start_tag(node, 'ri:page',
+            self.body.append(self.start_ac_link(node, appearance='inline'))
+            self.body.append(self.start_tag(node, 'ri:page',
                 suffix=self.nl, empty=True, **{'ri:content-title': doctitle}))
-            self.body.append(self._start_ac_link_body(node))
+            self.body.append(self.start_ac_link_body(node))
             self.body.append(node.astext())
-            self.body.append(self._end_ac_link_body(node))
-            self.body.append(self._end_ac_link(node))
+            self.body.append(self.end_ac_link_body(node))
+            self.body.append(self.end_ac_link(node))
         else:
             self.warn('unable to build link to document card due to '
                 f'missing title (in {self.docname}): {docname}')
@@ -2562,16 +2563,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # v1 editor does not support cards; contain in a panel to emulate a
         # block feel
         if not self.v2:
-            self.body.append(self._start_ac_macro(node, 'panel'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
+            self.body.append(self.start_ac_macro(node, 'panel'))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
 
-        self.body.append(self._start_tag(node, 'a', **options))
+        self.body.append(self.start_tag(node, 'a', **options))
         self.body.append(url)
-        self.body.append(self._end_tag(node, suffix=''))
+        self.body.append(self.end_tag(node, suffix=''))
 
         if not self.v2:
-            self.body.append(self._end_ac_rich_text_body_macro(node))
-            self.body.append(self._end_ac_macro(node))  # panel
+            self.body.append(self.end_ac_rich_text_body_macro(node))
+            self.body.append(self.end_ac_macro(node))  # panel
 
         raise nodes.SkipNode
 
@@ -2582,9 +2583,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             'href': self.encode(PARAMS(node)['href']),
         }
 
-        self.body.append(self._start_tag(node, 'a', **attribs))
+        self.body.append(self.start_tag(node, 'a', **attribs))
         self.body.append(attribs['href'])
-        self.body.append(self._end_tag(node, suffix=''))
+        self.body.append(self.end_tag(node, suffix=''))
 
         raise nodes.SkipNode
 
@@ -2593,7 +2594,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ----------------------------------------------
 
     def visit_confluence_emoticon_inline(self, node):
-        self.body.append(self._start_tag(node, 'ac:emoticon', empty=True,
+        self.body.append(self.start_tag(node, 'ac:emoticon', empty=True,
             **{'ac:name': self.encode(node.rawsource)}))
 
         raise nodes.SkipNode
@@ -2620,20 +2621,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             else:
                 number = node['number']
 
-            self.body.append(self._start_tag(node, 'div',
+            self.body.append(self.start_tag(node, 'div',
                 **{'style': 'float: right'}))
             self.body.append(f'({number})')
-            self.body.append(self._end_tag(node))
+            self.body.append(self.end_tag(node))
 
-        self.body.append(self._start_ac_macro(node, macro))
+        self.body.append(self.start_ac_macro(node, macro))
         if param is not None:
             latex_content = self.encode(latex_content)
-            self.body.append(self._build_ac_param(node, param, latex_content))
+            self.body.append(self.build_ac_param(node, param, latex_content))
         else:
-            self.body.append(self._start_ac_plain_text_body_macro(node))
-            self.body.append(self._escape_cdata(latex_content))
-            self.body.append(self._end_ac_plain_text_body_macro(node))
-        self.body.append(self._end_ac_macro(node))
+            self.body.append(self.start_ac_plain_text_body_macro(node))
+            self.body.append(self.escape_cdata(latex_content))
+            self.body.append(self.end_ac_plain_text_body_macro(node))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -2675,11 +2676,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         else:
             key = 'username'
 
-        self.body.append(self._start_ac_link(node))
-        self.body.append(self._start_tag(node, 'ri:user',
+        self.body.append(self.start_ac_link(node))
+        self.body.append(self.start_tag(node, 'ri:user',
             suffix=self.nl, empty=True,
             **{'ri:' + key: self.encode(identifier)}))
-        self.body.append(self._end_ac_link(node))
+        self.body.append(self.end_ac_link(node))
 
         raise nodes.SkipNode
 
@@ -2688,10 +2689,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ------------------------------------------
 
     def _visit_jira_node(self, node):
-        self.body.append(self._start_ac_macro(node, 'jira'))
+        self.body.append(self.start_ac_macro(node, 'jira'))
         for k, v in sorted(PARAMS(node).items()):
-            self.body.append(self._build_ac_param(node, k, v))
-        self.body.append(self._end_ac_macro(node))
+            self.body.append(self.build_ac_param(node, k, v))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -2703,10 +2704,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # --------------------------------------------
 
     def visit_confluence_status_inline(self, node):
-        self.body.append(self._start_ac_macro(node, 'status'))
+        self.body.append(self.start_ac_macro(node, 'status'))
         for k, v in sorted(PARAMS(node).items()):
-            self.body.append(self._build_ac_param(node, k, v))
-        self.body.append(self._end_ac_macro(node))
+            self.body.append(self.build_ac_param(node, k, v))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -2715,10 +2716,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------------------
 
     def visit_confluence_toc(self, node):
-        self.body.append(self._start_ac_macro(node, 'toc'))
+        self.body.append(self.start_ac_macro(node, 'toc'))
         for k, v in sorted(PARAMS(node).items()):
-            self.body.append(self._build_ac_param(node, k, v))
-        self.body.append(self._end_ac_macro(node))
+            self.body.append(self.build_ac_param(node, k, v))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -2816,20 +2817,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if 'json' in new_target_lang:
                 target_lang = new_target_lang
 
-        self.body.append(self._start_ac_macro(node, 'code'))
-        self.body.append(self._build_ac_param(node, 'language', target_lang))
+        self.body.append(self.start_ac_macro(node, 'code'))
+        self.body.append(self.build_ac_param(node, 'language', target_lang))
 
         if title:
-            self.body.append(self._build_ac_param(node, 'title', title))
+            self.body.append(self.build_ac_param(node, 'title', title))
 
         expand = node.get('expand', None)
         if not expand:
-            self.body.append(self._build_ac_param(node, 'collapse', 'true'))
+            self.body.append(self.build_ac_param(node, 'collapse', 'true'))
 
-        self.body.append(self._start_ac_plain_text_body_macro(node))
-        self.body.append(self._escape_cdata(data))
-        self.body.append(self._end_ac_plain_text_body_macro(node))
-        self.body.append(self._end_ac_macro(node))
+        self.body.append(self.start_ac_plain_text_body_macro(node))
+        self.body.append(self.escape_cdata(data))
+        self.body.append(self.end_ac_plain_text_body_macro(node))
+        self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
@@ -2838,8 +2839,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ---------------------------------------------------
 
     def visit_ItalicAbbreviationNode(self, node):
-        self.body.append(self._start_tag(node, 'i'))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, 'i'))
+        self.context.append(self.end_tag(node))
         self.visit_abbreviation(node)
 
     def depart_ItalicAbbreviationNode(self, node):
@@ -2876,20 +2877,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.warn(f'Unable to find video name: {source_path}')
             raise nodes.SkipNode
 
-        ri_filename = self._start_ri_attachment(node, video_key) + \
-            self._end_ri_attachment(node)
+        ri_filename = self.start_ri_attachment(node, video_key) + \
+            self.end_ri_attachment(node)
 
-        self.body.append(self._start_tag(node, 'div'))
-        self.body.append(self._start_ac_macro(node, 'multimedia'))
-        self.body.append(self._build_ac_param(node, 'name', ri_filename))
+        self.body.append(self.start_tag(node, 'div'))
+        self.body.append(self.start_ac_macro(node, 'multimedia'))
+        self.body.append(self.build_ac_param(node, 'name', ri_filename))
         if width:
-            self.body.append(self._build_ac_param(node, 'width', width))
+            self.body.append(self.build_ac_param(node, 'width', width))
         if height:
-            self.body.append(self._build_ac_param(node, 'height', height))
+            self.body.append(self.build_ac_param(node, 'height', height))
         if autoplay:
-            self.body.append(self._build_ac_param(node, 'autostart', 'true'))
-        self.body.append(self._end_ac_macro(node))
-        self.body.append(self._end_tag(node))
+            self.body.append(self.build_ac_param(node, 'autostart', 'true'))
+        self.body.append(self.end_ac_macro(node))
+        self.body.append(self.end_tag(node))
         raise nodes.SkipNode
 
     # ---------------------------------------------------
@@ -2915,18 +2916,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if alignment and alignment != 'left':
             attribs['style'] = f'text-align: {alignment};'
 
-        ri_url = self._start_tag(
+        ri_url = self.start_tag(
             node, 'ri:url', empty=True, **{'ri:value': self.encode(uri)})
 
-        self.body.append(self._start_tag(node, 'div', **attribs))
-        self.body.append(self._start_ac_macro(node, 'widget'))
-        self.body.append(self._build_ac_param(node, 'url', ri_url))
+        self.body.append(self.start_tag(node, 'div', **attribs))
+        self.body.append(self.start_ac_macro(node, 'widget'))
+        self.body.append(self.build_ac_param(node, 'url', ri_url))
         if height:
-            self.body.append(self._build_ac_param(node, 'height', height))
+            self.body.append(self.build_ac_param(node, 'height', height))
         if width:
-            self.body.append(self._build_ac_param(node, 'width', width))
-        self.body.append(self._end_ac_macro(node))
-        self.body.append(self._end_tag(node))
+            self.body.append(self.build_ac_param(node, 'width', width))
+        self.body.append(self.end_ac_macro(node))
+        self.body.append(self.end_tag(node))
 
         raise nodes.SkipNode
 
@@ -2941,8 +2942,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -------------------------------------------------------
 
     def visit_strike_node(self, node):
-        self.body.append(self._start_tag(node, 's'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 's'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_strike_node(self, node):
         self.body.append(self.context.pop())  # s
@@ -2958,8 +2959,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             title_value = self.encode(title_value)
             attribs['title'] = title_value
 
-        self.body.append(self._start_tag(node, 'abbr', **attribs))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'abbr', **attribs))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_abbreviation(self, node):
         self.body.append(self.context.pop())  # abbr
@@ -2967,21 +2968,21 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def visit_acronym(self, node):
         # Note: docutils indicates this directive is "to be completed"
 
-        self.body.append(self._start_tag(node, 'acronym'))
-        self.context.append(self._end_tag(node, suffix=''))
+        self.body.append(self.start_tag(node, 'acronym'))
+        self.context.append(self.end_tag(node, suffix=''))
 
     def depart_acronym(self, node):
         self.body.append(self.context.pop())  # acronym
 
     def visit_container(self, node):
         if 'collapse' in node.get('classes', []):
-            self.body.append(self._start_ac_macro(node, 'expand'))
-            self.body.append(self._start_ac_rich_text_body_macro(node))
-            self.context.append(self._end_ac_rich_text_body_macro(node) +
-                self._end_ac_macro(node))
+            self.body.append(self.start_ac_macro(node, 'expand'))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+            self.context.append(self.end_ac_rich_text_body_macro(node) +
+                self.end_ac_macro(node))
         else:
-            self.body.append(self._start_tag(node, 'div'))
-            self.context.append(self._end_tag(node))
+            self.body.append(self.start_tag(node, 'div'))
+            self.context.append(self.end_tag(node))
 
     def depart_container(self, node):
         self.body.append(self.context.pop())  # div
@@ -3030,8 +3031,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if style:
             attribs['style'] = style
 
-        self.body.append(self._start_tag(node, tag, **attribs))
-        self.context.append(self._end_tag(node))
+        self.body.append(self.start_tag(node, tag, **attribs))
+        self.context.append(self.end_tag(node))
 
     def depart_line_block(self, node):
         self.body.append(self.context.pop())  # div
@@ -3056,11 +3057,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 # on the user's Confluence instance
                 else:
                     macro = permit_raw_html
-                    self.body.append(self._start_ac_macro(node, macro))
-                    self.body.append(self._start_ac_plain_text_body_macro(node))
-                    self.body.append(self._escape_cdata(raw_html))
-                    self.body.append(self._end_ac_plain_text_body_macro(node))
-                    self.body.append(self._end_ac_macro(node))
+                    self.body.append(self.start_ac_macro(node, macro))
+                    self.body.append(self.start_ac_plain_text_body_macro(node))
+                    self.body.append(self.escape_cdata(raw_html))
+                    self.body.append(self.end_ac_plain_text_body_macro(node))
+                    self.body.append(self.end_ac_macro(node))
 
                 raise nodes.SkipNode
 
@@ -3118,33 +3119,44 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             anchor: the name of the anchor to create
         """
 
-        self.body.append(self._start_ac_macro(node, 'anchor'))
-        self.body.append(self._build_ac_param(node, '', anchor))
-        self.body.append(self._end_ac_macro(node, suffix=''))
+        self.body.append(self.start_ac_macro(node, 'anchor'))
+        self.body.append(self.build_ac_param(node, '', anchor))
+        self.body.append(self.end_ac_macro(node, suffix=''))
 
         if self.v2:
             doctitle = self.state.title(self.docname)
             doctitle = self.encode(doctitle.replace(' ', ''))
 
             compat_anchor = f'{doctitle}-{anchor}'
-            self.body.append(self._start_ac_macro(node, 'anchor'))
-            self.body.append(self._build_ac_param(node, '', compat_anchor))
-            self.body.append(self._end_ac_macro(node, suffix=''))
+            self.body.append(self.start_ac_macro(node, 'anchor'))
+            self.body.append(self.build_ac_param(node, '', compat_anchor))
+            self.body.append(self.end_ac_macro(node, suffix=''))
 
-    def _start_tag(self, node, tag, suffix=None, empty=False, **kwargs):
+    def start_tag(self, node, tag, suffix=None, empty=False, **kwargs):
         """
         generates start tag content for a given node
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format element (i.e. generates a
-        start tag). The element of type `tag` will be initialized. This method
-        may use provided `node` to tweak the final content.
+        start tag). The element of type ``tag`` will be initialized. This
+        method may use the provided ``node`` to tweak the final content.
+        Non-empty tags should be used with a respective :func:`end_tag` call.
+
+        .. code-block:: python
+
+            def visit_custom_node(self, node):
+                self.body.append(self.start_tag(node, 'p'))
+                self.context.append(self.end_tag(node))
+
+            def depart_custom_node(self, node):
+                self.body.append(self.context.pop())
 
         Args:
             node: the node processing the start-tag
             tag: the type of tag
             suffix (optional): the suffix to add (defaults to nothing)
-            empty (optional): tag will not hold child nodes (defaults to False)
+            empty (optional): tag will not hold child nodes (defaults to
+                              ``False``)
             **kwargs (optional): dictionary of attributes to include in the tag
 
         Returns:
@@ -3175,14 +3187,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         prefix = ' '.join(data)
         return f'<{prefix}{suffix}'
 
-    def _end_tag(self, node, suffix=None):
+    def end_tag(self, node, suffix=None):
         """
         generates end tag content for a given node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format element (i.e. generates an end tag). This
-        method should* be used to help close a _start_tag call (*with the
-        exception of when _start_tag is invoked with empty=True).
+        method should be used to help close a :func:`start_tag` call (with the
+        exception of when :func:`start_tag` is invoked with ``empty=True``).
 
         Args:
             node: the node processing the end-tag
@@ -3202,14 +3214,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         return f'</{tag}>{suffix}'
 
-    def _build_ac_param(self, node, name, value):
+    def build_ac_param(self, node, name, value):
         """
         generates a confluence parameter element
 
         A helper used to return content to be appended to a document which
-        builds a complete storage format parameter element. The 'ac:parameter'
-        element will be built. This method may use provided `node` to tweak the
-        final content.
+        builds a complete storage format parameter element. The
+        ``ac:parameter`` element will be built. This method may use provided
+        ``node`` to tweak the final content.
 
         Args:
             node: the node processing the parameter
@@ -3219,17 +3231,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return (self._start_tag(node, 'ac:parameter', **{'ac:name': name}) +
-            str(value) + self._end_tag(node))
+        return (self.start_tag(node, 'ac:parameter', **{'ac:name': name}) +
+            str(value) + self.end_tag(node))
 
-    def _start_ac_image(self, node, **kwargs):
+    def start_ac_image(self, node, **kwargs):
         """
         generates a confluence image start tag
 
         A helper used to return content to be appended to a document which
-        initializes the start of a storage format image element. The 'ac:image'
-        element will be initialized. This method may use provided `node` to
-        tweak the final content.
+        initializes the start of a storage format image element. The
+        ``ac:image`` element will be initialized. This method may use provided
+        ``node`` to tweak the final content. This call should be used with a
+        respective :func:`end_ac_image` call.
 
         Args:
             node: the node processing the image
@@ -3237,15 +3250,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:image', suffix=self.nl, **kwargs)
+        return self.start_tag(node, 'ac:image', suffix=self.nl, **kwargs)
 
-    def _end_ac_image(self, node):
+    def end_ac_image(self, node):
         """
         generates confluence image end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format image element. This method should be used to
-        help close a _start_ac_image call.
+        help close a :func:`start_ac_image` call.
 
         Args:
             node: the node processing the image
@@ -3253,21 +3266,22 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix='')
+        return self.end_tag(node, suffix='')
 
-    def _start_ac_link(self, node, anchor=None, appearance=None):
+    def start_ac_link(self, node, anchor=None, appearance=None):
         """
         generates a confluence link start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format link element of a specific
-        `type`. The 'ac:link' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``type``. The ``ac:link`` element will be initialized. This method may
+        use provided ``node`` to tweak the final content. This call should be
+        used with a respective :func:`end_ac_link` call.
 
         Args:
             node: the node processing the link
-            anchor (optional): the anchor value to use (defaults to None)
-            appearance (optional): card appearance to use (defaults to None)
+            anchor (optional): the anchor value to use (defaults to ``None``)
+            appearance (optional): card appearance to use (defaults to ``None``)
 
         Returns:
             the content
@@ -3277,15 +3291,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['ac:anchor'] = anchor
         if appearance:
             attribs['ac:card-appearance'] = appearance
-        return self._start_tag(node, 'ac:link', suffix=self.nl, **attribs)
+        return self.start_tag(node, 'ac:link', suffix=self.nl, **attribs)
 
-    def _end_ac_link(self, node):
+    def end_ac_link(self, node):
         """
         generates confluence link end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format link element. This method should be used to
-        help close a _start_ac_link call.
+        help close a :func:`start_ac_link` call.
 
         Args:
             node: the node processing the link
@@ -3293,36 +3307,38 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix='')
+        return self.end_tag(node, suffix='')
 
-    def _start_ac_macro(self, node, type_, empty=False):
+    def start_ac_macro(self, node, type_, empty=False):
         """
         generates a confluence macro start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format macro element of a specific
-        `type`. The 'ac:structured-macro' element will be initialized. This
-        method may use provided `node` to tweak the final content.
+        ``type``. The ``ac:structured-macro`` element will be initialized. This
+        method may use provided `node` to tweak the final content. This call
+        should be used with a respective :func:`end_ac_macro` call.
 
         Args:
             node: the node processing the macro
             type_: the type of macro
-            empty (optional): tag will not hold child nodes (defaults to False)
+            empty (optional): tag will not hold child nodes (defaults to
+                              ``False``)
 
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:structured-macro',
+        return self.start_tag(node, 'ac:structured-macro',
             suffix=self.nl, empty=empty, **{'ac:name': type_})
 
-    def _end_ac_macro(self, node, suffix=None):
+    def end_ac_macro(self, node, suffix=None):
         """
         generates confluence macro end tag content for a node
 
         A helper used to return content to be appended to a document which
-        finalizes a storage format macro element. This method should* be used to
-        help close a _start_ac_macro call (*with the exception of when
-        _start_ac_macro is invoked with empty=True).
+        finalizes a storage format macro element. This method should be used to
+        help close a :func:`start_ac_macro` call (with the exception of when
+        :func:`start_ac_macro` is invoked with ``empty=True``).
 
         Args:
             node: the node processing the macro
@@ -3331,16 +3347,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix=suffix)
+        return self.end_tag(node, suffix=suffix)
 
-    def _start_ac_link_body(self, node):
+    def start_ac_link_body(self, node):
         """
         generates a confluence link-body start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format link-body element. The
-        'ac:link-body' element will be initialized. This method may use provided
-        `node` to tweak the final content.
+        ``ac:link-body`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content. This call should be used
+        with a respective :func:`end_ac_link_body` call.
 
         Args:
             node: the node processing the macro
@@ -3348,15 +3365,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:link-body')
+        return self.start_tag(node, 'ac:link-body')
 
-    def _end_ac_link_body(self, node):
+    def end_ac_link_body(self, node):
         """
         generates confluence link-body end tag content for a node
 
         A helper used to return content to be appended to a document which
-        finalizes a storage format link-body element. This method should be used
-        to help close a _start_ac_link_body call.
+        finalizes a storage format link-body element. This method should be
+        used to help close a :func:`start_ac_link_body` call.
 
         Args:
             node: the node processing the macro
@@ -3364,16 +3381,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node)
+        return self.end_tag(node)
 
-    def _start_ac_rich_text_body_macro(self, node):
+    def start_ac_rich_text_body_macro(self, node):
         """
         generates a confluence rich-text-body start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format rich-text-body element. The
-        'ac:rich-text-body' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``ac:rich-text-body`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content. This call should be used
+        with a respective :func:`end_ac_rich_text_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3381,15 +3399,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:rich-text-body')
+        return self.start_tag(node, 'ac:rich-text-body')
 
-    def _end_ac_rich_text_body_macro(self, node):
+    def end_ac_rich_text_body_macro(self, node):
         """
         generates confluence rich-text-body end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format rich-text-body element. This method should
-        be used to help close a _start_ac_rich_text_body_macro call.
+        be used to help close a :func:`start_ac_rich_text_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3397,16 +3415,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node)
+        return self.end_tag(node)
 
-    def _start_ac_plain_text_body_macro(self, node):
+    def start_ac_plain_text_body_macro(self, node):
         """
         generates a confluence plain-text-body start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format plain-text-body element. The
-        'ac:plain-text-body' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``ac:plain-text-body`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content. This call should be used
+        with a respective :func:`end_ac_plain_text_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3414,15 +3433,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:plain-text-body', suffix='<![CDATA[')
+        return self.start_tag(node, 'ac:plain-text-body', suffix='<![CDATA[')
 
-    def _end_ac_plain_text_body_macro(self, node):
+    def end_ac_plain_text_body_macro(self, node):
         """
         generates confluence plain-text-body end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format plain-text-body element. This method should
-        be used to help close a _start_ac_plain_text_body_macro call.
+        be used to help close a :func:`start_ac_plain_text_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3430,16 +3449,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return ']]>' + self._end_tag(node)
+        return ']]>' + self.end_tag(node)
 
-    def _start_ac_plain_text_link_body_macro(self, node):
+    def start_ac_plain_text_link_body_macro(self, node):
         """
         generates a confluence plain-text-link-body start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format plain-text-body element. The
-        'ac:plain-text-body' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``ac:plain-text-body`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content. This call should be used
+        with a respective :func:`end_ac_plain_text_link_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3447,17 +3467,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:plain-text-link-body',
+        return self.start_tag(node, 'ac:plain-text-link-body',
             suffix='<![CDATA[')
 
-    def _end_ac_plain_text_link_body_macro(self, node):
+    def end_ac_plain_text_link_body_macro(self, node):
         """
         generates confluence plain-text-link-body end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format plain-text-link-body element. This method
-        should be used to help close a _start_ac_plain_text_link_body_macro
-        call.
+        should be used to help close a
+        :func:`start_ac_plain_text_link_body_macro` call.
 
         Args:
             node: the node processing the macro
@@ -3465,16 +3485,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return ']]>' + self._end_tag(node)
+        return ']]>' + self.end_tag(node)
 
-    def _start_ri_attachment(self, node, filename):
+    def start_ri_attachment(self, node, filename):
         """
         generates a confluence attachment start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format attachment element. The
-        'ri:attachment' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``ri:attachment`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content.
 
         Args:
             node: the node processing the attachment
@@ -3483,16 +3503,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ri:attachment',
+        return self.start_tag(node, 'ri:attachment',
             **{'ri:filename': filename})
 
-    def _end_ri_attachment(self, node):
+    def end_ri_attachment(self, node):
         """
         generates confluence attachment end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format attachment element. This method should be
-        used to help close a _start_ri_attachment call.
+        used to help close a :func:`start_ri_attachment` call.
 
         Args:
             node: the node processing the attachment
@@ -3500,15 +3520,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node)
+        return self.end_tag(node)
 
-    def _start_adf_extension(self, node):
+    def start_adf_extension(self, node):
         """
         generates a confluence adf-extension start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format adf-extension element. The
-        'ac:adf-extension' element will be initialized.
+        ``ac:adf-extension`` element will be initialized. This call should be
+        used with a respective :func:`start_adf_extension` call.
 
         Args:
             node: the node processing the macro
@@ -3516,15 +3537,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:adf-extension')
+        return self.start_tag(node, 'ac:adf-extension')
 
-    def _end_adf_extension(self, node, suffix=None):
+    def end_adf_extension(self, node, suffix=None):
         """
         generates confluence adf-extension end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format adf-extension element. This method should
-        be used to help close a _start_adf_extension call.
+        be used to help close a :func:`start_adf_extension` call.
 
         Args:
             node: the node processing the macro
@@ -3533,16 +3554,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix=suffix)
+        return self.end_tag(node, suffix=suffix)
 
-    def _start_adf_node(self, node, type_, empty=False):
+    def start_adf_node(self, node, type_, empty=False):
         """
         generates a confluence adf-node start tag
 
         A helper used to return content to be appended to a document which
-        initializes the start of a storage format adf-node element of a specific
-        `type`. The 'ac:adf-node' element will be initialized. This
-        method may use provided `node` to tweak the final content.
+        initializes the start of a storage format adf-node element of a
+        specific ``type``. The ``ac:adf-node`` element will be initialized.
+        This method may use provided ``node`` to tweak the final content. This
+        call should be used with a respective :func:`end_adf_node` call.
 
         Args:
             node: the node processing the macro
@@ -3550,17 +3572,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:adf-node',
+        return self.start_tag(node, 'ac:adf-node',
             empty=empty, **{'type': type_})
 
-    def _end_adf_node(self, node, suffix=None):
+    def end_adf_node(self, node, suffix=None):
         """
         generates confluence adf-node end tag content for a node
 
         A helper used to return content to be appended to a document which
-        finalizes a storage format adf-node element. This method should* be
-        used to help close a _start_adf_node call (*with the exception of when
-        _start_adf_node is invoked with empty=True).
+        finalizes a storage format adf-node element. This method should be
+        used to help close a :func:`start_adf_node` call (with the exception
+        of when :func:`start_adf_node` is invoked with ``empty=True``).
 
         Args:
             node: the node processing the macro
@@ -3569,16 +3591,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix=suffix)
+        return self.end_tag(node, suffix=suffix)
 
-    def _build_adf_attribute(self, node, name, value):
+    def build_adf_attribute(self, node, name, value):
         """
         generates a confluence parameter element
 
         A helper used to return content to be appended to a document which
         builds a complete storage format parameter element. The
-        'ac:adf-attribute' element will be built. This method may use provided
-        `node` to tweak the final content.
+        ``ac:adf-attribute`` element will be built. This method may use
+        provided ``node`` to tweak the final content.
 
         Args:
             node: the node processing the parameter
@@ -3588,17 +3610,18 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return (self._start_tag(node, 'ac:adf-attribute', **{'key': name}) +
-            value + self._end_tag(node))
+        return (self.start_tag(node, 'ac:adf-attribute', **{'key': name}) +
+            value + self.end_tag(node))
 
-    def _start_adf_content(self, node):
+    def start_adf_content(self, node):
         """
         generates a confluence adf-content start tag
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format adf-content element. The
-        'ac:adf-content' element will be initialized. This method may use
-        provided `node` to tweak the final content.
+        ``ac:adf-content`` element will be initialized. This method may use
+        provided ``node`` to tweak the final content. This call should be used
+        with a respective :func:`end_adf_content` call.
 
         Args:
             node: the node processing the macro
@@ -3606,15 +3629,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._start_tag(node, 'ac:adf-content')
+        return self.start_tag(node, 'ac:adf-content')
 
-    def _end_adf_content(self, node, suffix=None):
+    def end_adf_content(self, node, suffix=None):
         """
         generates confluence adf-content end tag content for a node
 
         A helper used to return content to be appended to a document which
         finalizes a storage format adf-content element. This method should be
-        used to help close a _start_adf_content call.
+        used to help close a :func:`start_adf_content` call.
 
         Args:
             node: the node processing the macro
@@ -3623,9 +3646,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Returns:
             the content
         """
-        return self._end_tag(node, suffix=suffix)
+        return self.end_tag(node, suffix=suffix)
 
-    def _escape_cdata(self, data):
+    def escape_cdata(self, data):
         """
         escapes text to be inserted into a cdata
 
@@ -3654,3 +3677,136 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             data = data.replace(']]>', ']]]]><![CDATA[>')
 
         return ConfluenceBaseTranslator.encode(self, data)
+
+    # ##########################################################################
+    # #                                                                        #
+    # # deprecated helpers                                                     #
+    # #                                                                        #
+    # # The following is a series of deprecated helper calls. While these have #
+    # # been internal hinted, some users may have attempted to utilize them    #
+    # # in their configurations/extensions. Being a bit flexible by still      #
+    # # supporting them for a few releases (with a warning) to give users      #
+    # # time to update.                                                        #
+    # #                                                                        #
+    # ##########################################################################
+
+    def _build_ac_param(self, node, name, value):
+        self._tracked_deprecated('_build_ac_param', 'build_ac_param')
+        return self.build_ac_param(node, name, value)
+
+    def _build_adf_attribute(self, node, name, value):
+        self._tracked_deprecated('_build_adf_attribute', 'build_adf_attribute')
+        return self.build_adf_attribute(node, name, value)
+
+    def _end_ac_image(self, node):
+        self._tracked_deprecated('_end_ac_image', 'end_ac_image')
+        return self.end_ac_image(node)
+
+    def _end_ac_link(self, node):
+        self._tracked_deprecated('_end_ac_link', 'end_ac_link')
+        return self.end_ac_link(node)
+
+    def _end_ac_link_body(self, node):
+        self._tracked_deprecated('_end_ac_link_body', 'end_ac_link_body')
+        return self.end_ac_link_body(node)
+
+    def _end_ac_macro(self, node, **kwargs):
+        self._tracked_deprecated('_end_ac_macro', 'end_ac_macro')
+        return self.end_ac_macro(node, **kwargs)
+
+    def _end_ac_plain_text_body_macro(self, node):
+        self._tracked_deprecated('_end_ac_plain_text_body_macro',
+            'end_ac_plain_text_body_macro')
+        return self.end_ac_plain_text_body_macro(node)
+
+    def _end_ac_plain_text_link_body_macro(self, node):
+        self._tracked_deprecated('_end_ac_plain_text_link_body_macro',
+            'end_ac_plain_text_link_body_macro')
+        return self.end_ac_plain_text_link_body_macro(node)
+
+    def _end_ac_rich_text_body_macro(self, node):
+        self._tracked_deprecated('_end_ac_rich_text_body_macro',
+            'end_ac_rich_text_body_macro')
+        return self.end_ac_rich_text_body_macro(node)
+
+    def _end_adf_content(self, node, **kwargs):
+        self._tracked_deprecated('_end_adf_content', 'end_adf_content')
+        return self.end_adf_content(node, **kwargs)
+
+    def _end_adf_extension(self, node, **kwargs):
+        self._tracked_deprecated('_end_adf_extension', 'end_adf_extension')
+        return self.end_adf_extension(node, **kwargs)
+
+    def _end_adf_node(self, node, **kwargs):
+        self._tracked_deprecated('_end_adf_node', 'end_adf_node')
+        return self.end_adf_node(node, **kwargs)
+
+    def _end_ri_attachment(self, node):
+        self._tracked_deprecated('_end_ri_attachment', 'end_ri_attachment')
+        return self.end_ri_attachment(node)
+
+    def _end_tag(self, node, **kwargs):
+        self._tracked_deprecated('_end_tag', 'end_tag')
+        return self.end_tag(node, **kwargs)
+
+    def _escape_cdata(self, data):
+        self._tracked_deprecated('_escape_cdata', 'escape_cdata')
+        return self.escape_cdata(data)
+
+    def _start_ac_image(self, node, **kwargs):
+        self._tracked_deprecated('_start_ac_image', 'start_ac_image')
+        return self.start_ac_image(node, **kwargs)
+
+    def _start_ac_link(self, node, anchor=None, appearance=None):
+        self._tracked_deprecated('_start_ac_link', 'start_ac_link')
+        return self.start_ac_link(node, anchor=anchor, appearance=appearance)
+
+    def _start_ac_link_body(self, node):
+        self._tracked_deprecated('_start_ac_link_body', 'start_ac_link_body')
+        return self.start_ac_link_body(node)
+
+    def _start_ac_macro(self, node, type_, **kwargs):
+        self._tracked_deprecated('_start_ac_macro', 'start_ac_macro')
+        return self.start_ac_macro(node, type_, **kwargs)
+
+    def _start_ac_plain_text_body_macro(self, node):
+        self._tracked_deprecated('_start_ac_plain_text_body_macro',
+            'start_ac_plain_text_body_macro')
+        return self.start_ac_plain_text_body_macro(node)
+
+    def _start_ac_plain_text_link_body_macro(self, node):
+        self._tracked_deprecated('_start_ac_plain_text_link_body_macro',
+            'start_ac_plain_text_link_body_macro')
+        return self.start_ac_plain_text_link_body_macro(node)
+
+    def _start_ac_rich_text_body_macro(self, node):
+        self._tracked_deprecated('_start_ac_rich_text_body_macro',
+            'start_ac_rich_text_body_macro')
+        return self.start_ac_rich_text_body_macro(node)
+
+    def _start_adf_content(self, node):
+        self._tracked_deprecated('_start_adf_content', 'start_adf_content')
+        return self.start_adf_content(node)
+
+    def _start_adf_extension(self, node):
+        self._tracked_deprecated('_start_adf_extension', 'start_adf_extension')
+        return self.start_adf_extension(node)
+
+    def _start_adf_node(self, node, type_, **kwargs):
+        self._tracked_deprecated('_start_adf_node', 'start_adf_node')
+        return self.start_adf_node(node, type_, **kwargs)
+
+    def _start_ri_attachment(self, node, filename):
+        self._tracked_deprecated('_start_ri_attachment', 'start_ri_attachment')
+        return self.start_ri_attachment(node, filename)
+
+    def _start_tag(self, node, tag, **kwargs):
+        self._tracked_deprecated('_start_tag', 'start_tag')
+        return self.start_tag(node, tag, **kwargs)
+
+    def _tracked_deprecated(self, prev, new):
+        if not self.__tracked_deprecated:
+            self.__tracked_deprecated = True
+            self.warn(
+                f'(developer) "{prev}" is deprecated; use "{new}" instead',
+                subtype='deprecated_develop')
