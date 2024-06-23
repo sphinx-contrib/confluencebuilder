@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
+from sphinx.ext.autodoc import cut_lines
 from sphinx.transforms.post_transforms import SphinxPostTransform
 import sphinxcontrib.confluencebuilder
 
@@ -17,6 +18,11 @@ supported_requests_ver = '2.25.0+'
 supported_sphinx_ver = '6.1+'
 
 root_doc = 'contents'
+
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+]
 
 # reStructuredText string included at the end of every source
 rst_epilog = f'''
@@ -39,6 +45,8 @@ suppress_warnings = [
     # Ignore excluded documents on toctrees (expected for LaTeX custom docs).
     'toc.excluded',
 ]
+
+add_module_names = False
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -124,6 +132,9 @@ def setup(app):
 
     app.add_js_file('jquery-3.6.3.min.js')
     app.add_js_file('version-alert.js')
+
+    # remove first line description docstrings in documentation
+    app.connect('autodoc-process-docstring', cut_lines(1))
 
     # custom directives/roles for documentation
     app.add_object_type('builderval', 'builderval', objname='builders',

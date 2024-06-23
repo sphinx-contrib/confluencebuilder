@@ -11,20 +11,16 @@ on extensions:
     | Sphinx Extensions API
     | https://www.sphinx-doc.org/en/master/extdev/index.html
 
-This extension does not provide any significant API capabilities beyond
-what is provided by Sphinx's existing API support. Developers or advanced
-users are recommended to use official Sphinx API calls for any modifications
-that are applicable when using the Sphinx Confluence Builder extension.
-Users are welcome to inspect this extension's code for any custom tweaks
-desired for their project;. While using extension specific implementation
-for customization is unsupported, this extension aims to be flexible to
-support users when possible.
+Developers or advanced users are recommended to use official Sphinx API
+calls for any modifications that are applicable when using the Sphinx
+Confluence Builder extension. Users are welcome to inspect this
+extension's code for any custom tweaks desired for their project.
 
 The following shows an example modification for a project to support a
 custom node type that is not supported by this extension. Users can use
 `Sphinx.add_node`_ to help register support for custom nodes. The keyword
-to use for this extension is `confluence`. If another extension defines a
-node `custom_node`, the following shows some example code to start supporting
+to use for this extension is ``confluence``. If another extension defines a
+node ``custom_node``, the following shows some example code to start supporting
 this node with Sphinx Confluence Builder:
 
 .. code-block:: python
@@ -41,6 +37,81 @@ this node with Sphinx Confluence Builder:
 
     def depart_custom_node(self, node):
         self.body.append(self.context.pop())
+
+Confluence Storage Format Translator Helpers
+--------------------------------------------
+
+When extending this extension or adding more advanced configurations, a
+series of helper calls are available for use. API calls may evolve over time
+as this extension is maintained. The following methods are available for a
+``ConfluenceStorageFormatTranslator`` translator.
+
+.. Ideally, the following entries would use `:no-index-entry:` over
+   `:no-index:`. However it looks like the autodocs extension does no yet
+   support this capability.
+
+.. (sorting) start off with start/end tag
+
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_tag
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_tag
+    :no-index:
+
+.. (sorting) then sort by name with prefix order start/end pairs and specific calls
+
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_image
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_image
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_link
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_link
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_link_body
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_link_body
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.build_ac_param
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_plain_text_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_plain_text_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_plain_text_link_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_plain_text_link_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ac_rich_text_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ac_rich_text_body_macro
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_adf_content
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_adf_content
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_adf_extension
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.build_adf_attribute
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_adf_extension
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_adf_node
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_adf_node
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.start_ri_attachment
+    :no-index:
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.end_ri_attachment
+    :no-index:
+
+.. (sorting) then others
+
+.. autofunction:: sphinxcontrib.confluencebuilder.storage.translator.ConfluenceStorageFormatTranslator.escape_cdata
+    :no-index:
 
 .. references ------------------------------------------------------------------
 
