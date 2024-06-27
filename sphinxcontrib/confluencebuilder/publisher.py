@@ -24,6 +24,7 @@ from sphinxcontrib.confluencebuilder.rest import Rest
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import detect_cloud
 import json
 import logging
 import time
@@ -65,6 +66,11 @@ class ConfluencePublisher:
         prefix_overrides = config.confluence_publish_override_api_prefix or {}
         self.APIV1 = prefix_overrides.get('v1', f'{API_REST_V1}/')
         self.APIV2 = prefix_overrides.get('v2', f'{API_REST_V2}/')
+
+        # if a default cloud value is provided, attempt to detect the cloud
+        # type
+        if cloud is None:
+            self.cloud = detect_cloud(config.confluence_server_url)
 
         # determine api mode to use
         # - if an explicit api mode is configured, use it

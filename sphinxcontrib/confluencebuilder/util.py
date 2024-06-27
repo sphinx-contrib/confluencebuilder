@@ -8,6 +8,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
 from hashlib import sha256
+from urllib.parse import urlparse
 import getpass
 import os
 import re
@@ -137,6 +138,33 @@ def convert_length(value, unit, pct=True):
         return None
 
     return int(round(fvalue))
+
+
+def detect_cloud(site):
+    """
+    attempt to detect if the site is a cloud or data center instance
+
+    Returns whether the provided site is most likely either a Confluence
+    Cloud or Confluence Data Server instance.
+
+    Args:
+        site: the configured site value
+
+    Returns:
+        whether it is believed the site is a cloud instance
+    """
+
+    is_cloud = False
+
+    try:
+        parsed = urlparse(site)
+    except ValueError:
+        pass
+    else:
+        if parsed.hostname and parsed.hostname.endswith('atlassian.net'):
+            is_cloud = True
+
+    return is_cloud
 
 
 def extract_length(value):

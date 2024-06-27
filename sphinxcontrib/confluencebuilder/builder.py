@@ -36,6 +36,7 @@ from sphinxcontrib.confluencebuilder.storage.search import generate_storage_form
 from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
@@ -141,7 +142,7 @@ class ConfluenceBuilder(Builder):
 
         # detect if Confluence Cloud if using the Atlassian domain
         if new_url:
-            self.cloud = new_url.endswith('.atlassian.net/wiki/')
+            self.cloud = detect_cloud(new_url)
 
         self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
