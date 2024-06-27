@@ -1519,6 +1519,10 @@ Advanced publishing configuration
 
         Switched from boolean to string for setting new debugging options.
 
+    .. versionchanged:: 2.6
+
+        Introduce the ``headers_and_data`` option.
+
     .. warning::
 
         Enabling certain debugging options may reveal information such as
@@ -1537,6 +1541,7 @@ Advanced publishing configuration
     - ``deprecated``: Log warnings when a deprecated API call is used
       (*for development purposes*).
     - ``headers``: Log requests and responses, including their headers.
+    - ``headers_and_data``: Log header data along with request/response bodies.
     - ``urllib3``: Enable urllib3 library debugging messages.
 
     An example debugging configuration is as follows:

@@ -403,6 +403,7 @@ class Rest:
     def _process_request(self, method, path, *args, **kwargs):
         publish_debug_opts = self.config.confluence_publish_debug
         dump = PublishDebug.headers in publish_debug_opts
+        dump_body = PublishDebug.headers_and_data in publish_debug_opts
 
         rest_url = f'{self.url}{path}'
         base_req = requests.Request(method, rest_url, *args, **kwargs)
@@ -431,6 +432,15 @@ class Rest:
             print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
             print('', flush=True)
 
+            if dump_body and req.body:
+                print('(debug) Request data]')
+                try:
+                    json_data = json.dumps(json.loads(req.body), indent=2)
+                    print(json_data)
+                except TypeError:
+                    print('(non-json)')
+                print('', flush=True)
+
         # perform the rest request
         rsp = self.session.send(req, timeout=self.timeout)
 
@@ -440,6 +450,16 @@ class Rest:
             print(f'Code: {rsp.status_code}')
             print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
             print('', flush=True)
+
+            if dump_body and rsp.text:
+                print('(debug) Response data]')
+                try:
+                    rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
+                    json_data = json.dumps(json.loads(rsp.text), indent=2)
+                    print(json_data)
+                except ValueError:
+                    print('(non-json)')
+                print('', flush=True)
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made
