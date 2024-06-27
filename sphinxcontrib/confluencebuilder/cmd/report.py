@@ -208,6 +208,7 @@ def report_main(args_parser):
                 config[key] = '(set; empty)'
 
     # always sanitize out sensitive information
+    sensitive_config('confluence_api_token')
     sensitive_config('confluence_client_cert_pass')
     sensitive_config('confluence_publish_headers')
     sensitive_config('confluence_publish_token')

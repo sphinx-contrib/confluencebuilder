@@ -75,6 +75,22 @@ def warnings(validator):
 
     config = validator.config
 
+    # check that only a single authentication key is configured
+    auth_keys = [
+        'confluence_api_token',
+        'confluence_publish_token',
+        'confluence_server_pass',
+    ]
+
+    auth_key_count = 0
+    for option in auth_keys:
+        value = getattr(config, option)
+        if value:
+            auth_key_count += 1
+
+    if auth_key_count > 1:
+        logger.warn('multiple authentication options configured')
+
     # check if any user defined mime types are unknown
     if config.confluence_additional_mime_types is not None:
         for mime_type in config.confluence_additional_mime_types:
@@ -115,6 +131,7 @@ def warnings(validator):
     # quotes a password/token value -- provide a warning if we believe that
     # has been detected
     quote_wrap_check = [
+        'confluence_api_token',
         'confluence_publish_token',
         'confluence_server_pass',
     ]

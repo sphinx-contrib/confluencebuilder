@@ -298,6 +298,17 @@ properly set with the publisher's Confluence username or have
 ''')
 
 
+class ConfluencePublishMissingUsernameAuthConfigError(ConfluenceConfigError):
+    def __init__(self):
+        super().__init__('''\
+confluence username not provided
+
+A publishing password has been configured with 'confluence_api_token';
+however, no username has been configured. Ensure 'confluence_server_user' is
+properly set with the publisher's Confluence username.
+''')
+
+
 class ConfluencePublishMissingUsernamePassConfigError(ConfluenceConfigError):
     def __init__(self):
         super().__init__('''\
