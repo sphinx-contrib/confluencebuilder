@@ -408,6 +408,10 @@ div.caution, div.warning {
     border: 1.5px solid #940000;
 }
 
+div.tip {
+    border: 1.5px solid #009400;
+}
+
 div.admonition > ul,
 div.admonition > ol {
     margin: 0.1em 0.5em 0.5em 3em;
