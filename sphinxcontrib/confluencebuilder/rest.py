@@ -399,7 +399,8 @@ class Rest:
         return err
 
     def _process_request(self, method, path, *args, **kwargs):
-        dump = PublishDebug.headers in self.config.confluence_publish_debug
+        publish_debug_opts = self.config.confluence_publish_debug
+        dump = PublishDebug.headers in publish_debug_opts
 
         rest_url = f'{self.url}{path}'
         base_req = requests.Request(method, rest_url, *args, **kwargs)
@@ -413,10 +414,19 @@ class Rest:
                 frame = frame.f_back
             origin = frame.f_code.co_name if frame else 'unknown'
 
+            # filter out special header items, to help avoid users from
+            # sharing raw data like authorization data in tickets, etc.;
+            # advanced users can use the hidden `headers_raw` option to
+            # see non-redacted content
+            filtered_headers = dict(req.headers)
+            if PublishDebug.headers_raw not in publish_debug_opts:
+                if filtered_headers.get('Authorization'):
+                    filtered_headers['Authorization'] = '(redacted)'
+
             print('')  # leading newline, if debugging into active line
             print(f'(debug) Request: {origin}]')
             print(f'{req.method} {req.url}')
-            print('\n'.join(f'{k}: {v}' for k, v in req.headers.items()))
+            print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
             print('', flush=True)
 
         # perform the rest request
