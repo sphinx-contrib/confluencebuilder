@@ -405,7 +405,7 @@ div.attention {
 }
 
 div.caution, div.warning {
-    border: 1px solid #940000;
+    border: 1.5px solid #940000;
 }
 
 div.admonition > ul,
