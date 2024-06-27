@@ -32,6 +32,7 @@ class TestConfluenceValidation(unittest.TestCase):
         space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
         cls.config['extensions'].append('sphinx.ext.ifconfig')
+        cls.config['confluence_api_token'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_disable_notifications'] = True
         cls.config['confluence_full_width'] = False
         cls.config['confluence_page_hierarchy'] = True
@@ -40,7 +41,6 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_prev_next_buttons_location'] = 'both'
         cls.config['confluence_publish'] = True
         cls.config['confluence_publish_debug'] = 'deprecated'
-        cls.config['confluence_server_pass'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_server_url'] = DEFAULT_TEST_URL
         cls.config['confluence_server_user'] = DEFAULT_TEST_USER
         cls.config['confluence_sourcelink'] = {
