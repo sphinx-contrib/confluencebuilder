@@ -124,6 +124,7 @@ def conntest_main(args_parser):
 
     opts = [
         'confluence_adv_embedded_certs',
+        'confluence_api_token',
         'confluence_ca_cert',
         'confluence_client_cert',
         'confluence_client_cert_pass',
@@ -272,13 +273,19 @@ def conntest_main(args_parser):
     if config.get('confluence_request_session_override'):
         print('(note) Custom session overrides detected!')
 
-    # confluence_publish_token
+    # confluence_server_pass + pat
     confluence_server_pass = config.get('confluence_server_pass')
     if confluence_server_pass and pat:
         print('(warning) Both server password/API token configured at the '
               'same time with a personal access token (PAT)!')
 
-    # confluence_publish_token
+    # confluence_api_token + confluence_server_pass
+    confluence_api_token = config.get('confluence_api_token')
+    if confluence_api_token and confluence_server_pass:
+        print('(warning) API token configured at the '
+              'same time with a password!')
+
+    # !confluence_server_user + confluence_server_pass
     confluence_server_user = config.get('confluence_server_user')
     if not confluence_server_user and confluence_server_pass:
         print('(warning) No user configured, but a server password/API '
@@ -363,6 +370,7 @@ class ProbeModes(Enum):
 
 
 def conntest_probe(config):
+    api_token = config.confluence_api_token
     ca_cert = config.confluence_ca_cert or True
     pat = config.confluence_publish_token
     publish_headers = config.confluence_publish_headers
@@ -370,6 +378,7 @@ def conntest_probe(config):
     server_user = config.confluence_server_user
     space_key = config.confluence_space_key
     url = config.confluence_server_url
+    auth_value = api_token or server_pass
 
     space_queries = {
         'v1': {
@@ -399,7 +408,7 @@ def conntest_probe(config):
 
             if mode == ProbeModes.auth:
                 if server_user:
-                    auth = (server_user, server_pass)
+                    auth = (server_user, auth_value)
                     headers = publish_headers
                 else:
                     print('skipped (no username configured).')

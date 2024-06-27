@@ -29,6 +29,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishM
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingServerUrlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingSpaceKeyConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernameAskConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernameAuthConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernamePassConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceServerAuthConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkRequiredConfigError
@@ -124,6 +125,12 @@ def validate_configuration(builder):
         if config.confluence_api_mode not in API_MODES:
             modes = '\n - '.join(API_MODES)
             raise ConfluenceApiModeConfigError(modes)
+
+    # ##################################################################
+
+    # confluence_api_token
+    validator.conf('confluence_api_token') \
+             .string()
 
     # ##################################################################
 
@@ -744,8 +751,10 @@ def validate_configuration(builder):
                 and not config.confluence_ask_user):
             raise ConfluencePublishMissingUsernameAskConfigError
 
-        if config.confluence_server_pass:
-            if not config.confluence_server_user:
+        if not config.confluence_server_user:
+            if config.confluence_api_token:
+                raise ConfluencePublishMissingUsernameAuthConfigError
+            if config.confluence_server_pass:
                 raise ConfluencePublishMissingUsernamePassConfigError
 
         if config.confluence_parent_page_id_check:

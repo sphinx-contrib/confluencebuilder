@@ -66,6 +66,20 @@ class TestConfluenceConfigChecks(unittest.TestCase):
 
             builder.init()
 
+    def test_config_check_api_token(self):
+        self.config['confluence_api_token'] = 'dummy'  # noqa: S105
+        self._try_config()
+
+        # enable publishing enabled checks
+        self._prepare_valid_publish()
+
+        # without `confluence_api_token` should throw an error
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_server_user'] = 'dummy'
+        self._try_config()
+
     def test_config_check_ask_password(self):
         print('')  # space out ask output if an unbuffered run
 
@@ -949,6 +963,10 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
     def test_config_check_quote_wrapped_auth(self):
+        self.config['confluence_api_token'] = '"test"'  # noqa: S105
+        with self.assertRaises(SphinxWarning):
+            self._try_config()
+
         self.config['confluence_publish_token'] = '"test"'  # noqa: S105
         with self.assertRaises(SphinxWarning):
             self._try_config()

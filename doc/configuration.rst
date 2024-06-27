@@ -128,42 +128,39 @@ Essential configuration
          (or)
         confluence_server_user = 'myawesomeuser'
 
-.. |confluence_server_pass| replace:: ``confluence_server_pass``
-.. _confluence_server_pass:
+.. |confluence_api_token| replace:: ``confluence_api_token``
+.. _confluence_api_token:
 
-.. confval:: confluence_server_pass
+.. confval:: confluence_api_token
+
+    .. versionadded:: 2.6
+
+    .. tip::
+
+        Use this option for Confluence Cloud.
 
     .. caution::
 
-        It is never recommended to store an API token or raw password into a
-        committed/shared repository holding documentation.
+        It is never recommended to store an API token into a committed/shared
+        repository holding documentation.
 
         A documentation's configuration can modified various ways with Python
         to pull an authentication token for a publishing event such as
         :ref:`reading from an environment variable <tip_manage_publish_subset>`,
-        reading from a local file or acquiring a password from ``getpass``. If
-        desired, this extension provides a method for prompting for a
-        password (see |confluence_ask_password|_).
+        reading from a local file or acquiring a token from ``getpass``.
 
     .. note::
 
         If attempting to use a personal access token (PAT), use the
         |confluence_publish_token|_ option instead.
 
-    The password value used to authenticate with the Confluence instance. If
-    using Confluence Cloud, it is recommended to use an API token for the
-    configured username value (see `API tokens`_):
+    The API token value used to authenticate with the Confluence instance. Set
+    this option to an API token for the configured username value
+    (see `API tokens`_):
 
     .. code-block:: python
 
-        confluence_server_pass = 'vsUsrSZ6Z4kmrQMapSXBYkJh'
-
-    If `API tokens`_ are not being used, the plaintext password for the
-    configured username value can be used:
-
-    .. code-block:: python
-
-        confluence_server_pass = 'myawesomepassword'
+        confluence_api_token = 'YDYDD3qVvKV0FbkErSxaQ2olmy...AMGwaPe8=02381T9A'
 
 .. |confluence_publish_token| replace:: ``confluence_publish_token``
 .. _confluence_publish_token:
@@ -171,6 +168,10 @@ Essential configuration
 .. confval:: confluence_publish_token
 
     .. versionadded:: 1.8
+
+    .. tip::
+
+        Use this option for Confluence Data Center.
 
     .. caution::
 
@@ -193,6 +194,45 @@ Essential configuration
     .. code-block:: python
 
         confluence_publish_token = 'AbCdEfGhIjKlMnOpQrStUvWxY/z1234567890aBc'
+
+.. |confluence_server_pass| replace:: ``confluence_server_pass``
+.. _confluence_server_pass:
+
+.. confval:: confluence_server_pass
+
+    .. warning::
+
+        It is not recommended to use this option when authenticating with
+        an API token or a personal access token.
+
+    .. note::
+
+        Functionally, this option is the same as |confluence_api_token|_.
+        It is recommended to use the API token variant solely for naming
+        convention. Only limited cases can use a password value for
+        publication over API tokens or personal access tokens (specifically,
+        cases using Confluence Data Center). Unless users are expected to
+        interact directly with their Confluence instance with user passwords,
+        users should instead use either one of the following options instead:
+
+        - |confluence_api_token|_
+        - |confluence_publish_token|_
+
+    .. caution::
+
+        It is never recommended to store a raw password into a
+        committed/shared repository holding documentation. If desired, this
+        extension provides a method for prompting for a password
+        (see |confluence_ask_password|_).
+
+        Future versions *may* deprecate this option.
+
+    The password value used to authenticate with the Confluence instance. This
+    value expects the plaintext password for the configured username value:
+
+    .. code-block:: python
+
+        confluence_server_pass = 'myawesomepassword'
 
 Generic configuration
 ---------------------

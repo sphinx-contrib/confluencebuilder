@@ -96,8 +96,10 @@ class ConfluencePublisher:
         # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/rest/api/space/STABLE
         # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/api/v2/spaces?keys=STABLE
 
+        api_token_set = bool(self.config.confluence_api_token)
         pw_set = bool(self.config.confluence_server_pass)
-        token_set = bool(self.config.confluence_publish_token)
+        auth_set = api_token_set or pw_set
+        pat_set = bool(self.config.confluence_publish_token)
 
         try:
             if self.api_mode == 'v2':
@@ -120,8 +122,8 @@ class ConfluencePublisher:
                         server_url,
                         self.space_key,
                         self.config.confluence_server_user,
-                        pw_set,
-                        token_set,
+                        auth_set,
+                        pat_set,
                     )
             else:
                 rsp = self.rest.get(f'{self.APIV1}space/{self.space_key}')
@@ -136,8 +138,8 @@ class ConfluencePublisher:
                     server_url,
                     self.space_key,
                     self.config.confluence_server_user,
-                    pw_set,
-                    token_set,
+                    auth_set,
+                    pat_set,
                 ) from ex
 
             raise ConfluenceBadServerUrlError(server_url, ex) from ex

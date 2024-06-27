@@ -286,8 +286,10 @@ class Rest:
 
         if config.confluence_server_auth:
             session.auth = config.confluence_server_auth
-        elif config.confluence_server_user:
-            passwd = config.confluence_server_pass
+        elif config.confluence_api_token or config.confluence_server_user:
+            passwd = config.confluence_api_token
+            if passwd is None:
+                passwd = config.confluence_server_pass
             if passwd is None:
                 passwd = ''
             session.auth = (config.confluence_server_user, passwd)

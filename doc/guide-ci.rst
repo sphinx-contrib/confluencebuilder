@@ -48,8 +48,8 @@ Before demonstrating these methods, please note which type of authentication
 is required for the target Confluence instance. For example, if
 authenticating with an API key (Confluence Cloud; see `API tokens`_), users
 will need to configure both ``confluence_server_user``
-(:ref:`ref<confluence_server_user>`) and ``confluence_server_pass``
-(:ref:`ref<confluence_server_pass>`) options. However, if using a personal
+(:ref:`ref<confluence_server_user>`) and ``confluence_api_token``
+(:ref:`ref<confluence_api_token>`) options. However, if using a personal
 access token (see `Using Personal Access Tokens`_), users will need to
 configure only the ``confluence_publish_token``
 (:ref:`ref<confluence_publish_token>`) option.
@@ -65,9 +65,10 @@ environment if the option is not already set in ``conf.py``.
 Confluence Cloud API Key
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-If using a Confluence Cloud API key, ensure both the following variables are
+If using a Confluence Cloud API key, ensure the following variables are
 *not set* inside ``conf.py``:
 
+- ``confluence_api_token``
 - ``confluence_publish_token``
 - ``confluence_server_pass``
 
@@ -76,15 +77,15 @@ published with a single API token. If the environment plans to use multiple
 tokens, ensure ``confluence_server_user`` is not set as well.
 
 Next, if the CI environment supports defining custom CI variables, create a
-new entry for ``CONFLUENCE_SERVER_PASS``, holding the API token value to use
+new entry for ``CONFLUENCE_API_TOKEN``, holding the API token value to use
 when publishing. If the API token is stored in another manner that can be
 exposed when running a build, ensure the token is set into a
-``CONFLUENCE_SERVER_PASS`` environment variable before running Sphinx. For
+``CONFLUENCE_API_TOKEN`` environment variable before running Sphinx. For
 example:
 
 .. code-block:: shell-session
 
-    $ export CONFLUENCE_SERVER_PASS="<my-token-value>"
+    $ export CONFLUENCE_API_TOKEN="<my-token-value>"
     $ sphinx-build ...
     Running Sphinx
     ...
@@ -93,7 +94,7 @@ Or, when using a Windows command line:
 
 .. code-block:: doscon
 
-    > set CONFLUENCE_SERVER_PASS="<my-token-value>"
+    > set CONFLUENCE_API_TOKEN="<my-token-value>"
     > sphinx-build ...
     Running Sphinx
     ...
@@ -107,6 +108,7 @@ Confluence Data Center PAT
 If using a PAT, ensure the following variables are *not set* inside
 ``conf.py``:
 
+- ``confluence_api_token``
 - ``confluence_publish_token``
 - ``confluence_server_pass``
 - ``confluence_server_user``
@@ -146,7 +148,7 @@ The following can be used to configure an API token for Confluence Cloud:
 
 .. code-block:: shell
 
-    sphinx-build ... -Dconfluence_server_pass="<my-token-value>"
+    sphinx-build ... -Dconfluence_api_token="<my-token-value>"
 
 Confluence Data Center PAT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,7 +180,7 @@ If using an API token, the following can be used:
     ...
 
     confluence_server_user = 'api-key-uid'
-    confluence_server_pass = os.getenv('SECRET_KEY')
+    confluence_api_token = os.getenv('SECRET_KEY')
 
 
 Confluence Data Center PAT
