@@ -20,8 +20,11 @@ class PublishDebug(Flag):
     none = auto()
     # logs warnings when confluence reports a deprecated api call
     deprecated = auto()
-    # log raw requests/responses in stdout with header data
+    # log raw requests/responses in stdout with header data (redacted auth)
     headers = auto()
+    # log raw requests/responses in stdout with header data (no redactions)
+    _headers_raw = auto()
+    headers_raw = headers | _headers_raw
     # log urllib3-supported debug messages
     urllib3 = auto()
     # enable all logging
