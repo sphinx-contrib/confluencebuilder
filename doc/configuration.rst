@@ -710,7 +710,7 @@ Publishing configuration
     Provides an override for an interactive shell to request publishing
     documents using an API key or password provided from a shell environment.
     While a password is typically defined in the option
-    ``confluence_server_pass`` (either directly set, fetched from the project's
+    |confluence_server_pass|_ (either directly set, fetched from the project's
     ``config.py`` or passed via an alternative means), select environments may
     wish to provide a way to accept an authentication token without needing to
     modify documentation sources or having a visible password value in the
