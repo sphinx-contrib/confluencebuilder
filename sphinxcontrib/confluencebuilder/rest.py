@@ -434,10 +434,14 @@ class Rest:
 
             if dump_body and req.body:
                 print('(debug) Request data]')
-                try:
-                    json_data = json.dumps(json.loads(req.body), indent=2)
-                    print(json_data)
-                except TypeError:
+                content_type = req.headers.get('Content-Type') or ''
+                if content_type == 'application/json;charset=utf-8':
+                    try:
+                        json_data = json.dumps(json.loads(req.body), indent=2)
+                        print(json_data)
+                    except TypeError:
+                        print('(bad-json)')
+                else:
                     print('(non-json)')
                 print('', flush=True)
 
