@@ -170,6 +170,8 @@ Common
 
                 This content is captured inside the expand macro.
 
+    See also :doc:`guide-collapse`.
+
 .. _confluence_metadata:
 
 .. rst:directive:: confluence_metadata
