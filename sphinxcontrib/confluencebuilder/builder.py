@@ -140,8 +140,10 @@ class ConfluenceBuilder(Builder):
             self.warn(f'normalizing confluence url from {old_url} to {new_url}')
             self.config.confluence_server_url = new_url
 
-        # detect if Confluence Cloud if using the Atlassian domain
-        if new_url:
+        # track if operating with a Confluence Cloud target
+        if self.config.confluence_adv_cloud is not None:
+            self.cloud = self.config.confluence_adv_cloud
+        else:
             self.cloud = detect_cloud(new_url)
 
         self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
