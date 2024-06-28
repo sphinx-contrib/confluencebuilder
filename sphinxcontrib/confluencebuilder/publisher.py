@@ -70,7 +70,10 @@ class ConfluencePublisher:
         # if a default cloud value is provided, attempt to detect the cloud
         # type
         if cloud is None:
-            self.cloud = detect_cloud(config.confluence_server_url)
+            if config.confluence_adv_cloud is not None:
+                self.cloud = config.confluence_adv_cloud
+            else:
+                self.cloud = detect_cloud(config.confluence_server_url)
 
         # determine api mode to use
         # - if an explicit api mode is configured, use it
