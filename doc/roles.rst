@@ -199,6 +199,7 @@ generated Confluence documents.
         :confluence_status:`PASSED [green]`
 
 .. index:: Strikethrough (role)
+.. _confluence_strike-role:
 
 Strikethrough
 -------------
@@ -217,6 +218,7 @@ generated Confluence documents.
 
         :confluence_strike:`My text`
 
+See also :doc:`guide-strike`.
 
 .. references ------------------------------------------------------------------
 
