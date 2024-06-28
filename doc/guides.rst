@@ -11,4 +11,5 @@ the Confluence Builder extension in a Sphinx-enabled environment.
     guide-collapse
     guide-confluence-macros
     guide-math
+    guide-strike
     guide-ci
