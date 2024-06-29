@@ -69,6 +69,13 @@ lint.ignore = [
 ]
 
 [lint.per-file-ignores]
+'doc/conf.py' = [
+    # sphinx configuration options may shadow
+    'A001',
+    # not an implicit namespace package
+    'INP001',
+]
+
 'sphinxcontrib/confluencebuilder/storage/translator.py' = [
     # ignore private member access warnings for custom/managed node flags
     'SLF001',
