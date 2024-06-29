@@ -25,6 +25,8 @@ from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import detect_cloud
+from urllib.parse import parse_qsl
+from urllib.parse import urlparse
 import json
 import logging
 import time
@@ -414,9 +416,11 @@ class ConfluencePublisher:
                 break
 
             idx += count
-            sub_search_fields = dict(search_fields)
-            sub_search_fields['start'] = idx
-            rsp = self.rest.get(api_endpoint, sub_search_fields)
+            next_fields = self._next_page_fields(rsp, search_fields, idx)
+            if not next_fields:
+                break
+
+            rsp = self.rest.get(api_endpoint, next_fields)
 
         return descendants
 
@@ -527,9 +531,11 @@ class ConfluencePublisher:
                 break
 
             idx += count
-            sub_search_fields = dict(search_fields)
-            sub_search_fields['start'] = idx
-            rsp = self.rest.get(url, sub_search_fields)
+            next_fields = self._next_page_fields(rsp, search_fields, idx)
+            if not next_fields:
+                break
+
+            rsp = self.rest.get(url, next_fields)
 
         return attachment_info
 
@@ -687,7 +693,8 @@ class ConfluencePublisher:
             '" and type=page and title~"' + page_name + '"'}
         search_fields['limit'] = BULK_LIMIT
 
-        rsp = self.rest.get(f'{self.APIV1}content/search', search_fields)
+        api_endpoint = f'{self.APIV1}content/search'
+        rsp = self.rest.get(api_endpoint, search_fields)
         idx = 0
         while rsp['results']:
             for result in rsp['results']:
@@ -701,10 +708,11 @@ class ConfluencePublisher:
                 break
 
             idx += count
-            sub_search_fields = dict(search_fields)
-            sub_search_fields['start'] = idx
-            rsp = self.rest.get(f'{self.APIV1}content/search',
-                sub_search_fields)
+            next_fields = self._next_page_fields(rsp, search_fields, idx)
+            if not next_fields:
+                break
+
+            rsp = self.rest.get(api_endpoint, next_fields)
 
         return page_id, page
 
@@ -1458,6 +1466,56 @@ class ConfluencePublisher:
             }
 
         return page
+
+    def _next_page_fields(self, rsp, fields, offset):
+        """
+        extract next query fields from a response
+
+        For paged search requests, Confluence can report a "next" link to use
+        for the "next page". This call can be used to extract the query options
+        provided by Confluence that should be included in a next request.
+
+        Original CQL search calls would use a "start" offset to manage pages.
+        Confluence Cloud (at least) has not used the `start` field for search
+        options for some time [1]. Note on Confluence Data Center, the "start"
+        offset may still be used.
+
+        [1]: https://developer.atlassian.com/cloud/confluence/change-notice-moderize-search-rest-apis/
+
+        Args:
+            rsp: the response to pull a next query from
+            fields: the recommended search fields
+            offset: the recommended start offset
+
+        Returns:
+            the extract query fields
+        """
+
+        reported_links = rsp.get('_links')
+        if reported_links:
+            next_query = reported_links.get('next')
+            if next_query:
+                try:
+                    parsed = urlparse(next_query)
+                    return dict(parse_qsl(parsed.query))
+                except ValueError:
+                    return None
+
+                return None
+
+        # If no next link, on Confluence Cloud this would mean there are no
+        # pages left. On Confluence Data Center, a next link may not be
+        # provided (we try to assume it does, but most likely will use the
+        # old paging method). If we detect that a "totalSize" field is
+        # provided, the instance should support the "start" field.
+        if not self.cloud:
+            total_sz = rsp.get('totalSize')
+            if total_sz and total_sz > offset:
+                sub_search_fields = dict(fields)
+                sub_search_fields['start'] = offset
+                return sub_search_fields
+
+        return None
 
     def _post_page_actions(self, page_id, cb_props):
         """
