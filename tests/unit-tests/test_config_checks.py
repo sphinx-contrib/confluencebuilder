@@ -81,7 +81,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self._try_config()
 
     def test_config_check_ask_password(self):
-        print('')  # space out ask output if an unbuffered run
+        print()  # space out ask output if an unbuffered run
 
         self.config['confluence_ask_password'] = True
         self._try_config()
@@ -138,7 +138,7 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             self._try_config(edefs=defines)
 
     def test_config_check_ask_user(self):
-        print('')  # space out ask output if an unbuffered run
+        print()  # space out ask output if an unbuffered run
 
         self.config['confluence_ask_user'] = True
         self._try_config()

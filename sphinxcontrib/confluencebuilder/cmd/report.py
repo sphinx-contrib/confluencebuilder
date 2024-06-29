@@ -265,10 +265,10 @@ def report_main(args_parser):
                 value = '(set; mixed)'
             config[space_cfg] = value
 
-    print('')
+    print()
     print('Confluence builder report has been generated.')
     print('Please copy the following text for the GitHub issue:')
-    print('')
+    print()
     logger.note('------------[ cut here ]------------')
     print('```')
     print('(system)')
@@ -280,7 +280,7 @@ def report_main(args_parser):
     print('  urllib3:', single_line_version(urllib3_version))
     print('  builder:', single_line_version(scb_version))
 
-    print('')
+    print()
     print('(configuration)')
     if config:
         for k, v in OrderedDict(sorted(config.items())).items():
@@ -289,12 +289,12 @@ def report_main(args_parser):
         print('~default configuration~')
 
     if configuration_load_issue:
-        print('')
+        print()
         print('(error loading configuration)')
         print(configuration_load_issue)
 
     if confluence_instance_info:
-        print('')
+        print()
         print('(confluence instance)')
         print(confluence_instance_info.rstrip())
 

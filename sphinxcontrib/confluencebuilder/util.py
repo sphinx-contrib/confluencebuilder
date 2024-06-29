@@ -338,7 +338,7 @@ def getpass2(prompt='Password: '):
             value = input(prompt)
         finally:
             subprocess.check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
-        print('')
+        print()
         return value
 
     return getpass.getpass(prompt=prompt)

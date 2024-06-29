@@ -38,7 +38,7 @@ def wipe_main(args_parser):
 
     # protection warning
     if not args.danger:
-        print('')
+        print()
         sys.stdout.flush()
         logger.warn('!!! DANGER DANGER DANGER !!!')
         print("""
@@ -101,7 +101,7 @@ To use this action, the argument '--danger' must be set.
         return 1
 
     # reminder warning
-    print('')
+    print()
     sys.stdout.flush()
     logger.warn('!!! DANGER DANGER DANGER !!!')
     print("""
@@ -113,11 +113,11 @@ pages. Only use this action if you know what you are doing.
     sys.stdout.flush()
 
     logger.warn('!!! DANGER DANGER DANGER !!!')
-    print('')
+    print()
 
     if not ask_question('Are you sure you want to continue?'):
         return 0
-    print('')
+    print()
 
     # user has confirmed; start an attempt to wipe
     publisher.connect()
@@ -141,7 +141,7 @@ pages. Only use this action if you know what you are doing.
         print('     Dry run:', 'Enabled (no pages will be removed)')
 
     if not legacy_pages:
-        print('')
+        print()
         print('No pages detected on this space. Exiting...')
         return 0
 
@@ -153,10 +153,10 @@ pages. Only use this action if you know what you are doing.
         print('\n'.join(page_names))
         print('-------------------------')
 
-    print('')
+    print()
     if not ask_question('Are you sure you want to REMOVE these pages?'):
         return 0
-    print('')
+    print()
 
     logger.info('Removing pages...', nonl=True)
     if dryrun:
