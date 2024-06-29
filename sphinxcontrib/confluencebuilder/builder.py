@@ -44,6 +44,7 @@ from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 from urllib.parse import quote
 import os
 import tempfile
+import time
 
 
 class ConfluenceBuilder(Builder):
@@ -69,6 +70,7 @@ class ConfluenceBuilder(Builder):
         self.metadata = defaultdict(dict)
         self.nav_next = {}
         self.nav_prev = {}
+        self.note = ConfluenceLogger.note
         self.omitted_docnames = []
         self.orphan_docnames = []
         self.out_dir = Path(self.outdir)
@@ -532,6 +534,9 @@ class ConfluenceBuilder(Builder):
         # if purging is enabled and we have yet to populate a list of legacy
         # pages to cache, populate pages in our target scope now
         if self.post_cleanup and self.legacy_pages is None:
+            # flag for newlining any note events needed for cleanup
+            extra_msg = False
+
             if conf.confluence_publish_root:
                 baseid = conf.confluence_publish_root
             elif conf.confluence_cleanup_from_root:
@@ -546,8 +551,17 @@ class ConfluenceBuilder(Builder):
                     conf.confluence_publish_dryrun and not baseid):
                 self.legacy_pages = []
             else:
+                if not extra_msg and not self._verbose:
+                    self.note('')
+
+                self.note('querying for descendants... ',
+                    nonl=(not self._verbose))
                 self.legacy_pages = self.publisher.get_descendants(
                     baseid, conf.confluence_cleanup_search_mode)
+                if not self._verbose:
+                    self.info('done')
+
+                extra_msg = True
 
             # remove any configured orphan root id from a cleanup check
             orphan_root_id = str(conf.confluence_publish_orphan_container)
@@ -558,10 +572,24 @@ class ConfluenceBuilder(Builder):
             # only populate a list of possible legacy assets when a user is
             # configured to check or push assets to the target space
             asset_override = conf.confluence_asset_override
-            if asset_override is None or asset_override:
-                for legacy_page in self.legacy_pages:
+            if self.legacy_pages and (asset_override is None or asset_override):
+                if not extra_msg and not self._verbose:
+                    self.note('')
+
+                for legacy_page in status_iterator(
+                        sorted(self.legacy_pages),
+                        'querying for attachments... ',
+                        length=len(self.legacy_pages),
+                        verbosity=self._verbose):
                     attachments = self.publisher.get_attachments(legacy_page)
                     self.legacy_assets[legacy_page] = attachments
+
+                    # unknown cause but using a nested status_iterator appears
+                    # to not flush log events to users standard output without
+                    # sleeping -- not sure if its the logger, a threading/gil
+                    # situation with this implementation or more -- although
+                    # looks if we wait a moment, logging works as expected
+                    time.sleep(0.1)
 
         if self.post_cleanup:
             if uploaded_id in self.legacy_pages:
@@ -647,7 +675,8 @@ class ConfluenceBuilder(Builder):
                 self.info('updating space\'s homepage... ',
                     nonl=(not self._verbose))
                 self.publisher.update_space_home(self.root_doc_page_id)
-                self.info('done')
+                if not self._verbose:
+                    self.info('done')
 
             if self.cloud:
                 point_url = '{0}spaces/{1}/pages/{2}'
@@ -771,7 +800,8 @@ class ConfluenceBuilder(Builder):
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)
-            self.info('done')
+            if not self._verbose:
+                self.info('done')
 
             if self.config.confluence_publish_intersphinx:
                 inventory_db = self.out_dir / 'objects.inv'
