@@ -23,7 +23,7 @@ when preparing documents.
 .. versionadded:: 1.9
 
     All options provided by this extension may be set from the running
-    environment. For example, if ``confluence_publish`` is not explicitly set
+    environment. For example, if |confluence_publish|_ is not explicitly set
     inside ``conf.py`` or provided via `Sphinx's command line`_, this extension
     may check the ``CONFLUENCE_PUBLISH`` environment option as a fallback. Note
     that this only applies options provided below and will not work for other
@@ -42,6 +42,9 @@ Essential configuration
    alphanumerically; however, an exception is in place for the "essential"
    configuration options, where there is a stronger desire to present key
    configurations in a specific order (publish, URL, space and authentication).
+
+.. |confluence_publish| replace:: ``confluence_publish``
+.. _confluence_publish:
 
 .. confval:: confluence_publish
 

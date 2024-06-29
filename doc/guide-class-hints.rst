@@ -33,7 +33,7 @@ For example:
         if __name__ == '__main__':
             main()
 
-See also :ref:`confluence_code_block_theme <confluence_code_block_theme>`.
+See also :lref:`confluence_code_block_theme`.
 
 ``strike``
 ----------

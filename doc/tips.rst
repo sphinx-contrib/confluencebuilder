@@ -63,9 +63,8 @@ is moved as a child of the container page:
 - See Also
 
 Users needing to restrict the extension from possibly mangling manually prepared
-content can use the ``confluence_publish_prefix``
-(:ref:`ref<confluence_publish_prefix>`) or ``confluence_publish_postfix``
-(:ref:`ref<confluence_publish_postfix>`) options.
+content can use the :lref:`confluence_publish_prefix` or
+:lref:`confluence_publish_postfix` options.
 
 See also the :ref:`dry run capability <confluence_publish_dryrun>` and the
 :ref:`title overrides capability <confluence_title_overrides>`.
@@ -75,7 +74,7 @@ Setting a publishing timeout
 
 By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
-(see ``confluence_timeout``; :ref:`ref<confluence_timeout>`).
+(see :lref:`confluence_timeout`).
 
 Connection troubleshooting
 --------------------------

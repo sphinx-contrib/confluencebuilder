@@ -187,21 +187,21 @@ Common
         :type: v1, v2
 
         Pages are publish with the editor type configured through the
-        ``confluence_editor`` option. However, users can override the editor
-        for a specific page using the ``editor`` metadata option.
+        :lref:`confluence_editor` option. However, users can override the
+        editor for a specific page using the ``editor`` metadata option.
 
         .. code-block:: rst
 
             .. confluence_metadata::
                 :editor: v2
 
-        See also ``confluence_editor`` (:ref:`ref<confluence_editor>`).
+        See also :lref:`confluence_editor`.
 
     .. rst:directive:option:: full-width: flag
         :type: boolean
 
         Pages are publish with the full-width appearance configured through the
-        ``confluence_full_width`` option. However, users can override the
+        :lref:`confluence_full_width` option. However, users can override the
         appearance for a specific page using the ``full-width`` metadata
         option.
 
@@ -210,7 +210,7 @@ Common
             .. confluence_metadata::
                 :full-width: false
 
-        See also ``confluence_full_width`` (:ref:`ref<confluence_full_width>`).
+        See also :lref:`confluence_full_width`.
 
     .. rst:directive:option:: labels: value
         :type: space separated strings
@@ -224,8 +224,7 @@ Common
             .. confluence_metadata::
                 :labels: label-a label-b
 
-        See also ``confluence_global_labels``
-        (:ref:`ref<confluence_global_labels>`).
+        See also :lref:`confluence_global_labels`.
 
 .. rst:directive:: confluence_newline
 
@@ -426,8 +425,8 @@ Confluence documents.
     .. rst:directive:option:: server: instance
         :type: string
 
-        Indicates a named Jira server provided via ``confluence_jira_servers``
-        (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
+        Indicates a named Jira server provided via
+        :lref:`confluence_jira_servers`. When set, options ``server-id``
         and ``server-name`` cannot be set.
 
         .. code-block:: rst
@@ -480,8 +479,8 @@ Confluence documents.
     .. rst:directive:option:: server: instance
         :type: string
 
-        Indicates a named Jira server provided via ``confluence_jira_servers``
-        (:ref:`ref<confluence_jira_servers>`). When set, options ``server-id``
+        Indicates a named Jira server provided via
+        :lref:`confluence_jira_servers`. When set, options ``server-id``
         and ``server-name`` cannot be set.
 
         .. code-block:: rst
@@ -528,8 +527,8 @@ LaTeX
 
     LaTeX support requires dvipng/dvisvgm to be installed on system; however,
     if a Confluence instance supports a LaTeX macro, the
-    ``confluence_latex_macro`` (:ref:`ref<confluence_latex_macro>`) option can
-    be used instead. For more information, please read :doc:`guide-math`.
+    :lref:`confluence_latex_macro` option can be used instead. For more
+    information, please read :doc:`guide-math`.
 
 The following directive can be used to help add LaTeX content into a
 Confluence page.
@@ -573,7 +572,7 @@ Smart links
 .. note::
 
     Smart links will only render when using the v2 editor
-    (see ``confluence_editor``; :ref:`ref<confluence_editor>`).
+    (see :lref:`confluence_editor`).
 
 .. rst:directive:: confluence_doc
 

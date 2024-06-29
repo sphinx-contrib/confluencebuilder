@@ -47,12 +47,10 @@ publish token:
 Before demonstrating these methods, please note which type of authentication
 is required for the target Confluence instance. For example, if
 authenticating with an API key (Confluence Cloud; see `API tokens`_), users
-will need to configure both ``confluence_server_user``
-(:ref:`ref<confluence_server_user>`) and ``confluence_api_token``
-(:ref:`ref<confluence_api_token>`) options. However, if using a personal
+will need to configure both :lref:`confluence_server_user` and
+:lref:`confluence_api_token` options. However, if using a personal
 access token (see `Using Personal Access Tokens`_), users will need to
-configure only the ``confluence_publish_token``
-(:ref:`ref<confluence_publish_token>`) option.
+configure only the :lref:`confluence_publish_token` option.
 
 Confluence environment variables
 --------------------------------
@@ -68,13 +66,13 @@ Confluence Cloud API Key
 If using a Confluence Cloud API key, ensure the following variables are
 *not set* inside ``conf.py``:
 
-- ``confluence_api_token``
-- ``confluence_publish_token``
-- ``confluence_server_pass``
+- :lref:`confluence_api_token`
+- :lref:`confluence_publish_token`
+- :lref:`confluence_server_pass`
 
-The option ``confluence_server_user`` may be set if a user will only ever be
-published with a single API token. If the environment plans to use multiple
-tokens, ensure ``confluence_server_user`` is not set as well.
+The option :lref:`confluence_server_user` may be set if a user will only ever
+be published with a single API token. If the environment plans to use multiple
+tokens, ensure :lref:`confluence_server_user` is not set as well.
 
 Next, if the CI environment supports defining custom CI variables, create a
 new entry for ``CONFLUENCE_API_TOKEN``, holding the API token value to use
@@ -108,10 +106,10 @@ Confluence Data Center PAT
 If using a PAT, ensure the following variables are *not set* inside
 ``conf.py``:
 
-- ``confluence_api_token``
-- ``confluence_publish_token``
-- ``confluence_server_pass``
-- ``confluence_server_user``
+- :lref:`confluence_api_token`
+- :lref:`confluence_publish_token`
+- :lref:`confluence_server_pass`
+- :lref:`confluence_server_user`
 
 Next, if the CI environment supports defining custom CI variables, create a
 new entry for ``CONFLUENCE_PUBLISH_TOKEN``, holding the PAT value to use
