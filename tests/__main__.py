@@ -77,11 +77,11 @@ def main():
             sys.exit(1)
 
         total_tests = len(target_unit_tests)
-        print('')
+        print()
         print(f'running specific test(s) (total: {total_tests})')
         for target_unit_test in target_unit_tests:
             print(f' {target_unit_test.id()}')
-        print('')
+        print()
         sys.stdout.flush()
 
         suite.addTests(target_unit_tests)

@@ -96,7 +96,7 @@ def conntest_main(args_parser):
 
             # initialize the publisher
             publisher.init(app.config)
-            print('')
+            print()
 
     except Exception:  # noqa: BLE001
         sys.stdout.flush()
@@ -153,7 +153,7 @@ def conntest_main(args_parser):
             value = '(not set)'
 
         print(f' {opt}: {value}')
-    print('')
+    print()
 
     # ##################################################################
     # configuration checks
@@ -291,7 +291,7 @@ def conntest_main(args_parser):
         print('(warning) No user configured, but a server password/API '
               'has been configured!')
 
-    print("")
+    print()
 
     # ##################################################################
     # connection check
@@ -441,7 +441,7 @@ def conntest_probe(config):
                     verify=ca_cert,
                 )
             except Exception:  # noqa: BLE001
-                print('', flush=True)
+                print(flush=True)
                 tb_msg = traceback.format_exc()
                 logger.error(tb_msg)
             else:
@@ -457,6 +457,6 @@ def conntest_probe(config):
                 if json_data:
                     print(f'({req_url})')
                     print(json.dumps(json_data, indent=2))
-                    print('')
+                    print()
 
     print('Probing has completed.')

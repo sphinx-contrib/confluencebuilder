@@ -426,11 +426,11 @@ class Rest:
                 if filtered_headers.get('Authorization'):
                     filtered_headers['Authorization'] = '(redacted)'
 
-            print('')  # leading newline, if debugging into active line
+            print()  # leading newline, if debugging into active line
             print(f'(debug) Request: {origin}]')
             print(f'{req.method} {req.url}')
             print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
-            print('', flush=True)
+            print(flush=True)
 
             if dump_body and req.body:
                 print('(debug) Request data]')
@@ -443,7 +443,7 @@ class Rest:
                         print('(bad-json)')
                 else:
                     print('(non-json)')
-                print('', flush=True)
+                print(flush=True)
 
         # perform the rest request
         rsp = self.session.send(req, timeout=self.timeout)
@@ -453,7 +453,7 @@ class Rest:
             print('(debug) Response]')
             print(f'Code: {rsp.status_code}')
             print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
-            print('', flush=True)
+            print(flush=True)
 
             if dump_body and rsp.text:
                 print('(debug) Response data]')
@@ -463,7 +463,7 @@ class Rest:
                     print(json_data)
                 except ValueError:
                     print('(non-json)')
-                print('', flush=True)
+                print(flush=True)
 
         # if confluence or a proxy reports a retry-after delay (to pace us),
         # track it to delay the next request made

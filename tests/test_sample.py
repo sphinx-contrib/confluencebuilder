@@ -77,7 +77,7 @@ def main():
     ]
 
     # process sample project
-    print('')
+    print()
     print('[sample] processing sample:', sample_name)
     print(' (sample)', sample_dir)
     print(' (output)', doc_dir)
@@ -85,7 +85,7 @@ def main():
     build_sphinx(sample_dir, out_dir=doc_dir, builder=args.builder,
         extra_config=defines, relax=True)
 
-    print('')
+    print()
     return 0
 
 
