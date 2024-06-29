@@ -423,8 +423,13 @@ class Rest:
             # see non-redacted content
             filtered_headers = dict(req.headers)
             if PublishDebug.headers_raw not in publish_debug_opts:
-                if filtered_headers.get('Authorization'):
-                    filtered_headers['Authorization'] = '(redacted)'
+                fde = [
+                    'Authorization',
+                    'Cookie',
+                ]
+                for entry in fde:
+                    if filtered_headers.get(entry):
+                        filtered_headers[entry] = '(redacted)'
 
             print()  # leading newline, if debugging into active line
             print(f'(debug) Request: {origin}]')
