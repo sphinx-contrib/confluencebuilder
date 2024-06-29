@@ -697,8 +697,7 @@ class ConfluenceBuilder(Builder):
 
             legacy_assets = {}
             for legacy_asset_info in self.legacy_assets.values():
-                for attachment_id, attachment_name in legacy_asset_info.items():
-                    legacy_assets[attachment_id] = attachment_name
+                legacy_assets.update(legacy_asset_info)
 
             if legacy_assets:
                 def to_asset_name(attachment_id):
