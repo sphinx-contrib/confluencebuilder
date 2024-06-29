@@ -2,7 +2,9 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
+from sphinx.domains.std import StandardDomain
 from sphinx.ext.autodoc import cut_lines
+from sphinx.roles import XRefRole
 from sphinx.transforms.post_transforms import SphinxPostTransform
 import sphinxcontrib.confluencebuilder
 
@@ -125,6 +127,46 @@ class DocumentationPostTransform(SphinxPostTransform):
                 classes.append('literal-link')
 
 
+class LiteralReferenceRole(XRefRole):
+    def __init__(self):
+        super().__init__(
+            # mimic options for standard domain's xref
+            lowercase=True, innernodeclass=nodes.inline, warn_dangling=True)
+
+    def result_nodes(self, document, env, node, is_ref):
+        # force custom domain so we can manipulate resolved nodes
+        node['refdomain'] = 'cb-doc-modifiers'
+
+        # force our custom reference role to be a `ref` type to resolve
+        # it as any other standard reference
+        node['reftype'] = 'ref'
+
+        # force explicit -- for some reason non-explicit references are
+        # not resolved (limitations of this hack)
+        node['refexplicit'] = True
+
+        return [node], []
+
+
+class ConfluenceBuilderModifiersDomain(StandardDomain):
+    name = 'cb-doc-modifiers'
+    label = 'confluencebuilder (modifiers)'
+
+    def resolve_xref(self,
+            env, fromdocname, builder, typ, target, node, contnode):
+        resolved = super().resolve_xref(
+            env, fromdocname, builder, typ, target, node, contnode)
+
+        if resolved:
+            # build a literal node and wrap the inner node before returning
+            # the resolved reference
+            inner_node = resolved.next_node()
+            container_node = nodes.literal('', '', inner_node)
+            resolved.replace(inner_node, container_node)
+
+        return resolved
+
+
 def setup(app):
     app.require_sphinx('6.0')
 
@@ -135,6 +177,11 @@ def setup(app):
 
     # remove first line description docstrings in documentation
     app.connect('autodoc-process-docstring', cut_lines(1))
+
+    # add a custom "literal reference" which allow us to create page-to-page
+    # references that are styled in literal tags
+    app.add_domain(ConfluenceBuilderModifiersDomain)
+    app.add_role('lref', LiteralReferenceRole())
 
     # custom directives/roles for documentation
     app.add_object_type('builderval', 'builderval', objname='builders',
