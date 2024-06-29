@@ -113,13 +113,12 @@ reason why the Confluence builder extension promotes the use of
 marketplace add-on which provides LaTeX macro support, math content can instead
 be injected into these macros instead.
 
-To use a LaTeX macro, the ``confluence_latex_macro``
-(:ref:`ref<confluence_latex_macro>`) configuration option can be used. This
-option accepts either the name of a macro to use or a dictionary of macro
-options to consider (the dictionary is for more complex configurations such as
-when attempting to support block-specific and inlined-specific macros). For
-example, to specify the macro to use for any LaTeX content, the following
-can be used:
+To use a LaTeX macro, the :lref:`confluence_latex_macro` configuration option
+can be used. This option accepts either the name of a macro to use or a
+dictionary of macro options to consider (the dictionary is for more complex
+configurations such as when attempting to support block-specific and
+inlined-specific macros). For example, to specify the macro to use for any
+LaTeX content, the following can be used:
 
 .. code-block:: python
 

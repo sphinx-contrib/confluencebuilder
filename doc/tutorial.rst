@@ -97,7 +97,7 @@ targeted.
 
 .. note::
 
-    The configuration of the space key (``confluence_space_key``) is
+    The configuration of the space key (:lref:`confluence_space_key`) is
     case-sensitive. Ensure the value matches the case found on the Confluence
     instances (typically, uppercase).
 
@@ -107,8 +107,8 @@ Recommended configurations
 By default, this extension will publish any documents to the root of a
 configured space. It can be common for most users to want to publish a
 documentation set as children of an already existing page. To take advantage of
-this feature, a user will want to define a ``confluence_parent_page`` option in
-their configuration file. For example:
+this feature, a user will want to define a :lref:`confluence_parent_page`
+option in their configuration file. For example:
 
 .. code-block:: python
 
@@ -119,8 +119,8 @@ extension to publish all documents under the ``MyDocumentation`` page.
 
 For first time users, they may wish to sanity check what content will be
 published before publishing for the first time to a Confluence instance. A user
-can perform a dryrun by configuring the ``confluence_publish_dryrun`` option in
-the project's configuration file. For example:
+can perform a dryrun by configuring the :lref:`confluence_publish_dryrun`
+option in the project's configuration file. For example:
 
 .. code-block:: python
 
@@ -146,8 +146,8 @@ building/publishing:
 
 Documentation of the project should now be published to the Confluence site.
 
-For users who set the dryrun option above (``confluence_publish_dryrun``), they
-may inspect the output of the run to confirm what the publish event will
+For users who set the dryrun option above (:lref:`confluence_publish_dryrun`),
+they may inspect the output of the run to confirm what the publish event will
 perform. If the desired result is observed, a user can remove the dryrun option
 and re-invoke the build/publish command to publish onto the configured
 Confluence instance.

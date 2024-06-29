@@ -9,8 +9,7 @@ following permissions_ when attempting to publish to a configured space:
 - Attachments -- Add, Delete
 
 Delete permissions are only required for environments using the
-``confluence_cleanup_purge`` (:ref:`ref<confluence_cleanup_purge>`)
-capabilitity.
+:lref:`confluence_cleanup_purge` capabilitity.
 
 For environments using an OAuth connector, the following scopes are required:
 

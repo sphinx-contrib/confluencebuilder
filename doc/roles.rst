@@ -60,8 +60,8 @@ LaTeX
 
     LaTeX support requires dvipng/dvisvgm to be installed on system; however,
     if a Confluence instance supports a LaTeX macro, the
-    ``confluence_latex_macro`` (:ref:`ref<confluence_latex_macro>`) option can
-    be used instead. For more information, please read :doc:`guide-math`.
+    :lref:`confluence_latex_macro` option can be used instead. For more
+    information, please read :doc:`guide-math`.
 
 The following role can be used to help include LaTeX content into generated
 Confluence documents.
@@ -119,7 +119,7 @@ generated Confluence documents.
         Contact :confluence_mention:`b9aaf35e80441f415c3a3d3c53695d0e` for help.
 
     A user mapping table can also be configured using the
-    ``confluence_mentions`` (:ref:`ref<confluence_mentions>`) option.
+    :lref:`confluence_mentions` option.
 
 .. index:: Smart links; Roles
 .. _smart-link-roles:
@@ -130,7 +130,7 @@ Smart links
 .. note::
 
     Smart links will only render when using the v2 editor
-    (see ``confluence_editor``; :ref:`ref<confluence_editor>`).
+    (see :lref:`confluence_editor`).
 
 Support for inlined smart links can be created using the following roles.
 
