@@ -58,6 +58,8 @@ lint.ignore = [
     'S101',
     # allow nested ifs when readability/line-length is preferred
     'SIM102',
+    # prefer bool-returning conditional checks over casts for readability
+    'SIM103',
     # allow non-ternary operators when readability/line-length is preferred
     'SIM108',
     # ignore combining ifs that are best presented separated
