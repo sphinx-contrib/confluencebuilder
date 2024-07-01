@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#
+# This is a helper script used to easily trigger validation publishing.
+
+exec tox -e validation
