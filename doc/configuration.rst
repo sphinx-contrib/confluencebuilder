@@ -883,9 +883,11 @@ Publishing configuration
 
 .. confval:: confluence_disable_notifications
 
+    .. versionchanged:: 2.6 Option is enabled by default.
+
     A boolean value which explicitly disables any page update notifications
     (i.e. treats page updates from a publish request as minor updates). By
-    default, notifications are enabled with a value of ``False``.
+    default, notifications are disabled with a value of ``True``.
 
     .. code-block:: python
 
