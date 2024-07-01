@@ -25,6 +25,7 @@ Documentation contents
     builders
     directives
     roles
+    events
 
 .. toctree::
     :maxdepth: 2
