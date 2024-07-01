@@ -1524,7 +1524,7 @@ Advanced publishing configuration
 
     .. versionchanged:: 2.6
 
-        Introduce the ``headers_and_data`` option.
+        Introduce the ``headers-and-data`` option.
 
     .. warning::
 
@@ -1544,7 +1544,7 @@ Advanced publishing configuration
     - ``deprecated``: Log warnings when a deprecated API call is used
       (*for development purposes*).
     - ``headers``: Log requests and responses, including their headers.
-    - ``headers_and_data``: Log header data along with request/response bodies.
+    - ``headers-and-data``: Log header data along with request/response bodies.
     - ``urllib3``: Enable urllib3 library debugging messages.
 
     An example debugging configuration is as follows:

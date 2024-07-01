@@ -229,7 +229,7 @@ configured at the same time.
 
 
 class ConfluencePublishDebugConfigError(ConfluenceConfigError):
-    def __init__(self, msg, opts):
+    def __init__(self, msg):
         super().__init__(f'''\
 {msg}
 
@@ -237,7 +237,10 @@ The option 'confluence_publish_debug' has been configured to enable publish
 debugging. Accepted values include:
 
  - all
- - {opts}
+ - deprecated
+ - headers
+ - headers-and-data
+ - urllib3
 ''')
 
 

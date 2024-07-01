@@ -218,7 +218,7 @@ class ConfigurationValidation:
 
         if value is not None and not isinstance(value, etype):
             try:
-                value = etype[value.lower()]
+                value = etype[value.replace('-', '_').lower()]
             except (AttributeError, KeyError) as ex:
                 msg = f'{self.key} is not an enumeration ({etype.__name__})'
                 raise ConfluenceConfigError(msg) from ex

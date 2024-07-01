@@ -107,7 +107,8 @@ def apply_defaults(builder):
         if publish_debug is True:
             conf.confluence_publish_debug = PublishDebug.urllib3
         elif isinstance(publish_debug, str) and publish_debug:
-            conf.confluence_publish_debug = PublishDebug[publish_debug.lower()]
+            raw_debug = publish_debug.replace('-', '_').lower()
+            conf.confluence_publish_debug = PublishDebug[raw_debug]
         else:
             conf.confluence_publish_debug = PublishDebug.none
 
