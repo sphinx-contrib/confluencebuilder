@@ -1,6 +1,7 @@
 Development
 ===========
 
+* **(note)** ``confluence_disable_notifications`` is now enabled by default
 * **(note)** ``confluence_file_transform`` support is deprecated
 * **(note)** ``confluence_link_transform`` support is deprecated
 * Fixed issue in Confluence REST v2 API usage (Cloud) where page updates
@@ -8,9 +9,10 @@ Development
 * Fixed issue using cleanup modes with Confluence Cloud with large
   attachment/page sets (250+) could block publishing
 * Fixed support when using the sphinxcontrib-video extension (v0.2.1+)
+* Improve user feedback when operating with a cleaning option enabled
+* Introduce the ``confluence-publish-point`` event
 * Introduce the ``confluence_api_token`` option
 * Introduce the ``confluence_page_search_mode`` option
-* Improve user feedback when operating with a cleaning option enabled
 * REST API calls will retry on select error events (e.g. 5xx errors)
 * Replacing ``confluence_lang_transform`` with a new option
   ``confluence_lang_overrides``
