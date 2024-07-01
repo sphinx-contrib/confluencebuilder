@@ -62,6 +62,9 @@ def apply_defaults(builder):
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
 
+    if conf.confluence_disable_notifications is None:
+        conf.confluence_disable_notifications = True
+
     if conf.confluence_editor is None:
         conf.confluence_editor = DEFAULT_EDITOR
 
