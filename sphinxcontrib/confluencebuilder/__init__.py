@@ -57,6 +57,7 @@ def setup(app):
     app.add_builder(ConfluenceBuilder)
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
+    app.add_event('confluence-publish-point')
     app.add_post_transform(ConfluenceHyperlinkCollector)
 
     # register this extension's locale
