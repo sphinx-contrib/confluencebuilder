@@ -7,6 +7,7 @@ from tests.lib import build_sphinx
 from tests.lib import enable_sphinx_info
 from tests.lib import prepare_conf
 from tests.lib import prepare_dirs
+from tests.lib import prepare_sphinx
 import argparse
 import os
 import sys
@@ -28,6 +29,8 @@ TESTKEY_ENV_VERSION = 'CONFLUENCE_TEST_VERSION'
 class TestConfluenceValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.point_url = None
+
         # build configuration
         space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
@@ -123,8 +126,14 @@ class TestConfluenceValidation(unittest.TestCase):
             return docnames
         config['confluence_navdocs_transform'] = navdocs_transform
 
+        # track the initial publish point
+        def capture_base_publish_point(app, point_url):
+            cls.point_url = point_url
+
         # build/publish test base page
-        build_sphinx(dataset, config=config, out_dir=doc_dir)
+        with prepare_sphinx(dataset, config=config, out_dir=doc_dir) as app:
+            app.connect('confluence-publish-point', capture_base_publish_point)
+            app.build()
 
         # track root pages for editors to publish content into
         cls.editor_root = {
@@ -136,6 +145,15 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.config['confluence_cleanup_purge'] = True
         cls.config['confluence_cleanup_from_root'] = True
         cls.config['confluence_root_homepage'] = False
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.point_url:
+            print()
+            print()
+            print('Validation publish point:', cls.point_url)
+            print()
+            print()
 
     def _prepare_editor(self, editor):
         display_name = ' (Fabric)' if editor == 'v2' else None

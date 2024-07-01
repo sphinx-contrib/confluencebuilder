@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
+# Copyright 2024 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import nodes
 from sphinx.domains.std import StandardDomain
 from sphinx.ext.autodoc import cut_lines
 from sphinx.roles import XRefRole
 from sphinx.transforms.post_transforms import SphinxPostTransform
+from sphinx.util.docfields import GroupedField
 import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
@@ -184,10 +186,15 @@ def setup(app):
     app.add_role('lref', LiteralReferenceRole())
 
     # custom directives/roles for documentation
+    fdesc = GroupedField(
+        'parameter', label='Parameters', names=['param'], can_collapse=True)
+
     app.add_object_type('builderval', 'builderval', objname='builders',
-        indextemplate='pair: %s; builder')
+        indextemplate='pair: %s; Builder')
     app.add_object_type('confval', 'confval', objname='configuration value',
-        indextemplate='pair: %s; configuration value')
+        indextemplate='pair: %s; Configuration value')
+    app.add_object_type('event', 'event', objname='events',
+        indextemplate='pair: %s; Event', doc_field_types=[fdesc])
 
     # register post-transformation hook for additional tweaks
     app.add_post_transform(DocumentationPostTransform)

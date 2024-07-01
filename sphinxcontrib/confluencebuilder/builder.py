@@ -679,14 +679,17 @@ class ConfluenceBuilder(Builder):
                     self.info('done')
 
             if self.cloud:
-                point_url = '{0}spaces/{1}/pages/{2}'
+                point_url_fmt = '{0}spaces/{1}/pages/{2}'
             else:
-                point_url = '{0}pages/viewpage.action?pageId={2}'
+                point_url_fmt = '{0}pages/viewpage.action?pageId={2}'
 
-            self.info('Publish point: ' + point_url.format(
+            point_url = point_url_fmt.format(
                 self.config.confluence_server_url,
                 self.config.confluence_space_key,
-                self.root_doc_page_id))
+                self.root_doc_page_id)
+
+            self.info('Publish point: ' + point_url)
+            self.app.emit('confluence-publish-point', point_url)
 
     def publish_cleanup(self):
         # check if archive cleanup is enabled
