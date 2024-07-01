@@ -40,10 +40,10 @@ Documentation contents
 
     changelog
 
-Indices and tables
-==================
-
 .. only:: builder_html or builder_dirhtml
+
+    Indices and tables
+    ==================
 
     * :ref:`genindex`
     * :ref:`search`
