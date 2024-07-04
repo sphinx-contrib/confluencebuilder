@@ -3116,7 +3116,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
             if sdc == 'card-title':
                 self.body.append(self.start_tag(node, 'strong'))
-                self.context.append(self.end_tag(node))
+                self.auto_append(self.end_tag(node))
 
     @depart_auto_context_decorator()
     def depart_container(self, node):
