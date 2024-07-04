@@ -233,6 +233,16 @@ Type                              Notes
                                   Can render JSON data inside code blocks.
                                   Content has collapse all data or expand all
                                   data, but not parts of the data.
+`sphinx-design`_                  Limited support.
+
+                                  Single card support (include header, title,
+                                  body and footer). No side-by-side cards,
+                                  alignment or extended capabilities such as
+                                  images or clickable support. Dropdowns will
+                                  function except for pre-expanded directives.
+                                  Support for some badges but limited to select
+                                  colors supported by Confluence. No extended
+                                  support for tabs, button and inline icons.
 `sphinx-diagrams`_                Supported
 `sphinx-gallery`_                 Supported
 `sphinx-needs`_                   Limited support.
@@ -340,6 +350,7 @@ brings up another concern, feel free to bring up an issue:
 .. _sections: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
 .. _sphinx-confluence-nbsphinx-test: https://github.com/jdknight/sphinx-confluence-nbsphinx-test
 .. _sphinx-data-viewer: https://sphinx-data-viewer.readthedocs.io/
+.. _sphinx-design: https://sphinx-design.readthedocs.io/
 .. _sphinx-diagrams: https://pypi.org/project/sphinx-diagrams/
 .. _sphinx-gallery: https://sphinx-gallery.github.io/
 .. _sphinx-needs: https://sphinxcontrib-needs.readthedocs.io/

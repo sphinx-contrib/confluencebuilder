@@ -4,6 +4,7 @@
 
 from contextlib import suppress
 from docutils import nodes
+from functools import wraps
 from pathlib import Path
 from sphinx import addnodes
 from sphinx.locale import _ as SL
@@ -35,6 +36,53 @@ import re
 import sys
 
 
+def visit_auto_context_decorator():
+    """
+    node visit decorator
+
+    Prepares a context for a given node type that can help populate a list
+    of completion tags which a depart implementation can automatically append
+    when using the ``depart_auto_context_decorator``. A visiting node will
+    include this decorator and use ``auto_append`` in the translator to queue
+    any tags that should be automatically added. For a node's depart call,
+    if applied the ``depart_auto_context_decorator`` decorator, the queued
+    tags will be applied to the body.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            self._auto_context.append([])
+
+            try:
+                return func(self, *args, **kwargs)
+            except nodes.SkipNode:
+                self._auto_context.pop()
+                raise
+
+        return _wrapper
+    return _decorator
+
+
+def depart_auto_context_decorator():
+    """
+    depart visit decorator
+
+    To help automatically apply pending tags to the body. See
+    ``visit_auto_context_decorator`` for more information.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            rv = func(self, *args, **kwargs)
+            ctx = self._auto_context.pop()
+            for element in reversed(ctx):
+                self.body.append(element)
+            return rv
+
+        return _wrapper
+    return _decorator
+
+
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     __tracked_deprecated = False
     _tracked_unknown_code_lang = []
@@ -61,6 +109,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
+        self._auto_context = []
         self._building_footnotes = False
         self._figure_context = []
         self._indent_level = 0
@@ -93,6 +142,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ---------
     # structure
     # ---------
+
+    def auto_append(self, entity):
+        self._auto_context[-1].append(entity)
 
     def get_secnumber(self, node):
         if node.get('secnumber'):
@@ -1613,6 +1665,40 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         elif classes in [['strike']]:
             self.body.append(self.start_tag(node, 's'))
             has_added = True
+        # [sphinx-design]
+        # badges
+        elif 'sd-badge' in classes:
+            color = None
+            subtle = False
+
+            if 'sd-bg-danger' in classes or 'sd-outline-danger' in classes:
+                color = 'red'
+                subtle = 'sd-outline-red' in classes
+            elif 'sd-bg-success' in classes or 'sd-outline-success' in classes:
+                color = 'green'
+                subtle = 'sd-outline-success' in classes
+            elif 'sd-bg-warning' in classes or 'sd-outline-warning' in classes:
+                color = 'yellow'
+                subtle = 'sd-outline-warning' in classes
+            elif ('sd-bg-primary' in classes or
+                    'sd-outline-primary' in classes or
+                    'sd-bg-info' in classes or
+                    'sd-outline-info' in classes):
+                color = 'blue'
+                subtle = ('sd-outline-primary' in classes or
+                    'sd-outline-info' in classes)
+            elif ('sd-bg-dark' not in classes and
+                    'sd-bg-secondary' not in classes):
+                subtle = True
+
+            self.body.append(self.start_ac_macro(node, 'status'))
+            if color:
+                self.body.append(self.build_ac_param(node, 'colour', color))
+            if subtle:
+                self.body.append(self.build_ac_param(node, 'subtle', 'true'))
+            self.body.append(self.build_ac_param(node, 'title', node.astext()))
+            self.body.append(self.end_ac_macro(node))
+            raise nodes.SkipNode
         # [sphinxcontrib-needs]
         # ignore collapse buttons, since they will not work in Confluence
         elif 'needs_collapse' in classes:
@@ -2215,6 +2301,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.context.pop())  # h2
 
     def visit_rubric(self, node):
+        # [sphinx-design]
+        # ignore rubrics inside drop downs that have already been used
+        sdc = node.parent.get('design_component')
+        if sdc == 'dropdown':
+            raise nodes.SkipNode
+
         # styling hints on paragraphs for rubrics do not work in v2;
         # we'll try to emulate a rubric the best we can
         if self.v2:
@@ -2838,6 +2930,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # -------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-needs
+    # -------------------------------------------------
+
+    def visit_PassthroughTextElement(self, node):
+        pass
+
+    def depart_PassthroughTextElement(self, node):
+        pass
+
     # ---------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-toolbox
     # ---------------------------------------------------
@@ -2978,18 +3080,53 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_acronym(self, node):
         self.body.append(self.context.pop())  # acronym
 
+    @visit_auto_context_decorator()
     def visit_container(self, node):
-        if 'collapse' in node.get('classes', []):
-            self.body.append(self.start_ac_macro(node, 'expand'))
-            self.body.append(self.start_ac_rich_text_body_macro(node))
-            self.context.append(self.end_ac_rich_text_body_macro(node) +
-                self.end_ac_macro(node))
-        else:
-            self.body.append(self.start_tag(node, 'div'))
-            self.context.append(self.end_tag(node))
+        # [sphinx-design]
+        # check if the container has a sphinx-design component
+        sdc = node.get('design_component')
 
+        if 'collapse' in node.get('classes', []) or sdc == 'dropdown':
+            self.body.append(self.start_ac_macro(node, 'expand'))
+            self.auto_append(self.end_ac_macro(node))
+
+            if sdc == 'dropdown':
+                next_child = first(findall(node, include_self=False))
+                if isinstance(next_child, nodes.rubric):
+                    self.body.append(self.build_ac_param(
+                        node, 'title', next_child.astext()))
+
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+            self.auto_append(self.end_ac_rich_text_body_macro(node))
+        else:
+            if sdc == 'card':
+                self.body.append(self.start_ac_macro(node, 'panel'))
+                self.body.append(self.build_ac_param(node, 'borderWidth', '2'))
+
+                self.auto_append(self.end_ac_macro(node))
+                self.body.append(self.start_ac_rich_text_body_macro(node))
+                self.auto_append(self.end_ac_rich_text_body_macro(node))
+
+            if sdc == 'card-footer':
+                self.body.append(self.start_tag(
+                    node, 'hr', suffix=self.nl, empty=True))
+
+            self.body.append(self.start_tag(node, 'div'))
+            self.auto_append(self.end_tag(node))
+
+            if sdc == 'card-title':
+                self.body.append(self.start_tag(node, 'strong'))
+                self.context.append(self.end_tag(node))
+
+    @depart_auto_context_decorator()
     def depart_container(self, node):
-        self.body.append(self.context.pop())  # div
+        # [sphinx-design]
+        # check if the container has a sphinx-design component
+        sdc = node.get('design_component')
+
+        if sdc == 'card-header':
+            self.body.append(self.start_tag(
+                node, 'hr', suffix=self.nl, empty=True))
 
     def depart_line(self, node):
         next_sibling = first(findall(node,
