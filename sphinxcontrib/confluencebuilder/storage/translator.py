@@ -4,6 +4,7 @@
 
 from contextlib import suppress
 from docutils import nodes
+from functools import wraps
 from pathlib import Path
 from sphinx import addnodes
 from sphinx.locale import _ as SL
@@ -35,6 +36,53 @@ import re
 import sys
 
 
+def visit_auto_context_decorator():
+    """
+    node visit decorator
+
+    Prepares a context for a given node type that can help populate a list
+    of completion tags which a depart implementation can automatically append
+    when using the ``depart_auto_context_decorator``. A visiting node will
+    include this decorator and use ``auto_append`` in the translator to queue
+    any tags that should be automatically added. For a node's depart call,
+    if applied the ``depart_auto_context_decorator`` decorator, the queued
+    tags will be applied to the body.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            self._auto_context.append([])
+
+            try:
+                return func(self, *args, **kwargs)
+            except nodes.SkipNode:
+                self._auto_context.pop()
+                raise
+
+        return _wrapper
+    return _decorator
+
+
+def depart_auto_context_decorator():
+    """
+    depart visit decorator
+
+    To help automatically apply pending tags to the body. See
+    ``visit_auto_context_decorator`` for more information.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def _wrapper(self, *args, **kwargs):
+            rv = func(self, *args, **kwargs)
+            ctx = self._auto_context.pop()
+            for element in reversed(ctx):
+                self.body.append(element)
+            return rv
+
+        return _wrapper
+    return _decorator
+
+
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     __tracked_deprecated = False
     _tracked_unknown_code_lang = []
@@ -61,6 +109,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
+        self._auto_context = []
         self._building_footnotes = False
         self._figure_context = []
         self._indent_level = 0
@@ -93,6 +142,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ---------
     # structure
     # ---------
+
+    def auto_append(self, entity):
+        self._auto_context[-1].append(entity)
 
     def get_secnumber(self, node):
         if node.get('secnumber'):
@@ -2978,18 +3030,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def depart_acronym(self, node):
         self.body.append(self.context.pop())  # acronym
 
+    @visit_auto_context_decorator()
     def visit_container(self, node):
         if 'collapse' in node.get('classes', []):
             self.body.append(self.start_ac_macro(node, 'expand'))
+            self.auto_append(self.end_ac_macro(node))
             self.body.append(self.start_ac_rich_text_body_macro(node))
-            self.context.append(self.end_ac_rich_text_body_macro(node) +
-                self.end_ac_macro(node))
+            self.auto_append(self.end_ac_rich_text_body_macro(node))
         else:
             self.body.append(self.start_tag(node, 'div'))
-            self.context.append(self.end_tag(node))
+            self.auto_append(self.end_tag(node))
 
+    @depart_auto_context_decorator()
     def depart_container(self, node):
-        self.body.append(self.context.pop())  # div
+        pass
 
     def depart_line(self, node):
         next_sibling = first(findall(node,
