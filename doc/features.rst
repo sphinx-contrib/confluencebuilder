@@ -16,6 +16,8 @@ reStructuredText markup
 
     .. tabularcolumns:: |p{4cm}|p{12cm}|
 
+.. rst-class:: no-wrap-links
+
 ======================= =====
 Type                    Notes
 ======================= =====
@@ -76,6 +78,8 @@ Sphinx markup
 .. only:: latex
 
     .. tabularcolumns:: |p{4cm}|p{12cm}|
+
+.. rst-class:: no-wrap-links
 
 ======================= =====
 Type                    Notes
@@ -139,6 +143,8 @@ each of these extensions:
 .. only:: latex
 
     .. tabularcolumns:: |p{5cm}|p{11cm}|
+
+.. rst-class:: no-wrap-links
 
 ================================= =====
 Type                              Notes
@@ -221,6 +227,8 @@ interacting with this extension:
 .. only:: latex
 
     .. tabularcolumns:: |p{5cm}|p{11cm}|
+
+.. rst-class:: no-wrap-links
 
 ================================= =====
 Type                              Notes
