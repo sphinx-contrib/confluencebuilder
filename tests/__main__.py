@@ -23,6 +23,7 @@ def main():
     suite = unittest.TestSuite()
 
     parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--debug', action='store_true')
     parser.add_argument('--help', '-h', action='store_true')
     parser.add_argument('--unbuffered', '-U', action='store_true')
     parser.add_argument('--verbose', '-V', action='count', default=0)
@@ -35,7 +36,7 @@ def main():
     # toggle verbose mode (if provided)
     buffered = not args.unbuffered
     verbosity = 0
-    if args.verbose:
+    if args.debug or args.verbose:
         buffered = False
 
         try:
@@ -43,6 +44,9 @@ def main():
             verbosity -= 1  # ignore first level for 'status' information
         except ValueError:
             pass
+
+        if verbosity < 1 and args.debug:
+            verbosity = 1
 
         enable_sphinx_info(verbosity=verbosity)
     else:
