@@ -224,7 +224,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # an anchor point with the name matching the title (which allows the
         # fallback link to jump to the desired point in a document).
         if self.builder.name == 'singleconfluence':
-            doc_anchorname = node['docname'] + '/'
+            doc_anchorname = '/#' + node['docname']
             doc_target = self.state.target(doc_anchorname)
             if not doc_target:
                 doc_id = node['docname']
@@ -265,8 +265,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if isinstance(node.parent, (nodes.section, nodes.topic)):
             new_targets = []
 
-            self.body.append(
-                self.start_tag(node, f'h{self._title_level}'))
+            self.body.append(self.start_tag(node, f'h{self._title_level}'))
+
+            if self.builder.name == 'singleconfluence':
+                docname = self._docnames[-1]
+            else:
+                docname = self.docname
 
             # For v2, will will generate section anchors inside the title
             # area for the following reasons:
@@ -278,7 +282,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #    properly link when coming from v1 or v2 editor pages.
             if self.v2 and 'names' in node.parent:
                 for anchor in node.parent['names']:
-                    target_name = f'{self.docname}#{anchor}'
+                    target_name = f'{docname}/#{anchor}'
                     target = self.state.target(target_name)
                     if target and target not in new_targets:
                         self._build_anchor(node, target)
@@ -289,7 +293,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             # Markdown page.
             slug = node.parent.get('slug')
             if slug:
-                target_name = f'{self.docname}#{slug}'
+                target_name = f'{docname}/#{slug}'
                 target = self.state.target(target_name)
                 if target and target not in new_targets:
                     self._build_anchor(node, target)
@@ -1326,20 +1330,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         if self.builder.name == 'singleconfluence':
             docname = self._docnames[-1]
-            anchorname = f'{docname}/#{raw_anchor}'
-            if anchorname not in self.builder.secnumbers:
-                anchorname = f'{raw_anchor}/'
         else:
-            anchorname = f'{self.docname}#{raw_anchor}'
+            docname = self.docname
 
-        # check if this target is reachable without an anchor; if so, use the
-        # identifier value instead
-        target = self.state.target(anchorname)
-        if target:
-            anchor_value = target
-            anchor_value = self.encode(anchor_value)
-        else:
-            anchor_value = raw_anchor
+        anchor_value = self._resolve_anchor(docname, raw_anchor)
 
         is_citation = ('ids' in node and node['ids']
             and 'internal' in node and node['internal'])
@@ -1385,7 +1379,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self._reference_context.append(self.end_tag(node, suffix=''))
             return
 
-        anchor_value = intern_uri_anchor_value(docname, node['refuri'])
+        raw_anchor = intern_uri_anchor_value(docname, node['refuri'])
+        anchor_value = self._resolve_anchor(docname, raw_anchor)
 
         navnode = getattr(node, 'cbe_navnode', False)
 
@@ -1470,6 +1465,35 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.encode(node.astext()))
 
         raise nodes.SkipNode
+
+    def _resolve_anchor(self, docname, raw_anchor):
+        if not raw_anchor:
+            return None
+
+        anchorname = f'{docname}/#{raw_anchor}'
+
+        # check if this target is reachable without an anchor; if so, use the
+        # identifier value instead
+        target = self.state.target(anchorname)
+
+        # if a target could not be found, check if it was registered from
+        # a "global name"
+        if not target:
+            alt_anchorname = f'/#{raw_anchor}'
+            target = self.state.target(alt_anchorname)
+
+        if target:
+            self.verbose(
+                f'found target for anchor ({docname}): '
+                f'{anchorname} -> {target}'  # noqa: COM812
+            )
+            anchor_value = target
+            anchor_value = self.encode(anchor_value)
+        else:
+            self.verbose(f'no target for anchor ({docname}): {anchorname}')
+            anchor_value = raw_anchor
+
+        return anchor_value
 
     # --------------------------------
     # references - footnotes/citations
@@ -3260,6 +3284,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             anchor: the name of the anchor to create
         """
 
+        self.verbose(f'build anchor ({self.docname}): {anchor}')
         self.body.append(self.start_ac_macro(node, 'anchor'))
         self.body.append(self.build_ac_param(node, '', anchor))
         self.body.append(self.end_ac_macro(node, suffix=''))
@@ -3269,6 +3294,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             doctitle = self.encode(doctitle.replace(' ', ''))
 
             compat_anchor = f'{doctitle}-{anchor}'
+            self.verbose(f'build anchor ({self.docname}): {compat_anchor}')
             self.body.append(self.start_ac_macro(node, 'anchor'))
             self.body.append(self.build_ac_param(node, '', compat_anchor))
             self.body.append(self.end_ac_macro(node, suffix=''))

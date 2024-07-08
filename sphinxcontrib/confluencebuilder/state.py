@@ -41,7 +41,7 @@ class ConfluenceState:
         logger.verbose(f'setting parent of {docname} to: {parent_docname}')
 
     @staticmethod
-    def register_target(refid, target):
+    def register_target(refid, target, overwrite=False):
         """
         register a reference to a specific (anchor) target
 
@@ -53,8 +53,13 @@ class ConfluenceState:
         to track the target value to use for a provided reference (so that a
         writer can properly prepare a link; see also `target`).
         """
-        ConfluenceState.refid2target[refid] = target
-        logger.verbose(f'mapping {refid} to target: {target}')
+        exists = refid in ConfluenceState.refid2target
+        if exists and not overwrite:
+            logger.verbose(f'ignore mapping {refid} to target: {target}')
+        else:
+            ConfluenceState.refid2target[refid] = target
+            postfix = ' [OVERWRITE]' if exists else ''
+            logger.verbose(f'mapping {refid} to target: {target}{postfix}')
 
     @staticmethod
     def register_title(docname, title, config):

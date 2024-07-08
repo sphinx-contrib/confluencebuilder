@@ -327,8 +327,8 @@ class ConfluenceBuilder(Builder):
             # post-prepare a ready doctree
             self._prepare_doctree_writing(docname, doctree)
 
-            # register title targets for references
-            self._register_doctree_title_targets(docname, doctree)
+            # register targets for references
+            self._register_doctree_targets(docname, doctree)
 
         # register titles for special documents (if needed); if a title is not
         # already set from a placeholder document, configure a default title
@@ -1167,60 +1167,164 @@ class ConfluenceBuilder(Builder):
 
         return True
 
-    def _register_doctree_title_targets(self, docname, doctree):
+    def _register_doctree_targets(self, docname, doctree, title_track=None):
         """
-        register title targets for a doctree
+        register targets for a doctree
 
-        Compiles a list of title targets which references can link against. This
+        Compiles a list of targets which references can link against. This
         tracked expected targets for sections which are automatically generated
         in a rendered Confluence instance.
 
         Args:
             docname: the docname of the doctree
             doctree: the doctree to search for targets
+            title_track (optional): database for tracking unique titles
         """
 
-        doc_used_names = {}
-        secnumbers = self.env.toc_secnumbers.get(docname, {})
+        singleconfluence = self.name == 'singleconfluence'
+        root_doc = self.config.root_doc if singleconfluence else docname
+        secnumbers = self.env.toc_secnumbers.get(root_doc, {})
 
+        # Determine the editor by checking if the metadata for a document
+        # specifies a specific editor override or fallback to the global
+        # configuration if one is set. In singleconfluence, we always use
+        # the global configuration.
         metadata = self.metadata.get(docname, {})
-        editor = metadata.get('editor', self.config.confluence_editor)
+        editor = metadata.get('editor')
+        if not editor or singleconfluence:
+            editor = self.config.confluence_editor
 
+        # Prepare a database to track titles if one is not already provided.
+        # (i.e. not all callers care about unique targets between multiple
+        # documents)
+        title_track = title_track if title_track else {}
+
+        # Find the first section of this document page. It will be used to
+        # create "base" line to a specific page embedded in the single
+        # document generated. This only applies to single-document generation.
+        root_section = None
+        if singleconfluence:
+            title_node = self._find_title_element(doctree)
+            if title_node and isinstance(title_node.parent, nodes.section):
+                root_section = title_node.parent
+
+        # Process all section-owned titles for "title"/heading elements to
+        # register.
         for node in findall(doctree, nodes.title):
-            if isinstance(node.parent, nodes.section):
-                section_node = node.parent
-                if 'ids' in section_node:
-                    # sections on v2 pages will replace spaces with dashes
-                    # for anchors, where older editors will strip out spaces
-                    sep = '-' if editor == 'v2' else ''
-                    target = sep.join(node.astext().split())
+            section_node = node.parent
+            if not isinstance(section_node, nodes.section):
+                continue
 
-                    if self.add_secnumbers:
-                        anchorname = '#' + section_node['ids'][0]
-                        if anchorname not in secnumbers:
-                            anchorname = ''
+            # Extract the "title" for this section to be used when referencing
+            # this heading. In Confluence, the anchor name matches that of the
+            # title (side from things such as spaces removed). Although, for
+            # repeated titles, there will be a ".<n>" postfix for any title
+            # entry that has the same name starting with ".1". For example,
+            # if a title "test" exists twice, the first header entry will have
+            # an anchor of "test" and the second will have an entry of
+            # "test.1".
+            sep = '-' if editor == 'v2' else ''
+            title_name = sep.join(node.astext().split())
 
-                        secnumber = secnumbers.get(anchorname)
-                        if secnumber:
-                            target = ('.'.join(map(str, secnumber)) +
-                                self.secnumber_suffix + target)
+            # Check to see if this title will have a section number added to
+            # it (e.g. "test" becoming named "1. test"). It is assumed here
+            # that any ID of a section node when passed into the environment's
+            # section number tracking will result in the same section number
+            # being returned.
+            if self.add_secnumbers and 'ids' in section_node:
+                first_id = first(section_node['ids'])
 
-                    section_id = doc_used_names.get(target, 0)
-                    doc_used_names[target] = section_id + 1
-                    if section_id > 0:
-                        target = f'{target}.{section_id}'
+                anchorname = f'{docname}/#{first_id}'
+                if anchorname not in secnumbers:
+                    anchorname = f'{first_id}/'
 
-                    # v2 editor does not link anchors with select characters;
-                    # provide a workaround that url encodes targets
-                    #
-                    # See: https://jira.atlassian.com/browse/CONFCLOUD-7469
-                    if not self.config.confluence_adv_disable_confcloud_74698:
-                        if editor == 'v2':
-                            target = quote(target)
+                secnumber = secnumbers.get(anchorname)
+                if secnumber:
+                    title_name = ('.'.join(map(str, secnumber)) +
+                        self.secnumber_suffix + title_name)
 
-                    for raw_id in section_node['ids']:
-                        full_id = f'{docname}#{raw_id}'
-                        self.state.register_target(full_id, target)
+            # Determine the "final" target name of this title. Check if this
+            # title has been used before. If so, append a new postfix to it.
+            title_target = title_name
+            last_title_postfix = title_track.get(title_target, 0)
+            title_track[title_target] = last_title_postfix + 1
+            if last_title_postfix > 0:
+                title_target = f'{title_target}.{last_title_postfix}'
+
+            # If this section is the (first) root section, register a target
+            # for a "root" anchor point. This is important for references that
+            # link to documents (e.g. `:doc:<>`). For example, if "page-a"
+            # has a document link to "page-b" (e.g. `:doc:<page-b>`), we want
+            # an anchor to jump to after the document is merged. We use the
+            # first detected title in a page as the main target for the
+            # document's "top" link.
+            if singleconfluence and section_node == root_section:
+                root_anchorname = f'/#{docname}'
+                self._register_target(editor, root_anchorname, title_target)
+
+            # For each identified assigned to the section, ensure we register
+            # a target anchor for each one.
+            if 'ids' in section_node:
+                for id_ in section_node['ids']:
+                    anchorname = f'{docname}/#{id_}'
+                    self._register_target(editor, anchorname, title_target)
+
+            # For each global name assigned to the section, ensure we register
+            # a target anchor for each one.
+            if 'names' in section_node:
+                for name in section_node['names']:
+                    anchorname = f'/#{name}'
+                    self._register_target(editor, anchorname, title_target)
+
+        # Process all targets except for entries associated with a section
+        # (as those were processed above).
+        for node in findall(doctree, nodes.target):
+            node_refid = node.get('refid')
+            if not node_refid:
+                continue
+
+            next_sibling = first(findall(node,
+                include_self=False, descend=False, siblings=True))
+            if isinstance(next_sibling, nodes.section):
+                continue
+
+            full_id = f'{docname}/#{node_refid}'
+            self._register_target(editor, full_id, node_refid)
+
+    def _register_target(self, editor, refid, target):
+        # v2 editor does not link anchors with select characters;
+        # provide a workaround that url encodes targets
+        #
+        # See: https://jira.atlassian.com/browse/CONFCLOUD-74698
+        if not self.config.confluence_adv_disable_confcloud_74698:
+            if editor == 'v2':
+                new_target = quote(target)
+
+                # So... related to CONFCLOUD-74698, something about anchors
+                # with special characters will cause some pain for links.
+                # This has been observed in the past, was removed after
+                # thinking it was not an issue but is now being added again.
+                # It appears that when a header is generated an identifier in
+                # Confluence Cloud that has special characters, we can observe
+                # Confluence prefixing these identifiers with two copies of
+                # `[inlineExtension]`. Cannot explain why, so if this situation
+                # occurs, just add the prefix data to help ensure links work.
+                if not self.config.confluence_adv_disable_confcloud_ieaj:
+                    if new_target != target:
+                        new_target = 2 * '[inlineExtension]' + new_target
+
+                target = new_target
+
+        self.state.register_target(refid, target)
+
+        # For singleconfluence, register global fallbacks for targets
+        # to ensure merged targets from other documents can be linked to
+        # from other doctrees.
+        if self.name == 'singleconfluence':
+            _, refid_part = refid.split('/', 1)
+            fallback_refid = f'/{refid_part}'
+            if fallback_refid != refid:
+                self.state.register_target(fallback_refid, target)
 
     def _top_ref_check(self, node):
         """

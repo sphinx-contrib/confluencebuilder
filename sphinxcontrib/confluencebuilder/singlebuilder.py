@@ -98,9 +98,10 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
             # register title targets for references before assembling doc
             # re-works them into a single document
+            title_db = {}
             for docname in docnames:
                 doctree = self.env.get_doctree(docname)
-                self._register_doctree_title_targets(docname, doctree)
+                self._register_doctree_targets(docname, doctree, title_db)
 
             doctree = self.assemble_doctree()
             self._prepare_doctree_writing(self.config.root_doc, doctree)
@@ -187,80 +188,3 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             whether or not the node should be a #top reference
         """
         return node['refid'] == self.config.root_doc
-
-    def _register_doctree_title_targets(self, docname, doctree):
-        """
-        register title targets for a doctree
-
-        Compiles a list of title targets which references can link against. This
-        tracked expected targets for sections which are automatically generated
-        in a rendered Confluence instance.
-
-        Args:
-            docname: the docname of the doctree
-            doctree: the doctree to search for targets
-        """
-
-        doc_used_names = {}
-        secnumbers = self.env.toc_secnumbers.get(self.config.root_doc, {})
-
-        docref_set = False
-        doc_anchorname = f'{docname}/'
-        root_section = None
-        title_node = self._find_title_element(doctree)
-        if title_node:
-            root_section = title_node.parent
-
-        for node in findall(doctree, nodes.title):
-            if isinstance(node.parent, nodes.section):
-                section_node = node.parent
-                if 'ids' in section_node:
-                    title_name = ''.join(node.astext().split())
-
-                    for id_ in section_node['ids']:
-                        target = title_name
-
-                        anchorname = f'{docname}/#{id_}'
-                        if anchorname not in secnumbers:
-                            anchorname = f'{id_}/'
-
-                        if self.add_secnumbers:
-                            secnumber = secnumbers.get(anchorname)
-                            if secnumber:
-                                target = ('.'.join(map(str, secnumber)) +
-                                    self.secnumber_suffix + target)
-
-                        section_id = doc_used_names.get(target, 0)
-                        doc_used_names[target] = section_id + 1
-                        if section_id > 0:
-                            target = f'{target}.{section_id}'
-
-                        self.state.register_target(anchorname, target)
-
-                        # register a "document target" if the document's base
-                        # identifier is set to a value which does not match the
-                        # document's docname
-                        #
-                        # When building a single Confluence page, if a reference
-                        # explicitly references to another document (:doc:<>),
-                        # there can be no registered target to properly point
-                        # to. This call focuses on building targets based off
-                        # the identifiers defined in the section names; however,
-                        # there is no guarantee that the assigned identifiers
-                        # will match to an internal refid value to a specific
-                        # document name (e.g. if "pagea" links to "pageb", page
-                        # A can have a reference to a refid "pageb", but page
-                        # B's root section name *may* not have a matching
-                        # identifier). Since we want references like this to
-                        # point to the starting location of these document's
-                        # content, there is a desire to register a reference to
-                        # the first section name value (i.e. first title) if one
-                        # exists. Therefore, if the root section name does not
-                        # register a target which matches a prospect refid value
-                        # for a :doc:<> reference, register an additional target
-                        # to the leading section which has this mapping.
-                        if section_node == root_section and not docref_set:
-                            if doc_anchorname != anchorname:
-                                self.state.register_target(
-                                    doc_anchorname, target)
-                            docref_set = True

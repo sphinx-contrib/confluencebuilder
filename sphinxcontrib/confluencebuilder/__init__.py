@@ -248,6 +248,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_cloud')
     # Disable workaround for: https://jira.atlassian.com/browse/CONFCLOUD-74698
     cm.add_conf_bool('confluence_adv_disable_confcloud_74698')
+    # Disable workaround for inline-extension anchor injection
+    cm.add_conf_bool('confluence_adv_disable_confcloud_ieaj')
     # Disable any attempts to initialize this extension's custom entities.
     cm.add_conf_bool('confluence_adv_disable_init')
     # Flag to permit the use of embedded certificates from requests.
