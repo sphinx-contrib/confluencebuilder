@@ -4,11 +4,14 @@ Development
 * **(note)** ``confluence_disable_notifications`` is now enabled by default
 * **(note)** ``confluence_file_transform`` support is deprecated
 * **(note)** ``confluence_link_transform`` support is deprecated
+* Fixed inconsistencies with page-meta editor/full-width with singleconfluence
 * Fixed issue in Confluence REST v2 API usage (Cloud) where page updates
   may fail when a page has no metadata
 * Fixed issue using cleanup modes with Confluence Cloud with large
   attachment/page sets (250+) could block publishing
+* Fixed issues where various links were broken with singleconfluence
 * Fixed support when using the sphinxcontrib-video extension (v0.2.1+)
+* Improve support when using the sphinx-designs extension
 * Improve user feedback when operating with a cleaning option enabled
 * Introduce the ``confluence-publish-point`` event
 * Introduce the ``confluence_api_token`` option
