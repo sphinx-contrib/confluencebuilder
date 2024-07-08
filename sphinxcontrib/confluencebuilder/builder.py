@@ -1223,13 +1223,8 @@ class ConfluenceBuilder(Builder):
             # if a title "test" exists twice, the first header entry will have
             # an anchor of "test" and the second will have an entry of
             # "test.1".
-            title_name = node.astext()
-            if editor == 'v2':
-                # In v2, targets with dashes look to get dash-wrapped. Tweak
-                # the target to perform the same type of manipulation.
-                title_name = title_name.replace('-', '---')
             sep = '-' if editor == 'v2' else ''
-            title_name = sep.join(title_name.split())
+            title_name = sep.join(node.astext().split())
 
             # Check to see if this title will have a section number added to
             # it (e.g. "test" becoming named "1. test"). It is assumed here
@@ -1314,10 +1309,8 @@ class ConfluenceBuilder(Builder):
                 # Confluence prefixing these identifiers with two copies of
                 # `[inlineExtension]`. Cannot explain why, so if this situation
                 # occurs, just add the prefix data to help ensure links work.
-                #
-                # Dash wrapping also seem to need inlineExtension as well.
                 if not self.config.confluence_adv_disable_confcloud_ieaj:
-                    if new_target != target or '---' in target:
+                    if new_target != target:
                         new_target = 2 * '[inlineExtension]' + new_target
 
                 target = new_target
