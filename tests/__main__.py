@@ -144,6 +144,7 @@ tests to run for this execution.
 
 (options)
  -h, --help            show this help
+ -U, --unbuffered      do not buffer output
  -V, --verbose         enable verbose messages
 """)
 
