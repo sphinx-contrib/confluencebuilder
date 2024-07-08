@@ -75,6 +75,9 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             return
 
         with progress_message(C('assembling single confluence document')):
+            if self.app.verbosity:
+                print()
+
             # assemble toc section/figure numbers
             #
             # Both the environment's `toc_secnumbers` and `toc_fignumbers`
@@ -104,6 +107,9 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             self.assets.process_document(doctree, self.config.root_doc)
 
         with progress_message(C('writing single confluence document')):
+            if self.app.verbosity:
+                print()
+
             self.write_doc_serialized(self.config.root_doc, doctree)
             self.write_doc(self.config.root_doc, doctree)
 
