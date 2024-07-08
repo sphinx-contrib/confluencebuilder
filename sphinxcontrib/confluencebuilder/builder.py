@@ -605,7 +605,7 @@ class ConfluenceBuilder(Builder):
         metadata = self.metadata[docname]
 
         # apply editor override (if any)
-        if 'editor' in metadata:
+        if 'editor' in metadata and self.name != 'singleconfluence':
             data['editor'] = metadata['editor']
 
         # determine appearance
@@ -613,7 +613,7 @@ class ConfluenceBuilder(Builder):
         # Note: we do not have an "OFF" for v1 editor since an
         # appearance hint is ignored; width management in this
         # case is managed in the translator
-        if 'fullWidth' in metadata:
+        if 'fullWidth' in metadata and self.name != 'singleconfluence':
             confluence_full_width = (metadata['fullWidth'] == 'true')
         else:
             confluence_full_width = self.config.confluence_full_width

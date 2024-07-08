@@ -124,12 +124,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         # override editor if the document specifies another
         editor_override = metadata.get('editor')
-        if editor_override:
+        if editor_override and self.builder.name != 'singleconfluence':
             self.editor = editor_override
 
         # override full-width option if the document hints to override
         fw_override = metadata.get('fullWidth')
-        if fw_override:
+        if fw_override and self.builder.name != 'singleconfluence':
             self.confluence_full_width = (fw_override == 'true')
 
         # helper to track a v2 editor
