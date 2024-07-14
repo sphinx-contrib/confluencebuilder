@@ -1,3 +1,9 @@
+Development
+===========
+
+* **(note)** ``confluence_file_transform`` support is dropped
+* **(note)** ``confluence_link_transform`` support is dropped
+
 2.6.0 (2024-07-14)
 ==================
 
