@@ -283,12 +283,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_file_transform
-    validator.conf('confluence_file_transform') \
-             .callable_()
-
-    # ##################################################################
-
     # confluence_footer_file
     try:
         validator.conf('confluence_footer_file') \
@@ -400,12 +394,6 @@ def validate_configuration(builder):
     # confluence_link_suffix
     validator.conf('confluence_link_suffix') \
              .string()
-
-    # ##################################################################
-
-    # confluence_link_transform
-    validator.conf('confluence_link_transform') \
-             .callable_()
 
     # ##################################################################
 
