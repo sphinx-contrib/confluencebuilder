@@ -10,26 +10,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb_NO\n"
-"PO-Revision-Date: 2023-11-19 22:08\n"
+"PO-Revision-Date: 2024-07-14 20:29\n"
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:78
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:77
 msgid "assembling single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:107
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:110
 msgid "writing single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:11
-#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:11
-#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:37
-#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:37
-#: sphinxcontrib/confluencebuilder/storage/templates/search.html:10
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2438
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex.html:12
+#: sphinxcontrib/confluencebuilder/storage/templates/domainindex_v2.html:12
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex.html:38
+#: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:38
+#: sphinxcontrib/confluencebuilder/storage/templates/search.html:11
+#: sphinxcontrib/confluencebuilder/storage/templates/search_v2.html:11
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2538
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2462
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2566
 msgid "Edit Source"
 msgstr "Rediger kilde"
 
