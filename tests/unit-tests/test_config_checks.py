@@ -550,21 +550,6 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_link_suffix'] = '.conf'
         self._try_config()
 
-    def test_config_check_link_transform(self):
-        self.config['suppress_warnings'] = [
-            'confluence.deprecated',
-        ]
-
-        def mock_transform(docname):
-            return docname + '.conf'
-
-        self.config['confluence_link_transform'] = mock_transform
-        self._try_config()
-
-        self.config['confluence_link_transform'] = 'invalid'
-        with self.assertRaises(ConfluenceConfigError):
-            self._try_config()
-
     def test_config_check_mentions(self):
         self.config['confluence_mentions'] = {}
         self._try_config()

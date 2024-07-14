@@ -2163,15 +2163,6 @@ Deprecated options
 
     This option has been replaced by |confluence_lang_overrides|_.
 
-.. confval:: confluence_link_transform
-
-    .. versionchanged:: 2.6
-
-    A function to override the translation of a document name to a (partial)
-    URI. The provided function is used to perform translations for both Sphinx's
-    get_relative_uri_ method. The default translation will be the combination of
-    "``docname`` + |confluence_link_suffix|_".
-
 .. confval:: confluence_master_homepage
 
     .. versionchanged:: 1.6

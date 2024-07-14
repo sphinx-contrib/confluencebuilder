@@ -397,12 +397,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_link_transform
-    validator.conf('confluence_link_transform') \
-             .callable_()
-
-    # ##################################################################
-
     # confluence_mentions
     validator.conf('confluence_mentions') \
              .dict_str_str()

@@ -180,10 +180,7 @@ class ConfluenceBuilder(Builder):
             return docname + self.link_suffix
 
         self.file_transform = file_transform
-        if self.config.confluence_link_transform is not None:
-            self.link_transform = self.config.confluence_link_transform
-        else:
-            self.link_transform = link_transform
+        self.link_transform = link_transform
 
         if self.config.confluence_lang_overrides is not None:
             if isinstance(self.config.confluence_lang_overrides, dict):
