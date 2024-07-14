@@ -1,5 +1,5 @@
-Development
-===========
+2.6.0 (2024-07-14)
+==================
 
 * **(note)** ``confluence_disable_notifications`` is now enabled by default
 * **(note)** ``confluence_file_transform`` support is deprecated
