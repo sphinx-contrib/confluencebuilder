@@ -179,10 +179,7 @@ class ConfluenceBuilder(Builder):
         def link_transform(docname):
             return docname + self.link_suffix
 
-        if self.config.confluence_file_transform is not None:
-            self.file_transform = self.config.confluence_file_transform
-        else:
-            self.file_transform = file_transform
+        self.file_transform = file_transform
         if self.config.confluence_link_transform is not None:
             self.link_transform = self.config.confluence_link_transform
         else:

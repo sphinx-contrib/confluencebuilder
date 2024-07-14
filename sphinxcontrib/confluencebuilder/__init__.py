@@ -220,8 +220,6 @@ def setup(app):
     # (configuration - advanced processing)
     # Filename suffix for generated files.
     cm.add_conf('confluence_file_suffix', 'confluence')
-    # Translation of docname to a filename.
-    cm.add_conf('confluence_file_transform', 'confluence')
     # Configuration for named JIRA Servers
     cm.add_conf('confluence_jira_servers', 'confluence')
     # Translation of a raw language to code block macro language.
