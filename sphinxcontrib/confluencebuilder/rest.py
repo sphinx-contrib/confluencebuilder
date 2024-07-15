@@ -27,6 +27,7 @@ import json
 import math
 import random
 import requests
+import sphinxcontrib.confluencebuilder
 import ssl
 import time
 
@@ -238,6 +239,7 @@ class Rest:
         self.last_retry = 1
         self.next_delay = None
         self.url = config.confluence_server_url
+        self.scb_version = sphinxcontrib.confluencebuilder.__version__
         self.session = None
         self.timeout = config.confluence_timeout
         self.verbosity = config.sphinx_verbosity
@@ -253,7 +255,7 @@ class Rest:
         session = requests.Session()
         session.headers.update({
             'Accept': 'application/json; charset=utf-8',
-            'User-Agent': 'Sphinx Confluence Builder',
+            'User-Agent': f'SphinxConfluenceBuilder/{self.scb_version}',
             'X-Atlassian-Token': NOCHECK,
         })
 
