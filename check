@@ -4,4 +4,4 @@
 # Solely used for a quick way to run a supported environment without
 # having to try to form one on the command line.
 
-exec tox -e py312-sphinx73 $@
+exec tox -e py312-sphinx74 $@
