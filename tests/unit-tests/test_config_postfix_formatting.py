@@ -102,6 +102,9 @@ class TestRegisterTitle(ConfluenceTestCase):
     def test_postfix_hash_fixing_name_conflict(self):
         config = dict(self.config)
         config['confluence_publish_postfix'] = ' -{hash:.10}'
+        # provide a fixed project name since the default name has been
+        # altered in Sphinx v7.4.x.
+        config['project'] = 'test'
 
         out_dir = self.build(self.dataset, config=config)
         with parse('index', out_dir) as data:
@@ -109,6 +112,6 @@ class TestRegisterTitle(ConfluenceTestCase):
             self.assertEqual(len(page_refs), 2)
 
             self.assertEqual(
-                page_refs[0]['ri:content-title'], 'readme -cef4211633')
+                page_refs[0]['ri:content-title'], 'readme -ac7d96da6b')
             self.assertEqual(
-                page_refs[1]['ri:content-title'], 'readme -b222cd6b2a')
+                page_refs[1]['ri:content-title'], 'readme -39add721ab')
