@@ -1,14 +1,21 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from importlib.util import find_spec
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
+import unittest
 
 
 class TestConfluenceReferencesConfluence(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
+        # skip myst_parser-related tests if the extension is not available
+        if find_spec('myst_parser') is None:
+            msg = 'myst_parser is not available'
+            raise unittest.SkipTest(msg)
+
         super().setUpClass()
 
         cls.config['extensions'].append('myst_parser')
