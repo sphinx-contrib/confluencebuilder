@@ -37,14 +37,16 @@ from sphinxcontrib.confluencebuilder.transform import ConfluenceHyperlinkCollect
 # load autosummary extension if available to add additional nodes
 try:
     from sphinx.ext import autosummary
+    has_autosummary = True
 except ImportError:
-    autosummary = None
+    has_autosummary = False
 
 # load imgmath extension if available to handle math configuration options
 try:
     from sphinx.ext import imgmath
+    has_imgmath = True
 except ImportError:
-    imgmath = None
+    has_imgmath = False
 
 __version__ = '2.7.0.dev0'
 
@@ -383,7 +385,7 @@ def confluence_autosummary_support(app):
         app: the sphinx application
     """
 
-    if autosummary:
+    if has_autosummary:
         for ext in app.extensions.values():
             if ext.name == 'sphinx.ext.autosummary':
                 app.registry.add_translation_handlers(
@@ -423,9 +425,8 @@ def confluence_imgmath_support(app):
         app: the sphinx application
     """
 
-    if imgmath is not None:
-        if 'sphinx.ext.imgmath' not in app.config.extensions:
-            imgmath.setup(app)
+    if has_imgmath and 'sphinx.ext.imgmath' not in app.config.extensions:
+        imgmath.setup(app)
 
 
 def confluence_remove_mathnodemigrator(app):

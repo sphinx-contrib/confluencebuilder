@@ -17,28 +17,28 @@ import itertools
 # load sphinx_toolbox extension if available to handle node pre-processing
 try:
     from sphinx_toolbox.assets import AssetNode as sphinx_toolbox_AssetNode
-    sphinx_toolbox_assets = True
+    has_sphinx_toolbox_assets = True
 except:  # noqa: E722
-    sphinx_toolbox_assets = False
+    has_sphinx_toolbox_assets = False
 
 try:
     from sphinx_toolbox.collapse import CollapseNode as sphinx_toolbox_CollapseNode
-    sphinx_toolbox_collapse = True
+    has_sphinx_toolbox_collapse = True
 except:  # noqa: E722
-    sphinx_toolbox_collapse = False
+    has_sphinx_toolbox_collapse = False
 
 try:
     from sphinx_toolbox.github.issues import IssueNode as sphinx_toolbox_IssueNode
     from sphinx_toolbox.github.issues import IssueNodeWithName as sphinx_toolbox_IssueNodeWithName
-    sphinx_toolbox_github_issues = True
+    has_sphinx_toolbox_github_issues = True
 except:  # noqa: E722
-    sphinx_toolbox_github_issues = False
+    has_sphinx_toolbox_github_issues = False
 
 try:
     from sphinx_toolbox.github.repos_and_users import GitHubObjectLinkNode as sphinx_toolbox_GitHubObjectLinkNode
-    sphinx_toolbox_github_repos_and_users = True
+    has_sphinx_toolbox_github_repos_and_users = True
 except:  # noqa: E722
-    sphinx_toolbox_github_repos_and_users = False
+    has_sphinx_toolbox_github_repos_and_users = False
 
 # re-enable pylint warnings from above
 # pylint: enable=E
@@ -62,7 +62,7 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
     if 'ext-sphinx_toolbox' in restricted:
         return
 
-    if sphinx_toolbox_assets:
+    if has_sphinx_toolbox_assets:
         for node in findall(doctree, sphinx_toolbox_AssetNode):
             # mock a docname based off the configured sphinx_toolbox's asset
             # directory; which the processing of a download_reference will
@@ -78,14 +78,14 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
             )
             node.replace_self(new_node)
 
-    if sphinx_toolbox_collapse:
+    if has_sphinx_toolbox_collapse:
         for node in findall(doctree, sphinx_toolbox_CollapseNode):
             new_node = confluence_expand(node.rawsource,
                 *node.children, **node.attributes)
             new_node.attributes['title'] = node.label
             node.replace_self(new_node)
 
-    if sphinx_toolbox_github_issues:
+    if has_sphinx_toolbox_github_issues:
         # note: using while loop since replacing issue nodes has observed to
         #  cause an exception while docutils is processing a doctree
         while True:
@@ -103,7 +103,7 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
             new_node = nodes.reference(title, title, refuri=node.issue_url)
             node.replace_self(new_node)
 
-    if sphinx_toolbox_github_repos_and_users:
+    if has_sphinx_toolbox_github_repos_and_users:
         for node in findall(doctree, sphinx_toolbox_GitHubObjectLinkNode):
             new_node = nodes.reference(node.name, node.name, refuri=node.url)
             node.replace_self(new_node)

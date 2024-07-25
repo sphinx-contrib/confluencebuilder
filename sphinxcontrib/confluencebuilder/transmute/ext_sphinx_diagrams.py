@@ -14,9 +14,9 @@ try:
     from sphinx_diagrams import DiagramsError
     from sphinx_diagrams import diagrams as sphinx_diagrams_diagrams
     from sphinx_diagrams import render_diagrams as sphinx_diagrams_render
-    sphinx_diagrams = True
+    has_sphinx_diagrams = True
 except:  # noqa: E722
-    sphinx_diagrams = False
+    has_sphinx_diagrams = False
 
 # re-enable pylint warnings from above
 # pylint: enable=E
@@ -40,7 +40,7 @@ def replace_sphinx_diagrams_nodes(builder, doctree):
     if 'ext-sphinx_diagrams' in restricted:
         return
 
-    if not sphinx_diagrams:
+    if not has_sphinx_diagrams:
         return
 
     # sphinx-diagrams's render call expects a translator to be passed in;

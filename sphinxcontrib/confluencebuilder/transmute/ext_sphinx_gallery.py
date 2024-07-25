@@ -11,9 +11,9 @@ from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 # load sphinx-gallery extension if available
 try:
     from sphinx_gallery.directives import imgsgnode as sphinx_gallery_imgsgnode
-    sphinx_gallery = True
+    has_sphinx_gallery = True
 except:  # noqa: E722
-    sphinx_gallery = False
+    has_sphinx_gallery = False
 
 # re-enable pylint warnings from above
 # pylint: enable=E
@@ -37,7 +37,7 @@ def replace_sphinx_gallery_nodes(builder, doctree):
     if 'ext-sphinx_gallery' in restricted:
         return
 
-    if not sphinx_gallery:
+    if not has_sphinx_gallery:
         return
 
     for node in findall(doctree, sphinx_gallery_imgsgnode):

@@ -14,9 +14,9 @@ try:
     from sphinxcontrib.mermaid import MermaidError
     from sphinxcontrib.mermaid import mermaid
     from sphinxcontrib.mermaid import render_mm as mermaid_render
-    sphinxcontrib_mermaid = True
+    has_sphinxcontrib_mermaid = True
 except:  # noqa: E722
-    sphinxcontrib_mermaid = False
+    has_sphinxcontrib_mermaid = False
 
 # re-enable pylint warnings from above
 # pylint: enable=E
@@ -40,7 +40,7 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
     if 'ext-sphinxcontrib.mermaid' in restricted:
         return
 
-    if not sphinxcontrib_mermaid:
+    if not has_sphinxcontrib_mermaid:
         return
 
     # mermaid's mermaid_render call expects a translator to be passed in; mock a
