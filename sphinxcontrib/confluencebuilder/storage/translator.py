@@ -2560,7 +2560,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         uri = PARAMS(node)['url']
 
         docname = self.docname
-        suffix = self.builder.env.doc2path(docname, base=None)[len(docname):]
+        docpath = str(self.builder.env.doc2path(docname, base=None))
+        suffix = docpath[len(docname):]
         uri = uri.format(page=docname, suffix=suffix, **PARAMS(node))
 
         source_text = PARAMS(node).get('text', L('Edit Source'))
