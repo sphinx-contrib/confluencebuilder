@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from __future__ import annotations
 from docutils import writers
+from typing import Any
 
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
     settings_spec = ('No options here.', '', ())
-    settings_defaults = {}
+    settings_defaults: dict[str, Any] = {}
 
     def __init__(self, builder):
         writers.Writer.__init__(self)
