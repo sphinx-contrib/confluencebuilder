@@ -11,7 +11,6 @@ from sphinx.builders import Builder
 from sphinx.locale import _ as SL
 from sphinx.util.display import status_iterator
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
-from sphinxcontrib.confluencebuilder.assets import ConfluenceSupportedImages
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
@@ -30,6 +29,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
+from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_genindex
 from sphinxcontrib.confluencebuilder.storage.search import generate_storage_format_search
@@ -52,7 +52,7 @@ class ConfluenceBuilder(Builder):
     default_translator_class = ConfluenceStorageFormatTranslator
     name = 'confluence'
     format = 'confluence_storage'
-    supported_image_types = ConfluenceSupportedImages()
+    supported_image_types = SUPPORTED_IMAGE_TYPES
     supported_linkcode = True
     supported_remote_images = True
 
@@ -114,7 +114,8 @@ class ConfluenceBuilder(Builder):
 
         if self.config.confluence_additional_mime_types:
             for type_ in self.config.confluence_additional_mime_types:
-                self.supported_image_types.register(type_)
+                if type_ not in self.supported_image_types:
+                    self.supported_image_types.append(type_)
 
         if 'graphviz_output_format' in self.config:  # noqa: SIM401
             self.graphviz_output_format = self.config['graphviz_output_format']

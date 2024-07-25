@@ -9,7 +9,6 @@ from sphinx.util.images import guess_mimetype
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.std.confluence import INVALID_CHARS
-from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
 
@@ -347,45 +346,3 @@ class ConfluenceAssetManager:
             logger.verbose(f'failed to find path: {path}')
 
         return abs_path
-
-
-class ConfluenceSupportedImages:
-    def __init__(self):
-        """
-        confluence support images
-
-        Defines an iterable instance of mime types of supported images types on
-        a Confluence instance. While a typical list can suffice to bind to a
-        builder's `supported_image_types` definition, this instance provides the
-        ability to register additional mime types (via configuration) if
-        supported by a Confluence instance. This provides flexibility for newer
-        Confluence versions as well as custom instances which support their own
-        custom image types.
-        """
-        self._mime_types = list(SUPPORTED_IMAGE_TYPES)
-
-    def __getitem__(self, key):
-        """
-        iterable evaulation of self[key]
-
-        Args:
-            key: the key to evaluate
-
-        Returns:
-            the value for this key
-        """
-        return self._mime_types[key]
-
-    def register(self, type_):
-        """
-        register a mime type to support
-
-        Register an additional mime type to support over the internal list of
-        supported types. This call has no effect if the type is already
-        registered.
-
-        Args:
-            type_: the mime type to add
-        """
-        if type_ not in self._mime_types:
-            self._mime_types.append(type_)

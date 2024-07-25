@@ -67,10 +67,11 @@ jobs:
             - { os:   macos-latest, python: "3.12", toxenv: py312-sphinx74, cache: ~/Library/Caches/pip }
             - { os: windows-latest, python: "3.12", toxenv: py312-sphinx74, cache: ~\AppData\Local\pip\Cache }
 
-            # linting
+            # linting/other
             #  - any OS, using most recent interpreter
             - { os: ubuntu-latest, python: "3.12", toxenv:   ruff, cache: ~/.cache/pip }
             - { os: ubuntu-latest, python: "3.12", toxenv: pylint, cache: ~/.cache/pip }
+            - { os: ubuntu-latest, python: "3.12", toxenv:   mypy, cache: ~/.cache/pip }
 
     steps:
     - uses: actions/checkout@v4

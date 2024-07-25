@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from __future__ import annotations
 from contextlib import contextmanager
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
@@ -228,7 +229,7 @@ def extract_strings_from_file(filename):
     return filelist
 
 
-def find_env_abspath(env, out_dir, path: str):
+def find_env_abspath(env, out_dir, path: str) -> Path | None:
     """
     find an existing absolute path for a provided path in a sphinx environment
 
@@ -278,11 +279,11 @@ def find_env_abspath(env, out_dir, path: str):
         if not abs_path.is_file():
             abs_path = out_dir / normalized_path
 
-    # if no asset can be found, ensure a `None` path is returned
-    if not abs_path.is_file():
-        abs_path = None
+    if abs_path.is_file():
+        return abs_path
 
-    return abs_path
+    # if no asset can be found, ensure a `None` path is returned
+    return None
 
 
 def first(it):
@@ -397,7 +398,7 @@ def remove_nonspace_control_chars(text):
         or unicodedata.category(c) != 'Cc')
 
 
-def str2bool(value):
+def str2bool(value) -> bool:
     """
     returns the boolean value for a string
 

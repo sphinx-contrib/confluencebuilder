@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from contextlib import suppress
 from docutils import nodes
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
@@ -23,20 +22,23 @@ try:
     from sphinx.ext.graphviz import GraphvizError
     from sphinx.ext.graphviz import graphviz
     from sphinx.ext.graphviz import render_dot
+    has_graphviz = True
 except ImportError:
-    graphviz = None
+    has_graphviz = False
 
 # load imgmath extension if available to handle math node pre-processing
 try:
     from sphinx.ext import imgmath
+    has_imgmath = True
 except ImportError:
-    imgmath = None
+    has_imgmath = False
 
 # load inheritance_diagram extension if available to handle node pre-processing
-inheritance_diagram = None
-if graphviz:
-    with suppress(ImportError):
-        from sphinx.ext import inheritance_diagram
+try:
+    from sphinx.ext import inheritance_diagram
+    has_inheritance_diagram = True
+except ImportError:
+    has_inheritance_diagram = False
 
 
 def doctree_transmute(builder, doctree):
@@ -112,7 +114,7 @@ def prepare_math_images(builder, doctree):
     if builder.config.confluence_latex_macro:
         return
 
-    if imgmath is None:
+    if not has_imgmath:
         return
 
     # convert Confluence LaTeX blocks into image blocks
@@ -203,7 +205,7 @@ def replace_graphviz_nodes(builder, doctree):
     if 'ext-graphviz' in restricted:
         return
 
-    if graphviz is None:
+    if not has_graphviz:
         return
 
     # graphviz's render_dot call expects a translator to be passed in; mock a
@@ -258,7 +260,7 @@ def replace_inheritance_diagram(builder, doctree):
     if 'ext-inheritance_diagram' in restricted:
         return
 
-    if inheritance_diagram is None:
+    if not has_graphviz or not has_inheritance_diagram:
         return
 
     # graphviz's render_dot call expects a translator to be passed in; mock

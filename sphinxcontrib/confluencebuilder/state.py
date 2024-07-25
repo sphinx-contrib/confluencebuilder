@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from __future__ import annotations
 import hashlib
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -15,15 +16,15 @@ class ConfluenceState:
     operation. This includes, but not limited to, remember title names for
     documents, tracking reference identifiers to other document names and more.
     """
-    doc2uploadId = {}
-    doc2parentDoc = {}
-    doc2title = {}
-    doc2ttd = {}
-    refid2target = {}
-    title2doc = {}
+    doc2uploadId: dict[str, int] = {}
+    doc2parentDoc: dict[str, str] = {}
+    doc2title: dict[str, str] = {}
+    doc2ttd: dict[str, int] = {}
+    refid2target: dict[str, str] = {}
+    title2doc: dict[str, str] = {}
 
     @staticmethod
-    def register_parent_docname(docname, parent_docname):
+    def register_parent_docname(docname: str, parent_docname: str):
         """
         register a parent docname for a provided docname
 
@@ -41,7 +42,7 @@ class ConfluenceState:
         logger.verbose(f'setting parent of {docname} to: {parent_docname}')
 
     @staticmethod
-    def register_target(refid, target, overwrite=False):
+    def register_target(refid: str, target: str, *, overwrite: bool=False):
         """
         register a reference to a specific (anchor) target
 
@@ -62,7 +63,7 @@ class ConfluenceState:
             logger.verbose(f'mapping {refid} to target: {target}{postfix}')
 
     @staticmethod
-    def register_title(docname, title, config):
+    def register_title(docname: str, title: str, config) -> str:
         """
         register the title for the provided document name
 
@@ -127,7 +128,7 @@ class ConfluenceState:
         return title
 
     @staticmethod
-    def register_toctree_depth(docname, depth):
+    def register_toctree_depth(docname: str, depth: int):
         """
         register the toctree-depth for the provided document name
 
@@ -142,7 +143,7 @@ class ConfluenceState:
         logger.verbose(f'track {docname} toc-depth: {depth}')
 
     @staticmethod
-    def register_upload_id(docname, id_):
+    def register_upload_id(docname: str, id_: int):
         """
         register a page (upload) identifier for a docname
 
@@ -175,7 +176,7 @@ class ConfluenceState:
         ConfluenceState.title2doc.clear()
 
     @staticmethod
-    def parent_docname(docname):
+    def parent_docname(docname: str) -> str | None:
         """
         return the parent docname (if any) for a provided docname
 
@@ -184,7 +185,7 @@ class ConfluenceState:
         return ConfluenceState.doc2parentDoc.get(docname)
 
     @staticmethod
-    def target(refid):
+    def target(refid: str) -> str | None:
         """
         return the (anchor) target for a provided reference
 
@@ -193,7 +194,7 @@ class ConfluenceState:
         return ConfluenceState.refid2target.get(refid)
 
     @staticmethod
-    def title(docname, default=None):
+    def title(docname: str, default: str | None = None) -> str | None:
         """
         return the title value for a provided docname
 
@@ -202,7 +203,7 @@ class ConfluenceState:
         return ConfluenceState.doc2title.get(docname, default)
 
     @staticmethod
-    def toctree_depth(docname):
+    def toctree_depth(docname: str) -> int | None:
         """
         return the toctree-depth value for a provided docname
 
@@ -211,7 +212,7 @@ class ConfluenceState:
         return ConfluenceState.doc2ttd.get(docname)
 
     @staticmethod
-    def upload_id(docname):
+    def upload_id(docname: str) -> int | None:
         """
         return the confluence (upload) page id for the provided docname
 
@@ -220,7 +221,7 @@ class ConfluenceState:
         return ConfluenceState.doc2uploadId.get(docname)
 
     @staticmethod
-    def _format_postfix(postfix, docname, config):
+    def _format_postfix(postfix: str, docname: str, config) -> str:
         """
         Format a postfix that may have placeholders.
         All placeholders used must be supported otherwise an error is raised
@@ -239,7 +240,7 @@ class ConfluenceState:
         return postfix
 
     @staticmethod
-    def _create_docname_unique_hash(docname, config):
+    def _create_docname_unique_hash(docname: str, config) -> str:
         """
         Create a unique(ish) hash for the given source file to avoid collisions
         when pushing pages to confluence.

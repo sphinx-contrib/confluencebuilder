@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 # Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
+from __future__ import annotations
 from contextlib import suppress
 from docutils import nodes
 from functools import wraps
@@ -85,7 +86,7 @@ def depart_auto_context_decorator():
 
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     __tracked_deprecated = False
-    _tracked_unknown_code_lang = []
+    _tracked_unknown_code_lang: list[str] = []
 
     """
     confluence storage format extension translator
