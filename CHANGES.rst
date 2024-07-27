@@ -3,11 +3,12 @@ Development
 
 * **(note)** ``confluence_file_transform`` support is dropped
 * **(note)** ``confluence_link_transform`` support is dropped
+* Update publisher's user agent to `SphinxConfluenceBuilder/<version>`
 
 2.6.1 (2024-07-27)
 ==================
 
-* Support Sphinx's 8.x switch to pathlib 
+* Support Sphinx's 8.x switch to pathlib
 
 2.6.0 (2024-07-14)
 ==================
