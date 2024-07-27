@@ -3,7 +3,7 @@ Development
 
 * **(note)** ``confluence_file_transform`` support is dropped
 * **(note)** ``confluence_link_transform`` support is dropped
-* Update publisher's user agent to `SphinxConfluenceBuilder/<version>`
+* Update publisher's user agent to ``SphinxConfluenceBuilder/<version>``
 
 2.6.1 (2024-07-27)
 ==================
