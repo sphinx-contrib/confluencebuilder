@@ -13,7 +13,7 @@ files and optionally publish them to a Confluence instance.
 * [Confluence][confluence] Cloud or Data Center 7.19+
 * [Python][python] 3.8+
 * [Requests][requests] 2.25.0+
-* [Sphinx][sphinx] 7.0+
+* [Sphinx][sphinx] 7.1+
 
 ## Installing
 
