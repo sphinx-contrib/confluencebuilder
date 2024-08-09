@@ -9,7 +9,6 @@ Images
 
             Limitations using the Fabric (``v2``) editor:
 
-            - Images cannot be inlined (`CONFCLOUD-68501`_).
             - SVGs may not render properly (`CONFCLOUD-1762`_).
 
 reStructuredText defines a series of `image-based directives`_. Example markup
