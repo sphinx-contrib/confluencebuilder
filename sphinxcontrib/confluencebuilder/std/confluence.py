@@ -74,58 +74,31 @@ FONT_X_HEIGHT = 7
 # [3]: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 # [4]: http://pygments.org/docs/lexers/
 # [5]: http://www.sphinx-doc.org/en/stable/markup/code.html
-LITERAL2LANG_MAP_V1 = {
+LITERAL2LANG_MAP_COMMON = {
+    # (none)
+    'none': 'none',
+    'raw': 'none',
+    'text': 'none',
     # ActionScript
     'actionscript3': 'actionscript3',
     'as3': 'actionscript3',
     # AppleScript (Confluence >=6.0)
     'applescript': 'applescript',
-    # Bash
-    'bash': 'bash',
-    'ksh': 'bash',
-    'sh': 'bash',
-    'shell': 'bash',
-    'zsh': 'bash',
-    # C#
-    'c#': 'csharp',
-    'csharp': 'csharp',
     # C++
-    'c': 'cpp',
     'c++': 'cpp',
     'cpp': 'cpp',
     # ColdFusion
     'cfc': 'coldfusion',
     'coldfusion': 'coldfusion',
-    # CSS
-    'css': 'css',
-    # Delphi
-    'delphi': 'delphi',
-    'pas': 'delphi',
-    'pascal': 'delphi',
-    'objectpascal': 'delphi',
     # Diff
     'diff': 'diff',
     'udiff': 'diff',
-    # Erlang
-    'erlang': 'erlang',
     # Groovy
     'groovy': 'groovy',
-    # HTML and XML
-    'html': 'html/xml',
-    'html/xml': 'html/xml',
-    'xml': 'html/xml',
-    'xslt': 'html/xml',
     # Java
     'java': 'java',
     # Java FX
     'javafx': 'javafx',
-    # JavaScript
-    'javascript': 'javascript',
-    'js': 'javascript',
-    # Plain Text
-    'none': 'none',
-    'raw': 'none',
-    'text': 'none',
     # Perl (Confluence <=5.10)
     'perl': 'perl',
     'pl': 'perl',
@@ -139,12 +112,15 @@ LITERAL2LANG_MAP_V1 = {
     'powershell': 'powershell',
     'ps1': 'powershell',
     'psm1': 'powershell',
+    'pwsh': 'powershell',
     # Python
+    'bazel': 'python',
     'py': 'python',
     'py3': 'python',
     'python': 'python',
     'python3': 'python',
     'sage': 'python',
+    'starlark': 'python',
     # Ruby
     'duby': 'ruby',
     'rb': 'ruby',
@@ -153,13 +129,47 @@ LITERAL2LANG_MAP_V1 = {
     'sass': 'sass',
     # Scala
     'scala': 'scala',
+    # Shell
+    'bash': 'bash',
+    'ksh': 'bash',
+    'openrc': 'bash',
+    'sh': 'bash',
+    'shell': 'bash',
+    'zsh': 'bash',
     # SQL
     'sql': 'sql',
     # Visual Basic
     'vb': 'vb',
     'vbscript': 'vb',
+    'visualbasic': 'vb',
     # YAML (Confluence Server >=6.7)
     'yaml': 'yaml',
+}
+
+LITERAL2LANG_MAP_V1 = {
+    **LITERAL2LANG_MAP_COMMON,
+    # C#
+    'c#': 'csharp',
+    'csharp': 'csharp',
+    # C
+    'c': 'cpp',
+    # CSS
+    'css': 'css',
+    # Delphi
+    'delphi': 'delphi',
+    'pas': 'delphi',
+    'pascal': 'delphi',
+    'objectpascal': 'delphi',
+    # Erlang
+    'erlang': 'erlang',
+    # HTML and XML
+    'html': 'html/xml',
+    'html/xml': 'html/xml',
+    'xml': 'html/xml',
+    'xslt': 'html/xml',
+    # JavaScript
+    'javascript': 'javascript',
+    'js': 'javascript',
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.
     # To follow Sphinx's method of highlighting, use Confluence's 'python'
@@ -170,29 +180,19 @@ LITERAL2LANG_MAP_V1 = {
 }
 
 LITERAL2LANG_MAP_V2 = {
-    # (none)
-    'none': 'none',
-    'raw': 'none',
+    **LITERAL2LANG_MAP_COMMON,
     # ABAP
     'abap': 'abap',
-    # ActionScript
-    'actionscript3': 'actionscript3',
-    'as3': 'actionscript3',
     # Ada
     'ada': 'ada',
     'ada2005': 'ada',
     'ada95': 'ada',
-    # AppleScript
-    'applescript': 'applescript',
     # Arduino
     'arduino': 'arduino',
     # Autoit
     'autoit': 'autoit',
     # C
     'c': 'c',
-    # C++
-    'c++': 'cpp',
-    'cpp': 'cpp',
     # C#
     'c#': 'c#',
     'csharp': 'c#',
@@ -203,9 +203,6 @@ LITERAL2LANG_MAP_V2 = {
     'coffee': 'coffeescript',
     'coffee-script': 'coffeescript',
     'coffeescript': 'coffeescript',
-    # ColdFusion
-    'cfc': 'coldfusion',
-    'coldfusion': 'coldfusion',
     # CSS
     'css': 'css',
     # CUDA
@@ -215,9 +212,9 @@ LITERAL2LANG_MAP_V2 = {
     'd': 'd',
     # Dart
     'dart': 'dart',
-    # Diff
-    'diff': 'diff',
-    'udiff': 'diff',
+    # Dockerfile
+    'docker': 'docker',
+    'dockerfile': 'docker',
     # Elixir
     'elixir': 'elixir',
     'ex': 'elixir',
@@ -237,8 +234,6 @@ LITERAL2LANG_MAP_V2 = {
     'golang': 'go',
     # GraphQL
     'graphql': 'graphql',
-    # Groovy
-    'groovy': 'groovy',
     # Haskell
     'haskell': 'haskell',
     'hs': 'haskell',
@@ -246,12 +241,12 @@ LITERAL2LANG_MAP_V2 = {
     'haxe': 'haxe',
     'hx': 'haxe',
     'hxsl': 'haxe',
+    # HCL
+    'hcl': 'hcl',
+    'terraform': 'hcl',
+    'tf': 'hcl',
     # HTML and XML
     'html': 'html',
-    # Java
-    'java': 'java',
-    # Java FX
-    'javafx': 'javafx',
     # JavaScript
     'javascript': 'js',
     'js': 'js',
@@ -276,6 +271,8 @@ LITERAL2LANG_MAP_V2 = {
     'nb': 'mathematica',
     # MATLAB
     'matlab': 'matlab',
+    # NGINX
+    'nginx': 'nginx',
     # Objective-C
     'obj-c': 'objective-c',
     'objc': 'objective-c',
@@ -295,31 +292,13 @@ LITERAL2LANG_MAP_V2 = {
     'pas': 'pas',
     'pascal': 'pas',
     'objectpascal': 'pas',
-    # Perl
-    'perl': 'perl',
-    'pl': 'perl',
-    # PHP
-    'php': 'php',
-    'php3': 'php',
-    'php4': 'php',
-    'php5': 'php',
-    # Plain Text
-    'text': 'text',
-    # PowerShell
-    'posh': 'powershell',
-    'powershell': 'powershell',
-    'ps1': 'powershell',
-    'psm1': 'powershell',
     # Prolog
     'prolog': 'prolog',
+    # Protocol Buffers
+    'proto': 'protobuf',
+    'protobuf': 'protobuf',
     # Puppet
     'puppet': 'puppet',
-    # Python
-    'py': 'py',
-    'py3': 'py',
-    'python': 'py',
-    'python3': 'py',
-    'sage': 'py',
     # QML
     'qbs': 'qbs',
     'qml': 'qbs',
@@ -332,26 +311,12 @@ LITERAL2LANG_MAP_V2 = {
     'rest': 'restructuredtext',
     'restructuredtext': 'restructuredtext',
     'rst': 'restructuredtext',
-    # Ruby
-    'duby': 'ruby',
-    'rb': 'ruby',
-    'ruby': 'ruby',
     # Rust
     'rs': 'rust',
     'rust': 'rust',
-    # Sass
-    'sass': 'sass',
-    # Scala
-    'scala': 'scala',
     # Scheme
     'scm': 'scheme',
     'scheme': 'scheme',
-    # Shell
-    'bash': 'bash',
-    'ksh': 'bash',
-    'sh': 'bash',
-    'shell': 'bash',
-    'zsh': 'bash',
     # Smalltalk
     'smalltalk': 'smalltalk',
     'squeak': 'smalltalk',
@@ -359,8 +324,6 @@ LITERAL2LANG_MAP_V2 = {
     # SplunkSPL
     'spl': 'splunk-spl',
     'splunkspl': 'splunk-spl',
-    # SQL
-    'sql': 'sql',
     # StandardML
     'sml': 'standardml',
     'standardml': 'standardml',
@@ -390,10 +353,6 @@ LITERAL2LANG_MAP_V2 = {
     'verilog': 'verilog',
     # VHDL
     'vhdl': 'vhdl',
-    # Visual Basic
-    'vb': 'vb',
-    'vbscript': 'vb',
-    'visualbasic': 'vb',
     # XML
     'xml': 'xml',
     'xslt': 'xml',
@@ -403,8 +362,6 @@ LITERAL2LANG_MAP_V2 = {
     'xqm': 'xquery',
     'xquery': 'xquery',
     'xqy': 'xquery',
-    # YAML
-    'yaml': 'yaml',
     # (special)
     # Sphinx's default highlight language is based off a superset of 'python'.
     # To follow Sphinx's method of highlighting, use Confluence's 'python'
@@ -442,6 +399,10 @@ LITERAL2LANG_FBMAP_COMMON = {
     'swig': 'cpp',
     'vala': 'cpp',
     'vapi': 'cpp',
+    # YAML-like languages
+    'salt': 'yaml',
+    'sls': 'yaml',
+    'yaml+jinja': 'yaml',
 }
 
 LITERAL2LANG_FBMAP_V1 = {
