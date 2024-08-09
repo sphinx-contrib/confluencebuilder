@@ -1853,6 +1853,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['ac:align'] = alignment
             if alignment == 'right':
                 attribs['ac:style'] = 'float: right;'
+        elif self.v2:
+            attribs['ac:inline'] = 'true'
 
         if 'alt' in node:
             alt = node['alt']
