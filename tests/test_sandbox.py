@@ -46,6 +46,9 @@ def process_raw_upload(target_sandbox):
                 'labels': [],
             }
 
+            if app.config.confluence_editor:
+                data['editor'] = app.config.confluence_editor
+
             with raw_file.open(encoding='utf-8') as f:
                 data['content'] = f.read()
 
