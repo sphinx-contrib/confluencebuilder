@@ -10,6 +10,7 @@ from sphinxcontrib.confluencebuilder.directives import ConfluenceDocDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExcerptDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExcerptIncludeDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceExpandDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceHtmlDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLatexDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLinkDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
@@ -222,6 +223,8 @@ def setup(app):
     # (configuration - advanced processing)
     # Filename suffix for generated files.
     cm.add_conf('confluence_file_suffix', 'confluence')
+    # Macro configuration for Confluence-managed HTML content.
+    cm.add_conf('confluence_html_macro', 'confluence')
     # Configuration for named JIRA Servers
     cm.add_conf('confluence_jira_servers', 'confluence')
     # Translation of a raw language to code block macro language.
@@ -349,6 +352,7 @@ def confluence_builder_inited(app):
     app.add_directive('confluence_excerpt_include',
         ConfluenceExcerptIncludeDirective)
     app.add_directive('confluence_expand', ConfluenceExpandDirective)
+    app.add_directive('confluence_html', ConfluenceHtmlDirective)
     app.add_directive('confluence_latex', ConfluenceLatexDirective)
     app.add_directive('confluence_link', ConfluenceLinkDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)

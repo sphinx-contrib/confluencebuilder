@@ -172,6 +172,31 @@ Common
 
     See also :doc:`guide-collapse`.
 
+.. _confluence_html:
+
+.. rst:directive:: confluence_html
+
+    .. versionadded:: 2.7
+
+    .. warning::
+
+        The `HTML Macro`_ is disabled by default on Confluence instances.
+        Using this directive is only useful for users that have instances
+        where a system administrator has enabled their use.
+
+    The ``confluence_html`` directive allows a user to define a Confluence
+    `HTML Macro`_ to render HTML content on a page. For example:
+
+    .. code-block:: rst
+
+        .. confluence_html::
+
+            <h1>Header</h1>
+
+            This is an <strong>example</strong>.
+
+    See also :lref:`confluence_permit_raw_html`.
+
 .. _confluence_metadata:
 
 .. rst:directive:: confluence_metadata
@@ -699,6 +724,7 @@ See also :ref:`smart link roles <smart-link-roles>`.
 .. _Excerpt Include Macro: https://confluence.atlassian.com/doc/excerpt-include-macro-148067.html
 .. _Excerpt Macro: https://confluence.atlassian.com/doc/excerpt-macro-148062.html
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
+.. _HTML Macro: https://confluence.atlassian.com/doc/html-macro-38273085.html
 .. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html
