@@ -2513,6 +2513,21 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 **{'style':
                     'clear: both; padding-top: 10px; margin-bottom: 30px'}))
 
+    def visit_confluence_html(self, node):
+        html_macro = 'html'
+        if self.builder.config.confluence_html_macro:
+            html_macro = self.builder.config.confluence_html_macro
+
+        html_content = node.rawsource
+
+        self.body.append(self.start_ac_macro(node, html_macro))
+        self.body.append(self.start_ac_plain_text_body_macro(node))
+        self.body.append(self.escape_cdata(html_content))
+        self.body.append(self.end_ac_plain_text_body_macro(node))
+        self.body.append(self.end_ac_macro(node))
+
+        raise nodes.SkipNode
+
     def visit_confluence_newline(self, node):
         self.body.append(self.start_tag(
             node, 'br', suffix=self.nl, empty=True))

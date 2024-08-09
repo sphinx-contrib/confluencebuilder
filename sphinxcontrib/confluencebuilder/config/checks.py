@@ -316,6 +316,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_html_macro
+    validator.conf('confluence_html_macro') \
+             .string()
+
+    # ##################################################################
+
     # confluence_ignore_titlefix_on_index
     validator.conf('confluence_ignore_titlefix_on_index') \
              .bool()

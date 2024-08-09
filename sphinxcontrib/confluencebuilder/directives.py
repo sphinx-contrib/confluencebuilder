@@ -8,6 +8,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
 from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt_include
+from sphinxcontrib.confluencebuilder.nodes import confluence_html
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
@@ -160,6 +161,19 @@ class ConfluenceExpandDirective(Directive):
         node = confluence_expand(rawsource=text)
         if 'title' in self.options:
             node['title'] = self.options['title']
+
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class ConfluenceHtmlDirective(Directive):
+    has_content = True
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_html(rawsource=text)
 
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]

@@ -102,6 +102,13 @@ class confluence_header(nodes.Decorative, nodes.Element):
     a document.
     """
 
+class confluence_html(nodes.TextElement):
+    """
+    confluence html node
+
+    A Confluence builder defined HTML node, used to help manage HTML content
+    designed for an HTML macro.
+    """
 
 class confluence_metadata(nodes.Invisible, nodes.Special, ConfluenceParams):
     """
