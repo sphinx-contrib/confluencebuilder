@@ -2081,6 +2081,9 @@ Advanced processing configuration
 
     See also |confluence_prev_next_buttons_location|_.
 
+.. |confluence_permit_raw_html| replace:: ``confluence_permit_raw_html``
+.. _confluence_permit_raw_html:
+
 .. confval:: confluence_permit_raw_html
 
     .. versionadded:: 2.2
@@ -2116,6 +2119,8 @@ Advanced processing configuration
     expected (e.g. styles can be ignored, JavaScript will not function)
     or Confluence may reject the publication of Confluence document (i.e.
     failing to upload a page).
+
+    See also :lref:`confluence_html` directive.
 
 .. |confluence_remove_title| replace:: ``confluence_remove_title``
 .. _confluence_remove_title:
