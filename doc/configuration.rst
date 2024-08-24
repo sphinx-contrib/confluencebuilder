@@ -2174,6 +2174,54 @@ Advanced processing configuration
     - |confluence_disable_autogen_title|_
     - |confluence_title_overrides|_
 
+Third-party related options
+---------------------------
+
+.. note::
+
+    The configurations in this section are specific to supporting
+    :ref:`third-party extensions <extensions_third_party>`; results may
+    vary.
+
+.. confval:: confluence_mermaid_html_macro
+
+    .. versionadded:: 2.7
+
+    .. warning::
+
+        This option relies on an HTML macro which is not available in a
+        default  Confluence configuration. Using this option is only useful
+        for users that have instances where a system administrator has
+        enabled their use.
+
+    .. note::
+
+        This option will most likely require additional configuration to
+        function. Setting this option only produces HTML macros with Mermaid
+        content but does not automatically include the JavaScript required to
+        process this content.
+
+        There can be various ways an instance/page can be configured to
+        include Mermaid JS support. For example, adding the following content
+        on the page planning to render diagrams:
+
+        .. code-block:: rst
+
+            .. confluence_html::
+
+                <script type="module">
+                import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+                </script>
+
+    When using the `sphinxcontrib-mermaid`_ extension, this option can be
+    used pass raw Mermaid figures into an HTML macro.
+
+    .. code-block:: python
+
+        confluence_mermaid_html_macro = True
+
+    See also |confluence_html_macro|_.
+
 Other options
 -------------
 
@@ -2281,6 +2329,7 @@ Deprecated options
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 .. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath
+.. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
 .. _suppress_warnings: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
 .. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc

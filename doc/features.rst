@@ -194,6 +194,8 @@ Type                              Notes
 
     \newpage
 
+.. _extensions_third_party:
+
 Extensions (Third-party)
 ------------------------
 
@@ -277,7 +279,9 @@ Type                              Notes
 `sphinxcontrib-kroki`_            Supported
 `sphinxcontrib-mermaid`_          Limited support.
 
-                                  Requires a PNG/SVG configuration.
+                                  Requires a PNG/SVG configuration. Raw/HTML
+                                  renders can be used for environments with
+                                  HTML macro support.
 `sphinxcontrib-nwdiag`_           Limited support.
 
                                   PNGs only; cannot configure for SVG at this
