@@ -47,6 +47,23 @@ class TestConfluenceConfigEnvironment(unittest.TestCase):
         self.assertTrue('CONFLUENCE_PUBLISH_FORCE' in os.environ)
         self.assertEqual(os.environ['CONFLUENCE_PUBLISH_FORCE'], '1')
 
+    def test_config_env_disabled(self):
+        # default unset
+        with prepare_sphinx(self.dataset, config=self.config) as app:
+            self.assertIsNone(app.config.confluence_publish_force)
+
+        # configure option from environment
+        os.environ['CONFLUENCE_PUBLISH_FORCE'] = '1'
+        with prepare_sphinx(self.dataset, config=self.config) as app:
+            self.assertTrue(app.config.confluence_publish_force)
+
+        # disable environment options
+        self.config['confluence_disable_env_conf'] = True
+        with prepare_sphinx(self.dataset, config=self.config) as app:
+            self.assertFalse(app.config.confluence_publish_force)
+        self.assertTrue('CONFLUENCE_PUBLISH_FORCE' in os.environ)
+        self.assertEqual(os.environ['CONFLUENCE_PUBLISH_FORCE'], '1')
+
     def test_config_env_int(self):
         # default unset
         with prepare_sphinx(self.dataset, config=self.config) as app:

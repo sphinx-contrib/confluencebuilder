@@ -23,6 +23,10 @@ def apply_env_overrides(builder):
     conf = builder.config
     config_manager = builder.app.config_manager_
 
+    # check if the configuration has disabled environment options
+    if conf.confluence_disable_env_conf:
+        return
+
     for key in sorted(config_manager.options):
         # skip over options that have been already set
         if getattr(conf, key) is not None:
