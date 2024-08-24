@@ -3,8 +3,10 @@ Development
 
 * **(note)** ``confluence_file_transform`` support is dropped
 * **(note)** ``confluence_link_transform`` support is dropped
+* Improve support when using the sphinx_toolbox extension
 * Improved support for newer Confluence Cloud code formats
 * Introduce the Confluence HTML directive
+* Introduce the ``confluence_disable_env_conf`` option
 * Support inlined images for v2 editor pages
 * Update publisher's user agent to ``SphinxConfluenceBuilder/<version>``
 
