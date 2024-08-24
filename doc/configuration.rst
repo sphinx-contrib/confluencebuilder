@@ -293,6 +293,20 @@ Generic configuration
 
         confluence_default_alignment = 'left'
 
+.. confval:: confluence_disable_env_conf
+
+    .. versionadded:: 2.7
+
+    A boolean value to configure whether to ignore environment-provided
+    configuration options. This extension will fallback on environment
+    variables if an option is not set in a configuration file or on the
+    command line. If a user never wants to pull options from the environment,
+    this option can be set to ``True``.
+
+    .. code-block:: python
+
+        confluence_disable_env_conf = True
+
 .. confval:: confluence_domain_indices
 
     .. versionadded:: 1.7
