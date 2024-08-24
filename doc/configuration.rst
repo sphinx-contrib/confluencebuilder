@@ -1909,6 +1909,23 @@ Advanced processing configuration
 
         confluence_file_suffix = '.conf'
 
+.. |confluence_html_macro| replace:: ``confluence_html_macro``
+.. _confluence_html_macro:
+
+.. confval:: confluence_html_macro
+
+    .. versionadded:: 2.7
+
+    This option will configure the HTML macro type for the ``confluence_html``
+    :ref:`directive <confluence_html>`. By default, the ``html`` macro
+    identifier is set.
+
+    .. code-block:: python
+
+        confluence_html_macro = 'html'
+
+    See also the :ref:`HTML directive <confluence_html>`.
+
 .. index:: Jira; Configuring Jira servers
 
 .. _confluence_jira_servers:
