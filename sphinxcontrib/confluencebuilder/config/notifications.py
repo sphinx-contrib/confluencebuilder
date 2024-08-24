@@ -78,14 +78,15 @@ def warnings(validator):
         'confluence_server_pass',
     ]
 
-    auth_key_count = 0
+    auth_keys_used = []
     for option in auth_keys:
         value = getattr(config, option)
         if value:
-            auth_key_count += 1
+            auth_keys_used.append(option)
 
-    if auth_key_count > 1:
-        logger.warn('multiple authentication options configured')
+    if len(auth_keys_used) > 1:
+        logger.warn('multiple authentication options configured; only one of '
+            'these options should be set: ' + ', '.join(auth_keys_used))
 
     # check if any user defined mime types are unknown
     if config.confluence_additional_mime_types is not None:
