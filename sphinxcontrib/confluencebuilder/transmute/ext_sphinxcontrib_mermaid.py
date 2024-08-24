@@ -4,6 +4,7 @@
 from docutils import nodes
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.nodes import confluence_html
 
 # ##############################################################################
 # disable import/except warnings for third-party modules
@@ -50,12 +51,20 @@ def replace_sphinxcontrib_mermaid_nodes(builder, doctree):
             self.builder = builder
     mock_translator = MockTranslator(builder)
 
-    for node in findall(doctree, mermaid):
-        try:
-            format_ = builder.config.mermaid_output_format
-            if format_ == 'raw':
-                format_ = 'png'
+    # if a user configures to use a mermaid/html-macro hint, we will
+    # instead leave the raw content as is and wrap things in an HTML macro
+    format_ = builder.config.mermaid_output_format
+    if not builder.config.confluence_mermaid_html_macro and format_ == 'raw':
+        format_ = 'png'
 
+    for node in findall(doctree, mermaid):
+        if format_ == 'raw':
+            raw_html = f'<div class="mermaid">{node["code"]}</div>'
+            new_node = confluence_html(rawsource=raw_html)
+            node.replace_self(new_node)
+            continue
+
+        try:
             fname, _ = mermaid_render(mock_translator,
                 node['code'], node['options'], format_, 'mermaid')
             if not fname:
