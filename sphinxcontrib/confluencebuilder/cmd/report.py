@@ -90,8 +90,24 @@ def report_main(args_parser):
                 status=sys.stdout,   # sphinx status output
                 warning=sys.stderr)  # sphinx warning output
 
+            # keep track of unset options in the configuration
+            pre_env_keys = set()
+            config_manager = app.config_manager_   # pylint: disable=no-member
+            for key in config_manager.options:
+                if getattr(app.config, key) is None:
+                    pre_env_keys.add(key)
+
             # apply environment-based configuration changes
             apply_env_overrides(app.builder)
+
+            # track for any remaining unset options to see if the environment
+            # has changed any options
+            post_env_keys = set()
+            for key in config_manager.options:
+                if getattr(app.config, key) is None:
+                    post_env_keys.add(key)
+
+            new_env_keys = pre_env_keys - post_env_keys
 
             # if the configuration is enabled for publishing, check if
             # we need to ask for authentication information (to perform
@@ -284,7 +300,8 @@ def report_main(args_parser):
     print('(configuration)')
     if config:
         for k, v in OrderedDict(sorted(config.items())).items():
-            print(f'{k}: {v}')
+            pf = ' (env)' if k in new_env_keys else ''
+            print(f'{k}: {v}{pf}')
     else:
         print('~default configuration~')
 
