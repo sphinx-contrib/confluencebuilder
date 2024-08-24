@@ -93,6 +93,8 @@ def setup(app):
     cm.add_conf('confluence_code_block_theme', 'confluence')
     # Default alignment for tables, figures, etc.
     cm.add_conf('confluence_default_alignment', 'confluence')
+    # Do not attempt to pull configuration values from the environment.
+    cm.add_conf_bool('confluence_disable_env_conf')
     # Enablement of a generated domain index documents
     cm.add_conf('confluence_domain_indices', 'confluence')
     # Confluence editor to target for publication.
