@@ -244,6 +244,10 @@ def setup(app):
     # Remove a detected title from generated documents.
     cm.add_conf_bool('confluence_remove_title', 'confluence')
 
+    # (configuration - third-party related)
+    # Wrap Mermaid nodes into HTML macros.
+    cm.add_conf_bool('confluence_mermaid_html_macro', 'confluence')
+
     # (configuration - undocumented)
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
