@@ -1,5 +1,5 @@
-Development
-===========
+2.7.1 (2024-08-26)
+==================
 
 * Fixed project dependency for Sphinx 7.1
 
