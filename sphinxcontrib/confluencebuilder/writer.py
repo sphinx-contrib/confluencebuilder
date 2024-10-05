@@ -4,12 +4,13 @@
 from __future__ import annotations
 from docutils import writers
 from typing import Any
+from typing import ClassVar
 
 
 class ConfluenceWriter(writers.Writer):
     supported = ('text',)
     settings_spec = ('No options here.', '', ())
-    settings_defaults: dict[str, Any] = {}
+    settings_defaults: ClassVar[dict[str, Any]] = {}
 
     def __init__(self, builder):
         writers.Writer.__init__(self)
