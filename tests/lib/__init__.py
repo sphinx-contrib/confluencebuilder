@@ -618,18 +618,22 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     doctrees_dir = out_dir / '.doctrees'
 
+    sphinx_args = {
+        'confoverrides': conf,     # load provided configuration (volatile)
+        'status': sts,             # status output
+        'warning': sys.stderr,     # warnings output
+        'warningiserror': warnerr, # treat warnings as errors
+        'verbosity': verbosity,    # verbosity
+    }
+
     with docutils_namespace():
         app = Sphinx(
-            str(src_dir),            # output for document sources
-            conf_dir,                # configuration directory
-            str(out_dir),            # output for generated documents
-            str(doctrees_dir),       # output for doctree files
-            builder,                 # builder to execute
-            confoverrides=conf,      # load provided configuration (volatile)
-            status=sts,              # status output
-            warning=sys.stderr,      # warnings output
-            warningiserror=warnerr,  # treat warnings as errors
-            verbosity=verbosity)     # verbosity
+            str(src_dir),      # output for document sources
+            conf_dir,          # configuration directory
+            str(out_dir),      # output for generated documents
+            str(doctrees_dir), # output for doctree files
+            builder,           # builder to execute
+            **sphinx_args)     # verbosity
 
         yield app
 
