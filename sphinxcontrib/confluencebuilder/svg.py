@@ -7,7 +7,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import find_env_abspath
-import xml.etree.ElementTree as xml_et
+import xml.etree.ElementTree as ET
 
 
 # xml declaration string
@@ -23,7 +23,7 @@ def svg_initialize():
     """
 
     # prevent ns0 namespace introduction if ever generating svg files
-    xml_et.register_namespace('', 'http://www.w3.org/2000/svg')
+    ET.register_namespace('', 'http://www.w3.org/2000/svg')
 
 
 def confluence_supported_svg(builder, node):
@@ -77,7 +77,7 @@ def confluence_supported_svg(builder, node):
         return
 
     modified = False
-    svg_root = xml_et.fromstring(svg_data)  # noqa: S314
+    svg_root = ET.fromstring(svg_data)  # noqa: S314
 
     # determine (if possible) the svgs desired width/height
     svg_height = None
@@ -179,7 +179,7 @@ def confluence_supported_svg(builder, node):
     if height and width:
         svg_root.attrib['height'] = str(height)
         svg_root.attrib['width'] = str(width)
-        svg_data = xml_et.tostring(svg_root)
+        svg_data = ET.tostring(svg_root)
         modified = True
 
     # ensure xml declaration exists

@@ -4,7 +4,7 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
-import xml.etree.ElementTree as xml_et
+import xml.etree.ElementTree as ET
 
 
 class TestSvg(ConfluenceTestCase):
@@ -18,7 +18,7 @@ class TestSvg(ConfluenceTestCase):
         with svg_file.open('rb') as f:
             svg_data = f.read()
 
-        svg_root = xml_et.fromstring(svg_data)  # noqa: S314
+        svg_root = ET.fromstring(svg_data)  # noqa: S314
         return int(svg_root.attrib['width']), int(svg_root.attrib['height'])
 
     @setup_builder('confluence')
