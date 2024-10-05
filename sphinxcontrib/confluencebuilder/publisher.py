@@ -7,7 +7,6 @@ See also:
     https://docs.atlassian.com/confluence/REST/latest/
 """
 
-from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
@@ -870,8 +869,7 @@ class ConfluencePublisher:
                     # entry was created with corrupted data (i.e. can we query
                     # for an existing attachment). If we find it, re-attempt
                     # to publish the attachment.
-                    with skip_warningiserror():
-                        logger.warn('attachment failure (503); retrying...')
+                    logger.info('attachment failure (503); retrying...')
                     time.sleep(0.5)
                     _, attachment = self.get_attachment(page_id, name)
 
@@ -1282,8 +1280,7 @@ class ConfluencePublisher:
                         raise
 
                     # retry on conflict
-                    with skip_warningiserror():
-                        logger.warn('property update conflict; retrying...')
+                    logger.info('property update conflict; retrying...')
 
                     attempt += 1
                 else:

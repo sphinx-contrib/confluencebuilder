@@ -5,7 +5,6 @@ from email.utils import mktime_tz
 from email.utils import parsedate_tz
 from functools import wraps
 from requests.adapters import HTTPAdapter
-from sphinx.util.logging import skip_warningiserror
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
@@ -131,10 +130,9 @@ def confluence_error_retries():
                     delay += random.uniform(0.0, 0.5)  # noqa: S311
 
                     # wait the calculated delay before retrying again
-                    with skip_warningiserror():
-                        reported_delay = math.ceil(delay)
-                        logger.warn('unexpected rest response detected; '
-                                    f'retrying in {reported_delay} seconds...')
+                    reported_delay = math.ceil(delay)
+                    logger.info('unexpected rest response detected; '
+                                f'retrying in {reported_delay} seconds...')
                     time.sleep(delay)
                     attempt += 1
 
@@ -197,9 +195,8 @@ def rate_limited_retries():
                     delay += random.uniform(0.3, 1.3)  # noqa: S311
 
                     # wait the calculated delay before retrying again
-                    with skip_warningiserror():
-                        logger.warn('rate-limit response detected; '
-                                    f'waiting {math.ceil(delay)} seconds...')
+                    logger.info('rate-limit response detected; '
+                                f'waiting {math.ceil(delay)} seconds...')
                     time.sleep(delay)
                     self.last_retry = delay
                     attempt += 1
