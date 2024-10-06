@@ -41,6 +41,7 @@ class ConfluenceLogger:
                     self.messagelog = deque(maxlen=10)
                     self.verbosity = 0
                     self.warningiserror = False
+                    self._exception_on_warning = False
                     self._warncount = 0
 
             # fail silently if mocked application is missing something

@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
-from sphinx.util.logging import skip_warningiserror
-from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
+from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_TITLE_LEN
 from tests.lib import MockedConfig
 import unittest
 
@@ -13,9 +13,12 @@ class TestTitles(unittest.TestCase):
         ConfluenceState.reset()
         self.config = MockedConfig()
 
+        # force (re-)initialize of logger to avoid logger being already
+        # configured with a warning-exception filter in a previous test
+        logger.initialize(preload=True)
+
     def _register_title(self, title):
-        with skip_warningiserror():
-            return ConfluenceState.register_title('mock', title, self.config)
+        return ConfluenceState.register_title('mock', title, self.config)
 
     def test_titles_maximum_checks_default(self):
         t0 = self._register_title('S' * (CONFLUENCE_MAX_TITLE_LEN - 1))

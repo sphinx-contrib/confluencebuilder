@@ -4,7 +4,6 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from sphinx.errors import SphinxWarning
-from sphinx.util.logging import skip_warningiserror
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 
@@ -36,11 +35,9 @@ class TestConfluenceUnknownNode(ConfluenceTestCase):
         # node to completion. A document should be built with the missing
         # component, and no errors should result from this attempt.
 
-        with self.prepare(self.dataset) as app:
+        with self.prepare(self.dataset, relax=True) as app:
             self._setup_app(app)
-
-            with skip_warningiserror():
-                app.build()
+            app.build()
 
     @setup_builder('confluence')
     def test_unknown_node_default_warning(self):

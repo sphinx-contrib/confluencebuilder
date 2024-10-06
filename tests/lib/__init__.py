@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
+from sphinx import version_info as sphinx_version_info
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
@@ -618,18 +619,28 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
 
     doctrees_dir = out_dir / '.doctrees'
 
+    sphinx_args = {
+        'confoverrides': conf,     # load provided configuration (volatile)
+        'status': sts,             # status output
+        'warning': sys.stderr,     # warnings output
+        'warningiserror': warnerr, # treat warnings as errors
+        'verbosity': verbosity,    # verbosity
+    }
+
+    # As of Sphinx v8.1.x, warnings will no longer generate exceptions by
+    # default. Force enable them as we rely on these exception events for
+    # various unit tests.
+    if sphinx_version_info >= (8, 1, 0):
+        sphinx_args['exception_on_warning'] = warnerr
+
     with docutils_namespace():
         app = Sphinx(
-            str(src_dir),            # output for document sources
-            conf_dir,                # configuration directory
-            str(out_dir),            # output for generated documents
-            str(doctrees_dir),       # output for doctree files
-            builder,                 # builder to execute
-            confoverrides=conf,      # load provided configuration (volatile)
-            status=sts,              # status output
-            warning=sys.stderr,      # warnings output
-            warningiserror=warnerr,  # treat warnings as errors
-            verbosity=verbosity)     # verbosity
+            str(src_dir),      # output for document sources
+            conf_dir,          # configuration directory
+            str(out_dir),      # output for generated documents
+            str(doctrees_dir), # output for doctree files
+            builder,           # builder to execute
+            **sphinx_args)     # verbosity
 
         yield app
 
