@@ -146,7 +146,8 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
         config['confluence_lang_overrides'] = test_override_lang_method
 
         out_dir = self.build(self.dataset, config=config,
-            filenames=['code-block-highlight'])
+            filenames=['code-block-highlight'], relax=True)
+        # relax: since using transform is deprecated and will generate a warning
 
         with parse('code-block-highlight', out_dir) as data:
             expected = [

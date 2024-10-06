@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
+from sphinx import version_info as sphinx_version_info
 from sphinx.application import Sphinx
 from sphinx.util.console import color_terminal
 from sphinx.util.console import nocolor
@@ -625,6 +626,12 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
         'warningiserror': warnerr, # treat warnings as errors
         'verbosity': verbosity,    # verbosity
     }
+
+    # As of Sphinx v8.1.x, warnings will no longer generate exceptions by
+    # default. Force enable them as we rely on these exception events for
+    # various unit tests.
+    if sphinx_version_info >= (8, 1, 0):
+        sphinx_args['exception_on_warning'] = warnerr
 
     with docutils_namespace():
         app = Sphinx(

@@ -42,11 +42,12 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             'https://intranet-wiki.example.com/'
         self.config['confluence_space_key'] = 'DUMMY'
 
-    def _try_config(self, config=None, edefs=None, dataset=None):
+    def _try_config(self, config=None, edefs=None, relax=None, dataset=None):
         config = config if config else self.minimal_config
         dataset = dataset if dataset else self.dataset
 
-        with prepare_sphinx(dataset, config=config, extra_config=edefs) as app:
+        with prepare_sphinx(dataset,
+                config=config, extra_config=edefs, relax=relax) as app:
             env = BuildEnvironment(app)
             builder = ConfluenceBuilder(app, env)
 
@@ -508,7 +509,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
             return 'default'
 
         self.config['confluence_lang_overrides'] = mock_transform
-        self._try_config()
+        self._try_config(relax=True)
+        # relax: since using transform is deprecated and will generate a warning
 
         self.config['confluence_lang_overrides'] = 'invalid'
         with self.assertRaises(ConfluenceConfigError):
