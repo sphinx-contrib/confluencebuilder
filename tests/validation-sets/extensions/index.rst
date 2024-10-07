@@ -11,4 +11,5 @@ found inside the internal tree.
     autosummary
     graphviz
     inheritance_diagram
+    linkcode
     todo

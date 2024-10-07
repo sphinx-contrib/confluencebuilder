@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
+    supported_linkcode = name
 
     def assemble_doctree(self):
         root_doc = self.config.root_doc

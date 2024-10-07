@@ -174,10 +174,7 @@ Type                              Notes
 
                                   Confluence does not support the injection of
                                   JavaScript into a page in most scenarios.
-`sphinx.ext.linkcode`_            Unsupported.
-
-                                  This extension only supports injecting
-                                  references for the ``html`` builder.
+`sphinx.ext.linkcode`_            Supported (Sphinx v8.1+)
 `sphinx.ext.mathjax`_             Unsupported.
 
                                   Confluence does not support the injection of
