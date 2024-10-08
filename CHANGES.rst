@@ -1,3 +1,9 @@
+Development
+===========
+
+* Improve support with Sphinx v8.1 ``--fail-on-warning`` changes
+* Improve support with Sphinx v8.1 ``sphinx.ext.linkcode`` changes
+
 2.7.1 (2024-08-26)
 ==================
 
