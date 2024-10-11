@@ -52,3 +52,13 @@ jobs:
         name: sphinxcontrib-confluencebuilder.pdf
         path: doc/_build/latex/sphinxconfluencebuilder.pdf
         retention-days: 10
+
+    - name: Archive PDF Raw Output
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: pdf-output
+        path: |
+          doc/_build/latex/sphinxconfluencebuilder.log
+          doc/_build/latex/sphinxconfluencebuilder.tex
+        retention-days: 1
