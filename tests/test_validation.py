@@ -35,7 +35,6 @@ class TestConfluenceValidation(unittest.TestCase):
         space_key = os.getenv(SPACE_ENV_KEY, DEFAULT_TEST_SPACE)
         cls.config = prepare_conf()
         cls.config['extensions'].append('sphinx.ext.ifconfig')
-        cls.config['extensions'].append('sphinx.ext.linkcode')
         cls.config['confluence_api_token'] = os.getenv(AUTH_ENV_KEY)
         cls.config['confluence_full_width'] = False
         cls.config['confluence_page_generation_notice'] = True
@@ -59,16 +58,6 @@ class TestConfluenceValidation(unittest.TestCase):
         cls.test_desc = os.getenv(TESTDESC_ENV_KEY, DEFAULT_TEST_DESC)
         cls.test_key = os.getenv(TESTKEY_ENV_KEY, DEFAULT_TEST_KEY)
         cls.test_version = os.getenv(TESTKEY_ENV_VERSION, DEFAULT_TEST_VERSION)
-
-        def linkcode_resolve(domain, info):
-            module = info.get('module', None)
-            if module != 'linkcode_example':
-                return None
-            name = info.get('fullname', None)
-            if not name:
-                return None
-            return f'https://example.org/src/{name}'
-        cls.config['linkcode_resolve'] = linkcode_resolve
 
         # overrides from user
         try:
@@ -308,9 +297,20 @@ class TestConfluenceValidation(unittest.TestCase):
         config['extensions'].append('sphinx.ext.graphviz')
         config['extensions'].append('sphinx.ext.ifconfig')
         config['extensions'].append('sphinx.ext.inheritance_diagram')
+        config['extensions'].append('sphinx.ext.linkcode')
         config['extensions'].append('sphinx.ext.todo')
         config['todo_include_todos'] = True
         config['todo_link_only'] = True
+
+        def linkcode_resolve(domain, info):
+            module = info.get('module', None)
+            if module != 'linkcode_example':
+                return None
+            name = info.get('fullname', None)
+            if not name:
+                return None
+            return f'https://example.org/src/{name}'
+        config['linkcode_resolve'] = linkcode_resolve
 
         # always force png since svgs do not look nice in v2
         if editor == 'v2':
