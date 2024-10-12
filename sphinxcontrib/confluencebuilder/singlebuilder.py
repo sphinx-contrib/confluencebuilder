@@ -1,16 +1,18 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
-# Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
+# Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import nodes
+from sphinx import addnodes
 from sphinx import version_info as sphinx_version_info
+from sphinx.locale import __ as SLC
 from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
 from sphinx.util.display import progress_message
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
-from sphinxcontrib.confluencebuilder.compat import inline_all_toctrees
 from sphinxcontrib.confluencebuilder.locale import C
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
+from typing import cast
 
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
@@ -34,9 +36,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     def assemble_doctree(self):
         root_doc = self.config.root_doc
         tree = self.env.get_doctree(root_doc)
-        tree = inline_all_toctrees(
-            self, set(), root_doc, tree, darkgreen, [root_doc],
-            replace=not self.config.singleconfluence_toctree)
+        tree = self._inline_all_toctrees(root_doc, tree, {root_doc})
         tree['docname'] = root_doc
 
         self.env.get_and_resolve_doctree(root_doc, self, doctree=tree)
@@ -165,6 +165,51 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             elif refuri.startswith(root_docuri + '#'):
                 refnode['refid'] = refuri[idx + 1:]
                 del refnode['refuri']
+
+    def _inline_all_toctrees(self, docname, doctree, traversed):
+        # generate a full copy of the provided doctree since we will be
+        # manipulating the individual nodes for our merged tree and want to
+        # leave the original doctree entity as it (if other logic wants to
+        # query/check original doctrees for documents)
+        tree = cast(nodes.document, doctree.deepcopy())
+
+        # in the cloned tree, look for other toctrees that we can include
+        # into our new single tree
+        toctreenodes = list(findall(tree, addnodes.toctree))
+        for toctreenode in toctreenodes:
+            newnodes = []
+            includefiles = map(str, toctreenode['includefiles'])
+            for includefile in includefiles:
+                if includefile in traversed:
+                    continue
+
+                traversed.add(includefile)
+                logger.info(darkgreen(includefile) + ' ', nonl=True)
+
+                try:
+                    subtree = self._inline_all_toctrees(includefile,
+                        self.env.get_doctree(includefile), traversed)
+                except Exception:  # noqa: BLE001
+                    logger.warn(
+                        SLC('toctree contains ref to nonexisting file %r'),
+                        includefile, location=docname)
+                else:
+                    sof = addnodes.start_of_file(docname=includefile)
+                    sof.children = subtree.children
+                    for sectionnode in findall(sof, nodes.section):
+                        if 'docname' not in sectionnode:
+                            sectionnode['docname'] = includefile
+                    newnodes.append(sof)
+
+            # we will append or replace the original toctree node based on
+            # user preference
+            if self.config.singleconfluence_toctree:
+                for node in newnodes:
+                    toctreenode.parent.append(node)
+            else:
+                toctreenode.parent.replace(toctreenode, newnodes)
+
+        return tree
 
     def _process_root_document(self):
         docname = self.config.root_doc
