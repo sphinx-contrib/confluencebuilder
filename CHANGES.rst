@@ -1,6 +1,7 @@
 Development
 ===========
 
+* Fixed issues where various links were broken with singleconfluence
 * Improve support with Sphinx v8.1 ``--fail-on-warning`` changes
 * Improve support with Sphinx v8.1 ``sphinx.ext.linkcode`` changes
 
