@@ -3,6 +3,7 @@
 # Copyright 2007-2019 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from docutils import nodes
+from sphinx import version_info as sphinx_version_info
 from sphinx.util.console import darkgreen  # pylint: disable=no-name-in-module
 from sphinx.util.display import progress_message
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
@@ -15,6 +16,20 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
     supported_linkcode = name
+
+    def __init__(self, app, env=None):
+        super().__init__(app, env)
+
+        # As of Sphinx v8.1, the builder's the `write` call has be finalized.
+        # Support has been added to use the new `write_documents` call. To
+        # handle older versions of Sphinx this extension supports, register
+        # a `write` hook override still.
+        if sphinx_version_info < (8, 1, 0):
+            def compat(self, *args, **kwargs):
+                self.write_documents(None)
+
+            # pylint: disable=E1111
+            self.write = compat.__get__(self, self.__class__)
 
     def assemble_doctree(self):
         root_doc = self.config.root_doc
@@ -64,12 +79,11 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
         return self.link_transform(docname)
 
-    def write(self, build_docnames, updated_docnames, method='update'):
-        docnames = self.env.all_docs
-        if self.config.root_doc not in docnames:
-            logger.error('singleconfluence requires root_doc')
-            return
+    def prepare_writing(self, docnames):
+        # override; nothing to prepare
+        pass
 
+    def write_documents(self, _docnames):
         root_doctitle = self._process_root_document()
         if not root_doctitle:
             logger.error('singleconfluence requires title on root_doc')
@@ -100,7 +114,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             # register title targets for references before assembling doc
             # re-works them into a single document
             title_db = {}
-            for docname in docnames:
+            for docname in self.env.all_docs:
                 doctree = self.env.get_doctree(docname)
                 self._register_doctree_targets(docname, doctree, title_db)
 
