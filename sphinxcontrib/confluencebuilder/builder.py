@@ -1192,7 +1192,7 @@ class ConfluenceBuilder(Builder):
         # Prepare a database to track titles if one is not already provided.
         # (i.e. not all callers care about unique targets between multiple
         # documents)
-        title_track = title_track if title_track else {}
+        title_track = title_track if title_track is not None else {}
 
         # Find the first section of this document page. It will be used to
         # create "base" line to a specific page embedded in the single
