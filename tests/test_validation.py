@@ -201,6 +201,20 @@ class TestConfluenceValidation(unittest.TestCase):
     def test_240_extensions(self):
         self._test_extensions('v2')
 
+    def test_310_singleconfluence(self):
+        config = self.config.clone()
+        config['confluence_editor'] = 'v1'
+        config['confluence_sourcelink'] = None
+        config['confluence_title_overrides'] = {
+            'index': 'Single Confluence',
+        }
+
+        dataset = self.datasets / 'restructuredtext'
+        doc_dir = prepare_dirs('validation-set-rst-singleconfluence')
+
+        build_sphinx(dataset, config=config, out_dir=doc_dir,
+            builder='singleconfluence')
+
     def _test_restructuredtext(self, editor):
         config = self._prepare_editor(editor)
         config['confluence_sourcelink']['container'] += 'restructuredtext/'
@@ -313,6 +327,9 @@ class TestConfluenceValidation(unittest.TestCase):
                 builder.state.register_title(
                     '_validation_prev', 'Markdown Table (Fabric)', None)
                 docnames.insert(0, '_validation_prev')
+                builder.state.register_title(
+                    '_validation_next', 'Single Confluence', None)
+                docnames.append('_validation_next')
             else:
                 builder.state.register_title(
                     '_validation_prev', 'Markdown Table', None)
