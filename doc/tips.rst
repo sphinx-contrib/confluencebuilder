@@ -108,7 +108,7 @@ Asking for help
 Having trouble or concerns using this extension? Do not hesitate to bring up an
 issue:
 
-    | Atlassian Confluence Builder for Confluence - Issues
+    | Atlassian Confluence Builder for Confluence — Issues
     | https://github.com/sphinx-contrib/confluencebuilder/issues
 
 For issues when using this extension, generating a report and including this

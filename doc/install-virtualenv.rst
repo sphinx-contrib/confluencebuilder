@@ -93,7 +93,7 @@ Windows (virtualenv)
 
 If not already installed, download the most recent version of Python_:
 
-    | Python - Downloads
+    | Python — Downloads
     | https://www.python.org/downloads/
 
 When invoking the installer, it is recommended to select the option to "Add

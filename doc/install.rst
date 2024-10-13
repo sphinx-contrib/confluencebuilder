@@ -32,10 +32,6 @@ For new users, the following provides a series of steps to assist in preparing
 a new environment to use this package. For users wishing to use virtualenv,
 please see the instructions in :doc:`install-virtualenv`.
 
-.. raw:: latex
-
-    \newpage
-
 Linux
 -----
 
@@ -86,10 +82,6 @@ Ubuntu
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-.. raw:: latex
-
-    \newpage
-
 OS X
 ----
 
@@ -107,7 +99,7 @@ Windows
 
 If not already installed, download the most recent version of Python_:
 
-    | Python - Downloads
+    | Python — Downloads
     | https://www.python.org/downloads/
 
 When invoking the installer, it is recommended to select the option to "Add

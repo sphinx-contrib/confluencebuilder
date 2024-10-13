@@ -3,6 +3,9 @@ Events
 
 The following outlines additional `events`_ supported by this extension.
 
+Generic events
+--------------
+
 .. event:: confluence-publish-point (app, point_url)
 
    :param app: :class:`.Sphinx`
