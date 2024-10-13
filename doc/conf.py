@@ -109,12 +109,17 @@ latex_elements = {
     # disable justified text
     # remove italics from links
     # new page for each section 
+    # minimize spacing between admonitions
     'preamble': r'''
         \usepackage{datetime2}
         \usepackage[none]{hyphenat}
         \usepackage[document]{ragged2e}
         \def\sphinxcrossref#1{#1}
         \newcommand{\sectionbreak}{\newpage}
+        \NewDocumentEnvironment{ScbShrinkAdmonition}{O{}}
+            {\vspace{-.6\baselineskip}}{\vspace{-.6\baselineskip}}
+        \BeforeBeginEnvironment{sphinxadmonition}{\begin{ScbShrinkAdmonition}}
+        \AfterEndEnvironment{sphinxadmonition}{\end{ScbShrinkAdmonition}}
     ''',
 }
 
