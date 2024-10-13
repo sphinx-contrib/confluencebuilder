@@ -81,6 +81,10 @@ html_context = {
 # -- Options for Latex output --------------------------------------------
 
 latex_elements = {
+    # explicit verbatim spacing (looks better?)
+    'sphinxsetup': r'''
+        verbatimsep=0.75em,
+    ''',
     # remove empty pages
     'extraclassoptions': 'openany,oneside',
     # custom title
