@@ -104,11 +104,13 @@ latex_elements = {
     # disable hyphenatation
     # disable justified text
     # remove italics from links
+    # new page for each section 
     'preamble': r'''
         \usepackage{datetime2}
         \usepackage[none]{hyphenat}
         \usepackage[document]{ragged2e}
         \def\sphinxcrossref#1{#1}
+        \newcommand{\sectionbreak}{\newpage}
     ''',
 }
 

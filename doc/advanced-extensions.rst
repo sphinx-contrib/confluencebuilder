@@ -38,6 +38,10 @@ this node with Sphinx Confluence Builder:
     def depart_custom_node(self, node):
         self.body.append(self.context.pop())
 
+.. raw:: latex
+
+    \newpage
+
 Confluence Storage Format Translator Helpers
 --------------------------------------------
 

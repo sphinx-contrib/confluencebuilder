@@ -115,10 +115,6 @@ Type                    Notes
 `versionchanged`_       Supported
 ======================= =====
 
-.. raw:: latex
-
-    \newpage
-
 Markdown support
 ----------------
 
@@ -187,10 +183,6 @@ Type                              Notes
                                   references for the ``html`` builder.
 ================================= =====
 
-.. raw:: latex
-
-    \newpage
-
 .. _extensions_third_party:
 
 Extensions (Third-party)
@@ -219,6 +211,10 @@ or create a new extension which can bind both desired extensions together
 (e.g. `sphinx-confluence-nbsphinx-test`_). Any changes directly submitted to be
 added into this extension's repository will be limited to the arbitrary
 release/development windows of this extension.
+
+.. raw:: latex
+
+    \newpage
 
 The following table shows a most recent state of various third-party extensions
 interacting with this extension:
@@ -297,10 +293,6 @@ Type                              Notes
 `sphinxcontrib-video`_            Supported
 `sphinxcontrib-youtube`_          Supported
 ================================= =====
-
-.. raw:: latex
-
-    \newpage
 
 Other
 -----
