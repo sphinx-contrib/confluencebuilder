@@ -33,7 +33,8 @@ the following in a reStructuredText document:
 
     .. raw:: confluence_storage
 
-        <ac:structured-macro ac:name="cheese" ac:macro-id="5d87ef61-1fcf-4d30-8d3b-82305e13233a" />
+        <ac:structured-macro ac:name="cheese"
+            ac:macro-id="5d87ef61-1fcf-4d30-8d3b-82305e13233a" />
 
 Or create an `"Info" macro`_  in a Markdown document:
 

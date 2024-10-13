@@ -1650,7 +1650,7 @@ Advanced publishing configuration
     no changes are detected on the Confluence instance. When a page is
     published by this extension, a hash of the page will be stored on the
     Confluence page. This hash can be referred to later by hosts using this
-    extension, by query the hash and comparing it against a locally prepared
+    extension, by querying the hash and comparing it against a locally prepared
     page update. If hashes match, no attempt will be made to update the
     specific page. If users are experiencing issues with this check, they may
     force publishing by configuring this option to ``True``. By default, this
@@ -1695,7 +1695,7 @@ Advanced publishing configuration
 
     .. versionadded:: 1.3
 
-    A publish event will from this extension will typically upload new pages or
+    A publish event from this extension will typically upload new pages or
     update existing pages on future attempts. In select cases, a user may not
     wish to modify existing pages and only permit adding new content to a
     Confluence space. To achieve this, a user can enable an "only-new" flag
@@ -1733,7 +1733,7 @@ Advanced publishing configuration
 
     .. versionadded:: 2.1
 
-    The page identifier of the page to hold orphan pages. The parent page
+    The identifier of the page to hold orphan pages. The parent page
     associated to an orphan page can vary per configuration. When a user
     configures for a parent page/root, orphan pages will be placed under the
     respective parent page/root configuration. If no parent page/root is
@@ -2080,7 +2080,7 @@ Advanced processing configuration
 
     .. code-block:: rst
 
-        For more information, contact :confluence_mention:`myuser`:
+        For more information, contact :confluence_mention:`myuser`.
 
     The value ``myuser`` will be replaced with the configured account
     identifier. This can be useful for when trying to manage multiple
@@ -2205,6 +2205,10 @@ Third-party related options
         include Mermaid JS support. For example, adding the following content
         on the page planning to render diagrams:
 
+        .. raw:: latex
+
+            {\footnotesize 
+
         .. code-block:: rst
 
             .. confluence_html::
@@ -2212,6 +2216,10 @@ Third-party related options
                 <script type="module">
                 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
                 </script>
+
+        .. raw:: latex
+
+            }
 
     When using the `sphinxcontrib-mermaid`_ extension, this option can be
     used pass raw Mermaid figures into an HTML macro.

@@ -298,9 +298,9 @@ Other
 -----
 
 If a feature or extension is not listed above, is not working as expected or
-brings up another concern, feel free to bring up an issue:
+has another concern, feel free to bring up an issue:
 
-    | Atlassian Confluence Builder for Confluence - Issues
+    | Atlassian Confluence Builder for Confluence — Issues
     | https://github.com/sphinx-contrib/confluencebuilder/issues
 
 

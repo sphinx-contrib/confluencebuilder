@@ -110,7 +110,7 @@ generated Confluence documents.
         See :confluence_mention:`3c5369:fa8b5c24-17f8-4340-b73e-50d383307c59`.
 
     For Confluence Data Center, a mention to a specific user can either
-    be set to the username value, or a user's key value:
+    be set to the username value or a user's key value:
 
     .. code-block:: rst
 
