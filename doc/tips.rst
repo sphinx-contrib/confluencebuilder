@@ -76,6 +76,8 @@ By default, this extension does not define any timeouts for a publish event. It
 is recommended to provide a timeout value based on the environment being used
 (see :lref:`confluence_timeout`).
 
+.. _confluence_connection_troubleshooting:
+
 Connection troubleshooting
 --------------------------
 
