@@ -200,6 +200,7 @@ class ConfluenceMetadataDirective(Directive):
     option_spec = {
         'editor': lambda x: directives.choice(x, EDITORS),
         'full-width': lambda x: directives.choice(x, ('true', 'false')),
+        'guid': directives.unchanged,
         'labels': string_list,
     }
 

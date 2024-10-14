@@ -60,6 +60,9 @@ def setup(app):
     app.add_builder(ConfluenceBuilder)
     app.add_builder(ConfluenceReportBuilder)
     app.add_builder(SingleConfluenceBuilder)
+    app.add_event('confluence-publish-attachment')
+    app.add_event('confluence-publish-override-pageid')
+    app.add_event('confluence-publish-page')
     app.add_event('confluence-publish-point')
     app.add_post_transform(ConfluenceHyperlinkCollector)
 
