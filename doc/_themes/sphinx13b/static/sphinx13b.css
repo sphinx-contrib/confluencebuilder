@@ -530,6 +530,13 @@ p.rubric {
     background-color: #efe9e8 !important;
 }
 
+.rst.directive, .rst.role,
+.std.confval, .std.builderval, .std.event,
+.py.function {
+    border-top: 1px solid #ccc;
+    padding-top: 5px;
+}
+
 @media (max-width: 750px) {
     .quick-links {
         display: none;
