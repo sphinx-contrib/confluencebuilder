@@ -108,7 +108,7 @@ latex_elements = {
     # disable hyphenatation
     # disable justified text
     # remove italics from links
-    # new page for each section 
+    # new page for each section
     # minimize spacing between admonitions
     'preamble': r'''
         \usepackage{datetime2}
