@@ -10,6 +10,7 @@ the Confluence Builder extension in a Sphinx-enabled environment.
     guide-class-hints
     guide-collapse
     guide-confluence-macros
+    guide-highlight-default
     guide-math
     guide-strike
     guide-ci
