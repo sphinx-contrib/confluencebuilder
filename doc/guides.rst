@@ -13,3 +13,4 @@ the Confluence Builder extension in a Sphinx-enabled environment.
     guide-math
     guide-strike
     guide-ci
+    guide-sso

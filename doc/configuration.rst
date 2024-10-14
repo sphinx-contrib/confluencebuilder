@@ -1496,6 +1496,8 @@ Advanced publishing configuration
 
     See also :lref:`confluence_publish_denylist`.
 
+.. _confluence_publish_debug:
+
 .. confval:: confluence_publish_debug
 
     .. versionadded:: 1.8
@@ -1622,6 +1624,8 @@ Advanced publishing configuration
     .. code-block:: python
 
         confluence_publish_force = True
+
+.. _confluence_publish_headers:
 
 .. confval:: confluence_publish_headers
 
@@ -1759,6 +1763,8 @@ Advanced publishing configuration
 
         confluence_request_session_override = my_request_session_override
 
+.. _confluence_server_auth:
+
 .. confval:: confluence_server_auth
 
     An authentication handler which can be directly provided to a REST API
@@ -1786,6 +1792,8 @@ Advanced publishing configuration
             client_secret=client_secret,
             resource_owner_key=resource_owner_key,
             resource_owner_secret=resource_owner_secret)
+
+.. _confluence_server_cookies:
 
 .. confval:: confluence_server_cookies
 
