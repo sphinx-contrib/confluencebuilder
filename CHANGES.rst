@@ -1,5 +1,5 @@
-Development
-===========
+2.8.0 (2024-10-14)
+==================
 
 * Fixed issues where various links were broken with singleconfluence
 * Improve support with Sphinx v8.1 ``--fail-on-warning`` changes
