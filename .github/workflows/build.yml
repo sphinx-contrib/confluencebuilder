@@ -11,11 +11,9 @@ on:
       - '.github/workflows/build.yml'
       - 'sphinxcontrib/**'
       - 'tests/**'
-      - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
-      - 'ruff.toml'
       - 'tox.ini'
   pull_request:
     branches:
@@ -24,11 +22,9 @@ on:
       - '.github/workflows/build.yml'
       - 'sphinxcontrib/**'
       - 'tests/**'
-      - '.pylintrc'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'requirements_dev.txt'
-      - 'ruff.toml'
       - 'tox.ini'
 
 jobs:
@@ -62,12 +58,6 @@ jobs:
             #  - test against all other supported OSes, using most recent interpreter/sphinx
             - { os:   macos-latest, python: "3.12", toxenv: py312-sphinx81, cache: ~/Library/Caches/pip }
             - { os: windows-latest, python: "3.12", toxenv: py312-sphinx81, cache: ~\AppData\Local\pip\Cache }
-
-            # linting/other
-            #  - any OS, using most recent interpreter
-            - { os: ubuntu-latest, python: "3.12", toxenv:   ruff, cache: ~/.cache/pip }
-            - { os: ubuntu-latest, python: "3.12", toxenv: pylint, cache: ~/.cache/pip }
-            - { os: ubuntu-latest, python: "3.12", toxenv:   mypy, cache: ~/.cache/pip }
 
     steps:
     - uses: actions/checkout@v4
