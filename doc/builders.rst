@@ -17,8 +17,6 @@ The following outlines the Sphinx builders provided by this extension.
 
 .. builderval:: singleconfluence
 
-    .. versionadded:: 1.3
-
     The ``singleconfluence`` builder allows a user to process a Sphinx supported
     documentation set to generate a single document in a Confluence supported
     representation. The generated document can in turn be published to a 
@@ -27,3 +25,5 @@ The following outlines the Sphinx builders provided by this extension.
     .. code-block:: shell
 
         sphinx-build -b singleconfluence . _build/singleconfluence -E -a
+
+    .. versionadded:: 1.3

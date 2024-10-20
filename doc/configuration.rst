@@ -80,8 +80,6 @@ Essential configuration
 
 .. confval:: confluence_space_key
 
-    .. versionadded:: 1.7
-
     .. note::
 
         - Use the key value for the space, not the name of the space. For
@@ -102,6 +100,8 @@ Essential configuration
     .. code-block:: python
 
         confluence_space_key = '~123456789'
+
+    .. versionadded:: 1.7
 
 .. _confluence_server_user:
 
@@ -133,8 +133,6 @@ Essential configuration
 
 .. confval:: confluence_api_token
 
-    .. versionadded:: 2.6
-
     .. tip::
 
         Use this option for Confluence Cloud.
@@ -162,11 +160,11 @@ Essential configuration
 
         confluence_api_token = 'YDYDD3qVvKV0FbkErSxaQ2olmy...AMGwaPe8=02381T9A'
 
+    .. versionadded:: 2.6
+
 .. _confluence_publish_token:
 
 .. confval:: confluence_publish_token
-
-    .. versionadded:: 1.8
 
     .. tip::
 
@@ -193,6 +191,8 @@ Essential configuration
     .. code-block:: python
 
         confluence_publish_token = 'AbCdEfGhIjKlMnOpQrStUvWxY/z1234567890aBc'
+
+    .. versionadded:: 1.8
 
 .. _confluence_server_pass:
 
@@ -239,8 +239,6 @@ Generic configuration
 
 .. confval:: confluence_add_secnumbers
 
-    .. versionadded:: 1.2
-
     Add section numbers to page and section titles if ``toctree`` uses the
     ``:numbered:`` option. By default, this is enabled:
 
@@ -250,11 +248,11 @@ Generic configuration
 
     See also :lref:`confluence_publish_prefix`.
 
+    .. versionadded:: 1.2
+
 .. _confluence_code_block_theme:
 
 .. confval:: confluence_code_block_theme
-
-    .. versionadded:: 2.2
 
     .. note::
 
@@ -271,9 +269,9 @@ Generic configuration
     For configuring the theme on individual code blocks, see
     :ref:`class hints <confluence_class_hints>`.
 
-.. confval:: confluence_default_alignment
+    .. versionadded:: 2.2
 
-    .. versionadded:: 1.3
+.. confval:: confluence_default_alignment
 
     Explicitly set which alignment type to use when a default alignment value is
     detected. As of Sphinx 2.0+, the default alignment is set to ``center``.
@@ -286,9 +284,9 @@ Generic configuration
 
         confluence_default_alignment = 'left'
 
-.. confval:: confluence_disable_env_conf
+    .. versionadded:: 1.3
 
-    .. versionadded:: 2.7
+.. confval:: confluence_disable_env_conf
 
     A boolean value to configure whether to ignore environment-provided
     configuration options. This extension will fallback on environment
@@ -300,9 +298,9 @@ Generic configuration
 
         confluence_disable_env_conf = True
 
-.. confval:: confluence_domain_indices
+    .. versionadded:: 2.7
 
-    .. versionadded:: 1.7
+.. confval:: confluence_domain_indices
 
     A boolean or list value to configure whether or not generate domain-specific
     indices. If configured to a value of ``True``, all domain-specific indices
@@ -319,11 +317,11 @@ Generic configuration
             'py-modindex',
         ]
 
+    .. versionadded:: 1.7
+
 .. _confluence_editor:
 
 .. confval:: confluence_editor
-
-    .. versionadded:: 2.0
 
     .. note::
 
@@ -358,6 +356,8 @@ Generic configuration
 
     For per-document overrides, please see the :lref:`confluence_metadata`.
 
+    .. versionadded:: 2.0
+
 .. _confluence_header_file:
 
 .. confval:: confluence_header_file
@@ -380,14 +380,14 @@ Generic configuration
 
 .. confval:: confluence_header_data
 
-    .. versionadded:: 1.9
-
     Takes an optional dictionary. If this value is set then
     ``confluence_header_file`` is interpreted as a jinja2 template with these
     values passed in. If this value is not set then ``confluence_header_file``
     is included verbatim.
 
     See also :lref:`confluence_header_file`.
+
+    .. versionadded:: 1.9
 
 .. _confluence_footer_file:
 
@@ -411,8 +411,6 @@ Generic configuration
 
 .. confval:: confluence_footer_data
 
-    .. versionadded:: 1.9
-
     Takes an optional dictionary. If this value is set then
     ``confluence_footer_file`` is interpreted as a jinja2 template with these
     values passed in. If this value is not set then ``confluence_footer_file``
@@ -420,9 +418,9 @@ Generic configuration
 
     See also :lref:`confluence_header_file`.
 
-.. confval:: confluence_include_search
+    .. versionadded:: 1.9
 
-    .. versionadded:: 1.7
+.. confval:: confluence_include_search
 
     A boolean value to configure whether or not generate a search page. If
     configured to a value of ``True``, a search page will be created with a
@@ -438,10 +436,9 @@ Generic configuration
 
         confluence_include_search = True
 
-.. confval:: confluence_page_generation_notice
-
     .. versionadded:: 1.7
-    .. versionchanged:: 2.5 Accept a string for custom notice.
+
+.. confval:: confluence_page_generation_notice
 
     This option can be set with a boolean value to whether or not to generate
     a message at the top of each document that the page has been
@@ -459,9 +456,10 @@ Generic configuration
 
     By default, this notice is disabled with a value of ``False``.
 
-.. confval:: confluence_page_hierarchy
+    .. versionadded:: 1.7
+    .. versionchanged:: 2.5 Accept a string for custom notice.
 
-    .. versionchanged:: 2.0 Option is enabled by default.
+.. confval:: confluence_page_hierarchy
 
     A boolean value to whether or not nest pages in a hierarchical ordered. The
     root of all pages is typically the configured root_doc_. If a root_doc_
@@ -479,11 +477,11 @@ Generic configuration
     these documents will still be published and uploaded to either the
     configured :lref:`confluence_parent_page` or in the root of the space.
 
+    .. versionchanged:: 2.0 Option is enabled by default.
+
 .. _confluence_prev_next_buttons_location:
 
 .. confval:: confluence_prev_next_buttons_location
-
-    .. versionadded:: 1.2
 
     A string value to where to include previous/next buttons (if any) based on
     the detected order of documents to be included in processing. Values
@@ -494,11 +492,11 @@ Generic configuration
 
        confluence_prev_next_buttons_location = 'top'
 
+    .. versionadded:: 1.2
+
 .. _confluence_secnumber_suffix:
 
 .. confval:: confluence_secnumber_suffix
-
-    .. versionadded:: 1.2
 
     The suffix to put after section numbers, before section name.
 
@@ -508,9 +506,9 @@ Generic configuration
 
     See also :lref:`confluence_add_secnumbers`.
 
-.. confval:: confluence_sourcelink
+    .. versionadded:: 1.2
 
-    .. versionadded:: 1.7
+.. confval:: confluence_sourcelink
 
     Provides options to include a link to the documentation's sources at the top
     of each page. This can either be a generic URL or customized to link to
@@ -622,9 +620,9 @@ Generic configuration
             'text': 'Edit Source',
         }
 
-.. confval:: confluence_use_index
-
     .. versionadded:: 1.7
+
+.. confval:: confluence_use_index
 
     A boolean value to configure whether or not generate an index page. If
     configured to a value of ``True``, an index page will be created. If a
@@ -639,9 +637,9 @@ Generic configuration
 
         confluence_use_index = True
 
-.. confval:: singleconfluence_toctree
-
     .. versionadded:: 1.7
+
+.. confval:: singleconfluence_toctree
 
     A boolean value to configure whether or not TOC trees will remain in place
     when building with a ``singleconfluence`` builder. By default, this option
@@ -651,14 +649,14 @@ Generic configuration
 
         singleconfluence_toctree = True
 
+    .. versionadded:: 1.7
+
 Publishing configuration
 ------------------------
 
 .. _confluence_append_labels:
 
 .. confval:: confluence_append_labels
-
-    .. versionadded:: 1.3
 
     Allows a user to decide how to manage labels for an updated page. When a
     page update contains new labels to set, they can either be stacked on
@@ -676,11 +674,11 @@ Publishing configuration
     - :lref:`confluence_global_labels`
     - :lref:`confluence_metadata`
 
+    .. versionadded:: 1.3
+
 .. _confluence_api_mode:
 
 .. confval:: confluence_api_mode
-
-    .. versionadded:: 2.5
 
     Configures the API mode to use for REST requests. Certain Confluence
     instances support a newer version of REST APIs (e.g. Confluence Cloud).
@@ -696,6 +694,8 @@ Publishing configuration
 
     By default, if a Confluence Cloud configuration is detected, this
     extension will use ``v2``. For all other cases, the default is ``v1``.
+
+    .. versionadded:: 2.5
 
 .. _confluence_ask_password:
 
@@ -734,8 +734,6 @@ Publishing configuration
 
 .. confval:: confluence_ask_user
 
-    .. versionadded:: 1.2
-
     Provides an override for an interactive shell to request publishing
     documents using a user provided from a shell environment. While a
     user is typically defined in the option ``confluence_server_user``, select
@@ -747,13 +745,13 @@ Publishing configuration
 
         confluence_ask_user = False
 
+    .. versionadded:: 1.2
+
 .. index:: Page removal; Automatically archiving pages
 
 .. _confluence_cleanup_archive:
 
 .. confval:: confluence_cleanup_archive
-
-    .. versionadded:: 1.9
 
     .. warning::
 
@@ -803,11 +801,11 @@ Publishing configuration
     - :lref:`confluence_cleanup_search_mode`
     - :lref:`confluence_publish_dryrun`
 
+    .. versionadded:: 1.9
+
 .. _confluence_cleanup_from_root:
 
 .. confval:: confluence_cleanup_from_root
-
-    .. versionadded:: 1.9
 
     A boolean value to which indicates that any cleanup attempt should be done
     from the root of a published root_doc_ page (instead of a configured parent
@@ -831,13 +829,13 @@ Publishing configuration
     - :lref:`confluence_cleanup_archive`
     - :lref:`confluence_cleanup_purge`
 
+    .. versionadded:: 1.9
+
 .. index:: Page removal; Automatically purging pages
 
 .. _confluence_cleanup_purge:
 
 .. confval:: confluence_cleanup_purge
-
-    .. versionadded:: 1.9
 
     .. warning::
 
@@ -875,11 +873,11 @@ Publishing configuration
     - :lref:`confluence_cleanup_search_mode`
     - :lref:`confluence_publish_dryrun`
 
+    .. versionadded:: 1.9
+
 .. _confluence_disable_notifications:
 
 .. confval:: confluence_disable_notifications
-
-    .. versionchanged:: 2.6 Option is enabled by default.
 
     A boolean value which explicitly disables any page update notifications
     (i.e. treats page updates from a publish request as minor updates). By
@@ -895,12 +893,11 @@ Publishing configuration
 
     See also :lref:`confluence_watch`.
 
+    .. versionchanged:: 2.6 Option is enabled by default.
+
 .. _confluence_full_width:
 
 .. confval:: confluence_full_width
-
-    .. versionadded:: 2.0
-    .. versionchanged:: 2.1 Support added for Confluence's ``v1`` editor.
 
     A boolean value to whether to publish pages using the full width of a page.
     By default, page widths will use their default/existing page widths with
@@ -915,11 +912,12 @@ Publishing configuration
 
     For per-document overrides, please see the :lref:`confluence_metadata`.
 
+    .. versionadded:: 2.0
+    .. versionchanged:: 2.1 Support added for Confluence's ``v1`` editor.
+
 .. _confluence_global_labels:
 
 .. confval:: confluence_global_labels
-
-    .. versionadded:: 1.3
 
     .. note::
 
@@ -941,6 +939,8 @@ Publishing configuration
     For per-document labels, please see the :lref:`confluence_metadata`.
     See also :lref:`confluence_append_labels`.
 
+    .. versionadded:: 1.3
+
 .. _confluence_parent_page:
 
 .. confval:: confluence_parent_page
@@ -948,8 +948,6 @@ Publishing configuration
     .. note::
 
         This option cannot be used with :lref:`confluence_publish_root`.
-
-    .. versionchanged:: 1.9 Support added for accepting a page identifier.
 
     The root page found inside the configured space
     (:lref:`confluence_space_key`) where published pages will be a
@@ -978,11 +976,11 @@ Publishing configuration
 
     See also :lref:`confluence_publish_root`.
 
+    .. versionchanged:: 1.9 Support added for accepting a page identifier.
+
 .. _confluence_publish_dryrun:
 
 .. confval:: confluence_publish_dryrun
-
-    .. versionadded:: 1.3
 
     When a user wishes to start managing a new document set for publishing,
     there maybe concerns about conflicts with existing content. When the dry run
@@ -999,12 +997,11 @@ Publishing configuration
     See also
     :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`.
 
+    .. versionadded:: 1.3
+
 .. _confluence_publish_postfix:
 
 .. confval:: confluence_publish_postfix
-
-    .. versionadded:: 1.2
-    .. versionchanged:: 1.9 Support for the ``{hash}`` placeholder.
 
     If set, a postfix value is added to the title of all published documents. In
     Confluence, page names need to be unique for a space. A postfix can be set
@@ -1040,6 +1037,9 @@ Publishing configuration
     - :lref:`confluence_ignore_titlefix_on_index`
     - :lref:`confluence_publish_prefix`
 
+    .. versionadded:: 1.2
+    .. versionchanged:: 1.9 Support for the ``{hash}`` placeholder.
+
 .. _confluence_publish_prefix:
 
 .. confval:: confluence_publish_prefix
@@ -1068,8 +1068,6 @@ Publishing configuration
 
 .. confval:: confluence_publish_root
 
-    .. versionadded:: 1.5
-
     .. note::
 
         This option cannot be used with :lref:`confluence_parent_page`.
@@ -1087,11 +1085,11 @@ Publishing configuration
 
     See also :lref:`confluence_parent_page`.
 
+    .. versionadded:: 1.5
+
 .. _confluence_root_homepage:
 
 .. confval:: confluence_root_homepage
-
-    .. versionadded:: 1.6
 
     A boolean value to whether or not force the configured space's homepage to
     be set to the page defined by the Sphinx configuration's root_doc_. By
@@ -1100,6 +1098,8 @@ Publishing configuration
     .. code-block:: python
 
         confluence_root_homepage = False
+
+    .. versionadded:: 1.6
 
 .. _confluence_timeout:
 
@@ -1121,8 +1121,6 @@ Publishing configuration
 
 .. confval:: confluence_watch
 
-    .. versionadded:: 1.3
-
     Indicate whether or not the user publishing content will automatically watch
     pages for changes. In Confluence, when creating a new page or updating an
     existing page, the editing user will automatically watch the page.
@@ -1138,12 +1136,12 @@ Publishing configuration
 
     See also :lref:`confluence_disable_notifications`.
 
+    .. versionadded:: 1.3
+
 Advanced publishing configuration
 ---------------------------------
 
 .. confval:: confluence_additional_mime_types
-
-    .. versionadded:: 1.3
 
     Candidate selection for images will only support the internally managed list
     of MIME types supported by a default Confluence instance. A custom
@@ -1158,9 +1156,9 @@ Advanced publishing configuration
             'image/tiff',
         ]
 
-.. confval:: confluence_asset_force_standalone
-
     .. versionadded:: 1.3
+
+.. confval:: confluence_asset_force_standalone
 
     Provides an override to always publish individual assets (images, downloads,
     etc.) on each individual document which uses them. This extension will
@@ -1176,6 +1174,8 @@ Advanced publishing configuration
     .. code-block:: python
 
         confluence_asset_force_standalone = True
+
+    .. versionadded:: 1.3
 
 .. confval:: confluence_asset_override
 
@@ -1200,8 +1200,6 @@ Advanced publishing configuration
 
 .. confval:: confluence_ca_cert
 
-    .. versionchanged:: 2.3 Support relative paths.
-
     Provide a CA certificate to use for server certificate authentication. The
     value for this option can either be a file of a certificate or a path
     pointing to an OpenSSL-prepared directory. Refer to the
@@ -1219,11 +1217,11 @@ Advanced publishing configuration
     - :lref:`confluence_client_cert`
     - :lref:`confluence_disable_ssl_validation`
 
+    .. versionchanged:: 2.3 Support relative paths.
+
 .. _confluence_cleanup_search_mode:
 
 .. confval:: confluence_cleanup_search_mode
-
-    .. versionadded:: 2.1
 
     .. warning::
 
@@ -1259,6 +1257,8 @@ Advanced publishing configuration
 
     - :lref:`confluence_cleanup_archive`
     - :lref:`confluence_cleanup_purge`
+
+    .. versionadded:: 2.1
 
 .. _confluence_client_cert:
 
@@ -1354,8 +1354,6 @@ Advanced publishing configuration
 
 .. confval:: confluence_ignore_titlefix_on_index
 
-    .. versionadded:: 1.3
-
     When configured to add a prefix or postfix onto the titles of published
     documents, a user may not want to have any title modifications on the index
     page. To prevent modifying an index page's title, this option can be set to
@@ -1370,9 +1368,9 @@ Advanced publishing configuration
     - :lref:`confluence_publish_postfix`
     - :lref:`confluence_publish_prefix`
 
-.. confval:: confluence_page_search_mode
+    .. versionadded:: 1.3
 
-    .. versionadded:: 2.6
+.. confval:: confluence_page_search_mode
 
     .. note::
 
@@ -1396,9 +1394,9 @@ Advanced publishing configuration
     - ``content`` `(default)`: Pages will fetched using the ``content/`` API.
     - ``search``: Pages will fetched using the ``content/search/`` API.
 
-.. confval:: confluence_parent_override_transform
+    .. versionadded:: 2.6
 
-    .. versionadded:: 2.2
+.. confval:: confluence_parent_override_transform
 
     .. note::
 
@@ -1430,6 +1428,8 @@ Advanced publishing configuration
 
     See also :lref:`confluence_parent_page`.
 
+    .. versionadded:: 2.2
+
 .. confval:: confluence_proxy
 
     REST calls use the Requests_ library, which will use system-defined proxy
@@ -1443,11 +1443,6 @@ Advanced publishing configuration
 .. _confluence_publish_allowlist:
 
 .. confval:: confluence_publish_allowlist
-
-    .. versionadded:: 1.3
-    .. versionchanged:: 2.0 An empty allow list will no longer publish any
-                            documents.
-    .. versionchanged:: 2.3 Support relative paths.
 
     .. note::
 
@@ -1496,18 +1491,14 @@ Advanced publishing configuration
 
     See also :lref:`confluence_publish_denylist`.
 
+    .. versionadded:: 1.3
+    .. versionchanged:: 2.0 An empty allow list will no longer publish any
+                            documents.
+    .. versionchanged:: 2.3 Support relative paths.
+
 .. _confluence_publish_debug:
 
 .. confval:: confluence_publish_debug
-
-    .. versionadded:: 1.8
-    .. versionchanged:: 2.5
-
-        Switched from boolean to string for setting new debugging options.
-
-    .. versionchanged:: 2.6
-
-        Introduce the ``headers-and-data`` option.
 
     .. warning::
 
@@ -1536,9 +1527,16 @@ Advanced publishing configuration
 
         confluence_publish_debug = 'urllib3'
 
-.. confval:: confluence_publish_delay
-
     .. versionadded:: 1.8
+    .. versionchanged:: 2.5
+
+        Switched from boolean to string for setting new debugging options.
+
+    .. versionchanged:: 2.6
+
+        Introduce the ``headers-and-data`` option.
+
+.. confval:: confluence_publish_delay
 
     Force a delay (in seconds) for any API calls made to a Confluence instance.
     By default, API requests will be made to a Confluence instance as soon as
@@ -1551,12 +1549,11 @@ Advanced publishing configuration
 
         confluence_publish_delay = 0.25
 
+    .. versionadded:: 1.8
+
 .. _confluence_publish_denylist:
 
 .. confval:: confluence_publish_denylist
-
-    .. versionadded:: 1.3
-    .. versionchanged:: 2.3 Support relative paths.
 
     .. note::
 
@@ -1605,11 +1602,12 @@ Advanced publishing configuration
 
     See also :lref:`confluence_publish_allowlist`.
 
+    .. versionadded:: 1.3
+    .. versionchanged:: 2.3 Support relative paths.
+
 .. _confluence_publish_force:
 
 .. confval:: confluence_publish_force
-
-    .. versionadded:: 2.1
 
     A boolean value on whether or not to force publish page updates even if
     no changes are detected on the Confluence instance. When a page is
@@ -1625,11 +1623,11 @@ Advanced publishing configuration
 
         confluence_publish_force = True
 
+    .. versionadded:: 2.1
+
 .. _confluence_publish_headers:
 
 .. confval:: confluence_publish_headers
-
-    .. versionadded:: 1.5
 
     A dictionary value which allows a user to pass key-value header information.
     This is useful for users who need to interact with a Confluence instance
@@ -1643,9 +1641,9 @@ Advanced publishing configuration
             'CUSTOM_HEADER': '<some-value>',
         }
 
-.. confval:: confluence_publish_intersphinx
+    .. versionadded:: 1.5
 
-    .. versionadded:: 1.9
+.. confval:: confluence_publish_intersphinx
 
     A publish event will upload a generated intersphinx's inventory
     (`object.inv`) as an attachment to the configured root_doc_. Inventory
@@ -1658,9 +1656,9 @@ Advanced publishing configuration
 
         confluence_publish_intersphinx = True
 
-.. confval:: confluence_publish_onlynew
+    .. versionadded:: 1.9
 
-    .. versionadded:: 1.3
+.. confval:: confluence_publish_onlynew
 
     A publish event from this extension will typically upload new pages or
     update existing pages on future attempts. In select cases, a user may not
@@ -1675,11 +1673,11 @@ Advanced publishing configuration
 
         confluence_publish_onlynew = True
 
+    .. versionadded:: 1.3
+
 .. _confluence_publish_orphan:
 
 .. confval:: confluence_publish_orphan
-
-    .. versionadded:: 2.1
 
     Whether to permit the publishing of orphan pages to a Confluence space.
     This option must be explicitly set to ``False`` if a user wishes to not
@@ -1692,11 +1690,11 @@ Advanced publishing configuration
 
     See also :lref:`confluence_publish_orphan_container`.
 
+    .. versionadded:: 2.1
+
 .. _confluence_publish_orphan_container:
 
 .. confval:: confluence_publish_orphan_container
-
-    .. versionadded:: 2.1
 
     The identifier of the page to hold orphan pages. The parent page
     associated to an orphan page can vary per configuration. When a user
@@ -1715,11 +1713,11 @@ Advanced publishing configuration
 
     See also :lref:`confluence_publish_orphan`.
 
+    .. versionadded:: 2.1
+
 .. _confluence_publish_override_api_prefix:
 
 .. confval:: confluence_publish_override_api_prefix
-
-    .. versionadded:: 2.5
 
     Allows a user to override the path-prefix value used for API requests.
     API paths are commonly prefixed, such as ``rest/api/`` for API v1 and
@@ -1748,9 +1746,9 @@ Advanced publishing configuration
             'v1': '',
         }
 
-.. confval:: confluence_request_session_override
+    .. versionadded:: 2.5
 
-    .. versionadded:: 1.7
+.. confval:: confluence_request_session_override
 
     A hook to manipulate a Requests_ session prepared by this extension. Allows
     users who wish to perform advanced configuration of a session for features
@@ -1762,6 +1760,8 @@ Advanced publishing configuration
             session.trust_env = False
 
         confluence_request_session_override = my_request_session_override
+
+    .. versionadded:: 1.7
 
 .. _confluence_server_auth:
 
@@ -1797,8 +1797,6 @@ Advanced publishing configuration
 
 .. confval:: confluence_server_cookies
 
-    .. versionadded:: 1.2
-
     A dictionary value which allows a user to pass key-value cookie information
     for authentication purposes. This is useful for users who need to
     authenticate with a single sign-on (SSO) provider to access a target
@@ -1812,11 +1810,11 @@ Advanced publishing configuration
             'U_ID': '<username>',
         }
 
+    .. versionadded:: 1.2
+
 .. _confluence_title_overrides:
 
 .. confval:: confluence_title_overrides
-
-    .. versionadded:: 1.3
 
     Allows a user to override the title value for a specific document. When
     documents are parsed for title values, the first title element's content
@@ -1843,12 +1841,9 @@ Advanced publishing configuration
     - :lref:`confluence_publish_prefix`
     - :lref:`confluence_remove_title`
 
+    .. versionadded:: 1.3
+
 .. confval:: confluence_version_comment
-
-    .. versionadded:: 1.8
-    .. versionchanged:: 2.1
-
-        Support comments for first/new pages on Confluence Cloud.
 
     .. note::
 
@@ -1860,6 +1855,11 @@ Advanced publishing configuration
     .. code-block:: python
 
         confluence_version_comment = 'Automatically generated.'
+
+    .. versionadded:: 1.8
+    .. versionchanged:: 2.1
+
+        Support comments for first/new pages on Confluence Cloud.
 
 Advanced processing configuration
 ---------------------------------
@@ -1879,8 +1879,6 @@ Advanced processing configuration
 
 .. confval:: confluence_html_macro
 
-    .. versionadded:: 2.7
-
     This option will configure the HTML macro type for the ``confluence_html``
     :ref:`directive <confluence_html>`. By default, the ``html`` macro
     identifier is set.
@@ -1891,13 +1889,13 @@ Advanced processing configuration
 
     See also the :ref:`HTML directive <confluence_html>`.
 
+    .. versionadded:: 2.7
+
 .. index:: Jira; Configuring Jira servers
 
 .. _confluence_jira_servers:
 
 .. confval:: confluence_jira_servers
-
-    .. versionadded:: 1.2
 
     Provides a dictionary of named Jira servers to reference when using the
     ``jira`` or ``jira_issue`` directives. In a typical Confluence environment
@@ -1942,11 +1940,11 @@ Advanced processing configuration
     - :ref:`Jira directives <jira-directives>`
     - :ref:`Jira roles <jira-roles>`
 
+    .. versionadded:: 1.2
+
 .. _confluence_lang_overrides:
 
 .. confval:: confluence_lang_overrides
-
-    .. versionadded:: 2.6
 
     A dictionary to override literal block-based directive language values to
     a Confluence supported code block macro language values. The default
@@ -1964,11 +1962,11 @@ Advanced processing configuration
     the provided language type will be transform to a default language type
     as if this transform was not provided.
 
+    .. versionadded:: 2.6
+
 .. _confluence_latex_macro:
 
 .. confval:: confluence_latex_macro
-
-    .. versionadded:: 1.8
 
     .. note::
 
@@ -2006,6 +2004,8 @@ Advanced processing configuration
     - :ref:`LaTeX roles <latex-roles>`
     - :doc:`guide-math`
 
+    .. versionadded:: 1.8
+
 .. _confluence_link_suffix:
 
 .. confval:: confluence_link_suffix
@@ -2023,8 +2023,6 @@ Advanced processing configuration
 .. _confluence_mentions:
 
 .. confval:: confluence_mentions
-
-    .. versionadded:: 1.9
 
     Provides a dictionary of key-to-value mappings which can be used with
     ``confluence_mention`` roles. When defining mentions, documents can
@@ -2055,9 +2053,9 @@ Advanced processing configuration
 
     - :ref:`Mention roles <mention-roles>`
 
-.. confval:: confluence_navdocs_transform
+    .. versionadded:: 1.9
 
-    .. versionadded:: 1.7
+.. confval:: confluence_navdocs_transform
 
     A function to override the document list used for populating navigational
     buttons generated from a :lref:`confluence_prev_next_buttons_location`
@@ -2075,11 +2073,11 @@ Advanced processing configuration
 
     See also :lref:`confluence_prev_next_buttons_location`.
 
+    .. versionadded:: 1.7
+
 .. _confluence_permit_raw_html:
 
 .. confval:: confluence_permit_raw_html
-
-    .. versionadded:: 2.2
 
     .. caution::
 
@@ -2115,6 +2113,8 @@ Advanced processing configuration
 
     See also :lref:`confluence_html` directive.
 
+    .. versionadded:: 2.2
+
 .. _confluence_remove_title:
 
 .. confval:: confluence_remove_title
@@ -2145,8 +2145,6 @@ Third-party related options
     vary.
 
 .. confval:: confluence_mermaid_html_macro
-
-    .. versionadded:: 2.7
 
     .. warning::
 
@@ -2191,12 +2189,12 @@ Third-party related options
 
     See also :lref:`confluence_html_macro`.
 
+    .. versionadded:: 2.7
+
 Other options
 -------------
 
 .. confval:: suppress_warnings
-
-    .. versionadded:: 2.1
 
     This extension supports suppressing warnings using Sphinx's
     `suppress_warnings`_ configuration. The following includes additional
@@ -2207,24 +2205,24 @@ Other options
     - ``confluence.deprecated_develop`` -- Development deprecated warnings
     - ``confluence.unsupported_code_lang`` -- Unsupported code language
 
+    .. versionadded:: 2.1
+
 Deprecated options
 ------------------
 
 .. confval:: confluence_lang_transform
 
-    .. versionchanged:: 2.6
-
     This option has been replaced by :lref:`confluence_lang_overrides`.
+
+    .. versionchanged:: 2.6
 
 .. confval:: confluence_master_homepage
 
-    .. versionchanged:: 1.6
-
     This option has been renamed to :lref:`confluence_root_homepage`.
 
-.. confval:: confluence_parent_page_id_check
+    .. versionchanged:: 1.6
 
-    .. versionchanged:: 1.9
+.. confval:: confluence_parent_page_id_check
 
         The :lref:`confluence_parent_page` option now accepts both a page
         name and identifier.
@@ -2241,37 +2239,39 @@ Deprecated options
 
     See also :lref:`confluence_parent_page`.
 
-.. confval:: confluence_publish_disable_api_prefix
+    .. versionchanged:: 1.9
 
-    .. versionchanged:: 2.5
+.. confval:: confluence_publish_disable_api_prefix
 
     This option has been replaced by
     :lref:`confluence_publish_override_api_prefix`.
 
-.. confval:: confluence_publish_subset
+    .. versionchanged:: 2.5
 
-    .. versionchanged:: 1.3
+.. confval:: confluence_publish_subset
 
     This option has been renamed to :lref:`confluence_publish_allowlist`.
 
-.. confval:: confluence_purge_from_master
+    .. versionchanged:: 1.3
 
-    .. versionchanged:: 1.6
+.. confval:: confluence_purge_from_master
 
     This option has been renamed to ``confluence_purge_from_root``, and has
     since been replaced with :lref:`confluence_cleanup_from_root`.
 
-.. confval:: confluence_purge_from_root
+    .. versionchanged:: 1.6
 
-    .. versionchanged:: 1.9
+.. confval:: confluence_purge_from_root
 
     This option has been renamed to :lref:`confluence_cleanup_from_root`.
 
+    .. versionchanged:: 1.9
+
 .. confval:: confluence_space_name
 
-    .. versionchanged:: 1.7
-
     This option has been renamed to :lref:`confluence_space_key`.
+
+    .. versionchanged:: 1.7
 
 
 .. footnotes -------------------------------------------------------------------

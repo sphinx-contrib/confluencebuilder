@@ -23,8 +23,6 @@ Common
 
 .. rst:directive:: confluence_excerpt
 
-    .. versionadded:: 2.0
-
     The ``confluence_excerpt`` directive allows a user to define a Confluence
     `Excerpt Macro`_ to help build snippets of content to be shared for
     other pages. For example:
@@ -81,12 +79,12 @@ Common
 
                 This content is reusable.
 
+    .. versionadded:: 2.0
+
 .. index:: Macros; Excerpt Include Macro (directive)
 .. index:: Excerpt Include Macro
 
 .. rst:directive:: .. confluence_excerpt_include:: [ref]
-
-    .. versionadded:: 2.0
 
     The ``confluence_excerpt_include`` directive allows a user to define a
     Confluence `Excerpt Include Macro`_ to help include snippets of content
@@ -138,13 +136,13 @@ Common
             .. confluence_excerpt_include:: !my-excerpt-docname
                 :nopanel: true
 
+    .. versionadded:: 2.0
+
 .. index:: Macros; Expand Macro (directive)
 .. index:: Expand Macro
 .. _confluence_expand-directive:
 
 .. rst:directive:: confluence_expand
-
-    .. versionadded:: 1.3
 
     The ``confluence_expand`` directive allows a user to define a Confluence
     `Expand Macro`_ to help manage the visibility of content on a page. For
@@ -172,11 +170,11 @@ Common
 
     See also :doc:`guide-collapse`.
 
+    .. versionadded:: 1.3
+
 .. _confluence_html:
 
 .. rst:directive:: confluence_html
-
-    .. versionadded:: 2.7
 
     .. warning::
 
@@ -197,13 +195,11 @@ Common
 
     See also :lref:`confluence_permit_raw_html`.
 
+    .. versionadded:: 2.7
+
 .. _confluence_metadata:
 
 .. rst:directive:: confluence_metadata
-
-    .. versionadded:: 1.3
-    .. versionchanged:: 2.2 Added ``editor`` and ``full-width`` support.
-    .. versionchanged:: 2.8 Added ``guid`` support.
 
     The ``confluence_metadata`` directive allows a user to define metadata
     information to be added during a publish event. This directive supports the
@@ -259,9 +255,11 @@ Common
 
         See also :lref:`confluence_global_labels`.
 
-.. rst:directive:: confluence_newline
+    .. versionadded:: 1.3
+    .. versionchanged:: 2.2 Added ``editor`` and ``full-width`` support.
+    .. versionchanged:: 2.8 Added ``guid`` support.
 
-    .. versionadded:: 1.7
+.. rst:directive:: confluence_newline
 
     The ``confluence_newline`` directive supports the injection of a newline
     in a document where seperation may be desired between inlined elements.
@@ -270,9 +268,9 @@ Common
 
         .. confluence_newline::
 
-.. rst:directive:: confluence_toc
+    .. versionadded:: 1.7
 
-    .. versionadded:: 1.9
+.. rst:directive:: confluence_toc
 
     The ``confluence_toc`` directive allows a user to define a Confluence
     `Table of Contents Macro`_. Users are typically recommended to use
@@ -398,6 +396,8 @@ Common
             .. confluence_toc::
                 :type: flat
 
+    .. versionadded:: 1.9
+
 .. index:: Macros; Jira Macro (directive)
 .. _jira-directives:
 
@@ -410,8 +410,6 @@ Confluence documents.
 .. index:: Jira; Adding a Jira table
 
 .. rst:directive:: .. jira:: [jql]
-
-    .. versionadded:: 1.2
 
     The ``jira`` directive allows a user to build a Jira macro to be configured
     with a provided JQL query. For example:
@@ -493,12 +491,11 @@ Confluence documents.
                 :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
                 :server-name: MyAwesomeJiraServer
 
+    .. versionadded:: 1.2
 
 .. index:: Jira; Adding a single Jira link (directive)
 
 .. rst:directive:: .. jira_issue:: [issue-id]
-
-    .. versionadded:: 1.2
 
     The ``jira_issue`` directive allows a user to build a Jira macro to be
     configured with a provided Jira key. For example:
@@ -547,6 +544,8 @@ Confluence documents.
                 :server-id: d005bcc2-ca4e-4065-8ce8-49ff5ac5857d
                 :server-name: MyAwesomeJiraServer
 
+    .. versionadded:: 1.2
+
 See also :ref:`Jira roles <jira-roles>`.
 
 .. index:: Macros; LaTeX Macro (directive)
@@ -567,8 +566,6 @@ The following directive can be used to help add LaTeX content into a
 Confluence page.
 
 .. rst:directive:: .. confluence_latex::
-
-    .. versionadded:: 1.8
 
     The ``confluence_latex`` directive allows a user to add LaTeX content into
     a document. For example:
@@ -594,6 +591,8 @@ Confluence page.
 
                 $\mathfrak{H}$ello world!
 
+    .. versionadded:: 1.8
+
 See also :ref:`LaTeX roles <latex-roles>`.
 
 .. index:: Smart links; Directives
@@ -608,8 +607,6 @@ Smart links
     (see :lref:`confluence_editor`).
 
 .. rst:directive:: confluence_doc
-
-    .. versionadded:: 2.1
 
     The ``confluence_doc`` directive allows a user to define a link to a
     document that is styled with a card appearance. The directive accepts the
@@ -666,9 +663,9 @@ Smart links
                 :card: embed
                 :width: 50
 
-.. rst:directive:: confluence_link
-
     .. versionadded:: 2.1
+
+.. rst:directive:: confluence_link
 
     The ``confluence_link`` directive allows a user to define a link to a
     page that is styled with a card appearance. The directive accepts a URL.
@@ -723,6 +720,8 @@ Smart links
             .. confluence_link:: https://example.com
                 :card: embed
                 :width: 50
+
+    .. versionadded:: 2.1
 
 See also :ref:`smart link roles <smart-link-roles>`.
 
