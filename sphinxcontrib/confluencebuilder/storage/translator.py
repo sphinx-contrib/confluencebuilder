@@ -282,7 +282,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #    repsective document name) which helps allow `ac:link` macros
             #    properly link when coming from v1 or v2 editor pages.
             if self.v2 and 'names' in node.parent:
-                for anchor in node.parent['names']:
+                for name in node.parent['names']:
+                    anchor = name.replace(' ', '-')
                     target_name = f'{docname}/#{anchor}'
                     target = self.state.target(target_name)
                     if target and target not in new_targets:
