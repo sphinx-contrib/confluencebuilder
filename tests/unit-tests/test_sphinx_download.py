@@ -19,19 +19,25 @@ class TestConfluenceSphinxDownload(ConfluenceTestCase):
         out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
-            # view-file
-            view_file_macro = data.find('ac:structured-macro',
+            # view-file(s)
+            #
+            # We have a couple of asset downloads in this example. A mixture
+            # of paths to sanity check download paths function. All use the
+            # same/replicated asset type and each will result in a single file
+            # upload, so we should have three matching view-file macros.
+            view_file_macros = data.find_all('ac:structured-macro',
                 {'ac:name': 'view-file'})
-            self.assertIsNotNone(view_file_macro)
+            self.assertEqual(len(view_file_macros), 3)
 
-            view_file_name = view_file_macro.find('ac:parameter',
-                {'ac:name': 'name'})
-            self.assertIsNotNone(view_file_name)
+            for view_file_macro in view_file_macros:
+                view_file_name = view_file_macro.find('ac:parameter',
+                    {'ac:name': 'name'})
+                self.assertIsNotNone(view_file_name)
 
-            attachment_ref = view_file_name.find('ri:attachment')
-            self.assertIsNotNone(attachment_ref)
-            self.assertTrue(attachment_ref.has_attr('ri:filename'))
-            self.assertEqual(attachment_ref['ri:filename'], 'example.pdf')
+                attachment_ref = view_file_name.find('ri:attachment')
+                self.assertIsNotNone(attachment_ref)
+                self.assertTrue(attachment_ref.has_attr('ri:filename'))
+                self.assertEqual(attachment_ref['ri:filename'], 'example.pdf')
 
             # link to file
             file_link = data.find('ac:link')
