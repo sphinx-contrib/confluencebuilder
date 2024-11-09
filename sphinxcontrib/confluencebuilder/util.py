@@ -257,19 +257,19 @@ def find_env_abspath(env, out_dir, path: str) -> Path | None:
         # later stage
         return None
 
+    # some generated nodes will prefix the path of an asset with `/`,
+    # with the intent of that path being the root from the
+    # configured source directory instead of an absolute path on the
+    # system -- check the environment's source directory first before
+    # checking the full system's path
+    if normalized_path.parts[0] == os.sep:
+        abs_path = Path(env.srcdir, *normalized_path.parts[1:])
+
+        if abs_path.is_file():
+            return abs_path
+
     if normalized_path.is_absolute():
         abs_path = normalized_path
-
-        # some generated nodes will prefix the path of an asset with `/`,
-        # with the intent of that path being the root from the
-        # configured source directory instead of an absolute path on the
-        # system -- check the environment's source directory first before
-        # checking the full system's path
-        if normalized_path.name[0] == os.sep:
-            new_path = Path(env.srcdir, normalized_path.name[1:])
-
-            if new_path.is_file():
-                abs_path = new_path
     else:
         abs_path = Path(env.srcdir, normalized_path)
 
