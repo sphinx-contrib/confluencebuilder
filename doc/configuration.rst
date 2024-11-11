@@ -2166,7 +2166,7 @@ Third-party related options
 
         .. raw:: latex
 
-            {\footnotesize 
+            {\footnotesize
 
         .. code-block:: rst
 
