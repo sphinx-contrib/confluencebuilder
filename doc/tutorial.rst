@@ -140,9 +140,9 @@ building/publishing:
 
     make confluence
      (or)
-    sphinx-build -b confluence . _build/confluence -E -a
+    sphinx-build -M confluence . _build -E -a
      (or)
-    python -m sphinx -b confluence . _build/confluence -E -a
+    python -m sphinx -M confluence . _build -E -a
 
 Documentation of the project should now be published to the Confluence site.
 
