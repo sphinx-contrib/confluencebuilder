@@ -16,8 +16,9 @@ __pycache__/
 # testing
 /_build/
 /htmlcov*/
-/output/
-/sandbox-*/
+/output*/
+/sandbox*/
+/venv*/
 /.coverage*
 .tox*
 validation_test_overrides.py
