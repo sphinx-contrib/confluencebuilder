@@ -1,3 +1,9 @@
+Development
+===========
+
+* Fixed issue with env-relative assets in sub-folders (e.g. download role)
+* Fixed some section references between pages for v2 editor pages
+
 2.8.0 (2024-10-14)
 ==================
 
