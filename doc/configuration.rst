@@ -323,13 +323,17 @@ Generic configuration
 
 .. confval:: confluence_editor
 
+    .. warning::
+
+        Using the ``v2`` editor with Confluence Data Center may yield
+        unexpected results. It is recommended to only use the ``v2`` editor
+        when using Confluence Cloud (CONFSERVER-59536_).
+
     .. note::
 
         - Confluence's ``v1`` editor provides a larger support for Sphinx
           features than the newer editor. Users can compare the difference
           in editors by inspecting the `online demo`_.
-        - Using the ``v2`` editor with Confluence Data Center may yield
-          unexpected results.
         - If a page is published with a ``v2`` editor, an attempt to re-publish
           with a ``v1`` editor style may be ignored in Confluence Cloud. In
           such situations, users are recommended to delete the pages on
@@ -2282,6 +2286,7 @@ Deprecated options
 
 .. _API tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _CONFSERVER-57639: https://jira.atlassian.com/browse/CONFSERVER-57639
+.. _CONFSERVER-59536: https://jira.atlassian.com/browse/CONFSERVER-59536
 .. _Confluence editor: https://support.atlassian.com/confluence-cloud/docs/confluence-cloud-editor-roadmap/
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
