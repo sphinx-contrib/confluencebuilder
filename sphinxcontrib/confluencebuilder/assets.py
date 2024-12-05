@@ -148,7 +148,16 @@ class ConfluenceAssetManager:
                     if self.force_standalone:
                         docname = canon_path(
                             self.env.path2doc(node.document['source']))
-                        assert docname in asset.docnames
+
+                        # check if the expected document name is found in the
+                        # asset's document list; if not and standalone, this
+                        # if just an indication that this is a new/dynamic
+                        # image entry on a document that already exists in
+                        # another document -- for now, indicate the key does
+                        # not exist so that the translator can process the
+                        # image node as something new
+                        if docname not in asset.docnames:
+                            key = None
                     else:
                         if len(asset.docnames) > 1:
                             docname = self.root_doc
@@ -307,7 +316,7 @@ class ConfluenceAssetManager:
                 # duplicate asset detected; build an asset alias
                 asset = self.hash2asset[hash_]
                 self.path2asset[path] = asset
-        else:
+        elif not standalone:
             assert (self.hash2asset[asset.hash] == asset)
 
         # track (if not already) that this document uses this asset
