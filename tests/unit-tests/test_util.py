@@ -18,5 +18,5 @@ class TestConfluenceUtil(unittest.TestCase):
 'https://intranet-wiki.example.com/rest/api/':    'https://intranet-wiki.example.com/',
 'http://example.atlassian.net/wiki':              'http://example.atlassian.net/wiki/',
         }
-        for key in data:
-            self.assertEqual(ConfluenceUtil.normalize_base_url(key), data[key])
+        for key, val in data.items():
+            self.assertEqual(ConfluenceUtil.normalize_base_url(key), val)
