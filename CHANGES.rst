@@ -1,3 +1,8 @@
+Development
+===========
+
+* Disable use of inlined images for v2 editor pages
+
 2.9.0 (2024-11-11)
 ==================
 
