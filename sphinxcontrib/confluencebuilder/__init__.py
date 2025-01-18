@@ -266,6 +266,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_embedded_certs')
     # List of node types to ignore if no translator support exists.
     cm.add_conf('confluence_adv_ignore_nodes')
+    # Add the inline attribute for images (v2 editor)
+    cm.add_conf_bool('confluence_adv_inlined_images')
     # Unknown node handler dictionary for advanced integrations.
     cm.add_conf('confluence_adv_node_handler')
     # Permit any string value to be provided as the editor.

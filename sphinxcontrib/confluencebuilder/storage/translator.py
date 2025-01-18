@@ -1855,7 +1855,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if alignment == 'right':
                 attribs['ac:style'] = 'float: right;'
         elif self.v2:
-            attribs['ac:inline'] = 'true'
+            # ideally, images will be inlined but recent v2 editor will
+            # restrict sizing to the line; restrict the feature using a
+            # configuration option for now
+            if self.builder.config.confluence_adv_inlined_images:
+                attribs['ac:inline'] = 'true'
 
         if 'alt' in node:
             alt = node['alt']
