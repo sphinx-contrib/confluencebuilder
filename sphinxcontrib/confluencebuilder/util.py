@@ -79,12 +79,12 @@ class ConfluenceUtil:
         if url:
             # removing any trailing forward slash user provided
             if url.endswith('/'):
-                url = url[:-1]
+                url = url.removesuffix('/')
             # check for rest api prefix; strip and return if found
             if url.endswith(API_REST_V1):
-                url = url[:-len(API_REST_V1)]
+                url = url.removesuffix(API_REST_V1)
             if url.endswith(API_REST_V2):
-                url = url[:-len(API_REST_V2)]
+                url = url.removesuffix(API_REST_V2)
             # restore trailing forward flash
             elif not url.endswith('/'):
                 url += '/'
