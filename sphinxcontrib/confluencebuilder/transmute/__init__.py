@@ -7,6 +7,8 @@ from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_mathjax_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_mathjax_inline
 from sphinxcontrib.confluencebuilder.svg import confluence_supported_svg
 from sphinxcontrib.confluencebuilder.svg import svg_initialize
 from sphinxcontrib.confluencebuilder.transmute.ext_jupyter_sphinx import replace_jupyter_sphinx_nodes
@@ -65,7 +67,7 @@ def doctree_transmute(builder, doctree):
     # replace graphviz nodes with images
     replace_graphviz_nodes(builder, doctree)
 
-    # replace math blocks with Confluence LaTeX blocks
+    # replace math blocks with Confluence LaTeX blocks or raw MathJax content
     replace_math_blocks(builder, doctree)
 
     # --------------------------
@@ -108,6 +110,11 @@ def prepare_math_images(builder, doctree):
         builder: the builder
         doctree: the doctree to replace blocks on
     """
+
+    # allow users to disabled implemented extension changes
+    restricted = builder.config.confluence_adv_restricted
+    if 'ext-imgmath' in restricted:
+        return
 
     # disable automatic conversion of latex blocks to images if a latex
     # macro is configured
@@ -296,7 +303,7 @@ def replace_inheritance_diagram(builder, doctree):
 
 def replace_math_blocks(builder, doctree):
     """
-    replace math blocks with images
+    replace math blocks with Confluence LaTeX blocks
 
     Math blocks are pre-processed and replaced with Confluence LaTeX blocks.
     This is to help prepare nodes that can later be used for user-configured
@@ -310,26 +317,44 @@ def replace_math_blocks(builder, doctree):
 
     # allow users to disabled implemented extension changes
     restricted = builder.config.confluence_adv_restricted
-    if 'ext-imgmath' in restricted:
+    if 'ext-math_blocks' in restricted:
         return
+
+    mathjax = builder.config.confluence_raw_mathjax
 
     # convert math blocks into Confluence LaTeX blocks
     for node in itertools.chain(findall(doctree, nodes.math),
             findall(doctree, nodes.math_block)):
-        if not isinstance(node, nodes.math):
+
+        inlined_math = isinstance(node, nodes.math)
+
+        if not inlined_math:
             if node['nowrap']:
                 latex = node.astext()
             else:
                 latex = wrap_displaymath(node.astext(), None, numbering=False)
-            new_node_type = confluence_latex_block
+
+            if mathjax:
+                new_node_type = confluence_mathjax_block
+            else:
+                new_node_type = confluence_latex_block
         else:
+            latex = node.astext()
+
+            if mathjax:
+                new_node_type = confluence_mathjax_inline
+            else:
+                new_node_type = confluence_latex_inline
+
+        if mathjax:
+            latex = '\\(' + node.astext() + '\\)'
+        elif inlined_math:
             latex = '$' + node.astext() + '$'
-            new_node_type = confluence_latex_inline
 
         new_node = new_node_type(latex, latex, **node.attributes)
         new_node['from_math'] = True
 
-        if not isinstance(node, nodes.math):
+        if not inlined_math:
             new_node['align'] = 'center'
 
         node.replace_self(new_node)

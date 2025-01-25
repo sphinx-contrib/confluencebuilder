@@ -2801,6 +2801,47 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         param = config.get('inline-macro-param')
         self._visit_confluence_latex(node, macro, param=param)
 
+    # ---------------------------------------------
+    # confluence-builder -- enhancements -- mathjax
+    # ---------------------------------------------
+
+    def visit_confluence_mathjax_block(self, node):
+        # if this block is numbered, attempt to align in on the following block
+        if node.get('from_math') and node.get('number'):
+            if self.builder.config.math_numfig and self.builder.config.numfig:
+                figtype = 'displaymath'
+                if self.builder.name == 'singleconfluence':
+                    key = f'{self._docnames[-1]}/{figtype}'
+                else:
+                    key = figtype
+
+                id_ = node['ids'][0]
+                number = self.builder.fignumbers.get(key, {}).get(id_, ())
+                number = '.'.join(map(str, number))
+            else:
+                number = node['number']
+
+            self.body.append(self.start_tag(node, 'div',
+                **{'style': 'float: right'}))
+            self.body.append(f'({number})')
+            self.body.append(self.end_tag(node))
+
+        attribs = {}
+        alignment = self._fetch_alignment(node)
+        if alignment and alignment != 'left':
+            attribs['style'] = f'text-align: {alignment};'
+
+        self.body.append(self.start_tag(node, 'div', **attribs))
+        self.body.append(self.encode(node.rawsource))
+        self.body.append(self.end_tag(node, suffix=''))
+        raise nodes.SkipNode
+
+    def visit_confluence_mathjax_inline(self, node):
+        self.body.append(self.start_tag(node, 'span'))
+        self.body.append(self.encode(node.rawsource))
+        self.body.append(self.end_tag(node, suffix=''))
+        raise nodes.SkipNode
+
     # ----------------------------------------------
     # confluence-builder -- enhancements -- mentions
     # ----------------------------------------------

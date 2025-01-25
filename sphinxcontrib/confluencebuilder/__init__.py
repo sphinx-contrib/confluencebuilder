@@ -244,6 +244,8 @@ def setup(app):
     cm.add_conf('confluence_navdocs_transform')
     # Enablement of permitting raw html blocks to be used in storage format.
     cm.add_conf('confluence_permit_raw_html', 'confluence')
+    # ZZZ
+    cm.add_conf_bool('confluence_raw_mathjax', 'confluence')
     # Remove a detected title from generated documents.
     cm.add_conf_bool('confluence_remove_title', 'confluence')
 
