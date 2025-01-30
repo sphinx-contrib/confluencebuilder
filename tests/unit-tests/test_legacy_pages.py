@@ -18,6 +18,7 @@ class TestConfluenceLegacyPages(ConfluenceTestCase):
 
         config = dict(self.config)
         config['confluence_publish'] = True
+        config['confluence_publish_intersphinx'] = False
         config['confluence_server_url'] = 'https://example.com/'
         config['confluence_space_key'] = 'TEST'
         config['confluence_cleanup_purge'] = True
