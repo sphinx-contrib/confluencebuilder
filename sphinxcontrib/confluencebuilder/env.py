@@ -210,6 +210,9 @@ class ConfluenceCacheInfo:
         new_dochashs = dict(self._cached_dochash)
         new_dochashs.update(self._active_dochash)
 
+        new_pids = dict(self._cached_pids)
+        new_pids.update(self._active_pids)
+
         try:
             with self._cache_cfg_file.open('w', encoding='utf-8') as f:
                 json.dump(new_cfg, f)
@@ -224,6 +227,6 @@ class ConfluenceCacheInfo:
 
         try:
             with self._cache_publish_file.open('w', encoding='utf-8') as f:
-                json.dump(self._active_pids, f)
+                json.dump(new_pids, f)
         except OSError as e:
             self.builder.warn('failed to save cache (pids): ' + e)
