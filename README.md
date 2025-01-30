@@ -44,9 +44,9 @@ extensions = [
 - Run sphinx-build with the builder `confluence`:
 
 ```shell
-sphinx-build -b confluence . _build/confluence -E -a
+sphinx-build -M confluence . _build -E -a
  (or)
-python -m sphinx -b confluence . _build/confluence -E -a
+python -m sphinx -M confluence . _build -E -a
 ```
 
 For more information on the usage of this extension, see also:
