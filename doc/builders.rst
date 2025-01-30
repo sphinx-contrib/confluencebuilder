@@ -12,7 +12,7 @@ The following outlines the Sphinx builders provided by this extension.
 
     .. code-block:: shell
 
-        sphinx-build -b confluence . _build/confluence -E -a
+        sphinx-build -M confluence . _build -E -a
 
 .. builderval:: singleconfluence
 
@@ -23,6 +23,6 @@ The following outlines the Sphinx builders provided by this extension.
 
     .. code-block:: shell
 
-        sphinx-build -b singleconfluence . _build/singleconfluence -E -a
+        sphinx-build -M singleconfluence . _build -E -a
 
     .. versionadded:: 1.3
