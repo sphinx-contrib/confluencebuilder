@@ -3,6 +3,7 @@
 Math support
 ============
 
+.. versionchanged:: 2.10 Limited support for generating MathJax-raw content.
 .. versionchanged:: 1.8 Support for using Confluence-supported LaTeX macros.
 .. versionchanged:: 1.7 SVG-generated math images requires the
                          ``sphinx.ext.imgmath`` extension to be explicitly
@@ -192,7 +193,50 @@ determine the name of the macro by:
         ...
       </ac:structured-macro>
 
+.. index:: Math; MathJax
+
+MathJax integration
+-------------------
+
+.. important::
+
+    While this extension aims to support the capability of generating raw
+    content that MathJax could render, the complete solution of using
+    MathJax on a Confluence instance is considered unsupported.
+
+Stock Confluence instances do not include support to render `MathJax`_
+content. However, if the instance has been configured to support the
+JavaScript engine, the Confluence builder extension can be configured to
+generate output that is compatible with MathJax.
+
+Users can use the :lref:`confluence_mathjax` option to output all math
+content into a MathJax-compatible format:
+
+.. code-block:: python
+
+    confluence_mathjax = True
+
+There are no system administrator guidelines on how to setup a Confluence
+instance to provide MathJax support.
+
+Users on a Confluence Data Center instance that has enabled support for
+HTML macros may be able to use the :lref:`confluence_html` directive to
+enable MathJax support on their pages. For example, adding the following
+into a project's ``conf.py``:
+
+.. code-block:: rst
+
+    rst_prolog = """
+
+    .. confluence_html::
+
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    """
+
+User experience may vary.
 
 .. references ------------------------------------------------------------------
 
+.. _MathJax: https://www.mathjax.org/
 .. _sphinx.ext.imgmath: https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.imgmath
