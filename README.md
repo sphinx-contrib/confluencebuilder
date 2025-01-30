@@ -21,7 +21,7 @@ The recommended method to installing this extension is using [pip][pip]:
 
 ```shell
 pip install sphinxcontrib-confluencebuilder
-    (or)
+ (or)
 python -m pip install sphinxcontrib-confluencebuilder
 ```
 
@@ -37,7 +37,7 @@ For a more in-depth installation information, see also:
 
 ```python
 extensions = [
-   'sphinxcontrib.confluencebuilder',
+    'sphinxcontrib.confluencebuilder',
 ]
 ```
 
@@ -61,7 +61,7 @@ and publishing:
 
 ```python
 extensions = [
-   'sphinxcontrib.confluencebuilder',
+    'sphinxcontrib.confluencebuilder',
 ]
 confluence_publish = True
 confluence_space_key = 'TEST'
