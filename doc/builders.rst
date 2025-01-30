@@ -3,7 +3,6 @@ Builders
 
 The following outlines the Sphinx builders provided by this extension.
 
-
 .. builderval:: confluence
 
     The ``confluence`` builder allows a user to process a Sphinx supported
