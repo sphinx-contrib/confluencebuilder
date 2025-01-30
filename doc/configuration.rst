@@ -2004,6 +2004,7 @@ Advanced processing configuration
 
     See also:
 
+    - :lref:`confluence_mathjax`
     - :ref:`LaTeX directives <latex-directives>`
     - :ref:`LaTeX roles <latex-roles>`
     - :doc:`guide-math`
@@ -2021,6 +2022,42 @@ Advanced processing configuration
     .. code-block:: python
 
         confluence_link_suffix = '.conf'
+
+.. _confluence_mathjax:
+
+.. confval:: confluence_mathjax
+
+    .. important::
+
+        This option relies on additional configuration of a Confluence
+        instance or additional directives such as using an HTML macro.
+        Both of these approaches may not be available in a default
+        Confluence configuration. Confluence Cloud may require a custom
+        marketplace add-on. Confluence Data Center can require a system
+        administrator configuring site support for MathJax; or environments
+        that have a Confluence HTML macro enabled, users can attempt to
+        include MathJax library support via the use of a
+        :lref:`confluence_html` directive.
+
+        While this extension aims to support the capability of generating
+        raw content that MathJax could render, the complete solution of
+        using MathJax on a Confluence instance is considered unsupported.
+
+    Generate math content into a raw format that can be rendered on a
+    Confluence instance that has been configured to support `MathJax`_.
+
+    .. code-block:: python
+
+        confluence_mathjax = True
+
+    See also:
+
+    - :lref:`confluence_latex_macro`
+    - :ref:`LaTeX directives <latex-directives>`
+    - :ref:`LaTeX roles <latex-roles>`
+    - :doc:`guide-math`
+
+    .. versionadded:: 2.10
 
 .. index:: Mentions; Configuration
 
@@ -2153,7 +2190,7 @@ Third-party related options
     .. warning::
 
         This option relies on an HTML macro which is not available in a
-        default  Confluence configuration. Using this option is only useful
+        default Confluence configuration. Using this option is only useful
         for users that have instances where a system administrator has
         enabled their use.
 
@@ -2290,6 +2327,7 @@ Deprecated options
 .. _Confluence editor: https://support.atlassian.com/confluence-cloud/docs/confluence-cloud-editor-roadmap/
 .. _Confluence-supported syntax highlight languages: https://confluence.atlassian.com/confcloud/code-block-macro-724765175.html
 .. _Key of the space: https://support.atlassian.com/confluence-cloud/docs/choose-a-space-key/
+.. _MathJax: https://www.mathjax.org/
 .. _Pygments documented language types: http://pygments.org/docs/lexers/
 .. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
