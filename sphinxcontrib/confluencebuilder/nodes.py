@@ -165,6 +165,24 @@ class confluence_link_card_inline(nodes.Inline, ConfluenceParams):
     """
 
 
+class confluence_mathjax_block(nodes.TextElement):
+    """
+    confluence mathjax block node
+
+    A Confluence builder defined MathJax block node, used to help manage MathJax
+    content designed for a block/section.
+    """
+
+
+class confluence_mathjax_inline(nodes.Inline, nodes.TextElement):
+    """
+    confluence mathjax inline node
+
+    A Confluence builder defined MathJax inline node, used to help manage MathJax
+    content designed for an inlined section of a paragraph.
+    """
+
+
 class confluence_mention_inline(nodes.Inline, nodes.TextElement):
     """
     confluence mention inline node

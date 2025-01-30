@@ -238,6 +238,8 @@ def setup(app):
     cm.add_conf('confluence_latex_macro', 'confluence')
     # Link suffix for generated files.
     cm.add_conf('confluence_link_suffix', 'confluence')
+    # Enable raw math output for MathJax support
+    cm.add_conf_bool('confluence_mathjax', 'confluence')
     # Mappings for documentation mentions to Confluence keys.
     cm.add_conf('confluence_mentions', 'confluence')
     # Inject navigational hints into the documentation.
