@@ -2,6 +2,7 @@ Development
 ===========
 
 * Disable use of inlined images for v2 editor pages
+* Support for generating and publish pages with raw MathJax content
 
 2.9.0 (2024-11-11)
 ==================
