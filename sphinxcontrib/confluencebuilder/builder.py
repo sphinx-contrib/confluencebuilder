@@ -131,8 +131,8 @@ class ConfluenceBuilder(Builder):
         # The imgmath extension allows a builder to override where temporary
         # files are build -- use this to hint to using a temporary directory
         # on the same partition the output directory to help prevent issues.
-        self._imgmath_tempdir = tempfile.mkdtemp(
-            prefix='.imgmath-', dir=self.out_dir)
+        self._imgmath_tempdir = Path(tempfile.mkdtemp(
+            prefix='.imgmath-', dir=self.out_dir))
 
         if self.config.confluence_publish:
             process_ask_configs(self.config)
