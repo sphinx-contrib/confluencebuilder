@@ -2095,6 +2095,22 @@ Advanced processing configuration
 
     .. versionadded:: 2.10
 
+.. confval:: confluence_manifest_data
+
+    A manifest file (``scb-manifest.json``) is generated after each run
+    into the output directory. This information includes built pages as
+    well as attachments for these pages. Each page/attachment provides a
+    path to where the content resides. However, if a user wishes to
+    include this data into the manifest, this option can be used to
+    Base64-encode page/attachment data into the manifest. By default, this
+    is disabled:
+
+    .. code-block:: python
+
+        confluence_manifest_data = True
+
+    .. versionadded:: 2.10
+
 .. index:: Mentions; Configuration
 
 .. _confluence_mentions:
