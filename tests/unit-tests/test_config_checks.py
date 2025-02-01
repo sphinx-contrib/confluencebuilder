@@ -906,6 +906,28 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_publish_prefix'] = 'dummy'
         self._try_config()
 
+    def test_config_check_publish_retry_attempts(self):
+        self.config['confluence_publish_retry_attempts'] = 10
+        self._try_config()
+
+        self.config['confluence_publish_retry_attempts'] = '999'
+        self._try_config()
+
+        self.config['confluence_publish_retry_attempts'] = -1
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+    def test_config_check_publish_retry_duration(self):
+        self.config['confluence_publish_retry_duration'] = 2
+        self._try_config()
+
+        self.config['confluence_publish_retry_duration'] = '2'
+        self._try_config()
+
+        self.config['confluence_publish_retry_duration'] = -1
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_publish_root(self):
         # enable publishing enabled checks
         self._prepare_valid_publish()

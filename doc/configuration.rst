@@ -1752,6 +1752,42 @@ Advanced publishing configuration
 
     .. versionadded:: 2.5
 
+.. _confluence_publish_retry_attempts:
+
+.. confval:: confluence_publish_retry_attempts
+
+    Allows a user to override how many retry attempts are permitted when a
+    single API request fails. By default, this extension uses a maximum
+    retry of two, allowing a single request to be attempted three times
+    for select failure events.
+
+    Failure scenarios that are retried on include all 500-series errors,
+    as well as couple of observed/reported corner cases reported by
+    Confluence instances during the life-cycle of this extension.
+
+    .. code-block:: python
+
+        confluence_publish_retry_attempts = 2
+
+    See also :lref:`confluence_publish_retry_duration`.
+
+    .. versionadded:: 2.10
+
+.. _confluence_publish_retry_duration:
+
+.. confval:: confluence_publish_retry_duration
+
+    The duration (in seconds) to wait between API retry events on select
+    failures. By default, the duration waited is four seconds.
+
+    .. code-block:: python
+
+        confluence_publish_retry_duration = 4
+
+    See also :lref:`confluence_publish_retry_attempts`.
+
+    .. versionadded:: 2.10
+
 .. confval:: confluence_request_session_override
 
     A hook to manipulate a Requests_ session prepared by this extension. Allows
