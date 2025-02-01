@@ -590,6 +590,16 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    validator.conf('confluence_publish_retry_attempts') \
+             .int_(positive=True)
+
+    # ##################################################################
+
+    validator.conf('confluence_publish_retry_duration') \
+             .int_(positive=True)
+
+    # ##################################################################
+
     validator.conf('confluence_publish_root') \
              .int_(positive=True)
 

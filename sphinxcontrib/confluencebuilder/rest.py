@@ -95,13 +95,23 @@ def confluence_error_retries():
     def _decorator(func):
         @wraps(func)
         def _wrapper(self, *args, **kwargs):
+            if self.config.confluence_publish_retry_attempts:
+                retry_attempts = self.config.confluence_publish_retry_attempts
+            else:
+                retry_attempts = REMOTE_ERR_MAX_RETRIES
+
+            if self.config.confluence_publish_retry_duration:
+                retry_duration = self.config.confluence_publish_retry_duration
+            else:
+                retry_duration = REMOTE_ERR_MAX_RETRY_DURATION
+
             attempt = 1
             while True:
                 try:
                     return func(self, *args, **kwargs)
                 except ConfluenceBadApiError as ex:  # noqa: PERF203
                     # if max attempts have been reached, stop any more attempts
-                    if attempt > REMOTE_ERR_MAX_RETRIES:
+                    if attempt > retry_attempts:
                         raise
 
                     # The following will contain a series of known error
@@ -124,7 +134,7 @@ def confluence_error_retries():
                         raise
 
                     # configure the delay
-                    delay = REMOTE_ERR_MAX_RETRY_DURATION
+                    delay = retry_duration
 
                     # add jitter
                     delay += random.uniform(0.0, 0.5)  # noqa: S311

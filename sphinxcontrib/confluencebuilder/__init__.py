@@ -214,6 +214,10 @@ def setup(app):
     cm.add_conf_int('confluence_publish_orphan_container')
     # Override the path prefixes for various REST API requests.
     cm.add_conf('confluence_publish_override_api_prefix')
+    # Number of attempts permitted when trying to retry a failed API request
+    cm.add_conf('confluence_publish_retry_attempts')
+    # Duration (in seconds) between retrying failed API requests
+    cm.add_conf('confluence_publish_retry_duration')
     # Manipulate a requests instance.
     cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.
