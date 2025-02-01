@@ -3,18 +3,19 @@
 
 from __future__ import annotations
 from contextlib import contextmanager
+from contextlib import suppress
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
+from subprocess import check_call
 from hashlib import sha256
 from urllib.parse import urlparse
 import getpass
 import os
 import re
 import shutil
-import subprocess
 import tempfile
 import unicodedata
 
@@ -334,13 +335,23 @@ def getpass2(prompt='Password: '):
     # disable this feature.
     if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
-        subprocess.check_call(['/usr/bin/stty', '-echo'])  # noqa: S603
         try:
-            value = input(prompt)
-        finally:
-            subprocess.check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
-        print()
-        return value
+            check_call(['/usr/bin/stty', '-echo'])  # noqa: S603
+        except:  # noqa: E722
+            print()
+            print()
+            print('(error) pass input not available; please run with winpty')
+            print()
+            return None
+        else:
+            try:
+                value = input(prompt)
+            finally:
+                with suppress(Exception):
+                    check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
+
+            print()
+            return value
 
     return getpass.getpass(prompt=prompt)
 
