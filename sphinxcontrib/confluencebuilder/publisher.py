@@ -960,6 +960,7 @@ class ConfluencePublisher:
         # fetch known properties (associated with this extension) from the page
         page_id = page['id'] if page else None
         cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
+            'key': CB_PROP_KEY,
             'value': {},
         })
 
@@ -1190,6 +1191,7 @@ class ConfluencePublisher:
 
         # fetch known properties (associated with this extension) from the page
         cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
+            'key': CB_PROP_KEY,
             'value': {},
         })
 
@@ -1535,7 +1537,7 @@ class ConfluencePublisher:
 
         # push an updated to confluence builder property which includes an
         # updated hash value
-        self.store_page_property(page_id, CB_PROP_KEY, cb_props)
+        self._update_page_properties(page_id, [cb_props])
 
         # ensure remove any watch flags on the update if watching is disabled
         if not self.watch:

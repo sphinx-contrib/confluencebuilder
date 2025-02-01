@@ -66,7 +66,8 @@ class TestConfluencePublisherPage(unittest.TestCase):
                     'number': '1',
                 },
             }
-            daemon.register_get_rsp(200, scb_fetch_props_rsp)
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)  # initial
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)  # re-fetch
 
             # prepare response for update event
             daemon.register_put_rsp(200, dict(page_fetch_rsp))
@@ -104,6 +105,9 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(update_req)
 
             # check that the property request on the page was done
+            props_fetch_req = daemon.pop_get_request()
+            self.assertIsNotNone(props_fetch_req)
+
             props_fetch_req = daemon.pop_get_request()
             self.assertIsNotNone(props_fetch_req)
 
@@ -156,7 +160,8 @@ class TestConfluencePublisherPage(unittest.TestCase):
                     'number': '1',
                 },
             }
-            daemon.register_get_rsp(200, scb_fetch_props_rsp)
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)  # initial
+            daemon.register_get_rsp(200, scb_fetch_props_rsp)  # re-fetch
 
             # prepare response for update event
             daemon.register_put_rsp(200, dict(page_fetch_rsp))
@@ -197,6 +202,9 @@ class TestConfluencePublisherPage(unittest.TestCase):
             self.assertIsNotNone(update_req)
 
             # check that the property request on the page was done
+            props_fetch_req = daemon.pop_get_request()
+            self.assertIsNotNone(props_fetch_req)
+
             props_fetch_req = daemon.pop_get_request()
             self.assertIsNotNone(props_fetch_req)
 
