@@ -258,6 +258,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_bulk_archiving')
     # Force override for detected Cloud state.
     cm.add_conf_bool('confluence_adv_cloud')
+    # Disable any delays when publishing property updates on Cloud
+    cm.add_conf_bool('confluence_adv_disable_cloud_prop_delay')
     # Disable workaround for: https://jira.atlassian.com/browse/CONFCLOUD-74698
     cm.add_conf_bool('confluence_adv_disable_confcloud_74698')
     # Disable workaround for inline-extension anchor injection

@@ -1112,13 +1112,6 @@ class ConfluencePublisher:
 
                     uploaded_page_id = rsp['id']
 
-                    # always wait a little moment before updating properies on
-                    # cloud -- it seems to take a moment to complete creating
-                    # initial properties after we build a new page, and we want
-                    # to avoid a conflict (409) if possible
-                    if self.cloud:
-                        time.sleep(0.5)
-
                     # we have properties we would like to apply, but we cannot
                     # just create new ones if Confluence already created ones
                     # implicitly in the new page update -- we will need to
@@ -1242,6 +1235,14 @@ class ConfluencePublisher:
             page_id: the id of the page to update
             properties: the properties to update
         """
+
+        # always wait a little moment before updating properties on
+        # cloud -- it seems to take a moment to complete creating or
+        # updating properties after we build process a page, and we want
+        # to avoid a conflict (409) if possible
+        if self.cloud:
+            if not self.config.confluence_adv_disable_cloud_prop_delay:
+                time.sleep(0.5)
 
         # we have properties we would like to apply, but we cannot
         # just create new ones if Confluence already created ones
