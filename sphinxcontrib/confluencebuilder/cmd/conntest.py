@@ -119,7 +119,7 @@ def conntest_main(args_parser):
         return 1
 
     # ##################################################################
-    # dump relavant configurations
+    # dump relevant configurations
     # ##################################################################
 
     opts = [
