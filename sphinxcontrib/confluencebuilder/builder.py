@@ -20,6 +20,7 @@ from sphinxcontrib.confluencebuilder.config.env import build_hash
 from sphinxcontrib.confluencebuilder.env import ConfluenceCacheInfo
 from sphinxcontrib.confluencebuilder.intersphinx import build_intersphinx
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.manifest import ConfluenceManifest
 from sphinxcontrib.confluencebuilder.nodes import confluence_footer
 from sphinxcontrib.confluencebuilder.nodes import confluence_header
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
@@ -93,6 +94,8 @@ class ConfluenceBuilder(Builder):
         self._original_get_doctree = None
         self._verbose = self.app.verbosity
 
+        self.manifest = ConfluenceManifest(self.config, self.state)
+
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
         self.state.reset()
@@ -102,6 +105,10 @@ class ConfluenceBuilder(Builder):
         validate_configuration(self)
         apply_defaults(self)
         config = self.config
+
+        # populate desired metadata into the manifest after the configuration
+        # has been finalized
+        self.manifest.register_metadata()
 
         self.add_secnumbers = self.config.confluence_add_secnumbers
         self.secnumber_suffix = self.config.confluence_secnumber_suffix
@@ -476,6 +483,9 @@ class ConfluenceBuilder(Builder):
                         file.write(self.writer.output)
             except OSError as err:
                 self.warn(f'error writing file {out_file}: {err}')
+            else:
+                self.manifest.add_page(
+                    docname, self.writer.output, out_file, self.out_dir)
 
         self._cache_info.track_page_hash(docname)
 
@@ -866,6 +876,20 @@ class ConfluenceBuilder(Builder):
 
             self.publish_cleanup()
             self.publish_finalize()
+        else:
+            assets = self.assets.build()
+
+        # track all referenced assets into the manifest
+        for asset in assets:
+            key, abs_file, mime, hash_, docname = asset
+            self.manifest.add_attachment(
+                docname, key, mime, hash_, Path(abs_file), self.out_dir)
+
+        # output the manifest into the output directory
+        self.info('building manifest...', nonl=(not self._verbose))
+        self.manifest.export(self.out_dir)
+        if not self._verbose:
+            self.info(' done')
 
         # persist cache from this run
         self._cache_info.save_cache()

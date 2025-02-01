@@ -244,6 +244,8 @@ def setup(app):
     cm.add_conf('confluence_link_suffix', 'confluence')
     # Enable raw math output for MathJax support
     cm.add_conf_bool('confluence_mathjax', 'confluence')
+    # Embed page/attachment data into the manifest
+    cm.add_conf_bool('confluence_manifest_data')
     # Mappings for documentation mentions to Confluence keys.
     cm.add_conf('confluence_mentions', 'confluence')
     # Inject navigational hints into the documentation.
