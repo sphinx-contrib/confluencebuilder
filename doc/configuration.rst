@@ -1529,7 +1529,7 @@ Advanced publishing configuration
 
     .. code-block:: python
 
-        confluence_publish_debug = 'urllib3'
+        confluence_publish_debug = 'headers'
 
     .. versionadded:: 1.8
     .. versionchanged:: 2.5
