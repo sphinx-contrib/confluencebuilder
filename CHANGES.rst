@@ -2,6 +2,9 @@ Development
 ===========
 
 * Disable use of inlined images for v2 editor pages
+* Fixed issue where MinGW getpass workaround could throw an exception
+* Introduce the ``confluence_publish_retry_attempts`` option
+* Introduce the ``confluence_publish_retry_duration`` option
 * Support for generating and publish pages with raw MathJax content
 
 2.9.0 (2024-11-11)
