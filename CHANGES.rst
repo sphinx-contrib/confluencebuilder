@@ -1,5 +1,5 @@
-Development
-===========
+2.10.0 (2025-02-02)
+===================
 
 * Disable use of inlined images for v2 editor pages
 * Fixed issue where MinGW getpass workaround could throw an exception
