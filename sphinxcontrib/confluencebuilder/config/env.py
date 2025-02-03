@@ -35,7 +35,7 @@ def apply_env_overrides(builder):
         env_key = key.upper()
         env_val = os.getenv(env_key)
         if env_val:
-            logger.verbose(f'accepting configuration from env: {env_val}')
+            logger.info(f'accepting configuration from env: {env_key}')
 
             if key in config_manager.options_bool:
                 conf[key] = str2bool(env_val)
