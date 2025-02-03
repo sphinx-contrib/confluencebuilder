@@ -174,7 +174,7 @@ class ConfluencePublisher:
         if detected_key != self.space_key:
             msg = (
                 'server did not provide an expected response; '
-                f'bad key match; {detected_key} != {self.space_key}'
+                f'bad space key match; {detected_key} != {self.space_key}'
             )
             raise ConfluenceBadServerUrlError(server_url, msg)
 
