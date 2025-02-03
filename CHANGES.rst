@@ -1,7 +1,7 @@
 2.10.1 (2025-02-02)
 ===================
 
-* Correct publish failure due key check mismatch on new Confluence Cloud spaces
+* Correct publish fail with key check mismatch on new Confluence Cloud spaces
 
 2.10.0 (2025-02-02)
 ===================
