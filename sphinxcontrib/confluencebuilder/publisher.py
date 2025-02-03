@@ -170,14 +170,6 @@ class ConfluencePublisher:
             msg = 'server did not provide an expected response; missing entries'
             raise ConfluenceBadServerUrlError(server_url, msg)
 
-        detected_key = rsp['key']
-        if detected_key != self.space_key:
-            msg = (
-                'server did not provide an expected response; '
-                f'bad space key match; {detected_key} != {self.space_key}'
-            )
-            raise ConfluenceBadServerUrlError(server_url, msg)
-
         # track required space information
         self.space_display_name = rsp['name']
         self.space_id = rsp['id']
