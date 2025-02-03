@@ -1,3 +1,8 @@
+Development
+===========
+
+* Correct publish failure due key check mismatch on new Confluence Cloud spaces
+
 2.10.0 (2025-02-02)
 ===================
 
