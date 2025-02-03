@@ -49,7 +49,7 @@ try:
 except ImportError:
     has_imgmath = False
 
-__version__ = '2.11.0.dev0'
+__version__ = '2.10.1'
 
 
 def setup(app):
