@@ -8,6 +8,8 @@ lint.exclude = [
 ]
 
 lint.ignore = [
+    # ignore shadowed modules
+    'A005',
     # we do not type annotate everything at this time
     'ANN',
     'RUF012',
