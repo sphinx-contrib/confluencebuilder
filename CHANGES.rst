@@ -2,7 +2,11 @@ Development
 ===========
 
 * Addressed path-related issue with graphviz/inheritance-diagrams for Sphinx v9
+* Fixed extra newlines generated with ``productionlist`` when using Sphinx v8.2
 * Publish retry events trigger on all `transient errors`_
+* Support ``no-wrap`` for math directives
+* Support collapsible code blocks for v2 editor pages
+* Support collapsible option for admonitions (unsightly)
 
 2.10.1 (2025-02-02)
 ===================
