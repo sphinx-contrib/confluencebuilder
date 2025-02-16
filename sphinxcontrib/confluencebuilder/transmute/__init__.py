@@ -231,6 +231,18 @@ def replace_graphviz_nodes(builder, doctree):
                 node.parent.remove(node)
                 continue
 
+            # force str type for uri
+            #
+            # Old `render_dot` returned a `str` but Sphinx v8.2 comes with
+            # a wrapper to prepare for the type changing to a `Path` type.
+            # Sphinx's usage of `render_dot` will generate a file type and
+            # use it in the translator, but this extension replaces the
+            # node here with a compatible `nodes.image` type ahead of time
+            # (e.g. for asset processing). The `nodes.image` type expects
+            # a `str` type, so convert ensure any new Path-like type is
+            # converted back to a `str` to prevent issues.
+            out_filename = str(out_filename)
+
             new_node = nodes.image(candidates={'?'}, uri=out_filename)
             if 'align' in node:
                 new_node['align'] = node['align']
@@ -291,6 +303,9 @@ def replace_inheritance_diagram(builder, doctree):
             if not out_filename:
                 node.parent.remove(node)
                 continue
+
+            # see `replace_graphviz_nodes` for more details
+            out_filename = str(out_filename)
 
             new_node = nodes.image(candidates={'?'}, uri=out_filename)
             if 'align' in node:
