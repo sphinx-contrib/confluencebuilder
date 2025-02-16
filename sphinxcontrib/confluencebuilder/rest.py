@@ -124,8 +124,10 @@ def confluence_error_retries():
                     if any(x in ex_str for x in API_NORETRY_ERRORS):
                         raise
 
-                    # Always retry on 5xx error codes.
-                    if ex.status_code >= 500 and ex.status_code <= 599:
+                    # Retry on transient errors.
+                    #
+                    # See: https://everything.curl.dev/usingcurl/downloads/retry.html#retry
+                    if ex.status_code in (408, 429, 500, 502, 503, 504):
                         pass
                     # Check if the reported state is a retry condition, but
                     # Confluence does not report a 5xx error code for the
