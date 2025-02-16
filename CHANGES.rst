@@ -1,3 +1,9 @@
+Development
+===========
+
+* Addressed path-related issue with graphviz/inheritance-diagrams for Sphinx v9
+* Publish retry events trigger on all `transient errors`_
+
 2.10.1 (2025-02-02)
 ===================
 
@@ -515,3 +521,4 @@
 .. _pycontribs/confluence: https://github.com/pycontribs/confluence
 .. _sphinx-contrib/confluencebuilder#10: https://github.com/sphinx-contrib/confluencebuilder/pull/10
 .. _sphinx-contrib/confluencebuilder#192: https://github.com/sphinx-contrib/confluencebuilder/issues/192
+.. _transient errors: https://everything.curl.dev/usingcurl/downloads/retry.html
