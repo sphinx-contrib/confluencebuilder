@@ -981,8 +981,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------
 
     def _visit_admonition(self, node, atype, title=None, logo=True):
+        collapsible = node.get('collapsible', False)
+
         self.body.append(self.start_ac_macro(node, atype))
-        if title:
+        if title and not collapsible:
             self.body.append(self.build_ac_param(node, 'title', title))
         if not logo:
             self.body.append(
@@ -991,7 +993,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.context.append(self.end_ac_rich_text_body_macro(node) +
             self.end_ac_macro(node))
 
+        if collapsible:
+            self.body.append(self.start_ac_macro(node, 'expand'))
+            if title:
+                self.body.append(self.build_ac_param(node, 'title', title))
+            self.context.append(self.end_ac_macro(node))
+
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+            self.context.append(self.end_ac_rich_text_body_macro(node))
+
     def _depart_admonition(self, node):
+        if node.get('collapsible', False):
+            self.body.append(self.context.pop())
+            self.body.append(self.context.pop())
+
         self.body.append(self.context.pop())  # macro (or blockquote)
 
     def _visit_admonition_adf(self, node, atype, title=None, logo=True):
@@ -1042,24 +1057,37 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     def visit_admonition(self, node):
         title_node = first(findall(node, nodes.title))
+        title = title_node.astext() if title_node else ''
 
         if self.v2:
             self._visit_admonition_adf(node, 'note')
 
-            if title_node:
-                title = title_node.astext()
+            collapsible = node.get('collapsible', False)
+            if collapsible:
+                self.body.append(self.start_ac_macro(node, 'expand'))
+                if title:
+                    self.body.append(self.build_ac_param(node, 'title', title))
+                self.context.append(self.end_ac_macro(node))
+
+                self.body.append(self.start_ac_rich_text_body_macro(node))
+                self.context.append(self.end_ac_rich_text_body_macro(node))
+
+            if title and not collapsible:
                 self.body.append(self.start_tag(node, 'h3'))
                 self.body.append(title)
                 self.body.append(self.end_tag(node))
         else:
-            if title_node:
-                title = title_node.astext()
+            if title:
                 self._visit_admonition(node, 'info', title, logo=False)
             else:
                 self._visit_admonition(node, 'info', logo=False)
 
     def depart_admonition(self, node):
         if self.v2:
+            if node.get('collapsible', False):
+                self.body.append(self.context.pop())
+                self.body.append(self.context.pop())
+
             self._depart_admonition_adf(node)
         else:
             self._depart_admonition(node)
