@@ -829,6 +829,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             with suppress(KeyError):
                 firstline = node.attributes['highlight_args']['linenostart']
 
+        collapse_code = 'collapse' in node.get('classes', [])
+        if self.v2 and collapse_code:
+            self.body.append(self.start_ac_macro(node, 'expand'))
+            if title:
+                self.body.append(self.build_ac_param(node, 'title', title))
+            self.body.append(self.start_ac_rich_text_body_macro(node))
+
         self.body.append(self.start_ac_macro(node, 'code'))
         self.body.append(self.build_ac_param(node, 'language', lang))
         self.body.append(self.build_ac_param(node, 'linenumbers', num))
@@ -852,16 +859,20 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if firstline is not None and firstline > 1:
             self.body.append(self.build_ac_param(node, 'firstline', firstline))
 
-        if title:
+        if title and not self.v2:
             self.body.append(self.build_ac_param(node, 'title', title))
 
-        if 'collapse' in node.get('classes', []):
+        if collapse_code and not self.v2:
             self.body.append(self.build_ac_param(node, 'collapse', 'true'))
 
         self.body.append(self.start_ac_plain_text_body_macro(node))
         self.body.append(self.escape_cdata(data))
         self.body.append(self.end_ac_plain_text_body_macro(node))
         self.body.append(self.end_ac_macro(node))
+
+        if self.v2 and collapse_code:
+            self.body.append(self.end_ac_rich_text_body_macro(node))
+            self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode
 
