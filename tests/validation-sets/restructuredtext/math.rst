@@ -42,6 +42,16 @@ Euler's identity is outline in :math:numref:`euler` below:
 .. math:: e^{i\pi} + 1 = 0
     :label: euler
 
+Non-wrapped math example:
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+      y    & = & ax^2 + bx + c \\
+      f(x) & = & x^2 + 2xy + y^2
+   \end{eqnarray}
+
 
 .. references ------------------------------------------------------------------
 
