@@ -354,7 +354,7 @@ def replace_math_blocks(builder, doctree):
         inlined_math = isinstance(node, nodes.math)
 
         if not inlined_math:
-            if node['nowrap']:
+            if node.get('no-wrap', node.get('nowrap', False)):
                 latex = node.astext()
             else:
                 latex = wrap_displaymath(node.astext(), None, numbering=False)
