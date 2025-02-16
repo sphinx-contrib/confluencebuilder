@@ -3,8 +3,9 @@ Math
 
 .. attention::
 
-    Support for math requires a LaTeX and dvipng/dvisvgm installation; unless
-    Marketplace-installed LaTeX macros are available on the target instance.
+    Support for math can require a LaTeX and dvipng/dvisvgm installation;
+    unless HTML or Marketplace-installed LaTeX macros are available on the
+    target instance. For more information, see the `math support guide`_.
 
 .. only:: confluence_storage
 
@@ -45,3 +46,4 @@ Euler's identity is outline in :math:numref:`euler` below:
 .. references ------------------------------------------------------------------
 
 .. _math directive: https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
+.. _math support guide: https://sphinxcontrib-confluencebuilder.readthedocs.io/guide-math/
