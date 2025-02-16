@@ -9,9 +9,10 @@ name = 'sphinxcontrib-confluencebuilder'
 description = 'Sphinx extension to build Atlassian Confluence Storage Markup'
 authors = [
     {name = 'Anthony Shaw', email = 'anthonyshaw@apache.org'},
+    {name = 'James Knight', email = 'git@jdknight.me'},
 ]
 maintainers = [
-    {name = 'James Knight', email = 'james.d.knight@live.com'},
+    {name = 'James Knight', email = 'git@jdknight.me'},
 ]
 requires-python = '>=3.9'
 readme = 'README.md'
