@@ -2168,7 +2168,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             else:
                 prefix = ' ' * len(lastname)
                 self.body.append(f'{prefix}    ')
-            text = production.astext()
+            text = production.astext().rstrip()
             text = self.encode(text)
             self.body.append(text + self.nl)
 
