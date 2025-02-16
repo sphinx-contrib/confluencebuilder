@@ -56,6 +56,9 @@ Essential configuration
 
         confluence_publish = True
 
+    Re-publishing supports checking for page changes. Pages that have not
+    changed will not be updated (see :lref:`confluence_publish_force`).
+
 .. confval:: confluence_server_url
 
     The URL for the Confluence instance to publish to. The URL should be
@@ -1181,6 +1184,8 @@ Advanced publishing configuration
 
     .. versionadded:: 1.3
 
+.. _confluence_asset_override:
+
 .. confval:: confluence_asset_override
 
     Provides an override for asset publishing to allow a user publishing to
@@ -1626,6 +1631,8 @@ Advanced publishing configuration
     .. code-block:: python
 
         confluence_publish_force = True
+
+    See also :lref:`confluence_asset_override`.
 
     .. versionadded:: 2.1
 
