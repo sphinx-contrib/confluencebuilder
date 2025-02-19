@@ -1,5 +1,5 @@
-Development
-===========
+2.11.0 (2025-02-18)
+===================
 
 * Addressed path-related issue with graphviz/inheritance-diagrams for Sphinx v9
 * Fixed extra newlines generated with ``productionlist`` when using Sphinx v8.2
