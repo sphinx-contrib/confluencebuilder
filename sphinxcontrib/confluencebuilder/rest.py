@@ -435,6 +435,9 @@ class Rest:
             filtered_headers = dict(req.headers)
             if PublishDebug.headers_raw not in publish_debug_opts:
                 fde = [
+                    'Atl-Confluence-Via',
+                    'Atl-Request-Id',
+                    'Atl-Traceid',
                     'Authorization',
                     'Cookie',
                 ]
@@ -451,7 +454,7 @@ class Rest:
             if dump_body and req.body:
                 print('(debug) Request data]')
                 content_type = req.headers.get('Content-Type') or ''
-                if content_type == 'application/json;charset=utf-8':
+                if 'application/json' in content_type:
                     try:
                         json_data = json.dumps(json.loads(req.body), indent=2)
                         print(json_data)
