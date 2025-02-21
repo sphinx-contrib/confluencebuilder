@@ -435,6 +435,9 @@ class Rest:
             filtered_headers = dict(req.headers)
             if PublishDebug.headers_raw not in publish_debug_opts:
                 fde = [
+                    'Atl-Confluence-Via',
+                    'Atl-Request-Id',
+                    'Atl-Traceid',
                     'Authorization',
                     'Cookie',
                 ]
