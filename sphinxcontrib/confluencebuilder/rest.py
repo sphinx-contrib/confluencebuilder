@@ -5,6 +5,7 @@ from email.utils import mktime_tz
 from email.utils import parsedate_tz
 from functools import wraps
 from requests.adapters import HTTPAdapter
+from sphinxcontrib.confluencebuilder.debug import FILTERED_HEADERS
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
@@ -434,14 +435,7 @@ class Rest:
             # see non-redacted content
             filtered_headers = dict(req.headers)
             if PublishDebug.headers_raw not in publish_debug_opts:
-                fde = [
-                    'Atl-Confluence-Via',
-                    'Atl-Request-Id',
-                    'Atl-Traceid',
-                    'Authorization',
-                    'Cookie',
-                ]
-                for entry in fde:
+                for entry in FILTERED_HEADERS:
                     if filtered_headers.get(entry):
                         filtered_headers[entry] = '(redacted)'
 
@@ -469,9 +463,15 @@ class Rest:
 
         # debug logging
         if dump:
+            filtered_headers = dict(rsp.headers)
+            if PublishDebug.headers_raw not in publish_debug_opts:
+                for entry in FILTERED_HEADERS:
+                    if filtered_headers.get(entry):
+                        filtered_headers[entry] = '(redacted)'
+
             print('(debug) Response]')
             print(f'Code: {rsp.status_code}')
-            print('\n'.join(f'{k}: {v}' for k, v in rsp.headers.items()))
+            print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
             print(flush=True)
 
             if dump_body and rsp.text:
