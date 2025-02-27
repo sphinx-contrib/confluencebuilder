@@ -35,3 +35,19 @@ class PublishDebug(Flag):
     all = data | headers | urllib3
     # enable all developer logging
     developer = deprecated | all
+
+
+# list of headers to filter out in any debug captures
+FILTERED_HEADERS = [
+    'Atl-Confluence-Via',
+    'Atl-Request-Id',
+    'Atl-Traceid',
+    'Authorization',
+    'Cookie',
+    'Link',
+    'Report-To',
+    'Server-Timing',
+    'Via',
+    'X-Amz-Cf-Id',
+    'X-Amz-Cf-Pop',
+]
