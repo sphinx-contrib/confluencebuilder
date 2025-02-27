@@ -1655,6 +1655,8 @@ class ConfluencePublisher:
                 raise ConfluenceUnreconciledPageError(
                     page_name, page['id'], self.server_url, ex) from ex
 
+            raise
+
         # post-update requests (api v2 mode)
         update_page_id = update_page['id']
 
