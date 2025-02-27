@@ -11,7 +11,7 @@ from sphinx.util.docfields import GroupedField
 import sphinxcontrib.confluencebuilder
 
 project = 'Sphinx Confluence Builder'
-copyright = '2024 Sphinx Confluence Builder Contributors'
+copyright = '2025 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
