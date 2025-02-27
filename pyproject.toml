@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    'flit_core>=3.7',
+    'flit_core >=3.11,<4',
 ]
 build-backend = 'flit_core.buildapi'
 
@@ -16,6 +16,7 @@ maintainers = [
 ]
 requires-python = '>=3.9'
 readme = 'README.md'
+license = {text = 'BSD-2-Clause'}
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
