@@ -621,9 +621,7 @@ class ConfluencePublisher:
                 props_to_fetch.append('editor')
 
             for prop_key in props_to_fetch:
-                prop_entry = self.get_page_property(page_id, prop_key, {
-                    'value': None,
-                })
+                prop_entry = self.get_page_property(page_id, prop_key)
                 meta_props[prop_key] = prop_entry
 
         return page_id, page
@@ -712,19 +710,23 @@ class ConfluencePublisher:
         get a property from the provided page id
 
         Performs an API call to acquire a property held on a specific page.
-        This call can returns the page properties dictionary if found;
-        otherwise ``None`` will be returned.
+        This call can returns the page properties dictionary. If the property
+        was not found, it will return a pre-populated properties entry with
+        a value of ``None``.
 
         Args:
             page_id: the page identifier
             key: the property key
-            default (optional): default value if no property exists
+            default (optional): default value for property if no property exists
 
         Returns:
             the property value
         """
 
-        props = default
+        props = {
+            'key': key,
+            'value': default,
+        }
 
         if page_id:
             try:
@@ -951,10 +953,7 @@ class ConfluencePublisher:
 
         # fetch known properties (associated with this extension) from the page
         page_id = page['id'] if page else None
-        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
-            'key': CB_PROP_KEY,
-            'value': {},
-        })
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, default={})
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -1182,10 +1181,7 @@ class ConfluencePublisher:
             raise ConfluenceMissingPageIdError(self.space_key, page_id) from ex
 
         # fetch known properties (associated with this extension) from the page
-        cb_props = self.get_page_property(page_id, CB_PROP_KEY, {
-            'key': CB_PROP_KEY,
-            'value': {},
-        })
+        cb_props = self.get_page_property(page_id, CB_PROP_KEY, default={})
 
         # calculate the hash for a page; we will first use this to check if
         # there is a update to apply, and if we do need to update, we will
@@ -1253,9 +1249,7 @@ class ConfluencePublisher:
             attempt = 1
             while attempt <= MAX_ATTEMPTS_TO_UPDATE_PROPERTY:
                 prop_key = prop['key']
-                prop_entry = self.get_page_property(page_id, prop_key, {
-                    'value': None,
-                })
+                prop_entry = self.get_page_property(page_id, prop_key)
 
                 # ignore if the property already matches the desired
                 # value
