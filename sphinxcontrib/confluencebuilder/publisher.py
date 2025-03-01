@@ -737,6 +737,12 @@ class ConfluencePublisher:
                     })
                     if rsp['results']:
                         props = rsp['results'][0]
+
+                        total_props = len(rsp['results'])
+                        if total_props > 1:
+                            logger.warn('multiple properties detected for key '
+                                       f'(page: {page_id}; '
+                                       f'total: {total_props}): {key}')
                 else:
                     prop_path = f'{self.APIV1}content/{page_id}/property/{key}'
                     props = self.rest.get(prop_path)
