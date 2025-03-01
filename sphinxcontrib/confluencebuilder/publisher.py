@@ -26,6 +26,7 @@ from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import detect_cloud
 from urllib.parse import parse_qsl
 from urllib.parse import urlparse
+import contextlib
 import json
 import logging
 import time
@@ -245,6 +246,25 @@ class ConfluencePublisher:
                 'from the configured space.'
             )
             raise ConfluencePermissionError(msg) from ex
+
+    def delete_page_property(self, page_id, id_):
+        """
+        request to delete a property on a page on a confluence instance
+
+        Performs a request which will attempt to delete a property on a
+        provided page.
+
+        Args:
+            page_id: the id of the page to update
+            id_: the property id
+        """
+
+        if self.api_mode == 'v2':
+            property_path = f'{self.APIV2}pages/{page_id}/properties'
+        else:
+            property_path = f'{self.APIV1}content/{page_id}/property'
+
+        self.rest.delete(property_path, id_)
 
     def get_ancestors(self, page_id):
         """
@@ -1262,6 +1282,7 @@ class ConfluencePublisher:
                     break
 
                 prop_entry['value'] = prop['value']
+                prop_id = prop_entry.get('id')
 
                 try:
                     self.store_page_property(page_id, prop_key, prop_entry)
@@ -1272,6 +1293,21 @@ class ConfluencePublisher:
                     # retry on conflict
                     if ex.status_code == 409:
                         logger.info('property update conflict; retrying...')
+                    # possible duplicate detection
+                    elif ex.status_code == 400 and prop_id:
+                        # Users have reported scenarios where a property update
+                        # may fail due to a duplicate property entry registered
+                        # in Confluence's db. In this scenario, Confluence can
+                        # report a 400 error. To try to help push the database
+                        # back into an ideal state, we will request to remove
+                        # the property to cleanup then re-push a new property
+                        # entry back in -- this should be fine for all property
+                        # types that this extension intends to manage.
+                        # (see sphinx-contrib/confluencebuilder#1094)
+                        logger.info(f'property update sync-fail ({prop_key}); '
+                                    'retrying...')
+                        with contextlib.suppress(ConfluenceBadApiError):
+                            self.delete_page_property(page_id, prop_id)
                     else:
                         raise
                 else:
