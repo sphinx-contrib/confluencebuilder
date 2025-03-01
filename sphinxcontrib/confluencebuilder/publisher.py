@@ -1252,8 +1252,7 @@ class ConfluencePublisher:
             # return (timing issue); so if we get a conflict error (409),
             # we will retry a fetch/update again
             MAX_ATTEMPTS_TO_UPDATE_PROPERTY = 2
-            attempt = 1
-            while attempt <= MAX_ATTEMPTS_TO_UPDATE_PROPERTY:
+            for attempt in range(MAX_ATTEMPTS_TO_UPDATE_PROPERTY):
                 prop_key = prop['key']
                 prop_entry = self.get_page_property(page_id, prop_key)
 
@@ -1265,19 +1264,16 @@ class ConfluencePublisher:
                 prop_entry['value'] = prop['value']
 
                 try:
-                    self.store_page_property(
-                        page_id,
-                        prop_key,
-                        prop_entry,
-                    )
+                    self.store_page_property(page_id, prop_key, prop_entry)
                 except ConfluenceBadApiError as ex:
-                    if ex.status_code != 409:
+                    if attempt >= MAX_ATTEMPTS_TO_UPDATE_PROPERTY -1:
                         raise
 
                     # retry on conflict
-                    logger.info('property update conflict; retrying...')
-
-                    attempt += 1
+                    if ex.status_code == 409:
+                        logger.info('property update conflict; retrying...')
+                    else:
+                        raise
                 else:
                     break
 
