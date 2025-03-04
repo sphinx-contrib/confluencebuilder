@@ -1,5 +1,5 @@
-Development
-===========
+2.12.0 (2025-03-03)
+===================
 
 * Correct regression in reporting API failures in failed page updates since v2.6
 * Ensure API failures are reported after exhausting failed retry attempts
