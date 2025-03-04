@@ -2,6 +2,9 @@ Development
 ===========
 
 * Correct regression in reporting API failures in failed page updates since v2.6
+* Ensure API failures are reported after exhausting failed retry attempts
+* Fixed issue where header debug logging not printing request headers
+* Help rebuild page properties on rare duplicate property scenarios
 
 2.11.0 (2025-02-18)
 ===================
