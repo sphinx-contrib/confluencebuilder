@@ -218,6 +218,8 @@ def setup(app):
     cm.add_conf('confluence_publish_retry_attempts')
     # Duration (in seconds) between retrying failed API requests
     cm.add_conf('confluence_publish_retry_duration')
+    # Whether to skip page updates for pages that have inlined comments
+    cm.add_conf_bool('confluence_publish_skip_commented_pages')
     # Manipulate a requests instance.
     cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.
