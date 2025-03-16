@@ -1,3 +1,9 @@
+Development
+===========
+
+* Generate a warning when inlined comments will be dropped
+* Support the ability to skip page updates on a page that has inlined comments
+
 2.12.0 (2025-03-03)
 ===================
 
