@@ -1795,6 +1795,29 @@ Advanced publishing configuration
 
     .. versionadded:: 2.10
 
+.. confval:: confluence_publish_skip_commented_pages
+
+    .. note::
+
+        There is no support to keep inlined comments on updated pages at
+        this time.
+
+    Indicates to skip updates on pages which have inlined comments. Before
+    a page update is issued, a warning will be generated if this extension
+    detects that a page has inlined comments added to it. Page updates
+    remove any inlined comments embedded in the page source. If a users
+    wants to prevent any updates on pages to prevent the loss of inlined
+    comments, they can configure this option to ``True``. By default, pages
+    will always be updated with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_publish_skip_commented_pages = True
+
+    See also :lref:`suppress_warnings_config`.
+
+    .. versionadded:: 2.13
+
 .. confval:: confluence_request_session_override
 
     A hook to manipulate a Requests_ session prepared by this extension. Allows
@@ -2294,6 +2317,8 @@ Third-party related options
 Other options
 -------------
 
+.. _suppress_warnings_config:
+
 .. confval:: suppress_warnings
 
     This extension supports suppressing warnings using Sphinx's
@@ -2303,7 +2328,16 @@ Other options
     - ``confluence`` -- All warnings
     - ``confluence.deprecated`` -- Configuration deprecated warnings
     - ``confluence.deprecated_develop`` -- Development deprecated warnings
+    - ``confluence.inline-comment`` -- Inlined comment warnings
     - ``confluence.unsupported_code_lang`` -- Unsupported code language
+
+    For example:
+
+    .. code-block:: python
+
+        suppress_warnings = [
+            'confluence.unsupported_code_lang',
+        ]
 
     .. versionadded:: 2.1
 
