@@ -110,25 +110,6 @@ class confluence_html(nodes.TextElement):
     designed for an HTML macro.
     """
 
-class confluence_metadata(nodes.Invisible, nodes.Special, ConfluenceParams):
-    """
-    confluence metadata node
-
-    A Confluence builder defined metadata node holds metadata information for a
-    given document.
-    """
-
-
-class confluence_newline(nodes.Structural, nodes.Element):
-    """
-    confluence newline node
-
-    A Confluence builder defined newline node which provides a convenience hint
-    that a newline should be injected into a document (for users not wanted to
-    define a custom raw type).
-    """
-
-
 class confluence_latex_block(nodes.TextElement):
     """
     confluence latex block node
@@ -192,12 +173,22 @@ class confluence_mention_inline(nodes.Inline, nodes.TextElement):
     """
 
 
-class confluence_status_inline(nodes.Inline, ConfluenceParams):
+class confluence_metadata(nodes.Invisible, nodes.Special, ConfluenceParams):
     """
-    confluence status inline node
+    confluence metadata node
 
-    A Confluence builder defined status inline node, used to help add
-    Confluence status macros for an inlined section of a paragraph.
+    A Confluence builder defined metadata node holds metadata information for a
+    given document.
+    """
+
+
+class confluence_newline(nodes.Structural, nodes.Element):
+    """
+    confluence newline node
+
+    A Confluence builder defined newline node which provides a convenience hint
+    that a newline should be injected into a document (for users not wanted to
+    define a custom raw type).
     """
 
 
@@ -208,6 +199,32 @@ class confluence_page_generation_notice(nodes.TextElement):
     A Confluence builder defined page generation notice node, used to create a
     helpful message for users to indicate that the document's content has been
     generated.
+    """
+
+
+def confluence_parameters_fetch(node):
+    """
+    fetch confluence parameters tracked on a node
+
+    This call will look at the node's attributes and extract the
+    Confluence-specific parameters (dictionary) from the instance.
+
+    Args:
+        node: the node holding Confluence-specific parameters
+
+    Return:
+        the parameters dictionary
+    """
+
+    return node.attributes[CONFLUENCE_PARAMS_KEY]
+
+
+class confluence_status_inline(nodes.Inline, ConfluenceParams):
+    """
+    confluence status inline node
+
+    A Confluence builder defined status inline node, used to help add
+    Confluence status macros for an inlined section of a paragraph.
     """
 
 
@@ -246,20 +263,3 @@ class jira_issue(nodes.Inline, ConfluenceParams):
     Defines a "JIRA" node to represent a Confluence JIRA macro configured to
     display a single JIRA issue.
     """
-
-
-def confluence_parameters_fetch(node):
-    """
-    fetch confluence parameters tracked on a node
-
-    This call will look at the node's attributes and extract the
-    Confluence-specific parameters (dictionary) from the instance.
-
-    Args:
-        node: the node holding Confluence-specific parameters
-
-    Return:
-        the parameters dictionary
-    """
-
-    return node.attributes[CONFLUENCE_PARAMS_KEY]
