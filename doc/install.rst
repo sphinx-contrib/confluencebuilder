@@ -50,17 +50,6 @@ Arch
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-CentOS
-~~~~~~
-
-.. code-block:: shell-session
-
-    $ sudo yum install epel-release
-    $ sudo yum install python-pip
-    $ pip install sphinxcontrib-confluencebuilder
-    $ python -m sphinxcontrib.confluencebuilder --version
-    sphinxcontrib.confluencebuilder <version>
-
 Fedora
 ~~~~~~
 

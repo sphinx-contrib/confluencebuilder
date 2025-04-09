@@ -28,20 +28,6 @@ Arch (virtualenv)
     $ python -m sphinxcontrib.confluencebuilder --version
     sphinxcontrib.confluencebuilder <version>
 
-CentOS (virtualenv)
-~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: shell-session
-
-    $ sudo yum install epel-release
-    $ sudo yum install python-pip
-    $ sudo yum install python-virtualenv
-    $ virtualenv sphinx-venv
-    $ source sphinx-venv/bin/activate
-    $ pip install sphinxcontrib-confluencebuilder
-    $ python -m sphinxcontrib.confluencebuilder --version
-    sphinxcontrib.confluencebuilder <version>
-
 Fedora (virtualenv)
 ~~~~~~~~~~~~~~~~~~~
 
