@@ -20,7 +20,28 @@ from sphinxcontrib.confluencebuilder.directives import JiraDirective
 from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
 from sphinxcontrib.confluencebuilder.locale import MESSAGE_CATALOG_NAME
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger
+from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
+from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_emoticon_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt
+from sphinxcontrib.confluencebuilder.nodes import confluence_excerpt_include
+from sphinxcontrib.confluencebuilder.nodes import confluence_expand
+from sphinxcontrib.confluencebuilder.nodes import confluence_footer
+from sphinxcontrib.confluencebuilder.nodes import confluence_header
+from sphinxcontrib.confluencebuilder.nodes import confluence_html
+from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_latex_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
+from sphinxcontrib.confluencebuilder.nodes import confluence_link_card_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_mathjax_block
+from sphinxcontrib.confluencebuilder.nodes import confluence_mathjax_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_mention_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
+from sphinxcontrib.confluencebuilder.nodes import confluence_newline
+from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
+from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch
+from sphinxcontrib.confluencebuilder.nodes import confluence_status_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
@@ -362,12 +383,36 @@ def confluence_builder_inited(app):
                 return
 
     # register nodes required by confluence-specific directives
-    if not docutils.is_node_registered(confluence_metadata):
-        app.add_node(confluence_metadata)
-    if not docutils.is_node_registered(jira):
-        app.add_node(jira)
-    if not docutils.is_node_registered(jira_issue):
-        app.add_node(jira_issue)
+    reg_nodes = [
+        confluence_doc_card,
+        confluence_doc_card_inline,
+        confluence_emoticon_inline,
+        confluence_excerpt,
+        confluence_excerpt_include,
+        confluence_expand,
+        confluence_footer,
+        confluence_header,
+        confluence_html,
+        confluence_latex_block,
+        confluence_latex_inline,
+        confluence_link_card,
+        confluence_link_card_inline,
+        confluence_mathjax_block,
+        confluence_mathjax_inline,
+        confluence_mention_inline,
+        confluence_metadata,
+        confluence_newline,
+        confluence_page_generation_notice,
+        confluence_parameters_fetch,
+        confluence_status_inline,
+        confluence_toc,
+        jira,
+        jira_issue,
+    ]
+
+    for node_type in reg_nodes:
+        if not docutils.is_node_registered(node_type):
+            app.add_node(node_type)
 
     # register directives
     app.add_directive('confluence_doc', ConfluenceDocDirective)
