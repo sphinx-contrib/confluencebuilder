@@ -160,9 +160,9 @@ def confluence_supported_svg(builder, node):
     # apply scale factor to height/width fields
     if scale:
         if height:
-            height = int(round(float(height) * scale / 100))
+            height = round(float(height) * scale / 100)
         if width:
-            width = int(round(float(width) * scale / 100))
+            width = round(float(width) * scale / 100)
 
     # confluence only supports pixel sizes -- adjust any other unit type
     # (if possible) to a pixel length

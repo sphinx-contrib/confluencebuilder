@@ -268,9 +268,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
         # apply scale factor to height/width fields
         if scale:
             if height:
-                height = int(round(float(height) * scale / 100))
+                height = round(float(height) * scale / 100)
             if width:
-                width = int(round(float(width) * scale / 100))
+                width = round(float(width) * scale / 100)
 
         # confluence only supports pixel sizes and percentage sizes in select
         # cases (e.g. applying a percentage width for an attached image can

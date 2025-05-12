@@ -116,7 +116,7 @@ def convert_length(value, unit, pct=True):
     fvalue = float(value)
 
     if unit is None:
-        return int(round(fvalue))
+        return round(fvalue)
 
     if unit == 'px':
         pass
@@ -139,7 +139,7 @@ def convert_length(value, unit, pct=True):
     else:
         return None
 
-    return int(round(fvalue))
+    return round(fvalue)
 
 
 def detect_cloud(site):
