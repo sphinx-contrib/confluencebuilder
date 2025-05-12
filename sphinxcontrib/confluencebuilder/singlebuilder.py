@@ -171,7 +171,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         # manipulating the individual nodes for our merged tree and want to
         # leave the original doctree entity as it (if other logic wants to
         # query/check original doctrees for documents)
-        tree = cast(nodes.document, doctree.deepcopy())
+        tree = cast('nodes.document', doctree.deepcopy())
 
         # we are processing multiple doctrees to be merged into a single one,
         # and we want to make sure any identifiers on each element is unique;

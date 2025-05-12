@@ -27,7 +27,7 @@ class ConfluenceHyperlinkCollector(HyperlinkCollector):
 
     def run(self, **kwargs: Any) -> None:
         app = self.app
-        builder = cast(CheckExternalLinksBuilder, app.builder)
+        builder = cast('CheckExternalLinksBuilder', app.builder)
         hyperlinks = builder.hyperlinks
         docname = self.env.docname
 
