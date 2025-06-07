@@ -31,7 +31,7 @@ class ConfigurationValidation:
             builder: the sphinx builder instance
         """
         self.config = builder.config
-        self.env = builder.app.env
+        self.env = builder.env
         self.key = None
         self._translate = None
 

@@ -64,7 +64,7 @@ def validate_configuration(builder):
     """
 
     config = builder.config
-    env = builder.app.env
+    env = builder.env
     validator = ConfigurationValidation(builder)
 
     # ##################################################################
