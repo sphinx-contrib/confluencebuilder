@@ -85,6 +85,29 @@ as the identifier could not be found.
 ''')
 
 
+class ConfluencePagePermissionError(ConfluenceError):
+    def __init__(self, page_name):
+        super().__init__(f'''
+---
+Permission denied on page update for: {page_name}
+
+An attempt has been made to add/update a page on Confluence, but the
+instance has reported a "title already exists" error. Typically, the
+reason for this is a result of a page has/had been configured with
+restrictive permissions, preventing this publish request from making a
+new page update.
+
+It is recommended to try the publish request again in the case this
+error state resolves itself. If this persisted, try contacting the
+owner of the space for help (e.g. manually removing the legacy page).
+
+Note that if the target page cannot be found, the page may have been
+previously archived with restricted permission. The page may need to be
+manually removed to correct the issue.
+---
+''')
+
+
 class ConfluencePermissionError(ConfluenceError):
     def __init__(self, details):
         super().__init__(f'''
