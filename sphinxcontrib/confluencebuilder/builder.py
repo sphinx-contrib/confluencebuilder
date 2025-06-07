@@ -92,7 +92,7 @@ class ConfluenceBuilder(Builder):
         self._cached_header_data = None
         self._config_confluence_hash = None
         self._original_get_doctree = None
-        self._verbose = self.app.verbosity
+        self._verbose = app.verbosity
 
         self.manifest = ConfluenceManifest(self.config, self.state)
 

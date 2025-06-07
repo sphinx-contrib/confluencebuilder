@@ -8,6 +8,10 @@ from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 class ConfluenceReportBuilder(Builder):
     name = 'internal-confluence-report'
 
+    def __init__(self, app, env):
+        super().__init__(app, env)
+        self._verbose = app.verbosity
+
     def init(self):
         validate_configuration(self)
-        self.config.sphinx_verbosity = self.app.verbosity
+        self.config.sphinx_verbosity = self._verbose

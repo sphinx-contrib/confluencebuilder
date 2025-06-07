@@ -21,6 +21,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
     def __init__(self, app, env):
         super().__init__(app, env)
+        self._verbose = app.verbosity
 
         # As of Sphinx v8.1, the builder's the `write` call has be finalized.
         # Support has been added to use the new `write_documents` call. To
@@ -90,7 +91,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             return
 
         with progress_message(C('assembling single confluence document')):
-            if self.app.verbosity:
+            if self._verbose:
                 print()
 
             # assemble toc section/figure numbers
@@ -123,7 +124,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
             self.assets.process_document(doctree, self.config.root_doc)
 
         with progress_message(C('writing single confluence document')):
-            if self.app.verbosity:
+            if self._verbose:
                 print()
 
             self.write_doc_serialized(self.config.root_doc, doctree)
