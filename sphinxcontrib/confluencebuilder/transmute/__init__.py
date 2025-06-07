@@ -138,7 +138,16 @@ def prepare_math_images(builder, doctree):
     for node in itertools.chain(findall(doctree, confluence_latex_inline),
             findall(doctree, confluence_latex_block)):
         try:
-            mf, depth = imgmath.render_math(mock_translator, node.astext())
+            # compatibility note: sphinx updated `render_math` to now take a
+            # configuration argument; try with this before falling back to
+            # legacy call
+            # (see: https://github.com/sphinx-doc/sphinx/pull/13626)
+            try:
+                # pylint: disable=unexpected-keyword-arg
+                mf, depth = imgmath.render_math(
+                    mock_translator, node.astext(), config=builder.config)
+            except TypeError:
+                mf, depth = imgmath.render_math(mock_translator, node.astext())
             if not mf:
                 continue
 
