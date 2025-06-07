@@ -143,6 +143,7 @@ A user can provide a test pattern to use when searching for a subset of unit
 tests to run for this execution.
 
 (options)
+ --debug               enable debug messages
  -h, --help            show this help
  -U, --unbuffered      do not buffer output
  -V, --verbose         enable verbose messages
