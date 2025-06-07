@@ -92,8 +92,8 @@ def report_main(args_parser):
 
             # keep track of unset options in the configuration
             pre_env_keys = set()
-            config_manager = app.config_manager_   # pylint: disable=no-member
-            for key in config_manager.options:
+            cm = app.config_manager_  # pylint: disable=no-member
+            for key in cm.options:
                 if getattr(app.config, key) is None:
                     pre_env_keys.add(key)
 
@@ -103,7 +103,7 @@ def report_main(args_parser):
             # track for any remaining unset options to see if the environment
             # has changed any options
             post_env_keys = set()
-            for key in config_manager.options:
+            for key in cm.options:
                 if getattr(app.config, key) is None:
                     post_env_keys.add(key)
 
@@ -119,7 +119,6 @@ def report_main(args_parser):
                     offline = True
 
             # extract configuration information
-            cm = app.config_manager_  # pylint: disable=no-member
             for key in app.config.values:
                 raw = getattr(app.config, key)
                 if raw is None:
