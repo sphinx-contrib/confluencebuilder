@@ -19,7 +19,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
     name = 'singleconfluence'
     supported_linkcode = name
 
-    def __init__(self, app, env=None):
+    def __init__(self, app, env):
         super().__init__(app, env)
 
         # As of Sphinx v8.1, the builder's the `write` call has be finalized.

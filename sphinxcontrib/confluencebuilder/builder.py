@@ -57,7 +57,7 @@ class ConfluenceBuilder(Builder):
     supported_linkcode = name
     supported_remote_images = True
 
-    def __init__(self, app, env=None):
+    def __init__(self, app, env):
         super().__init__(app, env)
 
         self.cache_doctrees = {}
