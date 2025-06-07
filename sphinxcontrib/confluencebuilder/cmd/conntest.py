@@ -74,7 +74,7 @@ def conntest_main(args_parser):
                 warning=sys.stderr)   # sphinx warning output
 
             # apply environment-based configuration changes
-            apply_env_overrides(app.builder)
+            apply_env_overrides(app)
 
             # extract configuration information
             for key in app.config.values:
@@ -92,7 +92,7 @@ def conntest_main(args_parser):
 
             # ensure internal defaults are applied after we already extracted
             # raw values and before attempting to use the publisher
-            apply_defaults(app.builder)
+            apply_defaults(app)
 
             # initialize the publisher
             publisher.init(app.config)

@@ -18,7 +18,7 @@ import contextlib
 DEFAULT_EDITOR = 'v1'
 
 
-def apply_defaults(builder):
+def apply_defaults(app):
     """
     applies default values for select configurations
 
@@ -28,12 +28,12 @@ def apply_defaults(builder):
     a more controlled time.
 
     Args:
-        builder: the builder which configuration defaults should be applied on
+        app: the application context
     """
 
-    conf = builder.config
-    config_manager = builder.app.config_manager_
-    env = builder.env
+    conf = app.config
+    config_manager = app.config_manager_
+    env = app.env
 
     if conf.confluence_add_secnumbers is None:
         conf.confluence_add_secnumbers = True

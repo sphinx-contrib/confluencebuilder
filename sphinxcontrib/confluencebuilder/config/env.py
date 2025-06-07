@@ -7,7 +7,7 @@ from sphinxcontrib.confluencebuilder.util import str2bool
 import os
 
 
-def apply_env_overrides(builder):
+def apply_env_overrides(app):
     """
     applies configuration options from the environment into the extension
 
@@ -17,11 +17,11 @@ def apply_env_overrides(builder):
     a matching environment key (capitalized) exists.
 
     Args:
-        builder: the builder which configuration defaults should be applied on
+        app: the application context
     """
 
-    conf = builder.config
-    config_manager = builder.app.config_manager_
+    conf = app.config
+    config_manager = app.config_manager_
 
     # check if the configuration has disabled environment options
     if conf.confluence_disable_env_conf:

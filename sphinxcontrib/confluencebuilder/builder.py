@@ -87,6 +87,7 @@ class ConfluenceBuilder(Builder):
         self.use_search = None
         self.verbose = ConfluenceLogger.verbose
         self.warn = ConfluenceLogger.warn
+        self.__app = app
         self._cache_info = ConfluenceCacheInfo(self)
         self._cached_footer_data = None
         self._cached_header_data = None
@@ -101,9 +102,9 @@ class ConfluenceBuilder(Builder):
         self.state.reset()
 
     def init(self):
-        apply_env_overrides(self)
+        apply_env_overrides(self.__app)
         validate_configuration(self)
-        apply_defaults(self)
+        apply_defaults(self.__app)
         config = self.config
 
         # populate desired metadata into the manifest after the configuration

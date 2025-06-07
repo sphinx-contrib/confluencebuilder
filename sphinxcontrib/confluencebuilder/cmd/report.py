@@ -98,7 +98,7 @@ def report_main(args_parser):
                     pre_env_keys.add(key)
 
             # apply environment-based configuration changes
-            apply_env_overrides(app.builder)
+            apply_env_overrides(app)
 
             # track for any remaining unset options to see if the environment
             # has changed any options
@@ -137,7 +137,7 @@ def report_main(args_parser):
 
             # ensure internal defaults are applied after we already extracted
             # raw values and before attempting to use the publisher
-            apply_defaults(app.builder)
+            apply_defaults(app)
 
             # initialize the publisher (if needed later)
             publisher.init(app.config)
