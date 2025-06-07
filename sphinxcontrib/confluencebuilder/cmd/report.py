@@ -80,13 +80,13 @@ def report_main(args_parser):
     try:
         with temp_dir() as tmp_dir, docutils_namespace():
             print('fetching configuration information...')
-            builder = ConfluenceReportBuilder.name
+            builder_name = ConfluenceReportBuilder.name
             app = Sphinx(
                 str(work_dir),       # document sources
                 str(work_dir),       # directory with configuration
                 str(tmp_dir),        # output for built documents
                 str(tmp_dir),        # output for doctree files
-                builder,             # builder to execute
+                builder_name,        # builder to execute
                 status=sys.stdout,   # sphinx status output
                 warning=sys.stderr)  # sphinx warning output
 
