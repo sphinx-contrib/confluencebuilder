@@ -515,7 +515,7 @@ class ConfluenceBuilder(Builder):
         metadata = self.metadata.get(docname, {})
         docguid = metadata.get('guid')
 
-        forced_page_id = self.app.emit_firstresult(
+        forced_page_id = self.events.emit_firstresult(
             'confluence-publish-override-pageid',
             docname,
             {
@@ -616,7 +616,7 @@ class ConfluenceBuilder(Builder):
                 self.legacy_pages.remove(uploaded_id)
 
         if uploaded_id:
-            self.app.emit(
+            self.events.emit(
                 'confluence-publish-page',
                 docname,
                 uploaded_id,
@@ -701,7 +701,7 @@ class ConfluenceBuilder(Builder):
                     legacy_asset_info.pop(attachment_id, None)
 
         if attachment_id:
-            self.app.emit(
+            self.events.emit(
                 'confluence-publish-attachment',
                 docname,
                 key,
@@ -732,7 +732,7 @@ class ConfluenceBuilder(Builder):
                 self.root_doc_page_id)
 
             self.info('Publish point: ' + point_url)
-            self.app.emit('confluence-publish-point', point_url)
+            self.events.emit('confluence-publish-point', point_url)
 
     def publish_cleanup(self):
         # check if archive cleanup is enabled
