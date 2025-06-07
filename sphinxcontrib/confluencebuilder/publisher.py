@@ -11,7 +11,9 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigEr
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadApiError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceBadServerUrlError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceMissingPageIdError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePagePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
@@ -963,14 +965,17 @@ class ConfluencePublisher:
 
         _, page = self.get_page(page_name, expand=expand)
 
-        # if the page is not found, but it determined to be an archived page,
+        # if the page is not found, but is determined to be an archived page,
         # Confluence Cloud does not appear to support moving/updating an
         # archived page back into a `current` mode -- instead, try to delete
         # the archived page before generating a new page
         if not page:
             _, page = self.get_page(page_name, expand=expand, status='archived')
             if page:
-                self.remove_page(page['id'])
+                try:
+                    self.remove_page(page['id'])
+                except ConfluenceError as ex:
+                    logger.warn(f'failed archive clean ("{page_name}"): {ex}')
                 page = None
 
         if self.onlynew and page:
@@ -1156,8 +1161,20 @@ class ConfluencePublisher:
 
             # update existing page
             if page:
-                self._update_page(page, page_name, data, parent_id=parent_id)
-                uploaded_page_id = page['id']
+                try:
+                    self._update_page(
+                        page, page_name, data, parent_id=parent_id)
+                except ConfluenceBadApiError as ex:
+                    # if we are updating a page that existed but is now
+                    # reporting as missing, this is either a timing issue of
+                    # multiple clients editing a page; or more so likely,
+                    # the publisher does not have permission to view/update
+                    # the page
+                    if ex.status_code == 404:
+                        raise ConfluencePagePermissionError(page_name) from ex
+                    raise
+                else:
+                    uploaded_page_id = page['id']
 
         except ConfluencePermissionError as ex:
             msg = (
@@ -1730,6 +1747,9 @@ class ConfluencePublisher:
         except ConfluenceBadApiError as ex:
             if str(ex).find('CDATA block has embedded') != -1:
                 raise ConfluenceUnexpectedCdataError from ex
+
+            if str(ex).find('title already exists') != -1:
+                raise ConfluencePagePermissionError(page_name) from ex
 
             if 'unreconciled' in str(ex):
                 raise ConfluenceUnreconciledPageError(
