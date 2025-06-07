@@ -516,10 +516,13 @@ class ConfluenceBuilder(Builder):
         docguid = metadata.get('guid')
 
         forced_page_id = self.app.emit_firstresult(
-            'confluence-publish-override-pageid', docname, {
+            'confluence-publish-override-pageid',
+            docname,
+            {
                 'guid': docguid,
                 'title': title,
-            })
+            },
+        )
 
         if forced_page_id:
             uploaded_id = self.publisher.store_page_by_id(title,
@@ -613,10 +616,15 @@ class ConfluenceBuilder(Builder):
                 self.legacy_pages.remove(uploaded_id)
 
         if uploaded_id:
-            self.app.emit('confluence-publish-page', docname, uploaded_id, {
-                'guid': docguid,
-                'title': title,
-            })
+            self.app.emit(
+                'confluence-publish-page',
+                docname,
+                uploaded_id,
+                {
+                    'guid': docguid,
+                    'title': title,
+                },
+            )
 
     def _prepare_page_data(self, docname, output):
         data = {
@@ -693,11 +701,16 @@ class ConfluenceBuilder(Builder):
                     legacy_asset_info.pop(attachment_id, None)
 
         if attachment_id:
-            self.app.emit('confluence-publish-attachment',
-                docname, key, attachment_id, {
-                'hash': hash_,
-                'type': type_,
-            })
+            self.app.emit(
+                'confluence-publish-attachment',
+                docname,
+                key,
+                attachment_id,
+                {
+                    'hash': hash_,
+                    'type': type_,
+                },
+            )
 
     def publish_finalize(self):
         if self.root_doc_page_id:
