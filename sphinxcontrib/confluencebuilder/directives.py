@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_latex_block
 from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
+from sphinxcontrib.confluencebuilder.nodes import confluence_panel
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
@@ -114,7 +115,7 @@ class ConfluenceExcerptDirective(Directive):
         node = confluence_excerpt(rawsource=text)
 
         # an excerpt's output type is a special option which does not appear
-        # to support/following the Kebab  case style -- extract and manually
+        # to support/following the Kebab case style -- extract and manually
         # apply this option directly on the node (values for this option are
         # also expected to be in uppercase)
         output_type = 'atlassian-macro-output-type'
@@ -219,6 +220,49 @@ class ConfluenceNewline(Directive):
     def run(self):
         node = confluence_newline()
 
+        return [node]
+
+
+class ConfluencePanelDirective(Directive):
+    has_content = True
+    option_spec = {
+        'bg-color': directives.unchanged,
+        'border-color': directives.unchanged,
+        'border-style': directives.unchanged,
+        'border-width': directives.positive_int,
+        'title': directives.unchanged,
+        'title-bg-color': directives.unchanged,
+        'title-color': directives.unchanged,
+    }
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+
+        node = confluence_panel(rawsource=text)
+
+        # conversion of title background color set `titleBgColor`, but we need
+        # a value of `titleBGColor`; adjusting
+        output_type = 'title-bg-color'
+        if output_type in self.options:
+            node.params['titleBGColor'] = self.options[output_type]
+            del self.options[output_type]
+
+        for k, v in self.options.items():
+            node.params[kebab_case_to_camel_case(k)] = v
+
+        warnings = []
+
+        if (node.params.get('titleBGColor') or node.params.get('titleColor')) \
+                and not node.params.get('title'):
+            warnings.append('configured title color without a title')
+
+        for warning in warnings:
+            reporter = self.state.document.reporter
+            source, lineno = reporter.get_source_and_line(self.lineno)
+            logger.warn('%s:%s: %s', source, lineno, warning)
+
+        self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
 
 

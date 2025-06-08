@@ -202,6 +202,15 @@ class confluence_page_generation_notice(nodes.TextElement):
     """
 
 
+class confluence_panel(nodes.Body, ConfluenceParams):
+    """
+    confluence panel node
+
+    A Confluence builder defined panel node serves as a hint to wrap content
+    using Confluence's panel macro.
+    """
+
+
 def confluence_parameters_fetch(node):
     """
     fetch confluence parameters tracked on a node
