@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if command -v xdg-open 2>&1 >/dev/null; then
+    exec xdg-open _build/html/index.html
+else
+    exec start _build/html/index.html
+fi
