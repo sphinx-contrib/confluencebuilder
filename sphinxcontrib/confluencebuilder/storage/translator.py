@@ -2618,6 +2618,17 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    def visit_confluence_panel(self, node):
+        self.body.append(self.start_ac_macro(node, 'panel'))
+        for k, v in sorted(PARAMS(node).items()):
+            self.body.append(self.build_ac_param(node, k, v))
+        self.body.append(self.start_ac_rich_text_body_macro(node))
+        self.context.append(self.end_ac_rich_text_body_macro(node) +
+            self.end_ac_macro(node))
+
+    def depart_confluence_panel(self, node):
+        self.body.append(self.context.pop())  # macro
+
     def visit_confluence_source_link(self, node):
         uri = PARAMS(node)['url']
 

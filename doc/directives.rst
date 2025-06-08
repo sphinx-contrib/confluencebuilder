@@ -270,6 +270,112 @@ Common
 
     .. versionadded:: 1.7
 
+.. index:: Macros; Panel Macro (directive)
+.. index:: Panel Macro
+.. _confluence_panel-directive:
+
+.. rst:directive:: confluence_panel
+
+    The ``confluence_panel`` directive allows a user to define a Confluence
+    `Panel Macro`_ to help format content in a customizable colored panel
+    on a page. For example:
+
+    .. code-block:: rst
+
+        .. confluence_panel::
+
+            This content is captured inside the panel macro.
+
+    This directive supports the following options:
+
+    .. rst:directive:option:: bg-color: value
+        :type: string
+
+        A string value to apply to the macros "bgColor" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :bg-color: #00ff00
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: border-color: value
+        :type: string
+
+        A string value to apply to the macros "borderColor" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :border-color: #ff0000
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: border-style: value
+        :type: string
+
+        A string value to apply to the macros "borderStyle" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :border-style: solid
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: border-width: value
+        :type: string
+
+        A string value to apply to the macros "borderWidth" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :border-width: 42
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: title: value
+        :type: string
+
+        A string value to apply to the macros "title" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :title: This is my title
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: title-bg-color: value
+        :type: string
+
+        A string value to apply to the macros "titleBGColor" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :title: my title
+                :title-bg-color: #0000ff
+
+                This content is captured inside the panel macro.
+
+    .. rst:directive:option:: title-color: value
+        :type: string
+
+        A string value to apply to the macros "titleColor" field.
+
+        .. code-block:: rst
+
+            .. confluence_panel::
+                :title: my title
+                :title-color: #ff00ff
+
+                This content is captured inside the panel macro.
+
+    .. versionadded:: 2.13
+
 .. rst:directive:: confluence_toc
 
     The ``confluence_toc`` directive allows a user to define a Confluence
@@ -732,6 +838,7 @@ See also :ref:`smart link roles <smart-link-roles>`.
 .. _Excerpt Macro: https://confluence.atlassian.com/doc/excerpt-macro-148062.html
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
 .. _HTML Macro: https://confluence.atlassian.com/doc/html-macro-38273085.html
+.. _Panel Macro: https://confluence.atlassian.com/doc/panel-macro-51872380.html
 .. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html

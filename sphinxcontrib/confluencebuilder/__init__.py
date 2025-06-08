@@ -15,6 +15,7 @@ from sphinxcontrib.confluencebuilder.directives import ConfluenceLatexDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceLinkDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceNewline
+from sphinxcontrib.confluencebuilder.directives import ConfluencePanelDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceToc
 from sphinxcontrib.confluencebuilder.directives import JiraDirective
 from sphinxcontrib.confluencebuilder.directives import JiraIssueDirective
@@ -39,6 +40,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_mention_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_notice
+from sphinxcontrib.confluencebuilder.nodes import confluence_panel
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch
 from sphinxcontrib.confluencebuilder.nodes import confluence_status_inline
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
@@ -403,6 +405,7 @@ def confluence_builder_inited(app):
         confluence_metadata,
         confluence_newline,
         confluence_page_generation_notice,
+        confluence_panel,
         confluence_parameters_fetch,
         confluence_status_inline,
         confluence_toc,
@@ -425,6 +428,7 @@ def confluence_builder_inited(app):
     app.add_directive('confluence_link', ConfluenceLinkDirective)
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
     app.add_directive('confluence_newline', ConfluenceNewline)
+    app.add_directive('confluence_panel', ConfluencePanelDirective)
     app.add_directive('confluence_toc', ConfluenceToc)
     app.add_directive('jira', JiraDirective)
     app.add_directive('jira_issue', JiraIssueDirective)
