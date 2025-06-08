@@ -1356,7 +1356,21 @@ class ConfluenceBuilder(Builder):
         # See: https://jira.atlassian.com/browse/CONFCLOUD-74698
         if not self.config.confluence_adv_disable_confcloud_74698:
             if editor == 'v2':
-                new_target = quote(target)
+                # We originally encoded specific characters to prevent
+                # Confluence from suppressing anchors for select characters,
+                # but it is unknown the extensive list of characters Confluence
+                # was not happy with. We then switch to `quote` which worked
+                # for the most part, but when users used Emoji's, these
+                # characters would become encoded and generate anchor targets
+                # with incorrect values. Now, we do a partial quote in an
+                # attempt to be flexible -- we quote the standard ASCII range
+                # using Python default safe sets and anything beyond it, we
+                # will just leave as is.
+                def partial_quote(s):
+                    chars = [quote(x) if ord(x) < 128 else x for x in s]
+                    return ''.join(chars)
+
+                new_target = partial_quote(target)
 
                 # So... related to CONFCLOUD-74698, something about anchors
                 # with special characters will cause some pain for links.
