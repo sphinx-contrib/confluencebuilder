@@ -1,5 +1,5 @@
-Development
-===========
+2.13.0 (2025-06-08)
+===================
 
 * Fixed ``render_math`` usage required for future Sphinx releases
 * Fixed broken references when using Emojis
