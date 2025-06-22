@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.locale import C
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from typing import cast
+import inspect
 
 
 class SingleConfluenceBuilder(ConfluenceBuilder):
@@ -40,7 +41,13 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         tree = self._inline_all_toctrees(root_doc, tree, {root_doc}, set())
         tree['docname'] = root_doc
 
-        self.env.get_and_resolve_doctree(root_doc, self, doctree=tree)
+        gnrdt_sig = inspect.signature(self.env.get_and_resolve_doctree)
+        if 'tags' in gnrdt_sig.parameters:
+            self.env.get_and_resolve_doctree(
+                root_doc, self, tags=self.tags, doctree=tree)
+        else:
+            self.env.get_and_resolve_doctree(root_doc, self, doctree=tree)
+
         self._fix_refuris(tree)
 
         return tree
