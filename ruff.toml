@@ -83,6 +83,11 @@ lint.ignore = [
     'SLF001',
 ]
 
+'sphinxcontrib/confluencebuilder/manifest.py' = [
+    # ignore the version import used to prevent a cyclic import issue
+    'PLC0415',
+]
+
 'tests/sample-sets/config.py' = [
     # ignore all in environment configuration file
     'ALL',
@@ -99,6 +104,11 @@ lint.ignore = [
     # long named, and using nested with statements makes it easier to
     # read without exceeding a long line length
     'SIM117',
+]
+
+'tests/test_validation.py' = [
+    # ignore injected configuration imports
+    'PLC0415',
 ]
 
 'tests*' = [

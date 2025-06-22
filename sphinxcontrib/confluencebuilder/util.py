@@ -336,7 +336,7 @@ def getpass2(prompt='Password: '):
     if (os.name == 'nt' and 'MSYSTEM' in os.environ and 'TERM' in os.environ and
             'CONFLUENCEBUILDER_NO_GETPASS_HOOK' not in os.environ):
         try:
-            check_call(['/usr/bin/stty', '-echo'])  # noqa: S603
+            check_call(['/usr/bin/stty', '-echo'])
         except:  # noqa: E722
             print()
             print()
@@ -348,7 +348,7 @@ def getpass2(prompt='Password: '):
                 value = input(prompt)
             finally:
                 with suppress(Exception):
-                    check_call(['/usr/bin/stty', 'echo'])  # noqa: S603
+                    check_call(['/usr/bin/stty', 'echo'])
 
             print()
             return value
