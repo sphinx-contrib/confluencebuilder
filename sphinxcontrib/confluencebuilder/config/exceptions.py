@@ -143,10 +143,10 @@ set to a dictionary of key-value strings for advanced options.
 ''')
 
 
-class ConfluenceLatexMacroMissingKeysConfigError(ConfluenceConfigError):
-    def __init__(self, keys):
+class ConfluenceMacroMissingKeysConfigError(ConfluenceConfigError):
+    def __init__(self, name, keys):
         super().__init__(f'''\
-missing keys in confluence_latex_macro
+missing keys in {name}
 
 The following keys are required:
 
