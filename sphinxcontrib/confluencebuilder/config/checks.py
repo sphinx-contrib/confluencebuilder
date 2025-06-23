@@ -15,7 +15,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceGlobalLa
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceHeaderFileConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceJiraServersConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroInvalidConfigError
-from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceLatexMacroMissingKeysConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceMacroMissingKeysConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageGenerationNoticeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageSearchModeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceParentPageConfigError
@@ -392,8 +392,9 @@ def validate_configuration(builder):
 
             if not all(name in conf_keys for name in required_keys):
                 keys_str = '\n - '.join(required_keys)
-                raise ConfluenceLatexMacroMissingKeysConfigError(keys_str) \
-                    from ex
+                cfg_name = 'confluence_latex_macro'
+                raise ConfluenceMacroMissingKeysConfigError(
+                    cfg_name, keys_str) from ex
 
     # ##################################################################
 
@@ -706,6 +707,24 @@ def validate_configuration(builder):
     # confluence_space_key
     validator.conf('confluence_space_key') \
              .string()
+
+    # ##################################################################
+
+    # confluence_tab_macro
+    validator.conf('confluence_tab_macro') \
+             .dict_str_str()
+
+    if config.confluence_tab_macro:
+        conf_keys = config.confluence_tab_macro.keys()
+
+        required_keys = [
+            'macro-name',
+        ]
+
+        if not all(name in conf_keys for name in required_keys):
+            keys_str = '\n - '.join(required_keys)
+            cfg_name = 'confluence_tab_macro'
+            raise ConfluenceMacroMissingKeysConfigError(cfg_name, keys_str)
 
     # ##################################################################
 

@@ -3069,6 +3069,38 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    # -------------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-inline-tabs
+    # -------------------------------------------------------
+
+    def visit_TabContainer(self, node):
+        # check if this is an explicit hint to start a new tab container
+        primary_tab = node.get('new_set')
+
+        # if we are not explicitly a new tab container, check if our previous
+        # sibling is a tab container; if not, consider ourselves a new
+        # tab container
+        if not primary_tab:
+            prev_sibling = None
+            for child in node.parent.children:
+                if child is node:
+                    if not isinstance(prev_sibling, type(node)):
+                        primary_tab = True
+                    break
+                prev_sibling = child
+
+        label_node = node.next_node()
+        if isinstance(label_node, nodes.label):
+            tabname = label_node.astext()
+        else:
+            tabname = ''
+
+        self._build_tab(node, tabname, primary_tab)
+
+    @depart_auto_context_decorator()
+    def depart_TabContainer(self, node):
+        pass
+
     # -------------------------------------------------
     # sphinx -- extension (third party) -- sphinx-needs
     # -------------------------------------------------
@@ -3077,6 +3109,43 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         pass
 
     def depart_PassthroughTextElement(self, node):
+        pass
+
+    # ------------------------------------------------
+    # sphinx -- extension (third party) -- sphinx-tabs
+    # ------------------------------------------------
+
+    def visit_SphinxTabsTablist(self, node):
+        self._sphinxtabs_primary = True
+        self._sphinxtabs_tabnames = {}
+
+        for child in node.children:
+            tab_id = child.get('name')
+            if tab_id:
+                self._sphinxtabs_tabnames[tab_id] = child.astext()
+
+        raise nodes.SkipNode
+
+    def visit_SphinxTabsTab(self, node):
+        pass
+
+    def depart_SphinxTabsTab(self, node):
+        pass
+
+    def depart_SphinxTabsTablist(self, node):
+        pass
+
+    def visit_SphinxTabsPanel(self, node):
+        primary_tab = self._sphinxtabs_primary
+        self._sphinxtabs_primary = False
+
+        tab_id = node.get('name')
+        tab_name = self._sphinxtabs_tabnames.get(tab_id, '')
+
+        self._build_tab(node, tab_name, primary_tab)
+
+    @depart_auto_context_decorator()
+    def depart_SphinxTabsPanel(self, node):
         pass
 
     # ---------------------------------------------------
@@ -3413,6 +3482,45 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.start_ac_macro(node, 'anchor'))
             self.body.append(self.build_ac_param(node, '', compat_anchor))
             self.body.append(self.end_ac_macro(node, suffix=''))
+
+    @visit_auto_context_decorator()
+    def _build_tab(self, node, tab_title, primary_tab):
+        """
+        build an inlined tab entry
+
+        This is a helper call that is used by various Sphinx tab-related
+        extensions to help build an appropriate macro used to render tabbed
+        content.
+
+        Note: visit calls that use this hook need to ensure their respective
+        depart call is wrapped with `depart_auto_context_decorator`.
+
+        Args:
+            node: the node adding the anchor
+            tab_title: the title to use for the tab
+            primary_tab: whether this is the primary/first tab
+        """
+
+        if not self.builder.config.confluence_tab_macro:
+            self._warnref(node, 'ignoring node since no tab macro configured')
+            raise nodes.SkipNode
+
+        conf = self.builder.config.confluence_tab_macro
+        macro = conf['macro-name']
+        pid = conf.get('primary-id')
+        pval = conf.get('primary-value')
+        tid = conf.get('title-id')
+
+        self.body.append(self.start_ac_macro(node, macro))
+        self.auto_append(self.end_tag(node))
+
+        if pid and primary_tab:
+            self.body.append(self.build_ac_param(node, pid, pval))
+        if tid:
+            self.body.append(self.build_ac_param(node, tid, tab_title))
+
+        self.body.append(self.start_ac_rich_text_body_macro(node))
+        self.auto_append(self.end_ac_rich_text_body_macro(node))
 
     def start_tag(self, node, tag, suffix=None, empty=False, **kwargs):
         """

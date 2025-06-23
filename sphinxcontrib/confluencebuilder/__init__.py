@@ -279,6 +279,8 @@ def setup(app):
     cm.add_conf('confluence_permit_raw_html', 'confluence')
     # Remove a detected title from generated documents.
     cm.add_conf_bool('confluence_remove_title', 'confluence')
+    # Macro configuration for Confluence-managed inlined tab content.
+    cm.add_conf('confluence_tab_macro', 'confluence')
 
     # (configuration - third-party related)
     # Wrap Mermaid nodes into HTML macros.

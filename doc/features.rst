@@ -248,12 +248,38 @@ Type                              Notes
                                   support for tabs, button and inline icons.
 `sphinx-diagrams`_                Supported
 `sphinx-gallery`_                 Supported
+`sphinx-inline-tabs`_             Limited support.
+
+                                  Requires a Confluence instance that supports
+                                  inlined tabs through the use of a third-party
+                                  macro. :lref:`confluence_tab_macro` must be
+                                  configured.
 `sphinx-needs`_                   Limited support.
 
                                   Formatting of content may not be as expected.
                                   The ``needs_default_layout`` option may need
                                   to be tailored specifically for a Confluence
                                   build.
+`sphinx-tabs`_                    Limited support.
+
+                                  Requires a Confluence instance that supports
+                                  inlined tabs through the use of a third-party
+                                  macro. :lref:`confluence_tab_macro` must be
+                                  configured.
+
+                                  Features such as group tabs are not
+                                  supported.
+
+                                  May require an explicit registration for
+                                  support with sphinx-tabs:
+
+                                  .. code-block:: python
+
+                                     sphinx_tabs_valid_builders = [
+                                         'confluence',
+                                         'singleconfluence',
+                                     ]
+
 `sphinx-toolbox`_                 Supported
 `sphinxcontrib-aafig`_            Supported.
 
@@ -354,7 +380,9 @@ has another concern, feel free to bring up an issue:
 .. _sphinx-design: https://sphinx-design.readthedocs.io/
 .. _sphinx-diagrams: https://pypi.org/project/sphinx-diagrams/
 .. _sphinx-gallery: https://sphinx-gallery.github.io/
+.. _sphinx-inline-tabs: https://sphinx-inline-tabs.readthedocs.io/
 .. _sphinx-needs: https://sphinxcontrib-needs.readthedocs.io/
+.. _sphinx-tabs: https://sphinx-tabs.readthedocs.io/
 .. _sphinx-toolbox: https://sphinx-toolbox.readthedocs.io/
 .. _sphinx.ext.autodoc: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 .. _sphinx.ext.autosectionlabel: https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html

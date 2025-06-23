@@ -1172,6 +1172,22 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         with self.assertRaises(ConfluenceSourcelinkTypeConfigError):
             self._try_config()
 
+    def test_config_check_tab_macro(self):
+        self.config['confluence_tab_macro'] = {
+            'macro-name': 'macro-name',
+        }
+        self._try_config()
+
+        self.config['confluence_tab_macro'] = {
+            'macro-name': None,
+        }
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_tab_macro'] = 1
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_title_overrides(self):
         self.config['confluence_title_overrides'] = {}
         self._try_config()

@@ -2238,6 +2238,58 @@ Advanced processing configuration
 
     .. versionadded:: 2.2
 
+.. _confluence_tab_macro:
+
+.. confval:: confluence_tab_macro
+
+    .. attention::
+
+        This feature is considered experimental. Inlined tabs are supported
+        through third-party Sphinx extensions as well as only supported on
+        Confluence instances using third-party marketplace extensions. The
+        combination is less than ideal for providing consistent results and
+        performing testing. This may be used by advanced users who can take
+        advantage of their instance's configurations to utilize inlined tabs.
+
+    This configuration is used when attempting to build macros for rendering
+    inlined tabs on a page. It is used to define what third-party macro can
+    be used to render inlined tabs. This configuration also defines what
+    parameter values dictate the name of a tab and well as which tab is
+    considered to be the first/primary tab for a set.
+
+    .. code-block:: python
+
+        confluence_tab_macro = {
+            'macro-name': 'macro-name',
+            'primary-id': 'id-for-primary-parameter',
+            'primary-value': 'value-to-primary-parameter',
+            'title-id': 'id-for-title-parameter',
+        }
+
+    The following configurations are known to function for the listed
+    marketplace extensions:
+
+    .. list-table::
+        :header-rows: 1
+        :widths: 40 60
+
+        * - Marketplace Application
+
+          - Configuration
+
+        * - Mosaic: Content Formatting Macros & Templates for Confluence
+
+          - .. code-block:: python
+
+                confluence_tab_macro = {
+                    'macro-name': 'cfm-tabs-page',
+                    'primary-id': 'primaryTab',
+                    'primary-value': 'true',
+                    'title-id': 'tabsPageTitle',
+                }
+
+    .. versionadded:: 2.14
+
 .. _confluence_remove_title:
 
 .. confval:: confluence_remove_title
