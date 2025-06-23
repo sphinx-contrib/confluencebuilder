@@ -3,6 +3,7 @@ Development
 
 * Fixed ``get_and_resolve_doctree`` usage when using singleconfluence for
   future Sphinx releases
+* Limited support for inlined tabs capability
 
 2.13.0 (2025-06-08)
 ===================
