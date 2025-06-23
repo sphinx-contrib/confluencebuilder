@@ -165,11 +165,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
             handler[node_name](self, node)
             raise nodes.SkipNode
 
-        if node.source:
-            lpf = f'#{node.line}' if node.line else ''
-            self.warn(f'unknown node {node_name}: {node.source}{lpf}')
-        else:
-            self.warn(f'unknown node {node_name}: {self.docname}')
+        self._warnref(node, f'unknown node {node_name}')
 
         raise nodes.SkipNode
 
@@ -506,3 +502,22 @@ class ConfluenceBaseTranslator(BaseTranslator):
             alignment = self.encode(alignment)
 
         return alignment
+
+    def _warnref(self, node, msg):
+        """
+        generate a warning with a reference to the source/line number (or doc)
+
+        A helper used to generate a warning that includes the source with line
+        number or a document name. This is to make it easier for a user to know
+        where the warning originated from.
+
+        Args:
+            node: the node
+            msg: the message
+        """
+
+        if node.source:
+            lpf = f'#{node.line}' if node.line else ''
+            self.warn(f'{msg}: {node.source}{lpf}')
+        else:
+            self.warn(f'{msg}: {self.docname}')
