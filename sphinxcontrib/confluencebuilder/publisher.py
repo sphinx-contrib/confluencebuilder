@@ -1557,8 +1557,8 @@ class ConfluencePublisher:
         # but it generates a warning to inform users and allows a publish
         # even to stop if `--fail-on-warning` is set.
         if '<ac:inline-comment-marker' in existing_data:
-            logger.warn(f'inline comment detected (page "{page_name}")',
-                subtype='inline-comment')
+            logger.warn(f'inline comment detected (page "{page_name}"); '
+                         'page not published', subtype='inline-comment')
             return True
 
         return False
