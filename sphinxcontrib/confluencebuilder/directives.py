@@ -3,6 +3,7 @@
 
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from sphinx.util.docutils import SphinxDirective
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.nodes import confluence_doc_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_expand
@@ -15,6 +16,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_panel
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
+from sphinxcontrib.confluencebuilder.nodes import confluence_view_pdf
 from sphinxcontrib.confluencebuilder.nodes import jira
 from sphinxcontrib.confluencebuilder.nodes import jira_issue
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
@@ -288,6 +290,21 @@ class ConfluenceToc(Directive):
         for k, v in self.options.items():
             node.params[kebab_case_to_camel_case(k)] = v
 
+        return [node]
+
+
+class ConfluenceViewPdfDirective(SphinxDirective):
+    has_content = False
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self):
+        options = {
+            'refdoc': self.env.current_document.docname,
+            'reftarget': self.arguments[0],
+        }
+
+        node = confluence_view_pdf(**options)
         return [node]
 
 

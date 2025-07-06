@@ -2,6 +2,7 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from docutils import nodes
+from sphinx import addnodes
 
 
 # name for this extension's custom node parameters
@@ -253,6 +254,15 @@ class confluence_toc(nodes.Structural, ConfluenceParams):
 
     Provides a Confluence's TOC macro; an alternative to Sphinx's TOC and
     reStructuredText's contents directive.
+    """
+
+
+class confluence_view_pdf(nodes.Structural, addnodes.download_reference):
+    """
+    confluence view pdf node
+
+    Provides a Confluence's ViewPDF macro, used to help present PDFs inlined
+    on a page.
     """
 
 
