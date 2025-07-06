@@ -16,7 +16,11 @@ maintainers = [
 ]
 requires-python = '>=3.9'
 readme = 'README.md'
-license = {text = 'BSD-2-Clause'}
+license = 'BSD-2-Clause'
+license-files = [
+    'LICENSE',
+    'LICENSE-3RD-PARTY',
+]
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
@@ -24,7 +28,6 @@ classifiers = [
     'Framework :: Sphinx',
     'Framework :: Sphinx :: Extension',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: BSD License',
     'Operating System :: OS Independent',
     'Programming Language :: Python',
     'Programming Language :: Python :: 3 :: Only',
