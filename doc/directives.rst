@@ -504,6 +504,21 @@ Common
 
     .. versionadded:: 1.9
 
+.. index:: Macros; PDF Macro (directive)
+.. index:: PDF Macro
+.. _confluence_viewpdf-directive:
+
+.. rst:directive:: confluence_viewpdf
+
+    The ``confluence_viewpdf`` directive allows a user to define a Confluence
+    `PDF Macro`_ to help inline PDF files in a page. For example:
+
+    .. code-block:: rst
+
+        .. confluence_viewpdf:: example.pdf
+
+    .. versionadded:: 2.14
+
 .. index:: Macros; Jira Macro (directive)
 .. _jira-directives:
 
@@ -839,6 +854,7 @@ See also :ref:`smart link roles <smart-link-roles>`.
 .. _Expand Macro: https://confluence.atlassian.com/doc/expand-macro-223222352.html
 .. _HTML Macro: https://confluence.atlassian.com/doc/html-macro-38273085.html
 .. _Panel Macro: https://confluence.atlassian.com/doc/panel-macro-51872380.html
+.. _PDF Macro: https://confluence.atlassian.com/doc/pdf-macro-375849180.html
 .. _Sphinx's toctree directive: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#table-of-contents
 .. _Table of Contents Macro: https://support.atlassian.com/confluence-cloud/docs/insert-the-table-of-contents-macro/
 .. _directives: https://www.sphinx-doc.org/en/stable/usage/restructuredtext/directives.html

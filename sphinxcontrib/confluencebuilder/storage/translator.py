@@ -2684,6 +2684,54 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         raise nodes.SkipNode
 
+    def visit_confluence_view_pdf(self, node):
+        reftarget = node['reftarget']
+        uri = self.encode(reftarget)
+
+        if uri.find('://') != -1:
+            self.warn('only local/downloaded pdfs are supported')
+            raise nodes.SkipNode
+
+        asset_docname = None
+        if self.builder.name == 'singleconfluence':
+            asset_docname = self.docname
+
+        file_key, hosting_docname, _ = \
+            self.assets.fetch(node, docname=asset_docname)
+
+        # if this file has not already be processed (injected at a later
+        # stage in the sphinx process); try processing it now
+        if not file_key:
+            if not asset_docname:
+                asset_docname = self.docname
+
+            file_key, hosting_docname, _ = \
+                self.assets.process_file_node(
+                    node, asset_docname, standalone=True)
+
+        if not file_key:
+            self.warn(f'unable to find download: {reftarget}')
+            raise nodes.SkipNode
+
+        hosting_doctitle = self.state.title(hosting_docname)
+        hosting_doctitle = self.encode(hosting_doctitle)
+
+        self.body.append(self.start_ac_macro(node, 'viewpdf'))
+        self.body.append(self.build_ac_param(node, 'name',
+            self.start_ri_attachment(node, file_key) +
+            self.end_ri_attachment(node),
+        ))
+        if hosting_docname != self.docname:
+            self.body.append(self.build_ac_param(node, 'page',
+                self.start_tag(node, 'ac:link') +
+                self.start_tag(node, 'ri:page',
+                   empty=True, **{'ri:content-title': hosting_doctitle}) +
+                self.end_tag(node, suffix=''),
+            ))
+        self.body.append(self.end_ac_macro(node))
+
+        raise nodes.SkipNode
+
     # ------------------------------------------
     # confluence-builder -- enhancements -- card
     # ------------------------------------------
