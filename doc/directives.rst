@@ -15,6 +15,12 @@ used to restrict these directives to supported builders by using the
         .. confluence_metadata::
             :labels: label-test
 
+Alternatively, users may be interested in a third-party extension which can
+help support the use of Confluence directives in other builders:
+
+    | sphinx-confluencebuilder-bridge
+    | https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge
+
 Common
 ------
 
