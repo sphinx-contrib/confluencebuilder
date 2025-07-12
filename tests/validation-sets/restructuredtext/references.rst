@@ -61,6 +61,46 @@ pharetra quis orci. Maecenas lobortis neque ipsum, quis ultricies velit auctor
 eu. Quisque pellentesque suscipit sodales. In sapien massa, tincidunt vel nisl
 id, sodales bibendum dui. Pellentesque consectetur a risus sed aliquam.
 
+Reference in a list: `other values`_
+
+#. Curabitur tincidunt eros non auctor commodo.
+#. Fusce vestibulum erat id massa vehicula, a suscipit ligula vestibulum.
+
+   .. _other values:
+
+#. Fusce quis nibh quis dui aliquet maximus ac vel felis.
+#. Duis vehicula sem non turpis eleifend imperdiet.
+
+Integer aliquet purus elementum leo pulvinar elementum. Aenean id orci cursus,
+viverra velit id, aliquam ipsum. Pellentesque nec magna ultricies, consequat
+metus a, sollicitudin libero. Aenean placerat, nibh at fermentum rutrum, metus
+nulla interdum mauris, sit amet sagittis diam elit vel elit. Vestibulum a
+mattis metus, et condimentum metus. Praesent pharetra, nisi ullamcorper
+tincidunt convallis, purus dolor placerat justo, at sodales elit nisl sed nisi.
+Nam bibendum tempor elit a fermentum. Vivamus tellus massa, vulputate a dolor
+eu, placerat pharetra justo. Pellentesque habitant morbi tristique senectus et
+netus et malesuada fames ac turpis egestas. Nunc fringilla nibh id dictum
+semper. Nam pharetra, tortor at porttitor sollicitudin, eros erat ultricies
+ante, nec cursus dui risus nec velit.
+
+Cras cursus in magna non ultrices. In nulla arcu, malesuada a blandit id,
+pretium ac dui. Praesent porta sodales turpis, vitae efficitur libero finibus
+sit amet. Nulla vitae molestie leo. Suspendisse nisl sapien, pulvinar ut
+ultricies ac, placerat vel ipsum. Pellentesque in ex volutpat, tincidunt eros
+sed, tristique nisi. Suspendisse sit amet dui justo. Maecenas convallis ligula
+a vestibulum pulvinar. Phasellus magna magna, maximus eu elit lacinia,
+venenatis ultrices libero.
+
+Mauris lobortis fringilla vestibulum. Donec quis sagittis erat. Mauris bibendum
+metus magna, sit amet pellentesque nibh mollis vitae. Maecenas interdum eget
+mi ac consectetur. Pellentesque fermentum gravida nisi, quis accumsan leo
+fringilla posuere. Proin sed luctus ipsum. Sed sit amet augue dui. Donec
+lobortis porta sapien, sit amet faucibus ipsum iaculis at. Nunc vel enim vel
+neque malesuada lacinia. Aliquam ante velit, interdum vitae purus eu, tristique
+placerat augue. Etiam ut consequat neque. Praesent tempor metus in lorem
+efficitur iaculis. Vivamus enim risus, molestie sed massa sit amet, iaculis
+facilisis velit. Aenean ornare tincidunt vestibulum. Nulla bibendum nisi in
+neque congue rutrum. 
 
 .. references ------------------------------------------------------------------
 

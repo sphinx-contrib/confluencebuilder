@@ -110,6 +110,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
         self.todo_include_todos = getattr(config, 'todo_include_todos', None)
+        self._anchor_cache = set()
         self._auto_context = []
         self._building_footnotes = False
         self._figure_context = []
@@ -117,6 +118,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._list_context = ['']
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._needs_navnode_spacing = False
+        self._pending_anchors = []
         self._reference_context = []
         self._thead_context = []
         self._v2_header_added = False
@@ -267,6 +269,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             new_targets = []
 
             self.body.append(self.start_tag(node, f'h{self._title_level}'))
+            self._delayed_anchor_inject(node)
 
             if self.builder.name == 'singleconfluence':
                 docname = self._docnames[-1]
@@ -1502,9 +1505,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # sections which will have automatically created targets), we will
         # build an anchor link for them; example cases include documentation
         # which generate a custom anchor link inside a paragraph
-        if 'ids' in node and 'refuri' not in node:
+        if node.get('ids') and 'refuri' not in node:
             self._build_id_anchors(node)
             self.body.append(self.encode(node.astext()))
+        # if this target has a reference id, treat as a generic anchor
+        elif node.get('refid'):
+            # note: we do not add generic anchors immediately to avoid
+            # newline issues
+            self._pending_anchors.append(node.get('refid'))
 
         raise nodes.SkipNode
 
@@ -3430,6 +3438,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             attribs['style'] = style
 
         self.body.append(self.start_tag(node, tag, **attribs))
+        self._delayed_anchor_inject(node)
         self.context.append(self.end_tag(node))
 
     def depart_line_block(self, node):
@@ -3498,6 +3507,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for id_ in node['ids']:
                 self._build_anchor(node, id_)
 
+        # also, include any pending anchors not added
+        self._delayed_anchor_inject(node)
+
     def _build_anchor(self, node, anchor, *, force_compat=False):
         """
         build an anchor on a page
@@ -3517,6 +3529,12 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             anchor: the name of the anchor to create
             force_compat (optional): always force compat anchor
         """
+
+        # ignore any duplicate anchors on the same page
+        if anchor in self._anchor_cache:
+            self.verbose(f'duplicate anchor ({self.docname}): {anchor}')
+            return
+        self._anchor_cache.add(anchor)
 
         self.verbose(f'build anchor ({self.docname}): {anchor}')
         self.body.append(self.start_ac_macro(node, 'anchor'))
@@ -4117,6 +4135,24 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             data = data.replace(']]>', ']]]]><![CDATA[>')
 
         return ConfluenceBaseTranslator.encode(self, data)
+
+    def _delayed_anchor_inject(self, node):
+        """
+        add delayed anchors into a node
+
+        While it would be nice to add anchors when processing targets
+        immediately, Confluence renders anchors in a way where they can result
+        in extra newlines. A trick that appears to work is for some anchors,
+        we can delay adding them into the body until we build a block (e.g. a
+        paragraph) to avoid any extra spacing.
+
+        Args:
+            node: the node to add the anchor into
+        """
+
+        while self._pending_anchors:
+            new_anchor_id = self._pending_anchors.pop()
+            self._build_anchor(node, new_anchor_id)
 
     # ##########################################################################
     # #                                                                        #
