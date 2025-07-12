@@ -3,8 +3,10 @@ Development
 
 * Fixed ``get_and_resolve_doctree`` usage when using singleconfluence for
   future Sphinx releases
+* Fixed certain section references when publishing on Confluence Cloud
 * Introduce the Confluence PDF (macro) directive
 * Limited support for inlined tabs capability
+* Support references to specific list items (and some other content types)
 
 2.13.0 (2025-06-08)
 ===================
