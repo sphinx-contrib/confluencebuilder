@@ -273,21 +273,22 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             else:
                 docname = self.docname
 
-            # For v2, will will generate section anchors inside the title
-            # area for the following reasons:
+            # Generate section anchors inside the title area for the following
+            # reasons:
             # - We want to create inside the header inside if we input anchors
             #    before the header, it increase the space above the anchor
             #    due to how v2 styles a page.
             # - We are generating compatible anchor links (prefixed with the
             #    repsective document name) which helps allow `ac:link` macros
             #    properly link when coming from v1 or v2 editor pages.
-            if self.v2 and 'names' in node.parent:
+            # - Helps support anchor links for legacy editor on Confluence Cloud
+            if 'names' in node.parent:
                 for name in node.parent['names']:
                     anchor = name.replace(' ', '-')
                     target_name = f'{docname}/#{anchor}'
                     target = self.state.target(target_name)
                     if target and target not in new_targets:
-                        self._build_anchor(node, target)
+                        self._build_anchor(node, target, force_compat=True)
                         new_targets.append(target)
 
             # For MyST sections with an auto-generated slug, we will use this
@@ -3497,7 +3498,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             for id_ in node['ids']:
                 self._build_anchor(node, id_)
 
-    def _build_anchor(self, node, anchor):
+    def _build_anchor(self, node, anchor, *, force_compat=False):
         """
         build an anchor on a page
 
@@ -3514,6 +3515,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         Args:
             node: the node adding the anchor
             anchor: the name of the anchor to create
+            force_compat (optional): always force compat anchor
         """
 
         self.verbose(f'build anchor ({self.docname}): {anchor}')
@@ -3521,7 +3523,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.build_ac_param(node, '', anchor))
         self.body.append(self.end_ac_macro(node, suffix=''))
 
-        if self.v2:
+        if self.builder.cloud or self.v2 or force_compat:
             doctitle = self.state.title(self.docname)
             doctitle = self.encode(doctitle.replace(' ', ''))
 
