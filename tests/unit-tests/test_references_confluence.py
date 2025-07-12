@@ -86,21 +86,25 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
 
             # anchor in local-toc
             ltoc_entry = local_toc_entries.pop(0)
-            ltoc_anchor = ltoc_entry.find(
+            ltoc_anchors = ltoc_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(ltoc_anchor)
-            anchor_param = ltoc_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_01_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_01_ids = []
+            for ltoc_anchor in ltoc_anchors:
+                anchor_param = ltoc_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_01_ids.append(anchor_param.text)
 
             # anchor in local-toc
             ltoc_entry = local_toc_entries.pop(0)
-            ltoc_anchor = ltoc_entry.find(
+            ltoc_anchors = ltoc_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(ltoc_anchor)
-            anchor_param = ltoc_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_02_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_02_ids = []
+            for ltoc_anchor in ltoc_anchors:
+                anchor_param = ltoc_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_02_ids.append(anchor_param.text)
 
             # anchor after pre-content
             content_element = data.find('p', text='pre-content')
@@ -138,7 +142,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # header link to a local-toc entry
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_01_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_01_ids)
             ac_link_body = ac_link.find('ac:link-body')
             self.assertIsNotNone(ac_link_body)
             self.assertEqual(ac_link_body.text, 'An Extra Header')
@@ -146,7 +150,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # header link to a local-toc entry
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_02_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_02_ids)
             ac_link_body = ac_link.find('ac:link-body')
             self.assertIsNotNone(ac_link_body)
             self.assertEqual(ac_link_body.text, 'An Extra Header')
@@ -295,21 +299,25 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
 
             # anchor in local-toc
             ltoc_entry = local_toc_entries.pop(0)
-            ltoc_anchor = ltoc_entry.find(
+            ltoc_anchors = ltoc_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(ltoc_anchor)
-            anchor_param = ltoc_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_01_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_01_ids = []
+            for ltoc_anchor in ltoc_anchors:
+                anchor_param = ltoc_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_01_ids.append(anchor_param.text)
 
             # anchor in local-toc
             ltoc_entry = local_toc_entries.pop(0)
-            ltoc_anchor = ltoc_entry.find(
+            ltoc_anchors = ltoc_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(ltoc_anchor)
-            anchor_param = ltoc_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_02_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_02_ids = []
+            for ltoc_anchor in ltoc_anchors:
+                anchor_param = ltoc_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_02_ids.append(anchor_param.text)
 
             # anchor after pre-content
             content_element = data.find('p', text='pre-content')
@@ -331,7 +339,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # header link to a local-toc entry
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_01_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_01_ids)
             ac_link_body = ac_link.find('ac:link-body')
             self.assertIsNotNone(ac_link_body)
             self.assertEqual(ac_link_body.text, 'An Extra Header')
@@ -339,7 +347,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # header link to a local-toc entry
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_02_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_02_ids)
             ac_link_body = ac_link.find('ac:link-body')
             self.assertIsNotNone(ac_link_body)
             self.assertEqual(ac_link_body.text, 'An Extra Header')
@@ -497,21 +505,25 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
 
             # anchor in first header
             header_entry = header_entries.pop(0)
-            header_anchor = header_entry.find(
+            header_anchors = header_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(header_anchor)
-            anchor_param = header_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_01_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_01_ids = []
+            for header_anchor in header_anchors:
+                anchor_param = header_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_01_ids.append(anchor_param.text)
 
             # anchor in second header
             header_entry = header_entries.pop(0)
-            header_anchor = header_entry.find(
+            header_anchors = header_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(header_anchor)
-            anchor_param = header_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_02_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_02_ids = []
+            for header_anchor in header_anchors:
+                anchor_param = header_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_02_ids.append(anchor_param.text)
 
             # ##########################################################
             # find the expected ac:link macros
@@ -522,7 +534,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # heading jump to other heading
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_01_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_01_ids)
             link_page = ac_link.find('ri:page')
             self.assertIsNone(link_page)
             ac_link_body = ac_link.find('ac:link-body')
@@ -532,7 +544,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # link to the sub-heading on this page
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_01_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_01_ids)
             link_page = ac_link.find('ri:page')
             self.assertIsNone(link_page)
             ac_link_body = ac_link.find('ac:link-body')
@@ -543,7 +555,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             # link to the second sub-heading on this page
             ac_link = ac_links.pop(0)
             self.assertTrue(ac_link.has_attr('ac:anchor'))
-            self.assertEqual(ac_link['ac:anchor'], anchor_02_id)
+            self.assertIn(ac_link['ac:anchor'], anchor_02_ids)
             link_page = ac_link.find('ri:page')
             self.assertIsNone(link_page)
             ac_link_body = ac_link.find('ac:link-body')
@@ -607,21 +619,25 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
 
             # anchor in first header
             header_entry = header_entries.pop(0)
-            header_anchor = header_entry.find(
+            header_anchors = header_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(header_anchor)
-            anchor_param = header_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_01_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_01_ids = []
+            for header_anchor in header_anchors:
+                anchor_param = header_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_01_ids.append(anchor_param.text)
 
             # anchor in second header
             header_entry = header_entries.pop(0)
-            header_anchor = header_entry.find(
+            header_anchors = header_entry.find_all(
                 'ac:structured-macro', {'ac:name': 'anchor'})
-            self.assertIsNotNone(header_anchor)
-            anchor_param = header_anchor.find('ac:parameter')
-            self.assertIsNotNone(anchor_param)
-            anchor_02_id = anchor_param.text
+            self.assertGreaterEqual(len(ltoc_anchors), 1)
+            anchor_02_ids = []
+            for header_anchor in header_anchors:
+                anchor_param = header_anchor.find('ac:parameter')
+                self.assertIsNotNone(anchor_param)
+                anchor_02_ids.append(anchor_param.text)
 
             # ##########################################################
             # find the expected ac:link macros
