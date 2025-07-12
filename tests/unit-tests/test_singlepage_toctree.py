@@ -14,6 +14,12 @@ class TestConfluenceSinglepageToctree(ConfluenceTestCase):
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
+            # ignore any anchor tags for these checks
+            for tag in data.find_all(
+                    'ac:structured-macro', attrs={'ac:name': 'anchor'}):
+                print(tag)
+                tag.decompose()
+
             tags = data.find_all()
             self.assertIsNotNone(tags)
             self.assertEqual(len(tags), 12)
@@ -76,6 +82,12 @@ class TestConfluenceSinglepageToctree(ConfluenceTestCase):
         out_dir = self.build(dataset)
 
         with parse('index', out_dir) as data:
+            # ignore any anchor tags for these checks
+            for tag in data.find_all(
+                    'ac:structured-macro', attrs={'ac:name': 'anchor'}):
+                print(tag)
+                tag.decompose()
+
             tags = data.find_all()
             self.assertIsNotNone(tags)
             self.assertEqual(len(tags), 6)

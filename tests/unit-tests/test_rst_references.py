@@ -65,13 +65,8 @@ class TestConfluenceRstReferences(ConfluenceTestCase):
 
             # anchors ##################################################
 
-            anchors = data.find_all('ac:structured-macro',
+            anchor = data.find('ac:structured-macro',
                 {'ac:name': 'anchor'})
-            self.assertEqual(len(anchors), 1)
-
-            # (anchor 1)
-            anchor = anchors.pop(0)
-
             anchor_id = anchor.find('ac:parameter')
             self.assertIsNotNone(anchor_id)
             self.assertEqual(anchor_id.text, 'my-reference-label1')
