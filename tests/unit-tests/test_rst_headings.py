@@ -6,6 +6,10 @@ from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
 
 
+def strval(obj):
+    return ''.join(obj.find_all(string=True, recursive=False)).strip()
+
+
 class TestConfluenceRstHeadings(ConfluenceTestCase):
     @classmethod
     def setUpClass(cls):
@@ -23,21 +27,21 @@ class TestConfluenceRstHeadings(ConfluenceTestCase):
 
             header_lvl2 = data.find('h2')
             self.assertIsNotNone(header_lvl2)
-            self.assertEqual(header_lvl2.text, 'header 2')
+            self.assertEqual(strval(header_lvl2), 'header 2')
 
             header_lvl3 = data.find_all('h3')
             self.assertIsNotNone(header_lvl3)
             self.assertEqual(len(header_lvl3), 2)
-            self.assertEqual(header_lvl3[0].text, 'header 3')
-            self.assertEqual(header_lvl3[1].text, 'header 12')
+            self.assertEqual(strval(header_lvl3[0]), 'header 3')
+            self.assertEqual(strval(header_lvl3[1]), 'header 12')
 
             header_lvl4 = data.find('h4')
             self.assertIsNotNone(header_lvl4)
-            self.assertEqual(header_lvl4.text, 'header 4')
+            self.assertEqual(strval(header_lvl4), 'header 4')
 
             header_lvl5 = data.find('h5')
             self.assertIsNotNone(header_lvl5)
-            self.assertEqual(header_lvl5.text, 'header 5')
+            self.assertEqual(strval(header_lvl5), 'header 5')
 
             header_lvl6 = data.find_all('h6')
             self.assertIsNotNone(header_lvl6)
@@ -51,28 +55,29 @@ class TestConfluenceRstHeadings(ConfluenceTestCase):
         out_dir = self.build(self.dataset, config=config)
 
         with parse('index', out_dir) as data:
-            header_lvl1 = data.find('h1')
+            header_lvl1 = data.find('h1', recursive=False)
+            print(header_lvl1)
             self.assertIsNotNone(header_lvl1)
-            self.assertEqual(header_lvl1.text, 'header 1')
+            self.assertEqual(strval(header_lvl1), 'header 1')
 
-            header_lvl2 = data.find('h2')
+            header_lvl2 = data.find('h2', recursive=False)
             self.assertIsNotNone(header_lvl2)
-            self.assertEqual(header_lvl2.text, 'header 2')
+            self.assertEqual(strval(header_lvl2), 'header 2')
 
-            header_lvl3 = data.find_all('h3')
+            header_lvl3 = data.find_all('h3', recursive=False)
             self.assertIsNotNone(header_lvl3)
             self.assertEqual(len(header_lvl3), 2)
-            self.assertEqual(header_lvl3[0].text, 'header 3')
-            self.assertEqual(header_lvl3[1].text, 'header 12')
+            self.assertEqual(strval(header_lvl3[0]), 'header 3')
+            self.assertEqual(strval(header_lvl3[1]), 'header 12')
 
-            header_lvl4 = data.find('h4')
+            header_lvl4 = data.find('h4', recursive=False)
             self.assertIsNotNone(header_lvl4)
-            self.assertEqual(header_lvl4.text, 'header 4')
+            self.assertEqual(strval(header_lvl4), 'header 4')
 
-            header_lvl5 = data.find('h5')
+            header_lvl5 = data.find('h5', recursive=False)
             self.assertIsNotNone(header_lvl5)
-            self.assertEqual(header_lvl5.text, 'header 5')
+            self.assertEqual(strval(header_lvl5), 'header 5')
 
-            header_lvl6 = data.find_all('h6')
+            header_lvl6 = data.find_all('h6', recursive=False)
             self.assertIsNotNone(header_lvl6)
             self.assertEqual(len(header_lvl6), 6)

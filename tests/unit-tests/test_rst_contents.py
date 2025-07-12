@@ -60,7 +60,9 @@ class TestConfluenceRstContents(ConfluenceTestCase):
             self.assertEqual(len(headers), 5)
 
             for header, expected in zip(headers, expected_header_text):
-                self.assertEqual(header.text, expected)
+                txt = ''.join(
+                    header.find_all(string=True, recursive=False)).strip()
+                self.assertEqual(txt, expected)
 
     @setup_builder('confluence')
     def test_storage_rst_contents_backlinks_top(self):
