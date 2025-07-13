@@ -326,17 +326,15 @@ Generic configuration
 
 .. confval:: confluence_editor
 
-    .. warning::
+    .. important::
 
-        Using the ``v2`` editor with Confluence Data Center may yield
-        unexpected results. It is recommended to only use the ``v2`` editor
-        when using Confluence Cloud (CONFSERVER-59536_).
+        - This option should not be used for Confluence Data Center.
 
-    .. note::
+        - This option is to hint at what editor style to use on Confluence
+          Cloud. As of year 2025, the default editor used is ``v1``. However,
+          this will change in 2026 as Atlassian
+          `deprecates their older editor`_.
 
-        - Confluence's ``v1`` editor provides a larger support for Sphinx
-          features than the newer editor. Users can compare the difference
-          in editors by inspecting the `online demo`_.
         - If a page is published with a ``v2`` editor, an attempt to re-publish
           with a ``v1`` editor style may be ignored in Confluence Cloud. In
           such situations, users are recommended to delete the pages on
@@ -350,18 +348,11 @@ Generic configuration
 
     A user can choose which version of the editor to build and published
     documentation with. This extension may adjust how content is generated
-    based on which editor is selected. Not all Confluence editors are
-    equal -- some features supported in one editor may not be supported in
-    another. For example, if documentation relies indenting bullet lists,
-    content may only be properly rendered with the ``v1`` editor; where if
-    users want to new styled Confluence admonitions (warnings, notes, etc.),
-    these are only available in the ``v2`` editor.
+    based on which editor is selected.
 
     .. code-block:: python
 
         confluence_editor = 'v1'
-
-    For per-document overrides, please see the :lref:`confluence_metadata`.
 
     .. versionadded:: 2.0
 
@@ -2484,6 +2475,7 @@ Deprecated options
 .. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 .. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
 .. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
+.. _deprecates their older editor: https://community.atlassian.com/forums/Confluence-articles/The-Legacy-Editor-is-being-deprecated-in-Confluence-Cloud-Here-s/ba-p/3046832
 .. _online demo: https://sphinxcontrib-confluencebuilder.atlassian.net/
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
 .. _sphinx-build: https://www.sphinx-doc.org/en/master/man/sphinx-build.html

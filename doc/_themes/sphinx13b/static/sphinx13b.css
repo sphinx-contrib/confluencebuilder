@@ -405,7 +405,7 @@ div.admonition > p.admonition-title {
     font-weight: bold;
 }
 
-div.attention {
+div.attention, div.important {
     border: 1px solid #9d9d27;
 }
 
