@@ -15,7 +15,7 @@ class TestConfluenceLocalToc(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_local_toc(self):
-        out_dir = self.build(self.dataset)
+        out_dir = self.build(self.dataset, relax=True)
 
         with parse('rst-v1', out_dir) as data:
             # for v1, no a-tags

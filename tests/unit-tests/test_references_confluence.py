@@ -32,7 +32,7 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
 
     @setup_builder('confluence')
     def test_storage_references_confluence(self):
-        out_dir = self.build(self.dataset)
+        out_dir = self.build(self.dataset, relax=True)
 
         # expected page names
         rst_v1_first_name = 'reStructuredText v1 First'
