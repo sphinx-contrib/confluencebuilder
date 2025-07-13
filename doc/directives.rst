@@ -214,6 +214,11 @@ Common
     .. rst:directive:option:: editor: value
         :type: v1, v2
 
+        .. deprecated:: 2.14
+
+            Support for page-specific editor overrides will be removed in 2026
+            as Confluence Cloud removes support for the ``v1`` editor.
+
         Pages are publish with the editor type configured through the
         :lref:`confluence_editor` option. However, users can override the
         editor for a specific page using the ``editor`` metadata option.
