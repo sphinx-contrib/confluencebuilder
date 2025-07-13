@@ -954,6 +954,15 @@ class ConfluenceBuilder(Builder):
                 else:
                     metadata[k] = v
 
+                if k == 'editor':
+                    msg = 'page-specific editor overrides are deprecated'
+                    if node.source:
+                        lpf = f'#{node.line}' if node.line else ''
+                        self.warn(f'{msg}: {node.source}{lpf}',
+                            subtype='deprecated')
+                    else:
+                        self.warn(f'{msg}: {docname}', subtype='deprecated')
+
             node.parent.remove(node)
 
     def _find_title_element(self, doctree):

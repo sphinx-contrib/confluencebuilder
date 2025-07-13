@@ -438,6 +438,10 @@ div.viewcode-block:target {
     border-bottom: 1px solid #ac9;
 }
 
+span.deprecated {
+    font-weight: bold;
+}
+
 .contentstable {
     margin-left: 30px;
     margin: 0 auto;
