@@ -2472,9 +2472,6 @@ Deprecated options
 .. _Sphinx's command line: https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _Using Personal Access Tokens: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html
-.. _api_tokens: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
-.. _get_outdated_docs: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_outdated_docs
-.. _get_relative_uri: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.get_relative_uri
 .. _deprecates their older editor: https://community.atlassian.com/forums/Confluence-articles/The-Legacy-Editor-is-being-deprecated-in-Confluence-Cloud-Here-s/ba-p/3046832
 .. _online demo: https://sphinxcontrib-confluencebuilder.atlassian.net/
 .. _root_doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-root_doc
@@ -2483,4 +2480,3 @@ Deprecated options
 .. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
 .. _suppress_warnings: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
-.. _write_doc: https://www.sphinx-doc.org/en/master/extdev/builderapi.html#sphinx.builders.Builder.write_doc
