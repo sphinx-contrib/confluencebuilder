@@ -66,8 +66,8 @@ Vivamus iaculis, sapien ac blandit faucibus, mauris felis sodales enim, et facil
 
 .. _main-rst-v2-extra2:
 
-An Extra Header
----------------
+An (Extra) Header
+-----------------
 
 .. note::
 
