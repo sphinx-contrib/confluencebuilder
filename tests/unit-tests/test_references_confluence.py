@@ -722,6 +722,6 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
             self.assertIsNotNone(a_href)
             self.assertTrue(a_href.has_attr('href'))
             self.assertEqual(a_href['href'],
-                '#Markdown-v2-Second-sub-heading-(jump-above)')
+                '#markdown-v2-second-sub-heading-jump-above')
             self.assertEqual(a_href.text,
                 'Markdown v2 Second sub-heading (jump above)')
