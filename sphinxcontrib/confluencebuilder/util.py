@@ -11,6 +11,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import FONT_SIZE
 from sphinxcontrib.confluencebuilder.std.confluence import FONT_X_HEIGHT
 from subprocess import check_call
 from hashlib import sha256
+from urllib.parse import quote
 from urllib.parse import urlparse
 import getpass
 import os
@@ -90,6 +91,28 @@ class ConfluenceUtil:
             elif not url.endswith('/'):
                 url += '/'
         return url
+
+
+def ascii_quote(text):
+    """
+    quote the ascii character range of a string
+
+    This utility calls will return a URL quoted value of a string for all
+    detected ASCII characters.
+
+    This is primarily used to help detect prospect anchor targets in Confluence
+    where Confluence may silently remove anchors with unsupported characters
+    (varies per editor).
+
+    Args:
+        text: the text to quote
+
+    Returns:
+        the quoted text
+    """
+
+    chars = [quote(x) if ord(x) < 128 else x for x in text]
+    return ''.join(chars)
 
 
 def convert_length(value, unit, pct=True):
