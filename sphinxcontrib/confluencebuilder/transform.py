@@ -39,13 +39,13 @@ class ConfluenceHyperlinkCollector(HyperlinkCollector):
             ))
 
         for refnode in self.document.findall(is_confluence_href_node):
-            uri = refnode['confluence-params']['href']
+            uri = refnode['confluence-params']['href']  # type: ignore[index]
 
             if newuri := app.emit_firstresult('linkcheck-process-uri', uri):
                 uri = newuri
 
             try:
-                lineno = get_node_line(refnode)
+                lineno = get_node_line(refnode)  # type: ignore[arg-type]
             except ValueError:
                 lineno = -1
 
