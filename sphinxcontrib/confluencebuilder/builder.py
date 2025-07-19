@@ -37,12 +37,12 @@ from sphinxcontrib.confluencebuilder.storage.search import generate_storage_form
 from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorageFormatTranslator
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import ascii_quote
 from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
-from urllib.parse import quote
 import os
 import tempfile
 import time
@@ -1318,6 +1318,30 @@ class ConfluenceBuilder(Builder):
             if last_title_postfix > 0:
                 title_target = f'{title_target}.{last_title_postfix}'
 
+            # The value of 'title_target' should now be what the name of the
+            # Confluence-header should be. However, there are a couple of cases
+            # where this (anchor) target cannot be used. In Confluence's v2
+            # editor, if a title includes non-basic characters, anchor links
+            # to the title can require encoding. Otherwise, Confluence will
+            # ignore/drop the provided anchor pages in the page. On top of
+            # this, if a section has some non-basic characters, Confluence (on
+            # v2) may also inject one or more `[inlineExtension]` string
+            # prefixes into a heading's identifier.
+            #
+            # Instead of dealing with any of this, if we detect a section is
+            # using any characters which may cause issues in building anchors
+            # or causing issues building links to these sections, we will not
+            # use the Confluence-generated identifier. Instead, we will pull
+            # the first section identifier value and use that as a target
+            # instead (as we now inject detected ids anchor values in headers).
+            #
+            # See: https://jira.atlassian.com/browse/CONFCLOUD-74698
+            if title_target != ascii_quote(title_target):
+                if 'ids' in section_node:
+                    old_target = title_target
+                    title_target = first(node.parent['ids'])
+                    self.verbose(f'target replace {title_target}: {old_target}')
+
             # If this section is the (first) root section, register a target
             # for a "root" anchor point. This is important for references that
             # link to documents (e.g. `:doc:<>`). For example, if "page-a"
@@ -1359,43 +1383,6 @@ class ConfluenceBuilder(Builder):
             self._register_target(editor, full_id, node_refid)
 
     def _register_target(self, editor, refid, target):
-        # v2 editor does not link anchors with select characters;
-        # provide a workaround that url encodes targets
-        #
-        # See: https://jira.atlassian.com/browse/CONFCLOUD-74698
-        if not self.config.confluence_adv_disable_confcloud_74698:
-            if editor == 'v2':
-                # We originally encoded specific characters to prevent
-                # Confluence from suppressing anchors for select characters,
-                # but it is unknown the extensive list of characters Confluence
-                # was not happy with. We then switch to `quote` which worked
-                # for the most part, but when users used Emoji's, these
-                # characters would become encoded and generate anchor targets
-                # with incorrect values. Now, we do a partial quote in an
-                # attempt to be flexible -- we quote the standard ASCII range
-                # using Python default safe sets and anything beyond it, we
-                # will just leave as is.
-                def partial_quote(s):
-                    chars = [quote(x) if ord(x) < 128 else x for x in s]
-                    return ''.join(chars)
-
-                new_target = partial_quote(target)
-
-                # So... related to CONFCLOUD-74698, something about anchors
-                # with special characters will cause some pain for links.
-                # This has been observed in the past, was removed after
-                # thinking it was not an issue but is now being added again.
-                # It appears that when a header is generated an identifier in
-                # Confluence Cloud that has special characters, we can observe
-                # Confluence prefixing these identifiers with two copies of
-                # `[inlineExtension]`. Cannot explain why, so if this situation
-                # occurs, just add the prefix data to help ensure links work.
-                if not self.config.confluence_adv_disable_confcloud_ieaj:
-                    if new_target != target:
-                        new_target = 2 * '[inlineExtension]' + new_target
-
-                target = new_target
-
         self.state.register_target(refid, target)
 
         # For singleconfluence, register global fallbacks for targets
