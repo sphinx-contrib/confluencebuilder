@@ -1,5 +1,5 @@
-Development
-===========
+2.14.0 (2025-07-26)
+===================
 
 * Fixed ``get_and_resolve_doctree`` usage when using singleconfluence for
   future Sphinx releases
