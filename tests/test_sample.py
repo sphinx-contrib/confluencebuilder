@@ -56,7 +56,7 @@ def main():
 
     doc_dir = prepare_dirs(container)
 
-    # extract any shared confguration values and inject them into the
+    # extract any shared configuration values and inject them into the
     # define list
     shared_config = sample_set_dir / 'config.py'
     if shared_config.is_file():
