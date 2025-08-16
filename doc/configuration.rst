@@ -1,7 +1,7 @@
 Configuration
 =============
 
-The following is an example of simple configuration (``config.py``) for
+The following is an example of simple configuration (``conf.py``) for
 Confluence generation and publishing:
 
 .. code-block:: python
