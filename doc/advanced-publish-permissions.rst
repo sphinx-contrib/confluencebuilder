@@ -1,3 +1,5 @@
+.. _publish_permissions:
+
 Publishing permissions
 ======================
 
@@ -11,14 +13,20 @@ following permissions_ when attempting to publish to a configured space:
 Delete permissions are only required for environments using the
 :lref:`confluence_cleanup_purge` capabilitity.
 
-For environments using an OAuth connector, the following scopes are required:
+For environments using an OAuth connector or scoped API tokens, the following
+scopes are required:
 
 .. code-block:: none
 
-    delete:content:confluence
+    read:space:confluence
+    read:content.metadata:confluence
+    read:page:confluence
+    write:page:confluence
+    delete:page:confluence
+    read:attachment:confluence
     read:content-details:confluence
     write:attachment:confluence
-    write:content:confluence
+    delete:attachment:confluence
     write:watcher:confluence
 
 .. references ------------------------------------------------------------------

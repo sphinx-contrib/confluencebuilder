@@ -59,6 +59,8 @@ Essential configuration
     Re-publishing supports checking for page changes. Pages that have not
     changed will not be updated (see :lref:`confluence_publish_force`).
 
+.. _confluence_server_url:
+
 .. confval:: confluence_server_url
 
     The URL for the Confluence instance to publish to. The URL should be
@@ -140,6 +142,15 @@ Essential configuration
 
         Use this option for Confluence Cloud.
 
+    .. note::
+
+        If using a scoped API token, users are required to also enable
+        :lref:`confluence_api_token_scoped` option or ensure their
+        :lref:`confluence_server_url` configuration points to a modern
+        Confluence API endpoint ("api.atlassian.com") for their site.
+
+        View :ref:`required scope permission <publish_permissions>`.
+
     .. caution::
 
         It is never recommended to store an API token into a committed/shared
@@ -164,6 +175,45 @@ Essential configuration
         confluence_api_token = 'YDYDD3qVvKV0FbkErSxaQ2olmy...AMGwaPe8=02381T9A'
 
     .. versionadded:: 2.6
+
+.. _confluence_api_token_scoped:
+
+.. confval:: confluence_api_token_scoped
+
+    .. tip::
+
+        Use this option for Confluence Cloud when using an API scoped token.
+
+    Enable this option to automatically convert a Confluence Cloud Wiki URL
+    to a Confluence Cloud API endpoint URL. When using an API scoped token,
+    Confluence expects an alternative API endpoint for calls. For example,
+
+    .. code-block:: none
+
+        https://example.atlassian.net/wiki/
+
+    The following is needed:
+
+    .. code-block:: none
+
+        https://api.atlassian.com/ex/confluence/550e8400-e29b-41d4-a716-446655440000/
+
+    The GUID for a space can be determined by venturing to:
+
+    .. code-block:: none
+
+        https://example.atlassian.net/_edge/tenant_info
+
+    Users may opt to configuring :lref:`confluence_server_url` to the newer
+    API endpoint for scoped tokens. However, enabling this option can perform
+    the translation for users who prefer to configure the Wiki endpoint. By
+    default, this option is not enabled with a value of ``False``.
+
+    .. code-block:: python
+
+        confluence_api_token_scoped = True
+
+    .. versionadded:: 2.7
 
 .. _confluence_publish_token:
 
