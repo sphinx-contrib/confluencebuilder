@@ -12,6 +12,7 @@ from sphinxcontrib.confluencebuilder.config.env import apply_env_overrides
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import temp_dir
@@ -313,6 +314,13 @@ def conntest_main(args_parser):
         print('failed!', flush=True)
         logger.error(traceback.format_exc())
     else:
+        # skip any manifest check for modern api cloud endpoint; not sure if
+        # there is a metadata-providing endpoint at this time
+        if publisher.rest.url.startswith(API_CLOUD_ENDPOINT):
+            if not base_url.startswith(API_CLOUD_ENDPOINT):
+                print(f'Resolved API endpoint: {publisher.rest.url}')
+            return 0
+
         try:
             print('Fetching Confluence instance information... ', end='')
             sys.stdout.flush()

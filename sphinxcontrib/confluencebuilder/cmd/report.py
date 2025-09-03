@@ -16,6 +16,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigEr
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
+from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import temp_dir
@@ -175,7 +176,14 @@ def report_main(args_parser):
             info += ' connected: no\n'
             rv = 1
 
-        if session:
+        # skip any manifest check for modern api cloud endpoint; not sure if
+        # there is a metadata-providing endpoint at this time
+        if session and publisher.rest.url.startswith(API_CLOUD_ENDPOINT):
+            if base_url.startswith(API_CLOUD_ENDPOINT):
+                info += '  endpoint: set\n'
+            else:
+                info += '  endpoint: resolved\n'
+        elif session:
             try:
                 # fetch
                 print('fetching confluence instance information...')
