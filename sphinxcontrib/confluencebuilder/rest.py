@@ -321,8 +321,8 @@ class Rest:
     @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def get(self, path, params=None):
-        rsp = self._process_request('GET', path, params=params)
+    def get(self, path, params=None, *, url=None):
+        rsp = self._process_request('GET', path, params=params, url=url)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, path)
@@ -342,32 +342,9 @@ class Rest:
     @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def post(self, path, data, files=None):
-        rsp = self._process_request('POST', path, json=data, files=files)
-
-        if not rsp.ok:
-            errdata = self._format_error(rsp, path)
-            if self.verbosity > 0:
-                errdata += "\n"
-                errdata += json.dumps(data, indent=2)
-            raise ConfluenceBadApiError(rsp.status_code, errdata)
-        if not rsp.text:
-            raise ConfluenceSeraphAuthenticationFailedUrlError
-
-        try:
-            rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
-            json_data = json.loads(rsp.text)
-        except ValueError as ex:
-            msg = 'REST reply did not provide valid JSON data.'
-            raise ConfluenceBadServerUrlError(self.url, msg) from ex
-
-        return json_data
-
-    @confluence_error_retries()
-    @rate_limited_retries()
-    @requests_exception_wrappers()
-    def put(self, path, value, data):
-        rsp = self._process_request('PUT', f'{path}/{value}', json=data)
+    def post(self, path, data, files=None, *, url=None):
+        rsp = self._process_request(
+            'POST', path, json=data, files=files, url=url)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, path)
@@ -390,8 +367,33 @@ class Rest:
     @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def delete(self, path, value):
-        rsp = self._process_request('DELETE', f'{path}/{value}')
+    def put(self, path, value, data, *, url=None):
+        rsp = self._process_request(
+            'PUT', f'{path}/{value}', json=data, url=url)
+
+        if not rsp.ok:
+            errdata = self._format_error(rsp, path)
+            if self.verbosity > 0:
+                errdata += "\n"
+                errdata += json.dumps(data, indent=2)
+            raise ConfluenceBadApiError(rsp.status_code, errdata)
+        if not rsp.text:
+            raise ConfluenceSeraphAuthenticationFailedUrlError
+
+        try:
+            rsp.encoding = self.CONFLUENCE_DEFAULT_ENCODING
+            json_data = json.loads(rsp.text)
+        except ValueError as ex:
+            msg = 'REST reply did not provide valid JSON data.'
+            raise ConfluenceBadServerUrlError(self.url, msg) from ex
+
+        return json_data
+
+    @confluence_error_retries()
+    @rate_limited_retries()
+    @requests_exception_wrappers()
+    def delete(self, path, value, *, url=None):
+        rsp = self._process_request('DELETE', f'{path}/{value}', url=url)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, path)
@@ -412,12 +414,13 @@ class Rest:
             err += 'DATA: <not-or-invalid-json>'
         return err
 
-    def _process_request(self, method, path, *args, **kwargs):
+    def _process_request(self, method, path, url=None, *args, **kwargs):
         publish_debug_opts = self.config.confluence_publish_debug
         dump = PublishDebug.headers in publish_debug_opts
         dump_body = PublishDebug.headers_and_data in publish_debug_opts
 
-        rest_url = f'{self.url}{path}'
+        base_url = url if url else self.url
+        rest_url = f'{base_url}{path}'
         base_req = requests.Request(method, rest_url, *args, **kwargs)
         req = self.session.prepare_request(base_req)
 
