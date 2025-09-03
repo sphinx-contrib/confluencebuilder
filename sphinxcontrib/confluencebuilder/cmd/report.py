@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
 from urllib3 import __version__ as urllib3_version
@@ -255,7 +256,7 @@ def report_main(args_parser):
             else:
                 value = '(set; no scheme)'
 
-            if parsed.netloc and parsed.netloc.endswith('atlassian.net'):
+            if detect_cloud(value):
                 value += ' (cloud)'
 
             config['confluence_server_url'] = value

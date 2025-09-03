@@ -13,6 +13,7 @@ from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.reportbuilder import ConfluenceReportBuilder
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
+from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
 import json
@@ -191,7 +192,7 @@ def conntest_main(args_parser):
             else:
                 print('warning; missing scheme.')
 
-            if parsed.netloc and parsed.netloc.endswith('atlassian.net'):
+            if detect_cloud(confluence_server_url):
                 print('Detected an Atlassian Cloud configuration.')
                 is_cloud = True
     else:
