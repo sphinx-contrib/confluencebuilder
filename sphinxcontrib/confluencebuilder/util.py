@@ -186,7 +186,8 @@ def detect_cloud(site):
     except ValueError:
         pass
     else:
-        if parsed.hostname and parsed.hostname.endswith('atlassian.net'):
+        cloud_domains = ('atlassian.com', 'atlassian.net')
+        if parsed.hostname and parsed.hostname.endswith(cloud_domains):
             is_cloud = True
 
     return is_cloud
