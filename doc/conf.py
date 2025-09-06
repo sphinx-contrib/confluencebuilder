@@ -9,6 +9,7 @@ from sphinx.roles import XRefRole
 from sphinx.transforms.post_transforms import SphinxPostTransform
 from sphinx.util.docfields import GroupedField
 import sphinxcontrib.confluencebuilder
+import sys
 
 project = 'Sphinx Confluence Builder'
 copyright = '2025 Sphinx Confluence Builder Contributors'
@@ -27,6 +28,11 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
 ]
+
+if any('spelling' in arg for arg in sys.argv):
+    extensions.append('sphinxcontrib.spelling')
+    spelling_exclude_patterns = ['changelog.rst']
+    spelling_word_list_filename = '.spelling'
 
 # reStructuredText string included at the end of every source
 rst_epilog = f'''
