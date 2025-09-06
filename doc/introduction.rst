@@ -25,6 +25,19 @@ project's GitHub repository:
     | Atlassian Confluence Builder for Sphinx — GitHub
     | https://github.com/sphinx-contrib/confluencebuilder
 
+.. raw:: latex
+
+    \vspace*{\fill}
+    {\scriptsize
+
+| Atlassian Confluence Builder for Sphinx project is unaffiliated with Atlassian.
+| Atlassian is a registered trademark of Atlassian Pty Ltd.
+| Confluence is a registered trademark of Atlassian Pty Ltd.
+
+.. raw:: latex
+
+    }
+
 Demonstration
 -------------
 
@@ -42,16 +55,3 @@ up an issue:
 
     | Atlassian Confluence Builder for Confluence — Issues
     | https://github.com/sphinx-contrib/confluencebuilder/issues
-
-.. raw:: latex
-
-    \vspace*{\fill}
-    {\scriptsize
-
-| Atlassian Confluence Builder for Sphinx project is unaffiliated with Atlassian.
-| Atlassian is a registered trademark of Atlassian Pty Ltd.
-| Confluence is a registered trademark of Atlassian Pty Ltd.
-
-.. raw:: latex
-
-    }
