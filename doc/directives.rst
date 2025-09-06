@@ -273,7 +273,7 @@ Common
 .. rst:directive:: confluence_newline
 
     The ``confluence_newline`` directive supports the injection of a newline
-    in a document where seperation may be desired between inlined elements.
+    in a document where separation may be desired between inlined elements.
 
     .. code-block:: rst
 
