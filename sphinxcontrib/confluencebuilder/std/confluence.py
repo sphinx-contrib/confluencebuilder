@@ -4,6 +4,9 @@
 from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
 import os
 
+# modern cloud api endpoint (scoped tokens)
+API_CLOUD_ENDPOINT = 'https://api.atlassian.com/ex/confluence'
+
 # prefix for all api path requests to a confluence instance (v1 api)
 API_REST_V1 = 'rest/api'
 

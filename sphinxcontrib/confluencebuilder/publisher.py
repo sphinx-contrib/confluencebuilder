@@ -22,6 +22,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstance
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
 from sphinxcontrib.confluencebuilder.rest import Rest
+from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
@@ -104,6 +105,21 @@ class ConfluencePublisher:
     def connect(self):
         self.rest = Rest(self.config)
         server_url = self.config.confluence_server_url
+
+        # if we have a scoped API token and are not used the newer API endpoint
+        # for the Cloud instance, query for the cloud identifier and adjust the
+        # rest URL to the new API endpoint
+        if self.config.confluence_api_token_scoped and \
+                not server_url.startswith(API_CLOUD_ENDPOINT):
+            base_atlassian_site = server_url.removesuffix('wiki/')
+            rsp = self.rest.get('_edge/tenant_info', url=base_atlassian_site)
+            cloud_id = rsp.get('cloudId')
+            if not cloud_id:
+                msg = 'failed to request cloud identifier for scoped token'
+                raise ConfluenceBadApiError(-1, msg)
+
+            logger.verbose(f'detected cloud identifier: {cloud_id}')
+            self.rest.url = f'{API_CLOUD_ENDPOINT}/{cloud_id}/'
 
         # Example space fetch points:
         # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/rest/api/space/STABLE

@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
+from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.util import str2bool
 import contextlib
 
@@ -43,6 +44,12 @@ def apply_defaults(app):
 
     if conf.confluence_adv_restricted is None:
         conf.confluence_adv_restricted = []
+
+    # force default v2 api if a scoped api token or modern api is detected
+    confluence_server_url = conf.confluence_server_url or ''
+    if conf.confluence_api_mode is None and (conf.confluence_api_token_scoped \
+            or confluence_server_url.startswith(API_CLOUD_ENDPOINT)):
+        conf.confluence_api_mode = 'v2'
 
     if conf.confluence_ca_cert:
         if not Path(conf.confluence_ca_cert).is_absolute():

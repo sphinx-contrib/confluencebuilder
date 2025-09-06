@@ -103,6 +103,8 @@ def setup(app):
     cm.add_conf_bool('confluence_publish')
     # API token to authenticate to Confluence API with.
     cm.add_conf('confluence_api_token')
+    # Whether the API token is a scoped token
+    cm.add_conf_bool('confluence_api_token_scoped')
     # PAT to authenticate to Confluence API with.
     cm.add_conf('confluence_publish_token')
     # Password to login to Confluence API with.

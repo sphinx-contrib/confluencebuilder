@@ -12,6 +12,7 @@ the Confluence Builder extension in a Sphinx-enabled environment.
     guide-confluence-macros
     guide-highlight-default
     guide-math
+    guide-scope-token
     guide-strike
     guide-ci
     guide-sso
