@@ -10,13 +10,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2025-03-04 03:06\n"
+"PO-Revision-Date: 2025-09-06 14:05\n"
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:92
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:100
 msgid "assembling single confluence document"
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/singlebuilder.py:125
+#: sphinxcontrib/confluencebuilder/singlebuilder.py:133
 msgid "writing single confluence document"
 msgstr ""
 
@@ -26,11 +26,11 @@ msgstr ""
 #: sphinxcontrib/confluencebuilder/storage/templates/genindex_v2.html:38
 #: sphinxcontrib/confluencebuilder/storage/templates/search.html:11
 #: sphinxcontrib/confluencebuilder/storage/templates/search_v2.html:11
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2600
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2609
 msgid "This page has been automatically generated."
 msgstr ""
 
-#: sphinxcontrib/confluencebuilder/storage/translator.py:2629
+#: sphinxcontrib/confluencebuilder/storage/translator.py:2649
 msgid "Edit Source"
 msgstr "Bron bewerken"
 
