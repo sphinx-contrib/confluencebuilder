@@ -108,6 +108,10 @@ Essential configuration
 
     .. versionadded:: 1.7
 
+.. raw:: latex
+
+    \newpage
+
 .. _confluence_server_user:
 
 .. confval:: confluence_server_user
@@ -133,6 +137,10 @@ Essential configuration
         confluence_server_user = 'myawesomeuser@example.com'
          (or)
         confluence_server_user = 'myawesomeuser'
+
+.. raw:: latex
+
+    \newpage
 
 .. _confluence_api_token:
 
@@ -176,6 +184,10 @@ Essential configuration
 
     .. versionadded:: 2.6
 
+.. raw:: latex
+
+    \newpage
+
 .. _confluence_api_token_scoped:
 
 .. confval:: confluence_api_token_scoped
@@ -215,6 +227,10 @@ Essential configuration
 
     .. versionadded:: 2.7
 
+.. raw:: latex
+
+    \newpage
+
 .. _confluence_publish_token:
 
 .. confval:: confluence_publish_token
@@ -246,6 +262,10 @@ Essential configuration
         confluence_publish_token = 'AbCdEfGhIjKlMnOpQrStUvWxY/z1234567890aBc'
 
     .. versionadded:: 1.8
+
+.. raw:: latex
+
+    \newpage
 
 .. _confluence_server_pass:
 
