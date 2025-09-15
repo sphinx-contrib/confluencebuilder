@@ -1860,7 +1860,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def _visit_image(self, node, opts):
         node.__confluence_wrapped_img = False
 
-        dochost = opts['dochost']
         height = opts['height']
         hu = opts['hu']
         width = opts['width']
@@ -1979,14 +1978,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.body.append(self.start_tag(node, 'ri:url',
                 suffix=self.nl, empty=True, **{'ri:value': uri}))
         else:
-            hosted_doctitle = self.state.title(dochost, dochost)
-            hosted_doctitle = self.encode(hosted_doctitle)
-
             self.body.append(self.start_ac_image(node, **attribs))
             self.body.append(self.start_ri_attachment(node, opts['key']))
-            if dochost != self.docname:
-                self.body.append(self.start_tag(node, 'ri:page', empty=True,
-                   **{'ri:content-title': hosted_doctitle}))
             self.body.append(self.end_ri_attachment(node))
 
         if self.v2:
@@ -2048,28 +2041,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self.end_tag(node, suffix=''))
         else:
             asset_docname = None
-            if self.builder.name == 'singleconfluence':
+            if 'single' in self.builder.name:
                 asset_docname = self.docname
 
-            file_key, hosting_docname, _ = \
-                self.assets.fetch(node, docname=asset_docname)
-
-            # if this file has not already be processed (injected at a later
-            # stage in the sphinx process); try processing it now
-            if not file_key:
-                if not asset_docname:
-                    asset_docname = self.docname
-
-                file_key, hosting_docname, _ = \
-                    self.assets.process_file_node(
-                        node, asset_docname, standalone=True)
-
+            file_key, _, _ = self.assets.fetch(node, docname=asset_docname)
             if not file_key:
                 self.warn(f'unable to find download: {reftarget}')
                 raise nodes.SkipNode
-
-            hosting_doctitle = self.state.title(hosting_docname)
-            hosting_doctitle = self.encode(hosting_doctitle)
 
             # If the view-file macro is permitted along with it not being an
             # explicitly referenced asset.
@@ -2078,9 +2056,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 # the tags in an interim list
                 attachment = []
                 attachment.append(self.start_ri_attachment(node, file_key))
-                if hosting_docname != self.docname:
-                    attachment.append(self.start_tag(node, 'ri:page',
-                       empty=True, **{'ri:content-title': hosting_doctitle}))
                 attachment.append(self.end_ri_attachment(node))
 
                 self.body.append(self.start_ac_macro(node, 'view-file'))
@@ -2090,9 +2065,6 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             else:
                 self.body.append(self.start_ac_link(node))
                 self.body.append(self.start_ri_attachment(node, file_key))
-                if hosting_docname != self.docname:
-                    self.body.append(self.start_tag(node, 'ri:page',
-                       empty=True, **{'ri:content-title': hosting_doctitle}))
                 self.body.append(self.end_ri_attachment(node))
                 self.body.append(
                     self.start_ac_plain_text_link_body_macro(node))
@@ -2702,41 +2674,19 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             raise nodes.SkipNode
 
         asset_docname = None
-        if self.builder.name == 'singleconfluence':
+        if 'single' in self.builder.name:
             asset_docname = self.docname
 
-        file_key, hosting_docname, _ = \
-            self.assets.fetch(node, docname=asset_docname)
-
-        # if this file has not already be processed (injected at a later
-        # stage in the sphinx process); try processing it now
-        if not file_key:
-            if not asset_docname:
-                asset_docname = self.docname
-
-            file_key, hosting_docname, _ = \
-                self.assets.process_file_node(
-                    node, asset_docname, standalone=True)
-
+        file_key, _, _ = self.assets.fetch(node, docname=asset_docname)
         if not file_key:
             self.warn(f'unable to find download: {reftarget}')
             raise nodes.SkipNode
-
-        hosting_doctitle = self.state.title(hosting_docname)
-        hosting_doctitle = self.encode(hosting_doctitle)
 
         self.body.append(self.start_ac_macro(node, 'viewpdf'))
         self.body.append(self.build_ac_param(node, 'name',
             self.start_ri_attachment(node, file_key) +
             self.end_ri_attachment(node),
         ))
-        if hosting_docname != self.docname:
-            self.body.append(self.build_ac_param(node, 'page',
-                self.start_tag(node, 'ac:link') +
-                self.start_tag(node, 'ri:page',
-                   empty=True, **{'ri:content-title': hosting_doctitle}) +
-                self.end_tag(node, suffix=''),
-            ))
         self.body.append(self.end_ac_macro(node))
 
         raise nodes.SkipNode

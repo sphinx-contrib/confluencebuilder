@@ -157,7 +157,7 @@ class ConfluenceBuilder(Builder):
         else:
             self.cloud = detect_cloud(new_url)
 
-        self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
+        self.assets = ConfluenceAssetManager(self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config, self.cloud)
@@ -402,7 +402,13 @@ class ConfluenceBuilder(Builder):
         # images and other late-injected assets are processed in a translator
         # when needed.
         if self.name != 'singleconfluence':
-            self.assets.process(ordered_docnames)
+            print()
+            for docname in status_iterator(
+                    ordered_docnames, 'pre-process assets... ',
+                    length=len(ordered_docnames),
+                    verbosity=self._verbose):
+                doctree = self.env.get_doctree(docname)
+                self.assets.preprocess_doctree(doctree, docname)
 
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
@@ -861,13 +867,13 @@ class ConfluenceBuilder(Builder):
             def to_asset_name(asset):
                 return asset[0]
 
-            assets = self.assets.build()
+            assets = self.assets.finalize_assets()
             for asset in status_iterator(assets, 'publishing assets... ',
                     length=len(assets), verbosity=self._verbose,
                     stringify_func=to_asset_name):
                 key, abs_file, type_, hash_, docname = asset
                 if self._check_publish_skip(docname):
-                    self.verbose(key + ' skipped due to configuration')
+                    self.verbose(f'{key}-{docname} skipped due to configuration')
                     continue
 
                 try:
@@ -891,7 +897,7 @@ class ConfluenceBuilder(Builder):
             self.publish_cleanup()
             self.publish_finalize()
         else:
-            assets = self.assets.build()
+            assets = self.assets.finalize_assets()
 
         # track all referenced assets into the manifest
         for asset in assets:

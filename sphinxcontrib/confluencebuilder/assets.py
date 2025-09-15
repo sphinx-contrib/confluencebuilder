@@ -23,16 +23,20 @@ class ConfluenceAsset:
     Holds metadata for an asset (image or file).
 
     Args:
-        key: the asset key
         path: the absolute path to the asset
         type_: the content type of the asset
         hash_: the hash of the asset
+
+    Attributes:
+        doc2key: mapping of a docname to an attachment key
+        hash: the hash of the asset
+        path: the absolute path to the asset
+        type: the content type of the asset
     """
-    def __init__(self, key, path, type_, hash_):
-        self.docnames = set()
-        self.path = path
+    def __init__(self, path, type_, hash_):
+        self.doc2key = {}
         self.hash = hash_
-        self.key = key
+        self.path = path
         self.type = type_
 
 
@@ -43,7 +47,7 @@ class ConfluenceAssetManager:
     The asset manager is used to track detect assets to be referenced to and
     published (if configured) to a Confluence instance. The manager has the
     ability to track locations of assets, detect duplicate uses of assets (when
-    references and/or duplicate physical files) and more. Typically, the buidler
+    references and/or duplicate physical files) and more. Typically, the builder
     will scan the list of documents to be processed for assets. When the
     translator is running, it will refer to the asset manager to know where an
     asset will be published (so the translator knows how to reference the
@@ -51,19 +55,16 @@ class ConfluenceAssetManager:
     be published to the respective publish points.
 
     Args:
-        config: the active configuration
         env: the build environment
         out_dir: configured output directory (where assets may be stored)
     """
-    def __init__(self, config, env, out_dir):
+    def __init__(self, env, out_dir):
         self.assets = []
+        self.dockeys = {}
         self.env = env
-        self.force_standalone = config.confluence_asset_force_standalone
         self.hash2asset = {}
-        self.keys = set()
         self.out_dir = out_dir
         self.path2asset = {}
-        self.root_doc = config.root_doc
 
     def add(self, path, docname):
         """
@@ -79,13 +80,13 @@ class ConfluenceAssetManager:
             docname: the document's name to attach to
 
         Returns:
-            the key, document name and path
+            the key and resolved path
         """
         logger.verbose(f'adding manual attachment: {path}')
         abs_path = find_env_abspath(self.env, self.out_dir, path)
-        return self._handle_entry(abs_path, docname, standalone=True)
+        return self._register_entry(abs_path, docname)
 
-    def build(self):
+    def finalize_assets(self):
         """
         build a list of all assets tracked by the manager
 
@@ -101,92 +102,72 @@ class ConfluenceAssetManager:
         Returns:
             the list of assets
         """
+        logger.verbose('finalize assets...')
+
         data = []
         for asset in self.assets:
-            if self.force_standalone:
-                for docname in asset.docnames:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        docname)
-                    data.append(entry)
-            else:
-                if len(asset.docnames) > 1:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        self.root_doc)
-                else:
-                    entry = (asset.key, asset.path, asset.type, asset.hash,
-                        next(iter(asset.docnames)))
+            for docname, key in asset.doc2key.items():
+                entry = (key, asset.path, asset.type, asset.hash, docname)
+                logger.verbose(f'>{key} ({docname}): {asset.path}')
                 data.append(entry)
+
         return data
 
     def fetch(self, node, docname=None):
         """
-        return key and target document name for provided asset
+        return attachment key and path for provided asset
 
-        When given a asset, cached information will return the name of the
-        target document this asset will be published to. In the event an asset
-        exists on a single page, the name of that respective page will be
-        returned; however, if the asset is found on multiple pages, the root
-        document name will be returned instead.
+        An asset-based node has a resource to be added to a page as an
+        attachment. This fetch call return the "key"/name of the attachment,
+        as well as the resolved path of the resource that will be uploaded.
 
         Args:
             node: the node to interpret
-            docname (optional): force the document name for this asset
+            docname (optional): the document name the fetch is force
 
         Returns:
-            the key, document name and path
+            the key, path and whether a new asset entry was created
         """
-        key = None
 
+        new_asset = False
+
+        # resolve asset path; stop if no path is available
         path = self._interpret_asset_path(node)
-        if path:
+        if not path:
+            return None, None, None
+
+        # if not provided a docname, determine the docname this node exists on
+        if not docname:
+            docname = canon_path(self.env.path2doc(node.document['source']))
+
+        # find the asset for this path; if we do not have one, this node was
+        # created after pre-processing
+        asset = self.path2asset.get(path, None)
+        if not asset:
+            if isinstance(node, nodes.image):
+                self._process_image_node(node, docname)
+            elif isinstance(node, addnodes.download_reference):
+                self._process_file_node(node, docname)
+            else:
+                msg = 'unimplemented node type'
+                raise AssertionError(msg)
+
+            new_asset = True
             asset = self.path2asset.get(path, None)
 
-            if asset:
-                key = asset.key
+        # (unexpected) stop if we have no asset for this node
+        if not asset:
+            logger.verbose(f'failed to find asset for path: {path}')
+            return None, None, None
 
-                if not docname:
-                    if self.force_standalone:
-                        docname = canon_path(
-                            self.env.path2doc(node.document['source']))
-
-                        # check if the expected document name is found in the
-                        # asset's document list; if not and standalone, this
-                        # if just an indication that this is a new/dynamic
-                        # image entry on a document that already exists in
-                        # another document -- for now, indicate the key does
-                        # not exist so that the translator can process the
-                        # image node as something new
-                        if docname not in asset.docnames:
-                            key = None
-                    else:
-                        if len(asset.docnames) > 1:
-                            docname = self.root_doc
-                        else:
-                            docname = next(iter(asset.docnames))
-
+        # acquire the attachment key; if none, build one now
+        key = asset.doc2key.get(docname, None)
         if not key:
-            docname = None
-            path = None
+            key = self._build_attachment_key(asset, docname)
 
-        return key, docname, path
+        return key, path, new_asset
 
-    def process(self, docnames):
-        """
-        process a list of document for assets
-
-        Given a list of document names, this method will search each document's
-        doctree for supported assets which could be published. Asset information
-        is tracked in this manager and other helper methods can be used to pull
-        asset information when needed.
-
-        Args:
-            docnames: the document names to search
-        """
-        for docname in docnames:
-            doctree = self.env.get_doctree(docname)
-            self.process_document(doctree, docname)
-
-    def process_document(self, doctree, docname, standalone=False):
+    def preprocess_doctree(self, doctree, docname):
         """
         process a document for assets
 
@@ -198,17 +179,16 @@ class ConfluenceAssetManager:
         Args:
             doctree: the document's tree
             docname: the document's name
-            standalone (optional): ignore hash mappings (defaults to False)
         """
         image_nodes = findall(doctree, nodes.image)
         for node in image_nodes:
-            self.process_image_node(node, docname, standalone)
+            self._process_image_node(node, docname)
 
         file_nodes = findall(doctree, addnodes.download_reference)
         for node in file_nodes:
-            self.process_file_node(node, docname, standalone)
+            self._process_file_node(node, docname)
 
-    def process_file_node(self, node, docname, standalone=False):
+    def _process_file_node(self, node, docname):
         """
         process an file node
 
@@ -219,10 +199,6 @@ class ConfluenceAssetManager:
         Args:
             node: the file node
             docname: the document's name
-            standalone (optional): ignore hash mappings (defaults to False)
-
-        Returns:
-            the key, document name and path
         """
 
         target = node['reftarget']
@@ -230,11 +206,9 @@ class ConfluenceAssetManager:
             logger.verbose(f'process file node: {target}')
             path = self._interpret_asset_path(node)
             if path:
-                return self._handle_entry(path, docname, standalone)
+                self._register_entry(path, docname)
 
-        return None, None, None
-
-    def process_image_node(self, node, docname, standalone=False):
+    def _process_image_node(self, node, docname):
         """
         process an image node
 
@@ -245,10 +219,6 @@ class ConfluenceAssetManager:
         Args:
             node: the image node
             docname: the document's name
-            standalone (optional): ignore hash mappings (defaults to False)
-
-        Returns:
-            the key, document name and path
         """
 
         uri = str(node['uri'])
@@ -256,11 +226,9 @@ class ConfluenceAssetManager:
             logger.verbose(f'process image node: {uri}')
             path = self._interpret_asset_path(node)
             if path:
-                return self._handle_entry(path, docname, standalone)
+                self._register_entry(path, docname)
 
-        return None, None, None
-
-    def _handle_entry(self, path, docname, standalone=False):
+    def _register_entry(self, path, docname):
         """
         handle an asset entry
 
@@ -277,57 +245,62 @@ class ConfluenceAssetManager:
         Args:
             path: the absolute path to the asset
             docname: the document name this asset was found in
-            standalone (optional): ignore hash mappings (defaults to False)
         """
 
-        if path not in self.path2asset:
-            hash_ = ConfluenceUtil.hash_asset(path)
-            type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
-        else:
-            hash_ = self.path2asset[path].hash
-            type_ = self.path2asset[path].type
-
+        # find an asset for path
         asset = self.path2asset.get(path, None)
+
+        # if no asset, check if the hash of the contents already has an
+        # asset reference
         if not asset:
-            hash_exists = hash_ in self.hash2asset
-            if not hash_exists or standalone:
-                # no asset entry and no hash entry (or standalone); new asset
-                key = path.name
+            hash_ = ConfluenceUtil.hash_asset(path)
+            asset = self.hash2asset.get(hash_, None)
 
-                # Confluence does not allow attachments with select characters.
-                # Filter out the asset name to a compatible key value.
-                for rep in INVALID_CHARS:
-                    key = key.replace(rep, '_')
-
-                new_path = Path(key)
-                idx = 1
-                while key in self.keys:
-                    idx += 1
-                    key = f'{new_path.stem}_{idx}{new_path.suffix}'
-                self.keys.add(key)
-
-                asset = ConfluenceAsset(key, path, type_, hash_)
+            # if still no asset, build a new asset entry for this path
+            if not asset:
+                type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
+                asset = ConfluenceAsset(path, type_, hash_)
+                self.hash2asset[hash_] = asset
                 self.assets.append(asset)
-                self.path2asset[path] = asset
-                if not hash_exists:
-                    self.hash2asset[hash_] = asset
-            else:
-                # duplicate asset detected; build an asset alias
-                asset = self.hash2asset[hash_]
-                self.path2asset[path] = asset
-        elif not standalone:
-            assert (self.hash2asset[asset.hash] == asset)
 
-        # track (if not already) that this document uses this asset
-        asset.docnames.add(docname)
+            self.path2asset[path] = asset
 
-        return asset.key, docname, asset.path
+        # acquire the attachment key; if none, build one now
+        key = asset.doc2key.get(docname, None)
+        if not key:
+            key = self._build_attachment_key(asset, docname)
+
+        return key, path
+
+    def _build_attachment_key(self, asset, docname):
+        # determine the key to use for this asset
+        #
+        # Confluence does not allow attachments with select characters.
+        # Filter out the asset name to a compatible key value.
+        key = asset.path.name
+        for rep in INVALID_CHARS:
+            key = key.replace(rep, '_')
+
+        # ensure the key is unique to the document it will be added to
+        key_db = self.dockeys.setdefault(docname, set())
+        tmp_path = Path(key)
+        idx = 1
+        while key in key_db:
+            idx += 1
+            key = f'{tmp_path.stem}_{idx}{tmp_path.suffix}'
+        key_db.add(key)
+
+        # track this key for this attachment on the specific document
+        asset.doc2key.setdefault(docname, key)
+        logger.verbose(f'setup attachment key ({docname}): {key}')
+
+        return key
 
     def _interpret_asset_path(self, node):
         """
-        find an absolute path for a target assert
+        find an absolute path for a target asset
 
-        Returns the absolute path to an assert. For unsupported asset types,
+        Returns the absolute path to an asset. For unsupported asset types,
         this method will return ``None`` values. This method should not be
         invoked on external assets (i.e. URLs).
 
@@ -338,6 +311,7 @@ class ConfluenceAssetManager:
             the absolute path
         """
         path = None
+
         if isinstance(node, nodes.image):
             # uri's will be relative to documentation root.
             path = Path(node['uri'])
@@ -347,9 +321,11 @@ class ConfluenceAssetManager:
             # to find a proper path.
             docdir = Path(node['refdoc']).parent
             path = docdir / node['reftarget']
+        else:
+            msg = 'unimplemented node type'
+            raise AssertionError(msg)  # noqa: TRY004
 
         abs_path = find_env_abspath(self.env, self.out_dir, path)
-
         if not abs_path:
             logger.verbose(f'failed to find path: {path}')
 

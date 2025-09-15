@@ -128,7 +128,12 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
 
             doctree = self.assemble_doctree()
             self._prepare_doctree_writing(self.config.root_doc, doctree)
-            self.assets.process_document(doctree, self.config.root_doc)
+
+        with progress_message(C('pre-process assets')):
+            if self._verbose:
+                print()
+
+            self.assets.preprocess_doctree(doctree, self.config.root_doc)
 
         with progress_message(C('writing single confluence document')):
             if self._verbose:
