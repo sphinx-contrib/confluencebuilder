@@ -102,14 +102,20 @@ class ConfluenceAssetManager:
         Returns:
             the list of assets
         """
-        logger.verbose('finalize assets...')
 
         data = []
-        for asset in self.assets:
-            for docname, key in asset.doc2key.items():
-                entry = (key, asset.path, asset.type, asset.hash, docname)
-                logger.verbose(f'>{key} ({docname}): {asset.path}')
-                data.append(entry)
+
+        if self.assets:
+            total = len(self.assets)
+            logger.verbose(f'finalize assets (total: {total})...')
+
+            for asset in self.assets:
+                for docname, key in asset.doc2key.items():
+                    entry = (key, asset.path, asset.type, asset.hash, docname)
+                    logger.verbose(f'> {key} ({docname}): {asset.path}')
+                    data.append(entry)
+        else:
+            logger.verbose('no assets to finalize')
 
         return data
 
@@ -180,6 +186,9 @@ class ConfluenceAssetManager:
             doctree: the document's tree
             docname: the document's name
         """
+
+        logger.verbose(f'pre-processing doctree ({docname}) for assets...')
+
         image_nodes = findall(doctree, nodes.image)
         for node in image_nodes:
             self._process_image_node(node, docname)
