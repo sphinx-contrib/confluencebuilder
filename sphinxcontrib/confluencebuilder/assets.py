@@ -114,6 +114,9 @@ class ConfluenceAssetManager:
                     entry = (key, asset.path, asset.type, asset.hash, docname)
                     logger.verbose(f'> {key} ({docname}): {asset.path}')
                     data.append(entry)
+
+                if not asset.doc2key:
+                    logger.verbose(f'> missing doc-entries: {asset.path}')
         else:
             logger.verbose('no assets to finalize')
 
@@ -212,7 +215,7 @@ class ConfluenceAssetManager:
 
         target = node['reftarget']
         if target.find('://') == -1:
-            logger.verbose(f'process file node: {target}')
+            logger.verbose(f'process file node ({docname}): {target}')
             path = self._interpret_asset_path(node)
             if path:
                 self._register_entry(path, docname)
@@ -232,7 +235,7 @@ class ConfluenceAssetManager:
 
         uri = str(node['uri'])
         if not uri.startswith('data:') and uri.find('://') == -1:
-            logger.verbose(f'process image node: {uri}')
+            logger.verbose(f'process image node ({docname}): {uri}')
             path = self._interpret_asset_path(node)
             if path:
                 self._register_entry(path, docname)
@@ -265,12 +268,15 @@ class ConfluenceAssetManager:
             hash_ = ConfluenceUtil.hash_asset(path)
             asset = self.hash2asset.get(hash_, None)
 
+            if asset:
+                logger.verbose(f'attachment alias ({hash_:.8s}): {asset.path}')
             # if still no asset, build a new asset entry for this path
-            if not asset:
+            else:
                 type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
                 asset = ConfluenceAsset(path, type_, hash_)
                 self.hash2asset[hash_] = asset
                 self.assets.append(asset)
+                logger.verbose(f'new attachment ({hash_:.8s}): {path}')
 
             self.path2asset[path] = asset
 

@@ -241,6 +241,9 @@ class ConfluenceBuilder(Builder):
         return self.link_transform(docname)
 
     def prepare_writing(self, docnames):
+        if self._verbose:
+            print()
+
         ordered_docnames = []
         traversed = [self.config.root_doc]
 
@@ -402,13 +405,15 @@ class ConfluenceBuilder(Builder):
         # images and other late-injected assets are processed in a translator
         # when needed.
         if self.name != 'singleconfluence':
-            print()
+            if not self._verbose:
+                self.info(' done')
             for docname in status_iterator(
                     ordered_docnames, 'pre-process assets... ',
                     length=len(ordered_docnames),
                     verbosity=self._verbose):
                 doctree = self.env.get_doctree(docname)
                 self.assets.preprocess_doctree(doctree, docname)
+            self.note('pre-process assets: ', nonl=True)
 
     def _prepare_doctree_writing(self, docname, doctree):
         # extract metadata information
