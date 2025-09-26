@@ -435,6 +435,25 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_header_file'] = relbase + 'sample-header.tpl'
         self._try_config()
 
+    def test_config_check_confluence_table_width(self):
+        self.config['confluence_table_width'] = 123456
+        self._try_config()
+
+        self.config['confluence_table_width'] = '123456'
+        self._try_config()
+
+        self.config['confluence_table_width'] = 0
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_table_width'] = -123456
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
+        self.config['confluence_table_width'] = 'MyPage'
+        with self.assertRaises(ConfluenceConfigError):
+            self._try_config()
+
     def test_config_check_confluence_html_macro(self):
         self.config['confluence_html_macro'] = ''
         self._try_config()

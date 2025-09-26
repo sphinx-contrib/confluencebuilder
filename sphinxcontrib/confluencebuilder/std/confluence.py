@@ -19,13 +19,6 @@ API_MODES = {
     'v2',
 }
 
-# default width for a table (v2 editor)
-#
-# It has been observed that when attempting to fix specific column widths on
-# a table in the v2 editor, Confluence applies a default data width of 760 on
-# the table.
-CONFLUENCE_DEFAULT_V2_TABLE_WIDTH = 760
-
 # maximum length for a confluence page title
 #
 # The maximum length of a Confluence page is set to 255. This is a Confluence-
