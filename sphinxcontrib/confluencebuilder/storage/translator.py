@@ -3,43 +3,40 @@
 # Copyright 2018-2020 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from __future__ import annotations
-from contextlib import suppress
-from docutils import nodes
-from functools import wraps
-from pathlib import Path
-from sphinx import addnodes
-from sphinx.locale import _ as SL
-from sphinx.locale import admonitionlabels
-from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
-from sphinxcontrib.confluencebuilder.locale import L
-from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
-from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
-from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
-from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
-from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
-from sphinxcontrib.confluencebuilder.std.confluence import INDENT
-from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V1
-from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_FBMAP_V2
-from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V1
-from sphinxcontrib.confluencebuilder.std.confluence import LITERAL2LANG_MAP_V2
-from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_CODE_BLOCK_THEMES
-from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
-from sphinxcontrib.confluencebuilder.storage import encode_storage_format
-from sphinxcontrib.confluencebuilder.storage import intern_uri_anchor_value
-from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
-from sphinxcontrib.confluencebuilder.util import convert_length
-from sphinxcontrib.confluencebuilder.util import extract_length
-from sphinxcontrib.confluencebuilder.util import first
+
 import json
 import posixpath
 import re
 import sys
+from contextlib import suppress
+from functools import wraps
+from pathlib import Path
+
+from docutils import nodes
+from sphinx import addnodes
+from sphinx.locale import _ as SL
+from sphinx.locale import admonitionlabels
+
+from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
+from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
+from sphinxcontrib.confluencebuilder.locale import L
+from sphinxcontrib.confluencebuilder.nodes import \
+    confluence_parameters_fetch as PARAMS
+from sphinxcontrib.confluencebuilder.std.confluence import (
+    CONFLUENCE_MAX_WIDTH,
+    FALLBACK_HIGHLIGHT_STYLE, FCMMO, INDENT, LITERAL2LANG_FBMAP_V1,
+    LITERAL2LANG_FBMAP_V2, LITERAL2LANG_MAP_V1, LITERAL2LANG_MAP_V2,
+    SUPPORTED_CODE_BLOCK_THEMES)
+from sphinxcontrib.confluencebuilder.std.sphinx import DEFAULT_HIGHLIGHT_STYLE
+from sphinxcontrib.confluencebuilder.storage import (encode_storage_format,
+                                                     intern_uri_anchor_value)
+from sphinxcontrib.confluencebuilder.translator import ConfluenceBaseTranslator
+from sphinxcontrib.confluencebuilder.util import (convert_length,
+                                                  extract_length, first)
 
 
 def visit_auto_context_decorator():
-    """
-    node visit decorator
+    """Node visit decorator.
 
     Prepares a context for a given node type that can help populate a list
     of completion tags which a depart implementation can automatically append
@@ -65,8 +62,7 @@ def visit_auto_context_decorator():
 
 
 def depart_auto_context_decorator():
-    """
-    depart visit decorator
+    """Depart visit decorator.
 
     To help automatically apply pending tags to the body. See
     ``visit_auto_context_decorator`` for more information.
@@ -87,7 +83,6 @@ def depart_auto_context_decorator():
 class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     __tracked_deprecated = False
     _tracked_unknown_code_lang: list[str] = []
-
     """
     confluence storage format extension translator
 
@@ -122,6 +117,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
         self._thead_context = []
         self._v2_header_added = False
+        self._v2_table_width = config.confluence_table_width
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
 
@@ -1151,7 +1147,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # detected, apply the default table width observed when using the v2
         # editor.
         if self.v2 and 'colwidths-given' in table_classes:
-            attribs['data-table-width'] = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+            attribs['data-table-width'] = self._v2_table_width
 
         # [sphinxcontrib-needs]
         # force needs tables to a maximum width
@@ -3486,8 +3482,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # ##########################################################################
 
     def _build_id_anchors(self, node):
-        """
-        build anchors for a node that has any ids
+        """Build anchors for a node that has any ids.
 
         A node may define one more more identifiers through an `ids` list.
         For some nodes, it may be ideal to generate anchor links for each
@@ -3511,8 +3506,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._delayed_anchor_inject(node)
 
     def _build_anchor(self, node, anchor, *, force_compat=False):
-        """
-        build an anchor on a page
+        """Build an anchor on a page.
 
         A helper is used to build a anchor on a current page. Using the
         provided anchor value, an anchor macro will be added to the body of
@@ -3553,8 +3547,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
     @visit_auto_context_decorator()
     def _build_tab(self, node, tab_title, primary_tab):
-        """
-        build an inlined tab entry
+        """Build an inlined tab entry.
 
         This is a helper call that is used by various Sphinx tab-related
         extensions to help build an appropriate macro used to render tabbed
@@ -3591,8 +3584,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.auto_append(self.end_ac_rich_text_body_macro(node))
 
     def start_tag(self, node, tag, suffix=None, empty=False, **kwargs):
-        """
-        generates start tag content for a given node
+        """Generates start tag content for a given node.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format element (i.e. generates a
@@ -3646,8 +3638,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return f'<{prefix}{suffix}'
 
     def end_tag(self, node, suffix=None):
-        """
-        generates end tag content for a given node
+        """Generates end tag content for a given node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format element (i.e. generates an end tag). This
@@ -3673,8 +3664,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return f'</{tag}>{suffix}'
 
     def build_ac_param(self, node, name, value):
-        """
-        generates a confluence parameter element
+        """Generates a confluence parameter element.
 
         A helper used to return content to be appended to a document which
         builds a complete storage format parameter element. The
@@ -3693,8 +3683,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             str(value) + self.end_tag(node))
 
     def start_ac_image(self, node, **kwargs):
-        """
-        generates a confluence image start tag
+        """Generates a confluence image start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format image element. The
@@ -3711,8 +3700,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:image', suffix=self.nl, **kwargs)
 
     def end_ac_image(self, node):
-        """
-        generates confluence image end tag content for a node
+        """Generates confluence image end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format image element. This method should be used to
@@ -3727,8 +3715,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix='')
 
     def start_ac_link(self, node, anchor=None, appearance=None):
-        """
-        generates a confluence link start tag
+        """Generates a confluence link start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format link element of a specific
@@ -3752,8 +3739,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:link', suffix=self.nl, **attribs)
 
     def end_ac_link(self, node):
-        """
-        generates confluence link end tag content for a node
+        """Generates confluence link end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format link element. This method should be used to
@@ -3768,8 +3754,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix='')
 
     def start_ac_macro(self, node, type_, empty=False):
-        """
-        generates a confluence macro start tag
+        """Generates a confluence macro start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format macro element of a specific
@@ -3790,8 +3775,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             suffix=self.nl, empty=empty, **{'ac:name': type_})
 
     def end_ac_macro(self, node, suffix=None):
-        """
-        generates confluence macro end tag content for a node
+        """Generates confluence macro end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format macro element. This method should be used to
@@ -3808,8 +3792,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix=suffix)
 
     def start_ac_link_body(self, node):
-        """
-        generates a confluence link-body start tag
+        """Generates a confluence link-body start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format link-body element. The
@@ -3826,8 +3809,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:link-body')
 
     def end_ac_link_body(self, node):
-        """
-        generates confluence link-body end tag content for a node
+        """Generates confluence link-body end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format link-body element. This method should be
@@ -3842,8 +3824,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node)
 
     def start_ac_rich_text_body_macro(self, node):
-        """
-        generates a confluence rich-text-body start tag
+        """Generates a confluence rich-text-body start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format rich-text-body element. The
@@ -3860,8 +3841,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:rich-text-body')
 
     def end_ac_rich_text_body_macro(self, node):
-        """
-        generates confluence rich-text-body end tag content for a node
+        """Generates confluence rich-text-body end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format rich-text-body element. This method should
@@ -3876,8 +3856,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node)
 
     def start_ac_plain_text_body_macro(self, node):
-        """
-        generates a confluence plain-text-body start tag
+        """Generates a confluence plain-text-body start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format plain-text-body element. The
@@ -3894,8 +3873,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:plain-text-body', suffix='<![CDATA[')
 
     def end_ac_plain_text_body_macro(self, node):
-        """
-        generates confluence plain-text-body end tag content for a node
+        """Generates confluence plain-text-body end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format plain-text-body element. This method should
@@ -3910,8 +3888,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return ']]>' + self.end_tag(node)
 
     def start_ac_plain_text_link_body_macro(self, node):
-        """
-        generates a confluence plain-text-link-body start tag
+        """Generates a confluence plain-text-link-body start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format plain-text-body element. The
@@ -3929,8 +3906,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             suffix='<![CDATA[')
 
     def end_ac_plain_text_link_body_macro(self, node):
-        """
-        generates confluence plain-text-link-body end tag content for a node
+        """Generates confluence plain-text-link-body end tag content for a
+        node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format plain-text-link-body element. This method
@@ -3946,8 +3923,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return ']]>' + self.end_tag(node)
 
     def start_ri_attachment(self, node, filename):
-        """
-        generates a confluence attachment start tag
+        """Generates a confluence attachment start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format attachment element. The
@@ -3965,8 +3941,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             **{'ri:filename': filename})
 
     def end_ri_attachment(self, node):
-        """
-        generates confluence attachment end tag content for a node
+        """Generates confluence attachment end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format attachment element. This method should be
@@ -3981,8 +3956,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node)
 
     def start_adf_extension(self, node):
-        """
-        generates a confluence adf-extension start tag
+        """Generates a confluence adf-extension start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format adf-extension element. The
@@ -3998,8 +3972,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:adf-extension')
 
     def end_adf_extension(self, node, suffix=None):
-        """
-        generates confluence adf-extension end tag content for a node
+        """Generates confluence adf-extension end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format adf-extension element. This method should
@@ -4015,8 +3988,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix=suffix)
 
     def start_adf_node(self, node, type_, empty=False):
-        """
-        generates a confluence adf-node start tag
+        """Generates a confluence adf-node start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format adf-node element of a
@@ -4034,8 +4006,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             empty=empty, **{'type': type_})
 
     def end_adf_node(self, node, suffix=None):
-        """
-        generates confluence adf-node end tag content for a node
+        """Generates confluence adf-node end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format adf-node element. This method should be
@@ -4052,8 +4023,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix=suffix)
 
     def build_adf_attribute(self, node, name, value):
-        """
-        generates a confluence parameter element
+        """Generates a confluence parameter element.
 
         A helper used to return content to be appended to a document which
         builds a complete storage format parameter element. The
@@ -4072,8 +4042,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             value + self.end_tag(node))
 
     def start_adf_content(self, node):
-        """
-        generates a confluence adf-content start tag
+        """Generates a confluence adf-content start tag.
 
         A helper used to return content to be appended to a document which
         initializes the start of a storage format adf-content element. The
@@ -4090,8 +4059,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.start_tag(node, 'ac:adf-content')
 
     def end_adf_content(self, node, suffix=None):
-        """
-        generates confluence adf-content end tag content for a node
+        """Generates confluence adf-content end tag content for a node.
 
         A helper used to return content to be appended to a document which
         finalizes a storage format adf-content element. This method should be
@@ -4107,8 +4075,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return self.end_tag(node, suffix=suffix)
 
     def escape_cdata(self, data):
-        """
-        escapes text to be inserted into a cdata
+        """Escapes text to be inserted into a cdata.
 
         A helper used to return content that has been properly escaped and can
         be directly placed inside a CDATA container.
@@ -4137,8 +4104,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         return ConfluenceBaseTranslator.encode(self, data)
 
     def _delayed_anchor_inject(self, node):
-        """
-        add delayed anchors into a node
+        """Add delayed anchors into a node.
 
         While it would be nice to add anchors when processing targets
         immediately, Confluence renders anchors in a way where they can result

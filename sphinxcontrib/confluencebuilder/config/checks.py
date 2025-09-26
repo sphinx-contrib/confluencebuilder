@@ -316,6 +316,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_table_width
+    validator.conf('confluence_table_width') \
+             .int_(positive=True)
+
+    # ##################################################################
+
     # confluence_html_macro
     validator.conf('confluence_html_macro') \
              .string()

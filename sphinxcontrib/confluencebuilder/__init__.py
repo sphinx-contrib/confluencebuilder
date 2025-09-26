@@ -261,6 +261,8 @@ def setup(app):
     # (configuration - advanced processing)
     # Filename suffix for generated files.
     cm.add_conf('confluence_file_suffix', 'confluence')
+    # Table width (v2 editor).
+    cm.add_conf_int('confluence_table_width', 'confluence')
     # Macro configuration for Confluence-managed HTML content.
     cm.add_conf('confluence_html_macro', 'confluence')
     # Configuration for named JIRA Servers
