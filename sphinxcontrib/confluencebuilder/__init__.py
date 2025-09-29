@@ -123,6 +123,8 @@ def setup(app):
     cm.add_conf('confluence_code_block_theme', 'confluence')
     # Default alignment for tables, figures, etc.
     cm.add_conf('confluence_default_alignment', 'confluence')
+    # Table width (v2 editor).
+    cm.add_conf('confluence_default_table_width', 'confluence')
     # Do not attempt to pull configuration values from the environment.
     cm.add_conf_bool('confluence_disable_env_conf')
     # Enablement of a generated domain index documents
@@ -261,8 +263,6 @@ def setup(app):
     # (configuration - advanced processing)
     # Filename suffix for generated files.
     cm.add_conf('confluence_file_suffix', 'confluence')
-    # Table width (v2 editor).
-    cm.add_conf('confluence_default_table_width', 'confluence')
     # Macro configuration for Confluence-managed HTML content.
     cm.add_conf('confluence_html_macro', 'confluence')
     # Configuration for named JIRA Servers

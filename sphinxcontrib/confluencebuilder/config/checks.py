@@ -317,8 +317,10 @@ def validate_configuration(builder):
     # ##################################################################
 
     # confluence_default_table_width
-    validator.conf('confluence_default_table_width') \
-             .int_(positive=True)
+    try:
+        validator.conf('confluence_default_table_width').string()
+    except ConfluenceConfigError:
+        validator.conf('confluence_default_table_width').int_(positive=True)
 
     # ##################################################################
 

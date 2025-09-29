@@ -80,9 +80,8 @@ def apply_defaults(app):
         if conf.confluence_file_suffix.endswith('.'):
             conf.confluence_file_suffix = '.conf'
 
-    if conf.confluence_table_width:
-        if conf.confluence_table_width is None:
-            conf.confluence_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+    if conf.confluence_default_table_width is None:
+        conf.confluence_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
     if conf.confluence_global_labels:
         # remove empty labels

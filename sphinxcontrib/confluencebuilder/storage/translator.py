@@ -121,9 +121,14 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._reference_context = []
         self._thead_context = []
         self._v2_header_added = False
-        self._v2_default_table_width = config.confluence_default_table_width
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
+
+        if isinstance(config.confluence_default_table_width, string):
+            table_width, twu = extract_length(config.confluence_default_table_width)
+            self._v2_default_table_width = convert_length(table_width, twu)
+        else:
+            self._v2_default_table_width = config.confluence_default_table_width
 
         # override editor if the document specifies another
         editor_override = metadata.get('editor')
