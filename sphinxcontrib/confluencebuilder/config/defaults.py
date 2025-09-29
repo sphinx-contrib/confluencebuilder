@@ -4,6 +4,7 @@
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 from sphinxcontrib.confluencebuilder.util import str2bool
 import contextlib
 
@@ -81,7 +82,7 @@ def apply_defaults(app):
 
     if conf.confluence_table_width:
         if conf.confluence_table_width is None:
-            conf.confluence_table_width = 760
+            conf.confluence_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
     if conf.confluence_global_labels:
         # remove empty labels
