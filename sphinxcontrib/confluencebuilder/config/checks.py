@@ -44,6 +44,7 @@ from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValid
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import API_MODES
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
+from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from requests.auth import AuthBase
 import os
@@ -319,10 +320,13 @@ def validate_configuration(builder):
 
     # confluence_default_table_width
     try:
-        validator.conf('confluence_default_table_width').string()
+        validator.conf('confluence_default_table_width').int_(positive=True)
     except ConfluenceConfigError:
         try:
-            validator.conf('confluence_default_table_width').int_(positive=True)
+            validator.conf('confluence_default_table_width').string()
+            width, unit = extract_length(config.confluence_default_table_width)
+            if unit == '%':
+                raise ConfluenceDefaultTableWidthError("Percentage is not a valid value.")
         except ConfluenceConfigError as ex:
             raise ConfluenceDefaultTableWidthError(ex) from ex
 

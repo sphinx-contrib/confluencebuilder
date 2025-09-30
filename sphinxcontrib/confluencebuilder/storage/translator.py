@@ -129,7 +129,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if isinstance(self._v2_default_table_width, str):
             table_width, twu = extract_length(self._v2_default_table_width)
             if table_width is not None:
-                self._v2_default_table_width = convert_length(table_width, twu)
+                self._v2_default_table_width = convert_length(table_width, twu, pct=False)
             else:
                 self._v2_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
