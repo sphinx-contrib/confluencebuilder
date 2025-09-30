@@ -55,6 +55,16 @@ found. Ensure the following file exists:
 ''')
 
 
+class ConfluenceDefaultTableWidthError(ConfluenceConfigError):
+    def __init__(self, msg):
+        super().__init__(f'''\
+{msg}
+
+The option 'confluence_default_table_width' has been provided to override the
+default width for tables in editor v2. Accepted values include a string or a positive integer.
+''')
+
+
 class ConfluenceDefaultAlignmentConfigError(ConfluenceConfigError):
     def __init__(self, msg):
         super().__init__(f'''\

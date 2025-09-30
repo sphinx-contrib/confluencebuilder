@@ -14,6 +14,7 @@ from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
@@ -124,11 +125,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.colspecs = []
         self._tocdepth = self.state.toctree_depth(self.docname)
 
-        if isinstance(config.confluence_default_table_width, string):
-            table_width, twu = extract_length(config.confluence_default_table_width)
-            self._v2_default_table_width = convert_length(table_width, twu)
-        else:
-            self._v2_default_table_width = config.confluence_default_table_width
+        self._v2_default_table_width = config.confluence_default_table_width
+        if isinstance(self._v2_default_table_width, str):
+            table_width, twu = extract_length(self._v2_default_table_width)
+            if table_width is not None:
+                self._v2_default_table_width = convert_length(table_width, twu)
+            else:
+                self._v2_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
         # override editor if the document specifies another
         editor_override = metadata.get('editor')

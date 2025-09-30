@@ -8,6 +8,7 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import SphinxWarning
 from sphinxcontrib.confluencebuilder.builder import ConfluenceBuilder
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultTableWidthError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePageGenerationNoticeConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePermitRawHtmlConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishCleanupConflictConfigError
@@ -435,23 +436,28 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_header_file'] = relbase + 'sample-header.tpl'
         self._try_config()
 
-    def test_config_check_confluence_table_width(self):
-        self.config['confluence_table_width'] = 123456
+    def test_config_check_confluence_default_table_width(self):
+        self.config['confluence_default_table_width'] = 123456
         self._try_config()
 
-        self.config['confluence_table_width'] = '123456'
+        self.config['confluence_default_table_width'] = '123456'
         self._try_config()
 
-        self.config['confluence_table_width'] = 0
-        with self.assertRaises(ConfluenceConfigError):
+        self.config['confluence_default_table_width'] = '123456 em'
+        self._try_config()
+
+        self.config['confluence_default_table_width'] = '123456 px'
+        self._try_config()
+
+        self.config['confluence_default_table_width'] = 'MyPage'
+        self._try_config()
+
+        self.config['confluence_default_table_width'] = 0
+        with self.assertRaises(ConfluenceDefaultTableWidthError):
             self._try_config()
 
-        self.config['confluence_table_width'] = -123456
-        with self.assertRaises(ConfluenceConfigError):
-            self._try_config()
-
-        self.config['confluence_table_width'] = 'MyPage'
-        with self.assertRaises(ConfluenceConfigError):
+        self.config['confluence_default_table_width'] = -123456
+        with self.assertRaises(ConfluenceDefaultTableWidthError):
             self._try_config()
 
     def test_config_check_confluence_html_macro(self):

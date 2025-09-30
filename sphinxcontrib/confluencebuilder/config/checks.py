@@ -8,6 +8,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCe
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertMissingCertConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultAlignmentConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultTableWidthError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDomainIndicesConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceEditorConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceFooterFileConfigError
@@ -320,7 +321,10 @@ def validate_configuration(builder):
     try:
         validator.conf('confluence_default_table_width').string()
     except ConfluenceConfigError:
-        validator.conf('confluence_default_table_width').int_(positive=True)
+        try:
+            validator.conf('confluence_default_table_width').int_(positive=True)
+        except ConfluenceConfigError as ex:
+            raise ConfluenceDefaultTableWidthError(ex) from ex
 
     # ##################################################################
 
