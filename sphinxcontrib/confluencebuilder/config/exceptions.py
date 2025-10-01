@@ -62,17 +62,8 @@ class ConfluenceDefaultTableWidthError(ConfluenceConfigError):
 
 The option 'confluence_default_table_width' has been provided to override the
 default width for tables in editor v2. Accepted values include a string or a positive integer.
-If the value is a string one can define a unit otherwise 'px' is internally used as default.
-Accepted units include:
-
- - px
- - em
- - ex
- - mm
- - cm
- - in
- - pt
- - pc
+String values will be interpreted by units supported by the markup processed.
+Strings without units or integer values will be interpreted as a pixel value.
 ''')
 
 
