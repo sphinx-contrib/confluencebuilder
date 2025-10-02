@@ -1144,9 +1144,16 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         table_classes = node.get('classes', [])
         attribs = {}
 
-        # Apply the default table width when using the v2 editor.
-        if self.v2:
+         # Apply the default table width when using the v2 editor.
+        if self.v2 and config.confluence_default_table_width:
             attribs['data-table-width'] = config.confluence_default_table_width
+        # For v2 editor, if we have given explicit widths for columns in the
+        # table (e.g. CSV table), we need to apply a data table width or the
+        # editor will ignore the column-specific widths. If widths are
+        # detected, apply the default table width observed when using the v2
+        # editor.
+        elif self.v2 and 'colwidths-given' in table_classes:
+            attribs['data-table-width'] = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
         # [sphinxcontrib-needs]
         # force needs tables to a maximum width
