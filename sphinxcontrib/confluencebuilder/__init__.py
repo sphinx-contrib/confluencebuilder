@@ -123,6 +123,8 @@ def setup(app):
     cm.add_conf('confluence_code_block_theme', 'confluence')
     # Default alignment for tables, figures, etc.
     cm.add_conf('confluence_default_alignment', 'confluence')
+    # Table width (v2 editor).
+    cm.add_conf('confluence_default_table_width', 'confluence')
     # Do not attempt to pull configuration values from the environment.
     cm.add_conf_bool('confluence_disable_env_conf')
     # Enablement of a generated domain index documents

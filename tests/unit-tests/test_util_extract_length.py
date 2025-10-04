@@ -10,6 +10,7 @@ class TestConfluenceUtilExtractLength(unittest.TestCase):
         self.assertEqual(extract_length(None), (None, None))
         self.assertEqual(extract_length(' '), (None, None))
         self.assertEqual(extract_length('px'), (None, None))
+        self.assertEqual(extract_length(str(None)), (None, None))
 
     def test_util_extractlen_unitless(self):
         self.assertEqual(extract_length('123'), ('123', None))

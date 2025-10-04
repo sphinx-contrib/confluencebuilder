@@ -8,6 +8,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCe
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceClientCertMissingCertConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultAlignmentConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDefaultTableWidthError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceDomainIndicesConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceEditorConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceFooterFileConfigError
@@ -43,6 +44,7 @@ from sphinxcontrib.confluencebuilder.config.validation import ConfigurationValid
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import API_MODES
 from sphinxcontrib.confluencebuilder.std.confluence import EDITORS
+from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from requests.auth import AuthBase
 import os
@@ -313,6 +315,21 @@ def validate_configuration(builder):
                  .file()
     except ConfluenceConfigError as ex:
         raise ConfluenceHeaderFileConfigError(ex) from ex
+
+    # ##################################################################
+
+    # confluence_default_table_width
+    try:
+        validator.conf('confluence_default_table_width').int_(positive=True)
+    except ConfluenceConfigError:
+        try:
+            validator.conf('confluence_default_table_width').string()
+            width, unit = extract_length(config.confluence_default_table_width)
+            if unit == '%':
+                msg="Percentage is not a valid unit."
+                raise ConfluenceDefaultTableWidthError(msg)
+        except ConfluenceConfigError as ex:
+            raise ConfluenceDefaultTableWidthError(ex) from ex
 
     # ##################################################################
 
