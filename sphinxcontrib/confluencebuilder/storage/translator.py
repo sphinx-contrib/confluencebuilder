@@ -1146,8 +1146,8 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         attribs = {}
 
          # Apply the default table width when using the v2 editor.
-        if self.v2 and config.confluence_default_table_width:
-            attribs['data-table-width'] = config.confluence_default_table_width
+        if self.v2 and self.builder.config.confluence_default_table_width:
+            attribs['data-table-width'] = self.builder.config.confluence_default_table_width
         # For v2 editor, if we have given explicit widths for columns in the
         # table (e.g. CSV table), we need to apply a data table width or the
         # editor will ignore the column-specific widths. If widths are

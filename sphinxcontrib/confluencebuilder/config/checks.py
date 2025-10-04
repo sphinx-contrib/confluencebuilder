@@ -326,7 +326,8 @@ def validate_configuration(builder):
             validator.conf('confluence_default_table_width').string()
             width, unit = extract_length(config.confluence_default_table_width)
             if unit == '%':
-                raise ConfluenceDefaultTableWidthError("Percentage is not a valid unit.")
+                msg="Percentage is not a valid unit."
+                raise ConfluenceDefaultTableWidthError(msg)
         except ConfluenceConfigError as ex:
             raise ConfluenceDefaultTableWidthError(ex) from ex
 
