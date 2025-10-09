@@ -26,6 +26,7 @@ on:
       - 'pyproject.toml'
       - 'requirements_dev.txt'
       - 'tox.ini'
+  workflow_dispatch:
 
 jobs:
   build:
