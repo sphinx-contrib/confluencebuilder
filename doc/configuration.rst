@@ -359,16 +359,23 @@ Generic configuration
 
     .. versionadded:: 1.3
 
+.. _confluence_default_table_width:
+
 .. confval:: confluence_default_table_width
 
-    Width for a table (v2 editor).
-    It has been observed that when attempting to fix specific column widths on
-    a table in the v2 editor, Confluence applies a default data width of 760 on
-    the table. By default, this value is 760.
+    Configure the default width to apply for all tables created. Accepts a
+    width value where units are accepted (e.g. ``100px``) or unitless to assume
+    a pixel width. Percentages can be provided but experience may vary between
+    Confluence editor versions.
 
     .. code-block:: python
 
         confluence_default_table_width = 2000
+         (or)
+        confluence_default_table_width = '100em'
+
+    See also the
+    :ref:`Confluence table width directive <confluence_table_width-directive>`.
 
     .. versionadded:: 2.15
 

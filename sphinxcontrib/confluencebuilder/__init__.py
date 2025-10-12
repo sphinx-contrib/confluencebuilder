@@ -16,6 +16,7 @@ from sphinxcontrib.confluencebuilder.directives import ConfluenceLinkDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceMetadataDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceNewline
 from sphinxcontrib.confluencebuilder.directives import ConfluencePanelDirective
+from sphinxcontrib.confluencebuilder.directives import ConfluenceTableWidthDirective
 from sphinxcontrib.confluencebuilder.directives import ConfluenceToc
 from sphinxcontrib.confluencebuilder.directives import ConfluenceViewPdfDirective
 from sphinxcontrib.confluencebuilder.directives import JiraDirective
@@ -44,6 +45,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_page_generation_not
 from sphinxcontrib.confluencebuilder.nodes import confluence_panel
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch
 from sphinxcontrib.confluencebuilder.nodes import confluence_status_inline
+from sphinxcontrib.confluencebuilder.nodes import confluence_table_width
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import confluence_view_pdf
 from sphinxcontrib.confluencebuilder.nodes import jira
@@ -413,6 +415,7 @@ def confluence_builder_inited(app):
         confluence_panel,
         confluence_parameters_fetch,
         confluence_status_inline,
+        confluence_table_width,
         confluence_toc,
         confluence_view_pdf,
         jira,
@@ -435,6 +438,7 @@ def confluence_builder_inited(app):
     app.add_directive('confluence_metadata', ConfluenceMetadataDirective)
     app.add_directive('confluence_newline', ConfluenceNewline)
     app.add_directive('confluence_panel', ConfluencePanelDirective)
+    app.add_directive('confluence_table_width', ConfluenceTableWidthDirective)
     app.add_directive('confluence_toc', ConfluenceToc)
     app.add_directive('confluence_viewpdf', ConfluenceViewPdfDirective)
     app.add_directive('jira', JiraDirective)

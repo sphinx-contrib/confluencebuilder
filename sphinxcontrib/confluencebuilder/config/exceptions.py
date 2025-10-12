@@ -55,18 +55,6 @@ found. Ensure the following file exists:
 ''')
 
 
-class ConfluenceDefaultTableWidthError(ConfluenceConfigError):
-    def __init__(self, msg):
-        super().__init__(f'''\
-{msg}
-
-The option 'confluence_default_table_width' has been provided to override the
-default width for tables in editor v2. Accepted values include a string or a positive integer.
-String values will be interpreted by units supported by the markup processed.
-Strings without units or integer values will be interpreted as a pixel value.
-''')
-
-
 class ConfluenceDefaultAlignmentConfigError(ConfluenceConfigError):
     def __init__(self, msg):
         super().__init__(f'''\
@@ -75,6 +63,19 @@ class ConfluenceDefaultAlignmentConfigError(ConfluenceConfigError):
 The option 'confluence_default_alignment' has been provided to override the
 default alignment for tables, figures, etc. Accepted values include 'left',
 'center' and 'right'.
+''')
+
+
+class ConfluenceDefaultTableWidthError(ConfluenceConfigError):
+    def __init__(self, msg):
+        super().__init__(f'''\
+{msg}
+
+The option 'confluence_default_table_width' has been provided to override the
+default width for tables. Accepted values include a string or a positive
+integer. String values will be interpreted by units supported by the markup
+processed. Strings without units or integer values will be interpreted as a
+pixel value.
 ''')
 
 

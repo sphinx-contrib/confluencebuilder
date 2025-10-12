@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from docutils.nodes import Node
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from sphinx.util.docutils import SphinxDirective
@@ -15,6 +16,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_link_card
 from sphinxcontrib.confluencebuilder.nodes import confluence_metadata
 from sphinxcontrib.confluencebuilder.nodes import confluence_newline
 from sphinxcontrib.confluencebuilder.nodes import confluence_panel
+from sphinxcontrib.confluencebuilder.nodes import confluence_table_width
 from sphinxcontrib.confluencebuilder.nodes import confluence_toc
 from sphinxcontrib.confluencebuilder.nodes import confluence_view_pdf
 from sphinxcontrib.confluencebuilder.nodes import jira
@@ -265,6 +267,20 @@ class ConfluencePanelDirective(Directive):
             logger.warn('%s:%s: %s', source, lineno, warning)
 
         self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class ConfluenceTableWidthDirective(SphinxDirective):
+    has_content = False
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self) -> list[Node]:
+        options = {
+            'width': self.arguments[0].strip(),
+        }
+
+        node = confluence_table_width(**options)
         return [node]
 
 

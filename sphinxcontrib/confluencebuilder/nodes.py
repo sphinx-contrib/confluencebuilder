@@ -248,6 +248,15 @@ class confluence_source_link(nodes.Structural, ConfluenceParams):
     """
 
 
+class confluence_table_width(nodes.Invisible, nodes.Special, ConfluenceParams):
+    """
+    confluence table width node
+
+    A Confluence builder defined table width node holds a width hint to be used
+    for tables in a document.
+    """
+
+
 class confluence_toc(nodes.Structural, ConfluenceParams):
     """
     confluence toc node

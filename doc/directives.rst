@@ -387,6 +387,55 @@ Common
 
     .. versionadded:: 2.13
 
+.. _confluence_table_width-directive:
+
+.. rst:directive:: confluence_table_width
+
+    The ``confluence_table_width`` directive allows a user to define widths
+    for tables defined after the directive. For example:
+
+    .. code-block:: rst
+
+        .. confluence_table_width:: 800px
+
+        +------------------------+------------+----------+----------+
+        | Header row, column 1   | Header 2   | Header 3 | Header 4 |
+        | (header rows optional) |            |          |          |
+        +========================+============+==========+==========+
+        | body row 1, column 1   | column 2   | column 3 | column 4 |
+        +------------------------+------------+----------+----------+
+        | body row 2             | ...        | ...      |          |
+        +------------------------+------------+----------+----------+
+
+    To reset the table width for additional tables, a value ``unset`` can
+    be provided.
+
+    .. code-block:: rst
+
+        .. confluence_table_width:: 800px
+
+        +------------+------------+--------------+
+        | Product    | Price      | Availability |
+        +============+============+==============+
+        | Widget     | $10        | In stock     |
+        +------------+------------+--------------+
+        | Gadget     | $15        | Out of stock |
+        +------------+------------+--------------+
+
+        .. confluence_table_width:: unset
+
+        +------------+------------+------------+
+        | Name       | Age        | City       |
+        +============+============+============+
+        | Alice      | 30         | New York   |
+        +------------+------------+------------+
+        | Bob        | 25         | London     |
+        +------------+------------+------------+
+
+    See also the :lref:`confluence_default_table_width` option.
+
+    .. versionadded:: 2.15
+
 .. rst:directive:: confluence_toc
 
     The ``confluence_toc`` directive allows a user to define a Confluence
