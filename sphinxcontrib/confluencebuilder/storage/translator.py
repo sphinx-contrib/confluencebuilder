@@ -1149,7 +1149,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
 
         # if we have a target width for this table, try to normalize its value
         # to a pixel/percentage value
-        target_tw = self.default_table_width
+        target_tw = self._force_table_width or self.default_table_width
         target_twu = None
         if target_tw:
             tw, target_twu = extract_length(target_tw)

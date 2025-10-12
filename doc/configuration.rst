@@ -359,6 +359,8 @@ Generic configuration
 
     .. versionadded:: 1.3
 
+.. _confluence_default_table_width:
+
 .. confval:: confluence_default_table_width
 
     Configure the default width to apply for all tables created. Accepts a
@@ -371,6 +373,9 @@ Generic configuration
         confluence_default_table_width = 2000
          (or)
         confluence_default_table_width = '100em'
+
+    See also the
+    :ref:`Confluence table width directive <confluence_table_width-directive>`.
 
     .. versionadded:: 2.15
 

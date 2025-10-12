@@ -59,6 +59,7 @@ class ConfluenceBaseTranslator(BaseTranslator):
         self.context = []
         self.nl = '\n'
         self._docnames = [self.docname]
+        self._force_table_width = None
         self._literal = False
         self._section_level = 1
         self._topic = False
@@ -355,6 +356,17 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
     def visit_toctree(self, node):
         # skip hidden toctree entries
+        raise nodes.SkipNode
+
+    # -----------------------------------------
+    # sphinx -- extension -- confluence builder
+    # -----------------------------------------
+
+    def visit_confluence_table_width(self, node):
+        new_table_width = node.get('width')
+        if new_table_width in ('default', 'unset'):
+            new_table_width = None
+        self._force_table_width = new_table_width
         raise nodes.SkipNode
 
     # -----------------------------------------------------
