@@ -3,6 +3,7 @@
 # Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from collections import defaultdict
+from collections.abc import Set as AbstractSet
 from docutils import nodes
 from docutils.io import StringOutput
 from pathlib import Path
@@ -437,6 +438,18 @@ class ConfluenceBuilder(Builder):
                     traversed.append(child)
 
                     self.process_tree_structure(ordered, child, traversed)
+
+    def write_documents(self, docnames: AbstractSet[str]) -> None:
+        # (note: this call only applies to sphinx v8.1+)
+
+        # if parallel, prepare a multiprocessing list to help track assets
+        if self.parallel_ok:
+            with self.assets.multiprocessing_asset_tracking():
+                super().write_documents(docnames)
+            return
+
+        # non-parallel, perform a default write
+        super().write_documents(docnames)
 
     def write_doc(self, docname, doctree):
         if docname in self.omitted_docnames:
