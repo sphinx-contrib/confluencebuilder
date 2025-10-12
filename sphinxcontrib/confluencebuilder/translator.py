@@ -207,7 +207,6 @@ class ConfluenceBaseTranslator(BaseTranslator):
         uri = node['uri']
         uri = self.encode(uri)
 
-        dochost = None
         img_key = None
         img_sz = None
         internal_img = uri.find('://') == -1 and not uri.startswith('data:')
@@ -219,22 +218,16 @@ class ConfluenceBaseTranslator(BaseTranslator):
             if 'single' in self.builder.name:
                 asset_docname = self.docname
 
-            img_key, dochost, img_path = \
-                self.assets.fetch(node, docname=asset_docname)
+            img_key, img_path = self.assets.fetch(
+                node, docname=asset_docname, allow_new=not is_svg)
 
-            # if this image has not already be processed (injected at a later
-            # stage in the sphinx process); try processing it now
-            if not img_key:
-                # if this is an svg image, additional processing may also needed
-                if is_svg:
-                    confluence_supported_svg(self.builder, node)
+            # if this image was not pre-processed before and is an svg image,
+            # additional processing may also needed
+            if not img_key and is_svg:
+                confluence_supported_svg(self.builder, node)
 
-                if not asset_docname:
-                    asset_docname = self.docname
-
-                img_key, dochost, img_path = \
-                    self.assets.process_image_node(
-                        node, asset_docname, standalone=True)
+                img_key, img_path = self.assets.fetch(
+                    node, docname=asset_docname)
 
             if not img_key:
                 self.warn('unable to find image: ' + uri)
@@ -309,7 +302,6 @@ class ConfluenceBaseTranslator(BaseTranslator):
 
         # forward image options
         opts = {}
-        opts['dochost'] = dochost
         opts['height'] = height
         opts['hu'] = hu
         opts['key'] = img_key

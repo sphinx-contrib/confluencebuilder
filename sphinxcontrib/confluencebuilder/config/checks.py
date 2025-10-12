@@ -154,12 +154,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_asset_force_standalone
-    validator.conf('confluence_asset_force_standalone') \
-             .bool()
-
-    # ##################################################################
-
     # confluence_asset_override
     validator.conf('confluence_asset_override') \
              .bool()

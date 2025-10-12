@@ -197,8 +197,6 @@ def setup(app):
     # (configuration - advanced publishing)
     # Register additional mime types to be selected for image candidates.
     cm.add_conf('confluence_additional_mime_types', 'confluence')
-    # Forcing all assets to be standalone.
-    cm.add_conf_bool('confluence_asset_force_standalone', 'confluence')
     # Tri-state asset handling (auto, force push or disable).
     cm.add_conf_bool('confluence_asset_override')
     # File/path to Certificate Authority
@@ -344,6 +342,7 @@ def setup(app):
     # dropped
     cm.add_conf_bool('confluence_adv_disable_confcloud_74698')
     cm.add_conf_bool('confluence_adv_disable_confcloud_ieaj')
+    cm.add_conf_bool('confluence_asset_force_standalone')
     cm.add_conf_int('confluence_max_doc_depth')
 
     # ##########################################################################
