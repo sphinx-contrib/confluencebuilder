@@ -11,7 +11,7 @@ class TestConfluenceSharedAsset(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = cls.datasets / 'shared-asset'
+        cls.dataset = cls.datasets / 'assets'
 
     @setup_builder('confluence')
     def test_storage_sharedasset_defaults(self):

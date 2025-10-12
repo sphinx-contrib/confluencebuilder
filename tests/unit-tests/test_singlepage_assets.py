@@ -11,7 +11,7 @@ class TestConfluenceSinglepageAssets(ConfluenceTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.dataset = cls.datasets / 'shared-asset'
+        cls.dataset = cls.datasets / 'assets'
 
     @setup_builder('singleconfluence')
     def test_storage_singlepage_asset_defaults(self):
