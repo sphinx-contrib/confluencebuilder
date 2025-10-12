@@ -8,6 +8,7 @@ from docutils import nodes
 from docutils.io import StringOutput
 from pathlib import Path
 from sphinx import addnodes
+from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
 from sphinx.locale import _ as SL
 from sphinx.util.display import status_iterator
@@ -101,6 +102,16 @@ class ConfluenceBuilder(Builder):
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
         self.state.reset()
+
+        # if running an older version of sphinx and plantuml is detected,
+        # re-flag the build as non-parallel safe since we only support a
+        # lazy asset building on Sphinx v8.1+
+        if sphinx_version_info < (8, 1, 0):
+            for ext in app.extensions.values():
+                if ext.name == 'sphinxcontrib.plantuml':
+                    self.verbose('flag non-parallel-safe for older sphinx')
+                    self.allow_parallel = False
+                    break
 
     def init(self):
         apply_env_overrides(self.__app)
