@@ -338,6 +338,7 @@ class ConfluenceAssetManager:
             the absolute path
         """
         path = None
+
         if isinstance(node, nodes.image):
             # uri's will be relative to documentation root.
             path = Path(node['uri'])
@@ -347,9 +348,11 @@ class ConfluenceAssetManager:
             # to find a proper path.
             docdir = Path(node['refdoc']).parent
             path = docdir / node['reftarget']
+        else:
+            msg = 'unimplemented node type'
+            raise AssertionError(msg)  # noqa: TRY004
 
         abs_path = find_env_abspath(self.env, self.out_dir, path)
-
         if not abs_path:
             logger.verbose(f'failed to find path: {path}')
 
