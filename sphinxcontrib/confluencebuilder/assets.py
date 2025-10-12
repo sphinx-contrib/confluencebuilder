@@ -132,16 +132,11 @@ class ConfluenceAssetManager:
             else:
                 msg = 'unimplemented node type'
                 raise AssertionError(msg)
-
-            asset = self.path2asset.get(path, None)
-            self._assets.append(asset)
-
         # acquire the attachment key of this ready asset
         else:
             key = asset.doc2key.get(docname, None)
 
         # if we have no attachment key for this document, build one now
-        key = asset.doc2key.get(docname, None)
         if not key:
             key = self._build_attachment_key(asset, docname)
 
