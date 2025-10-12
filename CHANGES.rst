@@ -1,3 +1,11 @@
+Development
+===========
+
+* **(note)** Final release supporting Python 3.9 (EOL)
+* Improved support for API endpoint resolution when using scoped API tokens
+* Improved support for Confluence Cloud detection when using scoped API tokens
+* Introduce the ``confluence_default_table_width`` option
+
 2.14.0 (2025-07-26)
 ===================
 
