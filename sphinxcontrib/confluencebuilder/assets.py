@@ -325,9 +325,9 @@ class ConfluenceAssetManager:
 
     def _interpret_asset_path(self, node):
         """
-        find an absolute path for a target assert
+        find an absolute path for a target asset
 
-        Returns the absolute path to an assert. For unsupported asset types,
+        Returns the absolute path to an asset. For unsupported asset types,
         this method will return ``None`` values. This method should not be
         invoked on external assets (i.e. URLs).
 
