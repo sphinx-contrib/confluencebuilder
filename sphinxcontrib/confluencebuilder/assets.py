@@ -43,7 +43,7 @@ class ConfluenceAssetManager:
     The asset manager is used to track detect assets to be referenced to and
     published (if configured) to a Confluence instance. The manager has the
     ability to track locations of assets, detect duplicate uses of assets (when
-    references and/or duplicate physical files) and more. Typically, the buidler
+    references and/or duplicate physical files) and more. Typically, the builder
     will scan the list of documents to be processed for assets. When the
     translator is running, it will refer to the asset manager to know where an
     asset will be published (so the translator knows how to reference the
