@@ -640,7 +640,7 @@ def prepare_sphinx(src_dir, config=None, out_dir=None, extra_config=None,
             str(out_dir),      # output for generated documents
             str(doctrees_dir), # output for doctree files
             builder,           # builder to execute
-            **sphinx_args)     # verbosity
+            **sphinx_args)     # other arguments
 
         yield app
 
