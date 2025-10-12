@@ -12,6 +12,8 @@ DEPRECATED_CONFIGS = {
         'use "confluence_cleanup_search_mode" instead',
     'confluence_adv_permit_raw_html':
         'use "confluence_permit_raw_html" instead',
+    'confluence_asset_force_standalone':
+        'option does nothing',
     'confluence_lang_transform':
         'use "confluence_lang_overrides" instead',
     'confluence_adv_trace_data':
