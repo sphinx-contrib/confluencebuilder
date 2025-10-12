@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from contextlib import contextmanager
 from docutils import nodes
+from multiprocessing import Manager
 from pathlib import Path
 from sphinx import addnodes
 from sphinx.util.osutil import canon_path
@@ -65,6 +67,7 @@ class ConfluenceAssetManager:
         self.out_dir = out_dir
         self.path2asset = {}
         self._assets = []
+        self._delayed_assets = []
 
     def add(self, path, docname):
         """
@@ -132,6 +135,9 @@ class ConfluenceAssetManager:
             else:
                 msg = 'unimplemented node type'
                 raise AssertionError(msg)
+
+            asset = self.path2asset.get(path, None)
+
         # acquire the attachment key of this ready asset
         else:
             key = asset.doc2key.get(docname, None)
@@ -140,7 +146,34 @@ class ConfluenceAssetManager:
         if not key:
             key = self._build_attachment_key(asset, docname)
 
+        # since this is a delayed asset entry, we are also going to track
+        # this in a mp-list when later finalizing assets (in the case
+        # where an invoke is running a parallel build)
+        self._delayed_assets.append(
+            (docname, key, path, asset.hash, asset.type))
+
         return key, path
+
+    @contextmanager
+    def multiprocessing_asset_tracking(self):
+        """
+        setup a context to help track delayed assets when using multiprocessing
+
+        Provides a context to have the asset manager's delayed asset list to
+        support a multiprocessing environment. The internal list is temporarily
+        replaced with a multiprocessing Manager's list to allow processes to
+        populated delayed assets. Once document process is completed, the
+        cleanup of the context will convert the delayed asset entries into a
+        local list.
+        """
+
+        manager = Manager()
+        try:
+            self._delayed_assets = manager.list()
+            yield
+            self._delayed_assets = list(self._delayed_assets)
+        finally:
+            manager.shutdown()
 
     def preprocess_doctree(self, doctree, docname):
         """
@@ -186,9 +219,10 @@ class ConfluenceAssetManager:
         data = []
 
         # if we have any assets, populate a list to be used for publishing
-        if self._assets:
+        if self._assets or self._delayed_assets:
             logger.verbose('finalize assets...')
 
+            # compile list of assets (pre-processed and main-thread registered)
             for asset in self._assets:
                 for docname, key in asset.doc2key.items():
                     entry = (key, asset.path, asset.type, asset.hash, docname)
@@ -197,6 +231,19 @@ class ConfluenceAssetManager:
 
                 if not asset.doc2key:
                     logger.verbose(f'> missing doc-entries: {asset.path}')
+
+            # for any "delayed" assets, check if they are registered on the
+            # main builder's thread; if not, append them to the list
+            for asset_entry in self._delayed_assets:
+                docname, key, path, hash_, type_ = asset_entry
+                key_db = self.dockeys.setdefault(docname, set())
+                if key in key_db:
+                    continue
+
+                entry = (key, path, type_, hash_, docname)
+                logger.verbose(f'~ {key} ({docname}): {path}')
+                data.append(entry)
+                key_db.add(key)
 
             logger.verbose(f'finalized assets (total: {len(data)})')
         else:

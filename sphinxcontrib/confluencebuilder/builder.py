@@ -3,10 +3,12 @@
 # Copyright 2007-2021 by the Sphinx team (sphinx-doc/sphinx#AUTHORS)
 
 from collections import defaultdict
+from collections.abc import Set as AbstractSet
 from docutils import nodes
 from docutils.io import StringOutput
 from pathlib import Path
 from sphinx import addnodes
+from sphinx import version_info as sphinx_version_info
 from sphinx.builders import Builder
 from sphinx.locale import _ as SL
 from sphinx.util.display import status_iterator
@@ -100,6 +102,16 @@ class ConfluenceBuilder(Builder):
         # state tracking is set at initialization (not cleanup) so its content's
         # can be checked/validated on after the builder has executed (testing)
         self.state.reset()
+
+        # if running an older version of sphinx and plantuml is detected,
+        # re-flag the build as non-parallel safe since we only support a
+        # lazy asset building on Sphinx v8.1+
+        if sphinx_version_info < (8, 1, 0):
+            for ext in app.extensions.values():
+                if ext.name == 'sphinxcontrib.plantuml':
+                    self.verbose('flag non-parallel-safe for older sphinx')
+                    self.allow_parallel = False
+                    break
 
     def init(self):
         apply_env_overrides(self.__app)
@@ -437,6 +449,18 @@ class ConfluenceBuilder(Builder):
                     traversed.append(child)
 
                     self.process_tree_structure(ordered, child, traversed)
+
+    def write_documents(self, docnames: AbstractSet[str]) -> None:
+        # (note: this call only applies to sphinx v8.1+)
+
+        # if parallel, prepare a multiprocessing list to help track assets
+        if self.parallel_ok:
+            with self.assets.multiprocessing_asset_tracking():
+                super().write_documents(docnames)
+            return
+
+        # non-parallel, perform a default write
+        super().write_documents(docnames)
 
     def write_doc(self, docname, doctree):
         if docname in self.omitted_docnames:
