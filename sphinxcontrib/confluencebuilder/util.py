@@ -211,7 +211,7 @@ def extract_length(value):
     if not value:
         return None, None
 
-    matched = re.match(r'^\s*(\d*\.?\d*)\s*(\S*)?\s*$', value)
+    matched = re.match(r'^\s*(\d*\.?\d*)\s*(\S*)?\s*$', str(value))
     if not matched:
         return None, None
 
