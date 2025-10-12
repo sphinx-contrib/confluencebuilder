@@ -4,7 +4,6 @@
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
-from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 from sphinxcontrib.confluencebuilder.util import convert_length
 from sphinxcontrib.confluencebuilder.util import extract_length
 from sphinxcontrib.confluencebuilder.util import str2bool
@@ -73,11 +72,9 @@ def apply_defaults(app):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
 
     if conf.confluence_default_table_width:
-        table_width, twu = extract_length(str(conf.confluence_default_table_width))
-        if table_width is not None:
-            conf.confluence_default_table_width = convert_length(table_width, twu, pct=False)
-        else:
-            conf.confluence_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+        # if a table width is defined, always normalize the value to a pixels
+        table_width, twu = extract_length(conf.confluence_default_table_width)
+        conf.confluence_default_table_width = convert_length(table_width, twu)
 
     if conf.confluence_disable_notifications is None:
         conf.confluence_disable_notifications = True

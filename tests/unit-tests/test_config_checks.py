@@ -452,8 +452,9 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_default_table_width'] = '123456 px'
         self._try_config()
 
-        self.config['confluence_default_table_width'] = 'MyPage'
-        self._try_config()
+        with self.assertRaises(ConfluenceDefaultTableWidthError):
+            self.config['confluence_default_table_width'] = 'MyPage'
+            self._try_config()
 
         self.config['confluence_default_table_width'] = '123456%'
         with self.assertRaises(ConfluenceDefaultTableWidthError):
