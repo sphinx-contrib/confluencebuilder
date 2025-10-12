@@ -370,6 +370,8 @@ Generic configuration
 
         confluence_default_table_width = 2000
 
+    .. versionadded:: 2.15
+
 .. confval:: confluence_disable_env_conf
 
     A boolean value to configure whether to ignore environment-provided
