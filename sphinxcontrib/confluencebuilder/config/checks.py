@@ -321,13 +321,9 @@ def validate_configuration(builder):
         except ConfluenceConfigError as ex:
             raise ConfluenceDefaultTableWidthError(ex) from ex
         else:
-            tlen, unit = extract_length(config.confluence_default_table_width)
+            tlen, _ = extract_length(config.confluence_default_table_width)
             if not tlen:
                 msg = 'Unable to detect length value.'
-                raise ConfluenceDefaultTableWidthError(msg)
-
-            if unit == '%':
-                msg = 'Percentage is not an accepted unit.'
                 raise ConfluenceDefaultTableWidthError(msg)
 
     # ##################################################################

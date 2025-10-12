@@ -26,6 +26,12 @@ API_MODES = {
 # the table.
 CONFLUENCE_DEFAULT_V2_TABLE_WIDTH = 760
 
+# default "maximum" width for a table (v2 editor)
+#
+# It has been observed that when attempting to maximum the width of a table in
+# the v2 editor, Confluence applies a limit of 1800 on the table.
+CONFLUENCE_DEFAULT_V2_TABLE_WIDTH_MAX = 1800
+
 # maximum length for a confluence page title
 #
 # The maximum length of a Confluence page is set to 255. This is a Confluence-

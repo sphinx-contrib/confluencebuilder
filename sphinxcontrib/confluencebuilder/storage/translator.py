@@ -15,6 +15,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluenceError
 from sphinxcontrib.confluencebuilder.locale import L
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_DEFAULT_V2_TABLE_WIDTH_MAX
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import FALLBACK_HIGHLIGHT_STYLE
 from sphinxcontrib.confluencebuilder.std.confluence import FCMMO
@@ -106,6 +107,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.add_secnumbers = config.confluence_add_secnumbers
         self.editor = config.confluence_editor
         self.confluence_full_width = config.confluence_full_width
+        self.default_table_width = config.confluence_default_table_width
         self.numfig = config.numfig
         self.numfig_format = config.numfig_format
         self.secnumber_suffix = config.confluence_secnumber_suffix
@@ -1145,9 +1147,25 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         table_classes = node.get('classes', [])
         attribs = {}
 
-         # Apply the default table width when using the v2 editor.
-        if self.v2 and self.builder.config.confluence_default_table_width:
-            attribs['data-table-width'] = self.builder.config.confluence_default_table_width
+        # if we have a target width for this table, try to normalize its value
+        # to a pixel/percentage value
+        target_tw = self.default_table_width
+        target_twu = None
+        if target_tw:
+            tw, target_twu = extract_length(target_tw)
+            target_tw = convert_length(tw, target_twu)
+
+        # Apply the default table width when using the v2 editor. v2 accepts a
+        # `data-table-width` in pixels. The implicit default is Confluence
+        # matches `CONFLUENCE_DEFAULT_V2_TABLE_WIDTH`, where the observed
+        # maximum (via editor) is `CONFLUENCE_DEFAULT_V2_TABLE_WIDTH_MAX`.
+        if self.v2 and target_tw:
+            if target_twu == '%':
+                final_tw_v2 = int(CONFLUENCE_DEFAULT_V2_TABLE_WIDTH_MAX *
+                                  (int(target_tw) / 100))
+            else:
+                final_tw_v2 = target_tw
+            attribs['data-table-width'] = final_tw_v2
         # For v2 editor, if we have given explicit widths for columns in the
         # table (e.g. CSV table), we need to apply a data table width or the
         # editor will ignore the column-specific widths. If widths are
@@ -1155,6 +1173,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # editor.
         elif self.v2 and 'colwidths-given' in table_classes:
             attribs['data-table-width'] = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+        # For v1, if provided a width, use it directly in the style.
+        elif not self.v2 and target_tw:
+            final_twu_v1 = '%' if target_twu == '%' else 'px'
+            attribs['style'] = f'width: {target_tw}{final_twu_v1};'
 
         # [sphinxcontrib-needs]
         # force needs tables to a maximum width
