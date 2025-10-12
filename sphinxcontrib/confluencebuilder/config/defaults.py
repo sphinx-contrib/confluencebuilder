@@ -72,6 +72,13 @@ def apply_defaults(app):
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
 
+    if conf.confluence_default_table_width:
+        table_width, twu = extract_length(str(conf.confluence_default_table_width))
+        if table_width is not None:
+            conf.confluence_default_table_width = convert_length(table_width, twu, pct=False)
+        else:
+            conf.confluence_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
+
     if conf.confluence_disable_notifications is None:
         conf.confluence_disable_notifications = True
 
@@ -81,13 +88,6 @@ def apply_defaults(app):
     if conf.confluence_file_suffix:
         if conf.confluence_file_suffix.endswith('.'):
             conf.confluence_file_suffix = '.conf'
-
-    if conf.confluence_default_table_width:
-        table_width, twu = extract_length(str(conf.confluence_default_table_width))
-        if table_width is not None:
-            conf.confluence_default_table_width = convert_length(table_width, twu, pct=False)
-        else:
-            conf.confluence_default_table_width = CONFLUENCE_DEFAULT_V2_TABLE_WIDTH
 
     if conf.confluence_global_labels:
         # remove empty labels
