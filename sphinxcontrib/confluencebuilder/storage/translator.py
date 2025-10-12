@@ -2051,7 +2051,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self.end_tag(node, suffix=''))
         else:
             asset_docname = None
-            if self.builder.name == 'singleconfluence':
+            if 'single' in self.builder.name:
                 asset_docname = self.docname
 
             file_key, hosting_docname, _ = \
@@ -2705,7 +2705,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             raise nodes.SkipNode
 
         asset_docname = None
-        if self.builder.name == 'singleconfluence':
+        if 'single' in self.builder.name:
             asset_docname = self.docname
 
         file_key, hosting_docname, _ = \
