@@ -994,8 +994,8 @@ class ConfluencePublisher:
                     logger.warn(f'failed archive clean ("{page_name}"): {ex}')
                 page = None
 
-        if self.onlynew and page:
-            self._onlynew('skipping existing page', page['id'])
+        # if a page was found, verify we are allowed to publish
+        if not self._check_allowed_page_update(page):
             return page['id']
 
         # fetch known properties (associated with this extension) from the page
@@ -1140,8 +1140,8 @@ class ConfluencePublisher:
                         # reviving a page from the dead.
                         raise
 
-                    if self.onlynew:
-                        self._onlynew('skipping existing page', page['id'])
+                    # if a page was found, verify we are allowed to publish
+                    if not self._check_allowed_page_update(page):
                         return page['id']
                 else:
                     if 'id' not in rsp:
@@ -1544,6 +1544,29 @@ class ConfluencePublisher:
             }
 
         return page
+
+    def _check_allowed_page_update(self, page):
+        """
+        check if a page is allowed to be updated
+
+        Performs checks on whether a page is allowed to be updated based on
+        a project's configuration. This is primarily to handle cases where
+        users do not want to update pages that might move pages outside the
+        hierarchy (e.g. naming conflicts).
+
+        Args:
+            page: the page to be updated
+
+        Returns:
+            whether an update is permitted
+        """
+
+        # never permit any updates if the "only new" flag is set
+        if self.onlynew:
+            self._onlynew('skipping existing page', page['id'])
+            return False
+
+        return True
 
     def _manage_inlined_comments(self, page, page_name, data):
         """
