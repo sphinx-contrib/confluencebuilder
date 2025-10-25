@@ -584,7 +584,7 @@ class ConfluenceBuilder(Builder):
             # populate ancestors to be used to pre-check ancestors assignments
             # on new pages (`uploaded_id` may not be set if dry run)
             if uploaded_id:
-                root_ancestors = self.publisher.get_ancestors(uploaded_id)
+                root_ancestors = self.publisher.get_ancestors(int(uploaded_id))
                 self.publisher.restrict_ancestors(root_ancestors)
 
         # if purging is enabled and we have yet to populate a list of legacy

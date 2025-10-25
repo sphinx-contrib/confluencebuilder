@@ -49,7 +49,7 @@ class ConfluencePublisher:
         self.space_display_name = None
         self.space_id = None
         self.space_type = None
-        self._ancestors_cache = set()
+        self._ancestors_cache: set[int] = set()
         self._name_cache = {}
 
     def init(self, config, cloud=None):
@@ -284,7 +284,7 @@ class ConfluencePublisher:
 
         self.rest.delete(property_path, id_)
 
-    def get_ancestors(self, page_id):
+    def get_ancestors(self, page_id: int) -> set[int]:
         """
         generate a list of ancestors
 
@@ -305,13 +305,13 @@ class ConfluencePublisher:
             rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors')
 
             for result in rsp['results']:
-                ancestors.add(result['id'])
+                ancestors.add(int(result['id']))
         else:
             _, page = self.get_page_by_id(page_id, 'ancestors')
 
             if 'ancestors' in page:
                 for ancestor in page['ancestors']:
-                    ancestors.add(ancestor['id'])
+                    ancestors.add(int(ancestor['id']))
 
         return ancestors
 
@@ -1456,7 +1456,7 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-    def restrict_ancestors(self, ancestors):
+    def restrict_ancestors(self, ancestors: set[int]):
         """
         restrict the provided ancestors from being changed
 
@@ -1704,7 +1704,7 @@ class ConfluencePublisher:
             update_page['version']['minorEdit'] = True
 
         if parent_id:
-            if page['id'] in self._ancestors_cache:
+            if int(page['id']) in self._ancestors_cache:
                 raise ConfluencePublishAncestorError(page_name)
 
             update_page['ancestors'] = [{'id': parent_id}]
