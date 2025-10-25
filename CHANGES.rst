@@ -7,6 +7,7 @@ Development
 * Improved support for API endpoint resolution when using scoped API tokens
 * Improved support for Confluence Cloud detection when using scoped API tokens
 * Introduce the ``confluence_default_table_width`` option
+* Introduce the ``confluence_publish_trample`` option
 * Properly handle late stage assets (e.g. plantuml) in POSIX parallel builds
 
 2.14.0 (2025-07-26)
