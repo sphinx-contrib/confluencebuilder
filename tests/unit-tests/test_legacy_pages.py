@@ -153,7 +153,7 @@ class MockedPublisher:
     def disconnect(self):
         pass
 
-    def get_ancestors(self, page_id):
+    def get_ancestors(self, page_id: int) -> set[int]:
         return set()
 
     def get_attachments(self, page_id):

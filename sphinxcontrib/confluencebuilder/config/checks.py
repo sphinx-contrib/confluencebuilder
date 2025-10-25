@@ -624,6 +624,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_publish_trample
+    validator.conf('confluence_publish_trample') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_remove_title
     validator.conf('confluence_remove_title') \
              .bool()

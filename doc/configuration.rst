@@ -1731,7 +1731,14 @@ Advanced publishing configuration
 
     .. versionadded:: 1.9
 
+.. _confluence_publish_onlynew:
+
 .. confval:: confluence_publish_onlynew
+
+    .. tip::
+
+        Users considering this option may wish to use
+        :lref:`confluence_publish_trample` instead.
 
     A publish event from this extension will typically upload new pages or
     update existing pages on future attempts. In select cases, a user may not
@@ -1745,6 +1752,8 @@ Advanced publishing configuration
     .. code-block:: python
 
         confluence_publish_onlynew = True
+
+    See also :lref:`confluence_publish_trample`.
 
     .. versionadded:: 1.3
 
@@ -1879,6 +1888,33 @@ Advanced publishing configuration
     See also :lref:`suppress_warnings_config`.
 
     .. versionadded:: 2.13
+
+.. _confluence_publish_trample:
+
+.. confval:: confluence_publish_trample
+
+    Since
+    :ref:`page names are unique for a given space <confluence_unique_page_names>`,
+    publishers need to take into account page name conflicts for documents that
+    already exist on a space versus documents attempted to be published. By
+    default , this extension will attempt to detect and stop a publish event if
+    it has detected a page being updated/moved that is not part of the
+    published documentation's hierarchy. This default is enforced with a value
+    of ``False``.
+
+    If a publisher wishes to always force renaming/replacing pages that are
+    found outside the hierarchy, this option can be set to ``True``.
+
+    .. code-block:: python
+
+        confluence_publish_trample = True
+
+    See also:
+
+    - :ref:`Confluence Spaces and Unique Page Names <confluence_unique_page_names>`
+    - :lref:`confluence_publish_onlynew`
+
+    .. versionadded:: 2.15
 
 .. confval:: confluence_request_session_override
 

@@ -22,6 +22,7 @@ class ConfluenceState:
     doc2ttd: dict[str, int] = {}
     refid2target: dict[str, str] = {}
     title2doc: dict[str, str] = {}
+    uploadIds: set[int] = set()
 
     @staticmethod
     def register_parent_docname(docname: str, parent_docname: str):
@@ -157,6 +158,7 @@ class ConfluenceState:
         tracked in this state (see also `uploadId`).
         """
         ConfluenceState.doc2uploadId[docname] = id_
+        ConfluenceState.uploadIds.add(id_)
         logger.verbose(
             f"tracking docname {docname}'s upload id: {id_}")
 
@@ -174,6 +176,16 @@ class ConfluenceState:
         ConfluenceState.doc2ttd.clear()
         ConfluenceState.refid2target.clear()
         ConfluenceState.title2doc.clear()
+        ConfluenceState.uploadIds.clear()
+
+    @staticmethod
+    def has_upload_id(page_id: int) -> bool:
+        """
+        return whether a page identifier has been uploaded
+
+        See `registerUploadId` for more information.
+        """
+        return page_id in ConfluenceState.uploadIds
 
     @staticmethod
     def parent_docname(docname: str) -> str | None:

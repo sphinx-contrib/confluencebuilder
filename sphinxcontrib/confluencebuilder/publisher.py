@@ -17,6 +17,7 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePagePermissionE
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
+from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishTrampleError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnexpectedCdataError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstanceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
@@ -25,6 +26,7 @@ from sphinxcontrib.confluencebuilder.rest import Rest
 from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
+from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import detect_cloud
 from urllib.parse import parse_qsl
@@ -49,7 +51,7 @@ class ConfluencePublisher:
         self.space_display_name = None
         self.space_id = None
         self.space_type = None
-        self._ancestors_cache = set()
+        self._ancestors_cache: set[int] = set()
         self._name_cache = {}
 
     def init(self, config, cloud=None):
@@ -65,6 +67,7 @@ class ConfluencePublisher:
         self.parent_ref = config.confluence_parent_page
         self.server_url = config.confluence_server_url
         self.space_key = config.confluence_space_key
+        self.trample = config.confluence_publish_trample
         self.watch = config.confluence_watch
 
         # track api prefix values to apply
@@ -284,7 +287,7 @@ class ConfluencePublisher:
 
         self.rest.delete(property_path, id_)
 
-    def get_ancestors(self, page_id):
+    def get_ancestors(self, page_id: int) -> set[int]:
         """
         generate a list of ancestors
 
@@ -305,13 +308,13 @@ class ConfluencePublisher:
             rsp = self.rest.get(f'{self.APIV2}pages/{page_id}/ancestors')
 
             for result in rsp['results']:
-                ancestors.add(result['id'])
+                ancestors.add(int(result['id']))
         else:
             _, page = self.get_page_by_id(page_id, 'ancestors')
 
             if 'ancestors' in page:
                 for ancestor in page['ancestors']:
-                    ancestors.add(ancestor['id'])
+                    ancestors.add(int(ancestor['id']))
 
         return ancestors
 
@@ -994,8 +997,8 @@ class ConfluencePublisher:
                     logger.warn(f'failed archive clean ("{page_name}"): {ex}')
                 page = None
 
-        if self.onlynew and page:
-            self._onlynew('skipping existing page', page['id'])
+        # if a page was found, verify we are allowed to publish
+        if page and not self._check_allowed_page_update(page, parent_id):
             return page['id']
 
         # fetch known properties (associated with this extension) from the page
@@ -1140,8 +1143,8 @@ class ConfluencePublisher:
                         # reviving a page from the dead.
                         raise
 
-                    if self.onlynew:
-                        self._onlynew('skipping existing page', page['id'])
+                    # if a page was found, verify we are allowed to publish
+                    if not self._check_allowed_page_update(page, parent_id):
                         return page['id']
                 else:
                     if 'id' not in rsp:
@@ -1456,7 +1459,7 @@ class ConfluencePublisher:
             )
             raise ConfluencePermissionError(msg) from ex
 
-    def restrict_ancestors(self, ancestors):
+    def restrict_ancestors(self, ancestors: set[int]):
         """
         restrict the provided ancestors from being changed
 
@@ -1544,6 +1547,81 @@ class ConfluencePublisher:
             }
 
         return page
+
+    def _check_allowed_page_update(self, page, parent_id):
+        """
+        check if a page is allowed to be updated
+
+        Performs checks on whether a page is allowed to be updated based on
+        a project's configuration. This is primarily to handle cases where
+        users do not want to update pages that might move pages outside the
+        hierarchy (e.g. naming conflicts).
+
+        Args:
+            page: the page to be updated
+            parent_id: the new parent id (may be ``None``)
+
+        Returns:
+            whether an update is permitted
+        """
+
+        # never permit any updates if the "only new" flag is set
+        if self.onlynew:
+            self._onlynew('skipping existing page', page['id'])
+            return False
+
+        # if configured not to trample and we have a parent identifier for
+        # this request (i.e. not root and in hierarchy mode), check to see if
+        # the new parent id is part of our documentation tree
+        detected_trample = False
+        while not self.trample and parent_id:
+            # if no parent, it lives on it's own
+            current_parent_id_str = page['parentId']
+            if not current_parent_id_str:
+                logger.verbose('(trample) detected no parent page')
+                detected_trample = True
+                break
+
+            # check if the parent page has been uploaded, indicating it is
+            # part of our current hierarchy
+            current_parent_id = int(current_parent_id_str)
+            if ConfluenceState.has_upload_id(current_parent_id):
+                break
+
+            # if the parent page is the configured orphan container, this is
+            # a contained page update
+            orphan_container = self.config.confluence_publish_orphan_container
+            if current_parent_id == orphan_container:
+                break
+
+            # if the parent page is the target base page identifier, this is
+            # a contained page update
+            base_page_id = self.get_base_page_id()
+            if current_parent_id == base_page_id:
+                break
+
+            # if the current page is under our base page, this is a contained
+            # page update
+            page_ancestors = self.get_ancestors(int(page['id']))
+            if int(base_page_id) in page_ancestors:
+                break
+
+            # page does not appear to be part of the target's hierarchy
+            detected_trample = True
+            break
+
+        if detected_trample:
+            page_name = page['title']
+
+            webui = page.get('_links', {}).get('webui').removeprefix('/')
+            if webui:
+                webui = f'{self.server_url}{webui}'
+            else:
+                webui = f'(not provided by api; page id: {page["id"]})'
+
+            raise ConfluencePublishTrampleError(page_name, webui)
+
+        return True
 
     def _manage_inlined_comments(self, page, page_name, data):
         """
@@ -1681,7 +1759,7 @@ class ConfluencePublisher:
             update_page['version']['minorEdit'] = True
 
         if parent_id:
-            if page['id'] in self._ancestors_cache:
+            if int(page['id']) in self._ancestors_cache:
                 raise ConfluencePublishAncestorError(page_name)
 
             update_page['ancestors'] = [{'id': parent_id}]
