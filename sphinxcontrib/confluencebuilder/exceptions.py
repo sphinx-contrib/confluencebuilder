@@ -193,6 +193,34 @@ please inform the maintainers of this extension.
 ''')
 
 
+class ConfluencePublishTrampleError(ConfluencePublishCheckError):
+    def __init__(self, page_name: str, page_webui: str):
+        super().__init__(f'''
+---
+Documentation trample detected: {page_name}
+
+A request has been made to publish a page which updates an existing page not
+contained in the expected hierarchy. This typically is a result of a conflict
+between an existing Confluence space's documentation and the documentation
+attempted to being published (i.e. a page name conflict).
+
+The conflicting page can be found at:
+
+    {page_webui}
+
+If the page move is desired, users can either:
+
+ - Move the existing page manually under the hierarchy of the root document.
+ - Remove the conflicting page.
+ - Enable the `confluence_publish_trample` option.
+
+For more information, please see:
+
+    https://sphinxcontrib-confluencebuilder.readthedocs.io/tips/#confluence-spaces-and-unique-page-names
+---
+''')
+
+
 class ConfluenceRateLimitedError(ConfluenceError):
     def __init__(self):
         super().__init__('''
