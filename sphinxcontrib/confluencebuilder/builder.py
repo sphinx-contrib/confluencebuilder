@@ -535,6 +535,7 @@ class ConfluenceBuilder(Builder):
             if self.config.root_doc != docname:
                 parent = self.state.parent_docname(docname)
                 parent_id = self.state.upload_id(parent)
+                parent_id = str(parent_id) if parent_id else None
         if not parent_id:
             parent_id = self.parent_id
 
@@ -574,7 +575,7 @@ class ConfluenceBuilder(Builder):
                     parent_id = new_parent_id
 
             uploaded_id = self.publisher.store_page(title, data, parent_id)
-        self.state.register_upload_id(docname, uploaded_id)
+        self.state.register_upload_id(docname, int(uploaded_id))
 
         self._cache_info.track_last_page_id(docname, uploaded_id)
 
@@ -704,7 +705,7 @@ class ConfluenceBuilder(Builder):
         publisher = self.publisher
 
         title = self.state.title(docname)
-        page_id = self.state.upload_id(docname)
+        page_id = str(self.state.upload_id(docname))
 
         if not page_id and not conf.confluence_publish_dryrun:
             # A page identifier may not be tracked in cases where only a subset
@@ -713,7 +714,7 @@ class ConfluenceBuilder(Builder):
             # Confluence instance what the target page's identifier is.
             page_id, _ = publisher.get_page(title)
             if page_id:
-                self.state.register_upload_id(docname, page_id)
+                self.state.register_upload_id(docname, int(page_id))
             else:
                 self.warn('cannot publish asset since publishing '
                     f'point cannot be found ({key}): {docname}')
