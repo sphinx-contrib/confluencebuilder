@@ -225,7 +225,7 @@ Essential configuration
 
         confluence_api_token_scoped = True
 
-    .. versionadded:: 2.7
+    .. versionadded:: 2.15
 
 .. raw:: latex
 

@@ -3,7 +3,7 @@
 Configure access for a scoped token
 ===================================
 
-.. versionadded:: 2.7
+.. versionadded:: 2.15
 
 .. note::
 
