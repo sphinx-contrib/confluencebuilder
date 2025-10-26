@@ -223,7 +223,7 @@ interacting with this extension:
 
     .. tabularcolumns:: |p{5cm}|p{11cm}|
 
-.. rst-class:: no-wrap-links
+.. rst-class:: longtable no-wrap-links
 
 ================================= =====
 Type                              Notes
