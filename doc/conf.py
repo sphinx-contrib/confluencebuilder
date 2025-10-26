@@ -111,7 +111,7 @@ latex_elements = {
 \end{titlepage}
     ''',
     # iso datetime support
-    # disable hyphenatation
+    # disable hyphenation
     # disable justified text
     # remove italics from links
     # new page for each section

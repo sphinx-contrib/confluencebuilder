@@ -13,7 +13,7 @@ time in a corporate environment.
 Confluence Authentication Token
 -------------------------------
 
-Users be using either an API token (Confluence Cloud) or personal access
+Users should be using either an API token (Confluence Cloud) or personal access
 token (PAT; Confluence Data Center) for authenticating with Confluence.
 This means that :lref:`confluence_api_token` (along with
 :lref:`confluence_server_user`) should be used in a Confluence Cloud
