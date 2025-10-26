@@ -3,6 +3,7 @@ Development
 
 * **(note)** Final release supporting Python 3.9 (EOL)
 * Assets are always standalone (``confluence_asset_force_standalone`` dropped)
+* Fixed reference conflicts with footnotes/citations in singleconfluence
 * Introduce the Confluence Table Width directive
 * Improved support for API endpoint resolution when using scoped API tokens
 * Improved support for Confluence Cloud detection when using scoped API tokens
