@@ -1575,16 +1575,30 @@ class ConfluencePublisher:
         # the new parent id is part of our documentation tree
         detected_trample = False
         while not self.trample and parent_id:
-            # if no parent, it lives on it's own
-            current_parent_id_str = page['parentId']
-            if not current_parent_id_str:
-                logger.verbose('(trample) detected no parent page')
-                detected_trample = True
-                break
+            page_ancestors = []
+
+            # if no parent, it lives on it's own; flag as trampling space
+            if self.api_mode == 'v2':
+                current_parent_id_str = page.get('parentId')
+                if not current_parent_id_str:
+                    logger.verbose('(trample) detected no parent page')
+                    detected_trample = True
+                    break
+
+                current_parent_id = int(current_parent_id_str)
+            else:
+                if 'ancestors' in page:
+                    page_ancestors = [int(x['id']) for x in page['ancestors']]
+
+                if not page_ancestors:
+                    logger.verbose('(trample) detected no parent page')
+                    detected_trample = True
+                    break
+
+                current_parent_id = page_ancestors[0]
 
             # check if the parent page has been uploaded, indicating it is
             # part of our current hierarchy
-            current_parent_id = int(current_parent_id_str)
             if ConfluenceState.has_upload_id(current_parent_id):
                 break
 
@@ -1602,7 +1616,8 @@ class ConfluencePublisher:
 
             # if the current page is under our base page, this is a contained
             # page update
-            page_ancestors = self.get_ancestors(int(page['id']))
+            if not page_ancestors:
+                page_ancestors = self.get_ancestors(int(page['id']))
             if int(base_page_id) in page_ancestors:
                 break
 
