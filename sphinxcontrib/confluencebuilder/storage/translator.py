@@ -1579,7 +1579,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         if not isinstance(label_node, nodes.label):
             raise nodes.SkipNode
 
-        # if the first foonote/citation, start building a table; except for
+        # if the first footnote/citation, start building a table; except for
         # the v2 editor, which we do not add tables since they cannot be
         # styled
         if not self._building_footnotes:

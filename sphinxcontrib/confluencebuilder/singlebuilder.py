@@ -155,7 +155,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
         Second, this change also removes the possibly of double-anchors
         generated when combining into a single toctree. When inlining toctree's,
         parses may stack target identifiers in a `refuri`. If this occurs, only
-        the last stacked target idenitifier is needed.
+        the last stacked target identifier is needed.
 
         Args:
             doctree: the doctree to parse
@@ -239,7 +239,7 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                         self.env.get_doctree(includefile), traversed, uids)
                 except Exception:  # noqa: BLE001
                     logger.warn(
-                        SLC('toctree contains ref to nonexisting file %r'),
+                        SLC('toctree contains ref to nonexistent file %r'),
                         includefile, location=docname)
                 else:
                     sof = addnodes.start_of_file(docname=includefile)

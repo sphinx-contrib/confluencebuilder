@@ -15,7 +15,7 @@ reStructuredText
     doctest
     enumerated-list
     epigraph
-    foonote
+    footnote
     highlights
     images
     indentation
