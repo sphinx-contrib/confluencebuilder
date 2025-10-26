@@ -1,5 +1,5 @@
-Development
-===========
+2.15.0 (2025-10-26)
+===================
 
 * **(note)** Final release supporting Python 3.9 (EOL)
 * Assets are always standalone (``confluence_asset_force_standalone`` dropped)
