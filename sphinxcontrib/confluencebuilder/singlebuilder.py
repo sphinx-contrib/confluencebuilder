@@ -215,11 +215,20 @@ class SingleConfluenceBuilder(ConfluenceBuilder):
                 target['ids'] = new_ids
 
         for target in findall(tree, nodes.Element):
+            # update any reference targets to their new identifier (if any)
             refid = target.get('refid')
             if refid:
                 new_refid = updated_refids.get(refid)
                 if new_refid:
                     target['refid'] = new_refid
+
+            # update any back references to their new identifier (if any)
+            backrefs = target.get('backrefs')
+            if backrefs:
+                for idx, backref in enumerate(backrefs):
+                    new_backref = updated_refids.get(backref)
+                    if new_backref:
+                        backrefs[idx] = new_backref
 
         # in the cloned tree, look for other toctrees that we can include
         # into our new single tree
