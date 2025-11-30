@@ -34,7 +34,8 @@ class TestConfluenceRstContents(ConfluenceTestCase):
             headers = data.find_all(re.compile('^h[1-6]$'))
             self.assertEqual(len(headers), 5)
 
-            for header, expected in zip(headers, expected_header_text):
+            for header, expected in zip(
+                    headers, expected_header_text, strict=True):
                 if expected == 'toc':
                     continue
 
@@ -59,7 +60,8 @@ class TestConfluenceRstContents(ConfluenceTestCase):
             headers = data.find_all(re.compile('^h[1-6]$'))
             self.assertEqual(len(headers), 5)
 
-            for header, expected in zip(headers, expected_header_text):
+            for header, expected in zip(
+                    headers, expected_header_text, strict=True):
                 txt = ''.join(
                     header.find_all(string=True, recursive=False)).strip()
                 self.assertEqual(txt, expected)
@@ -76,7 +78,8 @@ class TestConfluenceRstContents(ConfluenceTestCase):
             headers = data.find_all(re.compile('^h[1-6]$'))
             self.assertEqual(len(headers), 5)
 
-            for header, expected in zip(headers, expected_header_text):
+            for header, expected in zip(
+                    headers, expected_header_text, strict=True):
                 if expected == 'toc':
                     continue
 
@@ -150,7 +153,7 @@ class TestConfluenceRstContents(ConfluenceTestCase):
             links = toc.find_all('ac:link')
             self.assertEqual(len(links), 4)
 
-            for link, expected in zip(links, expected_header_text):
+            for link, expected in zip(links, expected_header_text, strict=True):
                 self.assertTrue(link.has_attr('ac:anchor'))
                 self.assertEqual(link['ac:anchor'], expected)
 

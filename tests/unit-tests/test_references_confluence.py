@@ -60,7 +60,8 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
                 md_v2_second_name,
             ]
 
-            for (ac_link, page_name) in zip(ac_links, expected_pages):
+            for (ac_link, page_name) in zip(
+                    ac_links, expected_pages, strict=True):
                 link_page = ac_link.find('ri:page')
                 self.assertTrue(link_page.has_attr('ri:content-title'))
                 self.assertEqual(link_page['ri:content-title'], page_name)

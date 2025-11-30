@@ -44,7 +44,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 '03',
             ]
 
-            for th, expected in zip(ths, expected_contents):
+            for th, expected in zip(ths, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             tds = tr01.find_all('tds', recursive=False)
@@ -70,7 +70,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 '13',
             ]
 
-            for th, expected in zip(tds, expected_contents):
+            for th, expected in zip(tds, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             #   (row 02 contents check)
@@ -130,7 +130,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'a3',
             ]
 
-            for th, expected in zip(ths, expected_contents):
+            for th, expected in zip(ths, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             ths = trs[1].find_all('th', recursive=False)
@@ -142,7 +142,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'b3',
             ]
 
-            for th, expected in zip(ths, expected_contents):
+            for th, expected in zip(ths, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             #  (body)
@@ -161,7 +161,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'c3',
             ]
 
-            for td, expected in zip(tds, expected_contents):
+            for td, expected in zip(tds, expected_contents, strict=True):
                 self.assertEqual(td.text.strip(), expected)
 
             tds = trs[1].find_all('td', recursive=False)
@@ -173,7 +173,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'd3',
             ]
 
-            for td, expected in zip(tds, expected_contents):
+            for td, expected in zip(tds, expected_contents, strict=True):
                 self.assertEqual(td.text.strip(), expected)
 
             # ##########################################################
@@ -196,7 +196,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'cell 2',
             ]
 
-            for th, expected in zip(ths, expected_contents):
+            for th, expected in zip(ths, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             # (body)
@@ -236,7 +236,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'b',
             ]
 
-            for th, expected in zip(ths, expected_contents):
+            for th, expected in zip(ths, expected_contents, strict=True):
                 self.assertEqual(th.text.strip(), expected)
 
             #  (body)
@@ -254,7 +254,7 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'd',
             ]
 
-            for td, expected in zip(tds, expected_contents):
+            for td, expected in zip(tds, expected_contents, strict=True):
                 self.assertEqual(td.text.strip(), expected)
 
             tds = trs[1].find_all('td', recursive=False)
@@ -265,5 +265,5 @@ class TestConfluenceRstTables(ConfluenceTestCase):
                 'f',
             ]
 
-            for td, expected in zip(tds, expected_contents):
+            for td, expected in zip(tds, expected_contents, strict=True):
                 self.assertEqual(td.text.strip(), expected)

@@ -60,10 +60,6 @@ cfg_envs=(
     py314-sphinx81-release
     py314-sphinx82
     py314-sphinx82-release
-    py39-sphinx73
-    py39-sphinx73-release
-    py39-sphinx74
-    py39-sphinx74-release
     pylint
     ruff
 )
