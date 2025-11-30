@@ -3404,10 +3404,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 indent = INDENT * (self._indent_level + 1)
 
             style += f'margin-left: {indent}px;'
-        elif self.v2:
+        elif self.v2 and self._indent_level:
             # (see "visit_paragraph")
             offset = INDENT * self._indent_level
             style += f'margin-left: {offset}px;'
+        elif self.v2:
+            # for v2, if we have no indentation for this line block, use
+            # a div tag instead since cloud to help avoid nested p tags that
+            # do not always play nice in cloud
+            tag = 'div'
 
         if style:
             attribs['style'] = style
