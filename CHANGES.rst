@@ -1,5 +1,5 @@
-Development
-===========
+2.16.0 (2025-11-30)
+===================
 
 * **(note)** Dropped support for Python 3.9 (EOL)
 * Fixed regression with sphinxcontrib-video support failing to process
