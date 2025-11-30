@@ -3217,7 +3217,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             if width is None:
                 self.warn('unsupported unit type for confluence: ' + wu)
 
-        video_key, _, _ = self.assets.add(source_path, self.docname)
+        video_key, _ = self.assets.add(source_path, self.docname)
 
         if not video_key:
             self.warn(f'Unable to find video name: {source_path}')
