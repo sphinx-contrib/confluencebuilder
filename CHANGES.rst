@@ -1,9 +1,17 @@
+Development
+===========
+
+* **(note)** Dropped support for Python 3.9 (EOL)
+* Fixed regression with sphinxcontrib-video support failing to process
+* Fixed regression with the dry-run mode failing to run
+* Improve the presentation in some line block usage scenarios in v2 editor 
+
 2.15.0 (2025-10-26)
 ===================
 
 * **(note)** Final release supporting Python 3.9 (EOL)
 * Assets are always standalone (``confluence_asset_force_standalone`` dropped)
-* Fixed reference conflicts with footnotes/citations in singleconfluence
+* Fixed reference conflicts with footnotes/citations in ``singleconfluence``
 * Introduce the Confluence Table Width directive
 * Improved support for API endpoint resolution when using scoped API tokens
 * Improved support for Confluence Cloud detection when using scoped API tokens
