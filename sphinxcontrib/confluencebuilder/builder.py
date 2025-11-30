@@ -575,7 +575,10 @@ class ConfluenceBuilder(Builder):
                     parent_id = new_parent_id
 
             uploaded_id = self.publisher.store_page(title, data, parent_id)
-        self.state.register_upload_id(docname, int(uploaded_id))
+
+        # TMP: interim cast logic until we can cleanup all the ids to be int
+        uploaded_id_int = int(uploaded_id) if uploaded_id else uploaded_id
+        self.state.register_upload_id(docname, uploaded_id_int)
 
         self._cache_info.track_last_page_id(docname, uploaded_id)
 
