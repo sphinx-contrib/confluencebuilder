@@ -147,6 +147,7 @@ def prepare_math_images(builder, doctree):
                 mf, depth = imgmath.render_math(
                     mock_translator, node.astext(), config=builder.config)
             except TypeError:
+                # pylint: disable=missing-kwoa
                 mf, depth = imgmath.render_math(mock_translator, node.astext())
             if not mf:
                 continue
