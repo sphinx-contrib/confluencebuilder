@@ -99,7 +99,7 @@ class TestConfluenceSphinxDomains(ConfluenceTestCase):
             stronged = desc.find_all('strong')
             self.assertEqual(len(stronged), len(expected_stronged))
 
-            for tag, expected in zip(stronged, expected_stronged):
+            for tag, expected in zip(stronged, expected_stronged, strict=True):
                 self.assertEqual(tag.text.strip(), expected)
 
     @setup_builder('confluence')

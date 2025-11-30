@@ -177,5 +177,5 @@ class TestConfluenceSphinxCodeblockHighlight(ConfluenceTestCase):
     def _verify_set_languages(self, tags, languages):
         self.assertEqual(len(tags), len(languages))
 
-        for tag, language in zip(tags, languages):
+        for tag, language in zip(tags, languages, strict=True):
             self.assertEqual(tag.text, language)
