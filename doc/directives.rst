@@ -623,7 +623,7 @@ Confluence documents.
             .. jira:: project = "TEST"
                 :count: true
 
-    .. rst:directive:option:: maximum_issues: count
+    .. rst:directive:option:: maximum-issues: count
         :type: number
 
         The maximum number of issues a ``jira`` directive will display. By
@@ -632,7 +632,7 @@ Confluence documents.
         .. code-block:: rst
 
             .. jira:: project = "TEST"
-                :maximum_issues: 10
+                :maximum-issues: 10
 
     .. rst:directive:option:: server: instance
         :type: string
