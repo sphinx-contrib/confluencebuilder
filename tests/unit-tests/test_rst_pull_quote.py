@@ -18,12 +18,23 @@ class TestConfluenceConfigHeaderFooter(ConfluenceTestCase):
         out_dir = self.build(self.dataset)
 
         with parse('index', out_dir) as data:
-            quote = data.find('div')
-            self.assertIsNotNone(quote)
+            quotes = data.find_all('div')
+            self.assertEqual(len(quotes), 2)
+
+            quote = quotes.pop(0)
 
             quote_text = quote.find('p')
             self.assertIsNotNone(quote_text)
-            self.assertEqual(quote_text.text.strip(), 'quote')
+            self.assertEqual(quote_text.text.strip(), 'quote1')
+
+            quote_sep = quote.find('br')
+            self.assertIsNone(quote_sep)
+
+            quote = quotes.pop(0)
+
+            quote_text = quote.find('p')
+            self.assertIsNotNone(quote_text)
+            self.assertEqual(quote_text.text.strip(), 'quote2')
 
             quote_sep = quote.find('br')
             self.assertIsNotNone(quote_sep)
