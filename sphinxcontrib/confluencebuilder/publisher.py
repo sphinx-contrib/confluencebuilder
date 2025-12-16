@@ -1618,7 +1618,7 @@ class ConfluencePublisher:
             # page update
             if not page_ancestors:
                 page_ancestors = self.get_ancestors(int(page['id']))
-            if int(base_page_id) in page_ancestors:
+            if base_page_id and int(base_page_id) in page_ancestors:
                 break
 
             # page does not appear to be part of the target's hierarchy
