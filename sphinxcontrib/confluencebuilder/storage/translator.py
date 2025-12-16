@@ -913,7 +913,11 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------
 
     def visit_block_quote(self, node):
-        if first(findall(node, nodes.attribution)):
+        bq_classes = node.get('classes', [])
+
+        # if column widths are explicitly given, apply specific column widths
+        if 'epigraph' in bq_classes or 'pull-quote' in bq_classes or \
+                first(findall(node, nodes.attribution)):
             if self.v2:
                 self.body.append(self.start_tag(node, 'blockquote'))
             else:
