@@ -708,7 +708,8 @@ class ConfluenceBuilder(Builder):
         publisher = self.publisher
 
         title = self.state.title(docname)
-        page_id = str(self.state.upload_id(docname))
+        page_id = self.state.upload_id(docname)
+        page_id = str(page_id) if page_id else None
 
         if not page_id and not conf.confluence_publish_dryrun:
             # A page identifier may not be tracked in cases where only a subset
