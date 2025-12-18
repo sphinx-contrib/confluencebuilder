@@ -1,3 +1,10 @@
+Development
+===========
+
+* Fixed regression where only an attachment update could cause a publish to fail
+* Fixed regression where publishing nested pages may fail
+* Support epigraphs and pull-quotes with optional attribution
+
 2.16.0 (2025-11-30)
 ===================
 
