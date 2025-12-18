@@ -5,6 +5,10 @@ pull-quote
 
 .. pull-quote::
 
-    quote
+    quote1
+
+.. pull-quote::
+
+    quote2
 
     -- source

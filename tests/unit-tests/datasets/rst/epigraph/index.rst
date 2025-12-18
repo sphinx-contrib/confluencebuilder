@@ -5,6 +5,10 @@ epigraph
 
 .. epigraph::
 
-    quote
+    quote1
+
+.. epigraph::
+
+    quote2
 
     -- source
