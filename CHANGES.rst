@@ -1,5 +1,5 @@
-Development
-===========
+2.17.0 (2025-12-18)
+===================
 
 * Fixed regression where only an attachment update could cause a publish to fail
 * Fixed regression where publishing nested pages may fail
