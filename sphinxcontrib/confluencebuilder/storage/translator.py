@@ -121,6 +121,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self._manpage_url = getattr(config, 'manpages_url', None)
         self._needs_navnode_spacing = False
         self._pending_anchors = []
+        self._quote_context = []
         self._reference_context = []
         self._thead_context = []
         self._v2_header_added = False
@@ -913,6 +914,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # -----------------------------
 
     def visit_block_quote(self, node):
+        has_content = True
         bq_classes = node.get('classes', [])
 
         # if column widths are explicitly given, apply specific column widths
@@ -933,6 +935,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             self.context.append(self.end_tag(node))
         elif self.v2:
             self._indent_level += 1
+            has_content = False
         else:
             style = ''
 
@@ -982,11 +985,15 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
                 **{'style': style}))
             self.context.append(self.end_tag(node))
 
+        self._quote_context.append(has_content)
+
     def depart_block_quote(self, node):
-        if first(findall(node, nodes.attribution)) or not self.v2:
+        if self._quote_context[-1]:
             self.body.append(self.context.pop())  # blockquote/div
         else:
             self._indent_level -= 1
+
+        self._quote_context.pop()
 
     def visit_attribution(self, node):
         # see `visit_block_quote` fallback case
