@@ -87,6 +87,15 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def depart_document(self, node):
         self.body_final = ''
 
+        # warn if there is some context that has not yet been consumed
+        #
+        # This should never happen unless there is a development bug or a user
+        # is injecting custom nodes that are incomplete. This is a sign that
+        # a translator handle has populated an interim context with data that
+        # should be in the body, but departure logic has not yet applied it.
+        if self.context:
+            self.warn('not all context consumed (developer note)')
+
         # prepend header (if any)
         if self.builder.config.confluence_header_file is not None:
             header_template_data = ''
