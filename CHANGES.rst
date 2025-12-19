@@ -1,3 +1,8 @@
+Development
+===========
+
+* Fixed use of epigraphs and pull-quotes with optional attribution
+
 2.17.0 (2025-12-18)
 ===================
 
