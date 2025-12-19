@@ -1,5 +1,5 @@
-Development
-===========
+2.17.1 (2025-12-19)
+===================
 
 * Fixed use of epigraphs and pull-quotes with optional attribution
 
