@@ -534,6 +534,10 @@ p.rubric {
     background-color: #efe9e8 !important;
 }
 
+span.deprecated {
+    font-weight: unset !important;
+}
+
 .rst.directive, .rst.role,
 .std.confval, .std.builderval, .std.event,
 .py.function {
