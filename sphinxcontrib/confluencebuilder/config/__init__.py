@@ -23,15 +23,10 @@ def handle_config_inited(app, config):
             config[new] = config[orig]
 
     # copy over deprecated configuration names to new names (if any)
-    legacy('confluence_publish_allowlist', 'confluence_publish_subset')
-    legacy('confluence_cleanup_from_root', 'confluence_purge_from_master')
-    legacy('confluence_cleanup_from_root', 'confluence_purge_from_root')
-    legacy('confluence_root_homepage', 'confluence_master_homepage')
-    legacy('confluence_space_key', 'confluence_space_name')
+    #legacy('NEW', 'OLD')
 
-    if getattr(config, 'confluence_adv_aggressive_search', None) is True:
-        if getattr(config, 'confluence_cleanup_search_mode', None) is None:
-            config['confluence_cleanup_search_mode'] = 'search-aggressive'
+    if getattr(config, 'confluence_cleanup_search_mode', None) is None:
+        config['confluence_cleanup_search_mode'] = 'search-aggressive'
 
 
 def process_ask_configs(config):
