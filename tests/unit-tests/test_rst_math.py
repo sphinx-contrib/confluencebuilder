@@ -22,6 +22,7 @@ class TestConfluenceRstMath(ConfluenceTestCase):
         cls.dataset = cls.datasets / 'rst' / 'math'
 
     @setup_builder('confluence')
+    @setup_editor('v1')
     def test_storage_rst_math_v1_default(self):
         out_dir = self.build(self.dataset)
 

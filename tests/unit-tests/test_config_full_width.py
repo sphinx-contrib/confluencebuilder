@@ -4,6 +4,7 @@
 from tests.lib.parse import parse
 from tests.lib.testcase import ConfluenceTestCase
 from tests.lib.testcase import setup_builder
+from tests.lib.testcase import setup_editor
 
 
 class TestConfluenceConfigFullWidth(ConfluenceTestCase):
@@ -14,6 +15,7 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
         cls.dataset = cls.datasets / 'common'
 
     @setup_builder('confluence')
+    @setup_editor('v1')
     def test_storage_config_full_width_v1_default(self):
         """validate full width modifications for v1 editor (default)"""
 
@@ -24,6 +26,7 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
             self.assertIsNone(layout)
 
     @setup_builder('confluence')
+    @setup_editor('v1')
     def test_storage_config_full_width_v1_disabled_cloud(self):
         """validate full width modifications for v1 editor (disabled; cloud)"""
         #
@@ -53,6 +56,7 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
             self.assertIsNotNone(cell)
 
     @setup_builder('confluence')
+    @setup_editor('v1')
     def test_storage_config_full_width_v1_disabled_dc(self):
         """validate full width modifications for v1 editor (disabled; dc)"""
         #
@@ -73,6 +77,7 @@ class TestConfluenceConfigFullWidth(ConfluenceTestCase):
             self.assertIn('max-width', container['style'])
 
     @setup_builder('confluence')
+    @setup_editor('v1')
     def test_storage_config_full_width_v1_enabled(self):
         """validate full width modifications for v1 editor (enabled)"""
 
