@@ -1,3 +1,12 @@
+Development
+===========
+
+* **(note)** Default editor for Confluence Cloud is now ``v2``
+* All deprecated options in v2 and older have been removed
+* Deprecated the ``confluence_editor`` option
+* Introduce the ``confluence_cloud`` option
+* Updated the connection test to include more publish-related options
+
 2.17.1 (2025-12-19)
 ===================
 
@@ -16,7 +25,7 @@
 * **(note)** Dropped support for Python 3.9 (EOL)
 * Fixed regression with sphinxcontrib-video support failing to process
 * Fixed regression with the dry-run mode failing to run
-* Improve the presentation in some line block usage scenarios in v2 editor 
+* Improve the presentation in some line block usage scenarios in v2 editor
 
 2.15.0 (2025-10-26)
 ===================
