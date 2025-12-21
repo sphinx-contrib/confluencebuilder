@@ -7,7 +7,7 @@ from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_CODE_BLOCK_
 import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
-DEPRECATED_CONFIGS = {
+DEPRECATED_CONFIGS: dict[str, str] = {
 }
 
 
