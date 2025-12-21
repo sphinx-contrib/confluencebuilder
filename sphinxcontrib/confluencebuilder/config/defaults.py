@@ -4,6 +4,7 @@
 from pathlib import Path
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
+from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import str2bool
 import contextlib
 
@@ -73,7 +74,13 @@ def apply_defaults(app):
         conf.confluence_disable_notifications = True
 
     if conf.confluence_editor is None:
-        conf.confluence_editor = DEFAULT_EDITOR
+        # default the editor to v2 for cloud instances; otherwise, use v1
+        if conf.confluence_adv_cloud is not None:
+            is_cloud = conf.confluence_adv_cloud
+        else:
+            is_cloud = detect_cloud(confluence_server_url)
+
+        conf.confluence_editor = 'v2' if is_cloud else 'v1'
 
     if conf.confluence_file_suffix:
         if conf.confluence_file_suffix.endswith('.'):
