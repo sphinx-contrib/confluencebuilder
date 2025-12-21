@@ -244,7 +244,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         # developed for v2 and newer). To emulate a non-full-width state with
         # a v1 editor, apply a layout around the page contents.
         if not self.v2 and self.confluence_full_width is False:
-            if self.builder.cloud:
+            if self.builder.config.confluence_cloud:
                 data += '<ac:layout>'
                 data += '<ac:layout-section ac:type="fixed-width">'
                 data += '<ac:layout-cell>'
@@ -258,7 +258,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         data = ''
 
         if not self.v2 and self.confluence_full_width is False:
-            if self.builder.cloud:
+            if self.builder.config.confluence_cloud:
                 data += '</ac:layout-cell>'
                 data += '</ac:layout-section>'
                 data += '</ac:layout>'
@@ -3532,7 +3532,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         self.body.append(self.build_ac_param(node, '', anchor))
         self.body.append(self.end_ac_macro(node, suffix=''))
 
-        if self.builder.cloud or self.v2 or force_compat:
+        if self.builder.config.confluence_cloud or self.v2 or force_compat:
             doctitle = self.state.title(self.docname)
             doctitle = self.encode(doctitle.replace(' ', ''))
 

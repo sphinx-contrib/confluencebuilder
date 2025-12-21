@@ -131,6 +131,7 @@ def conntest_main(args_parser):
         'confluence_ca_cert',
         'confluence_client_cert',
         'confluence_client_cert_pass',
+        'confluence_cloud',
         'confluence_disable_ssl_validation',
         'confluence_proxy',
         'confluence_publish_headers',

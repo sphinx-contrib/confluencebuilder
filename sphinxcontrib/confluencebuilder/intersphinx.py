@@ -26,8 +26,9 @@ def build_intersphinx(builder):
     def escape(string):
         return re.sub("\\s+", ' ', string)
 
+    is_cloud = builder.config.confluence_cloud
     pages_part_fmt = 'pages/'
-    pages_part_fmt += '{}/' if builder.cloud else 'viewpage.action?pageId={}'
+    pages_part_fmt += '{}/' if is_cloud else 'viewpage.action?pageId={}'
 
     inventory_db = builder.out_dir / INVENTORY_FILENAME
     with inventory_db.open('wb') as f:

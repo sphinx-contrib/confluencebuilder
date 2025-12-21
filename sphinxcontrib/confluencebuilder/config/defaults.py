@@ -70,17 +70,15 @@ def apply_defaults(app):
         if not isinstance(conf.confluence_client_cert, tuple):
             conf.confluence_client_cert = (conf.confluence_client_cert, None)
 
+    if conf.confluence_cloud is None:
+        conf.confluence_cloud = detect_cloud(confluence_server_url)
+
     if conf.confluence_disable_notifications is None:
         conf.confluence_disable_notifications = True
 
     if conf.confluence_editor is None:
         # default the editor to v2 for cloud instances; otherwise, use v1
-        if conf.confluence_adv_cloud is not None:
-            is_cloud = conf.confluence_adv_cloud
-        else:
-            is_cloud = detect_cloud(confluence_server_url)
-
-        conf.confluence_editor = 'v2' if is_cloud else 'v1'
+        conf.confluence_editor = 'v2' if conf.confluence_cloud else 'v1'
 
     if conf.confluence_file_suffix:
         if conf.confluence_file_suffix.endswith('.'):

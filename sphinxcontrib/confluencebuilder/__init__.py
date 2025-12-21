@@ -173,6 +173,8 @@ def setup(app):
     cm.add_conf_bool('confluence_cleanup_from_root')
     # Enablement of purging legacy child pages.
     cm.add_conf_bool('confluence_cleanup_purge')
+    # Force override for detected Cloud state.
+    cm.add_conf_bool('confluence_cloud')
     # Explicitly prevent page notifications on update.
     cm.add_conf_bool('confluence_disable_notifications')
     # Whether to utilize the full width of a Confluence page.
@@ -297,8 +299,6 @@ def setup(app):
     # (configuration - undocumented)
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
-    # Force override for detected Cloud state.
-    cm.add_conf_bool('confluence_adv_cloud')
     # Disable any delays when publishing property updates on Cloud
     cm.add_conf_bool('confluence_adv_disable_cloud_prop_delay')
     # Disable any attempts to initialize this extension's custom entities.
@@ -319,7 +319,8 @@ def setup(app):
     cm.add_conf('confluence_adv_restricted', 'confluence')
 
     # (configuration - deprecated)
-    # [placeholder for future deprecated configurations]
+    # replaced by confluence_cloud
+    cm.add_conf_bool('confluence_adv_cloud')
 
     # ##########################################################################
 

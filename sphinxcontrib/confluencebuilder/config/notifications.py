@@ -8,6 +8,8 @@ import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
 DEPRECATED_CONFIGS: dict[str, str] = {
+    'confluence_adv_cloud':
+        'use "confluence_adv_cloud" instead',
 }
 
 

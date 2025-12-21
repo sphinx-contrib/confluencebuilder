@@ -40,7 +40,6 @@ from sphinxcontrib.confluencebuilder.storage.translator import ConfluenceStorage
 from sphinxcontrib.confluencebuilder.transmute import doctree_transmute
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
 from sphinxcontrib.confluencebuilder.util import ascii_quote
-from sphinxcontrib.confluencebuilder.util import detect_cloud
 from sphinxcontrib.confluencebuilder.util import extract_strings_from_file
 from sphinxcontrib.confluencebuilder.util import first
 from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
@@ -63,7 +62,6 @@ class ConfluenceBuilder(Builder):
         super().__init__(app, env)
 
         self.cache_doctrees = {}
-        self.cloud = False
         self.domain_indices = {}
         self.file_suffix = '.conf'
         self.info = ConfluenceLogger.info
@@ -163,16 +161,10 @@ class ConfluenceBuilder(Builder):
             self.warn(f'normalizing confluence url from {old_url} to {new_url}')
             self.config.confluence_server_url = new_url
 
-        # track if operating with a Confluence Cloud target
-        if self.config.confluence_adv_cloud is not None:
-            self.cloud = self.config.confluence_adv_cloud
-        else:
-            self.cloud = detect_cloud(new_url)
-
         self.assets = ConfluenceAssetManager(self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self._verbose
-        self.publisher.init(self.config, self.cloud)
+        self.publisher.init(self.config)
 
         # With the configuration finalizes, generate a Confluence-specific
         # configuration hash that is applicable to this run
@@ -762,7 +754,7 @@ class ConfluenceBuilder(Builder):
                 if not self._verbose:
                     self.info('done')
 
-            if self.cloud:
+            if self.config.confluence_cloud:
                 point_url_fmt = '{0}spaces/{1}/pages/{2}'
             else:
                 point_url_fmt = '{0}pages/viewpage.action?pageId={2}'
@@ -1098,7 +1090,7 @@ class ConfluenceBuilder(Builder):
                 # add fixed width if not configured for full width on v1
                 # (see also: ConfluenceStorageFormatTranslator.pre_body_data)
                 if is_wrapped and not is_v2:
-                    if self.cloud:
+                    if self.config.confluence_cloud:
                         wrap_pre = (
                             '<ac:layout>'
                             '<ac:layout-section ac:type="fixed-width">'
@@ -1115,7 +1107,7 @@ class ConfluenceBuilder(Builder):
                 generator(self, docname, f)
 
                 if is_wrapped and not is_v2:
-                    if self.cloud:
+                    if self.config.confluence_cloud:
                         wrap_post = (
                             '</ac:layout-cell>'
                             '</ac:layout-section>'

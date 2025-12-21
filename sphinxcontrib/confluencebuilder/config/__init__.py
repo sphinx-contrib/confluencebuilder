@@ -23,7 +23,7 @@ def handle_config_inited(app, config):
             config[new] = config[orig]
 
     # copy over deprecated configuration names to new names (if any)
-    #legacy('NEW', 'OLD')
+    legacy('confluence_cloud', 'confluence_adv_cloud')
 
     if getattr(config, 'confluence_cleanup_search_mode', None) is None:
         config['confluence_cleanup_search_mode'] = 'search-aggressive'

@@ -28,7 +28,6 @@ from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V1
 from sphinxcontrib.confluencebuilder.std.confluence import API_REST_V2
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
 from sphinxcontrib.confluencebuilder.util import ConfluenceUtil
-from sphinxcontrib.confluencebuilder.util import detect_cloud
 from urllib.parse import parse_qsl
 from urllib.parse import urlparse
 import contextlib
@@ -47,15 +46,13 @@ CB_PROP_KEY = 'sphinxcontrib.confluencebuilder'
 
 class ConfluencePublisher:
     def __init__(self):
-        self.cloud = None
         self.space_display_name = None
         self.space_id = None
         self.space_type = None
         self._ancestors_cache: set[int] = set()
         self._name_cache = {}
 
-    def init(self, config, cloud=None):
-        self.cloud = cloud
+    def init(self, config):
         self.config = config
         self.rest = None
 
@@ -74,21 +71,13 @@ class ConfluencePublisher:
         self.APIV1 = prefix_overrides.get('v1', f'{API_REST_V1}/')
         self.APIV2 = prefix_overrides.get('v2', f'{API_REST_V2}/')
 
-        # if a default cloud value is provided, attempt to detect the cloud
-        # type
-        if cloud is None:
-            if config.confluence_adv_cloud is not None:
-                self.cloud = config.confluence_adv_cloud
-            else:
-                self.cloud = detect_cloud(config.confluence_server_url)
-
         # determine api mode to use
         # - if an explicit api mode is configured, use it
         # - if this is a cloud instance, use v2
         # - for all other cases, use v1
         if config.confluence_api_mode:
             self.api_mode = config.confluence_api_mode
-        elif self.cloud:
+        elif self.config.confluence_cloud:
             self.api_mode = 'v2'
         else:
             self.api_mode = 'v1'
@@ -1158,7 +1147,8 @@ class ConfluencePublisher:
 
                     # if we have labels and this is a non-cloud instance,
                     # initial labels need to be applied in their own request
-                    if not self.cloud and self.api_mode == 'v1':
+                    if not self.config.confluence_cloud and \
+                            self.api_mode == 'v1':
                         new_labels = new_page['metadata']['labels']
 
                     # add new labels if we have any to force add
@@ -1294,7 +1284,7 @@ class ConfluencePublisher:
         # cloud -- it seems to take a moment to complete creating or
         # updating properties after we build process a page, and we want
         # to avoid a conflict (409) if possible
-        if self.cloud:
+        if self.config.confluence_cloud:
             if not self.config.confluence_adv_disable_cloud_prop_delay:
                 time.sleep(0.5)
 
@@ -1701,7 +1691,7 @@ class ConfluencePublisher:
         # provided (we try to assume it does, but most likely will use the
         # old paging method). If we detect that a "totalSize" field is
         # provided, the instance should support the "start" field.
-        if not self.cloud:
+        if not self.config.confluence_cloud:
             total_sz = rsp.get('totalSize')
             if total_sz and total_sz > offset:
                 sub_search_fields = dict(fields)

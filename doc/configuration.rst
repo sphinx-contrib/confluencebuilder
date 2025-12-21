@@ -412,40 +412,6 @@ Generic configuration
 
     .. versionadded:: 1.7
 
-.. _confluence_editor:
-
-.. confval:: confluence_editor
-
-    .. important::
-
-        - This option should not be used for Confluence Data Center.
-
-        - This option is to hint at what editor style to use on Confluence
-          Cloud. As of year 2025, the default editor used is ``v1``. However,
-          this will change in 2026 as Atlassian
-          `deprecates their older editor`_.
-
-        - If a page is published with a ``v2`` editor, an attempt to re-publish
-          with a ``v1`` editor style may be ignored in Confluence Cloud. In
-          such situations, users are recommended to delete the pages on
-          Confluence and then retry the publish attempt with this extension.
-
-    A string value to indicate which `Confluence editor`_ to target. The
-    following editor values are supported:
-
-    - ``v1``: Use Confluence's older editor (default).
-    - ``v2``: Use Confluence's newer editor (fabric).
-
-    A user can choose which version of the editor to build and published
-    documentation with. This extension may adjust how content is generated
-    based on which editor is selected.
-
-    .. code-block:: python
-
-        confluence_editor = 'v1'
-
-    .. versionadded:: 2.0
-
 .. _confluence_header_file:
 
 .. confval:: confluence_header_file
@@ -962,6 +928,28 @@ Publishing configuration
     - :lref:`confluence_publish_dryrun`
 
     .. versionadded:: 1.9
+
+.. _confluence_cloud:
+
+.. confval:: confluence_cloud
+
+    A boolean value to whether or not to treat the configured
+    :lref:`confluence_server_url` configuration as an Atlassian Cloud site.
+    Cloud detection is implicitly performed to help determine which APIs and
+    default editor to use. However, some environments may be utilizing custom
+    domains that point to Atlassian Cloud services which can make it non-trivial
+    to determine if the site is Cloud-based or not. This option can be used to
+    explicitly configure if the site being published on is a Cloud-based
+    instance. By default, automatic cloud detection occurs with a value of
+    ``None``.
+
+    .. code-block:: python
+
+        confluence_cloud = True
+
+    See also :lref:`confluence_editor`.
+
+    .. versionadded:: 3.0
 
 .. _confluence_disable_notifications:
 
@@ -2502,6 +2490,48 @@ Deprecated options
     .. versionadded:: 1.3
     .. deprecated:: 2.15
     .. versionremoved:: 3.0
+
+.. _confluence_editor:
+
+.. confval:: confluence_editor
+
+    .. important::
+
+        - This option should not be used for Confluence Data Center.
+
+        - This option is a deprecated hint at what editor style to use on
+          Confluence Cloud. In the year 2026, Atlassian
+          `deprecates their older editor`_. This extension as of its v3 release
+          will use the ``v1`` editor for Confluence Data Center and the ``v2``
+          editor for Confluence Cloud. Users may attempt to use this option to
+          tweak their output, but results may vary. It is expected over time
+          that this option will do nothing when Atlassian finalizes its editor
+          support across its platforms.
+
+        - If a page is published with a ``v2`` editor, an attempt to re-publish
+          with a ``v1`` editor style may be ignored in Confluence Cloud. In
+          such situations, users are recommended to delete the pages on
+          Confluence and then retry the publish attempt with this extension.
+
+    A string value to indicate which `Confluence editor`_ to target. The
+    following editor values are supported:
+
+    - ``v1``: Use Confluence's older editor (default on Data Center).
+    - ``v2``: Use Confluence's newer editor "fabric" (default on Cloud).
+
+    A user can choose which version of the editor to build and published
+    documentation with. This extension may adjust how content is generated
+    based on which editor is selected.
+
+    .. code-block:: python
+
+        confluence_editor = 'v1'
+
+    See also :lref:`confluence_cloud`.
+
+    .. versionadded:: 2.0
+    .. versionchanged:: 3.0 Defaults to ``v2`` for Confluence Cloud.
+    .. deprecated:: 3.0
 
 .. confval:: confluence_lang_transform
 

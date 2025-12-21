@@ -187,6 +187,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_cloud
+    validator.conf('confluence_cloud') \
+             .bool()
+
+    # ##################################################################
+
     # confluence_client_cert_pass
     validator.conf('confluence_client_cert_pass') \
              .string()
