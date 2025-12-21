@@ -940,9 +940,6 @@ class ConfluencePublisher:
         """
         uploaded_page_id = None
 
-        if self.config.confluence_adv_trace_data:
-            logger.trace('data', data['content'])
-
         if self.dryrun:
             _, page = self.get_page(page_name, 'version,ancestors')
 

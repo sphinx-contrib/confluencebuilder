@@ -94,12 +94,6 @@ def validate_configuration(builder):
 
     # ##################################################################
 
-    # confluence_adv_trace_data
-    validator.conf('confluence_adv_trace_data') \
-             .bool()
-
-    # ##################################################################
-
     # confluence_adv_writer_no_section_cap
     validator.conf('confluence_adv_writer_no_section_cap') \
              .bool()
