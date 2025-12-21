@@ -21,9 +21,6 @@ class TestConfluenceReferencesConfluence(ConfluenceTestCase):
         cls.config['extensions'].append('myst_parser')
         cls.dataset = cls.datasets / 'references'
 
-        # disable any anchor workarounds for testing
-        cls.config['confluence_adv_disable_confcloud_74698'] = True
-
         # markdown headers
         cls.config['myst_enable_extensions'] = [
             'colon_fence',

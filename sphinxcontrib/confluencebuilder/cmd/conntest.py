@@ -132,7 +132,6 @@ def conntest_main(args_parser):
         'confluence_client_cert_pass',
         'confluence_disable_ssl_validation',
         'confluence_proxy',
-        'confluence_publish_disable_api_prefix',
         'confluence_publish_headers',
         'confluence_publish_token',
         'confluence_request_session_override',

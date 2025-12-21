@@ -87,10 +87,6 @@ def apply_defaults(app):
     if conf.confluence_jira_servers is None:
         conf.confluence_jira_servers = {}
 
-    if conf.confluence_lang_overrides is None and \
-            conf.confluence_lang_transform is not None:
-        conf.confluence_lang_overrides = conf.confluence_lang_transform
-
     if conf.confluence_latex_macro and \
             not isinstance(conf.confluence_latex_macro, dict):
         conf.confluence_latex_macro = {
@@ -103,10 +99,6 @@ def apply_defaults(app):
 
     if conf.confluence_page_hierarchy is None:
         conf.confluence_page_hierarchy = True
-
-    if conf.confluence_permit_raw_html is None and \
-            conf.confluence_adv_permit_raw_html is not None:
-        conf.confluence_permit_raw_html = conf.confluence_adv_permit_raw_html
 
     # ensure confluence_publish_debug is set with its expected enum value
     publish_debug = conf.confluence_publish_debug
@@ -129,14 +121,7 @@ def apply_defaults(app):
         conf.confluence_publish_orphan = True
 
     if conf.confluence_publish_override_api_prefix is None:
-        # confluence_publish_disable_api_prefix is deprecated, but we will
-        # use its presence to configure v1 api for old config support
-        if conf.confluence_publish_disable_api_prefix:
-            conf.confluence_publish_override_api_prefix = {
-                'v1': '',
-            }
-        else:
-            conf.confluence_publish_override_api_prefix = {}
+        conf.confluence_publish_override_api_prefix = {}
 
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True

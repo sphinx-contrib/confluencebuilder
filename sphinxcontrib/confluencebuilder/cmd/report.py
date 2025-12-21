@@ -246,7 +246,6 @@ def report_main(args_parser):
         sensitive_config('confluence_jira_servers')
         sensitive_config('confluence_mentions')
         sensitive_config('confluence_parent_page')
-        sensitive_config('confluence_parent_page_id_check')
         sensitive_config('confluence_proxy')
         sensitive_config('confluence_publish_root')
         sensitive_config('confluence_server_auth')
@@ -270,15 +269,8 @@ def report_main(args_parser):
             config['confluence_server_url'] = value
 
         # remove space key, but track casing
-        space_cfgs = [
-            'confluence_space_key',
-            'confluence_space_name',  # deprecated
-        ]
-        for space_cfg in space_cfgs:
-            if space_cfg not in config:
-                continue
-
-            value = config[space_cfg]
+        if 'confluence_space_key' in config:
+            value = config['confluence_space_key']
             if value.startswith('~'):
                 value = '(set; user)'
             elif value.isupper():
@@ -287,7 +279,7 @@ def report_main(args_parser):
                 value = '(set; lower)'
             else:
                 value = '(set; mixed)'
-            config[space_cfg] = value
+            config['confluence_space_key'] = value
 
     print()
     print('Confluence builder report has been generated.')

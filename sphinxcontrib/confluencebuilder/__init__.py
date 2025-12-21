@@ -323,31 +323,7 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'confluence')
 
     # (configuration - deprecated)
-    # replaced by confluence_cleanup_search_mode
-    cm.add_conf_bool('confluence_adv_aggressive_search')
-    # replaced by confluence_permit_raw_html
-    cm.add_conf_bool('confluence_adv_permit_raw_html')
-    # replaced by confluence_lang_overrides
-    cm.add_conf('confluence_lang_transform', 'confluence')
-    # replaced by confluence_root_homepage
-    cm.add_conf('confluence_master_homepage')
-    # confluence_parent_page supports both names and identifiers
-    cm.add_conf_int('confluence_parent_page_id_check')
-    # replaced by confluence_publish_override_api_prefix
-    cm.add_conf_bool('confluence_publish_disable_api_prefix')
-    # replaced by confluence_publish_allowlist
-    cm.add_conf('confluence_publish_subset')
-    # replaced by confluence_purge_from_root
-    cm.add_conf_bool('confluence_purge_from_master')
-    # replaced by confluence_cleanup_from_root
-    cm.add_conf_bool('confluence_purge_from_root')
-    # replaced by confluence_space_key
-    cm.add_conf('confluence_space_name')
-    # dropped
-    cm.add_conf_bool('confluence_adv_disable_confcloud_74698')
-    cm.add_conf_bool('confluence_adv_disable_confcloud_ieaj')
-    cm.add_conf_bool('confluence_asset_force_standalone')
-    cm.add_conf_int('confluence_max_doc_depth')
+    # [placeholder for future deprecated configurations]
 
     # ##########################################################################
 

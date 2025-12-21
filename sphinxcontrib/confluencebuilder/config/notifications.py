@@ -8,34 +8,10 @@ import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
 DEPRECATED_CONFIGS = {
-    'confluence_adv_aggressive_search':
-        'use "confluence_cleanup_search_mode" instead',
-    'confluence_adv_permit_raw_html':
-        'use "confluence_permit_raw_html" instead',
-    'confluence_asset_force_standalone':
-        'option does nothing',
-    'confluence_lang_transform':
-        'use "confluence_lang_overrides" instead',
     'confluence_adv_trace_data':
         'to be removed in a future version',
     'confluence_adv_writer_no_section_cap':
         'to be removed in a future version',
-    'confluence_master_homepage':
-        'use "confluence_root_homepage" instead',
-    'confluence_max_doc_depth':
-        'option does nothing',
-    'confluence_parent_page_id_check':
-        '"confluence_parent_page" now accepts a page id',
-    'confluence_publish_disable_api_prefix':
-        'use "confluence_publish_override_api_prefix" instead',
-    'confluence_publish_subset':
-        'use "confluence_publish_allowlist" instead',
-    'confluence_purge_from_master':
-        'use "confluence_cleanup_from_root" instead',
-    'confluence_purge_from_root':
-        'use "confluence_cleanup_from_root" instead',
-    'confluence_space_name':
-        'use "confluence_space_key" instead',
 }
 
 

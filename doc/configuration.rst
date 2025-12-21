@@ -2500,19 +2500,22 @@ Deprecated options
     supported. As of v2.15, a page will always host its own assets.
 
     .. versionadded:: 1.3
-    .. versionremoved:: 2.15
+    .. deprecated:: 2.15
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_lang_transform
 
     This option has been replaced by :lref:`confluence_lang_overrides`.
 
-    .. versionchanged:: 2.6
+    .. deprecated:: 2.6
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_master_homepage
 
     This option has been renamed to :lref:`confluence_root_homepage`.
 
-    .. versionchanged:: 1.6
+    .. deprecated:: 1.6
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_parent_page_id_check
 
@@ -2531,39 +2534,45 @@ Deprecated options
 
     See also :lref:`confluence_parent_page`.
 
-    .. versionchanged:: 1.9
+    .. deprecated:: 1.9
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_publish_disable_api_prefix
 
     This option has been replaced by
     :lref:`confluence_publish_override_api_prefix`.
 
-    .. versionchanged:: 2.5
+    .. deprecated:: 2.5
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_publish_subset
 
     This option has been renamed to :lref:`confluence_publish_allowlist`.
 
-    .. versionchanged:: 1.3
+    .. deprecated:: 1.3
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_purge_from_master
 
     This option has been renamed to ``confluence_purge_from_root``, and has
     since been replaced with :lref:`confluence_cleanup_from_root`.
 
-    .. versionchanged:: 1.6
+    .. deprecated:: 1.6
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_purge_from_root
 
     This option has been renamed to :lref:`confluence_cleanup_from_root`.
 
-    .. versionchanged:: 1.9
+    .. deprecated:: 1.9
+    .. versionremoved:: 3.0
 
 .. confval:: confluence_space_name
 
     This option has been renamed to :lref:`confluence_space_key`.
 
-    .. versionchanged:: 1.7
+    .. deprecated:: 1.7
+    .. versionremoved:: 3.0
 
 
 .. footnotes -------------------------------------------------------------------

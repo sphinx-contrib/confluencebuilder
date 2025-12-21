@@ -63,7 +63,6 @@ class ConfluencePublisher:
         self.dryrun = config.confluence_publish_dryrun
         self.notify = not config.confluence_disable_notifications
         self.onlynew = config.confluence_publish_onlynew
-        self.parent_id = config.confluence_parent_page_id_check
         self.parent_ref = config.confluence_parent_page
         self.server_url = config.confluence_server_url
         self.space_key = config.confluence_space_key
@@ -341,15 +340,7 @@ class ConfluencePublisher:
             msg = 'Configured parent page name does not exist.'
             raise ConfluenceConfigError(msg)
 
-        if self.parent_id and base_page_id != str(self.parent_id):
-            msg = 'Configured parent page ID and name do not match.'
-            raise ConfluenceConfigError(msg)
-
         self._name_cache[base_page_id] = self.parent_ref
-
-        if not base_page_id and self.parent_id:
-            msg = 'Unable to find parent page matching the ID/name provided.'
-            raise ConfluenceConfigError(msg)
 
         return base_page_id
 

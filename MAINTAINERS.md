@@ -151,13 +151,13 @@ reference, ensure the following post-release tasks are performed:
 
   ```python
   # version space
-  config_overrides['confluence_space_name'] = 'V010X00'
+  config_overrides['confluence_space_key'] = 'V010X00'
   config_test_key = 'v1.x'
   config_test_desc = 'v1.x release'
   config_version = '<tag>'
 
   # stable space
-  config_overrides['confluence_space_name'] = 'STABLE'
+  config_overrides['confluence_space_key'] = 'STABLE'
   config_test_key = 'Stable'
   config_test_desc = 'stable release (v1.x)'
   config_version = '<tag>'

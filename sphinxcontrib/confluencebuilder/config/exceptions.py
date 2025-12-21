@@ -268,18 +268,6 @@ names are relative to the documentation's source directory.
 ''')
 
 
-class ConfluencePublishMissingParentPageConfigError(ConfluenceConfigError):
-    def __init__(self):
-        super().__init__('''\
-parent page (holder) name not set
-
-When a parent page identifier check has been configured with the option
-'confluence_parent_page_id_check', no parent page name has been provided with
-the 'confluence_parent_page' option. Ensure the name of the parent page name
-is provided as well.
-''')
-
-
 class ConfluencePublishMissingServerUrlConfigError(ConfluenceConfigError):
     def __init__(self):
         super().__init__('''\
