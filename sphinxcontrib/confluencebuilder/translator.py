@@ -186,10 +186,9 @@ class ConfluenceBaseTranslator(BaseTranslator):
     def visit_section(self, node):
         level = self._section_level
 
-        if not self.builder.config.confluence_adv_writer_no_section_cap:
-            MAX_CONFLUENCE_SECTIONS = 6
-            if self._section_level > MAX_CONFLUENCE_SECTIONS:
-                level = MAX_CONFLUENCE_SECTIONS
+        MAX_CONFLUENCE_SECTIONS = 6
+        if self._section_level > MAX_CONFLUENCE_SECTIONS:
+            level = MAX_CONFLUENCE_SECTIONS
 
         self._title_level = level
         self._section_level += 1

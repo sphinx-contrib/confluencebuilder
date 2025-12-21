@@ -8,8 +8,6 @@ import mimetypes
 
 # dictionary of deprecated configuration entries and associated message
 DEPRECATED_CONFIGS = {
-    'confluence_adv_writer_no_section_cap':
-        'to be removed in a future version',
 }
 
 

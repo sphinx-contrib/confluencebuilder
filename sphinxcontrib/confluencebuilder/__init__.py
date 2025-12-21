@@ -317,8 +317,6 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_quirk_cdata')
     # List of optional features/macros/etc. restricted for use.
     cm.add_conf('confluence_adv_restricted', 'confluence')
-    # Do not cap sections to a maximum of six (6) levels.
-    cm.add_conf_bool('confluence_adv_writer_no_section_cap', 'confluence')
 
     # (configuration - deprecated)
     # [placeholder for future deprecated configurations]
