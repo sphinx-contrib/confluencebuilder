@@ -185,10 +185,12 @@ def setup(app):
     cm.add_conf('confluence_parent_page')
     # Perform a dry run of publishing to inspect what publishing will do.
     cm.add_conf_bool('confluence_publish_dryrun')
-    # Postfix to apply to title of published pages.
-    cm.add_conf('confluence_publish_postfix', 'confluence')
     # Prefix to apply to published pages.
     cm.add_conf('confluence_publish_prefix', 'confluence')
+    # Postfix to apply to title of published pages.
+    cm.add_conf('confluence_publish_postfix', 'confluence')
+    # Modifier for hash of published pages.
+    cm.add_conf('confluence_publish_hash_modifier', 'confluence')
     # Root page's identifier to publish documents into.
     cm.add_conf_int('confluence_publish_root')
     # Enablement of configuring root as space's homepage.

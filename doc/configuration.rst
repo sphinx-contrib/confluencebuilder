@@ -1075,6 +1075,30 @@ Publishing configuration
 
     .. versionadded:: 1.3
 
+.. _confluence_publish_prefix:
+
+.. confval:: confluence_publish_prefix
+
+    If set, a prefix value is added to the title of all published documents. In
+    Confluence, page names need to be unique for a space. A prefix can be set to
+    either:
+
+    * Add a unique naming schema to generated/published documents in a space
+      which has manually created pages; or,
+    * Allow multiple published sets of documentation, each with their own prefix
+      value.
+
+    An example publish prefix is as follows:
+
+    .. code-block:: python
+
+       confluence_publish_prefix = 'prefix-'
+
+    By default, no prefix is used. See also:
+
+    - :lref:`confluence_ignore_titlefix_on_index`
+    - :lref:`confluence_publish_postfix`
+
 .. _confluence_publish_postfix:
 
 .. confval:: confluence_publish_postfix
@@ -1112,32 +1136,28 @@ Publishing configuration
 
     - :lref:`confluence_ignore_titlefix_on_index`
     - :lref:`confluence_publish_prefix`
+    - :lref:`confluence_publish_hash_modifier`
 
     .. versionadded:: 1.2
     .. versionchanged:: 1.9 Support for the ``{hash}`` placeholder.
 
-.. _confluence_publish_prefix:
+.. _confluence_publish_hash_modifier:
 
-.. confval:: confluence_publish_prefix
+.. confval:: confluence_publish_hash_modifier
 
-    If set, a prefix value is added to the title of all published documents. In
-    Confluence, page names need to be unique for a space. A prefix can be set to
-    either:
+    The given string will be concatenated to the *docname* of a page before
+    computing the hash.
 
-    * Add a unique naming schema to generated/published documents in a space
-      which has manually created pages; or,
-    * Allow multiple published sets of documentation, each with their own prefix
-      value.
-
-    An example publish prefix is as follows:
+    The default value is as follows:
 
     .. code-block:: python
 
-       confluence_publish_prefix = 'prefix-'
+       confluence_publish_hash_modifier = (str(project)
+                                           + str(confluence_parent_page)
+                                           + str(confluence_publish_root))
 
-    By default, no prefix is used. See also:
+    See also:
 
-    - :lref:`confluence_ignore_titlefix_on_index`
     - :lref:`confluence_publish_postfix`
 
 .. _confluence_publish_root:
