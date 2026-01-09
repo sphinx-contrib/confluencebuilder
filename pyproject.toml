@@ -42,8 +42,8 @@ classifiers = [
     'Topic :: Utilities',
 ]
 dependencies = [
-    'requests>=2.25.0',
-    'sphinx>=7.4',
+    'requests>=2.30.0',
+    'sphinx>=8.0',
 ]
 dynamic = [
     'version',
