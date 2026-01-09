@@ -127,6 +127,13 @@ def apply_defaults(app):
 
     if conf.confluence_publish_override_api_prefix is None:
         conf.confluence_publish_override_api_prefix = {}
+    
+    if conf.confluence_publish_postfix_hash_modifier is None:
+        conf.confluence_publish_postfix_hash_modifier = (
+            str(conf.project)
+            + str(conf.confluence_parent_page)
+            + str(conf.confluence_publish_root)
+        )
 
     if conf.confluence_remove_title is None:
         conf.confluence_remove_title = True
@@ -154,8 +161,3 @@ def apply_defaults(app):
     if conf.confluence_parent_page:
         with contextlib.suppress(ValueError):
             conf.confluence_parent_page = int(conf.confluence_parent_page)
-    
-    if conf.confluence_publish_hash_modifier is None:
-        conf.confluence_publish_hash_modifier = (str(conf.project)
-                                                 + str(conf.confluence_parent_page)
-                                                 + str(conf.confluence_publish_root))

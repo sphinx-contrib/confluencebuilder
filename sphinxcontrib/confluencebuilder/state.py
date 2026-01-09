@@ -257,5 +257,5 @@ class ConfluenceState:
         Create a unique(ish) hash for the given source file to avoid collisions
         when pushing pages to confluence.
         """
-        prehash = docname + str(config.confluence_publish_hash_modifier)
+        prehash = docname + str(config.confluence_publish_postfix_hash_modifier)
         return hashlib.sha1(prehash.encode()).hexdigest()  # noqa: S324

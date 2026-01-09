@@ -185,12 +185,10 @@ def setup(app):
     cm.add_conf('confluence_parent_page')
     # Perform a dry run of publishing to inspect what publishing will do.
     cm.add_conf_bool('confluence_publish_dryrun')
-    # Prefix to apply to published pages.
-    cm.add_conf('confluence_publish_prefix', 'confluence')
     # Postfix to apply to title of published pages.
     cm.add_conf('confluence_publish_postfix', 'confluence')
-    # Modifier for hash of published pages.
-    cm.add_conf('confluence_publish_hash_modifier', 'confluence')
+    # Prefix to apply to published pages.
+    cm.add_conf('confluence_publish_prefix', 'confluence')
     # Root page's identifier to publish documents into.
     cm.add_conf_int('confluence_publish_root')
     # Enablement of configuring root as space's homepage.
@@ -247,6 +245,8 @@ def setup(app):
     cm.add_conf_int('confluence_publish_orphan_container')
     # Override the path prefixes for various REST API requests.
     cm.add_conf('confluence_publish_override_api_prefix')
+    # Modifier for postfix hash of published pages.
+    cm.add_conf('confluence_publish_postfix_hash_modifier', 'confluence')
     # Number of attempts permitted when trying to retry a failed API request
     cm.add_conf('confluence_publish_retry_attempts')
     # Duration (in seconds) between retrying failed API requests

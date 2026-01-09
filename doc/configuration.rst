@@ -1075,30 +1075,6 @@ Publishing configuration
 
     .. versionadded:: 1.3
 
-.. _confluence_publish_prefix:
-
-.. confval:: confluence_publish_prefix
-
-    If set, a prefix value is added to the title of all published documents. In
-    Confluence, page names need to be unique for a space. A prefix can be set to
-    either:
-
-    * Add a unique naming schema to generated/published documents in a space
-      which has manually created pages; or,
-    * Allow multiple published sets of documentation, each with their own prefix
-      value.
-
-    An example publish prefix is as follows:
-
-    .. code-block:: python
-
-       confluence_publish_prefix = 'prefix-'
-
-    By default, no prefix is used. See also:
-
-    - :lref:`confluence_ignore_titlefix_on_index`
-    - :lref:`confluence_publish_postfix`
-
 .. _confluence_publish_postfix:
 
 .. confval:: confluence_publish_postfix
@@ -1127,37 +1103,44 @@ Publishing configuration
 
     Supported placeholders:
 
-    * ``{hash}`` - Create a reproducible hash given the title and location
-      based from the project root. Using this placeholder provides an option
-      for allowing pages with the same title to be pushed to the same
-      Confluence space without needing to manually add an index to the title.
+    * ``{hash}`` - Create a reproducible hash given the ``docname`` (name and
+      location of the document source based from the project root) and the value
+      of :lref:`confluence_publish_postfix_hash_modifier`. Using this
+      placeholder provides an option for allowing pages with the same title to
+      be pushed to the same Confluence space without needing to manually add an
+      index to the title.
 
     By default, no postfix is used. See also:
 
     - :lref:`confluence_ignore_titlefix_on_index`
     - :lref:`confluence_publish_prefix`
-    - :lref:`confluence_publish_hash_modifier`
+    - :lref:`confluence_publish_postfix_hash_modifier`
 
     .. versionadded:: 1.2
     .. versionchanged:: 1.9 Support for the ``{hash}`` placeholder.
 
-.. _confluence_publish_hash_modifier:
+.. _confluence_publish_prefix:
 
-.. confval:: confluence_publish_hash_modifier
+.. confval:: confluence_publish_prefix
 
-    The given string will be concatenated to the *docname* of a page before
-    computing the hash.
+    If set, a prefix value is added to the title of all published documents. In
+    Confluence, page names need to be unique for a space. A prefix can be set to
+    either:
 
-    The default value is as follows:
+    * Add a unique naming schema to generated/published documents in a space
+      which has manually created pages; or,
+    * Allow multiple published sets of documentation, each with their own prefix
+      value.
+
+    An example publish prefix is as follows:
 
     .. code-block:: python
 
-       confluence_publish_hash_modifier = (str(project)
-                                           + str(confluence_parent_page)
-                                           + str(confluence_publish_root))
+       confluence_publish_prefix = 'prefix-'
 
-    See also:
+    By default, no prefix is used. See also:
 
+    - :lref:`confluence_ignore_titlefix_on_index`
     - :lref:`confluence_publish_postfix`
 
 .. _confluence_publish_root:
@@ -1804,6 +1787,38 @@ Advanced publishing configuration
     See also :lref:`confluence_publish_orphan`.
 
     .. versionadded:: 2.1
+
+.. _confluence_publish_postfix_hash_modifier:
+
+.. confval:: confluence_publish_postfix_hash_modifier
+
+    The hash for :lref:`confluence_publish_postfix` is computed from the
+    ``docname`` (name and location of the document source based from the
+    project root) and the value given here. The default value is:
+
+    .. code-block:: python
+
+        conf.confluence_publish_postfix_hash_modifier = (
+            str(conf.project)
+            + str(conf.confluence_parent_page)
+            + str(conf.confluence_publish_root)
+        )
+
+    Modify this value if you want the generated hashes to be independent of:
+
+    * ``project``
+    * :lref:`confluence_parent_page`
+    * :lref:`confluence_publish_root`
+
+    This can be helpful when your project name or the title of the parent page
+    have changed but you would like to retain the hash values. Thereby the page
+    contents may be updated without breaking links from other Confluence pages.
+
+    See also:
+
+    - :lref:`confluence_publish_postfix`
+
+    .. versionadded:: 3.0
 
 .. _confluence_publish_override_api_prefix:
 
