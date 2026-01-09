@@ -40,6 +40,8 @@ cfg_envs=(
     py312-sphinx90-release
     py313-sphinx74
     py313-sphinx74-release
+    py312-sphinx91
+    py312-sphinx91-release
     py313-sphinx80
     py313-sphinx80-release
     py313-sphinx81
@@ -48,6 +50,8 @@ cfg_envs=(
     py313-sphinx82-release
     py313-sphinx90
     py313-sphinx90-release
+    py313-sphinx91
+    py313-sphinx91-release
     py314-sphinx74
     py314-sphinx74-release
     py314-sphinx80
@@ -58,6 +62,8 @@ cfg_envs=(
     py314-sphinx82-release
     py314-sphinx90
     py314-sphinx90-release
+    py314-sphinx91
+    py314-sphinx91-release
     pylint
     ruff
 )
