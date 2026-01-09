@@ -2,7 +2,7 @@ Development
 ===========
 
 * **(note)** Default editor for Confluence Cloud is now ``v2``
-* All deprecated options in v2 and older have been removed
+* All deprecated options in 2.x and older have been removed
 * Deprecated the ``confluence_editor`` option
 * Introduce the ``confluence_cloud`` option
 * Updated the connection test to include more publish-related options
