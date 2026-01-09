@@ -12,14 +12,10 @@ cfg_envs=(
     doc-html
     doc-latexpdf
     mypy
-    py310-sphinx74
-    py310-sphinx74-release
     py310-sphinx80
     py310-sphinx80-release
     py310-sphinx81
     py310-sphinx81-release
-    py311-sphinx74
-    py311-sphinx74-release
     py311-sphinx80
     py311-sphinx80-release
     py311-sphinx81
@@ -28,8 +24,6 @@ cfg_envs=(
     py311-sphinx82-release
     py311-sphinx90
     py311-sphinx90-release
-    py312-sphinx74
-    py312-sphinx74-release
     py312-sphinx80
     py312-sphinx80-release
     py312-sphinx81
@@ -38,8 +32,6 @@ cfg_envs=(
     py312-sphinx82-release
     py312-sphinx90
     py312-sphinx90-release
-    py313-sphinx74
-    py313-sphinx74-release
     py312-sphinx91
     py312-sphinx91-release
     py313-sphinx80
@@ -52,8 +44,6 @@ cfg_envs=(
     py313-sphinx90-release
     py313-sphinx91
     py313-sphinx91-release
-    py314-sphinx74
-    py314-sphinx74-release
     py314-sphinx80
     py314-sphinx80-release
     py314-sphinx81
