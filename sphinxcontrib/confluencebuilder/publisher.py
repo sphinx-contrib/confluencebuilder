@@ -1059,7 +1059,7 @@ class ConfluencePublisher:
                 new_labels = None
                 new_prop_requests = []
                 if self.api_mode == 'v2':
-                    # use newer space id refrence for v2
+                    # use newer space id reference for v2
                     new_page.pop('space', None)
                     new_page['spaceId'] = self.space_id
 
