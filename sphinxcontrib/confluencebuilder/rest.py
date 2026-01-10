@@ -367,16 +367,18 @@ class Rest:
     @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def put(self, path, value, data, *, url=None):
+    def put(self, path, value, data=None, *, url=None):
         rsp = self._process_request(
             'PUT', f'{path}/{value}', json=data, url=url)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, path)
-            if self.verbosity > 0:
+            if data and self.verbosity > 0:
                 errdata += "\n"
                 errdata += json.dumps(data, indent=2)
             raise ConfluenceBadApiError(rsp.status_code, errdata)
+        if rsp.status_code == 204:
+            return {}
         if not rsp.text:
             raise ConfluenceSeraphAuthenticationFailedUrlError
 

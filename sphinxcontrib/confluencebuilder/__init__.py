@@ -211,6 +211,8 @@ def setup(app):
     cm.add_conf('confluence_client_cert')
     # Password for client certificate to use for publishing
     cm.add_conf('confluence_client_cert_pass')
+    # Force Cloud v2 page migration/conversion.
+    cm.add_conf_bool('confluence_cloud_v2_migration')
     # Explicitly prevent auto-generation of titles for titleless documents.
     cm.add_conf_bool('confluence_disable_autogen_title')
     # Disable SSL validation with Confluence server.
