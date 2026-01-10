@@ -961,6 +961,16 @@ class ConfluencePublisher:
 
         _, page = self.get_page(page_name, expand=expand)
 
+        # if we have a page and a user has requested a forced migration from
+        # legacy to cloud, force convert the page
+        if self.config.confluence_cloud_v2_migration:
+            if page and self.api_mode == 'v2':
+                page_id = page['id']
+                self.rest.put(f'{self.APIV1}content', f'{page_id}/convert')
+
+                # re-fetch page for latest version
+                _, page = self.get_page(page_name, expand=expand)
+
         # if the page is not found, but is determined to be an archived page,
         # Confluence Cloud does not appear to support moving/updating an
         # archived page back into a `current` mode -- instead, try to delete
