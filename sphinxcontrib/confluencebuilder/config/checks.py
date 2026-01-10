@@ -573,6 +573,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_publish_postfix_hash_modifier
+    validator.conf('confluence_publish_postfix_hash_modifier') \
+             .string()
+
+    # ##################################################################
+
     # confluence_publish_prefix
     validator.conf('confluence_publish_prefix') \
              .string()
