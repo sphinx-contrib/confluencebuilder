@@ -127,7 +127,7 @@ def apply_defaults(app):
 
     if conf.confluence_publish_override_api_prefix is None:
         conf.confluence_publish_override_api_prefix = {}
-    
+
     if conf.confluence_publish_postfix_hash_modifier is None:
         conf.confluence_publish_postfix_hash_modifier = (
             str(conf.project)
