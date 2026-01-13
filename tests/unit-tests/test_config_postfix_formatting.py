@@ -10,8 +10,17 @@ from unittest.mock import patch
 
 
 class TestCreateDocnameUniqueHash(ConfluenceTestCase):
+    def _build_postfix_hash_modifier(self):
+        conf = self.config
+        conf.confluence_publish_postfix_hash_modifier = (
+            str(conf.project)
+            + str(conf.confluence_parent_page)
+            + str(conf.confluence_publish_root)
+        )
+
     def test_no_parent_or_root_page_or_project_configured(self):
         test_docname = 'docs/test_file.rst'
+        self._build_postfix_hash_modifier()
         hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
         self.assertEqual(hv, '75b0047d7552a5e4d91481e992f5ed339d868b3c')
@@ -20,6 +29,7 @@ class TestCreateDocnameUniqueHash(ConfluenceTestCase):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_parent_page'] = 'parent_page'
+        self._build_postfix_hash_modifier()
         hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
         self.assertEqual(hv, '9ca6dcc0b0e9eff175f1182ed75a2c43f359ed24')
@@ -28,6 +38,7 @@ class TestCreateDocnameUniqueHash(ConfluenceTestCase):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['confluence_publish_root'] = 'publish_root'
+        self._build_postfix_hash_modifier()
         hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
         self.assertEqual(hv, '02fe177ef99b746ed60cb1959d6134d3ea54fab9')
@@ -36,6 +47,7 @@ class TestCreateDocnameUniqueHash(ConfluenceTestCase):
         test_docname = 'docs/test_file.rst'
         config = self.config
         config['project'] = 'grand_project'
+        self._build_postfix_hash_modifier()
         hv = ConfluenceState._create_docname_unique_hash(
             docname=test_docname, config=self.config)
         self.assertEqual(hv, '67e8ac11ab088e763c3cf2e577037b510a54ba41')
