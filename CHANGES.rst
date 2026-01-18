@@ -1,5 +1,5 @@
-Development
-===========
+3.0 (2026-01-18)
+================
 
 * **(note)** Default editor for Confluence Cloud is now ``v2``
 * All deprecated options in 2.x and older have been removed
