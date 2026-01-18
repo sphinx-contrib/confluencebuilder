@@ -1804,15 +1804,17 @@ Advanced publishing configuration
             + str(conf.confluence_publish_root)
         )
 
-    Modify this value if you want the generated hashes to be independent of:
+    Modify this option if there is a need to generated hashes that are
+    independent of:
 
     * ``project``
     * :lref:`confluence_parent_page`
     * :lref:`confluence_publish_root`
 
-    This can be helpful when your project name or the title of the parent page
-    have changed but you would like to retain the hash values. Thereby the page
-    contents may be updated without breaking links from other Confluence pages.
+    This can be helpful when a project name or the title of the parent page
+    have changed but there is a desire to retain the hash values. Thereby the
+    page contents may be updated without breaking links from other
+    Confluence pages.
 
     See also:
 
