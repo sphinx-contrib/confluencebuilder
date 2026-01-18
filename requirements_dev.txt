@@ -1,3 +1,2 @@
 beautifulsoup4
-# temporarily disable myst_parser until sphinx v9.x support
-#myst_parser
+myst_parser
