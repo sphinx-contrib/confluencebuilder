@@ -5,6 +5,7 @@ Development
 * All deprecated options in 2.x and older have been removed
 * Deprecated the ``confluence_editor`` option
 * Introduce the ``confluence_cloud`` option
+* Introduce the ``confluence_publish_hash_modifier`` option
 * Updated the connection test to include more publish-related options
 
 2.17.1 (2025-12-19)
