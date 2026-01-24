@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -34,7 +34,7 @@ jobs:
           cat SHA256SUMS
 
       - name: Store release artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-artifacts
           path: dist/
@@ -51,7 +51,7 @@ jobs:
       id-token: write
     steps:
       - name: Acquire release artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: release-artifacts
           path: dist/
@@ -72,10 +72,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Acquire release artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: release-artifacts
           path: dist/
