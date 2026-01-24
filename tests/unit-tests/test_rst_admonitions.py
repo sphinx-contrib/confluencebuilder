@@ -32,12 +32,12 @@ class TestConfluenceRstAdmonitions(ConfluenceTestCase):
             macro = self._verify_storage_tags(data, 'admonition', 'info')
             title_param = macro.find('ac:parameter', {'ac:name': 'title'})
             self.assertIsNotNone(title_param,
-                'admonition is missing a title paramater')
+                'admonition is missing a title parameter')
             self.assertEqual(title_param.text, 'my-title',
                 'admonition title value does not match expected')
             icon_param = macro.find('ac:parameter', {'ac:name': 'icon'})
             self.assertIsNotNone(icon_param,
-                'admonition is missing a icon paramater')
+                'admonition is missing a icon parameter')
             self.assertEqual(icon_param.text, 'false',
                 'admonition icon value is not disabled')
 
