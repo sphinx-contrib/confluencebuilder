@@ -64,7 +64,7 @@ jobs:
             - { os: windows-latest, python: "3.12", toxenv: py312-sphinx81, cache: ~\AppData\Local\pip\Cache }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v6
