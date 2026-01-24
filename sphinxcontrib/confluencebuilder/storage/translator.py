@@ -1138,7 +1138,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     depart_tip = _depart_admonition
     visit_todo_node = _visit_todo_node
     depart_todo_node = depart_admonition
-    visit_warning = _visit_warning
+    visit_warning = _visit_note
     depart_warning = _depart_admonition
 
     # ------
