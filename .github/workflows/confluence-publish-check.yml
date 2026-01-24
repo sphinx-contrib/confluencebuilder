@@ -33,7 +33,7 @@ jobs:
     container: ghcr.io/sphinx-contrib/confluencebuilder/doctest:main
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Set up Python ${{ github.event.inputs.python }}
       uses: actions/setup-python@v6
