@@ -82,6 +82,12 @@ def validate_configuration(builder):
 
     # ##################################################################
 
+    # confluence_adv_admonition_overrides
+    validator.conf('confluence_adv_admonition_overrides') \
+             .dict_str_str()
+
+    # ##################################################################
+
     # confluence_adv_bulk_archiving
     validator.conf('confluence_adv_bulk_archiving') \
              .bool()
