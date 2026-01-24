@@ -27,7 +27,7 @@ class TestConfluenceRstAdmonitions(ConfluenceTestCase):
             self._verify_storage_tags(data, 'important', 'warning')
             self._verify_storage_tags(data, 'note', 'info')
             self._verify_storage_tags(data, 'tip', 'tip')
-            self._verify_storage_tags(data, 'warning', 'warning')
+            self._verify_storage_tags(data, 'warning', 'note')
 
             macro = self._verify_storage_tags(data, 'admonition', 'info')
             title_param = macro.find('ac:parameter', {'ac:name': 'title'})
@@ -55,7 +55,7 @@ class TestConfluenceRstAdmonitions(ConfluenceTestCase):
             self._verify_storage_tags(data, 'important', 'warning')
             self._verify_storage_tags(data, 'note', 'info')
             self._verify_storage_tags(data, 'tip', 'tip')
-            self._verify_storage_tags(data, 'warning', 'warning')
+            self._verify_storage_tags(data, 'warning', 'note')
 
             # v2 admonition is stored in a adf panel node
             # - adf nodes are wrapped in extension tags
