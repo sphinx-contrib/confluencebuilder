@@ -1011,6 +1011,10 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     def _visit_admonition(self, node, atype, title=None, logo=True):
         collapsible = node.get('collapsible', False)
 
+        ato = self.builder.config.confluence_adv_admonition_overrides
+        if ato:
+            atype = ato.get(node.__class__.__name__, atype)
+
         self.body.append(self.start_ac_macro(node, atype))
         if title and not collapsible:
             self.body.append(self.build_ac_param(node, 'title', title))

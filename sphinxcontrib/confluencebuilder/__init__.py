@@ -301,6 +301,8 @@ def setup(app):
     cm.add_conf_bool('confluence_mermaid_html_macro', 'confluence')
 
     # (configuration - undocumented)
+    # Allow overriding which admonition type is used
+    cm.add_conf('confluence_adv_admonition_overrides', 'confluence')
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
     # Disable any delays when publishing property updates on Cloud
