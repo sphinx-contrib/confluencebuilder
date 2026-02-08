@@ -324,6 +324,17 @@ properly set with the publisher's Confluence username.
 ''')
 
 
+class ConfluencePublishSkipCommentedConfigError(ConfluenceConfigError):
+    def __init__(self):
+        super().__init__('''\
+unsupported publish skip commented packages value
+
+The option 'confluence_publish_skip_commented_pages' has been provided to
+tailor how the environment will handle commented packages. Accepted values
+include 'True', 'False' and 'ignored-resolved'.
+''')
+
+
 class ConfluenceServerAuthConfigError(ConfluenceConfigError):
     def __init__(self):
         super().__init__('''\

@@ -256,7 +256,7 @@ def setup(app):
     # Publish only new/updates content within the root document's hierarchy.
     cm.add_conf_bool('confluence_publish_trample')
     # Whether to skip page updates for pages that have inlined comments
-    cm.add_conf_bool('confluence_publish_skip_commented_pages')
+    cm.add_conf('confluence_publish_skip_commented_pages')
     # Manipulate a requests instance.
     cm.add_conf('confluence_request_session_override')
     # Authentication passthrough for Confluence REST interaction.
