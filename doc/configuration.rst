@@ -1898,21 +1898,36 @@ Advanced publishing configuration
         There is no support to keep inlined comments on updated pages at
         this time.
 
-    Indicates to skip updates on pages which have inlined comments. Before
-    a page update is issued, a warning will be generated if this extension
-    detects that a page has inlined comments added to it. Page updates
-    remove any inlined comments embedded in the page source. If a users
-    wants to prevent any updates on pages to prevent the loss of inlined
-    comments, they can configure this option to ``True``. By default, pages
-    will always be updated with a value of ``False``.
+    Indicates to skip updates on pages which have inlined comments. By default,
+    pages will always be updated with a value of ``False``.
+
+    If this option is set to ``True``, if a page to be update is detected to
+    have an embedded comment reference, a warning will be generated and the
+    page will not be updated.
 
     .. code-block:: python
 
         confluence_publish_skip_commented_pages = True
 
+    If this option is set to ``ignored-resolved``, the page will be checked
+    for embedded comment references. In the event that comments are found and
+    all comments are resolved, the page will be updated/overridden as if no
+    comments where there. However, if any unresolved comments are detected,
+    a warning will be generated and the page will not be updated.
+
+    .. code-block:: python
+
+        confluence_publish_skip_commented_pages = 'ignored-resolved'
+
+    Users may be interesting in turning `warnings into errors`_ to report a
+    non-zero exit status for these warnings.
+
     See also :lref:`suppress_warnings_config`.
 
     .. versionadded:: 2.13
+    .. versionchanged:: 3.1
+
+        Support the ``ignored-resolved`` value.
 
 .. _confluence_publish_trample:
 
@@ -2671,3 +2686,4 @@ Deprecated options
 .. _sphinxcontrib-mermaid: https://pypi.org/project/sphinxcontrib-mermaid/
 .. _suppress_warnings: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
 .. _toctree: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
+.. _warnings into errors: https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-W

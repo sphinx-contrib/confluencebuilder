@@ -31,6 +31,7 @@ from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishM
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernameAskConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernameAuthConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishMissingUsernamePassConfigError
+from sphinxcontrib.confluencebuilder.config.exceptions import ConfluencePublishSkipCommentedConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceServerAuthConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkRequiredConfigError
 from sphinxcontrib.confluencebuilder.config.exceptions import ConfluenceSourcelinkReservedConfigError
@@ -603,6 +604,19 @@ def validate_configuration(builder):
 
     validator.conf('confluence_publish_root') \
              .int_(positive=True)
+
+    # ##################################################################
+
+    # confluence_publish_skip_commented_pages
+    try:
+        validator.conf('confluence_publish_skip_commented_pages').bool()
+    except ConfluenceConfigError:
+        try:
+            validator.conf('confluence_publish_skip_commented_pages').matching(
+                'ignored-resolved',
+            )
+        except ConfluenceConfigError as ex:
+            raise ConfluencePublishSkipCommentedConfigError from ex
 
     # ##################################################################
 

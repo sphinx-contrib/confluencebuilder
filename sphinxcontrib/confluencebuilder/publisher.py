@@ -1053,11 +1053,9 @@ class ConfluencePublisher:
                 return page['id']
 
         # check for inlined comments
-        if page:
-            icdrop = self._manage_inlined_comments(page, page_name, data)
-            if icdrop and self.config.confluence_publish_skip_commented_pages:
-                logger.verbose(f'skipping publish due to comments: {page_name}')
-                return page['id']
+        if self.config.confluence_cloud and page and \
+                not self._manage_inlined_comments(page, page_name, data):
+            return page['id']
 
         try:
             # new page
@@ -1254,11 +1252,9 @@ class ConfluencePublisher:
                 return page_id
 
         # check for inlined comments
-        if page:
-            icdrop = self._manage_inlined_comments(page, page_name, data)
-            if icdrop and self.config.confluence_publish_skip_commented_pages:
-                logger.verbose(f'skipping publish due to comments: {page_name}')
-                return page_id
+        if self.config.confluence_cloud and page and \
+                not self._manage_inlined_comments(page, page_name, data):
+            return page_id
 
         try:
             self._update_page(page, page_name, data)
@@ -1640,25 +1636,60 @@ class ConfluencePublisher:
             data: the new page data to be applied
 
         Returns:
-            whether at least one inlined comment will be dropped
+            whether a page update should be allowed top continue; ``False`` to
+            indicate the update should stop due to an inlined comment issue
         """
 
         try:
             existing_data = page['body']['storage']['value']
         except KeyError:
-            return False
-
-        # At this time, we only have this crude check for inlined comments.
-        # We check if the original page has any inlined comment markers. If
-        # so, we generate a warning. A publish even will still go through,
-        # but it generates a warning to inform users and allows a publish
-        # even to stop if `--fail-on-warning` is set.
-        if '<ac:inline-comment-marker' in existing_data:
-            logger.warn(f'inline comment detected (page "{page_name}"); '
-                         'page not published', subtype='inline-comment')
             return True
 
-        return False
+        # if we have no comments in the page, continue as normal
+        if '<ac:inline-comment-marker' not in existing_data:
+            return True
+
+        do_no_update = False
+        match self.config.confluence_publish_skip_commented_pages:
+            # Users have indicated to skip any commented pages. We will
+            # generate a warning. A publish event will still go through,
+            # but it generates a warning to inform users and allows a publish
+            # even to stop if `--fail-on-warning` is set.
+            case True:
+                logger.warn(f'inline comment detected (page "{page_name}"); '
+                             'page not updated', subtype='inline-comment')
+                do_no_update = True
+
+            # Users have indicating that they do not care if page updates
+            # override comments if all comments are in a resolved-like state.
+            # Check if a page has any opened comments. If so, continue as if
+            # nothing as happened.
+            case 'ignored-resolved':
+                page_id = page['id']
+                endpoint_path = f'{self.APIV2}pages/{page_id}/inline-comments'
+                rsp = self.rest.get(endpoint_path, {
+                    'resolution-status': [
+                        'open',
+                        'reopened',
+                    ],
+                    # note; originally tried to include "limit=1", but the
+                    # API appears to provide no results where without a limit,
+                    # results appear
+                })
+
+                if rsp['results']:
+                    logger.warn('unresolved (open/unresolved-deleted) inline '
+                               f'comment detected (page "{page_name}"); '
+                                'page not updated', subtype='inline-comment')
+                    do_no_update = True
+
+        # if any scenario above indicated we should not update this page,
+        # log and return to hint not to update
+        if do_no_update:
+            logger.verbose(f'skipping publish due to comments: {page_name}')
+            return False
+
+        return True
 
     def _next_page_fields(self, rsp, fields, offset):
         """
