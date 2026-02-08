@@ -23,6 +23,7 @@ from sphinxcontrib.confluencebuilder.util import temp_dir
 from urllib.parse import urlparse
 from urllib3 import __version__ as urllib3_version
 import json
+import os
 import platform
 import sys
 import traceback
@@ -281,6 +282,22 @@ def report_main(args_parser):
                 value = '(set; mixed)'
             config['confluence_space_key'] = value
 
+    # environment flags to report
+    env_opts = [
+        'ALL_PROXY',
+        'CURL_CA_BUNDLE',
+        'HTTPS_PROXY',
+        'HTTP_PROXY',
+        'NO_PROXY',
+        'REQUESTS_CA_BUNDLE',
+        'SSL_CERT_DIR',
+        'SSL_CERT_FILE',
+        'all_proxy',
+        'http_proxy',
+        'https_proxy',
+        'no_proxy',
+    ]
+
     print()
     print('Confluence builder report has been generated.')
     print('Please copy the following text for the GitHub issue:')
@@ -304,6 +321,21 @@ def report_main(args_parser):
             print(f'{k}: {v}{pf}')
     else:
         print('~default configuration~')
+
+    has_env_opt = False
+    print()
+    print('(environment)')
+    for opt in env_opts:
+        if opt in os.environ:
+            if os.environ[opt]:
+                value = str(os.environ[opt]) if args.no_sanitize else '(set)'
+            else:
+                value = '(set; empty)'
+
+            print(f'{opt}: {value}')
+            has_env_opt = True
+    if not has_env_opt:
+        print('~default environment~')
 
     if configuration_load_issue:
         print()
