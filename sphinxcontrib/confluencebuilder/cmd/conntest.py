@@ -159,6 +159,34 @@ def conntest_main(args_parser):
         print(f' {opt}: {value}')
     print()
 
+    env_opts = [
+        'ALL_PROXY',
+        'CURL_CA_BUNDLE',
+        'HTTPS_PROXY',
+        'HTTP_PROXY',
+        'NO_PROXY',
+        'REQUESTS_CA_BUNDLE',
+        'SSL_CERT_DIR',
+        'SSL_CERT_FILE',
+        'all_proxy',
+        'http_proxy',
+        'https_proxy',
+        'no_proxy',
+    ]
+
+    print("Network-related environment]")
+    for opt in env_opts:
+        if opt in os.environ:
+            if os.environ[opt]:
+                value = str(os.environ[opt]) if args.no_sanitize else '(set)'
+            else:
+                value = '(set; empty)'
+        else:
+            value = '(not set)'
+
+        print(f' {opt}: {value}')
+    print()
+
     # ##################################################################
     # configuration checks
     # ##################################################################
