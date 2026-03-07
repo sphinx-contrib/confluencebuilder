@@ -143,7 +143,7 @@ class MockedPublisher:
 
         self.published.append(page_name)
 
-        return page_id
+        return page_id, False
 
     # other unused methods
 

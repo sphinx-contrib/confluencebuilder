@@ -553,6 +553,7 @@ class ConfluenceBuilder(Builder):
             },
         )
 
+        is_new_page = False
         if forced_page_id:
             uploaded_id = self.publisher.store_page_by_id(title,
                 forced_page_id, data)
@@ -566,7 +567,8 @@ class ConfluenceBuilder(Builder):
                 if new_parent_id:
                     parent_id = new_parent_id
 
-            uploaded_id = self.publisher.store_page(title, data, parent_id)
+            uploaded_id, is_new_page = \
+                self.publisher.store_page(title, data, parent_id, force=force)
 
         # TMP: interim cast logic until we can cleanup all the ids to be int
         uploaded_id_int = int(uploaded_id) if uploaded_id else uploaded_id
@@ -654,9 +656,12 @@ class ConfluenceBuilder(Builder):
                 uploaded_id,
                 {
                     'guid': docguid,
+                    'new': is_new_page,
                     'title': title,
                 },
             )
+
+        return is_new_page
 
     def _prepare_page_data(self, docname, output):
         data = {
