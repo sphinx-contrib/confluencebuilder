@@ -323,6 +323,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_quirk_cdata')
     # List of optional features/macros/etc. restricted for use.
     cm.add_conf('confluence_adv_restricted', 'confluence')
+    # Enable a Windows imgmath hack to address possible dvisvgm invoke issues
+    cm.add_conf_bool('confluence_adv_win32_imgmath_hack')
 
     # (configuration - deprecated)
     # replaced by confluence_cloud

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
+from contextlib import contextmanager
 from docutils import nodes
 from sphinx.util.math import wrap_displaymath
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
@@ -18,6 +19,8 @@ from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_gallery import replace
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinx_toolbox import replace_sphinx_toolbox_nodes
 from sphinxcontrib.confluencebuilder.transmute.ext_sphinxcontrib_mermaid import replace_sphinxcontrib_mermaid_nodes
 import itertools
+import os
+import tempfile
 
 # load graphviz extension if available to handle node pre-processing
 try:
@@ -91,7 +94,8 @@ def doctree_transmute(builder, doctree):
     # -------------------
 
     # replace Confluence LaTeX blocks with images (if configured/supported)
-    prepare_math_images(builder, doctree)
+    with win32_imgpath_volpath_hack(builder):
+        prepare_math_images(builder, doctree)
 
     # re-work svg entries to support confluence
     prepare_svgs(builder, doctree)
@@ -393,3 +397,37 @@ def replace_math_blocks(builder, doctree):
             new_node['align'] = 'center'
 
         node.replace_self(new_node)
+
+
+@contextmanager
+def win32_imgpath_volpath_hack(builder):
+    """
+    patch mkdtemp for a context to use the output directory as a base
+
+    When running tools like dvisvgm on Windows, if the source and output paths
+    are on different drives (e.g. C: and D:), commands can fail with a
+    "Windows API error 87". To help avoid these issues, this context manager
+    call will override the temporary directory used to be the same as the
+    output directory (which has a higher chance of being the same location as
+    sources).
+
+    Args:
+        builder: the builder
+    """
+
+    # ignore if not windows or configuration disabled
+    if os.name != 'nt' or not builder.config.confluence_adv_win32_imgmath_hack:
+        yield
+        return
+
+    original_mkdtemp = tempfile.mkdtemp
+
+    def mock_mkdtemp(*args, **kwargs):
+        return original_mkdtemp(prefix='.imgmath-', dir=builder.out_dir)
+
+    tempfile.mkdtemp = mock_mkdtemp
+
+    try:
+        yield
+    finally:
+        tempfile.mkdtemp = original_mkdtemp
