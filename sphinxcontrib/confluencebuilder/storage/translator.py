@@ -2455,7 +2455,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         doclink = node['doclink']
         space_key = None
 
-        # if prefixed with an exclamation, document is refering to another
+        # if prefixed with an exclamation, document is referring to another
         # Sphinx document -- find the respective title based off the captured
         # state
         if doclink.startswith('!'):
