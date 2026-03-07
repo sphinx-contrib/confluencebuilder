@@ -912,7 +912,7 @@ class ConfluencePublisher:
 
         return uploaded_attachment_id
 
-    def store_page(self, page_name, data, parent_id=None):
+    def store_page(self, page_name, data, parent_id=None, *, force: bool = False):
         """
         request to store page information to a confluence instance
 
@@ -1001,7 +1001,7 @@ class ConfluencePublisher:
         new_page_hash = ConfluenceUtil.hash(data['content'])
 
         # check if we have to force a page update
-        force_publish = self.config.confluence_publish_force
+        force_publish = force or self.config.confluence_publish_force
         if page and not force_publish:
             metadata = page.get('metadata', {})
             meta_props = metadata.get('properties', {})

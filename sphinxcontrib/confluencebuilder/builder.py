@@ -517,7 +517,7 @@ class ConfluenceBuilder(Builder):
 
         self._cache_info.track_page_hash(docname)
 
-    def publish_doc(self, docname, output):
+    def publish_doc(self, docname, output, *, force: bool = False):
         conf = self.config
         title = self.state.title(docname)
         is_root_doc = self.config.root_doc == docname
