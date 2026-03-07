@@ -266,8 +266,18 @@ inspect that the configured Confluence URL is valid:
 This can be common for internal/self-hosted Confluence instances which
 may have been signed with an internal/corporate root authority. If the
 environment is not setup in a way to verify self-signed certificates,
-users may be interested in manually configure the `confluence_ca_cert`
+users may be interested in manually configuring the `confluence_ca_cert`
 option.
+
+If experiencing this issue on Confluence Cloud, the publish environment
+may not be populated with updated upstream certificates or Python/Requests
+cannot find these certificates. Setup to address this can verify based on
+platform distributions used. A workaround that may work is to install/upgrade
+the third-party `certifi` package and explicitly pass in the certificates
+using an environment hint. For example:
+
+    pip install --upgrade certifi
+    export SSL_CERT_FILE=$(python -m certifi)
 
 (details: {details})
 ---
