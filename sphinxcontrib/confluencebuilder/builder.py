@@ -14,6 +14,7 @@ from sphinx.locale import _ as SL
 from sphinx.util.display import status_iterator
 from sphinxcontrib.confluencebuilder.assets import ConfluenceAssetManager
 from sphinxcontrib.confluencebuilder.compat import docutils_findall as findall
+from sphinxcontrib.confluencebuilder.confcloud78192 import find_risked_delayed_anchor_pages
 from sphinxcontrib.confluencebuilder.config import process_ask_configs
 from sphinxcontrib.confluencebuilder.config.checks import validate_configuration
 from sphinxcontrib.confluencebuilder.config.defaults import apply_defaults
@@ -826,6 +827,16 @@ class ConfluenceBuilder(Builder):
                     self.publisher.remove_attachment(attachment_id)
 
     def finish(self):
+        # try to find documents that may have a risk of CONFCLOUD-78192
+        docs_to_force_update = set()
+        anchor_risk_db = {}
+        if self.config.confluence_cloud and \
+                not self.config.confluence_adv_disable_anchor_fix:
+            for docname in self.publish_docnames:
+                doctree = self.env.get_doctree(docname)
+                find_risked_delayed_anchor_pages(
+                    docname, doctree, anchor_risk_db)
+
         # restore environment's get_doctree if it was temporarily replaced
         if self._original_get_doctree:
             self.env.get_doctree = self._original_get_doctree
@@ -878,9 +889,37 @@ class ConfluenceBuilder(Builder):
                 try:
                     with docfile.open(encoding='utf-8') as file:
                         output = file.read()
-                        self.publish_doc(docname, output)
+                        is_new_page = self.publish_doc(docname, output)
+
+                        # if we are publishing a new page, check to see if
+                        # there are any delayed anchor risks for pages that
+                        # reference this page; if so, register these pages
+                        # to be re-published
+                        if is_new_page and docname in anchor_risk_db:
+                            docs_to_force_update |= anchor_risk_db[docname]
+
                 except OSError as err:
                     self.warn(f'error reading file {docfile}: {err}')
+
+            # re-publish pages that have a risk of a broken anchor link
+            if docs_to_force_update:
+                for docname in status_iterator(
+                        sorted(docs_to_force_update),
+                        're-publish documents (cloud anchor updates)... ',
+                        length=len(docs_to_force_update),
+                        verbosity=self._verbose):
+                    if self._check_publish_skip(docname):
+                        self.verbose(docname + ' skipped due to configuration')
+                        continue
+                    docfile = self.out_dir / self.file_transform(docname)
+
+                    try:
+                        with docfile.open(encoding='utf-8') as file:
+                            output = file.read()
+                            self.publish_doc(docname, output, force=True)
+
+                    except OSError as err:
+                        self.warn(f'error reading file {docfile}: {err}')
 
             self.info('building intersphinx... ', nonl=(not self._verbose))
             build_intersphinx(self)

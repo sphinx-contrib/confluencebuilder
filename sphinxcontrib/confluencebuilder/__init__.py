@@ -305,6 +305,8 @@ def setup(app):
     cm.add_conf('confluence_adv_admonition_overrides', 'confluence')
     # Enablement for bulk archiving of packages (for premium environments).
     cm.add_conf_bool('confluence_adv_bulk_archiving')
+    # Avoid re-publishing pages for anchor corrections (CONFCLOUD-78192)
+    cm.add_conf_bool('confluence_adv_disable_anchor_fix')
     # Disable any delays when publishing property updates on Cloud
     cm.add_conf_bool('confluence_adv_disable_cloud_prop_delay')
     # Disable any attempts to initialize this extension's custom entities.
