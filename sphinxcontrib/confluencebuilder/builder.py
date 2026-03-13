@@ -31,6 +31,7 @@ from sphinxcontrib.confluencebuilder.nodes import confluence_source_link
 from sphinxcontrib.confluencebuilder.nodes import confluence_parameters_fetch as PARAMS
 from sphinxcontrib.confluencebuilder.publisher import ConfluencePublisher
 from sphinxcontrib.confluencebuilder.state import ConfluenceState
+from sphinxcontrib.confluencebuilder.std.confluence import API_CLOUD_ENDPOINT
 from sphinxcontrib.confluencebuilder.std.confluence import CONFLUENCE_MAX_WIDTH
 from sphinxcontrib.confluencebuilder.std.confluence import SUPPORTED_IMAGE_TYPES
 from sphinxcontrib.confluencebuilder.storage.index import generate_storage_format_domainindex
@@ -759,8 +760,18 @@ class ConfluenceBuilder(Builder):
             else:
                 point_url_fmt = '{0}pages/viewpage.action?pageId={2}'
 
+            # if we have an explicit api cloud endpoint, the configured
+            # server base url is not a user-target url; in such a scenario,
+            # check to see if we have detected a user base url to use; if so,
+            # use it instead
+            server_base_url = self.config.confluence_server_url
+            if server_base_url.startswith(API_CLOUD_ENDPOINT):
+                last_base_url = ConfluenceState.last_base_url()
+                if last_base_url:
+                    server_base_url = last_base_url
+
             point_url = point_url_fmt.format(
-                self.config.confluence_server_url,
+                server_base_url,
                 self.config.confluence_space_key,
                 self.root_doc_page_id)
 

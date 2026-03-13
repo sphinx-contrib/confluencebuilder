@@ -115,6 +115,7 @@ class ConfluencePublisher:
         # Example space fetch points:
         # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/rest/api/space/STABLE
         # https://sphinxcontrib-confluencebuilder.atlassian.net/wiki/api/v2/spaces?keys=STABLE
+        # https://api.atlassian.com/ex/confluence/GUID/api/v2/spaces?keys=STABLE
 
         api_token_set = bool(self.config.confluence_api_token)
         pw_set = bool(self.config.confluence_server_pass)
@@ -645,6 +646,7 @@ class ConfluencePublisher:
                 prop_entry = self.get_page_property(page_id, prop_key)
                 meta_props[prop_key] = prop_entry
 
+        self._crude_publish_point_track(page)
         return page_id, page
 
     def get_page_by_id(self, page_id, expand='version'):
@@ -1099,6 +1101,7 @@ class ConfluencePublisher:
                         build_path = f'{self.APIV1}content'
 
                     rsp = self.rest.post(build_path, new_page)
+                    self._crude_publish_point_track(rsp)
                 except ConfluenceBadApiError as ex:
                     if str(ex).find('CDATA block has embedded') != -1:
                         raise ConfluenceUnexpectedCdataError from ex
@@ -1951,3 +1954,21 @@ class ConfluencePublisher:
         """
         metadata = page.setdefault('metadata', {})
         metadata['labels'] = [{'name': v} for v in set(labels)]
+
+    def _crude_publish_point_track(self, page):
+        """
+        crude publish point detection for scoped api mode
+        #
+        If we detect a base URL, cache it for now. We might use it later
+        to report a publish point hint for cases where confluence_server_url
+        is not a user-end URL.
+
+        Args:
+            page: the page
+        """
+        root_node = page or {}
+        container = root_node.get('metadata', {}).get('labels', root_node)
+        detected_base_url = container.get('_links', {}).get('base')
+        if detected_base_url:
+            detected_base_url = detected_base_url.removesuffix('/')
+            ConfluenceState.register_base_url(f'{detected_base_url}/')

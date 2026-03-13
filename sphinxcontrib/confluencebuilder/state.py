@@ -16,6 +16,7 @@ class ConfluenceState:
     operation. This includes, but not limited to, remember title names for
     documents, tracking reference identifiers to other document names and more.
     """
+    base_url: str | None = None
     doc2uploadId: dict[str, int] = {}
     doc2parentDoc: dict[str, str] = {}
     doc2title: dict[str, str] = {}
@@ -23,6 +24,16 @@ class ConfluenceState:
     refid2target: dict[str, str] = {}
     title2doc: dict[str, str] = {}
     uploadIds: set[int] = set()
+
+    @staticmethod
+    def register_base_url(base_url: str):
+        """
+        register the detected base url
+
+        Confluence may report the base URL we are published to. This call is
+        used to track the most recent reported base URL.
+        """
+        ConfluenceState.base_url = base_url
 
     @staticmethod
     def register_parent_docname(docname: str, parent_docname: str):
@@ -170,6 +181,7 @@ class ConfluenceState:
         Provides the ability for uses of a Confluence state singleton to reset
         known tracked data.
         """
+        ConfluenceState.base_url = None
         ConfluenceState.doc2uploadId.clear()
         ConfluenceState.doc2parentDoc.clear()
         ConfluenceState.doc2title.clear()
@@ -177,6 +189,15 @@ class ConfluenceState:
         ConfluenceState.refid2target.clear()
         ConfluenceState.title2doc.clear()
         ConfluenceState.uploadIds.clear()
+
+    @staticmethod
+    def last_base_url() -> str | None:
+        """
+        last reported base url
+
+        See `register_base_url` for more information.
+        """
+        return ConfluenceState.base_url
 
     @staticmethod
     def has_upload_id(page_id: int) -> bool:
