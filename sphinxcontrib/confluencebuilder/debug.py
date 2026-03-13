@@ -50,4 +50,5 @@ FILTERED_HEADERS = [
     'Via',
     'X-Amz-Cf-Id',
     'X-Amz-Cf-Pop',
+    'X-Trace-Id',
 ]
