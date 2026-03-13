@@ -24,16 +24,18 @@ On this page:
 - Select the ``Confluence`` application.
 - Check each of the following scopes required for this extension:
 
-  - ``read:space:confluence``
-  - ``read:content.metadata:confluence``
-  - ``read:page:confluence``
-  - ``write:page:confluence``
-  - ``delete:page:confluence``
   - ``read:attachment:confluence``
   - ``read:content-details:confluence``
+  - ``read:content.metadata:confluence``
+  - ``read:content.property:confluence``
+  - ``read:page:confluence``
+  - ``read:space:confluence``
   - ``write:attachment:confluence``
-  - ``delete:attachment:confluence``
+  - ``write:content.property:confluence``
+  - ``write:page:confluence``
   - ``write:watcher:confluence``
+  - ``delete:attachment:confluence``
+  - ``delete:page:confluence``
 
 - Review and create.
 
