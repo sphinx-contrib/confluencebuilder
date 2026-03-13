@@ -12,7 +12,7 @@ import sphinxcontrib.confluencebuilder
 import sys
 
 project = 'Sphinx Confluence Builder'
-copyright = '2025 Sphinx Confluence Builder Contributors'
+copyright = '2026 Sphinx Confluence Builder Contributors'
 author = 'Sphinx Confluence Builder Contributors'
 version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
