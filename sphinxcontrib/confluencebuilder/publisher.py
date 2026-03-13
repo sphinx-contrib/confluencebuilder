@@ -1870,20 +1870,36 @@ class ConfluencePublisher:
             update_path = f'{self.APIV1}content'
 
         update_page['status'] = 'current'
-        try:
-            self.rest.put(update_path, page['id'], update_page)
-        except ConfluenceBadApiError as ex:
-            if str(ex).find('CDATA block has embedded') != -1:
-                raise ConfluenceUnexpectedCdataError from ex
 
-            if str(ex).find('title already exists') != -1:
-                raise ConfluencePagePermissionError(page_name) from ex
+        MAX_ATTEMPTS_TO_UPDATE_PAGE = 3
+        for attempt in range(MAX_ATTEMPTS_TO_UPDATE_PAGE):
+            try:
+                self.rest.put(update_path, page['id'], update_page)
+            except ConfluenceBadApiError as ex:  # noqa: PERF203
+                if ex.status_code == 409:
+                    if attempt >= MAX_ATTEMPTS_TO_UPDATE_PAGE - 1:
+                        raise
 
-            if 'unreconciled' in str(ex):
-                raise ConfluenceUnreconciledPageError(
-                    page_name, page['id'], self.server_url, ex) from ex
+                    logger.info('page update conflict (409); retrying...')
+                    time.sleep(0.5)
+                    _, active_page = self.get_page(page_name)
+                    neW_last_version = int(active_page['version']['number'])
+                    update_page['version']['number'] = neW_last_version + 1
+                    continue
 
-            raise
+                if str(ex).find('CDATA block has embedded') != -1:
+                    raise ConfluenceUnexpectedCdataError from ex
+
+                if str(ex).find('title already exists') != -1:
+                    raise ConfluencePagePermissionError(page_name) from ex
+
+                if 'unreconciled' in str(ex):
+                    raise ConfluenceUnreconciledPageError(
+                        page_name, page['id'], self.server_url, ex) from ex
+
+                raise
+            else:
+                break
 
         # post-update requests (api v2 mode)
         update_page_id = update_page['id']
