@@ -132,7 +132,7 @@ class MockedPublisher:
         page_name = self.id2page.get(page_id)
         self.removed.append(page_name)
 
-    def store_page(self, page_name, data, parent_id=None):
+    def store_page(self, page_name, data, parent_id=None, force=False):
         page_id = self.page2id.get(page_name)
         if not page_id:
             page_id = self.base_page_idx
@@ -143,7 +143,7 @@ class MockedPublisher:
 
         self.published.append(page_name)
 
-        return page_id
+        return page_id, False
 
     # other unused methods
 

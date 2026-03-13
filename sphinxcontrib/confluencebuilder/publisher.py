@@ -912,7 +912,7 @@ class ConfluencePublisher:
 
         return uploaded_attachment_id
 
-    def store_page(self, page_name, data, parent_id=None):
+    def store_page(self, page_name, data, parent_id=None, *, force: bool = False):
         """
         request to store page information to a confluence instance
 
@@ -926,6 +926,9 @@ class ConfluencePublisher:
             page_name: the page title to use on the updated page
             data: the page data to apply
             parent_id (optional): the id of the ancestor to use
+
+        Returns:
+            tuple of the page id and whether this is a new page
         """
         uploaded_page_id = None
 
@@ -934,7 +937,7 @@ class ConfluencePublisher:
 
             if not page:
                 self._dryrun('adding new page ' + page_name)
-                return None
+                return None, True
 
             misc = ''
             if parent_id and 'ancestors' in page:
@@ -945,7 +948,7 @@ class ConfluencePublisher:
                     misc += f'[new parent page{desc}]'
 
             self._dryrun('updating existing page', page['id'], misc)
-            return page['id']
+            return page['id'], False
 
         # fetch the page data
         # (expand on certain fields that may be required)
@@ -986,7 +989,7 @@ class ConfluencePublisher:
 
         # if a page was found, verify we are allowed to publish
         if page and not self._check_allowed_page_update(page, parent_id):
-            return page['id']
+            return page['id'], False
 
         # fetch known properties (associated with this extension) from the page
         page_id = page['id'] if page else None
@@ -998,7 +1001,7 @@ class ConfluencePublisher:
         new_page_hash = ConfluenceUtil.hash(data['content'])
 
         # check if we have to force a page update
-        force_publish = self.config.confluence_publish_force
+        force_publish = force or self.config.confluence_publish_force
         if page and not force_publish:
             metadata = page.get('metadata', {})
             meta_props = metadata.get('properties', {})
@@ -1050,12 +1053,12 @@ class ConfluencePublisher:
             remote_hash = cb_props['value'].get('hash')
             if new_page_hash == remote_hash:
                 logger.verbose(f'no changes in page: {page_name}')
-                return page['id']
+                return page['id'], False
 
         # check for inlined comments
         if self.config.confluence_cloud and page and \
                 not self._manage_inlined_comments(page, page_name, data):
-            return page['id']
+            return page['id'], False
 
         try:
             # new page
@@ -1130,7 +1133,7 @@ class ConfluencePublisher:
 
                     # if a page was found, verify we are allowed to publish
                     if not self._check_allowed_page_update(page, parent_id):
-                        return page['id']
+                        return page['id'], False
                 else:
                     if 'id' not in rsp:
                         api_err = (
@@ -1194,7 +1197,7 @@ class ConfluencePublisher:
         # perform any required post-page update actions
         self._post_page_actions(uploaded_page_id, cb_props)
 
-        return uploaded_page_id
+        return uploaded_page_id, not bool(page)
 
     def store_page_by_id(self, page_name, page_id, data):
         """
