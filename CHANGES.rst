@@ -1,3 +1,9 @@
+# Development
+
+* Handle Confluence dropped reference anchors on first publish
+* Improve reported publish URL for setups using direct Cloud API endpoint
+* Support auto-retry on immediate page update version conflicts
+
 3.0 (2026-01-18)
 ================
 
