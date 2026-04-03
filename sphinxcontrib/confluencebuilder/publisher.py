@@ -18,7 +18,6 @@ from sphinxcontrib.confluencebuilder.exceptions import ConfluencePermissionError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishSelfAncestorError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluencePublishTrampleError
-from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnexpectedCdataError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnknownInstanceError
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceUnreconciledPageError
 from sphinxcontrib.confluencebuilder.logger import ConfluenceLogger as logger
@@ -1106,9 +1105,6 @@ class ConfluencePublisher:
                     rsp = self.rest.post(build_path, new_page)
                     self._crude_publish_point_track(rsp)
                 except ConfluenceBadApiError as ex:
-                    if str(ex).find('CDATA block has embedded') != -1:
-                        raise ConfluenceUnexpectedCdataError from ex
-
                     # Check if Confluence reports that the new page request
                     # fails, indicating it already exists. This is usually
                     # (outside of possible permission use cases) that the page
@@ -1892,9 +1888,6 @@ class ConfluencePublisher:
                     neW_last_version = int(active_page['version']['number'])
                     update_page['version']['number'] = neW_last_version + 1
                     continue
-
-                if str(ex).find('CDATA block has embedded') != -1:
-                    raise ConfluenceUnexpectedCdataError from ex
 
                 if str(ex).find('title already exists') != -1:
                     raise ConfluencePagePermissionError(page_name) from ex

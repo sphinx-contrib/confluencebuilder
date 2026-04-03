@@ -321,8 +321,6 @@ def setup(app):
     cm.add_conf('confluence_adv_node_handler')
     # Permit any string value to be provided as the editor.
     cm.add_conf('confluence_adv_permit_editor', 'confluence')
-    # Flag to tweak code-block CDATA EOFs to prevent publishing issues.
-    cm.add_conf_bool('confluence_adv_quirk_cdata')
     # List of optional features/macros/etc. restricted for use.
     cm.add_conf('confluence_adv_restricted', 'confluence')
     # Enable a Windows imgmath hack to address possible dvisvgm invoke issues
