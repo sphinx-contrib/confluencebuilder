@@ -10,7 +10,6 @@ on:
       - '.github/workflows/docs.yml'
       - 'doc/**'
       - 'CHANGES.rst'
-      - 'requirements_docs.txt'
   pull_request:
     branches:
     - main
@@ -18,7 +17,6 @@ on:
       - '.github/workflows/docs.yml'
       - 'doc/**'
       - 'CHANGES.rst'
-      - 'requirements_docs.txt'
 
 jobs:
   build:
@@ -35,7 +33,7 @@ jobs:
         python -m venv venv
         . venv/bin/activate
         pip install -e .
-        pip install -r requirements_docs.txt
+        pip install -r doc/requirements.txt
 
     - name: HTML
       run: |
