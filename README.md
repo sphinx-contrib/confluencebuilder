@@ -8,14 +8,6 @@
 [Sphinx][sphinx] extension to build Confluence® compatible markup format
 files and optionally publish them to a Confluence instance.
 
-## Notice for v3 Release
-
-> [!IMPORTANT]
-> Users on Confluence Cloud upgrading to this extension's v3 release
-> may require additional actions. See the following for more information:
->
-> [sphinxcontrib-confluencebuilder v3 Cloud Users Notice](https://github.com/sphinx-contrib/confluencebuilder/issues/1166)
-
 ## Requirements
 
 * [Confluence][confluence] Cloud or Data Center 8.9+
