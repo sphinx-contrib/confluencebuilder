@@ -27,6 +27,7 @@ root_doc = 'contents'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx_inline_tabs',
 ]
 
 if any('spelling' in arg for arg in sys.argv):

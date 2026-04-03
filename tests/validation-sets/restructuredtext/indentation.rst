@@ -7,11 +7,11 @@ Indentation
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not support indenting block types. For example,
-              an indented paragraph with a list will always have the list rendered
-              without an indentation.
+            - Confluence Cloud does not support indenting block types. For
+              example, an indented paragraph with a list will always have the
+              list rendered without an indentation.
 
 reStructuredText supports the ability to `indent`_ content. The builder will
 translate the indented content into respective indented paragraphs. Content that

@@ -42,19 +42,18 @@ Type                    Notes
 `hyperlink targets`_    Supported
 `images`_               Limited support.
 
-                        When using a Confluence v2 editor, images cannot be
-                        inlined.
+                        When using Confluence Cloud, images cannot be inlined.
 `inline markup`_        Supported
 `list-table`_           Supported
 `literal blocks`_       Supported
 `math`_                 Supported with additional system tools.
 
                         Requires a LaTeX and dvipng/dvisvgm installation.
-                        When using a Confluence v2 editor, images cannot be
+                        When using Confluence Cloud, images cannot be
                         offset to be aligned in a paragraph.
 `parsed literal block`_ Limited support.
 
-                        When using a Confluence v2 editor, literal blocks
+                        When using Confluence Cloud, literal blocks
                         cannot be parsed and the contents will be placed
                         inside a code macro.
 `option lists`_         Supported
@@ -106,7 +105,7 @@ Type                    Notes
 `glossary`_             Supported
 `hlist`_                Limited support.
 
-                        When using a Confluence v2 editor, the maximum columns
+                        When using Confluence Cloud, the maximum columns
                         for an hlist is three.
 `manpage`_              Supported
 `production list`_      Supported

@@ -7,10 +7,10 @@ Parsed Literal Block
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not support disabling code lines.
-            - Confluence does not support parsing literal content.
+            - Confluence Cloud does not support disabling code lines.
+            - Confluence Cloud does not support parsing literal content.
 
 reStructuredText provides a `parsed literals`_ directive help render a
 literal block where the text is parsed for inline markup. Example markup
