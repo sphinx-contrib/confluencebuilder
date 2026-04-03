@@ -2359,14 +2359,17 @@ Advanced processing configuration
     Some documentation may rely on HTML-specific content, and if this HTML
     content is not too complex, this may be renderable on a Confluence
     instance. Users wanting to allow this can enable this option to have
-    HTML content directly injected on pages, or even placed inside an
-    HTML-supported macro (if such a macro is available for the target
-    Confluence instance):
+    HTML content directly injected on pages:
 
     .. code-block:: python
 
         confluence_permit_raw_html = True
-         (or)
+
+    Or even placed inside an HTML-supported macro (if such a macro is
+    available for the target Confluence instance):
+
+    .. code-block:: python
+
         confluence_permit_raw_html = 'html'
 
     Using this option is not supported. Content may be automatically
