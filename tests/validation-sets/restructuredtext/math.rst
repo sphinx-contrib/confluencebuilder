@@ -13,10 +13,10 @@ Math
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not allow image offset alignments in a paragraph.
-            - Confluence does not render gracefully SVG-generated images.
+            - Confluence Cloud does not allow image offset alignments in a paragraph.
+            - Confluence Cloud does not render gracefully SVG-generated images.
 
 reStructuredText defines a `math directive`_. Example markup is as follows:
 

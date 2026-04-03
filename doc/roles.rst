@@ -129,8 +129,7 @@ Smart links
 
 .. note::
 
-    Smart links will only render when using the v2 editor
-    (see :lref:`confluence_editor`).
+    Smart links will only render when using Confluence Cloud.
 
 Support for inlined smart links can be created using the following roles.
 

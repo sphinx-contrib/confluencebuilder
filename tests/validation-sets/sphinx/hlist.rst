@@ -7,7 +7,7 @@ Horizontal list
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
             - Maximum number of columns (``:columns:``) supported is
               three (``3``).

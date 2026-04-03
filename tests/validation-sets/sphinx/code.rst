@@ -21,10 +21,10 @@ Code block
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not support applying a code line offset.
-            - Confluence does not support disabling code lines.
+            - Confluence Cloud does not support applying a code line offset.
+            - Confluence Cloud does not support disabling code lines.
 
 The following contains a series of code examples using `Sphinx's code markup`_.
 Example markup is as follows:

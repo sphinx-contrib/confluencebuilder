@@ -7,9 +7,9 @@ Literal Blocks
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not support disabling code lines.
+            - Confluence Cloud does not support disabling code lines.
 
 reStructuredText provides a `literal block`_ directive help render a block
 of content in a monospaced typeface. Example markup is as follows:

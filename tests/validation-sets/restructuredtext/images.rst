@@ -7,7 +7,7 @@ Images
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
             - Images cannot be inlined with expected sizes (`CONFCLOUD-68501`_).
             - SVGs may not render properly (`CONFCLOUD-1762`_).

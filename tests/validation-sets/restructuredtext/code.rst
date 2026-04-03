@@ -7,10 +7,10 @@ Code
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
-            - Confluence does not support applying a code line offset.
-            - Confluence does not support disabling code lines.
+            - Confluence Cloud does not support applying a code line offset.
+            - Confluence Cloud does not support disabling code lines.
 
 reStructuredText provides a `code`_ directive help render a literal block
 where if a code language is specified, the content is parsed by a syntax

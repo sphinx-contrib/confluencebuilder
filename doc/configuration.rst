@@ -356,8 +356,7 @@ Generic configuration
 
     .. note::
 
-        This option is only supported using the ``v1``
-        :ref:`editor <confluence_editor>`.
+        This option is only supported on Confluence Data Center.
 
     Specifies the color scheme to use when displaying a Confluence code
     block macro.
@@ -1441,8 +1440,7 @@ Advanced publishing configuration
 
     .. note::
 
-        This option is only supported using the ``v1``
-        :ref:`editor <confluence_editor>`.
+        This option is only supported on Confluence Data Center.
 
     Configures the mode which pages will be fetched from Confluence. For
     Confluence Data Center instances, there may be performance issues when

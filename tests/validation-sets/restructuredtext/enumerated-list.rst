@@ -14,7 +14,7 @@ Enumerated list
 
         .. attention::
 
-            Limitations using the Fabric (``v2``) editor:
+            Limitations on Confluence Cloud:
 
             - Enumerator lists do not support explicit styling.
 
