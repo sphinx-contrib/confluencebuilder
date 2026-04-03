@@ -1770,13 +1770,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
         has_added = False
 
         classes = node.get('classes', [])
-        if classes in [['guilabel']]:
+        if 'guilabel' in classes:
             self.body.append(self.start_tag(node, 'em'))
             has_added = True
-        elif classes in [['accelerator']]:
+        elif 'accelerator' in classes:
             self.body.append(self.start_tag(node, 'u'))
             has_added = True
-        elif classes in [['strike']]:
+        elif 'strike' in classes:
             self.body.append(self.start_tag(node, 's'))
             has_added = True
         # [sphinx-design]
@@ -1824,7 +1824,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             has_added = True
         elif isinstance(node.parent, addnodes.desc_parameter):
             # check if an identifier in signature
-            if classes in [['n']]:
+            if 'n' in classes:
                 self.body.append(self.start_tag(node, 'em'))
                 has_added = True
 

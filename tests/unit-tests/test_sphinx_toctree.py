@@ -336,7 +336,7 @@ class TestConfluenceSphinxToctree(ConfluenceTestCase):
             self._verify_link(doc, '1.1!Z /+4child')
 
     def _verify_link(self, entity, title, label=None, anchor=None):
-        label = label if label else title
+        label = label or title
 
         ac_link = entity.find('ac:link', recursive=False)
         self.assertIsNotNone(ac_link)

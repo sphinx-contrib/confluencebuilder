@@ -42,13 +42,13 @@ def build_main(args_parser):
         logger.error('invalid define provided in command line')
         return 1
 
-    work_dir = args.work_dir if args.work_dir else Path.cwd()
+    work_dir = args.work_dir or Path.cwd()
     if args.output_dir:
         output_dir = args.output_dir
     else:
         output_dir = work_dir / '_build' / 'confluence'
     doctrees_dir = output_dir / '.doctrees'
-    builder = args.action if args.action else DEFAULT_BUILDER
+    builder = args.action or DEFAULT_BUILDER
 
     verbosity = 0
     if args.verbose:

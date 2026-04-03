@@ -48,7 +48,7 @@ def conntest_main(args_parser):
     if unknown_args:
         logger.warn('unknown arguments: {}'.format(' '.join(unknown_args)))
 
-    work_dir = args.work_dir if args.work_dir else Path.cwd()
+    work_dir = args.work_dir or Path.cwd()
 
     # ##################################################################
     # setup sphinx engine to extract configuration

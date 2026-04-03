@@ -34,7 +34,7 @@ class PublishDebug(Flag):
     # enable all logging
     all = data | headers | urllib3
     # enable all developer logging
-    developer = deprecated | all
+    developer = deprecated | all  # noqa: A003
 
 
 # list of headers to filter out in any debug captures

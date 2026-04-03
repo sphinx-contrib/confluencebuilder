@@ -421,7 +421,7 @@ class Rest:
         dump = PublishDebug.headers in publish_debug_opts
         dump_body = PublishDebug.headers_and_data in publish_debug_opts
 
-        base_url = url if url else self.url
+        base_url = url or self.url
         rest_url = f'{base_url}{path}'
         base_req = requests.Request(method, rest_url, *args, **kwargs)
         req = self.session.prepare_request(base_req)

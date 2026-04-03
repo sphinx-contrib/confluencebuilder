@@ -72,7 +72,7 @@ def report_main(args_parser):
 
     rv = 0
     offline = args.offline
-    work_dir = args.work_dir if args.work_dir else Path.cwd()
+    work_dir = args.work_dir or Path.cwd()
 
     # setup sphinx engine to extract configuration
     config = {}

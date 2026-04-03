@@ -44,8 +44,8 @@ class TestConfluenceConfigChecks(unittest.TestCase):
         self.config['confluence_space_key'] = 'DUMMY'
 
     def _try_config(self, config=None, edefs=None, relax=None, dataset=None):
-        config = config if config else self.minimal_config
-        dataset = dataset if dataset else self.dataset
+        config = config or self.minimal_config
+        dataset = dataset or self.dataset
 
         with prepare_sphinx(dataset,
                 config=config, extra_config=edefs, relax=relax) as app:
