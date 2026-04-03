@@ -1,24 +1,10 @@
 Configuration
 =============
 
-The following is an example of simple configuration (``conf.py``) for
-Confluence generation and publishing:
-
-.. code-block:: python
-
-    extensions = [
-        'sphinxcontrib.confluencebuilder',
-    ]
-    confluence_publish = True
-    confluence_space_key = 'TEST'
-    confluence_parent_page = 'Documentation'
-    confluence_server_url = 'https://intranet-wiki.example.com/'
-    confluence_server_user = 'myawesomeuser'
-    confluence_ask_password = True
-
-All configurations introduced by this extension are listed below. This
-extension may take advantage of a subset of `Sphinx configurations`_ as well
-when preparing documents.
+All configurations introduced by this extension are listed below. These may
+be used in a documentation project's `Sphinx configuration`_ (``conf.py``).
+This extension may take advantage of a subset of Sphinx-defined configurations
+as well when preparing documents.
 
 .. versionadded:: 1.9
 
@@ -35,6 +21,121 @@ when preparing documents.
     .. contents::
        :depth: 1
        :local:
+
+Example configurations
+----------------------
+
+The following shows example configurations (``conf.py``) for
+Confluence generation and publishing:
+
+.. tab:: Cloud
+
+    .. only:: latex
+
+        Example Cloud Configuration
+        ***************************
+
+    .. code-block:: python
+
+        extensions = [
+            'sphinxcontrib.confluencebuilder',
+        ]
+        confluence_publish = True
+        confluence_space_key = 'MYPRJ'
+        confluence_server_url = 'https://example.atlassian.net/'
+        confluence_parent_page = 'Documentation'
+        confluence_server_user = 'myawesomeuser@example.com'
+
+    With use of a token environment variable:
+
+    .. code-block:: none
+
+        export CONFLUENCE_API_TOKEN=TOKEN
+         (or)
+        set CONFLUENCE_API_TOKEN=TOKEN
+
+.. tab:: Cloud (Scoped Token)
+
+    .. only:: latex
+
+        Example Cloud (Scoped Token) Configuration
+        ******************************************
+
+    .. code-block:: python
+
+        extensions = [
+            'sphinxcontrib.confluencebuilder',
+        ]
+        confluence_publish = True
+        confluence_space_key = 'MYPRJ'
+        confluence_server_url = 'https://example.atlassian.net/'
+        confluence_parent_page = 'Documentation'
+        confluence_server_user = 'myawesomeuser@example.com'
+        confluence_api_token_scoped = True
+
+    With use of a token environment variable:
+
+    .. code-block:: none
+
+        export CONFLUENCE_API_TOKEN=TOKEN
+         (or)
+        set CONFLUENCE_API_TOKEN=TOKEN
+
+.. tab:: Cloud (Custom Domain)
+
+    .. raw:: latex
+
+        \newpage
+
+    .. only:: latex
+
+        Example Cloud (Custom Domain) Configuration
+        *******************************************
+
+    .. code-block:: python
+
+        extensions = [
+            'sphinxcontrib.confluencebuilder',
+        ]
+        confluence_publish = True
+        confluence_space_key = 'MYPRJ'
+        confluence_server_url = 'https://wiki.example.com/'
+        confluence_parent_page = 'Documentation'
+        confluence_server_user = 'myawesomeuser@example.com'
+        confluence_cloud = True
+
+    With use of a token environment variable:
+
+    .. code-block:: none
+
+        export CONFLUENCE_API_TOKEN=TOKEN
+         (or)
+        set CONFLUENCE_API_TOKEN=TOKEN
+
+.. tab:: Data Center
+
+    .. only:: latex
+
+        Example Data Center Configuration
+        *********************************
+
+    .. code-block:: python
+
+        extensions = [
+            'sphinxcontrib.confluencebuilder',
+        ]
+        confluence_publish = True
+        confluence_space_key = 'MYPRJ'
+        confluence_server_url = 'https://wiki.example.com/'
+        confluence_parent_page = 'Documentation'
+
+    With use of a token environment variable:
+
+    .. code-block:: none
+
+        export CONFLUENCE_PUBLISH_TOKEN=TOKEN
+         (or)
+        set CONFLUENCE_PUBLISH_TOKEN=TOKEN
 
 Essential configuration
 -----------------------
@@ -2680,7 +2781,7 @@ Deprecated options
 .. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
-.. _Sphinx configurations: https://www.sphinx-doc.org/en/master/usage/configuration.html
+.. _Sphinx configuration: https://www.sphinx-doc.org/en/master/usage/configuration.html
 .. _Sphinx's command line: https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
 .. _Using Personal Access Tokens: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html
