@@ -1713,7 +1713,7 @@ Advanced publishing configuration
 .. confval:: confluence_publish_intersphinx
 
     A publish event will upload a generated intersphinx's inventory
-    (`object.inv`) as an attachment to the configured root_doc_. Inventory
+    (``object.inv``) as an attachment to the configured root_doc_. Inventory
     files are typically small and should not cause issues for most users.
     However, if a user desired to not publish an inventory for their
     documentation, this option can be configured to ``False``. By default,
