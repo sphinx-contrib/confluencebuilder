@@ -5,6 +5,7 @@
 * Improve reported publish URL for setups using direct Cloud API endpoint
 * Support auto-retry on immediate page update version conflicts
 * Support new code types on Confluence Cloud (Handlebars, Markdown and TOML)
+* Support updating with resolved comments when setup to skip commented pages
 
 3.0 (2026-01-18)
 ================
