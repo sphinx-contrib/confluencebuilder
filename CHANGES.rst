@@ -1,8 +1,10 @@
-# Development
+Development
+===========
 
 * Handle Confluence dropped reference anchors on first publish
 * Improve reported publish URL for setups using direct Cloud API endpoint
 * Support auto-retry on immediate page update version conflicts
+* Support new code types on Confluence Cloud (Handlebars, Markdown and TOML)
 
 3.0 (2026-01-18)
 ================
