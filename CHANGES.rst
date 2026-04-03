@@ -1,5 +1,5 @@
-Development
-===========
+3.1 (2026-04-03)
+================
 
 * Handle Confluence dropped reference anchors on first publish
 * Improve reported publish URL for setups using direct Cloud API endpoint
