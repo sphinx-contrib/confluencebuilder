@@ -52,13 +52,10 @@ following:
 - Update documentation (if applicable). If a new change introduces, for
   example, a new configuration entry or markup support has changed with
   a request, do not forget to update respective documentation as well.
-- **Do not** update `AUTHORS` or `CHANGES.rst`. Author information and
-  change log information are managed by this extension's maintainers. These
-  files may be updated during a development window and will always be updated
-  during a release. If a contributor does not wish to add themselves to the
-  `AUTHORS` document, they may opt-out be explicitly indicating in a pull
-  request or issue. In select cases, users may open pull requests for these
-  documents if corrections are needed.
+- If desired, update `AUTHORS`.
+- **Do not** `CHANGES.rst`. Change log information is managed by this
+  extension's maintainers. The change log may be updated during a
+  development window and will always be updated during a release.
 
 While maintainers will help strive to review, merge changes and provide
 support (when possible), the process may take some time. Please be patient
