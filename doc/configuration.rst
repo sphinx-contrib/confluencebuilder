@@ -26,7 +26,7 @@ when preparing documents.
     environment. For example, if :lref:`confluence_publish` is not explicitly
     set inside ``conf.py`` or provided via `Sphinx's command line`_, this
     extension may check the ``CONFLUENCE_PUBLISH`` environment option as a
-    fallback. Note that this only applies options provided below and will
+    fallback. Note that this only applies to options provided below and will
     not work for other configuration options provided by Sphinx or other
     Sphinx extensions.
 
