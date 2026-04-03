@@ -305,6 +305,33 @@ Essential configuration
 
         confluence_server_pass = 'myawesomepassword'
 
+.. _confluence_cloud:
+
+.. confval:: confluence_cloud
+
+    .. tip::
+
+        Users only need to explicitly set this if using a Confluence Cloud
+        instance hosted with a custom domain name.
+
+    A boolean value to whether or not to treat the configured
+    :lref:`confluence_server_url` configuration as an Atlassian Cloud site.
+    Cloud detection is implicitly performed to help determine which APIs and
+    default editor to use. However, some environments may be utilizing custom
+    domains that point to Atlassian Cloud services which can make it non-trivial
+    to determine if the site is Cloud-based or not. This option can be used to
+    explicitly configure if the site being published on is a Cloud-based
+    instance. By default, automatic cloud detection occurs with a value of
+    ``None``.
+
+    .. code-block:: python
+
+        confluence_cloud = True
+
+    See also :lref:`confluence_editor`.
+
+    .. versionadded:: 3.0
+
 Generic configuration
 ---------------------
 
@@ -928,28 +955,6 @@ Publishing configuration
     - :lref:`confluence_publish_dryrun`
 
     .. versionadded:: 1.9
-
-.. _confluence_cloud:
-
-.. confval:: confluence_cloud
-
-    A boolean value to whether or not to treat the configured
-    :lref:`confluence_server_url` configuration as an Atlassian Cloud site.
-    Cloud detection is implicitly performed to help determine which APIs and
-    default editor to use. However, some environments may be utilizing custom
-    domains that point to Atlassian Cloud services which can make it non-trivial
-    to determine if the site is Cloud-based or not. This option can be used to
-    explicitly configure if the site being published on is a Cloud-based
-    instance. By default, automatic cloud detection occurs with a value of
-    ``None``.
-
-    .. code-block:: python
-
-        confluence_cloud = True
-
-    See also :lref:`confluence_editor`.
-
-    .. versionadded:: 3.0
 
 .. _confluence_disable_notifications:
 

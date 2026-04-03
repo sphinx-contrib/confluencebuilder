@@ -107,6 +107,8 @@ def setup(app):
     cm.add_conf('confluence_api_token')
     # Whether the API token is a scoped token
     cm.add_conf_bool('confluence_api_token_scoped')
+    # Force override for detected Cloud state.
+    cm.add_conf_bool('confluence_cloud')
     # PAT to authenticate to Confluence API with.
     cm.add_conf('confluence_publish_token')
     # Password to login to Confluence API with.
@@ -173,8 +175,6 @@ def setup(app):
     cm.add_conf_bool('confluence_cleanup_from_root')
     # Enablement of purging legacy child pages.
     cm.add_conf_bool('confluence_cleanup_purge')
-    # Force override for detected Cloud state.
-    cm.add_conf_bool('confluence_cloud')
     # Explicitly prevent page notifications on update.
     cm.add_conf_bool('confluence_disable_notifications')
     # Whether to utilize the full width of a Confluence page.
