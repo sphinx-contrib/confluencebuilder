@@ -243,6 +243,10 @@ LITERAL2LANG_MAP_V2 = {
     'golang': 'go',
     # GraphQL
     'graphql': 'graphql',
+    # Handlebars
+    'handlebars': 'handlebars',
+    'hbs': 'handlebars',
+    'html+handlebars': 'handlebars',
     # Haskell
     'haskell': 'haskell',
     'hs': 'haskell',
@@ -274,6 +278,9 @@ LITERAL2LANG_MAP_V2 = {
     'livescript': 'livescript',
     # Lua
     'lua': 'lua',
+    # Markdown
+    'markdown': 'markdown',
+    'md': 'markdown',
     # Mathematica
     'mathematica': 'mathematica',
     'mma': 'mathematica',
@@ -343,6 +350,8 @@ LITERAL2LANG_MAP_V2 = {
     # TeX
     'latex': 'tex',
     'tex': 'tex',
+    # TOML
+    'toml': 'toml',
     # TSX
     'tsx': 'tsx',
     # TypeScript
