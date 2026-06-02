@@ -841,20 +841,24 @@ class ConfluencePublisher:
             chunked_hash = '\n'.join(
                 [hash_[i:i + 16] for i in range(0, len(hash_), 16)])
 
-            data = {
+            form_data = {
                 'comment': chunked_hash,
+            }
+
+            files = {
                 'file': (name, data, mimetype),
             }
 
             if not self.notify:
                 # using str over bool to support requests pre-v2.19.0
-                data['minorEdit'] = 'true'
+                form_data['minorEdit'] = 'true'
 
             if not attachment:
                 url = f'{self.APIV1}content/{page_id}/child/attachment'
 
                 try:
-                    rsp = self.rest.post(url, None, files=data)
+                    rsp = self.rest.post(
+                        url, None, form_data=form_data, files=files)
                     uploaded_attachment_id = rsp['results'][0]['id']
                 except ConfluenceBadApiError as ex:
                     # file type restricted? generate a warning
@@ -898,7 +902,8 @@ class ConfluencePublisher:
             if attachment:
                 url = '{}content/{}/child/attachment/{}/data'.format(
                     self.APIV1, page_id, attachment['id'])
-                rsp = self.rest.post(url, None, files=data)
+                rsp = self.rest.post(
+                    url, None, form_data=form_data, files=files)
                 uploaded_attachment_id = rsp['id']
 
             if not self.watch:

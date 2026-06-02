@@ -342,9 +342,9 @@ class Rest:
     @confluence_error_retries()
     @rate_limited_retries()
     @requests_exception_wrappers()
-    def post(self, path, data, files=None, *, url=None):
+    def post(self, path, data, form_data=None, files=None, *, url=None):
         rsp = self._process_request(
-            'POST', path, json=data, files=files, url=url)
+            'POST', path, json=data, data=form_data, files=files, url=url)
 
         if not rsp.ok:
             errdata = self._format_error(rsp, path)
