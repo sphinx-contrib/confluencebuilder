@@ -285,7 +285,7 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #    before the header, it increase the space above the anchor
             #    due to how v2 styles a page.
             # - We are generating compatible anchor links (prefixed with the
-            #    repsective document name) which helps allow `ac:link` macros
+            #    respective document name) which helps allow `ac:link` macros
             #    properly link when coming from v1 or v2 editor pages.
             # - Helps support anchor links for legacy editor on Confluence Cloud
             if 'names' in node.parent:
