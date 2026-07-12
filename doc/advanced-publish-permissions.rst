@@ -27,6 +27,8 @@ scopes are required:
     read:content-details:confluence
     write:attachment:confluence
     delete:attachment:confluence
+    read:label:confluence
+    write:label:confluence
     write:watcher:confluence
 
 .. references ------------------------------------------------------------------

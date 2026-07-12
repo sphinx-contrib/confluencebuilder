@@ -28,10 +28,12 @@ On this page:
   - ``read:content-details:confluence``
   - ``read:content.metadata:confluence``
   - ``read:content.property:confluence``
+  - ``read:label:confluence``
   - ``read:page:confluence``
   - ``read:space:confluence``
   - ``write:attachment:confluence``
   - ``write:content.property:confluence``
+  - ``write:label:confluence``
   - ``write:page:confluence``
   - ``write:watcher:confluence``
   - ``delete:attachment:confluence``
