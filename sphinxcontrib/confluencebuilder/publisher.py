@@ -360,7 +360,7 @@ class ConfluencePublisher:
             (depending on the version of Confluence, possible caching, etc.).
 
         - `<mode>-aggressive`
-            Descendants will be queried in the same manner as the specied mode
+            Descendants will be queried in the same manner as the specified mode
             type, with the addition that for each page found, an additional
             fetching will be performed to check for descendants for a found
             descendant. Querying stops when all descendants have been fetched
