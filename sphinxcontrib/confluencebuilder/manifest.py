@@ -187,6 +187,7 @@ class ConfluenceManifest:
         manifest_path = out_dir / 'scb-manifest.json'
         with manifest_path.open('w') as fp:
             json.dump(self.data, fp, indent=4)
+            fp.write('\n')
 
     def _resolve_path(self, path: Path, base: Path) -> str:
         """
