@@ -16,12 +16,15 @@ lint.ignore = [
     # various translator/role/etc. definitions may not use all/any arguments
     'ARG001',
     'ARG002',
-    # we are a bit complex for now
+    # we are a bit complex
     'C90',
     'PLR0911',
     'PLR0912',
     'PLR0913',
     'PLR0915',
+    'PLR0917',
+    # we have copyright headers set in the format desired
+    'CPY001',
     # ignore pydocstyle
     'D',
     # ignore line too long lengths; as we aim to provide implementation that
