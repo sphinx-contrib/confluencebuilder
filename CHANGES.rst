@@ -1,3 +1,9 @@
+Development
+===========
+
+* Ensure REST calls push form data and files with expected content-types
+* Ensure generated manifests end with a newline
+
 3.1 (2026-04-03)
 ================
 
