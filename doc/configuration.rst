@@ -2381,6 +2381,10 @@ Advanced processing configuration
 
         confluence_manifest_data = True
 
+    See also:
+
+    - `Sphinx Confluence Relay`_ (external)
+
     .. versionadded:: 2.10
 
 .. index:: Mentions; Configuration
@@ -2781,6 +2785,7 @@ Deprecated options
 .. _Requests -- Authentication: https://requests.readthedocs.io/en/stable/user/authentication/
 .. _Requests SSL Cert Verification: https://requests.readthedocs.io/en/stable/user/advanced/#ssl-cert-verification
 .. _Requests: https://pypi.python.org/pypi/requests
+.. _Sphinx Confluence Relay: https://pypi.org/project/sphinx-confluence-relay/
 .. _Sphinx configuration: https://www.sphinx-doc.org/en/master/usage/configuration.html
 .. _Sphinx's command line: https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D
 .. _TLS/SSL wrapper for socket object: https://docs.python.org/3/library/ssl.html#ssl.create_default_context
