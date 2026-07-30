@@ -28,6 +28,12 @@ except:  # noqa: E722
     has_sphinx_toolbox_collapse = False
 
 try:
+    from sphinx_toolbox.collapse import CollapseSummaryNode as sphinx_toolbox_CollapseSummaryNode
+    has_sphinx_toolbox_collapse_summary = True
+except:  # noqa: E722
+    has_sphinx_toolbox_collapse_summary = False
+
+try:
     from sphinx_toolbox.github.issues import IssueNode as sphinx_toolbox_IssueNode
     from sphinx_toolbox.github.issues import IssueNodeWithName as sphinx_toolbox_IssueNodeWithName
     has_sphinx_toolbox_github_issues = True
@@ -87,6 +93,15 @@ def replace_sphinx_toolbox_nodes(builder, doctree):
                 new_label = node.label
             else:
                 new_label = node.get('label', '')
+
+            # if this collapsed node has a summary node, use its value as the
+            # label instead; this will remove any formatting on the label
+            # content (since formatting is not supporting in Confluence expand
+            # macros)
+            if has_sphinx_toolbox_collapse_summary:
+                next_child = first(findall(node, include_self=False))
+                if isinstance(next_child, sphinx_toolbox_CollapseSummaryNode):
+                    new_label = next_child.astext()
 
             new_node.attributes['title'] = new_label
             node.replace_self(new_node)

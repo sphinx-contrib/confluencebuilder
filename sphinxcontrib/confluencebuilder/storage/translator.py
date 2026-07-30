@@ -3199,6 +3199,9 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
     # sphinx -- extension (third party) -- sphinx-toolbox
     # ---------------------------------------------------
 
+    def visit_CollapseSummaryNode(self, node):
+        raise nodes.SkipNode
+
     def visit_ItalicAbbreviationNode(self, node):
         self.body.append(self.start_tag(node, 'i'))
         self.context.append(self.end_tag(node))
