@@ -5,8 +5,9 @@
 [![Documentation Status](https://img.shields.io/readthedocs/sphinxcontrib-confluencebuilder?label=Documentation)](https://sphinxcontrib-confluencebuilder.readthedocs.io/) 
 [![PyPI download month](https://img.shields.io/pypi/dm/sphinxcontrib-confluencebuilder.svg?label=Downloads)](https://pypi.python.org/pypi/sphinxcontrib-confluencebuilder/) 
 
-[Sphinx][sphinx] extension to build Confluence® compatible markup format
-files and optionally publish them to a Confluence instance.
+[Sphinx][sphinx] ([GitHub][sphinx-github]) extension to build Confluence®
+compatible markup format files and optionally publish them to a Confluence
+instance.
 
 ## Requirements
 
@@ -107,4 +108,5 @@ Confluence is a registered trademark of Atlassian Pty Ltd.
 [pip]: https://pip.pypa.io/
 [python]: https://www.python.org/
 [requests]: https://pypi.python.org/pypi/requests
+[sphinx-github]: https://github.com/sphinx-doc/sphinx
 [sphinx]: https://www.sphinx-doc.org/
