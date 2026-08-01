@@ -3,6 +3,8 @@ Development
 
 * Ensure REST calls push form data and files with expected content-types
 * Ensure generated manifests end with a newline
+* Improve support when using the sphinx_toolbox extension
+* Use both page hash and version to consider a new publish event
 
 3.1 (2026-04-03)
 ================
