@@ -288,10 +288,13 @@ class ConfluenceStorageFormatTranslator(ConfluenceBaseTranslator):
             #    respective document name) which helps allow `ac:link` macros
             #    properly link when coming from v1 or v2 editor pages.
             # - Helps support anchor links for legacy editor on Confluence Cloud
-            if 'names' in node.parent:
-                for name in node.parent['names']:
-                    anchor = name.replace(' ', '-')
-                    target_name = f'{docname}/#{anchor}'
+            # Key off the section's `ids` (docutils' ascii-safe slugs), not
+            # `names` (which preserves punctuation like "&"), since `ids` is
+            # the exact key `_register_doctree_targets` in builder.py always
+            # registers under, regardless of special characters in the title.
+            if 'ids' in node.parent:
+                for id_ in node.parent['ids']:
+                    target_name = f'{docname}/#{id_}'
                     target = self.state.target(target_name)
                     if target and target not in new_targets:
                         self._build_anchor(node, target, force_compat=True)
