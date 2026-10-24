@@ -36,7 +36,6 @@ jobs:
       matrix:
         include:
             # test each python/sphinx pair supported
-            - { os:  ubuntu-latest, python: "3.10", toxenv: py310-sphinx81, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx81, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx82, cache: ~/.cache/pip }
             - { os:  ubuntu-latest, python: "3.11", toxenv: py311-sphinx90, cache: ~/.cache/pip }
