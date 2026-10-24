@@ -43,7 +43,7 @@ classifiers = [
 ]
 dependencies = [
     'requests>=2.30.0',
-    'sphinx>=8.0',
+    'sphinx>=8.1',
 ]
 dynamic = [
     'version',
