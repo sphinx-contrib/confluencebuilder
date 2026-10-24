@@ -1,3 +1,9 @@
+Development
+===========
+
+* Dropped support for Python 3.10 (EOL)
+* Fixed for anchor macros in section titles containing special characters
+
 3.2 (2026-08-01)
 ================
 
