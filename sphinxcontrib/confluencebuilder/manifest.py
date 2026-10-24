@@ -2,8 +2,8 @@
 # Copyright Sphinx Confluence Builder Contributors (AUTHORS)
 
 from base64 import b64encode
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from docutils import __version__ as docutils_version
 from pathlib import Path
 from sphinx import __version__ as sphinx_version
@@ -181,7 +181,7 @@ class ConfluenceManifest:
             'confluencebuilderVersion': scb_version,
             'sphinxVersion': sphinx_version,
             'docutilsVersion': docutils_version,
-            'generated': datetime.now(timezone.utc).isoformat(),
+            'generated': datetime.now(UTC).isoformat(),
         })
 
         manifest_path = out_dir / 'scb-manifest.json'

@@ -1,5 +1,5 @@
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from pathlib import Path
 import json
 
@@ -19,7 +19,7 @@ with data.open('rb') as f:
 
 for feature in data['features']:
     raw_sec = float(feature['properties']['time'])/1000
-    ts = datetime.fromtimestamp(raw_sec, tz=timezone.utc)
+    ts = datetime.fromtimestamp(raw_sec, tz=UTC)
     feature['properties']['time_str'] = ts.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 # inject data for our directive

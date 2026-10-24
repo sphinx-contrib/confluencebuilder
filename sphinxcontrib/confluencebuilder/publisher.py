@@ -1892,7 +1892,7 @@ class ConfluencePublisher:
         for attempt in range(MAX_ATTEMPTS_TO_UPDATE_PAGE):
             try:
                 self.rest.put(update_path, page['id'], update_page)
-            except ConfluenceBadApiError as ex:  # noqa: PERF203
+            except ConfluenceBadApiError as ex:
                 if ex.status_code == 409:
                     if attempt >= MAX_ATTEMPTS_TO_UPDATE_PAGE - 1:
                         raise

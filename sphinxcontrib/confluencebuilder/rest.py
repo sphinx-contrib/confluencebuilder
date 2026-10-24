@@ -110,7 +110,7 @@ def confluence_error_retries():
             while True:
                 try:
                     return func(self, *args, **kwargs)
-                except ConfluenceBadApiError as ex:  # noqa: PERF203
+                except ConfluenceBadApiError as ex:
                     # if max attempts have been reached, stop any more attempts
                     if attempt > retry_attempts:
                         raise
@@ -188,7 +188,7 @@ def rate_limited_retries():
             while True:
                 try:
                     return func(self, *args, **kwargs)
-                except ConfluenceRateLimitedError:  # noqa: PERF203
+                except ConfluenceRateLimitedError:
                     # if max attempts have been reached, stop any more attempts
                     if attempt > RATE_LIMITED_MAX_RETRIES:
                         raise
