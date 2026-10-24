@@ -26,7 +26,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: Install
       run: |
@@ -48,14 +48,14 @@ jobs:
         make latexpdf
 
     - name: Archive generated PDF
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: sphinxcontrib-confluencebuilder.pdf
         path: doc/_build/latex/sphinxconfluencebuilder.pdf
         retention-days: 10
 
     - name: Archive PDF Raw Output
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: pdf-output
