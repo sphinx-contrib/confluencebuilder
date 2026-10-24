@@ -14,7 +14,7 @@ authors = [
 maintainers = [
     {name = 'James Knight', email = 'git@jdknight.me'},
 ]
-requires-python = '>=3.10'
+requires-python = '>=3.11'
 readme = 'README.md'
 license = 'BSD-2-Clause'
 license-files = [
@@ -32,11 +32,11 @@ classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3 :: Only',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
     'Programming Language :: Python :: 3.14',
+    'Programming Language :: Python :: 3.15',
     'Topic :: Documentation',
     'Topic :: Documentation :: Sphinx',
     'Topic :: Utilities',
