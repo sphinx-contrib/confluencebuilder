@@ -43,7 +43,7 @@ RATE_LIMITED_MAX_RETRY_DURATION = 30
 REMOTE_ERR_MAX_RETRIES = 2
 
 # the maximum duration (in seconds) a retry on a erred request can be delayed
-REMOTE_ERR_MAX_RETRY_DURATION = 4
+REMOTE_ERR_MAX_RETRY_DURATION = 10
 
 
 class SslAdapter(HTTPAdapter):
