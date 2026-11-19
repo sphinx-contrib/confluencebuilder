@@ -110,6 +110,8 @@ def confluence_error_retries():
             while True:
                 try:
                     return func(self, *args, **kwargs)
+                # if an api failure has occurred, check status codes and
+                # messages to see if we should retry the request
                 except ConfluenceBadApiError as ex:
                     # if max attempts have been reached, stop any more attempts
                     if attempt > retry_attempts:
@@ -135,19 +137,27 @@ def confluence_error_retries():
                     # state.
                     elif not any(x in ex_str for x in API_RETRY_ERRORS):
                         raise
+                # if a bad server scenario happens after we already performed
+                # an initial connection test, there may be an availability
+                # issue with the configured confluence instance (server busy,
+                # proxy issues, etc.); perform a generic retry
+                except ConfluenceBadServerUrlError:
+                    # if max attempts have been reached, stop any more attempts
+                    if attempt > retry_attempts:
+                        raise
 
-                    # configure the delay
-                    delay = retry_duration
+                # configure the delay
+                delay = retry_duration
 
-                    # add jitter
-                    delay += random.uniform(0.0, 0.5)  # noqa: S311
+                # add jitter
+                delay += random.uniform(0.0, 0.5)  # noqa: S311
 
-                    # wait the calculated delay before retrying again
-                    reported_delay = math.ceil(delay)
-                    logger.info('unexpected rest response detected; '
-                                f'retrying in {reported_delay} seconds...')
-                    time.sleep(delay)
-                    attempt += 1
+                # wait the calculated delay before retrying again
+                reported_delay = math.ceil(delay)
+                logger.info('unexpected rest response detected; '
+                            f'retrying in {reported_delay} seconds...')
+                time.sleep(delay)
+                attempt += 1
 
         return _wrapper
     return _decorator
