@@ -2,7 +2,12 @@ Development
 ===========
 
 * Dropped support for Python 3.10 (EOL)
+* Extend language mappings for supported storage format language types
+* Fallback retries increased from four to ten seconds
 * Fixed for anchor macros in section titles containing special characters
+* More information printed in REST failure/debug scenarios
+* Override SVG MIME type to workaround Confluence Cloud publish issues
+* Retry on Confluence non-JSON responses during limited availability
 
 3.2 (2026-08-01)
 ================
