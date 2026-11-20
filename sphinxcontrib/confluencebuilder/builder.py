@@ -48,7 +48,6 @@ from sphinxcontrib.confluencebuilder.util import handle_cli_file_subset
 from sphinxcontrib.confluencebuilder.writer import ConfluenceWriter
 import os
 import tempfile
-import time
 
 
 class ConfluenceBuilder(Builder):
@@ -639,13 +638,6 @@ class ConfluenceBuilder(Builder):
                         verbosity=self._verbose):
                     attachments = self.publisher.get_attachments(legacy_page)
                     self.legacy_assets[legacy_page] = attachments
-
-                    # unknown cause but using a nested status_iterator appears
-                    # to not flush log events to users standard output without
-                    # sleeping -- not sure if its the logger, a threading/gil
-                    # situation with this implementation or more -- although
-                    # looks if we wait a moment, logging works as expected
-                    time.sleep(0.1)
 
         if self.post_cleanup:
             if uploaded_id in self.legacy_pages:
