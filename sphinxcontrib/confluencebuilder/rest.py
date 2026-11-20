@@ -5,6 +5,7 @@ from email.utils import mktime_tz
 from email.utils import parsedate_tz
 from functools import wraps
 from requests.adapters import HTTPAdapter
+from requests.exceptions import RequestException
 from sphinxcontrib.confluencebuilder.debug import FILTERED_HEADERS
 from sphinxcontrib.confluencebuilder.debug import PublishDebug
 from sphinxcontrib.confluencebuilder.exceptions import ConfluenceAuthenticationFailedUrlError
@@ -415,15 +416,33 @@ class Rest:
         self.session.close()
 
     def _format_error(self, rsp, path):
-        err = ""
-        err += f"REQ: {rsp.request.method}\n"
-        err += "RSP: " + str(rsp.status_code) + "\n"
-        err += "URL: " + self.url + "\n"
-        err += "API: " + path + "\n"
-        try:
-            err += f'DATA: {json.dumps(rsp.json(), indent=2)}'
-        except:  # noqa: E722
-            err += 'DATA: <not-or-invalid-json>'
+        err = ''
+        err += f'REQ: {rsp.request.method}\n'
+        err += f'RSP: {rsp.status_code}\n'
+        err += f'URL: {self.url}\n'
+        err += f'API: {path}\n'
+
+        if rsp.content:
+            try:
+                data = rsp.json()
+            except (RequestException, ValueError):
+                try:
+                    LIMIT_TEXT = 5000
+                    text = rsp.content.decode('utf-8')[:LIMIT_TEXT].strip()
+                except UnicodeDecodeError:
+                    err += 'DATA: <binary-or-non-utf8>'
+                else:
+                    if not text:
+                        err += 'DATA: (empty)'
+                    elif '\x00' in text:
+                        err += 'DATA: <binary-content>'
+                    else:
+                        err += f'DATA: {" ".join(text.split())}'
+            else:
+                err += f'DATA: {json.dumps(data, indent=2)}'
+        else:
+            err += 'DATA: (empty)'
+
         return err
 
     def _process_request(self, method, path, url=None, *args, **kwargs):
