@@ -88,26 +88,140 @@ LITERAL2LANG_MAP_COMMON = {
     'none': 'none',
     'raw': 'none',
     'text': 'none',
+    # ABAP (Confluence Data Center >=9.1)
+    'abap': 'abap',
     # ActionScript
     'actionscript3': 'actionscript3',
     'as3': 'actionscript3',
     # AppleScript (Confluence >=6.0)
     'applescript': 'applescript',
+    # Ada (Confluence Data Center >=9.1)
+    'ada': 'ada',
+    'ada2005': 'ada',
+    'ada95': 'ada',
+    # Arduino (Confluence Data Center >=9.1)
+    'arduino': 'arduino',
+    # Autoit (Confluence Data Center >=9.1)
+    'autoit': 'autoit',
+    # C (Confluence Data Center >=9.1; "cpp -> c")
+    'c': 'c',
     # C++
     'c++': 'cpp',
     'cpp': 'cpp',
+    # Clojure (Confluence Data Center >=9.1)
+    'clj': 'clojure',
+    'clojure': 'clojure',
+    # CoffeeScript (Confluence Data Center >=9.1)
+    'coffee': 'coffeescript',
+    'coffee-script': 'coffeescript',
+    'coffeescript': 'coffeescript',
     # ColdFusion
     'cfc': 'coldfusion',
     'coldfusion': 'coldfusion',
+    # CSS
+    'css': 'css',
+    # CUDA (Confluence Data Center >=9.1)
+    'cu': 'cuda',
+    'cuda': 'cuda',
+    # D (Confluence Data Center >=9.1)
+    'd': 'd',
+    # Dart (Confluence Data Center >=9.1)
+    'dart': 'dart',
     # Diff
     'diff': 'diff',
     'udiff': 'diff',
+    # Dockerfile (Confluence Data Center >=9.1)
+    'docker': 'docker',
+    'dockerfile': 'docker',
+    # Elixir (Confluence Data Center >=9.1)
+    'elixir': 'elixir',
+    'ex': 'elixir',
+    'exs': 'elixir',
+    # Fortran (Confluence Data Center >=9.1)
+    'f90': 'fortran',
+    'fortran': 'fortran',
+    # FoxPro (Confluence Data Center >=9.1)
+    'clipper': 'foxpro',
+    'foxpro': 'foxpro',
+    'vfp': 'foxpro',
+    'xbase': 'foxpro',
+    # Gherkin (Confluence Data Center >=9.1)
+    'cucumber': 'gherkin',
+    'gherkin': 'gherkin',
+    # Go (Confluence Data Center >=9.1)
+    'go': 'go',
+    'golang': 'go',
+    # GraphQL (Confluence Data Center >=9.1)
+    'graphql': 'graphql',
     # Groovy
     'groovy': 'groovy',
+    # Handlebars (Confluence Data Center >=9.1)
+    'handlebars': 'handlebars',
+    'hbs': 'handlebars',
+    'html+handlebars': 'handlebars',
+    # Haskell (Confluence Data Center >=9.1)
+    'haskell': 'haskell',
+    'hs': 'haskell',
+    # Haxe (Confluence Data Center >=9.1)
+    'haxe': 'haxe',
+    'hx': 'haxe',
+    'hxsl': 'haxe',
+    # HCL (Confluence Data Center >=9.1)
+    'hcl': 'hcl',
+    'terraform': 'hcl',
+    'tf': 'hcl',
+    # HTML (Confluence Data Center >=9.1; "html/xml -> html")
+    'html': 'html/xml',
+    'html/xml': 'html/xml',
     # Java
     'java': 'java',
     # Java FX
     'javafx': 'javafx',
+    # JSON (Confluence Data Center >=9.1)
+    'json': 'json',
+    'json-object': 'json',
+    # JSX (Confluence Data Center >=9.1)
+    'jsx': 'jsx',
+    # Julia (Confluence Data Center >=9.1)
+    'jl': 'julia',
+    'julia': 'julia',
+    # Kotlin (Confluence Data Center >=9.1)
+    'kotlin': 'kotlin',
+    # LiveScript (Confluence Data Center >=9.1)
+    'live-script': 'livescript',
+    'livescript': 'livescript',
+    # Lua (Confluence Data Center >=9.1)
+    'lua': 'lua',
+    # Markdown
+    'markdown': 'markdown',
+    'md': 'markdown',
+    # Mathematica (Confluence Data Center >=9.1)
+    'mathematica': 'mathematica',
+    'mma': 'mathematica',
+    'nb': 'mathematica',
+    # MATLAB (Confluence Data Center >=9.1)
+    'matlab': 'matlab',
+    # NGINX (Confluence Data Center >=9.1)
+    'nginx': 'nginx',
+    # Objective-C (Confluence Data Center >=9.1)
+    'obj-c': 'objective-c',
+    'objc': 'objective-c',
+    'objective-c': 'objective-c',
+    'objectivec': 'objective-c',
+    # Objective-J (Confluence Data Center >=9.1)
+    'obj-j': 'objective-j',
+    'objective-j': 'objective-j',
+    'objectivej': 'objective-j',
+    'objj': 'objective-j',
+    # OCaml (Confluence Data Center >=9.1)
+    'ocaml': 'ocaml',
+    # Octave (Confluence Data Center >=9.1)
+    'octave': 'octave',
+    # Pascal (Confluence Data Center >=9.1; "delphi -> pas")
+    'delphi': 'pas',
+    'pas': 'pas',
+    'pascal': 'pas',
+    'objectpascal': 'pas',
     # Perl (Confluence <=5.10)
     'perl': 'perl',
     'pl': 'perl',
@@ -122,6 +236,13 @@ LITERAL2LANG_MAP_COMMON = {
     'ps1': 'powershell',
     'psm1': 'powershell',
     'pwsh': 'powershell',
+    # Prolog (Confluence Data Center >=9.1)
+    'prolog': 'prolog',
+    # Protocol Buffers (Confluence Data Center >=9.1)
+    'proto': 'protobuf',
+    'protobuf': 'protobuf',
+    # Puppet (Confluence Data Center >=9.1)
+    'puppet': 'puppet',
     # Python
     'bazel': 'python',
     'py': 'python',
@@ -130,10 +251,25 @@ LITERAL2LANG_MAP_COMMON = {
     'python3': 'python',
     'sage': 'python',
     'starlark': 'python',
+    # QML (Confluence Data Center >=9.1)
+    'qbs': 'qbs',
+    'qml': 'qbs',
+    # R (Confluence Data Center >=9.1)
+    'r': 'r',
+    # Racket (Confluence Data Center >=9.1)
+    'racket': 'racket',
+    'rkt': 'racket',
+    # reStructuredText (Confluence Data Center >=9.1)
+    'rest': 'restructuredtext',
+    'restructuredtext': 'restructuredtext',
+    'rst': 'restructuredtext',
     # Ruby
     'duby': 'ruby',
     'rb': 'ruby',
     'ruby': 'ruby',
+    # Rust (Confluence Data Center >=9.1)
+    'rs': 'rust',
+    'rust': 'rust',
     # Sass
     'sass': 'sass',
     # Scala
@@ -145,14 +281,69 @@ LITERAL2LANG_MAP_COMMON = {
     'sh': 'bash',
     'shell': 'bash',
     'zsh': 'bash',
+    # Scheme (Confluence Data Center >=9.1)
+    'scm': 'scheme',
+    'scheme': 'scheme',
+    # Smalltalk (Confluence Data Center >=9.1)
+    'smalltalk': 'smalltalk',
+    'squeak': 'smalltalk',
+    'st': 'smalltalk',
+    # SplunkSPL (Confluence Data Center >=9.1)
+    'spl': 'splunk-spl',
+    'splunkspl': 'splunk-spl',
     # SQL
     'sql': 'sql',
+    # StandardML (Confluence Data Center >=9.1)
+    'sml': 'standardml',
+    'standardml': 'standardml',
+    # Swift (Confluence Data Center >=9.1)
+    'swift': 'swift',
+    # Tcl (Confluence Data Center >=9.1)
+    'tcl': 'tcl',
+    # TeX (Confluence Data Center >=9.1)
+    'latex': 'tex',
+    'tex': 'tex',
+    # TSX (Confluence Data Center >=9.1)
+    'tsx': 'tsx',
+    # TypeScript (Confluence Data Center >=9.1)
+    'ts': 'typescript',
+    'typescript': 'typescript',
+    # Vala (Confluence Data Center >=9.1)
+    'vala': 'vala',
+    'vapi': 'vala',
+    # VbNet (Confluence Data Center >=9.1)
+    'lobas': 'vbnet',
+    'oobas': 'vbnet',
+    'sobas': 'vbnet',
+    'vb.net': 'vbnet',
+    'vbnet': 'vbnet',
+    # Verilog (Confluence Data Center >=9.1)
+    'v': 'verilog',
+    'verilog': 'verilog',
     # Visual Basic
     'vb': 'vb',
     'vbscript': 'vb',
     'visualbasic': 'vb',
+    # VHDL (Confluence Data Center >=9.1)
+    'vhdl': 'vhdl',
+    # XML (Confluence Data Center >=9.1; "html/xml -> xml")
+    'xml': 'xml',
+    'xslt': 'xml',
+    # XQuery (Confluence Data Center >=9.1)
+    'xq': 'xquery',
+    'xql': 'xquery',
+    'xqm': 'xquery',
+    'xquery': 'xquery',
+    'xqy': 'xquery',
     # YAML (Confluence Server >=6.7)
     'yaml': 'yaml',
+    # (special)
+    # Sphinx's default highlight language is based off a superset of 'python'.
+    # To follow Sphinx's method of highlighting, use Confluence's 'python'
+    # highlight type as the target language for the default type.
+    #
+    # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
+    DEFAULT_HIGHLIGHT_STYLE: 'python',
 }
 
 LITERAL2LANG_MAP_V1 = {
@@ -160,233 +351,27 @@ LITERAL2LANG_MAP_V1 = {
     # C#
     'c#': 'csharp',
     'csharp': 'csharp',
-    # C
-    'c': 'cpp',
-    # CSS
-    'css': 'css',
-    # Delphi
-    'delphi': 'delphi',
-    'pas': 'delphi',
-    'pascal': 'delphi',
-    'objectpascal': 'delphi',
     # Erlang
     'erlang': 'erlang',
-    # HTML and XML
-    'html': 'html/xml',
-    'html/xml': 'html/xml',
-    'xml': 'html/xml',
-    'xslt': 'html/xml',
     # JavaScript
     'javascript': 'javascript',
     'js': 'javascript',
-    # (special)
-    # Sphinx's default highlight language is based off a superset of 'python'.
-    # To follow Sphinx's method of highlighting, use Confluence's 'python'
-    # highlight type as the target language for the default type.
-    #
-    # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
-    DEFAULT_HIGHLIGHT_STYLE: 'python',
 }
 
 LITERAL2LANG_MAP_V2 = {
     **LITERAL2LANG_MAP_COMMON,
-    # ABAP
-    'abap': 'abap',
-    # Ada
-    'ada': 'ada',
-    'ada2005': 'ada',
-    'ada95': 'ada',
-    # Arduino
-    'arduino': 'arduino',
-    # Autoit
-    'autoit': 'autoit',
-    # C
-    'c': 'c',
     # C#
     'c#': 'c#',
     'csharp': 'c#',
-    # Clojure
-    'clj': 'clojure',
-    'clojure': 'clojure',
-    # CoffeeScript
-    'coffee': 'coffeescript',
-    'coffee-script': 'coffeescript',
-    'coffeescript': 'coffeescript',
-    # CSS
-    'css': 'css',
-    # CUDA
-    'cu': 'cuda',
-    'cuda': 'cuda',
-    # D
-    'd': 'd',
-    # Dart
-    'dart': 'dart',
-    # Dockerfile
-    'docker': 'docker',
-    'dockerfile': 'docker',
-    # Elixir
-    'elixir': 'elixir',
-    'ex': 'elixir',
-    'exs': 'elixir',
     # Erlang
     'erlang': 'erl',
-    # Fortran
-    'f90': 'fortran',
-    'fortran': 'fortran',
-    # FoxPro
-    'clipper': 'foxpro',
-    'foxpro': 'foxpro',
-    'vfp': 'foxpro',
-    'xbase': 'foxpro',
-    # Go
-    'go': 'go',
-    'golang': 'go',
-    # GraphQL
-    'graphql': 'graphql',
-    # Handlebars
-    'handlebars': 'handlebars',
-    'hbs': 'handlebars',
-    'html+handlebars': 'handlebars',
-    # Haskell
-    'haskell': 'haskell',
-    'hs': 'haskell',
-    # Haxe
-    'haxe': 'haxe',
-    'hx': 'haxe',
-    'hxsl': 'haxe',
-    # HCL
-    'hcl': 'hcl',
-    'terraform': 'hcl',
-    'tf': 'hcl',
-    # HTML and XML
-    'html': 'html',
     # JavaScript
     'javascript': 'js',
     'js': 'js',
-    # JSON
-    'json': 'json',
-    'json-object': 'json',
-    # JSX
-    'jsx': 'jsx',
-    # Julia
-    'jl': 'julia',
-    'julia': 'julia',
-    # Kotlin
-    'kotlin': 'kotlin',
-    # LiveScript
-    'live-script': 'livescript',
-    'livescript': 'livescript',
-    # Lua
-    'lua': 'lua',
-    # Markdown
-    'markdown': 'markdown',
-    'md': 'markdown',
-    # Mathematica
-    'mathematica': 'mathematica',
-    'mma': 'mathematica',
-    'nb': 'mathematica',
-    # MATLAB
-    'matlab': 'matlab',
-    # NGINX
-    'nginx': 'nginx',
-    # Objective-C
-    'obj-c': 'objective-c',
-    'objc': 'objective-c',
-    'objective-c': 'objective-c',
-    'objectivec': 'objective-c',
-    # Objective-J
-    'obj-j': 'objective-j',
-    'objective-j': 'objective-j',
-    'objectivej': 'objective-j',
-    'objj': 'objective-j',
-    # OCaml
-    'ocaml': 'ocaml',
-    # Octave
-    'octave': 'octave',
-    # Pascal
-    'delphi': 'pas',
-    'pas': 'pas',
-    'pascal': 'pas',
-    'objectpascal': 'pas',
-    # Prolog
-    'prolog': 'prolog',
-    # Protocol Buffers
-    'proto': 'protobuf',
-    'protobuf': 'protobuf',
-    # Puppet
-    'puppet': 'puppet',
-    # QML
-    'qbs': 'qbs',
-    'qml': 'qbs',
-    # R
-    'r': 'r',
-    # Racket
-    'racket': 'racket',
-    'rkt': 'racket',
-    # reStructuredText
-    'rest': 'restructuredtext',
-    'restructuredtext': 'restructuredtext',
-    'rst': 'restructuredtext',
-    # Rust
-    'rs': 'rust',
-    'rust': 'rust',
-    # Scheme
-    'scm': 'scheme',
-    'scheme': 'scheme',
-    # Smalltalk
-    'smalltalk': 'smalltalk',
-    'squeak': 'smalltalk',
-    'st': 'smalltalk',
-    # SplunkSPL
-    'spl': 'splunk-spl',
-    'splunkspl': 'splunk-spl',
-    # StandardML
-    'sml': 'standardml',
-    'standardml': 'standardml',
-    # Swift
-    'swift': 'swift',
-    # Tcl
-    'tcl': 'tcl',
-    # TeX
-    'latex': 'tex',
-    'tex': 'tex',
+    # Mermaid
+    'mermaid': 'mermaid',
     # TOML
     'toml': 'toml',
-    # TSX
-    'tsx': 'tsx',
-    # TypeScript
-    'ts': 'typescript',
-    'typescript': 'typescript',
-    # Vala
-    'vala': 'vala',
-    'vapi': 'vala',
-    # VbNet
-    'lobas': 'vbnet',
-    'oobas': 'vbnet',
-    'sobas': 'vbnet',
-    'vb.net': 'vbnet',
-    'vbnet': 'vbnet',
-    # Verilog
-    'v': 'verilog',
-    'verilog': 'verilog',
-    # VHDL
-    'vhdl': 'vhdl',
-    # XML
-    'xml': 'xml',
-    'xslt': 'xml',
-    # XQuery
-    'xq': 'xquery',
-    'xql': 'xquery',
-    'xqm': 'xquery',
-    'xquery': 'xquery',
-    'xqy': 'xquery',
-    # (special)
-    # Sphinx's default highlight language is based off a superset of 'python'.
-    # To follow Sphinx's method of highlighting, use Confluence's 'python'
-    # highlight type as the target language for the default type.
-    #
-    # [1]: http://www.sphinx-doc.org/en/stable/config.html#confval-highlight_language
-    DEFAULT_HIGHLIGHT_STYLE: 'python',
 }
 
 # sphinx literal to confluence language map (fallbacks)
@@ -399,24 +384,25 @@ LITERAL2LANG_MAP_V2 = {
 # (specifically, the interactive part); however, it will be still nice to
 # render the content as Python code instead of plain text.
 LITERAL2LANG_FBMAP_COMMON = {
-    # C-like languages
+    # C-like languages (Confluence Data Center >=9.1; "cpp -> c")
+    'clay': 'c',
+    'ec': 'c',
+    'nesc': 'c',
+    'pike': 'c',
+    'vala': 'c',
+    'vapi': 'c',
+    # C++-like languages
     'arduino': 'cpp',
     'charmci': 'cpp',
-    'clay': 'cpp',
     'cu': 'cpp',
     'cuda': 'cpp',
-    'ec': 'cpp',
     'mq4': 'cpp',
     'mq5': 'cpp',
     'mql': 'cpp',
     'mql4': 'cpp',
     'mql5': 'cpp',
-    'nesc': 'cpp',
     'omg-idl': 'cpp',
-    'pike': 'cpp',
     'swig': 'cpp',
-    'vala': 'cpp',
-    'vapi': 'cpp',
     # YAML-like languages
     'salt': 'yaml',
     'sls': 'yaml',
@@ -429,9 +415,6 @@ LITERAL2LANG_FBMAP_V1 = {
     'ipython': 'python',
     'ipython2': 'python',
     'ipython3': 'python',
-    # JSON (if JSON is not explicitly supported, Python style slightly works)
-    'json': 'python',
-    'json-object': 'python',
 }
 
 LITERAL2LANG_FBMAP_V2 = {
@@ -440,9 +423,6 @@ LITERAL2LANG_FBMAP_V2 = {
     'ipython': 'py',
     'ipython2': 'py',
     'ipython3': 'py',
-    # JSON (if JSON is not explicitly supported, Python style slightly works)
-    'json': 'py',
-    'json-object': 'py',
 }
 
 # fallback highlight language

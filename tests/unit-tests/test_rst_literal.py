@@ -59,7 +59,7 @@ class TestConfluenceRstLiteral(ConfluenceTestCase):
 
             lang = block.find('ac:parameter', {'ac:name': 'language'})
             self.assertIsNotNone(lang)
-            self.assertEqual(lang.text, 'cpp')
+            self.assertEqual(lang.text, 'c')
 
             linenumbers = block.find('ac:parameter', {'ac:name': 'linenumbers'})
             self.assertIsNotNone(linenumbers)
