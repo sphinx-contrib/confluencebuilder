@@ -477,6 +477,11 @@ class Rest:
             print(f'(debug) Request: {origin}]')
             print(f'{req.method} {req.url}')
             print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
+            if base_req.files:
+                print('--- (files) ---')
+                for file_info in base_req.files.values():
+                    file_name, _, file_mime = file_info
+                    print(f'File: {file_name} ({file_mime})')
             print(flush=True)
 
             if dump_body and req.body:
@@ -505,6 +510,8 @@ class Rest:
 
             print('(debug) Response]')
             print(f'Code: {rsp.status_code}')
+            if rsp.reason.strip():
+                print(f'Reason: {rsp.reason.strip()}')
             print('\n'.join(f'{k}: {v}' for k, v in filtered_headers.items()))
             print(flush=True)
 
