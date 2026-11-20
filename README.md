@@ -12,9 +12,9 @@ instance.
 ## Requirements
 
 * [Confluence][confluence] Cloud or Data Center 9.1+
-* [Python][python] 3.10+
+* [Python][python] 3.11+
 * [Requests][requests] 2.30.0+
-* [Sphinx][sphinx] 8.0+
+* [Sphinx][sphinx] 8.1+
 
 ## Installing
 

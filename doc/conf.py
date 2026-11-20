@@ -18,9 +18,9 @@ version = sphinxcontrib.confluencebuilder.__version__
 release = sphinxcontrib.confluencebuilder.__version__
 
 supported_confluence_ver = '9.1+'
-supported_python_ver = '3.10+'
+supported_python_ver = '3.11+'
 supported_requests_ver = '2.30.0+'
-supported_sphinx_ver = '8.0+'
+supported_sphinx_ver = '8.1+'
 
 root_doc = 'contents'
 
