@@ -57,10 +57,12 @@ class ConfluenceAssetManager:
     be published to the respective publish points.
 
     Args:
+        config: the project config
         env: the build environment
         out_dir: configured output directory (where assets may be stored)
     """
-    def __init__(self, env, out_dir):
+    def __init__(self, config, env, out_dir):
+        self.config = config
         self.dockeys = {}
         self.env = env
         self.hash2asset = {}
@@ -334,6 +336,15 @@ class ConfluenceAssetManager:
             # if still no asset, build a new asset entry for this path
             else:
                 type_ = guess_mimetype(path, default=DEFAULT_CONTENT_TYPE)
+
+                # for "image/svg+xml" types, switch it to an octet-stream
+                # since Confluence Cloud edge in Fall 2026 looks to deny these
+                # requests
+                if not self.config.confluence_adv_disable_imgsvg_override:
+                    if type_ == 'image/svg+xml':
+                        logger.verbose(f'overriding {type_} mime-type: {path}')
+                        type_ = DEFAULT_CONTENT_TYPE
+
                 asset = ConfluenceAsset(path, type_, hash_)
                 self.hash2asset[hash_] = asset
                 self._assets.append(asset)

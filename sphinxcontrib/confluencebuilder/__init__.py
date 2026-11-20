@@ -307,6 +307,8 @@ def setup(app):
     cm.add_conf_bool('confluence_adv_disable_anchor_fix')
     # Disable any delays when publishing property updates on Cloud
     cm.add_conf_bool('confluence_adv_disable_cloud_prop_delay')
+    # Disable overriding image/svg+xml mime-type tweak used for publish support
+    cm.add_conf_bool('confluence_adv_disable_imgsvg_override')
     # Disable any attempts to initialize this extension's custom entities.
     cm.add_conf_bool('confluence_adv_disable_init')
     # Flag to permit the use of embedded certificates from requests.

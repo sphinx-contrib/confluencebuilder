@@ -163,7 +163,7 @@ class ConfluenceBuilder(Builder):
             self.warn(f'normalizing confluence url from {old_url} to {new_url}')
             self.config.confluence_server_url = new_url
 
-        self.assets = ConfluenceAssetManager(self.env, self.out_dir)
+        self.assets = ConfluenceAssetManager(config, self.env, self.out_dir)
         self.writer = ConfluenceWriter(self)
         self.config.sphinx_verbosity = self._verbose
         self.publisher.init(self.config)
