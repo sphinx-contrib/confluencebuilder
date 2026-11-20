@@ -1,5 +1,5 @@
-Development
-===========
+3.3 (2026-11-20)
+================
 
 * Dropped support for Python 3.10 (EOL)
 * Extend language mappings for supported storage format language types
